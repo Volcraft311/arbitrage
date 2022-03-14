@@ -24,8 +24,7 @@ function Arbitrage.Initialize()
 	end
 
 	local commandData = {
-		--[["dupe_arm",]] "gm_save",
-		--[["gmod_admin_cleanup",]] "kill"
+		"gm_save","kill"
 	}
 
 	for k, v in ipairs(commandData) do
@@ -47,9 +46,6 @@ function Arbitrage.Initialize()
 		for k, v in ipairs(funcData) do
 			Arbitrage.GM[v] = permissionFunc
 		end
-
-		-- crasher (rubat fixed??)
-		--net.Receive("ArmDupe", function(size, client) end)
 
 		Arbitrage.util.WriteMessage("The gamemode \"" .. engine.ActiveGamemode() .. "\" was started!")
 	end

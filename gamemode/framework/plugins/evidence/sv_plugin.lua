@@ -1,12 +1,6 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:RegisterNewEvidence(data)
-    -- self.list[#self.list + 1] = {
-    --     name = data.name or "Неизвестно",
-    --     description = data.description or "Неизвестно",
-    --     image = data.image or 1
-    -- }
-
     self.list[#self.list + 1] = data
 
     local idx = #self.list

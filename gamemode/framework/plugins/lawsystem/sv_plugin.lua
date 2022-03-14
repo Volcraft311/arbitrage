@@ -14,43 +14,6 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:GameStart()
-    --self.LawList = {}
-
-    -- local num = 1
-    -- for k, v in pairs(player.GetAll()) do
-    --     v:SetNetVar("arbLaw", num, v)
-    --     self.LawList[v:SteamID()] = {
-    --         place = num,
-    --         faction = v:Team()
-    --     }
-
-    --     num = num + 1
-    -- end
-
-    --[[
-    for k, v in pairs(self.LawList) do
-        local client = NULL
-        for k1, v1 in pairs(player.GetAll()) do
-            if k == v1:SteamID() then
-                client = v1
-                break
-            end
-        end
-
-        local place = v.place
-        local faction = v.faction
-        local factionTable = Arbitrage.teams.Get(faction)
-
-        if !place or !factionTable then return end
-
-        if IsValid(client) then
-            print(client)
-        else
-            print("Игрока нет на сервере")
-        end
-    end
-    ]]--
-
     local num = 1
 
     Arbitrage.players = Arbitrage.players or {}
@@ -64,42 +27,6 @@ function PLUGIN:GameStart()
     end
 end
 
--- function PLUGIN:TransferOnLaw()
---     local num = 1
---     for k, v in pairs(player.GetAll()) do
---         if v:Team() != TEAM_SPECTATE then
---             local increase = false
---             local data = self.placesList[num]
-
---             if v:Team() == TEAM_MONOKUMA then
---                 data = self.monokumPlace
---                 increase = true
---             end
-
---             v:SetPos(data.pos)
---             v:SetEyeAngles(data.ang)
-
---             num = increase and num or (num + 1)
---         end
---     end
--- end
-
--- function PLUGIN:FreezePlayers()
---     for k, v in pairs(player.GetAll()) do
---         if v:Team() != TEAM_SPECTATE then
---             v:Freeze(true)
---         end
---     end
--- end
-
--- function PLUGIN:UnFreezePlayers()
---     for k, v in pairs(player.GetAll()) do
---         if v:Team() != TEAM_SPECTATE then
---             v:Freeze(false)
---         end
---     end
--- end
-
 function PLUGIN:DrawSprites(client, bState)
     if !IsValid(client) then return end
 
@@ -109,8 +36,6 @@ function PLUGIN:DrawSprites(client, bState)
     client:DrawShadow(bState)
     client:SetNoTarget(!bState)
 end
-
---print(PLUGIN.placesList["drp_hopespeak"][1].pos)
 
 function Arbitrage:StartLaw()
     Arbitrage.lawEnable = true
@@ -136,9 +61,6 @@ function Arbitrage:StartLaw()
 
             local place = tonumber(v.place)
             if place == -1 then continue end -- Место неуказано
-
-            --local faction = v.faction
-            --local factionTable = Arbitrage.teams.Get(faction)
 
             if IsValid(client) and client:Alive() and client:InGame() then
                 local pos = place == 0 and PLUGIN.monokumPlace[game.GetMap()].pos or (PLUGIN.placesList[game.GetMap()][place] and PLUGIN.placesList[game.GetMap()][place].pos or nil)
@@ -289,26 +211,4 @@ netstream.Hook("arb.ShowEvidence", function(client, data)
 
         PLUGIN.ShowEvidenceCD = CurTime() + 10
     end
-
-    -- if (!PLUGIN.ShowEvidenceCD or CurTime() >= PLUGIN.ShowEvidenceCD) then
-    --     local evList = client:GetNetVar("evidence", {})
-    --     if !evList[data] then return end
-
-    --     local evidence = Arbitrage.evidence.repository[data]
-    --     if !evidence then return end
-
-    --     local evidenceData = evidence and Arbitrage.evidence.data[evidence.index] or nil
-    --     if !evidenceData then return end
-
-    --     local mat = evidenceData.mat
-    --     netstream.Start(nil, "arb.ShowEvidence", client, mat, data)
-
-    --     for k, v in pairs(player.GetAll()) do
-    --         Arbitrage.player.AddEvidence(v, {
-    --             [1] = evidence
-    --         })
-    --     end
-
-    --     PLUGIN.ShowEvidenceCD = CurTime() + 10
-    -- end
 end)

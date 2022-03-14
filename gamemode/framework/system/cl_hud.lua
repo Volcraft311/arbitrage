@@ -119,7 +119,6 @@ function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 
 	element.progress = Lerp(FrameTime() * 2, element.progress, status)
 
-	--draw.CircleCustom(position, ScrH() - 70, 5, 5, 360, Color(color.r / 3, color.g / 3, color.b / 3, Arbitrage.hud.alpha / 2), 0, -35)
 	draw.CircleCustom(position, ScrH() - 70, 5, 5, element.progress - 1, ColorAlpha(color, Arbitrage.hud.alpha / 2), 0, -35)
 
 	local size = 25
@@ -130,17 +129,6 @@ function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 
 	Arbitrage.hud.moved = Arbitrage.hud.moved + 120
 end
-
--- function Arbitrage.hud.AddInfo(data)
--- 	if !data then return end
-
--- 	draw_DrawText("- " .. tostring(data[1]), "arb.Font_OpenSansLight_10", 100, ScrH() - 50 - Arbitrage.hud.y, ColorAlpha(data[2], 255 / 2 - Arbitrage.hud.alpha), TEXT_ALIGN_LEFT)
-
--- 	surface_SetDrawColor(ColorAlpha(data[2], 255 / 2 - Arbitrage.hud.alpha))
--- 	surface_DrawRect(100 - 10, ScrH() - 50 - Arbitrage.hud.y + 1, 1, 23)
-
--- 	Arbitrage.hud.y = Arbitrage.hud.y + 23
--- end
 
 
 local spectate_l_mat = Arbitrage.GetMaterial("danganronpa/hud/spectate_l.png")
@@ -180,16 +168,6 @@ function Arbitrage.hud.ALTMenuDraw()
 
 	Arbitrage.hud.alpha = Lerp(FrameTime() * 7, Arbitrage.hud.alpha, ((SETTINGS.binds.IsClampedID("open_interface") and !vgui_CursorVisible()) or IsValid(Arbitrage.gui.context)) and 255 or 0)
 	Arbitrage.hud.y = 0
-
-	-- ТРЕБУЕТСЯПОЛНАЯ ПЕРЕРАБОТКА >>>>>>
-    --[[
-	local data = client:GetNetVar("infotable", {})
-	for k, v in pairs(data) do
-		if istable(v) then
-			Arbitrage.hud.AddInfo(v)
-		end
-	end
-	]]--
 
 	if SETTINGS.options.Get("interface_open_button") then
 		draw_DrawText("Зажмите клавишу \"Q\", чтобы открыть интерфейс", "arb.Font_FuturaPTBook_8", ScrW() - 100, ScrH() - 50, Color( 255, 255, 255, 255 / 2 - Arbitrage.hud.alpha ), TEXT_ALIGN_RIGHT)
@@ -289,9 +267,6 @@ function Arbitrage.hud.CrosshairDraw()
 		drawColor = Color(119, 104, 176)
 	end
 
-	--if (math_abs(curGap - realGap) < 0.5) then
-	--	curGap = realGap
-	--end
 	if client:IsNocliping() or isUseTool then
 		curGap = realGap
 	end
@@ -526,7 +501,6 @@ function Arbitrage.hud.SeeVector(a, b, _debug)
 	local m = {x = b:ToScreen().x, y = b:ToScreen().y}
 
 	local conclusion = r.C.x <= m.x and r.D.x >= m.x and r.C.y <= m.y and r.A.y >= m.y
-	--local conclusion = r.A.x >= m.x and r.B.x <= m.x and r.D.x >= m.x and r.C.x <= m.x and r.A.y >= m.y and r.D.y <= m.y and r.B.y >= m.y and r.C.y <= m.y
 
 	if _debug then
 		local seeRect = {
@@ -640,15 +614,6 @@ function Arbitrage.hud.CreateTextPlayer(client)
 
 	surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), alpha))
 	surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
-
-	-- ТРЕБУЕТСЯПОЛНАЯ ПЕРЕРАБОТКА >>>>>>
-    --[[
-	for k, v in pairs(client:GetNetVar("infotable", {})) do
-		draw.DrawText(v[1], "ArcadeGenericFont", x, y2, ColorAlpha(v[2], alpha), TEXT_ALIGN_CENTER)
-
-		y2 = y2 + descHeight
-	end
-	]]--
 end
 
 function Arbitrage.hud.PlayerInfoDraw()

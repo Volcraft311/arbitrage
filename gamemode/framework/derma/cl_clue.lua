@@ -100,30 +100,6 @@ function PANEL:Init()
 
     self.select = -1
 
-    -- local title = self:Add("Panel")
-    -- title:SetPos(Arbitrage.ResolutionW(111), 0)
-    -- title:SetSize(Arbitrage.ResolutionW(500), Arbitrage.ResolutionH(32))
-    -- title.Paint = function(_, w, h)
-    --     surface.SetDrawColor(255, 255, 255, 76)
-    --     surface.DrawRect(10, h - 2, w - 10 * 2, 2)
-    -- end
-
-    -- local close = title:Add("DButton")
-    -- close:SetText("")
-    -- close:Dock(RIGHT)
-    -- close:SetWide(Arbitrage.ResolutionH(32))
-    -- close.alpha = 50
-    -- close.Paint = function(_, w, h)
-    --     _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
-
-    --     draw.DrawText("x", "arb.Font_FuturaPTBook_11", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
-    -- end
-    -- close.DoClick = function()
-    --     self:AlphaTo(0, 0.3, 0, function()
-    --         self:Remove()
-    --     end)
-    -- end
-
     local close = self:Add("DButton")
     close:SetText("")
     close:SetPos(self:GetWide() - Arbitrage.ResolutionH(40))

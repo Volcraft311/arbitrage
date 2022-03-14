@@ -46,18 +46,10 @@ function PANEL:Init()
 end
 
 function PANEL:SetPlayer(data)
-    --self.player = data
-
-    --PrintTable(self.player)
-
     self:InitCategory(data)
 end
 
 function PANEL:InitCategory(client)
-    --local client = self.player
-
-    --PrintTable(client)
-
     for k, v in ipairs(PLUGIN.ActionData) do
         local category = self.categoryPanel:Add("Panel")
         category:SetTall(0)
@@ -75,7 +67,6 @@ function PANEL:InitCategory(client)
 
                 if !bState then
                     allow = false
-                    --continue
                 end
             end
 
@@ -107,10 +98,6 @@ function PANEL:InitCategory(client)
                 end
             end
             button.DoClick = function()
-                -- self:AlphaTo(0, 0.2, 0, function()
-                --     self:Remove()
-                -- end)
-
                 if v2.onRun and allow then
                     Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
                     v2.onRun(client)
@@ -120,7 +107,6 @@ function PANEL:InitCategory(client)
             end
 
             category:SetTall(category:GetTall() + button:GetTall() + 2)
-            --return
         end
 
         self.categoryPanel:AddItem(category)

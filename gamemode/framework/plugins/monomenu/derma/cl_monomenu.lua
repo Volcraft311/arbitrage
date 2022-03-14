@@ -170,7 +170,6 @@ function PANEL:SetData(data)
 
                 if !bState then
                     allow = false
-                    --continue
                 end
             end
 
@@ -203,7 +202,6 @@ function PANEL:SetData(data)
             end
 
             button.DoClick = function()
-                --Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
                 if v.onRun then
                     Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
                     v.onRun(client)
@@ -254,7 +252,6 @@ function PANEL:SetData(data)
                 surface.DrawTexturedRect(0, 0, w, h)
             end
         end
-        -- modelPanel:SetModel(factionData.model and factionData.model or ARBITRAGE_STANDART_MODEL)
 
         self:AddAction(panel, v, true)
 
@@ -286,7 +283,6 @@ function PANEL:SetData(data)
 
             draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", Arbitrage.ResolutionW(45), Arbitrage.ResolutionH(8), nameColor, TEXT_ALIGN_LEFT)
             draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, Arbitrage.ResolutionH(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
-            --draw.DrawText("Место на суде: " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + Arbitrage.ResolutionW(200), Arbitrage.ResolutionH(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
 
         local mat = (factionData and factionData.pixel) and Arbitrage.GetMaterial(factionData.pixel) or nil
@@ -308,16 +304,6 @@ function PANEL:SetData(data)
         num = num + 1
     end
 end
-
--- function PANEL:OnKeyCodeReleased(button)
---     button = input.GetKeyName(button)
-
---     if button == "F3" then
---         self:AlphaTo(0, 0.2, 0, function()
---             self:Remove()
---         end)
---     end
--- end
 
 local c = Color(255, 255, 255, 255)
 function PANEL:Paint(w, h)

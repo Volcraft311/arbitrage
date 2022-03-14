@@ -197,7 +197,6 @@ vgui.Register("arb.MonoMenuClue", PANEL, "DFrame")
 local PANEL = {}
 
 function PANEL:Init()
-    --self:SetTitle("")
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()
@@ -375,7 +374,6 @@ vgui.Register("arb.MonoMenuClueSub", PANEL, "EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    --self:SetTitle("")
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()

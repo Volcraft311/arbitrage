@@ -135,8 +135,6 @@ function PANEL:Init()
     end)
 
     parent:AddOption(self.optionPanel, "ESC", "Назад", W(50), W(100))
-
-    -- self:OpenStages(true, "game_process")
 end
 
 function PANEL:SettingsCreatePanels()

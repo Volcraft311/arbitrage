@@ -44,23 +44,6 @@ function Arbitrage.teams.Create(data)
         data.emodjiListMin[#data.emodjiListMin + 1] = min
     end
 
-    -- Перенесено в AUTOCACHE
-    --[[
-    if Arbitrage.util.IsClientSide() then
-        -- Кешируем все эмодзи
-        local info = {data.emodjiList, data.emodjiListMin}
-
-        for i = 1, #info do
-            local element = info[i]
-
-            for k, v in pairs(element) do
-                Arbitrage.GetMaterial(v)
-            end
-        end
-    end
-    ]]--
-
-
     Arbitrage.teams.data[team_index] = data
 
     if Arbitrage.util.IsServerSide() then

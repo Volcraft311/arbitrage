@@ -13,16 +13,6 @@
 
 local PLUGIN = PLUGIN
 
--- Отключаем старый худ observer-а
---[[ HELIX CODE
-ix.plugin.list["observer"].HUDPaint = nil
-for k, v in pairs(HOOKS_CACHE["HUDPaint"]) do 
-	if k.uniqueID == "observer" and k.folder == "helix/plugins/observer.lua" then
-		HOOKS_CACHE["HUDPaint"][k] = nil
-	end
-end
-]]--
-
 surface.CreateFont( "AdminESPFont", {
 	font = "Roboto",
 	size = 17,
@@ -47,54 +37,6 @@ function PLUGIN:HUDPaint()
 	if !SETTINGS.options.Get("show_admin_esp") then return end
 	if client.GetSitting and client:GetSitting() then return end
 	if Arbitrage.lawEnable then return end
-
-	-- for k, v in pairs(player.GetAll()) do
-	-- 	if v == LocalPlayer() then continue end
-	-- 	if !v:oldAlive() then continue end
-	-- 	if v:IsSpectate() then continue end
-
-	-- 	local _y = 0
-	-- 	local info = v:ESPInfo()
-	-- 	for k2, v2 in pairs(info) do
-	-- 		if v2[1] and self:DistanceFits(LocalPlayer():GetPos(), v:GetPos(), v2[2]) then
-	-- 			local pos = v:GetPos()
-	-- 			local head = Vector(pos.x, pos.y, pos.z + 60)
-	-- 			local headPos = head:ToScreen()
-	-- 			local distance = LocalPlayer():GetPos():Distance(v:GetPos())
-	-- 			local x, y = headPos.x, headPos.y
-	-- 			local f = math.abs(350 / distance)
-	-- 			local size = 52 * f
-	-- 			local col = team.GetColor(v:Team()) or color_white
-
-	-- 			createText(tostring(v2[1]), (x - size / 2) + size, y - size / 2, col, _y)
-
-	-- 			_y = _y + 15
-	-- 		end
-	-- 	end
-	-- end
-
-	-- for k, v in pairs(ents.GetAll()) do
-	-- 	if !self.entslist[v:GetClass()] then continue end
-
-	-- 	local _y = 0
-	-- 	local info = v:ESPInfo()
-	-- 	for k2, v2 in pairs(info) do
-	-- 		if v2[1] and self:DistanceFits(LocalPlayer():GetPos(), v:GetPos(), v2[2]) then
-	-- 			local pos = v:GetPos()
-	-- 			local head = Vector(pos.x, pos.y, pos.z)
-	-- 			local headPos = head:ToScreen()
-	-- 			local distance = LocalPlayer():GetPos():Distance(v:GetPos())
-	-- 			local x, y = headPos.x, headPos.y
-	-- 			local f = math.abs(350 / distance)
-	-- 			local size = 52 * f
-	-- 			local col = self.entslist[v:GetClass()] or color_white
-
-	-- 			createText(tostring(v2[1]), (x - size / 2) + size, y - size / 2, col, _y)
-
-	-- 			_y = _y + 15
-	-- 		end
-	-- 	end
-	-- end
 
 	for k, v in pairs(ents.GetAll()) do
 		local p = v:IsPlayer()

@@ -42,36 +42,7 @@ function PLUGIN:StartPointing()
     end)
 
     hook.Add("CalcView", "arb.LawStartPointing", function(client, pos, angles, fov)
-        --local __camPos = self.__camPos
-        --if self.oldEntity != self._entity then
-            --self.oldEntity = self._entity -- Старый игрок который говорил
-        --end
-
-        -- if (!self.interruption or CurTime() >= self.interruption) then
-        --     for k, v in SortedPairs(player.GetAll()) do
-        --         if v:IsPlaying() and v:IsSpeaking() and v != self._entity then
-        --             self._entity = v
-        --             self.interruption = CurTime() + 5
-        --             break
-        --         end
-        --     end
-        -- end
-
         if IsValid(self._entity) then
-            --local isKuma = self._entity:Team() == TEAM_MONOKUMA
-            --local a = self.monokumCam
-            --local b = self.camPosEnd
-
-            --self.__camPos = Lerp(FrameTime() * 5, self.__camPos, isKuma and a or b)
-
-            -- local WPos = self._entity:LocalToWorld(Vector(0, 0, 0))
-            -- local Ang = WPos - self.__camPos
-            -- Ang = Ang:Angle()
-
-            -- if self.oldEntity != self._entity then
-            --     self.animID = math.random(1, #self.CamAnimData)
-            -- end
-
             self:ReplaceVariables()
             self.__camPos, self._angles, self._fov, self._entity = self.CamAnimData[self.animID](
                 self,
@@ -80,22 +51,6 @@ function PLUGIN:StartPointing()
                 self._fov,
                 self._entity
             )
-
-            -- for k, v in pairs({"x", "y", "z"}) do
-            --     local speed = 5
-            --     if self._angles.y >= Ang.y - 5 and self._angles.y <= Ang.y + 5 then
-            --         speed = 1
-            --     end
-
-            --     self._angles[v] = Lerp(FrameTime() * speed, self._angles[v], Ang[v])
-            -- end
-
-            -- if self._angles.y >= Ang.y - 5 and self._angles.y <= Ang.y + 5 and self._entity:IsSpeaking() then
-            --     self._fov = Lerp(FrameTime() * 3, self._fov, 88.5)
-            -- else
-            --     self._fov = Lerp(FrameTime() * 5, self._fov, 90)
-            -- end
-            --self._fov = Lerp(FrameTime() * 5, self._fov, 90)
         else
             self._angles.y = CurTime() % 20 * 18
         end
@@ -116,10 +71,7 @@ function PLUGIN:StartPointing()
 end
 
 function PLUGIN:RednessScreen()
-    hook.Add("RenderScreenspaceEffects", "arb.LawRednessScreen", function()
-        --surface.SetDrawColor(255, 61, 96, 5)
-        --surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-    end)
+    -- eh...
 end
 
 function PLUGIN:TransferCamPos(id)
@@ -130,14 +82,8 @@ function PLUGIN:TransferCamPos(id)
     self.__movescene = 0
     self._angUp = 0
 
-    -- hook.Add("RenderScreenspaceEffects", "arb.LawTransferCamPos", function()
-    --     self._camPos = Lerp(FrameTime(), self._camPos, self.camPosEnd)
-    --     self.__movescene = Lerp(FrameTime(), self.__movescene, self._movescene and ScrH() * 0.1 or 0)
-    -- end)
-
     hook.Add("CalcView", "arb.LawTransferCamPos", function(client, pos, angles, fov)
         self._camPos = Lerp(FrameTime() * 1.3, self._camPos, self.camPosEnd[game.GetMap()])
-        --self.__movescene = Lerp(FrameTime(), self.__movescene, self._movescene and ScrH() * 0.1 or 0)
 
         local frame = FrameTime() * 60
         self._angCam = (id % 2 == 1 and (self._angCam + frame) or (self._angCam - frame))
@@ -149,12 +95,6 @@ function PLUGIN:TransferCamPos(id)
             fov = fov,
             drawviewer = true
         }
-
-        --local dist = self._camPos:Distance(self.camPosEnd)
-        --if dist <= 50 then
-            --hook.Remove("CalcView", "arb.LawTransferCamPos")
-            --self:StartPointing()
-        --end
 
         return view
     end)
@@ -264,53 +204,6 @@ function PLUGIN:Clear()
     hook.Remove("RenderScreenspaceEffects", "arb.LawCylinder")
     hook.Remove("ArbitrageVoiceStart", "arb.LawStartVoice")
 end
-
--- function PLUGIN:TransferCamPos(id)
---     local data = self.camPos[id]
---     self._camPos = data.pos
---     self._alpha = 1000
---     self._angCam = 0
---     self._movescene = false
---     self.__movescene = 0
-
---     hook.Add("RenderScreenspaceEffects", "arb.TransferCamPos", function()
---         self._camPos = Lerp(FrameTime(), self._camPos, self.camPosEnd)
---         self._alpha = Lerp(FrameTime() * 3, self._alpha, 0)
---         self.__movescene = Lerp(FrameTime(), self.__movescene, self._movescene and ScrH() * 0.1 or 0)
-
---         surface.SetDrawColor(0, 0, 0, self._alpha)
---         surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-
---         surface.SetDrawColor(0, 0, 0, 255)
---         surface.DrawRect(-1, -1 - self.__movescene, ScrW() + 2, ScrH() * 0.1)
---         surface.DrawRect(-1, (ScrH() - ScrH() * 0.1) + self.__movescene, ScrW() + 2, ScrH() * 0.1)
---     end)
-
---     hook.Add("CalcView", "arb.TransferCamPos", function(client, pos, angles, fov)
---         self._angCam = (id % 2 == 1 and (self._angCam + FrameTime() * 15) or (self._angCam - FrameTime() * 15))
-
---         local view = {
---             origin = self._camPos,
---             angles = data.ang + Angle(0, self._angCam, 0),
---             fov = fov,
---             drawviewer = true
---         }
-
---         local dist = self._camPos:Distance(self.camPosEnd)
---         if dist <= 50 then
---             if id >= #self.camPos then
---                 hook.Remove("CalcView", "arb.TransferCamPos")
---                 self._alpha = 1000
-
---                 self:StartPointing()
---             else
---                 self:TransferCamPos(id + 1)
---             end
---         end
-
---         return view
---     end)
--- end
 
 function PLUGIN:Interruption(client)
     if !IsValid(client) then return end
@@ -538,82 +431,11 @@ function PLUGIN:CameraTwist()
     end)
 end
 
--- local cylinderMat = Arbitrage.GetMaterial("danganronpa/law/cylinder.png")
--- local cbulletMat = Arbitrage.GetMaterial("danganronpa/law/big_bullet.png")
--- local cbulletMatBlur = Arbitrage.GetMaterial("danganronpa/law/big_bullet_blur.png")
--- function PLUGIN:StartCylinder()
---     local size = ScrH() / 1.3
---     local _size = size
---     local cylinder_x = -size / 2
---     local alpha = 0
---     local cylinder_lerp = 0
---     local _cylinder_lerp = cylinder_lerp
---     local csize = ScrH() / 1.5
---     local c_bullets = {}
-
---     hook.Add("HUDPaint", "arb.LawCylinder", function()
---         alpha = Lerp(FrameTime() * 5, alpha, 255)
---         cylinder_x = Lerp(FrameTime() * 10, cylinder_x, 0)
---         cylinder_lerp = Lerp(FrameTime() * 10, cylinder_lerp, _cylinder_lerp)
---         size = Lerp(FrameTime() * 10, size, _size)
-
---         surface.SetDrawColor(255 - 10, 61 - 10, 96 - 10, alpha - 10)
---         surface.SetMaterial(cylinderMat)
---         surface.DrawTexturedRectRotated(cylinder_x + 0 + size / 4, ScrH() - size / 4, size, size, -CurTime() % 20 * 18 - cylinder_lerp)
-
---         for k, v in pairs(c_bullets) do
---             v.alpha = Lerp(FrameTime() * 15, v.alpha, v._alpha)
---             v.move = Lerp(FrameTime() * 15, v.move, v._move)
-
---             surface.SetDrawColor(255, 61, 96, v.alpha / 2)
---             surface.SetMaterial(cbulletMatBlur)
---             surface.DrawTexturedRect(v.x + v.move, ScrH() - size / 1.6 + v.y, csize / 2, csize / 2 * 0.2)
-
---             surface.SetDrawColor(255, 61, 96, v.alpha)
---             surface.SetMaterial(cbulletMat)
---             surface.DrawTexturedRect(v.x + v.move, ScrH() - size / 1.6 + v.y, csize / 2, csize / 2 * 0.2)
---         end
---     end)
-
---     for i = 1, 3 do
---         timer.Simple(i * 0.5, function()
---             c_bullets[i] = c_bullets[i] or {
---                 text = "Monokuma File" .. i,
---                 x = i * 20,
---                 y = csize / 2 * 0.1 + (i * (csize / 2 * 0.1 + 20)),
---                 move = 0,
---                 _move = size / 3,
---                 alpha = 0,
---                 _alpha = 255,
---             }
-
---             _cylinder_lerp = _cylinder_lerp - 6
-
---             timer.Simple(0.1, function()
---                 _cylinder_lerp = _cylinder_lerp + 55
---             end)
---         end)
-
---         timer.Simple(2.5, function()
---             _size = ScrH() / 2
-
---             for k, v in pairs(c_bullets) do
---                 if k == 1 then
---                     -- eh...
---                 else
---                     c_bullets[k]._alpha = 0
---                 end
---             end
---         end)
---     end
--- end
-
 surface.CreateFont( "arb.LawBulletFont", {
     font = "Futura PT Book",
     extended = true,
     size = ScreenScale(12),
-    weight = 400,
-    --italic = true,
+    weight = 400
 })
 
 local mat = Arbitrage.GetMaterial("danganronpa/law/cylinder.png")
@@ -730,7 +552,6 @@ function PLUGIN:StartCylinder()
         local _x = 1.5
 
         local w, h = ScrW(), ScrH()
-        --local alpha = math.abs(math.sin(CurTime() * 7) * 255)
 
         local bulletSizeW = ScrW() * 0.15
         local bulletSizeH = ScrH() * 0.057
@@ -882,8 +703,6 @@ netstream.Hook("arb.StartLaw", function()
             end
 
             timer.Simple(2, function()
-                --PLUGIN:StartCylinder()
-                --RegCylinder()
                 PLUGIN:StartCylinder()
             end)
         end)

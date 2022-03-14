@@ -77,12 +77,6 @@ end
 
 function PANEL:Show(bState)
     self:AlphaTo(bState and 255 or 0, 0.5)
-
-    --self:SetEnabled(bState)
-
-    --for k, v in pairs(self.panels) do
-    --    v:SetEnabled(bState)
-    --end
 end
 
 function PANEL:Paint(w, h)

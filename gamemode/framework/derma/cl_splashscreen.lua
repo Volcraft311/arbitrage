@@ -131,9 +131,6 @@ function PANEL:ShowTitle()
         ScrH() / 2 - tSizeY / 2 + tSizeY,
         0, 0, 0, 0, 0
 
-    -- self.Text = -40
-    -- self.mText = 0
-
     local alpha = 0
     local textAlpha = 0
 

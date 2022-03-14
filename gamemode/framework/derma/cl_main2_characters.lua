@@ -249,7 +249,6 @@ end
 
 function PANEL:ClearGarbage()
     local data = {
-        -- self.categoryPanel,
         self.categoryOpPanel,
         self.charactersPanel,
         self.charactersInfo

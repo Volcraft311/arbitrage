@@ -22,12 +22,6 @@ Arbitrage.lawEnable = Arbitrage.lawEnable or false
 PLUGIN.copy = {}
 
 function PLUGIN:ReplaceVariables()
-    -- if PLUGIN.copy.camPos then PLUGIN.camPos = PLUGIN.copy.camPos end
-    -- if PLUGIN.copy.camPosEnd then PLUGIN.camPosEnd = PLUGIN.copy.camPosEnd end
-    -- if PLUGIN.copy.monokumPlace then PLUGIN.monokumPlace = PLUGIN.copy.monokumPlace end
-    -- if PLUGIN.copy.monokumCam then PLUGIN.monokumCam = PLUGIN.copy.monokumCam end
-    -- if PLUGIN.copy.placesList then PLUGIN.placesList = PLUGIN.copy.placesList return end
-
     -- Позиции начальной камеры
     PLUGIN.camPos = {
         ["drp_hopespeak"] = {

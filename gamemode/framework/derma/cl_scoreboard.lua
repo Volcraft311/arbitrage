@@ -37,12 +37,7 @@ local pingData = {
         data = Format(path, "connect_2"),
         min = 150,
         max = 249
-    },
-    -- {
-    --     data = Format(path, "connect_1"),
-    --     min = 250,
-    --     max = 9999
-    -- }
+    }
 }
 
 function PANEL:Init()
@@ -139,10 +134,6 @@ function PANEL:Paint(w, h)
 
     Arbitrage.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, 255)
 
-    -- draw.DrawText("BULLET OF HOPE", "arb.Font_FuturaPTDemi_15", w / 2, Arbitrage.ResolutionH(9) + ScrH() * padding, Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
-
-    -- draw.DrawText("ИМЯ", "arb.Font_FuturaPTBook_6", ScrW() * padding + Arbitrage.ResolutionH(40) * 2 + 25, Arbitrage.ResolutionH(10) + ScrH() * padding * 2, Color(255, 220, 228, 255), TEXT_ALIGN_LEFT)
-    -- draw.DrawText("ПЕРСОНАЖ", "arb.Font_FuturaPTBook_6", ScrW() / 2, Arbitrage.ResolutionH(10) + ScrH() * padding * 2, Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     draw.DrawText(Format("%s | Эпизод %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, 255), TEXT_ALIGN_CENTER)
 end
 

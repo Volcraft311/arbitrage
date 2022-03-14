@@ -26,8 +26,6 @@ function PANEL:Init()
     self.bluring = false
     self.bluringM = 0
     self.listCircle = {}
-
-    -- self:Intro()
 end
 
 function PANEL:DesignButton(panel, text, w, h, icon)
@@ -112,9 +110,6 @@ function PANEL:RegisterCategory(panel, x, y, w, h)
             if !button.select then
                 draw.DrawText(text, "arb.Font_FuturaPTDemiBlurN_11", w / 2, H(12), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
-
-            -- surface.SetDrawColor(255, 0, 0)
-            -- surface.DrawOutlinedRect(0, 0, w, h)
         end
         button.DoClick = function(_, bIgnore)
             if button.select and !bIgnore then return end

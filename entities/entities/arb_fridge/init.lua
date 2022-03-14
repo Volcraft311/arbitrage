@@ -16,17 +16,6 @@ include("shared.lua");
 AddCSLuaFile("cl_init.lua");
 AddCSLuaFile("shared.lua");
 
--- function ENT:SpawnFunction(client, trace)
--- 	local entity = ents.Create("arb_sink")
-
--- 	entity:SetPos(trace.HitPos)
--- 	entity:SetAngles(trace.HitNormal:Angle() + Angle(0, -90, 0))
--- 	entity:Spawn()
--- 	entity:Activate()
-
--- 	return entity
--- end
-
 function ENT:Initialize()
 	self:SetModel("models/props_wasteland/kitchen_fridge001a.mdl")
 	self:SetSolid(SOLID_VPHYSICS)

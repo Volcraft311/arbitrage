@@ -33,14 +33,6 @@ function PANEL:Init()
     self.numbers = {}
 end
 
--- function PANEL:CreateText(text, x, y, alpha)
---     for i = 1, 2 do
---         draw.DrawText(text, "arb.LawTimerFontBlur", x, y, Color(254, 110, 21, alpha), TEXT_ALIGN_LEFT)
---     end
-
---     draw.DrawText(text, "arb.LawTimerFont", x, y, Color(255, 238, 177, alpha), TEXT_ALIGN_LEFT)
--- end
-
 function PANEL:Paint(w, h)
     local offset = Arbitrage.ResolutionW(150)
 

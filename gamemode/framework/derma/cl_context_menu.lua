@@ -52,7 +52,6 @@ function PANEL:Init()
 
     self.dancePanel = leftPanel:Add("Panel")
     self.dancePanel:Dock(TOP)
-    -- self.dancePanel:DockMargin(0, ScrH() / 2 - Arbitrage.ResolutionH(45), 0, 0)
     self.dancePanel:SetTall(H(57))
     self.dancePanel.Paint = function(_, w, h)
         surface.SetDrawColor(5, 2, 2, 204)

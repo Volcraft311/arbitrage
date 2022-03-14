@@ -24,48 +24,29 @@ function PLUGIN:PlayerNoClip(client, state)
     if !client:IsAdmin() then return false end
     if Arbitrage.lawEnable then return false end
 
-    -- if state then
-    --     hook.Run("PlayerEnterNoclip", client)
-    -- else
-    --     hook.Run("PlayerExitNoclip", client)
-    -- end
-
     hook.Run(state and "PlayerEnterNoclip" or "PlayerExitNoclip", client)
 
     return true
 end
 
 function PLUGIN:PlayerEnterNoclip(client)
-    -- client.observer_data = {
-    --     position = client:GetPos(),
-    --     angles = client:EyeAngles(),
-    --     color = client:GetColor(),
-    --     move_type = client:GetMoveType(),
-    -- }
-
     client:SetNoDraw(true)
     client:SetNotSolid(true)
     client:DrawWorldModel(false)
     client:DrawShadow(false)
     client:GodEnable()
     client:SetNoTarget(true)
-    --client:SetColor(Color(0, 0, 0, 0))
 
     client:SetNetVar("observer", true, client)
 end
 
 function PLUGIN:PlayerExitNoclip(client)
-    --local data = client.observer_data
-
-    --if data then
-        client:SetNoDraw(false)
-        client:SetNotSolid(false)
-        client:DrawWorldModel(true)
-        client:DrawShadow(true)
-        client:GodDisable()
-        client:SetNoTarget(false)
-        --client:SetColor(data.color)
-    --end
+    client:SetNoDraw(false)
+    client:SetNotSolid(false)
+    client:DrawWorldModel(true)
+    client:DrawShadow(true)
+    client:GodDisable()
+    client:SetNoTarget(false)
 
     client.observer_data = nil
     client:SetNetVar("observer", false, client)

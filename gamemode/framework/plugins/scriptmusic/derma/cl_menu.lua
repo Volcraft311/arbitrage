@@ -229,7 +229,6 @@ vgui.Register("ScriptMusic:Menu", PANEL, "DFrame")
 local PANEL = {}
 
 function PANEL:Init()
-    --self:SetTitle("")
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()
@@ -268,7 +267,6 @@ function PANEL:Init()
 
         draw.DrawText("Ивенты:", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
         draw.DrawText("Действия:", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(320), Arbitrage.ResolutionH(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        -- draw.DrawText("Пример: Selenter", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     self.nameEntry = self.main:Add("DTextEntry")

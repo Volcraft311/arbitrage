@@ -15,7 +15,6 @@ local gradientLeft = surface.GetTextureID("vgui/gradient-l")
 
 local PANEL = {}
 function PANEL:Init()
-    --self:Dock(RIGHT)
     self:SetPos(ScrW() - ScrW() * 0.2, 0)
     self:SetSize(ScrW() * 0.2, ScrH())
 end

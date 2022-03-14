@@ -26,31 +26,6 @@ function PLUGIN:GetToolData(client)
 
     local tool = client:GetTool()
 
-    -- local evidenceName = tool:GetClientInfo("name")
-    -- local evidenceDescription = tool:GetClientInfo("description")
-    -- local evidenceR = tool:GetClientInfo("r")
-    -- local evidenceG = tool:GetClientInfo("g")
-    -- local evidenceB = tool:GetClientInfo("b")
-    -- local evidenceAlpha = tool:GetClientInfo("alpha")
-    -- local evidenceIcon = tool:GetClientInfo("icon")
-
-    -- if IsValid(entity) and !entity:IsPlayer() and !entity:IsWorld() then
-    --     -- eh...
-    -- else
-    --     entity = NULL
-    -- end
-
-    -- local data = {
-    --     name = evidenceName,
-    --     description = evidenceDescription,
-    --     entity = entity,
-    --     color = Color(evidenceR, evidenceG, evidenceB),
-    --     alpha = evidenceAlpha,
-    --     position = position + angles:Up() * 0.5,
-    --     image = evidenceIcon,
-    --     angles = angles,
-    -- }
-
     local interactionUrl = tool:GetClientInfo("url")
 
     local data = {

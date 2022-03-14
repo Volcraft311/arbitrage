@@ -349,16 +349,6 @@ function SWEP:HandleDelayedAttack( statv )
 end
 
 function SWEP:PrimaryAttack( release, docharge )
-	-- self:VMIV()
-	-- if release then
-	-- 	if not docharge then
-	-- 		self:Swing()
-	-- 	else
-	-- 		self:StartCharge()
-	-- 	end
-	-- end
-
-	-- self.firstattack = CurTime() + 5
 end
 
 function SWEP:Swing()

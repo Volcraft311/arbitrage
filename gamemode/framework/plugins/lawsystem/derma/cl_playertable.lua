@@ -20,10 +20,6 @@ local disable = Arbitrage.GetMaterial("danganronpa/law/table/disable.png")
 function PANEL:Init()
     self:SetPos(ScrW() - Arbitrage.ResolutionW(582) - 30, 30)
     self:SetSize(Arbitrage.ResolutionW(582), Arbitrage.ResolutionH(100))
-    --self:MakePopup()
-
-    --self:SetTitle("")
-    --self:ShowCloseButton(false)
 
     Arbitrage.gui.playertable = self
 

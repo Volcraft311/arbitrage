@@ -49,12 +49,6 @@ function PLUGIN:OpenMonoWhiteList(client)
     netstream.Start(client, "arb.OpenMonoWhiteList", data)
 end
 
--- function PLUGIN:ShowSpare1(client)
---     if !client:IsAdmin() then return end
-
---     self:OpenMonoMenu(client)
--- end
-
 local function CheckVoting(players, data)
     if #players <= 0 then return true end -- прерываем голосование т.к. нету участников
 
@@ -91,7 +85,6 @@ function PLUGIN:StartVoting()
 
             local client = player.GetBySteamID(v.steamid)
             if IsValid(client) and v.alive then
-                --netstream.Start(client, "arb.OpenVotingScreen", data)
                 showingList[#showingList + 1] = client
             end
         end

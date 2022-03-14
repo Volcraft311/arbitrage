@@ -28,7 +28,6 @@ local function CacheTable(data)
 end
 
 function PLUGIN:CacheMat(data, num, max_num)
-    -- if !GetConVar("arb_autocache"):GetBool() then return end
     if !SETTINGS.options.Get("enable_autocache") then return end
 
     Arbitrage.GetMaterial(data)
@@ -79,7 +78,6 @@ function PLUGIN:EndSaving()
 end
 
 function PLUGIN:StartSaving()
-    -- if !GetConVar("arb_autocache"):GetBool() then return end
     if !SETTINGS.options.Get("enable_autocache") then return end
 
     -- Кешируем все картинки у всех персонажей
@@ -183,7 +181,6 @@ end
 local settings_mat = Arbitrage.GetMaterial("danganronpa/ui/settings.png")
 function PLUGIN:HUDPaint()
     if !self.caching then return end
-    -- if !GetConVar("arb_autocache"):GetBool() then return end
     if !SETTINGS.options.Get("enable_autocache") then return end
 
     local padding = W(5)

@@ -97,7 +97,6 @@ function PANEL:SetData(data)
 
     self.playersPanel = self.mainPanel:Add("DPanelList")
     self.playersPanel:EnableVerticalScrollbar()
-    --self.playersPanel:SetPadding(Arbitrage.ResolutionH(15))
     self.playersPanel:Dock(FILL)
     self.playersPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
 
@@ -192,7 +191,6 @@ vgui.Register("arb.MonoMenuWhiteList", PANEL, "DFrame")
 local PANEL = {}
 
 function PANEL:Init()
-    --self:SetTitle("")
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()

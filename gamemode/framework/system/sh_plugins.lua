@@ -163,8 +163,6 @@ function Arbitrage.plugin.LoadEntities(path)
 		Base = "base_gmodentity",
 		Spawnable = true
 	}, false, nil, function(ent)
-		-- if (SERVER and ent.Holdable == true) then
-		-- end
 	end)
 
 	HandleEntityInclusion("weapons", "SWEP", weapons.Register, {
@@ -194,8 +192,6 @@ end
 
 function Arbitrage:InitializePlugins()
 	if !Arbitrage.plugin.updates then
-		--Arbitrage.plugin.unloaded = Arbitrage.data.Get("unloaded", {}, true, true)
-
 		Arbitrage:LoadFromDir("arbitrage/gamemode/framework/plugins")
 		Arbitrage.plugin.updates = true
 	end

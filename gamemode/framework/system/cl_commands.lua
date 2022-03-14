@@ -17,5 +17,4 @@ netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end
 
     Arbitrage.notify.NotifyChat(data)
-    --chat.AddText(Color(179, 94, 231), "| ", Color(255, 255, 255), unpack(data))
 end)

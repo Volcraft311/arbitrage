@@ -175,15 +175,6 @@ PLUGIN.GameData = {
             ScriptMusic:OpenMenu(client)
         end
     },
-    -- {
-    --     data = "Открыть меню улик",
-    --     icon = "icon16/zoom.png",
-    --     onRun = function(client)
-    --         if SERVER then return false end
-
-    --         vgui.Create("arb.MonoMenuClue")
-    --     end
-    -- },
     {
         data = "Сбросить всем все харак...",
         icon = "icon16/chart_line.png",
@@ -242,11 +233,6 @@ PLUGIN.AdminData = {
             if CLIENT then return end
 
             Arbitrage.player.SetTeam(client, TEAM_ADMIN, true)
-
-            -- local data = Arbitrage.players[client:SteamID()]
-            -- if data then
-            --     data.faction = TEAM_ADMIN
-            -- end
         end,
         onCreate = function(client)
             return client:Team() != TEAM_ADMIN

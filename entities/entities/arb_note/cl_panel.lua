@@ -417,13 +417,6 @@ function PANEL:SetData(data, bEdit)
             surface.DrawRect(25, h - 1, _.width, 1)
         end
         panel.DoClick = function(_, w, h)
-            -- ГМОД ХУЙНЯ ЕБАННАЯ И НЕ ДАЕТ МЕНЯТЬ ШРИФТЫ ИНИЦИАЛИЗИРОВАННЫХ DTEXTENTRY
-            -- self.data.font = k
-            -- self.note.data.font = k
-
-            -- self.note.title:SetFont(v.font .. 14)
-            -- self.note.text:SetFont(v.font .. 7)
-
             netstream.Start("arb.NoteAction", "CHANGE_FONT", data.entity, data.page, k)
         end
     end

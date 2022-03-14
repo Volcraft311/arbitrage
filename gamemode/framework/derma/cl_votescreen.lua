@@ -81,10 +81,6 @@ function PANEL:Think()
 
     if thisTime <= 0 and !self.closing then
         self.closing = true
-
-        -- self:AlphaTo(0, 0.5, 0, function()
-        --     self:Remove()
-        -- end)
         self:RemovingPanels()
     end
 end
@@ -162,7 +158,6 @@ function PANEL:SetInfo(faction, steamid)
     end)
 end
 
--- local a = {} for i = 1, 16 do a[#a + 1] = {"STEAM_0:1:12752673" .. i, 3, math.random(1, 2) == 1 and true or false} end vgui.Create("arb.VoteScreen"):SetData(a)
 function PANEL:SetData(data)
     self.data = data
 

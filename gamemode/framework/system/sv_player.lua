@@ -13,18 +13,6 @@
 
 Arbitrage.player = Arbitrage.library.Add("player")
 
--- function Arbitrage.player.AddEvidence(client, data)
---     if !IsValid(client) then return end
---     if !istable(data) then return end
-
---     client.evidence = client.evidence or {}
---     for k, v in pairs(data) do
---         client.evidence[v.num] = true
---     end
-
---     client:SetNetVar("evidence", client.evidence, client)
--- end
-
 function Arbitrage.player.SetStats(client, data, amount)
     if !IsValid(client) then return end
 

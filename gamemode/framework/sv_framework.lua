@@ -235,87 +235,6 @@ function Arbitrage:PlayerShouldTaunt(client, act)
     return true
 end
 
--- function Arbitrage:EntityTakeDamage(target, dmginfo)
---     local attacker = dmginfo:GetAttacker()
-
---     -- if target:GetClass() == "prop_ragdoll" and IsValid(target:GetNetVar("player")) and attacker and IsValid(attacker) and attacker:IsPlayer() then
---     --     local client = target:GetNetVar("player")
---     --     local damage = dmginfo:GetDamage()
---     --     local weapon = attacker:GetActiveWeapon()
---     --     local class = weapon:GetClass()
-
---     --     if !client.infoDataRagdoll then return end
-
---     --     if class == "tfa_arcade_first" then
---     --         damage = client.infoDataRagdoll.health <= 20 and 0 or 2
---     --     end
-
---     --     client.infoDataRagdoll.health = math.Clamp(client.infoDataRagdoll.health - damage, 0, 100)
---     --     client:SetHealth(client.infoDataRagdoll.health)
---     --     --client:TakeDamage(damage)
---     -- end
-
---     if attacker and IsValid(attacker) and attacker:IsPlayer() and target:IsPlayer() and target:IsPlaying() and attacker:IsPlaying() then
---         local wep = attacker:GetActiveWeapon()
---         local typedamage = wep.DamageType or "НЕИЗВЕСТНО"
---         local hitgroup = attacker:GetEyeTraceNoCursor().HitGroup
-
---         if typedamage then
---             target.GetAllDamage = target.GetAllDamage or {}
---             target.GetAllDamage[#target.GetAllDamage + 1] = {
---                 time = CurTime(),
---                 type = typedamage,
---                 deletetime = CurTime() + 2400,
---                 hitgroup = Arbitrage.persistent.HitGroupsName[hitgroup]
---             }
---         end
-
---         -- ТРЕБУЕТСЯПОЛНАЯ ПЕРЕРАБОТКА >>>>>>
---         --[[
---         target.InfoTable = target.InfoTable or {}
---         attacker.InfoTable = attacker.InfoTable or {}
-
---         if wep.DamageType == "Удар холодным оружием" then
---             target.beatingcolder = target.beatingcolder or 0
---             target.beatingcolder = target.beatingcolder + 1
-
---             if target.beatingcolder == 1 then
---                 target.InfoTable["colder"] = {"Ранение холодным оружием", Color(206, 59, 59)}
---             elseif target.beatingcolder > 1 then
---                 target.InfoTable["colder"] = {"Ранения холодным оружием", Color(241, 34, 34)}
---             end
-
---             attacker.InfoTable["blood"] = {"Кровавые следы", Color(255, 0, 0)}
---         elseif wep.DamageType == "Удар тупым предметом" then
---             target.beatingblunt = target.beatingblunt or 0
---             target.beatingblunt = target.beatingblunt + 1
-
---             if target.beatingblunt == 1 then
---                 target.InfoTable["blunt"] = {"Удар тупым предметом", Color(167, 66, 66)}
---             elseif target.beatingblunt > 1 then
---                 target.InfoTable["blunt"] = {"Удары тупым предметом", Color(241, 34, 34)}
---             end
-
---             attacker.InfoTable["blood"] = {"Кровавые следы", Color(255, 0, 0)}
---         end
-
---         if wep.DamageType == "Побои" then
---             target.beatingblows = target.beatingblows or 0
---             target.beatingblows = target.beatingblows + 1
-
---             if target.beatingblows == 1 then
---                 target.InfoTable["blow"] = {"След побоев", Color(230, 148, 18), CurTime() + 2400}
---             elseif target.beatingblows > 1 then
---                 target.InfoTable["blow"] = {"Следы побоев", Color(245, 184, 18), CurTime() + 2400}
---             end
---         end
-
---         target:SetNetVar("infotable", target.InfoTable)
---         attacker:SetNetVar("infotable", attacker.InfoTable)
---         ]]--
---     end
--- end
-
 function Arbitrage:DoPlayerDeath(client, attacker, damageinfo)
     Arbitrage.persistent.DoPlayerDeath(client, attacker, damageinfo)
 end
@@ -389,86 +308,6 @@ function Arbitrage:KeyPress(client, key)
     end
 end
 
--- function Arbitrage:Think()
---     for k, v in pairs(Arbitrage.persistent.ragdolls or {}) do
---         local entity = Entity(v.entity)
-
---         if entity and IsValid(entity) and entity:GetPos() != v.pos then
---             local trace = util.TraceLine({
---                 start = entity:GetPos(),
---                 endpos = entity:GetPos() - entity:GetAngles():Up() * 99999999,
---                 filter = function(ent)
---                     local class = ent:GetClass()
---                     if class == "prop_ragdoll" then
---                         return false
---                     end
---                 end
---             })
-
---             if trace.HitWorld and (not Arbitrage.persistent.ragdolls[k].timers or CurTime() >= Arbitrage.persistent.ragdolls[k].timers) then
---                 local Pos1 = trace.HitPos + trace.HitNormal
---                 local Pos2 = trace.HitPos - trace.HitNormal
-
---                 local Bone
---                 if (trace.PhysicsBone and trace.PhysicsBone < trace.Entity:GetPhysicsObjectCount()) then
---                     Bone = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
---                 end
-
---                 if (!IsValid(Bone)) then
---                     Bone = trace.Entity:GetPhysicsObject()
---                 end
-
---                 if (!IsValid(Bone)) then
---                     Bone = trace.Entity
---                 end
-
---                 Pos1 = Bone:WorldToLocal(Pos1)
---                 Pos2 = Bone:WorldToLocal(Pos2)
-
---                 Arbitrage.persistent.PlaceDecal(v, trace.Entity, {
---                     Pos1 = Pos1,
---                     Pos2 = Pos2,
---                     bone = trace.PhysicsBone,
---                     decal = "Blood"
---                 })
-
---                 Arbitrage.persistent.ragdolls[k].timers = CurTime() + 0.3
---                 Arbitrage.persistent.ragdolls[k].pos = entity:GetPos()
---             end
---         end
---     end
---     if (not OneTick or CurTime() >= OneTick) then
---         for k, v in pairs(player.GetAll()) do
---             local damageinfo = v.GetAllDamage or {}
-
---             if #damageinfo > 0 then
---                 for k2, v2 in pairs(damageinfo) do
---                     local deletetime = v2.deletetime
-
---                     if CurTime() > deletetime then
---                         v.GetAllDamage[k2] = nil
---                     end
---                 end
---             end
-
---             -- ТРЕБУЕТСЯ ПОЛНАЯ ПЕРЕРАБОТКА >>>>>>
---             --[[
---             v.InfoTable = v.InfoTable or {}
---             for k2, v2 in pairs(v.InfoTable) do
---                 local time = tonumber(v2[3])
-
---                 if time and CurTime() >= time then
---                     v.InfoTable[k2] = nil
---                     v:SetNetVar("infotable", v.InfoTable)
---                 end
---             end
---             ]]--
---         end
-
---         OneTick = CurTime() + 1
---     end
--- end
-
 function Arbitrage:PlayerPostThink(client)
     if Arbitrage.statistics then Arbitrage.statistics.PlayerPostThink(client) end
 
@@ -530,27 +369,18 @@ function Arbitrage:PlayerDeath(client, inflictor, attacker)
     end)
 end
 
---Arbitrage.game = true
 function Arbitrage:PlayerInitialSpawn(client)
-    -- if Arbitrage.evidence then
-    --     Arbitrage.evidence.SendInfo(client)
-    -- end
-
     timer.Create("initClient_" .. client:EntIndex(), FrameTime(), 0, function()
         if IsValid(client) then
             timer.Remove("initClient_" .. client:EntIndex())
-            --local vector, _ = ARBITRAGE_LOBBY[game.GetMap()] and table.Random(ARBITRAGE_LOBBY[game.GetMap()]) or Vector(0, 0, 0)
 
             client:StripWeapons()
             client:StripAmmo()
-            --client:SetPos(vector)
             client:Freeze(false)
             client:GodDisable()
             client:SyncVars()
 
             Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
-            -- netstream.Start(client, "arb.OpenMainMenu")
-            -- Arbitrage.evidence.SendInfo(client)
 
             hook.Run("PlayerInitial", client)
         end
@@ -659,8 +489,6 @@ function Arbitrage:StartGame()
 
             client:SendLua([[RunConsoleCommand("stopsound")]])
             client:SendLua([[RunConsoleCommand("r_cleardecals")]])
-            --client:SendLua([[Arbitrage.Client().corpsesList = nil]])
-            --client:SendLua([[Arbitrage.Client().notesList = nil]])
 
             client:StripAmmo()
             client:StripWeapons()
@@ -691,22 +519,9 @@ function Arbitrage:StartGame()
             end)
         end
     end
-
-    -- for k, v in pairs(ents.GetAll()) do
-    --     if v:IsNPC() then v:Remove() end
-    --     if v:GetClass() == "arb_weapon" then v:Remove() end
-    --     if v:GetClass() == "arb_evidence" then v:Remove() end
-    -- end
-
-    -- Arbitrage.CurTime = 0
-    -- Arbitrage.evidence.ClearAll()
-
-    -- hook.Run("GameStart")
 end
 
 function Arbitrage:StopGame()
-    -- ScriptMusic:ChangeTheme("endgame", true)
-
     Arbitrage.startgame = false
     SetNetVar("arb.StartGame", Arbitrage.startgame)
 
@@ -750,10 +565,6 @@ function Arbitrage:PlayerOneSecond(client)
     client:StripAmmo()
     client:Spectate(OBS_MODE_CHASE)
 end
-
--- function Arbitrage:PlayerCanPickupItem(client, entity)
---     return client:KeyPressed(IN_USE)
--- end
 
 function Arbitrage:PlayerCanPickupWeapon(client, entity)
     if client:IsSpectate() then return false end
@@ -799,7 +610,6 @@ end)
 
 timer.Create("arb.UpdateTheme", 10, 0, function()
     local theme = ScriptMusic:GetTheme()
-    -- PrintMessage(HUD_PRINTTALK, "Тема сейчас: " .. tostring(theme))
     if theme != "none" and theme != "freetime_day" and theme != "freetime_night" then return end
 
     local isDay = Arbitrage.IsDay()

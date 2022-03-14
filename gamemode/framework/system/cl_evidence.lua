@@ -42,8 +42,6 @@ function Arbitrage.evidence.CreateText(data)
     local endpos1 = vec + ang:Forward() * 150 + ang:Right() * 15 + ang:Up() * 10
     local endpos2 = vec + ang:Forward() * 150 - ang:Right() * 15 + ang:Up() * 10
 
-    --if name == "Труп" then return end
-
     local ignore_list = {}
     ignore_list[#ignore_list + 1] = client
 

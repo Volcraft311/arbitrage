@@ -133,7 +133,6 @@ function PLUGIN:StopGlobalSound(callback)
             end
         end)
     else
-        -- channel:Stop() -- sound not valid
         if self:IsValidGlobalSound() then
             local gSound = self:GetGlobalSound()
             gSound:Stop()
@@ -153,9 +152,6 @@ function PLUGIN:IsStoping()
     if !self:IsValidGlobalSound() then return true end
 
     local gSound = self:GetGlobalSound()
-    -- if !gSound then return true end
-    -- if !gSound:IsValid() then return true end
-
     local state = gSound:GetState()
 
     return state != GMOD_CHANNEL_PLAYING and state != GMOD_CHANNEL_STALLED

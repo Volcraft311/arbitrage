@@ -1,7 +1,6 @@
 local PANEL = {}
 
 function PANEL:Init()
-    --self:SetTitle("")
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()

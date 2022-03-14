@@ -31,12 +31,6 @@ function Arbitrage.weapon.Drop(client)
 			weapon:Holster()
 		end
 
-		-- if class == "buu_lantern" or class == "buu_lantern_oil" then
-		-- 	weapon:SetLantern_Holstered(true)
-		-- 	client:SetNWBool("Lantern_JustHolsteredIt", false)
-		-- 	weapon:OnDrop()
-		-- end
-
 		local dropPos = client:GetPos() + Vector(0, 0, 35) + client:GetAngles():Forward() * 8
 
 		local entity = ents.Create( "arb_weapon" )

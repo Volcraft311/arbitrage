@@ -41,35 +41,6 @@ function PLUGIN:LoadData()
 	end
 end
 
--- function PLUGIN:SaveDoorData()
--- 	local data = {}
--- 	local doors = {}
-
--- 	for _, v in ipairs(ents.GetAll()) do
--- 		if v:GetClass() == "prop_door_rotating" or v:GetClass() == "func_door_rotating" then
--- 			doors[v:MapCreationID()] = v
--- 		end
--- 	end
-
--- 	local doorData
-
--- 	for k, v in pairs(doors) do
--- 		doorData = {}
-
--- 		if v.arbOwnerID then
--- 			doorData.arbOwnerID = v.arbOwnerID
--- 		end
-
--- 		if (!table.IsEmpty(doorData)) then
--- 			data[k] = doorData
--- 		end
--- 	end
-
--- 	--self:SetData(data)
-
--- 	self:LoadData()
--- end
-
 local initData = {
 	["drp_hopespeak"] = {
 		[3460] = true,
@@ -114,7 +85,6 @@ function PLUGIN:InitPlayersDoor()
 			db[entity:MapCreationID()].arbOwnerID[v:SteamID()] = v:Name()
 			db[entity:MapCreationID()].indexDoor = entity:EntIndex()
 
-			--entity:SetNetVar("arb.owner", v:Name())
 			entity:SetNetVar("arb.team", v:Team())
 
 			num = num + 1
@@ -190,5 +160,3 @@ netstream.Hook("arb.DoorSetIcon", function(client, data)
 		door:SetNetVar("arb.team", data > 0 and data or nil)
 	end
 end)
-
---PLUGIN:LoadData()

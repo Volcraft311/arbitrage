@@ -114,20 +114,11 @@ local categoryData = {
                 present:DockMargin(0, Arbitrage.ResolutionH(10), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(10))
                 present:SetWide(Arbitrage.ResolutionH(30))
                 present.DoClick = function()
-                    --if Arbitrage.gui.lawaction.evidences[v.index] then return end
-
                     netstream.Start("arb.ShowEvidence", k)
                 end
             end
         end
-    },
-    -- {
-    --     name = "Еще что-то",
-    --     icon = "icon16/chart_bar.png",
-    --     data = function(client, panel)
-    --         print(LocalPlayer())
-    --     end
-    -- },
+    }
 }
 
 local PANEL = {}

@@ -56,19 +56,6 @@ ARBITRAGE_LOBBY = {
 	}
 }
 
--- Определенные действия при нажатии на заданные кнопки
--- ARBITRAGE_KEY_DATA = {
--- 	data = {
--- 		F4 = function(client)
--- 			if IsValid(Arbitrage.gui.logmenu) then Arbitrage.gui.logmenu:AlphaTo(0, 0.3, 0, function() Arbitrage.gui.logmenu:Remove() end) return end
-
--- 			Arbitrage.logmenu = vgui.Create("arb.EvidenceMenu")
--- 		end,
-
--- 		-- Тут должны быть бинды других кнопок, наверно...
--- 	}
--- }
-
 -- Кнопки в `C` менюшке
 ARBITRAGE_CONTEXT_DATA = {
 	dance = {

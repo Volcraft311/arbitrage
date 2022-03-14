@@ -167,7 +167,6 @@ Arbitrage.hud.AddCircle("sleep", {
 })
 
 function Arbitrage:HUDPaint()
-	print("aboba")
     if !Arbitrage.hud then return end
 
     Arbitrage.hud.SpectateDraw()

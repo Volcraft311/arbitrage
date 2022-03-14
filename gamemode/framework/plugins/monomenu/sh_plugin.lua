@@ -222,6 +222,38 @@ PLUGIN.GameData = {
             Evidence.list = {}
             netstream.Start(nil, "evidence.Clear")
         end
+    },
+    {
+        data = "Вкл отображение ClassTrial",
+        icon = "icon16/chart_curve_add.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.ClassTrial", true)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return !Arbitrage.IsShowClassTrial()
+        end
+    },
+    {
+        data = "Выкл отображение ClassTrial",
+        icon = "icon16/chart_curve_delete.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.ClassTrial", false)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return Arbitrage.IsShowClassTrial()
+        end
     }
 }
 

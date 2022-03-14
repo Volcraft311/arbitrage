@@ -344,6 +344,7 @@ end
 
 function PLUGIN:PostDrawOpaqueRenderables()
     if !Arbitrage.lawEnable then return end
+    if !Arbitrage.IsShowClassTrial() then return end
 
     local pos = self.camPosEnd[game.GetMap()]
     if !pos then return end

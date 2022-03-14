@@ -1,7 +1,7 @@
 "arbitrage"
 {
 	"base"		"base"
-	"title"		"Danganronpa RP"
+	"title"		"Danganronpa RP test"
 	"maps"		"^arb_"
 	"menusystem"	"1"
 }

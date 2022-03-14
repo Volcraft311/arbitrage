@@ -69,9 +69,6 @@ function PANEL:InitPlayersCategory()
         surface.SetDrawColor(255, 255, 255, 50)
         surface.DrawRect(w * 0.15, 22 - 2, w - w * 0.3, 2)
     end
-
-    self.playersPanel:AddItem(self.charactersPanel)
-    self.playersPanel:AddItem(self.notcharactersPanel)
 end
 
 function PANEL:ClearCategory()
@@ -82,7 +79,7 @@ function PANEL:ClearCategory()
     self.mainPanel:DockMargin(0, Arbitrage.ResolutionH(4), 0, 0)
 
     local _ = self.mainPanel:Add("Panel")
-    _:SetWide(Arbitrage.ResolutionW(250))
+    _:SetWide(Arbitrage.ResolutionW(300))
     _:Dock(LEFT)
     _:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(45), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
     _.Paint = function(_, w, h)
@@ -90,11 +87,27 @@ function PANEL:ClearCategory()
         surface.DrawRect(0, 0, w, h)
     end
 
-    self.gamePanel = _:Add("DPanelList")
-    self.gamePanel:EnableVerticalScrollbar()
+    self.gamePanel = _:Add("DScrollPanel")
     self.gamePanel:SetPadding(Arbitrage.ResolutionH(5))
     self.gamePanel:Dock(FILL)
     self.gamePanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+
+    do
+        local bar = self.gamePanel:GetVBar()
+        bar:SetWide(30)
+        bar:DockMargin(0, 0, 0, 0)
+
+        bar.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255, 3)
+            surface.DrawRect(20 + 7, 30, w, h - 60)
+        end
+        bar.btnUp.Paint = function(_, w, h) end
+        bar.btnDown.Paint = function(_, w, h) end
+        bar.btnGrip.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.DrawRect(20 + 7, 0, w, h)
+        end
+    end
 
     local _ = self.mainPanel:Add("Panel")
     _:SetWide(Arbitrage.ResolutionW(250))
@@ -105,11 +118,27 @@ function PANEL:ClearCategory()
         surface.DrawRect(0, 0, w, h)
     end
 
-    self.adminPanel = _:Add("DPanelList")
-    self.adminPanel:EnableVerticalScrollbar()
+    self.adminPanel = _:Add("DScrollPanel")
     self.adminPanel:SetPadding(Arbitrage.ResolutionH(5))
     self.adminPanel:Dock(FILL)
     self.adminPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+
+    do
+        local bar = self.adminPanel:GetVBar()
+        bar:SetWide(30)
+        bar:DockMargin(0, 0, 0, 0)
+
+        bar.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255, 3)
+            surface.DrawRect(20 + 7, 30, w, h - 60)
+        end
+        bar.btnUp.Paint = function(_, w, h) end
+        bar.btnDown.Paint = function(_, w, h) end
+        bar.btnGrip.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.DrawRect(20 + 7, 0, w, h)
+        end
+    end
 
     local _ = self.mainPanel:Add("Panel")
     _:Dock(FILL)
@@ -119,11 +148,27 @@ function PANEL:ClearCategory()
         surface.DrawRect(0, 0, w, h)
     end
 
-    self.playersPanel = _:Add("DPanelList")
-    self.playersPanel:EnableVerticalScrollbar()
+    self.playersPanel = _:Add("DScrollPanel")
     self.playersPanel:SetPadding(Arbitrage.ResolutionH(25))
     self.playersPanel:Dock(FILL)
     self.playersPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+
+    do
+        local bar = self.playersPanel:GetVBar()
+        bar:SetWide(30)
+        bar:DockMargin(0, 0, 0, 0)
+
+        bar.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255, 3)
+            surface.DrawRect(20 + 7, 30, w, h - 60)
+        end
+        bar.btnUp.Paint = function(_, w, h) end
+        bar.btnDown.Paint = function(_, w, h) end
+        bar.btnGrip.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.DrawRect(20 + 7, 0, w, h)
+        end
+    end
 end
 
 local settingMat = Arbitrage.GetMaterial("danganronpa/ui/settings.png")

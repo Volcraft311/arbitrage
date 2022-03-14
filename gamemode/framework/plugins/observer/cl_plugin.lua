@@ -15,7 +15,7 @@ local PLUGIN = PLUGIN
 
 function PLUGIN:HUDPaint()
     if Arbitrage.lawEnable then return end
-    if LocalPlayer():GetNetVar("observer") then return end
+    if !LocalPlayer():GetNetVar("observer") then return end
 
     local alpha = math.abs(math.sin(CurTime() * 1)) * 100
     draw.DrawText("Вы находитесь в невидимости!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)

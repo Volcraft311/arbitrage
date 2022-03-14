@@ -1,0 +1,47 @@
+﻿--[[
+        © Asterion Project 2021.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+include("shared.lua");
+
+AddCSLuaFile("cl_init.lua");
+AddCSLuaFile("shared.lua");
+
+-- function ENT:SpawnFunction(client, trace)
+-- 	local entity = ents.Create("arb_sink")
+
+-- 	entity:SetPos(trace.HitPos)
+-- 	entity:SetAngles(trace.HitNormal:Angle() + Angle(0, -90, 0))
+-- 	entity:Spawn()
+-- 	entity:Activate()
+
+-- 	return entity
+-- end
+
+function ENT:Initialize()
+	self:SetModel("models/props_wasteland/kitchen_fridge001a.mdl")
+	self:SetSolid(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetUseType( SIMPLE_USE )
+end
+
+function ENT:Use(client, caller)
+	Arbitrage.action.ActionRun(client, "Берем еду", 10, function()
+		if client:GetEyeTrace().Entity != self then return true end
+		if client:GetPos():Distance(self:GetPos()) >= 110 then return true end
+
+		return false
+	end, function(activator)
+		Arbitrage.statistics.Set(activator, "Hunger", 100)
+		Arbitrage.statistics.Set(activator, "Thirst", 100)
+	end)
+end

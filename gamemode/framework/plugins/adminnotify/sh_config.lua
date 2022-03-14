@@ -1,0 +1,96 @@
+--[[
+        © Asterion Project 2021.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+local PLUGIN = PLUGIN
+
+PLUGIN.guiTime = 30
+
+PLUGIN.groupAccess = {
+    ["owner"] = true,
+    ["founder"] = true,
+    ["superadmin"] = true,
+    ["admin"] = true,
+    ["senior_administrator"] = true,
+    ["regular_administrator"] = true,
+    ["junior_administrator"] = true,
+}
+
+PLUGIN:AddNewNotify("killed", function(client, target, weapon)
+    return Color(223, 66, 66), client, Color(255, 255, 255), " убил игрока ", Color(74, 114, 202), target, Color(255, 255, 255), weapon and (" при помощи " .. weapon) or ""
+end)
+
+PLUGIN:AddNewNotify("joincharacter", function(clientSt, character)
+    return Color(74, 114, 202), clientSt, Color(255, 255, 255), " зашел за персонажа ", Color(216, 204, 34), character
+end)
+
+PLUGIN:AddNewNotify("spawn", function(client)
+    return Color(74, 114, 202), client, Color(255, 255, 255), " возродился"
+end)
+
+PLUGIN:AddNewNotify("join", function(client)
+    return Color(50, 211, 77), client, Color(255, 255, 255), " подключился к серверу"
+end)
+
+PLUGIN:AddNewNotify("connect", function(name, steamid)
+    return Color(211, 147, 50), name .. "(" .. steamid .. ")", Color(255, 255, 255), " начал подключаться к серверу"
+end)
+
+PLUGIN:AddNewNotify("disconnect", function(client)
+    return Color(202, 74, 74), client, Color(255, 255, 255), " отключился от сервера"
+end)
+
+PLUGIN:AddNewNotify("transfercharacter", function(client, target, faction)
+    local factionData = Arbitrage.teams.Get(faction)
+
+    return Color(63, 162, 184), client, Color(255, 255, 255), " перенес игрока ", Color(197, 181, 60), target, Color(255, 255, 255), " во фракцию ", Color(48, 218, 187), factionData.name .. " (" .. faction .. ")"
+end)
+
+PLUGIN:AddNewNotify("monocommand", function(client, command, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " выполнил команду ", Color(48, 218, 187), command, Color(255, 255, 255), " на игроке ", Color(197, 181, 60), target
+end)
+
+PLUGIN:AddNewNotify("monocommandc", function(client, command, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " выполнил команду ", Color(48, 218, 187), command
+end)
+
+PLUGIN:AddNewNotify("setstats", function(client, data, target, amount)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " установил ", Color(48, 218, 187), data, Color(255, 255, 255), " игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " на ", Color(48, 218, 187), amount
+end)
+
+PLUGIN:AddNewNotify("setplace", function(client, data, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " установил место в суде игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " на ", Color(48, 218, 187), data
+end)
+
+PLUGIN:AddNewNotify("giveweapon", function(client, target, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " выдал игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " оружие ", Color(48, 218, 187), data
+end)
+
+PLUGIN:AddNewNotify("setchapter", function(client, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " установил главу ", Color(48, 218, 187), data
+end)
+
+PLUGIN:AddNewNotify("removewhitelist", function(client, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " удалил из WhiteList-а ", Color(48, 218, 187), data
+end)
+
+PLUGIN:AddNewNotify("addwhitelist", function(client, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " добавил в WhiteList ", Color(48, 218, 187), data
+end)
+
+PLUGIN:AddNewNotify("settingswhitelist", function(client, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " сделал сервер ", Color(48, 218, 187), data and "Общедоступным" or "Приватным"
+end)
+
+PLUGIN:AddNewNotify("setmodel", function(client, target, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " изменил игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " модель на ", Color(48, 218, 187), data
+end)

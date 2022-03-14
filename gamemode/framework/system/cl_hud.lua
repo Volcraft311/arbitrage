@@ -1,0 +1,687 @@
+--[[
+        © Asterion Project 2021.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+-- Localize Global Calls
+local LocalPlayer = LocalPlayer
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local math_floor = math.floor
+local math_fmod = math.fmod
+local string_format = string.format
+local Format = Format
+local Arbitrage = Arbitrage
+local math_rad = math.rad
+local math_cos = math.cos
+local math_sin = math.sin
+local ScrW = ScrW
+local ScrH = ScrH
+local surface_SetDrawColor = surface.SetDrawColor
+local draw_NoTexture = draw.NoTexture
+local surface_DrawPoly = surface.DrawPoly
+local Lerp = Lerp
+local FrameTime = FrameTime
+local draw = draw
+local ColorAlpha = ColorAlpha
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local draw_DrawText = draw.DrawText
+local tostring = tostring
+local surface_DrawRect = surface.DrawRect
+local input_IsKeyDown = input.IsKeyDown
+local vgui_CursorVisible = vgui.CursorVisible
+local IsValid = IsValid
+local Color = Color
+local SortedPairs = SortedPairs
+local math_Clamp = math.Clamp
+local GetNetVar = GetNetVar
+local pairs = pairs
+local util_TraceLine = util.TraceLine
+local math_Round = math.Round
+local math_abs = math.abs
+local Vector = Vector
+local surface_DrawCircle = surface.DrawCircle
+local math_Approach = math.Approach
+local surface_GetTextureID = surface.GetTextureID
+local surface_SetTexture = surface.SetTexture
+local DrawColorModify = DrawColorModify
+local CurTime = CurTime
+local render_UpdateScreenEffectTexture = render.UpdateScreenEffectTexture
+local render_SetMaterial = render.SetMaterial
+local render_DrawScreenQuad = render.DrawScreenQuad
+local system_IsOSX = system.IsOSX
+local ipairs = ipairs
+local surface_DrawLine = surface.DrawLine
+local chat_AddText = chat.AddText
+local draw_GetFontHeight = draw.GetFontHeight
+local select = select
+local surface_SetFont = surface.SetFont
+local surface_GetTextSize = surface.GetTextSize
+local Angle = Angle
+local player_GetAll = player.GetAll
+
+
+
+Arbitrage.hud = Arbitrage.library.Add("hud")
+Arbitrage.hud.alpha = 0
+Arbitrage.hud.HUDElement = {}
+Arbitrage.hud.update = false
+Arbitrage.hud.path = "arcadehud/"
+Arbitrage.hud.y = 0
+
+Arbitrage.hud.CircleData = {}
+function Arbitrage.hud.AddCircle(name, data)
+	Arbitrage.hud.CircleData[#Arbitrage.hud.CircleData + 1] = {name, data}
+end
+
+function Arbitrage.hud.GeneratePoly(x, y, radius, quality)
+	local circle = {}
+	local tmp = 0
+
+	for i = 1, quality do
+		tmp = math_rad(i * 360) / quality
+		circle[i] = {
+			x = x + math_cos(tmp) * radius,
+			y = y + math_sin(tmp) * radius
+		}
+	end
+
+	return circle
+end
+
+
+function Arbitrage.hud.CreateCircle(index, x, status, color, png)
+	Arbitrage.hud.HUDElement[index] = Arbitrage.hud.HUDElement[index] or {
+		x = x,
+		color = color,
+		png = png,
+		progress = 0
+	}
+
+	local element = Arbitrage.hud.HUDElement[index]
+
+	local position = ScrW() / 2 + element.x
+	local circle = Arbitrage.hud.GeneratePoly(position, ScrH() - 70, 36, 36)
+
+	surface_SetDrawColor( 22, 22, 22, Arbitrage.hud.alpha )
+	draw_NoTexture()
+	surface_DrawPoly(circle)
+
+	element.progress = Lerp(FrameTime() * 2, element.progress, status)
+
+	--draw.CircleCustom(position, ScrH() - 70, 5, 5, 360, Color(color.r / 3, color.g / 3, color.b / 3, Arbitrage.hud.alpha / 2), 0, -35)
+	draw.CircleCustom(position, ScrH() - 70, 5, 5, element.progress - 1, ColorAlpha(color, Arbitrage.hud.alpha / 2), 0, -35)
+
+	local size = 25
+
+	surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
+	surface_SetMaterial(png)
+	surface_DrawTexturedRect(position - size / 2, ScrH() - 70 - size / 2, size, size )
+
+	Arbitrage.hud.moved = Arbitrage.hud.moved + 120
+end
+
+-- function Arbitrage.hud.AddInfo(data)
+-- 	if !data then return end
+
+-- 	draw_DrawText("- " .. tostring(data[1]), "arb.Font_OpenSansLight_10", 100, ScrH() - 50 - Arbitrage.hud.y, ColorAlpha(data[2], 255 / 2 - Arbitrage.hud.alpha), TEXT_ALIGN_LEFT)
+
+-- 	surface_SetDrawColor(ColorAlpha(data[2], 255 / 2 - Arbitrage.hud.alpha))
+-- 	surface_DrawRect(100 - 10, ScrH() - 50 - Arbitrage.hud.y + 1, 1, 23)
+
+-- 	Arbitrage.hud.y = Arbitrage.hud.y + 23
+-- end
+
+
+local spectate_l_mat = Arbitrage.GetMaterial("danganronpa/hud/spectate_l.png")
+local spectate_r_mat = Arbitrage.GetMaterial("danganronpa/hud/spectate_r.png")
+function Arbitrage.hud.SpectateDraw()
+	local client = LocalPlayer()
+
+	if !client:IsSpectate() then return end
+
+	local spectate = client:GetNetVar("spectate")
+
+	if spectate and IsValid(spectate) and spectate:IsPlayer() and spectate:IsValid() then
+		spectate = "Вы наблюдаете за " .. spectate:Name()
+	else
+		spectate = "Свободное наблюдение за игрой"
+	end
+
+	surface_SetDrawColor(5, 2, 2, 229.5)
+	surface_DrawRect(ScrW() / 2 - W(560) / 2, H(40), W(560), H(46))
+
+	draw_DrawText(spectate, "arb.Font_FuturaPTBook_10", ScrW() / 2, H(46), Color(255, 234, 238, 255), TEXT_ALIGN_CENTER)
+
+	surface_SetDrawColor(255, 255, 255)
+	surface_SetMaterial(spectate_l_mat)
+	surface_DrawTexturedRect(ScrW() / 2 - W(560) / 2 + W(14), H(40) + H(11), W(62), H(24))
+
+	surface_SetDrawColor(255, 255, 255)
+	surface_SetMaterial(spectate_r_mat)
+	surface_DrawTexturedRect(ScrW() / 2 + W(560) / 2 - W(62) - W(14), H(40) + H(11), W(62), H(24))
+end
+
+function Arbitrage.hud.ALTMenuDraw()
+	if Arbitrage.lawEnable then return end
+
+	local client = Arbitrage.Client()
+	if !client:IsPlaying() then return end
+
+	Arbitrage.hud.alpha = Lerp(FrameTime() * 7, Arbitrage.hud.alpha, ((SETTINGS.binds.IsClampedID("open_interface") and !vgui_CursorVisible()) or IsValid(Arbitrage.gui.context)) and 255 or 0)
+	Arbitrage.hud.y = 0
+
+	-- ТРЕБУЕТСЯПОЛНАЯ ПЕРЕРАБОТКА >>>>>>
+    --[[
+	local data = client:GetNetVar("infotable", {})
+	for k, v in pairs(data) do
+		if istable(v) then
+			Arbitrage.hud.AddInfo(v)
+		end
+	end
+	]]--
+
+	if SETTINGS.options.Get("interface_open_button") then
+		draw_DrawText("Зажмите клавишу \"Q\", чтобы открыть интерфейс", "arb.Font_FuturaPTBook_8", ScrW() - 100, ScrH() - 50, Color( 255, 255, 255, 255 / 2 - Arbitrage.hud.alpha ), TEXT_ALIGN_RIGHT)
+	end
+
+	if Arbitrage.hud.alpha > 0.01 then
+		surface_SetDrawColor(15, 6, 7, Arbitrage.hud.alpha * 0.9)
+		surface_DrawRect(0, 0, ScrW(), ScrH())
+
+		Arbitrage.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, Arbitrage.hud.alpha)
+
+		Arbitrage.hud.moved = -180
+
+		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
+		surface_SetMaterial(Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud))
+		surface_DrawTexturedRect(ScrW() / 2 - (ScrW() * 0.378) / 2, ScrH() - ScrH() * 1.08, ScrW() * 0.378, ScrH() * 1.08)
+
+		for k, v in SortedPairs(Arbitrage.hud.CircleData or {}) do
+			local name = v[1]
+			local dataTable = v[2]
+
+			Arbitrage.hud.CreateCircle(name, Arbitrage.hud.moved, math_Clamp(dataTable.value() * 3.6, 0, 360), dataTable.color, dataTable.image)
+		end
+
+		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
+		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)
+
+		draw_DrawText(Arbitrage.teams.Get(client:Team()).name, "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_DrawText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+
+		draw_DrawText(Format("%s | Эпизод %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+	end
+
+	Arbitrage.hud.update = Arbitrage.hud.alpha > 0.01
+
+	if !Arbitrage.hud.update then
+		for k, v in pairs(Arbitrage.hud.HUDElement or {}) do
+			v.progress = 0
+		end
+	end
+end
+
+local gap = 8
+local curGap = gap
+
+Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
+
+function Arbitrage.hud.CrosshairDraw()
+	if Arbitrage.lawEnable then return end
+	if !SETTINGS.options.Get("show_crosshair") then return end
+
+	local client = Arbitrage.Client()
+	if client:IsSpectate() then return end
+	if !client:oldAlive() then return end
+
+	local isUseTool = false
+	local isWeaponTFA = false
+
+	local weapon = client:GetActiveWeapon()
+	if IsValid(weapon) then
+		local weaponData = Arbitrage.weapon.views
+		local class = weapon:GetClass()
+
+		isUseTool = class and (class == "gmod_tool" or class == "weapon_physgun")
+		isWeaponTFA = class and weaponData[class]
+	end
+
+	if isWeaponTFA then return end
+
+	local traceline = {}
+	traceline.start = client:GetShootPos()
+	traceline.endpos = traceline.start + client:GetAimVector() * 3000
+	traceline.filter = client
+	local trace = util_TraceLine(traceline)
+
+	local distance = Arbitrage.Client():GetPos():Distance(trace.HitPos)
+	local drawColor = Color(255, 255, 255)
+	local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
+
+	if client:GetActiveWeapon().dragentity and (client:KeyDown(IN_ATTACK) or client:KeyDown(IN_ATTACK2)) then
+		realGap = math_Round(gap * 2)
+		drawColor = Color(255, 61, 96)
+	end
+
+	local velocity = client:GetVelocity():Length2D() * 0.03
+
+	curGap = Lerp(FrameTime() * 6, curGap, realGap + velocity)
+
+	local tr = trace.Entity
+	if IsValid(tr) and (tr:GetClass() == "prop_physics" or tr:IsPlayer() or
+		tr:GetClass() == "prop_door_rotating" or
+		tr:GetClass() == "func_door_rotating" or
+		Arbitrage.evidence.entities[tr:GetClass()]) then
+
+		drawColor = Color(255, 61, 96)
+	elseif IsValid(tr) and tr:IsNPC() then
+		drawColor = Color(119, 104, 176)
+	end
+
+	--if (math_abs(curGap - realGap) < 0.5) then
+	--	curGap = realGap
+	--end
+	if client:IsNocliping() or isUseTool then
+		curGap = realGap
+	end
+
+	local x, y, z = trace.HitPos.x, trace.HitPos.y, trace.HitPos.z
+
+	Arbitrage.hud.lerpX = (client:IsPlaying() and !isUseTool) and Lerp(FrameTime() * 10, Arbitrage.hud.lerpX, x) or x
+	Arbitrage.hud.lerpY = (client:IsPlaying() and !isUseTool) and Lerp(FrameTime() * 10, Arbitrage.hud.lerpY, y) or y
+	Arbitrage.hud.lerpZ = (client:IsPlaying() and !isUseTool) and Lerp(FrameTime() * 10, Arbitrage.hud.lerpZ, z) or z
+
+	local traceNew = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
+
+	surface_DrawCircle(traceNew.x, traceNew.y, curGap, ColorAlpha(drawColor, 255 - Arbitrage.hud.alpha))
+end
+
+local infowl = {}
+function Arbitrage.hud.WalkEffect(client, pos, ang, fov)
+	if Arbitrage.lawEnable then return end
+
+	if !client:Alive() then return end
+	if !client:IsPlaying() then return end
+
+	if (client:GetMoveType() ~= MOVETYPE_NOCLIP) then
+		local activeweapon = client:GetActiveWeapon()
+		if !IsValid(activeweapon) then return end
+
+		if activeweapon.Base and activeweapon.Base:find("tfa_") then return end
+
+	    local v = {}
+	    v.pos = pos
+	    v.ang = ang
+	    v.fov = fov
+
+	    client.OLDANG = v.ang
+	    client.OLDPOS = v.pos
+	    v.ang.pitch = v.ang.pitch + 0 * 1
+	    v.ang.roll = v.ang.roll + 0 * 1
+	    v.pos.z = v.pos.z - math_cos(0 * 1)
+
+	    local frameTime = FrameTime()
+	    local approachTime = frameTime * 2
+	    local info = {
+	    	speed = 1,
+	    	yaw = 0.5 * (1 + 4 * 0),
+	    	roll = 0.1 * (1 + 40 * 0)
+	    }
+
+	    if !infowl.HeadbobAngle then infowl.HeadbobAngle = 0 end
+	    if !infowl.headinfo then infowl.headinfo = info end
+
+	    infowl.headinfo.yaw = math_Approach(infowl.headinfo.yaw, info.yaw, approachTime)
+	    infowl.headinfo.roll = math_Approach(infowl.headinfo.roll, info.roll, approachTime)
+	    infowl.headinfo.speed = math_Approach(infowl.headinfo.speed, info.speed, approachTime)
+	    infowl.HeadbobAngle = infowl.HeadbobAngle + (infowl.headinfo.speed * frameTime)
+
+	    local yawAngle = math_sin(infowl.HeadbobAngle)
+	    local rollAngle = math_cos(infowl.HeadbobAngle)
+
+	    ang.y = ang.y + (yawAngle * infowl.headinfo.yaw)
+	    ang.r = ang.r + (rollAngle * infowl.headinfo.roll)
+
+	    local velocity = client:GetVelocity()
+
+	    if !infowl.smooth then infowl.smooth = 0 end
+	    if !infowl.WalkTimer then infowl.WalkTimer = 0 end
+
+	    infowl.smooth = math_Clamp(infowl.smooth * 0.9 + velocity:Length() * 0.1, 0, 700)
+	    infowl.WalkTimer = infowl.WalkTimer + infowl.smooth * FrameTime() * 0.05
+
+	    ang.p = ang.p + math_cos(infowl.WalkTimer * 0.5) * infowl.smooth * 0.000002 * infowl.smooth
+	    ang.r = ang.r + math_sin(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
+	    ang.y = ang.y + math_cos(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
+	end
+end
+
+Arbitrage.hud.intensity = 0
+local hpwait = 0
+local hpalpha = 0
+Arbitrage.hud.vignitte = surface_GetTextureID("vgui/vignette_w")
+
+Arbitrage.hud.hpcolor = {
+	[ "$pp_colour_addr" ] = 0,
+	[ "$pp_colour_addg" ] = 0,
+	[ "$pp_colour_addb" ] = 0,
+	[ "$pp_colour_brightness" ] = 0,
+	[ "$pp_colour_contrast" ] = 1,
+	[ "$pp_colour_colour" ] = 1,
+	[ "$pp_colour_mulr" ] = 0,
+	[ "$pp_colour_mulg" ] = 0,
+	[ "$pp_colour_mulb" ] = 0
+}
+
+function Arbitrage.hud.LowHealthDraw()
+	if Arbitrage.lawEnable then return end
+
+	local client = Arbitrage.Client()
+	if !client:IsPlaying() then return end
+
+	local health = client:Health()
+	if health <= 0 then return end
+
+	if client:Health() <= 10 then
+		if !client.lastDSP then
+			client:SetDSP(14)
+			client.lastDSP = 14
+		end
+	else
+		if client.lastDSP then
+			client:SetDSP(0)
+			client.lastDSP = nil
+		end
+	end
+
+	Arbitrage.hud.intensity = math_Approach(Arbitrage.hud.intensity, math_Clamp(1 - math_Clamp(health / 25, 0, 1), 0, 1), FrameTime() * 3)
+
+	if Arbitrage.hud.intensity > 0 then
+		surface_SetDrawColor(0, 0, 0, 200 * Arbitrage.hud.intensity)
+		surface_SetTexture(Arbitrage.hud.vignitte)
+		surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+
+		Arbitrage.hud.hpcolor[ "$pp_colour_colour" ] = 1 - Arbitrage.hud.intensity
+		DrawColorModify(Arbitrage.hud.hpcolor)
+
+		if client:Alive() then
+			local curtime = CurTime()
+
+			if curtime > hpwait then
+				client:EmitSound("lowhp/hbeat.wav", 45 * Arbitrage.hud.intensity, 100 + 20 * Arbitrage.hud.intensity)
+				hpwait = curtime + 0.5
+			end
+
+			surface_SetDrawColor(255, 0, 0, (50 * Arbitrage.hud.intensity) * hpalpha)
+			surface_DrawTexturedRect(0, 0, ScrW(), ScrH())
+
+			if curtime < hpwait - 0.4 then
+				hpalpha = math_Approach(hpalpha, 1, FrameTime() * 10)
+			else
+				hpalpha = math_Approach(hpalpha, 0.33, FrameTime() * 10)
+			end
+		end
+	end
+end
+
+local FishEyeTexture = Arbitrage.GetMaterial("models/props_c17/fisheyelens")
+function Arbitrage.hud.GrayCorrect()
+	local GrayColorModify = {}
+	local colour = 0.65
+
+	if Arbitrage.Client():WaterLevel() > 2 then
+	    colour = 0.4
+	    render_UpdateScreenEffectTexture()
+	        FishEyeTexture:SetFloat("$envmap", 0)
+	        FishEyeTexture:SetFloat("$envmaptint", 0)
+	        FishEyeTexture:SetFloat("$refractamount", 0.1)
+	        FishEyeTexture:SetInt("$ignorez", 1)
+	    render_SetMaterial(FishEyeTexture)
+	    render_DrawScreenQuad()
+	end
+
+	GrayColorModify["$pp_colour_brightness"] = 0
+	GrayColorModify["$pp_colour_contrast"] = 1
+	GrayColorModify["$pp_colour_colour"] = colour
+	GrayColorModify["$pp_colour_addr"] = 0 * 0.025
+	GrayColorModify["$pp_colour_addg"] = 0 * 0.025
+	GrayColorModify["$pp_colour_addb"] = 0 * 0.025
+	GrayColorModify["$pp_colour_mulr"] = 0 * 0.1
+	GrayColorModify["$pp_colour_mulg"] = 0 * 0.1
+	GrayColorModify["$pp_colour_mulb"] = 0 * 0.1
+
+	if (system_IsOSX()) then
+	    GrayColorModify["$pp_colour_brightness"] = 0
+	    GrayColorModify["$pp_colour_contrast"] = 1
+	end
+
+	DrawColorModify(GrayColorModify)
+end
+
+local vignitte_a = 150
+local vignitte = surface_GetTextureID("vgui/vignette")
+function Arbitrage.hud.VignetteDraw()
+	if Arbitrage.lawEnable then return end
+
+	local client = Arbitrage.Client()
+	if !client:IsPlaying() then return end
+
+	local blur = math_Clamp(50 - (Arbitrage.statistics.Get(client, "Sleep") or 100), 0, 255)
+	local hunger = 255 - (Arbitrage.statistics.Get(client, "Hunger") or 100) * 2.55
+	local thirst = 255 - (Arbitrage.statistics.Get(client, "Thirst") or 100) * 2.55
+
+	vignitte_a = Lerp(FrameTime() * 5, vignitte_a, client:KeyDown(IN_ZOOM) and 257 or 150)
+
+	if blur > 1 then
+		Arbitrage.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
+	end
+
+	surface_SetTexture(vignitte)
+	surface_SetDrawColor(255, 255, 255, vignitte_a)
+	surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+
+	for k, v in ipairs({hunger, thirst}) do
+		surface_SetDrawColor(255, 255, 255, v / 2)
+		surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+	end
+end
+
+Arbitrage.hud.evidence = {}
+
+function Arbitrage.hud.VectorObstructed(vec1, vec2, filter)
+	local trace = util_TraceLine({
+		start = vec1,
+		endpos = vec2,
+		filter = filter
+	})
+
+	return trace.Hit
+end
+
+function Arbitrage.hud.SeeVector(a, b, _debug)
+	local client = Arbitrage.Client()
+	local zPos = client:GetPos()[3]
+
+	for i = 1, 4 do a[i] = Vector(a[i][1], a[i][2], zPos) end
+	b = Vector(b[1], b[2], zPos)
+
+	local r = {
+		A = {x = a[1]:ToScreen().x, y = a[1]:ToScreen().y},
+		B = {x = a[2]:ToScreen().x, y = a[2]:ToScreen().y},
+		C = {x = a[3]:ToScreen().x, y = a[3]:ToScreen().y},
+		D = {x = a[4]:ToScreen().x, y = a[4]:ToScreen().y}
+	}
+
+	local m = {x = b:ToScreen().x, y = b:ToScreen().y}
+
+	local conclusion = r.C.x <= m.x and r.D.x >= m.x and r.C.y <= m.y and r.A.y >= m.y
+	--local conclusion = r.A.x >= m.x and r.B.x <= m.x and r.D.x >= m.x and r.C.x <= m.x and r.A.y >= m.y and r.D.y <= m.y and r.B.y >= m.y and r.C.y <= m.y
+
+	if _debug then
+		local seeRect = {
+			{x = a[4]:ToScreen().x, y = a[1]:ToScreen().y},
+			{x = a[3]:ToScreen().x, y = a[2]:ToScreen().y},
+			{x = a[3]:ToScreen().x, y = a[3]:ToScreen().y},
+			{x = a[4]:ToScreen().x, y = a[4]:ToScreen().y}
+		}
+
+		local linesRect = {
+			{x = a[1]:ToScreen().x, y = a[1]:ToScreen().y},
+			{x = a[2]:ToScreen().x, y = a[2]:ToScreen().y},
+			{x = a[3]:ToScreen().x, y = a[3]:ToScreen().y},
+			{x = a[4]:ToScreen().x, y = a[4]:ToScreen().y}
+		}
+
+		for k, v in ipairs(linesRect) do
+			local nextLine = k + 1
+
+			if nextLine > #linesRect then nextLine = 1 end
+
+			surface_SetDrawColor(0, 255, 0)
+			surface_DrawLine(v.x, v.y, linesRect[nextLine].x, linesRect[nextLine].y)
+
+			if k == 1 or k == 2 then
+				draw_DrawText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+				draw_DrawText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+				draw_DrawText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+			end
+		end
+
+		for k, v in ipairs(seeRect) do
+			local nextLine = k + 1
+
+			if nextLine > #seeRect then nextLine = 1 end
+
+			surface_SetDrawColor(199, 194, 194)
+			surface_DrawLine(v.x, v.y, seeRect[nextLine].x, seeRect[nextLine].y)
+
+			draw_DrawText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+			draw_DrawText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+			draw_DrawText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+		end
+
+		local circle = Arbitrage.hud.GeneratePoly(b:ToScreen().x, b:ToScreen().y, 5, 5)
+		surface_SetDrawColor(255, 255, 0, 255)
+		draw_NoTexture()
+		surface_DrawPoly(circle)
+
+		draw_DrawText("x: " .. math_Round(m.x), "DermaDefault", b:ToScreen().x, b:ToScreen().y, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
+		draw_DrawText("y: " .. math_Round(m.y), "DermaDefault", b:ToScreen().x, b:ToScreen().y + 15, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
+
+		local pref = tostring(conclusion)
+		local st = conclusion and "Точка в прямоугольнике." or "Точка не в прямоугольнике."
+		chat_AddText("[" .. pref .. "] " .. st)
+	end
+
+	return conclusion
+end
+
+local stmData = {}
+stmData.stamina = 100
+stmData.color = Color(255, 255, 255)
+stmData.alphastamina = 0
+function Arbitrage.hud.StaminaDraw()
+	if Arbitrage.lawEnable then return end
+	if !SETTINGS.options.Get("show_stamina") then return end
+
+	local client = Arbitrage.Client()
+	if !client:IsPlaying() then return end
+
+	if client and client:Alive() then
+		client.Stamina = client:GetNetVar("stm", 100)
+		stmData.stamina = Lerp(FrameTime() * 10, stmData.stamina, client.Stamina)
+
+		local staminaMax = 100 * (ScrW() * 0.001)
+
+		surface_SetDrawColor(ColorAlpha(stmData.color, stmData.alphastamina * (10 / 255)))
+		surface_DrawRect(ScrW() / 2 - staminaMax, ScrH() - 30, staminaMax * 2, 4)
+
+		surface_SetDrawColor(ColorAlpha(stmData.color, stmData.alphastamina))
+		surface_DrawRect(ScrW() / 2 - stmData.stamina * (ScrW() * 0.001), ScrH() - 30, stmData.stamina * (ScrW() * 0.001) * 2, 4)
+
+		surface_DrawRect(ScrW() / 2 - staminaMax - 4, ScrH() - 30, 4, 4)
+		surface_DrawRect(ScrW() / 2 + staminaMax - 1, ScrH() - 30, 4, 4)
+
+		stmData.color.r = Lerp(FrameTime() * 2, stmData.color.r, stmData.stamina <= 30 and 255 or 255)
+		stmData.color.g = Lerp(FrameTime() * 2, stmData.color.g, stmData.stamina <= 30 and 0 or 255)
+		stmData.color.b = Lerp(FrameTime() * 2, stmData.color.b, stmData.stamina <= 30 and 0 or 255)
+
+		stmData.alphastamina = Lerp(FrameTime() * 10, stmData.alphastamina, stmData.stamina < 98 and 255 or 0)
+
+		draw_DrawText(math_Round(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
+	end
+end
+
+function Arbitrage.hud.CreateTextPlayer(client)
+	if !IsValid(client) then return end
+
+	local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_8")
+
+	local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
+	local alpha = client.textalpha
+
+	local x = position:ToScreen().x
+	local y = position:ToScreen().y
+	draw_DrawText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
+
+	surface_SetFont( "arb.Font_FuturaPTBook_8" )
+	local width = surface_GetTextSize(client:Name()) * alpha / 255
+
+	surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), alpha))
+	surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
+
+	-- ТРЕБУЕТСЯПОЛНАЯ ПЕРЕРАБОТКА >>>>>>
+    --[[
+	for k, v in pairs(client:GetNetVar("infotable", {})) do
+		draw.DrawText(v[1], "ArcadeGenericFont", x, y2, ColorAlpha(v[2], alpha), TEXT_ALIGN_CENTER)
+
+		y2 = y2 + descHeight
+	end
+	]]--
+end
+
+function Arbitrage.hud.PlayerInfoDraw()
+	if Arbitrage.lawEnable then return end
+
+	local client = Arbitrage.Client()
+
+	if client:IsSpectate() then return end
+
+	local vec = client:GetPos()
+	local ang = Angle(client:GetAngles()[1], client:GetAngles()[2], 0)
+
+	local _forward = 150
+	local _up = 10
+	local _right = 30
+
+	local start1 = vec + ang:Right() * _right
+	local start2 = vec - ang:Right() * _right
+	local endpos1 = vec + ang:Forward() * _forward + ang:Right() * _right + ang:Up() * _up
+	local endpos2 = vec + ang:Forward() * _forward - ang:Right() * _right + ang:Up() * _up
+
+	for k, v in ipairs(player_GetAll()) do
+		if v == LocalPlayer() then continue end
+		if v:IsSpectate() then continue end
+		if client:GetPos():Distance(v:GetPos()) >= 500 then continue end
+		if v:IsNocliping() then continue end
+
+		v.textalpha = v.textalpha or 0
+
+		local isDraw = v:oldAlive() and client:GetPos():Distance(v:GetPos()) < 150 and client ~= v and Arbitrage.hud.SeeVector({start1, start2, endpos2, endpos1}, v:GetPos(), false)
+		v.textalpha = Lerp(FrameTime() * 5, v.textalpha, isDraw and 255 or 0)
+
+		if v.textalpha <= 0.1 then continue end
+		Arbitrage.hud.CreateTextPlayer(v)
+	end
+end

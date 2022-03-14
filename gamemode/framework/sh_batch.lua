@@ -1,0 +1,219 @@
+--[[
+        © Asterion Project 2021.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+Arbitrage.GamemodeStart = os.clock()
+
+
+Arbitrage.base = Arbitrage.base or {}
+Arbitrage.util = Arbitrage.util or {}
+Arbitrage.players = Arbitrage.players or {}
+
+function Arbitrage.Initialize()
+	function Arbitrage.GM:GetGameDescription()
+		return "Danganronpa RP"
+	end
+
+	local commandData = {
+		--[["dupe_arm",]] "gm_save",
+		--[["gmod_admin_cleanup",]] "kill"
+	}
+
+	for k, v in ipairs(commandData) do
+		concommand.Remove(v)
+		concommand.Add(v, function() end)
+	end
+
+	if Arbitrage.util.IsServerSide() then
+		-- permission
+		local function permissionFunc(_, client) return client:IsAdmin() end
+		local funcData = {
+			"PlayerSpawnProp", "PlayerGiveSWEP", "PlayerSpawnedEffect", "PlayerSpawnedNPC",
+			"PlayerSpawnedProp", "PlayerSpawnedRagdoll", "PlayerSpawnedSENT", "PlayerSpawnedSWEP",
+			"PlayerSpawnedVehicle", "PlayerSpawnEffect", "PlayerSpawnNPC", "PlayerSpawnObject",
+			"PlayerSpawnRagdoll", "PlayerSpawnSENT", "PlayerSpawnSWEP", "PlayerSpawnVehicle",
+			"CanEditVariable", "CanProperty"
+		}
+
+		for k, v in ipairs(funcData) do
+			Arbitrage.GM[v] = permissionFunc
+		end
+
+		-- crasher (rubat fixed??)
+		--net.Receive("ArmDupe", function(size, client) end)
+
+		Arbitrage.util.WriteMessage("The gamemode \"" .. engine.ActiveGamemode() .. "\" was started!")
+	end
+
+	timer.Simple(1, function()
+		RunConsoleCommand("mp_show_voice_icons", 0)
+		RunConsoleCommand("sbox_godmode", 0)
+		RunConsoleCommand("sbox_playershurtplayers", 1)
+		RunConsoleCommand("sv_voiceenable", 1)
+		RunConsoleCommand("zoom_sensitivity_ratio", 0.15)
+		RunConsoleCommand("r_decals", 999)
+		RunConsoleCommand("mp_falldamage", 1)
+	end)
+
+	function Arbitrage.GM:Initialize() end
+	function Arbitrage.GM:DoPlayerDeath() end
+	function Arbitrage.GM:PlayerDeath() end
+	function Arbitrage.GM:CanPlayerSuicide() return false end
+	function Arbitrage.GM:AllowPlayerPickup() return false end
+	function Arbitrage.GM:PlayerDeathThink() return false end
+	function Arbitrage.GM:PlayerDeathSound() return true end
+	function Arbitrage.GM:ShowHelp() end
+
+	function Arbitrage.GM:PlayerNoClip(client) return client:IsAdmin() end
+
+	function Arbitrage.GM:OnReloaded()
+		if Arbitrage.plugin then
+			Arbitrage.plugin.updates = false
+			Arbitrage:InitializePlugins()
+		end
+	end
+
+	if Arbitrage.util.IsClientSide() then
+		net.Receive("CopiedDupe", function(len, client) end)
+
+		-- delete sandbox shit :/
+		local funcData = {
+			"ScoreboardShow", "ScoreboardHide", "AddHint", "SuppressHint",
+			"HUDItemPickedUp", "HUDPaint", "HUDDrawScoreBoard", "HUDPaintBackground"
+		}
+
+		for k, v in ipairs(funcData) do
+			Arbitrage.GM[v] = function() end
+		end
+
+		for k, v in ipairs({"EditingSpawnlistsSave", "ContextClick", "EditingSpawnlists", "OpeningContext", "Annoy2", "Annoy1", "OpeningMenu"}) do
+			timer.Remove("HintSystem_" .. v)
+		end
+	end
+
+	Arbitrage.util.WriteMessage("BATCH has been successfully loaded!")
+	hook.Run("InitializeArbitrage")
+end
+
+function Arbitrage.base.Include(fileName, realm)
+	if ((realm == "server" or fileName:find("sv_")) and SERVER) then
+		return include(fileName)
+	elseif (realm == "shared" or fileName:find("shared.lua") or fileName:find("sh_")) then
+		if (SERVER) then
+
+			AddCSLuaFile(fileName)
+		end
+
+		return include(fileName)
+	elseif (realm == "client" or fileName:find("cl_")) then
+		if (SERVER) then
+			AddCSLuaFile(fileName)
+		else
+			return include(fileName)
+		end
+	end
+
+	hook.Run("IncludeFile", fileName)
+end
+
+function Arbitrage.base.IncludeDir(directory, bFromLua)
+	local baseDir = "arbitrage/gamemode/framework/"
+
+	for _, v in ipairs(file.Find((bFromLua and "" or baseDir) .. directory .. "/*.lua", "LUA")) do
+		Arbitrage.base.Include(directory .. "/" .. v)
+	end
+end
+
+Arbitrage.base.Include("sh_util.lua")
+
+function Arbitrage.HookRun(data, ...)
+	local ARBhook = Arbitrage[data]
+
+	if ARBhook and isfunction(ARBhook) then
+		ARBhook(...)
+	end
+end
+
+
+Arbitrage.base.Include("sh_constants.lua")
+
+Arbitrage.base.Include("cl_fonts.lua")
+Arbitrage.base.Include("sh_system.lua")
+Arbitrage.base.Include("sh_libraries.lua")
+
+Arbitrage.base.IncludeDir("derma")
+Arbitrage.base.IncludeDir("system")
+Arbitrage.base.IncludeDir("teams")
+
+Arbitrage.base.Include("sh_framework.lua")
+Arbitrage.base.Include("cl_framework.lua")
+Arbitrage.base.Include("sv_framework.lua")
+
+
+
+Arbitrage.GamemodeCompletion = os.clock()
+
+if Arbitrage.util.IsServerSide() then
+	local time = Arbitrage.GamemodeCompletion - Arbitrage.GamemodeStart
+
+	Arbitrage.util.WriteMessage(Color(0, 255, 0), "Arbitrage gamemode was successfully loaded for \"" .. math.Round(time, 3) .. "s\". You are using version \"" .. Arbitrage.version .. "\"")
+end
+
+
+
+
+do
+	hook.ArbitrageCall = hook.ArbitrageCall or hook.Call
+
+	function hook.Call(name, gm, ...)
+		local _hook = Arbitrage[name]
+
+		if _hook and isfunction(_hook) then
+			local a, b, c, d, e, f = _hook(name, ...)
+
+			if (a != nil) then
+				return a, b, c, d, e, f
+			end
+		end
+
+		return hook.ArbitrageCall(name, gm, ...)
+	end
+end
+
+do
+	local think_delay = 1 * 0.125
+	local next_think = 0
+	local next_second = 0
+
+	function Arbitrage.GM:Tick()
+		local cur_time = CurTime()
+
+		if cur_time >= next_think then
+			local one_second_tick = (cur_time >= next_second)
+
+			for k, v in ipairs(player.GetAll()) do
+				hook.Call("PlayerThink", self, v, cur_time)
+
+				if one_second_tick then
+					hook.Call("PlayerOneSecond", self, v, cur_time)
+				end
+			end
+
+			next_think = cur_time + think_delay
+
+			if one_second_tick then
+				hook.Call("OneSecond", self, cur_time)
+				next_second = cur_time + 1
+			end
+		end
+	end
+end

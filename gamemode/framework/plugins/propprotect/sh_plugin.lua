@@ -1,0 +1,60 @@
+local PLUGIN = PLUGIN
+
+local PROP_BLACKLIST = {
+    ["models/props_combine/combinetrain02b.mdl"] = true,
+    ["models/props_combine/combinetrain02a.mdl"] = true,
+    ["models/props_combine/combinetrain01.mdl"] = true,
+    ["models/cranes/crane_frame.mdl"] = true,
+    ["models/props_junk/trashdumpster02.mdl"] = true,
+    ["models/props_c17/oildrum001_explosive.mdl"] = true,
+    ["models/props_canal/canal_bridge02.mdl"] = true,
+    ["models/props_canal/canal_bridge01.mdl"] = true,
+    ["models/props_canal/canal_bridge03a.mdl"] = true,
+    ["models/props_canal/canal_bridge03b.mdl"] = true,
+    ["models/props_wasteland/cargo_container01.mdl"] = true,
+    ["models/props_wasteland/cargo_container01c.mdl"] = true,
+    ["models/props_wasteland/cargo_container01b.mdl"] = true,
+    ["models/props_combine/combine_mine01.mdl"] = true,
+    ["models/props_junk/glassjug01.mdl"] = true,
+    ["models/props_c17/paper01.mdl"] = true,
+    ["models/props_junk/garbage_takeoutcarton001a.mdl"] = true,
+    ["models/props_c17/trappropeller_engine.mdl"] = true,
+    ["models/props/cs_office/microwave.mdl"] = true,
+    ["models/items/item_item_crate.mdl"] = true,
+    ["models/props_junk/gascan001a.mdl"] = true,
+    ["models/props_c17/consolebox01a.mdl"] = true,
+    ["models/props_buildings/building_002a.mdl"] = true,
+    ["models/props_phx/mk-82.mdl"] = true,
+    ["models/props_phx/cannonball.mdl"] = true,
+    ["models/props_phx/ball.mdl"] = true,
+    ["models/props_phx/amraam.mdl"] = true,
+    ["models/props_phx/misc/flakshell_big.mdl"] = true,
+    ["models/props_phx/ww2bomb.mdl"] = true,
+    ["models/props_phx/torpedo.mdl"] = true,
+    ["models/props/de_train/biohazardtank.mdl"] = true,
+    ["models/props_buildings/project_building01.mdl"] = true,
+    ["models/props_combine/prison01c.mdl"] = true,
+    ["models/props/cs_militia/silo_01.mdl"] = true,
+    ["models/props_phx/huge/evildisc_corp.mdl"] = true,
+    ["models/props_phx/misc/potato_launcher_explosive.mdl"] = true,
+    ["models/props_combine/combine_citadel001.mdl"] = true,
+    ["models/props_phx/oildrum001_explosive.mdl"] = true,
+    ["models/props_junk/wood_crate01_explosive.mdl"] = true,
+    ["models/props_junk/propane_tank001a.mdl"] = true,
+    ["models/props_explosive/explosive_butane_can.mdl"] = true,
+    ["models/props_explosive/explosive_butane_can02.mdl"] = true
+}
+
+if SERVER then
+    function PLUGIN:PlayerSpawnObject(client, model, entity)
+        if ((client.arbNextSpawn or 0) < CurTime()) then
+            client.arbNextSpawn = CurTime() + 0.75
+        else
+            return false
+        end
+
+        if (!client:IsAdmin() and PROP_BLACKLIST[model:lower()]) then
+            return false
+        end
+    end
+end

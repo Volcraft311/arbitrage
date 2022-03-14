@@ -1,0 +1,21 @@
+--[[
+        © Asterion Project 2021.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+ENT.Type = "anim"
+ENT.Author = "Selenter"
+ENT.PrintName = "Холодильник"
+ENT.Category = "Bullet Of Hope"
+ENT.Spawnable = true
+ENT.AdminSpawnable = true
+ENT.PhysgunDisable = true
+ENT.bNoPersist = true

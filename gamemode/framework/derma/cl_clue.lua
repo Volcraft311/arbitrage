@@ -1,0 +1,282 @@
+local PANEL = {}
+
+local categoryData = {
+    {
+        name = "Список улик",
+        func = function(panel)
+            local List = panel:Add("DIconLayout")
+            List:Dock(FILL)
+            List:SetSpaceY(5)
+            List:SetSpaceX(5)
+
+            for k, v in pairs(LocalPlayer():GetEvidences()) do
+                local data = Evidence:GetEvidence(k)
+                if !data then continue end
+
+                local d = Evidence.icons
+                local mat = Arbitrage.GetMaterial(d[data.image] and d[data.image] or d[1])
+
+                local ListItem = List:Add("DButton")
+                ListItem:SetText("")
+                ListItem:SetSize(Arbitrage.ResolutionW(140), Arbitrage.ResolutionH(190))
+                ListItem.alpha = 0
+                ListItem.Paint = function(_, w, h)
+                    _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
+
+                    surface.SetDrawColor(27, 10, 13, 150)
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(255, 61, 96, _.alpha)
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(255, 255, 255)
+                    surface.SetMaterial(mat)
+                    surface.DrawTexturedRect(10, 10, w - 20, w - 20)
+
+                    surface.SetDrawColor(255, 61, 96, 50)
+                    surface.DrawOutlinedRect(0, 0, w, h, 1)
+
+                    local descHeight = draw.GetFontHeight("arb.Font_FuturaPTBook_7")
+                    local descriptionText = Arbitrage.WrapText(data.name, Arbitrage.ResolutionW(140), "arb.Font_FuturaPTBook_7")
+
+                    for i, _ in pairs(descriptionText) do
+                        local y2 = descHeight * i - descHeight
+                        draw.DrawText(descriptionText[i], "arb.Font_FuturaPTBook_7", w / 2, w * 0.95 + y2, ColorAlpha(Color(255, 255, 255), 255), TEXT_ALIGN_CENTER)
+                    end
+                end
+
+                ListItem.DoClick = function()
+                    --v.index = k
+
+                    local mainPanel = Arbitrage.gui.logmenu
+
+                    local x = IsValid(mainPanel) and mainPanel:GetX() or 0
+                    local y = IsValid(mainPanel) and mainPanel:GetY() or 0
+                    local wide = IsValid(mainPanel) and mainPanel:GetWide() or Arbitrage.ResolutionW(620)
+
+                    local evidence = vgui.Create("arb.EvidenceMenuSub")
+                    evidence:SetEvidence(data)
+                    evidence:SetPos(x + wide * 1.05, y)
+                end
+            end
+
+            panel:AddItem(List)
+        end,
+    },
+    {
+        name = "Свидетельства о смерти",
+        func = function(panel)
+            local List = panel:Add("Panel")
+            List:Dock(FILL)
+            List.Paint = function(_, w, h)
+                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            end
+        end,
+    },
+    {
+        name = "Список заметок",
+        func = function(panel)
+            local List = panel:Add("Panel")
+            List:Dock(FILL)
+            List.Paint = function(_, w, h)
+                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            end
+        end,
+    }
+}
+
+function PANEL:Init()
+    self:SetTitle("")
+    self:SetSize(Arbitrage.ResolutionW(620), Arbitrage.ResolutionH(700))
+    self:Center()
+    self:SetAlpha(0)
+    self:AlphaTo(255, 0.3)
+    self:MakePopup()
+    self:ShowCloseButton(false)
+
+    self:SetKeyboardInputEnabled(false)
+
+    Arbitrage.gui.logmenu = self
+
+    self.select = -1
+
+    -- local title = self:Add("Panel")
+    -- title:SetPos(Arbitrage.ResolutionW(111), 0)
+    -- title:SetSize(Arbitrage.ResolutionW(500), Arbitrage.ResolutionH(32))
+    -- title.Paint = function(_, w, h)
+    --     surface.SetDrawColor(255, 255, 255, 76)
+    --     surface.DrawRect(10, h - 2, w - 10 * 2, 2)
+    -- end
+
+    -- local close = title:Add("DButton")
+    -- close:SetText("")
+    -- close:Dock(RIGHT)
+    -- close:SetWide(Arbitrage.ResolutionH(32))
+    -- close.alpha = 50
+    -- close.Paint = function(_, w, h)
+    --     _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
+
+    --     draw.DrawText("x", "arb.Font_FuturaPTBook_11", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+    -- end
+    -- close.DoClick = function()
+    --     self:AlphaTo(0, 0.3, 0, function()
+    --         self:Remove()
+    --     end)
+    -- end
+
+    local close = self:Add("DButton")
+    close:SetText("")
+    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(40))
+    close:SetSize(Arbitrage.ResolutionH(32), Arbitrage.ResolutionH(32))
+    close.alpha = 50
+    close.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
+
+        draw.DrawText("x", "arb.Font_FuturaPTBook_11", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+    end
+    close.DoClick = function()
+        self:AlphaTo(0, 0.3, 0, function()
+            self:Remove()
+        end)
+    end
+
+    self.main = self:Add("Panel")
+    self.main:SetPos(Arbitrage.ResolutionW(123), Arbitrage.ResolutionH(40))
+    self.main:SetSize(Arbitrage.ResolutionW(490), Arbitrage.ResolutionH(650))
+
+    local categoryPanel = self:Add("Panel")
+    categoryPanel:SetPos(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(5))
+    categoryPanel:SetSize(Arbitrage.ResolutionW(25), Arbitrage.ResolutionH(270))
+
+    for k, v in pairs(categoryData) do
+        local panel = categoryPanel:Add("DButton")
+        panel:SetText("")
+        panel:Dock(TOP)
+        panel:SetTall(Arbitrage.ResolutionH(270) / #categoryData)
+        panel.alpha = 100
+        panel.Paint = function(_, w, h)
+            _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.select == k) and 255 or 100)
+            surface.SetDrawColor(255, 61, 96, _.alpha)
+            surface.DrawRect(0, 0, w, h - 5)
+        end
+
+        panel.DoClick = function()
+            if self.select == k then return end
+
+            if IsValid(self.scrollPanel) then self.scrollPanel:Remove() end
+            if IsValid(self.scrollTitle) then self.scrollTitle:Remove() end
+
+            self.select = k
+
+            self.scrollTitle = self.main:Add("Panel")
+            self.scrollTitle:Dock(TOP)
+            self.scrollTitle:SetTall(Arbitrage.ResolutionH(30))
+            self.scrollTitle:SetAlpha(0)
+            self.scrollTitle:AlphaTo(255, 0.5)
+            self.scrollTitle.Paint = function(_, w, h)
+                draw.DrawText(v.name, "arb.Font_FuturaPTBook_10", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+            end
+
+            self.scrollPanel = self.main:Add("DPanelList")
+            self.scrollPanel:Dock(FILL)
+            self.scrollPanel:DockMargin(0, 5, 0, 0)
+            self.scrollPanel:SetAlpha(0)
+            self.scrollPanel:AlphaTo(255, 0.5)
+            self.scrollPanel:EnableVerticalScrollbar()
+
+            local bar = self.scrollPanel:GetChildren()[2]
+            bar.Paint = function(_, w, h)
+                surface.SetDrawColor(0, 0, 0, 100)
+                surface.DrawRect(w * 0.2, bar.btnUp:GetTall(), w - w * 0.4, h - bar.btnUp:GetTall() * 2)
+            end
+
+            bar.btnUp.Paint = function() end
+            bar.btnDown.Paint = function() end
+
+            bar.btnGrip.Paint = function(_, w, h)
+                surface.SetDrawColor(255, 255, 255, 100)
+                surface.DrawRect(w * 0.2, 0, w - w * 0.4, h)
+            end
+
+            v.func(self.scrollPanel)
+        end
+
+        if k == 1 then
+            panel.DoClick()
+        end
+    end
+end
+
+local mat = Arbitrage.GetMaterial("danganronpa/ui/evidence.png")
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(255, 255, 255)
+    surface.SetMaterial(mat)
+    surface.DrawTexturedRect(0, 0, w, h)
+
+    surface.SetDrawColor(255, 255, 255, 76)
+    surface.DrawRect(Arbitrage.ResolutionW(150), Arbitrage.ResolutionH(32) - 2, w - Arbitrage.ResolutionW(200), 2)
+end
+
+vgui.Register("arb.EvidenceMenu", PANEL, "DFrame")
+
+
+local PANEL = {}
+
+function PANEL:Init()
+    self:SetTitle("")
+    self:SetSize(Arbitrage.ResolutionW(400), Arbitrage.ResolutionH(600))
+    self:Center()
+    self:SetAlpha(0)
+    self:AlphaTo(255, 0.3)
+    self:MakePopup()
+    self:ShowCloseButton(false)
+
+    self:SetKeyboardInputEnabled(false)
+
+    local close = self:Add("DButton")
+    close:SetText("")
+    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(40))
+    close:SetSize(Arbitrage.ResolutionH(32), Arbitrage.ResolutionH(32))
+    close.alpha = 50
+    close.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
+
+        draw.DrawText("x", "arb.Font_FuturaPTBook_11", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+    end
+    close.DoClick = function()
+        self:AlphaTo(0, 0.3, 0, function()
+            self:Remove()
+        end)
+    end
+
+    self.textPanel = self:Add("DTextEntry")
+    self.textPanel:SetFont("arb.Font_FuturaPTBook_8")
+    self.textPanel:SetMultiline(true)
+    self.textPanel:SetTextColor(Color(255, 255, 255))
+    self.textPanel:SetVerticalScrollbarEnabled(true)
+    self.textPanel:SetDisabled(truewa)
+    self.textPanel:Dock(FILL)
+    self.textPanel:SetDrawBackground(false)
+    self.textPanel:DockMargin(5, Arbitrage.ResolutionH(50), 5, 5)
+
+end
+
+function PANEL:SetEvidence(data)
+    self.data = data
+
+    self.textPanel:SetValue(self.data.description)
+end
+
+function PANEL:Paint(w, h)
+    surface.SetDrawColor(0, 0, 0, 200)
+    surface.DrawRect(6, 0, w - 12, h)
+
+    surface.SetDrawColor(255, 255, 255, 76)
+    surface.DrawRect(Arbitrage.ResolutionW(50), Arbitrage.ResolutionH(32) - 2, w - Arbitrage.ResolutionW(50) * 2, 2)
+    surface.DrawRect(0, 0, 2, h)
+    surface.DrawRect(w - 2, 0, 2, h)
+
+    draw.DrawText(self.data.name or "", "arb.Font_FuturaPTBook_9", w / 2, Arbitrage.ResolutionH(40), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+end
+
+vgui.Register("arb.EvidenceMenuSub", PANEL, "DFrame")

@@ -1,0 +1,37 @@
+--[[
+        © Asterion Project 2021.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+Arbitrage.library = {}
+Arbitrage.library.LibraryLoaded = {}
+
+function Arbitrage.library.Add(data)
+	if !Arbitrage.library.LibraryLoaded[data] then
+		Arbitrage.util.WriteMessage(Color(255, 132, 0), "{" .. string.upper(Arbitrage.util.GetSide()) .. "} ", Color(255, 174, 0), "Libraries \"" .. data .. "\" was created.")
+		Arbitrage.library.LibraryLoaded[data] = true
+	end
+
+	hook.Run("CreateLibrary", data)
+	return Arbitrage[data] or {}
+end
+
+function Arbitrage.library.Remove(data)
+	-- когда нить я возьмусь за это...
+
+	hook.Run("RemoveLibrary", data)
+end
+
+function Arbitrage.library.Get(data)
+	hook.Run("GetLibrary", data)
+
+	return Arbitrage[data]
+end

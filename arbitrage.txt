@@ -1,0 +1,7 @@
+"arbitrage"
+{
+	"base"		"base"
+	"title"		"Danganronpa RP"
+	"maps"		"^arb_"
+	"menusystem"	"1"
+}

@@ -85,7 +85,7 @@ local stagesData = {
 
         local labelTitle = panel.informationPanel:Add("DLabel")
         labelTitle:SetText("Управление контентом")
-        labelTitle:SetFont("arb.Font_FuturaPTBook_11")
+        labelTitle:SetFont("arb.Font_FuturaPTDemi_11")
         labelTitle:SetTextColor(Color(255, 41, 80))
         labelTitle:Dock(TOP)
         labelTitle:DockMargin(0, 0, 0, H(6))
@@ -231,12 +231,12 @@ end
 function PANEL:Paint()
     self.titleAlpha = Lerp(FrameTime() * 3, self.titleAlpha, 1)
 
-    draw.DrawText(self.titleText, "arb.Font_FuturaPTDemi_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
+    draw.DrawText(self.titleText, "arb.Font_FuturaPTDemiItalic_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
 
     surface.SetFont("arb.Font_FuturaPTDemi_17")
     local width, _ = surface.GetTextSize(self.titleText)
 
-    draw.DrawText(self.titleDesc, "arb.Font_FuturaPTBook_10", width + W(170), H(74), Color(255, 234, 238, 20 * self.titleAlpha), TEXT_ALIGN_LEFT)
+    draw.DrawText(self.titleDesc, "arb.Font_FuturaPTCondBookItalic_10", width + W(170), H(74), Color(255, 234, 238, 20 * self.titleAlpha), TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MainRemake:Settings", PANEL, "EditablePanel")

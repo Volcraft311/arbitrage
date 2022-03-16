@@ -142,6 +142,7 @@ end
 
 Arbitrage.base.Include("sh_constants.lua")
 
+Arbitrage.base.Include("cl_props.lua")
 Arbitrage.base.Include("cl_fonts.lua")
 Arbitrage.base.Include("sh_system.lua")
 Arbitrage.base.Include("sh_libraries.lua")

@@ -14,7 +14,6 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "MonoMenu"
-PLUGIN.author = "Selenter"
 
 PLUGIN.ClickSound = "garrysmod/content_downloaded.wav"
 

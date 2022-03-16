@@ -14,7 +14,7 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "[AsterionProject] AdminESP"
-PLUGIN.author = "Selenter"
+
 PLUGIN.playerinfo = {}
 PLUGIN.entityinfo = {}
 

@@ -2,6 +2,7 @@ local PLUGIN = PLUGIN
 SETTINGS = PLUGIN
 
 PLUGIN.name = "Settings"
+
 PLUGIN.keys = {}
 PLUGIN.options = PLUGIN.options or {}
 PLUGIN.binds = PLUGIN.binds or {}
@@ -19,8 +20,6 @@ function PLUGIN.options.Add(id, type, default, data)
     if oldValue != default then
         bReplace = true
     end
-
-    -- print("id:" .. tostring(id), "bReplace:" .. tostring(bReplace), "oldValue:" .. tostring(oldValue), "default:" .. tostring(default))
 
     PLUGIN.stored.options[id] = {
         id = id,
@@ -199,9 +198,7 @@ function PLUGIN.Save()
 
     for k, v in ipairs({"options", "binds"}) do
         for k2, v2 in pairs(PLUGIN.stored[v]) do
-            -- if v2.default != v2.value and !data.options[k2] then
-                data[v][k2] = v2.value
-            -- end
+            data[v][k2] = v2.value
         end
     end
 

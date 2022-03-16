@@ -14,8 +14,6 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "AdminNotify"
-PLUGIN.author = "AsterionTeam"
-PLUGIN.description = ""
 
 Arbitrage.adminnotify = PLUGIN
 

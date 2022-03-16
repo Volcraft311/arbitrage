@@ -13,10 +13,8 @@
 
 local PLUGIN = PLUGIN
 PLUGIN.name = "LawSystem"
-PLUGIN.author = "Selenter"
 
 Arbitrage.law = PLUGIN
-
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
 PLUGIN.copy = {}

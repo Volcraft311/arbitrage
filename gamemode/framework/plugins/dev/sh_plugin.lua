@@ -14,7 +14,6 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "Dev"
-PLUGIN.author = "Selenter"
 
 Arbitrage.base.Include("cl_plugin.lua")
 
@@ -25,4 +24,4 @@ PLUGIN.init = PLUGIN.init or false
 if PLUGIN.init then return end
 PLUGIN.init = true
 
-Arbitrage.base.Include("sh_profiler.lua") -- By TeslaCloud
+Arbitrage.base.Include("sh_profiler.lua") -- By TeslaCloud (https://github.com/TeslaCloud/flux-ce/blob/master/plugins/sh_profiler.lua)

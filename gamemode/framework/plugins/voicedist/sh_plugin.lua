@@ -13,7 +13,6 @@
 
 local PLUGIN = PLUGIN
 PLUGIN.name = "VoiceDist"
-PLUGIN.author = "Selenter"
 
 PLUGIN.players = {}
 PLUGIN.text = "Говорит..."

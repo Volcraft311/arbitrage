@@ -1,3 +1,5 @@
+-- By Valkyrie & blackops7799 (https://github.com/NebulousCloud/helix-plugins/blob/master/legs.lua)
+
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "Legs"

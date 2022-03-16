@@ -13,7 +13,6 @@
 
 local PLUGIN = PLUGIN
 PLUGIN.name = "BedSystem"
-PLUGIN.author = "a"
 
 PLUGIN.animation = "zombie_slump_idle_01"
 PLUGIN.allowBed = {

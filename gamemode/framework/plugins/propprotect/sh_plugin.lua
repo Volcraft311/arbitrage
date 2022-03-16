@@ -1,4 +1,8 @@
+-- By Chessnut (https://github.com/NebulousCloud/helix/blob/master/plugins/propprotect.lua)
+
 local PLUGIN = PLUGIN
+
+PLUGIN.name = "Prop Protect"
 
 local PROP_BLACKLIST = {
     ["models/props_combine/combinetrain02b.mdl"] = true,

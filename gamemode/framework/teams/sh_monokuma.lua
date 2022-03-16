@@ -22,7 +22,7 @@ TEAM.path = "danganronpa/characters/monokuma"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 1
-TEAM.staminaSpeed = 0.5
+TEAM.staminaSpeed = 0
 TEAM.walkSpeed = 1
 TEAM.runSpeed = 1.3
 TEAM.hungerSpeed = 10000

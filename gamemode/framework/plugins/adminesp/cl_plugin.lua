@@ -42,7 +42,7 @@ function PLUGIN:HUDPaint()
 		local p = v:IsPlayer()
 		if !p and !self.entslist[v:GetClass()] then continue end
 
-		if !p or (p and v != LocalPlayer() and v:Alive()) then
+		if !p or (p and v != LocalPlayer() and v:oldAlive()) then
 			local _y = 0
 			local info = v:ESPInfo()
 

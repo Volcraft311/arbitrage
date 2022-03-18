@@ -15,7 +15,7 @@ local TEAM = {emodjiList = {}}
 TEAM.name = "Ибуки Миода"
 TEAM.description = "Абсолютный Музыкант"
 TEAM.category = "GOODBYE DESPAIR"
-TEAM.model = "models/player/dewobedil/danganronpa/ibuki_miodadefault_p.mdl"
+TEAM.model = "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl"
 TEAM.path = "danganronpa/characters/ibuki"
 
 TEAM.color = Color(240, 201, 73)

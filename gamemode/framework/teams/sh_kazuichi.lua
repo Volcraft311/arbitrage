@@ -15,7 +15,7 @@ local TEAM = {emodjiList = {}}
 TEAM.name = "Казуичи Сода"
 TEAM.description = "Абсолютный Механик"
 TEAM.category = "GOODBYE DESPAIR"
-TEAM.model = "models/player/danganronpa/default_p.mdl"
+TEAM.model = "models/player/danganronpa/kazuichi_soda.mdl"
 TEAM.path = "danganronpa/characters/kazuichi"
 
 TEAM.color = Color(240, 201, 73)

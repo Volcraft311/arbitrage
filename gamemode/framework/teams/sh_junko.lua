@@ -16,7 +16,7 @@ local TEAM = {emodjiList = {}}
 TEAM.name = "Джунко Эношима"
 TEAM.description = "Абсолютная Модница"
 TEAM.category = "TRIGGER HAPPY HAVOC"
-TEAM.model = "models/player/dewobedil/junko_enoshima/default_p.mdl"
+TEAM.model = "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl"
 TEAM.path = "danganronpa/characters/junko"
 
 TEAM.color = Color(240, 201, 73)

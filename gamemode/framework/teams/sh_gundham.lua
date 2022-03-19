@@ -19,7 +19,7 @@ TEAM.model = "models/player/dewobedil/gundam_tanaka/default_p.mdl"
 TEAM.path = "danganronpa/characters/gundham"
 
 TEAM.color = Color(240, 201, 73)
-TEAM.evidenceVisibility = 0.6
+TEAM.evidenceVisibility = 0.4
 TEAM.staminaSpeed = 1
 TEAM.walkSpeed = 1
 TEAM.runSpeed = 1

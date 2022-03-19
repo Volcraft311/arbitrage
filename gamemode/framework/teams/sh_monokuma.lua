@@ -20,7 +20,7 @@ TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/yourtoast4/danganronpa/monokuma.mdl"
 TEAM.path = "danganronpa/characters/monokuma"
 
-TEAM.color = Color(240, 201, 73)
+TEAM.color = Color(255, 0, 0)
 TEAM.evidenceVisibility = 1
 TEAM.staminaSpeed = 0
 TEAM.walkSpeed = 1

@@ -455,3 +455,9 @@ function PANEL:SetData(data, bEdit)
 end
 
 vgui.Register("arb.OpenNote", PANEL, "EditablePanel")
+
+concommand.Add("arb_close_notemenu", function(client, command, arguments)
+    if IsValid(Arbitrage.gui.note) then
+        Arbitrage.gui.note:Remove()
+    end
+end)

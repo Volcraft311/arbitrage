@@ -1,11 +1,12 @@
 local PLUGIN = PLUGIN
+PLUGIN.numID = 1
 
 function PLUGIN:RegisterNewEvidence(data)
-    self.list[#self.list + 1] = data
-
-    local idx = #self.list
+    self.list[self.numID] = data
+    local idx = self.numID
 
     netstream.Start(nil, "evidence.Register", idx, self.list[idx])
+    self.numID = self.numID + 1
 
     return idx
 end

@@ -47,7 +47,6 @@ function SWEP:SecondaryAttack()
     local door = trace.Entity
 
     if IsValid(door) and (door:GetClass() == "prop_door_rotating" or door:GetClass() == "func_door_rotating") and (!client.doorSpam or CurTime() >= client.doorSpam) and door:GetPos():Distance(client:GetPos()) <= 100 then
-
         local doorData
         for k, v in pairs(Arbitrage.plugin.list["doors"].DoorsData) do
             if v.indexDoor == door:EntIndex() then
@@ -55,8 +54,9 @@ function SWEP:SecondaryAttack()
             end
         end
 
-        local owned = false
+        if !door:GetNWBool("Locked") then return end
 
+        local owned = false
         if doorData then
             local doorOwned = doorData.arbOwnerID[client:SteamID()]
 
@@ -75,6 +75,7 @@ function SWEP:SecondaryAttack()
                 end, function(activator)
                     door:Fire("UnLock")
                     client:EmitSound("doors/door_latch3.wav")
+                    door:SetNWBool("Locked", false)
                 end)
 
                 owned = true
@@ -105,8 +106,9 @@ function SWEP:PrimaryAttack()
             end
         end
 
-        local owned = false
+        if door:GetNWBool("Locked") then return end
 
+        local owned = false
         if doorData then
             local doorOwned = doorData.arbOwnerID[client:SteamID()]
 
@@ -125,6 +127,7 @@ function SWEP:PrimaryAttack()
                 end, function(activator)
                     door:Fire("Lock")
                     client:EmitSound("doors/door_latch3.wav")
+                    door:SetNWBool("Locked", true)
                 end)
 
                 owned = true

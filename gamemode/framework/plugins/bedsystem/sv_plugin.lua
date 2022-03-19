@@ -38,6 +38,7 @@ function PLUGIN:GetUpBed(client, entity)
     client:Freeze(false)
     client:SetMoveType(MOVETYPE_WALK)
     client:SetNetVar("inbed", nil)
+    client:SetPos(client:GetPos() + Vector(0, 0, 10))
 end
 
 function PLUGIN:PlayerUse(client, entity)

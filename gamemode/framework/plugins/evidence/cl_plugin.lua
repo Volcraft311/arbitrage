@@ -53,6 +53,7 @@ function PLUGIN:HUDPaint()
             if Arbitrage:IsDeveloping() or client:IsNocliping() then
                 if !client:IsAdmin() then return end
                 if client.GetSitting and client:GetSitting() then return end
+                if !SETTINGS.options.Get("show_admin_esp") then return end
 
                 draw.DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, ColorAlpha(color, alphaA), TEXT_ALIGN_CENTER)
             end

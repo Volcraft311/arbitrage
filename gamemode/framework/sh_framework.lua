@@ -187,6 +187,7 @@ do
     Arbitrage.weapon.Add("tfa_arcade_nmrih_hatchet", "big", false)
     Arbitrage.weapon.Add("tfa_arcade_nmrih_wrench", "small", false)
     Arbitrage.weapon.Add("tfa_arcade_nmrih_big", "blunt", false)
+    Arbitrage.weapon.Add("tfa_arcade_nmrih_etool", "big", false)
 
     Arbitrage.weapon.Add("weapon_crowbar", "blunt", false)
     Arbitrage.weapon.Add("weapon_stunstick", "blunt", false)

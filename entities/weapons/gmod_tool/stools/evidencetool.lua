@@ -92,7 +92,7 @@ function TOOL.BuildCPanel(CPanel)
     CPanel:AddPanel(lableDesc)
 
     local dtextentryDesc = vgui.Create("DTextEntry")
-    dtextentryDesc:SetValue(GetConVar("evidencetool_description"):GetString())
+    dtextentryDesc:SetValue(GetConVar("evidencetool_description"):GetString():gsub("\\n", "\n"))
     dtextentryDesc:SetTall(100)
     dtextentryDesc:SetMultiline(true)
     dtextentryDesc.OnChange = function(_)

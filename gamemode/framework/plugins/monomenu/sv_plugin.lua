@@ -55,23 +55,19 @@ local function CheckVoting(players, data)
     local sendData = {}
     local num_voting = table.Count(data)
 
-    if num_voting >= #players then
-        for k, v in pairs(data) do
-            sendData[v] = sendData[v] or 0
-            sendData[v] = sendData[v] + 1
-        end
-
-        return true, sendData
+    for k, v in pairs(data) do
+        sendData[v] = sendData[v] or 0
+        sendData[v] = sendData[v] + 1
     end
 
-    return false
+    return num_voting >= #players, sendData
 end
 
 function PLUGIN:StartVoting()
     ScriptMusic:ChangeTheme("voting", true)
 
+    self.voteTime = RealTime() + 60
     self.votingData = {}
-
     local showingList = {}
 
     local data = {}
@@ -84,32 +80,23 @@ function PLUGIN:StartVoting()
             }
 
             local client = player.GetBySteamID(v.steamid)
-            if IsValid(client) and v.alive then
+            if IsValid(client) and client:Alive() then
                 showingList[#showingList + 1] = client
             end
         end
     end
 
-    for k, v in pairs(Arbitrage.players) do
-        if !IsMonoKum(v.faction) then
-            local client = player.GetBySteamID(v.steamid)
+    netstream.Start(nil, "arb.OpenVotingScreen", data, showingList)
 
-            if IsValid(client) and v.alive then
-                netstream.Start(client, "arb.OpenVotingScreen", data)
-            end
-        end
-    end
-
-    local time = RealTime() + 60
-
+    timer.Remove("arb.CheckVotes")
     timer.Create("arb.CheckVotes", 1, 0, function()
         local isAllVoting, votingList = CheckVoting(showingList, self.votingData)
 
-        if RealTime() >= time or isAllVoting then
+        if RealTime() >= self.voteTime or isAllVoting then
             timer.Remove("arb.CheckVotes")
 
             local newData = {}
-            local faction -- = -1
+            local faction
 
             if votingList and table.Count(votingList) >= 1 then
                 for k, v in pairs(votingList) do newData[#newData + 1] = {k, v} end
@@ -124,11 +111,7 @@ function PLUGIN:StartVoting()
                 end
             end
 
-            for k, v in pairs(showingList) do
-                if !IsValid(v) then continue end
-
-                netstream.Start(v, "arb.EndVoting", faction)
-            end
+            netstream.Start(nil, "arb.EndVoting", faction)
 
             local str = "Информация о голосовании: \n"
             for k, v in ipairs(newData) do

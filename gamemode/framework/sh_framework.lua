@@ -554,3 +554,13 @@ player_manager.AddValidModel("group01female07", "models/player/group01/female_07
 player_manager.AddValidHands("group01female07", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
 player_manager.AddValidModel("group02female03", "models/player/group01/female_03.mdl")
 player_manager.AddValidHands("group02female03", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
+
+-- отключаем звук при инициализации игрока
+sound.Add( {
+    name = "Player.DrownStart",
+    channel = CHAN_STATIC,
+    volume = 0,
+    level = 0,
+    pitch = 0,
+    sound = ""
+})

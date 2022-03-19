@@ -81,10 +81,28 @@ function TOOL.BuildCPanel(CPanel)
         Command = "evidencetool_name"
     })
 
-    CPanel:AddControl("TextBox", {
-        Label = "Описание улики",
-        Command = "evidencetool_description"
-    })
+    -- CPanel:AddControl("TextBox", {
+    --     Label = "Описание улики",
+    --     Command = "evidencetool_description"
+    -- })
+
+    local lableDesc = vgui.Create("DLabel")
+    lableDesc:SetText("Описание улики")
+    lableDesc:SetTextColor(Color(0, 0, 0))
+    CPanel:AddPanel(lableDesc)
+
+    local dtextentryDesc = vgui.Create("DTextEntry")
+    dtextentryDesc:SetValue(GetConVar("evidencetool_description"):GetString())
+    dtextentryDesc:SetTall(100)
+    dtextentryDesc:SetMultiline(true)
+    dtextentryDesc.OnChange = function(_)
+        local data = _:GetValue()
+        data = data:gsub("\n", "\\n")
+
+        GetConVar("evidencetool_description"):SetString(data)
+    end
+
+    CPanel:AddPanel(dtextentryDesc)
 
     CPanel:AddControl("Slider", {
         Label = "Видимость улики",

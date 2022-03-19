@@ -240,6 +240,8 @@ end
 function PANEL:SetEvidence(data)
     self.data = data
 
+    self.data.description = self.data.description:gsub("\\n", "\n")
+
     self.textPanel:SetValue(self.data.description)
 end
 

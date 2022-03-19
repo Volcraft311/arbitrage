@@ -221,7 +221,7 @@ function PANEL:ShowSurvival()
         local factionData = Arbitrage.teams.Get(faction)
         if !factionData then continue end
 
-        local mat = Arbitrage.GetMaterial(factionData.white)
+        local mat = Arbitrage.GetMaterial(factionData.white or "error.png")
 
         self.survival.List[steamid] = {
             material = mat,

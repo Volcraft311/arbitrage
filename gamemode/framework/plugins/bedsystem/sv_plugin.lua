@@ -71,7 +71,7 @@ function PLUGIN:PlayerPostThink(client)
 end
 
 netstream.Hook("arb.GetUpBed", function(client)
-    Arbitrage.action.ActionRun(client, "Вы просыпаетесь", 10, function()
+    Arbitrage.action.ActionRun(client, "Вы просыпаетесь", 5, function()
         return false
     end, function(activator)
         PLUGIN:GetUpBed(activator, activator.bedentity)

@@ -28,7 +28,7 @@ ARBITRAGE_RUN_SPEED = 200
 ARBITRAGE_JUMP_POWER = 200
 
 -- Длина видимости обычного сообщения в чате
-ARBITRAGE_SAY_LENGTH = 800
+ARBITRAGE_SAY_LENGTH = 600
 
 -- Стандартная модель игрока
 ARBITRAGE_STANDART_MODEL = "models/editor/playerstart.mdl"

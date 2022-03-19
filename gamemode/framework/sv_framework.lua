@@ -607,7 +607,9 @@ end
 concommand.Add( "gm_giveswep", CCGiveSWEP)
 
 concommand.Add("arb_join_notcharacter", function(client, command, arguments)
-    Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+    if client:Team() != TEAM_NOTCHARACTER then
+        Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+    end
 end)
 
 timer.Create("arb.CurTime", 1, 0, function()

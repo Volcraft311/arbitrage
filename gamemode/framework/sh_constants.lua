@@ -31,7 +31,7 @@ ARBITRAGE_JUMP_POWER = 200
 ARBITRAGE_SAY_LENGTH = 300
 
 -- Стандартная модель игрока
-ARBITRAGE_STANDART_MODEL = "models/editor/playerstart.mdl"
+ARBITRAGE_STANDART_MODEL = "models/player/skeleton.mdl"
 
 -- Расположения спавна при заходе на сервер
 ARBITRAGE_SPAWN = {

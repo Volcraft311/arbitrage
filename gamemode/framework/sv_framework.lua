@@ -606,6 +606,10 @@ function CCGiveSWEP(client, command, arguments)
 end
 concommand.Add( "gm_giveswep", CCGiveSWEP)
 
+concommand.Add("arb_join_notcharacter", function(client, command, arguments)
+    Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+end)
+
 timer.Create("arb.CurTime", 1, 0, function()
     Arbitrage.CurTime = Arbitrage.CurTime or 0
     Arbitrage.CurTime = Arbitrage.CurTime + 17

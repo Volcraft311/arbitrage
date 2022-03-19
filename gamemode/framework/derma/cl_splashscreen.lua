@@ -42,6 +42,8 @@ function PANEL:Init()
     self:AlphaTo(255, 2)
     self:MakePopup()
 
+    Arbitrage.gui.splashscreen = self
+
     self.th = CurTime() + 4
 
     timer.Simple(3, function()
@@ -366,3 +368,10 @@ function PANEL:Paint(w, h)
 end
 
 vgui.Register("arb.SplashScreen", PANEL, "EditablePanel")
+
+
+concommand.Add("arb_close_splashscreen", function(client, command, arguments)
+    if IsValid(Arbitrage.gui.splashscreen) then
+        Arbitrage.gui.splashscreen:Remove()
+    end
+end)

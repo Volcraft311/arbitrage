@@ -278,3 +278,9 @@ function PANEL:Paint(w, h)
 end
 
 vgui.Register("arb.VoteScreen", PANEL, "EditablePanel")
+
+concommand.Add("arb_close_votescreen", function(client, command, arguments)
+    if IsValid(Arbitrage.gui.votescreen) then
+        Arbitrage.gui.votescreen:Remove()
+    end
+end)

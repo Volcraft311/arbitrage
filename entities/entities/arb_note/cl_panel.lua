@@ -319,33 +319,15 @@ function PANEL:Init()
         end
     end
 
-    timer.Simple(0.5, function()
-        if !IsValid(yellowPanel) then return end
-
-        yellowPanel.Think = function()
-            local wide = yellowPanel:GetWide()
-            local w = Lerp(FrameTime() * 5, wide, self.attachment:GetWide())
-            yellowPanel:SetWide(w)
+    -- timer.Simple(0.5, function()
+        if IsValid(yellowPanel) then
+            yellowPanel:SizeTo(self.attachment:GetWide(), yellowPanel:GetTall(), 0.5)
         end
-    end)
+    -- end)
 
-    timer.Simple(1.3, function()
-        if !IsValid(self.redPanel) then return end
-
-        self.redPanel.Think = function()
-            local wide = self.redPanel:GetWide()
-            local w = Lerp(FrameTime() * 5, wide, self.attachment:GetWide() * 0.8)
-            self.redPanel:SetWide(w)
-        end
-    end)
-
-    timer.Simple(1.7, function()
+    timer.Simple(0.3, function()
         if IsValid(self.redPanel) then
-            self.redPanel.Think = nil
-        end
-
-        if IsValid(self.yellowPanel) then
-            yellowPanel.Think = nil
+            self.redPanel:SizeTo(self.attachment:GetWide() * 0.8, self.redPanel:GetTall(), 0.5)
         end
     end)
 

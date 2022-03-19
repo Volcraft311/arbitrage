@@ -182,7 +182,7 @@ function PANEL:ShowTitle()
 end
 
 function PANEL:ShowSurvival()
-    local size = ScrH() * 0.15
+    local size = ScrH() * 0.11
 
     local surv = self.data[1]
     local dead = self.data[2]
@@ -201,7 +201,7 @@ function PANEL:ShowSurvival()
                 v.color[v2] = Lerp(FrameTime() * 3, v.color[v2], v.mcolor[v2])
             end
 
-            local shift = (size * num)
+            local shift = (size * num) - 65
 
             surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
             surface.SetMaterial(v.material)

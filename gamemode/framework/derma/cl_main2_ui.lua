@@ -197,7 +197,7 @@ function PANEL:ClosePanel()
     self:RemoveButtons()
     self:SetMouseInputEnabled(false)
     self:SetKeyboardInputEnabled(false)
-    self:AlphaTo(0, 3, 0, function()
+    self:AlphaTo(0, 0.5, 0, function()
         self:Remove()
 
         timer.Simple(1, function()

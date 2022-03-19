@@ -56,9 +56,9 @@ netstream.Hook("arb.OpenSplashScreen", function(data)
     panel:SetData(data)
 end)
 
-netstream.Hook("arb.OpenVotingScreen", function(data)
+netstream.Hook("arb.OpenVotingScreen", function(data, votingList)
     local panel = vgui.Create("arb.VoteScreen")
-    panel:SetData(data)
+    panel:SetData(data, votingList)
 end)
 
 netstream.Hook("arb.EndVoting", function(data)

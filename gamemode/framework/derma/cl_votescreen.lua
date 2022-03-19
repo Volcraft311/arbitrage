@@ -158,9 +158,16 @@ function PANEL:SetInfo(faction, steamid)
     end)
 end
 
-function PANEL:SetData(data)
-    self.data = data
+function PANEL:SetData(data, votingList)
+    local isVoting = false
 
+    for k, v in pairs(votingList or {}) do
+        if LocalPlayer():SteamID() == v then
+            isVoting = true
+        end
+    end
+
+    self.data = data
     self.panels = {}
 
     for k, v in pairs(data) do
@@ -177,6 +184,7 @@ function PANEL:SetData(data)
         character:SetAlpha(0)
         character:AlphaTo(255, 0.3)
         character:SetText("")
+        character:SetEnabled(isVoting)
         character:SetSize(Arbitrage.ResolutionW(139.5), Arbitrage.ResolutionH(135))
         character.alpha = 0
         character.Paint = function(_, w, h)

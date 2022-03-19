@@ -378,6 +378,8 @@ function Arbitrage:OnSettingsLoad()
     else
         Arbitrage.menu:Intro()
     end
+
+    RunConsoleCommand("stopsound")
 end
 
 function Arbitrage:PreDrawViewModel(vm, client, weapon)

@@ -381,6 +381,7 @@ function Arbitrage:PlayerInitialSpawn(client)
             client:SyncVars()
 
             Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+            client:SendLua([[RunConsoleCommand("stopsound")]])
 
             hook.Run("PlayerInitial", client)
         end

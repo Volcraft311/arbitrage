@@ -580,6 +580,10 @@ function Arbitrage:PlayerCanPickupWeapon(client, entity)
     return false
 end
 
+function Arbitrage:PlayerSpray(client)
+    return true
+end
+
 function CCGiveSWEP(client, command, arguments)
     if !IsValid(client) then return end
     if arguments[1] == nil then return end

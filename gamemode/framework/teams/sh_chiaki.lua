@@ -21,14 +21,14 @@ TEAM.path = "danganronpa/characters/chiaki"
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6
 TEAM.staminaSpeed = 1
-TEAM.walkSpeed = 1
-TEAM.runSpeed = 1
+TEAM.walkSpeed = 0.8
+TEAM.runSpeed = 0.8
 TEAM.hungerSpeed = 33
 TEAM.thirstSpeed = 33
 TEAM.sleepSpeed = 33
 TEAM.max = 1
 
-for i = 1, 16 do
+for i = 1, 21 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
 end
 

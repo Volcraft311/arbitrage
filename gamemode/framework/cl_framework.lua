@@ -388,6 +388,7 @@ function Arbitrage:PreDrawViewModel(vm, client, weapon)
     end
 end
 
+
 timer.Create("arb.DayChangeNotifications", 1, 0, function()
     if !Arbitrage.IsStartGame() then return end
     if LocalPlayer().IsPlaying and !LocalPlayer():IsPlaying() then return end
@@ -402,6 +403,13 @@ timer.Create("arb.DayChangeNotifications", 1, 0, function()
             LocalPlayer():EmitSound("dingdong.wav")
         end
     end)
+end)
+
+timer.Create("arb.BillSound", 1, 1, function()
+    timer.Remove("arb.BillSound")
+
+    system.FlashWindow()
+    sound.PlayFile("sound/hl1/fvox/bell.wav", "", function() end)
 end)
 
 

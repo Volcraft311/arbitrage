@@ -162,7 +162,7 @@ function PANEL:SetData(data, votingList)
     local isVoting = false
 
     for k, v in pairs(votingList or {}) do
-        if LocalPlayer():SteamID() == v then
+        if LocalPlayer():SteamID() == v:SteamID() then
             isVoting = true
         end
     end

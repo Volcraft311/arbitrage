@@ -40,14 +40,6 @@ do
 end
 
 do
-    Arbitrage.evidence.AddEnt("prop_ragdoll", {
-        name = "Труп",
-        desc = "А ведь раньше этот человек был одним из нас...",
-        up = 0,
-        right = 0,
-        forward = 0
-    })
-
     Arbitrage.evidence.AddEnt("arb_note", {
         name = "Блокнот",
         desc = "Самый обычный блокнот, скорее всего содержит в себе какие-то записи.",

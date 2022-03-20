@@ -93,6 +93,9 @@ end
 
 do
     PLUGIN:AddIcon("test.png")
+    PLUGIN:AddIcon("camera.png")
+    PLUGIN:AddIcon("Pistol.png")
+    PLUGIN:AddIcon("Documents.png")
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

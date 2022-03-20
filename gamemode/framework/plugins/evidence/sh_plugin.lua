@@ -40,7 +40,7 @@ function PLUGIN:GetToolData(client)
     local tool = client:GetTool()
 
     local evidenceName = tool:GetClientInfo("name")
-    local evidenceDescription = tool:GetClientInfo("description")
+    local evidenceDescription = (SERVER and client.EvidenceDescription or EvidenceDescription) or "Описание улики"
     local evidenceR = tool:GetClientInfo("r")
     local evidenceG = tool:GetClientInfo("g")
     local evidenceB = tool:GetClientInfo("b")

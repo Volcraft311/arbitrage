@@ -9,7 +9,8 @@ TOOL.Information = {
 }
 
 TOOL.ClientConVar.name = "Название улики"
-TOOL.ClientConVar.description = "Описание улики"
+-- TOOL.ClientConVar.description = "Описание улики"
+EvidenceDescription = EvidenceDescription or "Описание улики"
 TOOL.ClientConVar.r = 255
 TOOL.ClientConVar.g = 255
 TOOL.ClientConVar.b = 255
@@ -81,25 +82,21 @@ function TOOL.BuildCPanel(CPanel)
         Command = "evidencetool_name"
     })
 
-    -- CPanel:AddControl("TextBox", {
-    --     Label = "Описание улики",
-    --     Command = "evidencetool_description"
-    -- })
-
     local lableDesc = vgui.Create("DLabel")
     lableDesc:SetText("Описание улики")
     lableDesc:SetTextColor(Color(0, 0, 0))
     CPanel:AddPanel(lableDesc)
 
     local dtextentryDesc = vgui.Create("DTextEntry")
-    dtextentryDesc:SetValue(GetConVar("evidencetool_description"):GetString():gsub("\\n", "\n"))
+    dtextentryDesc:SetValue(EvidenceDescription)
     dtextentryDesc:SetTall(100)
+    dtextentryDesc:SetVerticalScrollbarEnabled(true)
     dtextentryDesc:SetMultiline(true)
     dtextentryDesc.OnChange = function(_)
         local data = _:GetValue()
-        data = data:gsub("\n", "\\n")
 
-        GetConVar("evidencetool_description"):SetString(data)
+        EvidenceDescription = data
+        netstream.Start("Evidence:SetDescription", EvidenceDescription)
     end
 
     CPanel:AddPanel(dtextentryDesc)
@@ -165,7 +162,8 @@ function TOOL.BuildCPanel(CPanel)
     ResetButton:SetText("Сбросить настройки")
     ResetButton.DoClick = function()
         RunConsoleCommand(l .. "name", "Название улики")
-        RunConsoleCommand(l .. "description", "Описание улики")
+        EvidenceDescription = "Описание улики"
+        dtextentryDesc:SetValue(EvidenceDescription)
         RunConsoleCommand(l .. "r", 255)
         RunConsoleCommand(l .. "g", 255)
         RunConsoleCommand(l .. "b", 255)

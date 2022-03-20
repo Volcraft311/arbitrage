@@ -1,5 +1,5 @@
 local PLUGIN = PLUGIN
-PLUGIN.numID = 1
+PLUGIN.numID = PLUGIN.numID or 1
 
 function PLUGIN:RegisterNewEvidence(data)
     self.list[self.numID] = data
@@ -26,7 +26,7 @@ local function reg(data)
         description = data.description or "Неизвестно",
         color = data.color or Color(255, 255, 255),
         alpha = data.alpha or 255,
-        image = data.image or 1
+        image = tonumber(data.image) and math.floor(data.image) or 1
     })
 end
 
@@ -151,7 +151,6 @@ function PLUGIN:PlayerUse(client, entity)
     if !client.evidenceCD or CurTime() >= client.evidenceCD then
         if !client:HasEvidence(idx) then
             Arbitrage.action.ActionRun(client, "Собираем улику", 1, function()
-                -- if client:GetEyeTrace().Entity != entity then return true end
                 if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 
                 return false
@@ -173,3 +172,8 @@ function PLUGIN:PlayerInitialSpawn(client)
         netstream.Start(client, "evidence.Register", k, v)
     end
 end
+
+
+netstream.Hook("Evidence:SetDescription", function(client, data)
+    client.EvidenceDescription = data or "Описание улики"
+end)

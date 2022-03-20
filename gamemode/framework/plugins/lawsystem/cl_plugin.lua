@@ -274,27 +274,6 @@ local bulletMat = Arbitrage.GetMaterial("danganronpa/law/bullet.png")
 local bulletMatL = Arbitrage.GetMaterial("danganronpa/law/bullet_l.png")
 
 function PLUGIN:HUDPaint()
-    if !self.placesList[game.GetMap()] then return end
-
-    local client = Arbitrage.Client()
-    local var = client:GetNetVar("arbLaw", -1)
-    local place = self.placesList[game.GetMap()][var]
-
-    if var >= 0 and place then
-        local vec = place.pos - Vector(0, 0, 10)
-        local alpha = math.Clamp(255 - client:GetPos():Distance(vec), 0, 255)
-
-        if !Arbitrage.lawEnable and alpha > 0 then
-            Arbitrage.evidence.CreateText({
-                pos = vec,
-                name = "Суд",
-                desc = "Ваше место находится тут!",
-                class = nil,
-                data = "Law"
-            })
-        end
-    end
-
     if !Arbitrage.lawEnable then return end
 
     for k, v in pairs(self.bulletList) do
@@ -342,7 +321,31 @@ function PLUGIN:RenderScreenspaceEffects()
     DrawColorModify(tab)
 end
 
+local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawOpaqueRenderables()
+    if self.placesList[game.GetMap()] then
+        local client = Arbitrage.Client()
+        local var = client:GetNetVar("arbLaw", -1)
+        local place = self.placesList[game.GetMap()][var]
+
+        if var >= 0 and place then
+            local anim = math.sin(CurTime() * 1.5) * 5
+            local vec = place.pos - Vector(0, 0, 10 + anim)
+
+            local ang = Angle(0, EyeAngles().y, EyeAngles().z)
+            ang:RotateAroundAxis(ang:Forward(), 90)
+            ang:RotateAroundAxis(ang:Right(), 90)
+
+            local sizeW, sizeH = 150, 150
+
+            cam.Start3D2D(vec, ang, 0.03)
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(matArrow)
+                surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
+            cam.End3D2D()
+        end
+    end
+
     if !Arbitrage.lawEnable then return end
     if !Arbitrage.IsShowClassTrial() then return end
 

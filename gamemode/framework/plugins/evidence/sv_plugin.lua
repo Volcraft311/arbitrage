@@ -151,8 +151,8 @@ function PLUGIN:PlayerUse(client, entity)
     if !client.evidenceCD or CurTime() >= client.evidenceCD then
         if !client:HasEvidence(idx) then
             Arbitrage.action.ActionRun(client, "Собираем улику", 1, function()
-                if client:GetEyeTrace().Entity != entity then return true end
-                if client:GetPos():Distance(entity:GetPos()) >= 180 then return true end
+                -- if client:GetEyeTrace().Entity != entity then return true end
+                if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 
                 return false
             end, function(activator)

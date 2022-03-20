@@ -14,7 +14,7 @@
 local PLUGIN = PLUGIN
 PLUGIN.name = "Doors"
 
-PLUGIN.DoorsData = {}
+PLUGIN.DoorsData = PLUGIN.DoorsData or {}
 
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_datasave.lua")

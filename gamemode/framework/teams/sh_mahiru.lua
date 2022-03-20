@@ -29,7 +29,7 @@ TEAM.sleepSpeed = 33
 TEAM.max = 1
 
 for i = 1, 21 do
-	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
+	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/mahiru/" .. i .. ".png"
 end
 
 TEAM_MAHIRU = Arbitrage.teams.Create(TEAM)

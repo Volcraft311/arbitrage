@@ -36,11 +36,9 @@ function Arbitrage.Initialize()
 		-- permission
 		local function permissionFunc(_, client) return client:IsAdmin() end
 		local funcData = {
-			"PlayerSpawnProp", "PlayerGiveSWEP", "PlayerSpawnedEffect", "PlayerSpawnedNPC",
-			"PlayerSpawnedProp", "PlayerSpawnedRagdoll", "PlayerSpawnedSENT", "PlayerSpawnedSWEP",
-			"PlayerSpawnedVehicle", "PlayerSpawnEffect", "PlayerSpawnNPC", "PlayerSpawnObject",
-			"PlayerSpawnRagdoll", "PlayerSpawnSENT", "PlayerSpawnSWEP", "PlayerSpawnVehicle",
-			"CanEditVariable", "CanProperty"
+			"PlayerSpawnProp", "PlayerGiveSWEP", "PlayerSpawnEffect", "PlayerSpawnNPC", "PlayerSpawnObject",
+			"PlayerSpawnRagdoll", "PlayerSpawnSENT", "PlayerSpawnSWEP", "PlayerSpawnVehicle","CanEditVariable",
+			"CanProperty"
 		}
 
 		for k, v in ipairs(funcData) do
@@ -79,7 +77,7 @@ function Arbitrage.Initialize()
 	end
 
 	if Arbitrage.util.IsClientSide() then
-		net.Receive("CopiedDupe", function(len, client) end)
+		-- net.Receive("CopiedDupe", function(len, client) end)
 
 		-- delete sandbox shit :/
 		local funcData = {

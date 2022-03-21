@@ -255,7 +255,7 @@ function Arbitrage:KeyPress(client, key)
         local alive_players = {}
 
         for k, v in SortedPairs(player.GetAll()) do
-            if v:oldAlive() and !v:IsSpectate() and !v:IsMonoKum() then -- v:Team() == TEAM_PLAYERS
+            if v:oldAlive() and !v:IsSpectate() and !v:IsMonoKum() and v:Team() != TEAM_ADMIN then -- v:Team() == TEAM_PLAYERS
                 alive_players[#alive_players + 1] = v
             end
         end

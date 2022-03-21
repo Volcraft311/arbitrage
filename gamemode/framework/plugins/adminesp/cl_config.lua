@@ -74,27 +74,27 @@ PLUGIN:AddPlayerESPCustomization("weapon_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("vector_pl", {
-    dist = 500,
-    config = {
-        name = "Позиция игрока",
-        desc = "Включить показатель позиции игрока"
-    },
-    data = function(entity)
-        return "Vector(" .. math.Round(entity:GetPos().x, 2) .. ", " .. math.Round(entity:GetPos().y, 2) .. ", " .. math.Round(entity:GetPos().z, 2) .. ")"
-    end
-})
+-- PLUGIN:AddPlayerESPCustomization("vector_pl", {
+--     dist = 500,
+--     config = {
+--         name = "Позиция игрока",
+--         desc = "Включить показатель позиции игрока"
+--     },
+--     data = function(entity)
+--         return "Vector(" .. math.Round(entity:GetPos().x, 2) .. ", " .. math.Round(entity:GetPos().y, 2) .. ", " .. math.Round(entity:GetPos().z, 2) .. ")"
+--     end
+-- })
 
-PLUGIN:AddPlayerESPCustomization("dist_pl", {
-    dist = 0,
-    config = {
-        name = "Дистанция игрока",
-        desc = "Включить показатель дистанции игрока"
-    },
-    data = function(entity)
-        return math.Round(LocalPlayer():GetPos():Distance(entity:GetPos()), 1)
-    end
-})
+-- PLUGIN:AddPlayerESPCustomization("dist_pl", {
+--     dist = 0,
+--     config = {
+--         name = "Дистанция игрока",
+--         desc = "Включить показатель дистанции игрока"
+--     },
+--     data = function(entity)
+--         return math.Round(LocalPlayer():GetPos():Distance(entity:GetPos()), 1)
+--     end
+-- })
 
 PLUGIN:AddPlayerESPCustomization("trace_pl", {
     dist = 1000,

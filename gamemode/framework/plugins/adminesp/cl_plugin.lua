@@ -21,24 +21,43 @@ surface.CreateFont( "AdminESPFont", {
 } )
 
 local function createText(data, x, y, col, y2)
-	-- draw.DrawText(data, "AdminESPFont", x, y + y2 - 1, Color(0, 0, 0), TEXT_ALIGN_LEFT)
-	-- draw.DrawText(data, "AdminESPFont", x, y + y2 + 1, Color(0, 0, 0), TEXT_ALIGN_LEFT)
-	-- draw.DrawText(data, "AdminESPFont", x - 1, y + y2, Color(0, 0, 0), TEXT_ALIGN_LEFT)
-	-- draw.DrawText(data, "AdminESPFont", x + 1, y + y2, Color(0, 0, 0), TEXT_ALIGN_LEFT)
 	draw.SimpleText(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT)
 end
 
-function PLUGIN:HUDPaint()
-	local client = LocalPlayer()
+local function isAllow(client)
+	if !IsValid(client) then return false end
 
-	if !client:oldAlive() then return end
-	if !client:IsAdmin() then return end
-	if !client:IsNocliping() and !Arbitrage:IsDeveloping() then return end
-	if !SETTINGS.options.Get("show_admin_esp") then return end
-	if client.GetSitting and client:GetSitting() then return end
-	if Arbitrage.lawEnable then return end
+	if !client:oldAlive() then return false end
+	if !client:IsAdmin() then return false end
+	if !client:IsNocliping() and !Arbitrage:IsDeveloping() then return false end
+	if !SETTINGS.options.Get("show_admin_esp") then return false end
+	if client.GetSitting and client:GetSitting() then return false end
+	if Arbitrage.lawEnable then return false end
+
+	return true
+end
+
+PLUGIN.showEntsList = {}
+
+timer.Create("AdminESP:Update", 1, 0, function()
+	PLUGIN.showEntsList = {}
+
+	local client = LocalPlayer()
+	local allow = isAllow(client)
+
+	if !allow then return end
 
 	for k, v in pairs(ents.GetAll()) do
+		if v:IsPlayer() then
+			PLUGIN.showEntsList[#PLUGIN.showEntsList + 1] = v
+		elseif PLUGIN.entslist[v:GetClass()] then
+			PLUGIN.showEntsList[#PLUGIN.showEntsList + 1] = v
+		end
+	end
+end)
+
+function PLUGIN:HUDPaint()
+	for k, v in ipairs(self.showEntsList) do
 		local p = v:IsPlayer()
 		if !p and !self.entslist[v:GetClass()] then continue end
 
@@ -51,6 +70,8 @@ function PLUGIN:HUDPaint()
 					local pos = v:GetPos()
 					local head = Vector(pos.x, pos.y, !p and pos.z or pos.z + 60)
 					local headPos = head:ToScreen()
+					if !headPos.visible then continue end
+
 					local distance = LocalPlayer():GetPos():Distance(v:GetPos())
 					local x, y = headPos.x, headPos.y
 					local f = math.abs(350 / distance)

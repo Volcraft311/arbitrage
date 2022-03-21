@@ -379,6 +379,16 @@ function PANEL:SetData(data, bEdit)
         end
     end
 
+    if IsValid(self.fontsPanel) then
+        local children = self.fontsPanel:GetChildren()[1]:GetChildren()
+
+        for k, v in ipairs(children) do
+            if IsValid(v) then
+                v:Remove()
+            end
+        end
+    end
+
     for k, v in ipairs(NOTE_FONTS) do
         local panel = self.fontsPanel:Add("DButton")
         panel:SetText("")
@@ -401,6 +411,8 @@ function PANEL:SetData(data, bEdit)
         panel.DoClick = function(_, w, h)
             netstream.Start("arb.NoteAction", "CHANGE_FONT", data.entity, data.page, k)
         end
+
+        self.fontsPanel:AddItem(panel)
     end
 
     self.panels = {}

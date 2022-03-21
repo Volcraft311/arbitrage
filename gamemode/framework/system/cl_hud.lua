@@ -85,19 +85,29 @@ function Arbitrage.hud.AddCircle(name, data)
 	Arbitrage.hud.CircleData[#Arbitrage.hud.CircleData + 1] = {name, data}
 end
 
-function Arbitrage.hud.GeneratePoly(x, y, radius, quality)
-	local circle = {}
-	local tmp = 0
+local cache = {}
+function Arbitrage.hud.GeneratePoly(x, y, radius, passes)
+	passes = passes or 100
 
-	for i = 1, quality do
-		tmp = math_rad(i * 360) / quality
-		circle[i] = {
-			x = x + math_cos(tmp) * radius,
-			y = y + math_sin(tmp) * radius
-		}
+	local id = x .. '|' .. y .. '|' .. radius .. '|' .. passes
+	local info = cache[id]
+
+	if !info then
+	    info = {}
+
+	    for i = 1, passes + 1 do
+	        local deg_in_rad = i * math.pi / (passes * 0.5)
+
+	        info[i] = {
+	            x = x + math.cos(deg_in_rad) * radius,
+	            y = y + math.sin(deg_in_rad) * radius
+	        }
+	    end
+
+	    cache[id] = info
 	end
 
-	return circle
+	return info
 end
 
 

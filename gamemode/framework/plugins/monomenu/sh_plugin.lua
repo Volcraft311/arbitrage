@@ -301,7 +301,7 @@ PLUGIN.AdminData = {
         onRun = function(client)
             if CLIENT then return end
 
-            client:SetNetVar("arbGlobalVoice", true)
+            client:SetNetVar("arbGlobalVoice", true, client)
         end,
         onCreate = function(client)
             return !client:GetNetVar("arbGlobalVoice")
@@ -313,7 +313,7 @@ PLUGIN.AdminData = {
         onRun = function(client)
             if CLIENT then return end
 
-            client:SetNetVar("arbGlobalVoice", nil)
+            client:SetNetVar("arbGlobalVoice", nil, client)
         end,
         onCreate = function(client)
             return client:GetNetVar("arbGlobalVoice")

@@ -56,6 +56,7 @@ function PLUGIN:PlayerEndVoice(client)
 end
 
 function PLUGIN:HUDPaint()
+    local client = LocalPlayer()
     local size = ScrW() * 0.05
     local value = LocalPlayer():GetNetVar("arb.voicescale", 0.5)
     local bShow = self.realtime >= RealTime()
@@ -64,7 +65,9 @@ function PLUGIN:HUDPaint()
     self.alpha = Lerp(FrameTime() * 40, self.alpha, self.players[LocalPlayer()] and 255 or 0)
 
     if self.alpha > 0.2 then
-        surface.SetDrawColor(255, 255, 255, self.alpha * value)
+        local color = client:GetNetVar("arbGlobalVoice") and Color(255, 61, 96, self.alpha) or Color(255, 255, 255, self.alpha * value)
+
+        surface.SetDrawColor(color)
         surface.SetMaterial(mat)
         surface.DrawTexturedRect(ScrW() / 2 - 40 / 2, ScrH() - self.pos, 40, 40)
     end

@@ -120,6 +120,7 @@ PLUGIN.GameData = {
 
             for k, v in pairs(player.GetAll()) do
                 if v:IsAdmin() then continue end
+                if v:IsSpectate() then continue end
 
                 v:Freeze(true)
             end

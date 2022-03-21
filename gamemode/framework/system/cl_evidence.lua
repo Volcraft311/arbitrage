@@ -13,16 +13,6 @@
 
 Arbitrage.evidence = Arbitrage.library.Add("evidence")
 
-function Arbitrage.evidence.VectorObstructed(vec1, vec2, filter)
-    local trace = util.TraceLine({
-        start = vec1,
-        endpos = vec2,
-        filter = filter
-    })
-
-    return trace.Hit
-end
-
 local color = Color(255, 61, 96)
 function Arbitrage.evidence.CreateText(data)
     if !data then return end
@@ -53,7 +43,7 @@ function Arbitrage.evidence.CreateText(data)
         end
     end
 
-    if !Arbitrage.evidence.VectorObstructed(EyePos(), pos, ignore_list) then
+    if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
         local x = pos:ToScreen().x
         local y = pos:ToScreen().y
 

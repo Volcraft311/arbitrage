@@ -234,10 +234,10 @@ netstream.Hook("ScriptMusic:GlobalTrack", function(data, volume, max_volume)
         PLUGIN:StopGlobalSound(function()
             PLUGIN.sound = channel
 
-            channel:SetVolume(volume)
+            channel:SetVolume(0)
             channel:Play()
 
-            PLUGIN:VolumeUp(channel, max_volume)
+            --PLUGIN:VolumeUp(channel, max_volume)
         end)
     end)
 end)

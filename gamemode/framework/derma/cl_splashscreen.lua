@@ -203,7 +203,7 @@ function PANEL:ShowSurvival()
                 v.color[v2] = Lerp(FrameTime() * 3, v.color[v2], v.mcolor[v2])
             end
 
-            local shift = (size * num) - 65
+            local shift = (size * num) - (30 * num)
 
             surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
             surface.SetMaterial(v.material)

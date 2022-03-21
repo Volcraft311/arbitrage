@@ -27,7 +27,10 @@ function PLUGIN:HUDPaint()
             local pos = v:GetPos()
             local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
 
-            local x, y = pos:ToScreen().x, pos:ToScreen().y
+            local data2D = pos:ToScreen()
+            if !data2D.visible then continue end
+
+            local x, y = data2D.x, data2D.y
 
             local max_alpha = 150
             local curalpha = math.Clamp(math.abs(math.sin(CurTime() * 3)) * max_alpha, 0, max_alpha)

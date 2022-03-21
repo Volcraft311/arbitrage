@@ -44,8 +44,11 @@ function Arbitrage.evidence.CreateText(data)
     end
 
     if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
-        local x = pos:ToScreen().x
-        local y = pos:ToScreen().y
+        local data2D = pos:ToScreen()
+        if !data2D.visible then return end
+
+        local x = data2D.x
+        local y = data2D.y
 
         local max_alpha = 150
         local curalpha = math.Clamp(math.sin(CurTime() * 2) * max_alpha, 0, max_alpha)

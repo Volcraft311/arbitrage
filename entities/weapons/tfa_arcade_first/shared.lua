@@ -60,8 +60,11 @@ if CLIENT then
 
             local pos2 = entity:LocalToWorld(pos)
 
-            local x = pos2:ToScreen().x
-            local y = pos2:ToScreen().y
+            local data2D = pos2:ToScreen()
+            if !data2D.visible then return end
+
+            local x = data2D.x
+            local y = data2D.y
 
             local traceNew = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
 

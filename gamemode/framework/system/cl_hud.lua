@@ -606,8 +606,11 @@ function Arbitrage.hud.CreateTextPlayer(client)
 	local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
 	local alpha = client.textalpha
 
-	local x = position:ToScreen().x
-	local y = position:ToScreen().y
+	local data2D = position:ToScreen()
+	if !data2D.visible then return end
+
+	local x = data2D.x
+	local y = data2D.y
 	draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
 
 	surface_SetFont( "arb.Font_FuturaPTBook_8" )

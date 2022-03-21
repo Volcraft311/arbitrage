@@ -113,7 +113,7 @@ function PANEL:InitWeapons()
 				description = description:utf8sub(1, 12) .. "..."
 			end
 
-			draw.DrawText(description, "arb.Font_FuturaPTBook_9", h + W(12 + 5), h / 2 - H(15), isSelect and Color(255, 61, 96) or Color(255, 234, 238), TEXT_ALIGN_LEFT)
+			draw.SimpleText(description, "arb.Font_FuturaPTBook_9", h + W(12 + 5), h / 2 - H(15), isSelect and Color(255, 61, 96) or Color(255, 234, 238), TEXT_ALIGN_LEFT)
 		end
 
 		self.weaponsCategory[k] = weapon
@@ -176,8 +176,8 @@ function PANEL:CreateCategory(id, name)
 		surface.SetDrawColor(25, 25, 25, 240)
 		surface.DrawRect(0, 0, w, h)
 
-		draw.DrawText(name, "arb.Font_FuturaPTDemi_9", w / 2, h / 2 - H(15), Color(255, 234, 238), TEXT_ALIGN_CENTER)
-		draw.DrawText(num, "arb.Font_FuturaPTBook_7", w - 4, h - H(25), Color(255, 234, 238, 50), TEXT_ALIGN_RIGHT)
+		draw.SimpleText(name, "arb.Font_FuturaPTDemi_9", w / 2, h / 2 - H(15), Color(255, 234, 238), TEXT_ALIGN_CENTER)
+		draw.SimpleText(num, "arb.Font_FuturaPTBook_7", w - 4, h - H(25), Color(255, 234, 238, 50), TEXT_ALIGN_RIGHT)
 	end
 end
 

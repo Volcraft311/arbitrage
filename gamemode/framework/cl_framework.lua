@@ -73,10 +73,10 @@ function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign)
     local font_blur = font_name .. "Blur_" .. font_size
 
     for i = 1, 2 do
-        draw.DrawText(text, font_blur, x, y, ColorAlpha(Color(254, 110, 21), alpha), xAlign)
+        draw.SimpleText(text, font_blur, x, y, ColorAlpha(Color(254, 110, 21), alpha), xAlign)
     end
 
-    draw.DrawText(text, font_normal, x, y, color, xAlign)
+    draw.SimpleText(text, font_normal, x, y, color, xAlign)
 end
 
 function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size)

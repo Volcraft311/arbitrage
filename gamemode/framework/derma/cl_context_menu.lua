@@ -45,7 +45,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 89.25)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.DrawText("Действия", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("Действия", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
 
@@ -65,7 +65,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 89.25)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.DrawText("Эмоции", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("Эмоции", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
     self.dancePanelScroll = self.dancePanel:Add("DScrollPanel")
@@ -96,7 +96,7 @@ function PANEL:AddDance(name, command, icon)
     panel:SetTall(H(45))
     panel.color = Color(255, 234, 238)
     panel.Paint = function(_, w, h)
-        draw.DrawText(name, "arb.Font_FuturaPTBook_8", W(66), H(10), Color(_.color.r, _.color.g, _.color.b), TEXT_ALIGN_LEFT)
+        draw.SimpleText(name, "arb.Font_FuturaPTBook_8", W(66), H(10), Color(_.color.r, _.color.g, _.color.b), TEXT_ALIGN_LEFT)
 
         local ishover = _:IsHovered()
         local frame = FrameTime() * 10
@@ -125,7 +125,7 @@ function PANEL:AddAction(name, callback, icon)
     panel:SetTall(H(45))
     panel.color = Color(255, 234, 238)
     panel.Paint = function(_, w, h)
-        draw.DrawText(name, "arb.Font_FuturaPTBook_8", W(66), H(10), Color(_.color.r, _.color.g, _.color.b), TEXT_ALIGN_LEFT)
+        draw.SimpleText(name, "arb.Font_FuturaPTBook_8", W(66), H(10), Color(_.color.r, _.color.g, _.color.b), TEXT_ALIGN_LEFT)
 
         local ishover = _:IsHovered()
         local frame = FrameTime() * 10

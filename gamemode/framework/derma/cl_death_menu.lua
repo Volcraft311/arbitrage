@@ -93,8 +93,8 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 44, 44, self.alpha)
     surface.DrawRect(0, 0, w, h)
 
-    draw.DrawText(self.labelTitle, "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
-    draw.DrawText(self.labelText, "arb.Font_FuturaPTBook_12", ScrW() / 2, ScrH() * 0.45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.labelTitle, "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.labelText, "arb.Font_FuturaPTBook_12", ScrW() / 2, ScrH() * 0.45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.DeathMenu", PANEL, "EditablePanel")

@@ -80,13 +80,13 @@ function Arbitrage.evidence.CreateText(data)
         local genericHeight = draw.GetFontHeight("arb.Font_FuturaPTDemi_8")
         local descHeight = draw.GetFontHeight("arb.Font_FuturaPTBook_6")
 
-        draw.DrawText(name, "arb.Font_FuturaPTDemi_8", x, y - (genericHeight / 2), ColorAlpha(color, evData.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(name, "arb.Font_FuturaPTDemi_8", x, y - (genericHeight / 2), ColorAlpha(color, evData.alpha), TEXT_ALIGN_CENTER)
 
         local descriptionText = Arbitrage.WrapText(desc, 300, "arb.Font_FuturaPTBook_6")
 
         for i, _ in pairs(descriptionText) do
             local y2 = y + (descHeight * i) - (genericHeight / 2) + 5
-            draw.DrawText(descriptionText[i], "arb.Font_FuturaPTBook_6", x, y2, ColorAlpha(Color(255, 255, 255), evData.alpha), TEXT_ALIGN_CENTER)
+            draw.SimpleText(descriptionText[i], "arb.Font_FuturaPTBook_6", x, y2, ColorAlpha(Color(255, 255, 255), evData.alpha), TEXT_ALIGN_CENTER)
         end
     end
 end

@@ -30,7 +30,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 41, 80)
         surface.DrawRect(0, 0, w, H(56))
 
-        draw.DrawText("РАННИЙ ДОСТУП", "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(15, 5, 6), TEXT_ALIGN_CENTER)
+        draw.SimpleText("РАННИЙ ДОСТУП", "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(15, 5, 6), TEXT_ALIGN_CENTER)
         draw.DrawText(description, "arb.Font_FuturaPTBook_8", w / 2, H(75), Color(255, 234, 238), TEXT_ALIGN_CENTER)
     end
 

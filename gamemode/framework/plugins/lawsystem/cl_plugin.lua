@@ -379,8 +379,8 @@ function PLUGIN:PostDrawOpaqueRenderables()
             ang_t:RotateAroundAxis(ang_t:Right(), 90)
 
             cam.Start3D2D(Pos, ang_t, 0.3)
-                draw.DrawText("class trial", "arb.Font_Nebula_35", 2, 2, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
-                draw.DrawText("class trial", "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
+                draw.SimpleText("class trial", "arb.Font_Nebula_35", 2, 2, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
+                draw.SimpleText("class trial", "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
             cam.End3D2D()
         end
     end
@@ -542,7 +542,7 @@ function PLUGIN:StartCylinder()
                     surface.SetMaterial(bullet)
                     surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                    draw.DrawText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, Color(0, 0, 0), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, Color(0, 0, 0), TEXT_ALIGN_LEFT)
                 cam.PopModelMatrix()
             end
 
@@ -607,7 +607,7 @@ function PLUGIN:StartCylinder()
                     surface.SetMaterial(bullet)
                     surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW, bulletSizeH)
 
-                    draw.DrawText("Monokuma File " .. i, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), Color(0, 0, 0), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Monokuma File " .. i, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), Color(0, 0, 0), TEXT_ALIGN_LEFT)
                 cam.PopModelMatrix()
             end
         end)

@@ -84,12 +84,12 @@ local stagesData = {
                 surface.SetMaterial(splash)
                 surface.DrawTexturedRect(0, 0, w, h)
 
-                draw.DrawText(faction.name, "arb.Font_FuturaPTDemi_15", w / 2, H(400), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(faction.name, "arb.Font_FuturaPTDemi_15", w / 2, H(400), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 
                 surface.SetDrawColor(255, 234, 238, 15 * _.alpha)
                 surface.DrawRect(W(155), H(467), W(350), H(2))
 
-                draw.DrawText(faction.description, "arb.Font_FuturaPTBook_10", w / 2, H(485), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(faction.description, "arb.Font_FuturaPTBook_10", w / 2, H(485), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 
                 local count = 0
                 for k, v in ipairs(player.GetAll()) do

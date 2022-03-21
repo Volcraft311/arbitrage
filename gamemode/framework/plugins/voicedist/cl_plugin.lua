@@ -77,7 +77,7 @@ function PLUGIN:HUDPaint()
     self.lerp = Lerp(FrameTime() * 15, self.lerp, (size * 2) * value)
 
     if self.alpha2 > 0.2 then
-        draw.DrawText("Дальность голоса " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
+        draw.SimpleText("Дальность голоса " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 255, 255, self.alpha2 * 0.1)
         surface.DrawRect(ScrW() / 2 - size, ScrH() - self.pos2 * 3, size * 2, 5)

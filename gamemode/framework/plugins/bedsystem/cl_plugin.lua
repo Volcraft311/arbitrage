@@ -74,6 +74,6 @@ function PLUGIN:RenderScreenspaceEffects()
 
     local actionAlpha = Arbitrage.action.data and ((Arbitrage.action.data.alpha and Arbitrage.action.data.alpha or 0) + 1) or 0
 
-    draw.DrawText("Вы спите" .. string.rep(".", self.dot), "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
-    draw.DrawText("Чтобы проснуться нажмите на \"Пробел\"", "arb.Font_FuturaPTBook_12", ScrW() / 2, ScrH() * 0.45, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText("Вы спите" .. string.rep(".", self.dot), "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText("Чтобы проснуться нажмите на \"Пробел\"", "arb.Font_FuturaPTBook_12", ScrW() / 2, ScrH() * 0.45, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
 end

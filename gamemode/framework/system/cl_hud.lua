@@ -36,6 +36,7 @@ local ColorAlpha = ColorAlpha
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local draw_DrawText = draw.DrawText
+local draw_SimpleText = draw.SimpleText
 local tostring = tostring
 local surface_DrawRect = surface.DrawRect
 local input_IsKeyDown = input.IsKeyDown
@@ -149,7 +150,7 @@ function Arbitrage.hud.SpectateDraw()
 	surface_SetDrawColor(5, 2, 2, 229.5)
 	surface_DrawRect(ScrW() / 2 - W(560) / 2, H(40), W(560), H(46))
 
-	draw_DrawText(spectate, "arb.Font_FuturaPTBook_10", ScrW() / 2, H(46), Color(255, 234, 238, 255), TEXT_ALIGN_CENTER)
+	draw_SimpleText(spectate, "arb.Font_FuturaPTBook_10", ScrW() / 2, H(46), Color(255, 234, 238, 255), TEXT_ALIGN_CENTER)
 
 	surface_SetDrawColor(255, 255, 255)
 	surface_SetMaterial(spectate_l_mat)
@@ -170,7 +171,7 @@ function Arbitrage.hud.ALTMenuDraw()
 	Arbitrage.hud.y = 0
 
 	if SETTINGS.options.Get("interface_open_button") then
-		draw_DrawText("Зажмите клавишу \"Q\", чтобы открыть интерфейс", "arb.Font_FuturaPTBook_8", ScrW() - 100, ScrH() - 50, Color( 255, 255, 255, 255 / 2 - Arbitrage.hud.alpha ), TEXT_ALIGN_RIGHT)
+		draw_SimpleText("Зажмите клавишу \"Q\", чтобы открыть интерфейс", "arb.Font_FuturaPTBook_8", ScrW() - 100, ScrH() - 50, Color( 255, 255, 255, 255 / 2 - Arbitrage.hud.alpha ), TEXT_ALIGN_RIGHT)
 	end
 
 	if Arbitrage.hud.alpha > 0.01 then
@@ -195,10 +196,10 @@ function Arbitrage.hud.ALTMenuDraw()
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
 		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)
 
-		draw_DrawText(Arbitrage.teams.Get(client:Team()).name, "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-		draw_DrawText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(Arbitrage.teams.Get(client:Team()).name, "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 
-		draw_DrawText(Format("%s | Эпизод %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(Format("%s | Эпизод %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 	end
 
 	Arbitrage.hud.update = Arbitrage.hud.alpha > 0.01
@@ -526,9 +527,9 @@ function Arbitrage.hud.SeeVector(a, b, _debug)
 			surface_DrawLine(v.x, v.y, linesRect[nextLine].x, linesRect[nextLine].y)
 
 			if k == 1 or k == 2 then
-				draw_DrawText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-				draw_DrawText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-				draw_DrawText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+				draw_SimpleText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+				draw_SimpleText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
+				draw_SimpleText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
 			end
 		end
 
@@ -540,9 +541,9 @@ function Arbitrage.hud.SeeVector(a, b, _debug)
 			surface_SetDrawColor(199, 194, 194)
 			surface_DrawLine(v.x, v.y, seeRect[nextLine].x, seeRect[nextLine].y)
 
-			draw_DrawText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
-			draw_DrawText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
-			draw_DrawText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+			draw_SimpleText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+			draw_SimpleText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
+			draw_SimpleText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
 		end
 
 		local circle = Arbitrage.hud.GeneratePoly(b:ToScreen().x, b:ToScreen().y, 5, 5)
@@ -550,8 +551,8 @@ function Arbitrage.hud.SeeVector(a, b, _debug)
 		draw_NoTexture()
 		surface_DrawPoly(circle)
 
-		draw_DrawText("x: " .. math_Round(m.x), "DermaDefault", b:ToScreen().x, b:ToScreen().y, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
-		draw_DrawText("y: " .. math_Round(m.y), "DermaDefault", b:ToScreen().x, b:ToScreen().y + 15, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
+		draw_SimpleText("x: " .. math_Round(m.x), "DermaDefault", b:ToScreen().x, b:ToScreen().y, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
+		draw_SimpleText("y: " .. math_Round(m.y), "DermaDefault", b:ToScreen().x, b:ToScreen().y + 15, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
 
 		local pref = tostring(conclusion)
 		local st = conclusion and "Точка в прямоугольнике." or "Точка не в прямоугольнике."
@@ -593,7 +594,7 @@ function Arbitrage.hud.StaminaDraw()
 
 		stmData.alphastamina = Lerp(FrameTime() * 10, stmData.alphastamina, stmData.stamina < 98 and 255 or 0)
 
-		draw_DrawText(math_Round(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
+		draw_SimpleText(math.floor(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
 	end
 end
 
@@ -607,7 +608,7 @@ function Arbitrage.hud.CreateTextPlayer(client)
 
 	local x = position:ToScreen().x
 	local y = position:ToScreen().y
-	draw_DrawText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
+	draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
 
 	surface_SetFont( "arb.Font_FuturaPTBook_8" )
 	local width = surface_GetTextSize(client:Name()) * alpha / 255

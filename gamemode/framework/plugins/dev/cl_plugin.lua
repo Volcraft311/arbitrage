@@ -17,15 +17,15 @@ local PLUGIN = PLUGIN
 
 function PLUGIN:HUDPaint()
     if SETTINGS.options.Get("show_gamemode_info") then
-        draw.DrawText("yeah! arbitrage works :)", "arb.Font_FuturaPTBook_5", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(10), Color(14, 255, 151, 10), TEXT_ALIGN_RIGHT)
+        draw.SimpleText("yeah! arbitrage works :)", "arb.Font_FuturaPTBook_5", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(10), Color(14, 255, 151, 10), TEXT_ALIGN_RIGHT)
 
-        draw.DrawText("GM-Arbitrage Framework", "arb.Font_FuturaPTBook_7", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(35), Color(255, 255, 255, 40), TEXT_ALIGN_RIGHT)
-        draw.DrawText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_6", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(52), Color(255, 255, 255, 25), TEXT_ALIGN_RIGHT)
+        draw.SimpleText("GM-Arbitrage Framework", "arb.Font_FuturaPTBook_7", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(35), Color(255, 255, 255, 40), TEXT_ALIGN_RIGHT)
+        draw.SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_6", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(52), Color(255, 255, 255, 25), TEXT_ALIGN_RIGHT)
 
-        draw.DrawText("This gamemode is still in the early stages of development!\nIf you find any errors, please let us know.", "arb.Font_FuturaPTBook_5", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80), Color(255, 255, 255, 7), TEXT_ALIGN_RIGHT)
+        draw.SimpleText("This gamemode is still in the early stages of development!\nIf you find any errors, please let us know.", "arb.Font_FuturaPTBook_5", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80), Color(255, 255, 255, 7), TEXT_ALIGN_RIGHT)
 
         local alpha = math.sin(CurTime() * 1) * 7
-        draw.DrawText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(110), Color(255, 255, 255, alpha), TEXT_ALIGN_RIGHT)
+        draw.SimpleText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(110), Color(255, 255, 255, alpha), TEXT_ALIGN_RIGHT)
     end
 
     self:HUDProfiler()

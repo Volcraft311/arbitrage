@@ -213,9 +213,9 @@ function PLUGIN:HUDPaint()
     surface.SetMaterial(settings_mat)
     surface.DrawTexturedRectRotated(padding + h / 2 + es, padding + h / 2, h - es * 2, h - es * 2, CurTime() % 360 * 50)
 
-    draw.DrawText("Загружаем: " .. text, "arb.Font_FuturaPTBook_7", padding * 3 + h, padding + H(4), Color(255, 220, 228, alpha), TEXT_ALIGN_LEFT)
+    draw.SimpleText("Загружаем: " .. text, "arb.Font_FuturaPTBook_7", padding * 3 + h, padding + H(4), Color(255, 220, 228, alpha), TEXT_ALIGN_LEFT)
     draw.DrawText("Внимание! Ваш клиент заранее кэширует ассеты используемые на сервере во благо избежений микро-фризов во время игры.\nИгра может подвисать во время загрузки...", "arb.Font_FuturaPTBook_5", padding, padding + h + H(1), Color(255, 220, 228, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Отключить авто-кэширование можно в настройках режима", "arb.Font_FuturaPTBook_5", padding, padding + h + H(31), Color(255, 220, 228, 30), TEXT_ALIGN_LEFT)
+    draw.SimpleText("Отключить авто-кэширование можно в настройках режима", "arb.Font_FuturaPTBook_5", padding, padding + h + H(31), Color(255, 220, 228, 30), TEXT_ALIGN_LEFT)
 end
 
 function Arbitrage.StartCaching()

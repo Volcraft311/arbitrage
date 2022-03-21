@@ -56,7 +56,7 @@ function PLUGIN:HUDPaint()
                 if client.GetSitting and client:GetSitting() then return end
                 if !SETTINGS.options.Get("show_admin_esp") then return end
 
-                draw.DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
+                draw.SimpleText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
             end
         end
     end

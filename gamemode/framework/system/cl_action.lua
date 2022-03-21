@@ -96,7 +96,7 @@ function Arbitrage.action.Draw()
 
     local text = Arbitrage.action.data.text or "Отсутствует"
 
-    draw.DrawText(text .. string.rep(".", Arbitrage.action.dot), "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 + 30, color, TEXT_ALIGN_CENTER)
+    draw.SimpleText(text .. string.rep(".", Arbitrage.action.dot), "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 + 30, color, TEXT_ALIGN_CENTER)
 
     local circle = Arbitrage.hud.GeneratePoly(ScrW() / 2, ScrH() / 2, 25, 25)
     surface.SetDrawColor(Color(0, 0, 0, Arbitrage.action.data.alpha * 0.3))

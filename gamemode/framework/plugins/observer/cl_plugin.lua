@@ -18,7 +18,7 @@ function PLUGIN:HUDPaint()
     if !LocalPlayer():GetNetVar("observer") then return end
 
     local alpha = math.abs(math.sin(CurTime() * 1)) * 100
-    draw.DrawText("Вы находитесь в невидимости!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText("Вы находитесь в невидимости!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
 end
 
 function PLUGIN:DrawPhysgunBeam(client, physgun, enabled, target, bone, hitPos)

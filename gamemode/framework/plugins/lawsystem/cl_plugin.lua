@@ -323,7 +323,7 @@ end
 
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawOpaqueRenderables()
-    if self.placesList[game.GetMap()] then
+    if self.placesList[game.GetMap()] and !Arbitrage.lawEnable then
         local client = Arbitrage.Client()
         local var = client:GetNetVar("arbLaw", -1)
         local place = self.placesList[game.GetMap()][var]

@@ -75,12 +75,12 @@ function PLUGIN:CalcView(ply, pos, angles, fov)
 		return
 	end
 
-	local camera_smoothness = SETTINGS.options.Get("camera_smoothness")
+	local camera_smoothness = SETTINGS.options.Get("camera_smoothnessNEW")
 
 	if !CurView then
 		CurView = angles
 	else
-		CurView = LerpAngle(FT * (camera_smoothness * (1 - 0.8)), CurView, angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency))
+		CurView = LerpAngle(FT * camera_smoothness, CurView, angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency))
 	end
 
 	ViewOffsetLeftRight = math.Approach(ViewOffsetLeftRight, 0, 0.5)

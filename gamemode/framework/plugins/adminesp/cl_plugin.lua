@@ -58,6 +58,8 @@ end)
 
 function PLUGIN:HUDPaint()
 	for k, v in ipairs(self.showEntsList) do
+		if !IsValid(v) then continue end
+
 		local p = v:IsPlayer()
 		if !p and !self.entslist[v:GetClass()] then continue end
 

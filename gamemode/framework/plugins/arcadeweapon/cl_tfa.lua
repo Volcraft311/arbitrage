@@ -11,8 +11,8 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-hook.Remove("ContextMenuOpen", "TFAContextBlock")
-hook.Remove("Think", "TFAInspectionMenu")
+-- hook.Remove("ContextMenuOpen", "TFAContextBlock")
+-- hook.Remove("Think", "TFAInspectionMenu")
 hook.Add("TFA_DrawCrosshair", "TFARemoveCrosshair", function()
 	return true
 end )

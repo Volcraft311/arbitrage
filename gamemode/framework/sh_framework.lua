@@ -148,6 +148,22 @@ do
     Arbitrage.weapon.Add("weapon_shotgun", "automatic_machines", true)
     Arbitrage.weapon.Add("weapon_rpg", "automatic_machines", true)
 
+    Arbitrage.weapon.Add("428gl", "automatic_machines", true)
+    Arbitrage.weapon.Add("428mas", "automatic_machines", true)
+    Arbitrage.weapon.Add("428draco", "automatic_machines", true)
+    Arbitrage.weapon.Add("428pkm", "automatic_machines", true)
+    Arbitrage.weapon.Add("428tac", "automatic_machines", true)
+    Arbitrage.weapon.Add("428saigad", "automatic_machines", true)
+    Arbitrage.weapon.Add("428saiga", "automatic_machines", true)
+    Arbitrage.weapon.Add("428scorp", "automatic_machines", true)
+    Arbitrage.weapon.Add("428scorpst", "automatic_machines", true)
+    Arbitrage.weapon.Add("428scorps", "automatic_machines", true)
+    Arbitrage.weapon.Add("428sgr", "automatic_machines", true)
+    Arbitrage.weapon.Add("428sauer", "automatic_machines", true)
+    Arbitrage.weapon.Add("428sauers", "automatic_machines", true)
+    Arbitrage.weapon.Add("428sauero", "automatic_machines", true)
+    Arbitrage.weapon.Add("428winch", "automatic_machines", true)
+
 
     -- Пистолеты
     Arbitrage.weapon.Add("tfcss_deagle_alt", "pistol", true)
@@ -164,6 +180,17 @@ do
 
     Arbitrage.weapon.Add("weapon_357", "pistol", true)
     Arbitrage.weapon.Add("weapon_pistol", "pistol", true)
+
+    Arbitrage.weapon.Add("428samurai", "pistol", true)
+    Arbitrage.weapon.Add("428_1911", "pistol", true)
+    Arbitrage.weapon.Add("428mag", "pistol", true)
+    Arbitrage.weapon.Add("428cz", "pistol", true)
+    Arbitrage.weapon.Add("428_1911_2", "pistol", true)
+    Arbitrage.weapon.Add("428cz2", "pistol", true)
+    Arbitrage.weapon.Add("428dual", "pistol", true)
+    Arbitrage.weapon.Add("428glo", "pistol", true)
+
+    Arbitrage.weapon.Add("tfa_hellsing_casull", "pistol", true)
 
 
     -- Ближнее
@@ -190,6 +217,23 @@ do
     Arbitrage.weapon.Add("weapon_flashlight", "flashlight", false)
     Arbitrage.weapon.Add("weapon_extinguisher_infinite", "extinguisher", false)
     Arbitrage.weapon.Add("weapon_extinguisher", "extinguisher", false)
+    Arbitrage.weapon.Add("weapon_grapplehook", "grapp", false)
+    Arbitrage.weapon.Add("weapon_grapplehook_mk2", "grapp", false)
+    Arbitrage.weapon.Add("weapon_thrusterpack", "thruster", false)
+    Arbitrage.weapon.Add("weapon_roulette", "roulette", false)
+    Arbitrage.weapon.Add("item_lighter", "lighter", false)
+
+
+    -- Наручники
+    Arbitrage.weapon.Add("weapon_cuff_standard", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_leash_elastic", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_cuff_elastic", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_cuff_plastic", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_cuff_police", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_leash_rope", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_cuff_rope", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_cuff_shackles", "cuffs", false)
+    Arbitrage.weapon.Add("weapon_cuff_tactical", "cuffs", false)
 end
 
 function Arbitrage.ReturnTime()

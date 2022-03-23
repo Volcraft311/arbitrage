@@ -17,7 +17,7 @@ PLUGIN.name = "BedSystem"
 PLUGIN.animation = "zombie_slump_idle_01"
 PLUGIN.allowBed = {
     ["models/props_downtown/bed_motel01.mdl"] = {
-        pos = Vector(0, 0, 25),
+        pos = Vector(0, 0, 30),
         ang = Angle(0, 90, 0),
         eye = {
             pos = function(vec, ang)
@@ -25,7 +25,57 @@ PLUGIN.allowBed = {
             end,
             ang = Angle(10, 180, 3)
         }
-    }
+    },
+    ["models/env/furniture/bed_andrea/bed_andrea_1st.mdl"] = {
+        pos = Vector(-50, 0, 30),
+        ang = Angle(0, -90, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * -25 + Vector(0, 0, 41)
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
+    ["models/env/furniture/bed_secondclass/beddouble_group.mdl"] = {
+        pos = Vector(0, 0, 30),
+        ang = Angle(0, -90, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * 25 + ang:Forward() * -20 + Vector(0, 0, 41)
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
+    ["models/props_interiors/bed_motel.mdl"] = {
+        pos = Vector(0, 0, 30),
+        ang = Angle(0, 90, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * -25 + Vector(0, 0, 41)
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
+    ["models/props_vtmb/fancybed.mdl"] = {
+        pos = Vector(10, 0, 30),
+        ang = Angle(0, 180, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * 1 + ang:Forward() * -20 + Vector(0, 0, 41)
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
+    ["models/props_vtmb/heartbed.mdl"] = {
+        pos = Vector(10, 0, 35),
+        ang = Angle(0, 270, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * 20 + ang:Forward() * 1 + Vector(0, 0, 46)
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
 }
 
 function PLUGIN:CalcMainActivity(client, vector)

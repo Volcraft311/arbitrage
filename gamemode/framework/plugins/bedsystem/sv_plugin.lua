@@ -47,7 +47,7 @@ function PLUGIN:PlayerUse(client, entity)
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
         Arbitrage.action.ActionRun(client, "Ложимся на кровать", 5, function()
             if client:GetEyeTrace().Entity != entity then return true end
-            if client:GetPos():Distance(entity:GetPos()) >= 80 then return true end
+            if client:GetPos():Distance(entity:GetPos()) >= 180 then return true end
 
             return false
         end, function(activator)

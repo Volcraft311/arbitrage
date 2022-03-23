@@ -22,7 +22,7 @@ function PLUGIN:Think()
 
     if input.IsKeyDown(KEY_SPACE) and (!client.BedCD or CurTime() >= client.BedCD) then
         netstream.Start("arb.GetUpBed")
-        client.BedCD = CurTime() + 2
+        client.BedCD = CurTime() + 5
     end
 end
 

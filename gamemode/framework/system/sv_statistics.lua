@@ -39,6 +39,9 @@ function Arbitrage.statistics.PlayerPostThink(client)
         client[data] = client[data] or 100
         client[colddown] = client[colddown] or 0
 
+        if !Arbitrage.IsStartGame() then continue end
+        if Arbitrage.lawEnable then continue end
+
         if v.data and (!client[colddown] or CurTime() >= client[colddown]) then
             client[data] = client[data] - 1
             client:SetNetVar(k, math.Clamp(client[data], 0, 100), client)

@@ -11,6 +11,30 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+local Arbitrage = Arbitrage
+local Color = Color
+local Angle = Angle
+local pairs = pairs
+local ents_FindByClass = ents.FindByClass
+local EyePos = EyePos
+local math_Clamp = math.Clamp
+local math_sin = math.sin
+local CurTime = CurTime
+local tonumber = tonumber
+local isentity = isentity
+local IsValid = IsValid
+local LocalPlayer = LocalPlayer
+local surface_SetDrawColor = surface.SetDrawColor
+local ColorAlpha = ColorAlpha
+local draw_NoTexture = draw.NoTexture
+local surface_DrawPoly = surface.DrawPoly
+local Lerp = Lerp
+local FrameTime = FrameTime
+local draw_GetFontHeight = draw.GetFontHeight
+local draw_SimpleText = draw.SimpleText
+local isvector = isvector
+local ents_FindInSphere = ents.FindInSphere
+
 Arbitrage.evidence = Arbitrage.library.Add("evidence")
 
 local color = Color(255, 61, 96)
@@ -35,10 +59,10 @@ function Arbitrage.evidence.CreateText(data)
     local ignore_list = {}
     ignore_list[#ignore_list + 1] = client
 
-    for k, v in pairs(ents.FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v end
+    for k, v in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v end
 
     if class then
-        for k, v in pairs(ents.FindByClass(class)) do
+        for k, v in pairs(ents_FindByClass(class)) do
             ignore_list[#ignore_list + 1] = v
         end
     end
@@ -51,9 +75,9 @@ function Arbitrage.evidence.CreateText(data)
         local y = data2D.y
 
         local max_alpha = 150
-        local curalpha = math.Clamp(math.sin(CurTime() * 2) * max_alpha, 0, max_alpha)
+        local curalpha = math_Clamp(math_sin(CurTime() * 2) * max_alpha, 0, max_alpha)
 
-        local alpha = math.Clamp(client:GetPos():Distance(pos) / 3, 0, 150)
+        local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, 150)
 
         local evData = 0
         if tonumber(dataEvidence) and Arbitrage.evidence.repository[dataEvidence] then
@@ -69,10 +93,10 @@ function Arbitrage.evidence.CreateText(data)
 
         evData.alpha = evData.alpha or 0
 
-        local circle = Arbitrage.hud.GeneratePoly(x, y, math.Clamp((curalpha - alpha - evData.alpha) * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math.Clamp(curalpha - alpha - evData.alpha, 0, 150))
-        surface.SetDrawColor(ColorAlpha(color, math.Clamp(curalpha - alpha - evData.alpha, 0, 150)))
-        draw.NoTexture()
-        surface.DrawPoly(circle)
+        local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - evData.alpha) * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(curalpha - alpha - evData.alpha, 0, 150))
+        surface_SetDrawColor(ColorAlpha(color, math_Clamp(curalpha - alpha - evData.alpha, 0, 150)))
+        draw_NoTexture()
+        surface_DrawPoly(circle)
 
         if Arbitrage.hud.SeeVector({start1, start2, endpos2, endpos1}, pos, false) and client:GetPos():Distance(pos) < 150 then
             evData.alpha = Lerp(FrameTime(), evData.alpha, 255)
@@ -80,16 +104,16 @@ function Arbitrage.evidence.CreateText(data)
             evData.alpha = Lerp(FrameTime() * 3, evData.alpha, 0)
         end
 
-        local genericHeight = draw.GetFontHeight("arb.Font_FuturaPTDemi_8")
-        local descHeight = draw.GetFontHeight("arb.Font_FuturaPTBook_6")
+        local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTDemi_8")
+        local descHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_6")
 
-        draw.SimpleText(name, "arb.Font_FuturaPTDemi_8", x, y - (genericHeight / 2), ColorAlpha(color, evData.alpha), TEXT_ALIGN_CENTER)
+        draw_SimpleText(name, "arb.Font_FuturaPTDemi_8", x, y - (genericHeight / 2), ColorAlpha(color, evData.alpha), TEXT_ALIGN_CENTER)
 
         local descriptionText = Arbitrage.WrapText(desc, 300, "arb.Font_FuturaPTBook_6")
 
         for i, _ in pairs(descriptionText) do
             local y2 = y + (descHeight * i) - (genericHeight / 2) + 5
-            draw.SimpleText(descriptionText[i], "arb.Font_FuturaPTBook_6", x, y2, ColorAlpha(Color(255, 255, 255), evData.alpha), TEXT_ALIGN_CENTER)
+            draw_SimpleText(descriptionText[i], "arb.Font_FuturaPTBook_6", x, y2, ColorAlpha(Color(255, 255, 255), evData.alpha), TEXT_ALIGN_CENTER)
         end
     end
 end
@@ -121,7 +145,7 @@ function Arbitrage.evidence.Draw()
         end
     end
 
-    for k2, v2 in pairs(ents.FindInSphere(EyePos(), 500)) do
+    for k2, v2 in pairs(ents_FindInSphere(EyePos(), 500)) do
         local entity = Arbitrage.evidence.entities[v2:GetClass()]
         if !entity then continue end
 

@@ -13,6 +13,18 @@
 
 local PLUGIN = PLUGIN
 
+local Arbitrage = Arbitrage
+local IsValid = IsValid
+local RealFrameTime = RealFrameTime
+local LerpAngle = LerpAngle
+local Angle = Angle
+local math_Approach = math.Approach
+local LocalPlayer = LocalPlayer
+local Lerp = Lerp
+local math_Clamp = math.Clamp
+local Vector = Vector
+local util_TraceLine = util.TraceLine
+
 PLUGIN.name = "First Person"
 
 local ViewOffsetUp = 0
@@ -84,18 +96,18 @@ function PLUGIN:CalcView(ply, pos, angles, fov)
 		CurView = LerpAngle(FT * camera_smoothness, CurView, angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency))
 	end
 
-	ViewOffsetLeftRight = math.Approach(ViewOffsetLeftRight, 0, 0.5)
+	ViewOffsetLeftRight = math_Approach(ViewOffsetLeftRight, 0, 0.5)
 
 	local m = LocalPlayer():Team() == TEAM_MONDO and 5 or 0
 
 	local view = {}
 	if ply:WaterLevel() >= 3 then
-		ViewOffsetUp = math.Approach(ViewOffsetUp, 0, 0.5)
-		ViewOffsetForward = math.Approach(ViewOffsetForward, 8, 0.5)
+		ViewOffsetUp = math_Approach(ViewOffsetUp, 0, 0.5)
+		ViewOffsetForward = math_Approach(ViewOffsetForward, 8, 0.5)
 		RollDependency = Lerp(FT * 15, RollDependency, 0.5)
 	else
-		ViewOffsetUp = math.Approach(ViewOffsetUp, math.Clamp(eyeAngles.p * -0.1 - m, 0 - m, 10), 0.5)
-		ViewOffsetForward = math.Approach(ViewOffsetForward, 5 + math.Clamp(eyeAngles.p * 0.1, 0, 5), 0.5)
+		ViewOffsetUp = math_Approach(ViewOffsetUp, math_Clamp(eyeAngles.p * -0.1 - m, 0 - m, 10), 0.5)
+		ViewOffsetForward = math_Approach(ViewOffsetForward, 5 + math_Clamp(eyeAngles.p * 0.1, 0, 5), 0.5)
 		RollDependency = Lerp(FT * 15, RollDependency, 0.05)
 	end
 
@@ -131,7 +143,7 @@ function PLUGIN:Think()
 		tr.endpos = tr.start + Vector(forwardVec.x, forwardVec.y, 0) * 20
 		tr.filter = ply
 
-		local trace = util.TraceLine(tr)
+		local trace = util_TraceLine(tr)
 
 		if trace.Hit then
 			traceHit = true
@@ -149,5 +161,5 @@ function PLUGIN:CreateMove(ucmd)
 	local s = LocalPlayer():Team() == TEAM_MONDO and 32 or 90
 
 	local eyeAng = ucmd:GetViewAngles()
-	ucmd:SetViewAngles(Angle(math.Clamp(eyeAng.p, -s, m), eyeAng.y, eyeAng.r))
+	ucmd:SetViewAngles(Angle(math_Clamp(eyeAng.p, -s, m), eyeAng.y, eyeAng.r))
 end

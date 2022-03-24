@@ -13,7 +13,20 @@
 
 local PLUGIN = PLUGIN
 
-surface.CreateFont( "AdminESPFont", {
+local surface_CreateFont = surface.CreateFont
+local draw_SimpleText = draw.SimpleText
+local IsValid = IsValid
+local timer_Create = timer.Create
+local LocalPlayer = LocalPlayer
+local pairs = pairs
+local ents_GetAll = ents.GetAll
+local ipairs = ipairs
+local Vector = Vector
+local math_abs = math.abs
+local team_GetColor = team.GetColor
+local tostring = tostring
+
+surface_CreateFont( "AdminESPFont", {
 	font = "Roboto",
 	size = 17,
 	extended = true,
@@ -21,7 +34,7 @@ surface.CreateFont( "AdminESPFont", {
 } )
 
 local function createText(data, x, y, col, y2)
-	draw.SimpleText(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT)
+	draw_SimpleText(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT)
 end
 
 local function isAllow(client)
@@ -39,7 +52,7 @@ end
 
 PLUGIN.showEntsList = {}
 
-timer.Create("AdminESP:Update", 1, 0, function()
+timer_Create("AdminESP:Update", 1, 0, function()
 	PLUGIN.showEntsList = {}
 
 	local client = LocalPlayer()
@@ -47,7 +60,7 @@ timer.Create("AdminESP:Update", 1, 0, function()
 
 	if !allow then return end
 
-	for k, v in pairs(ents.GetAll()) do
+	for k, v in pairs(ents_GetAll()) do
 		if v:IsPlayer() then
 			PLUGIN.showEntsList[#PLUGIN.showEntsList + 1] = v
 		elseif PLUGIN.entslist[v:GetClass()] then
@@ -76,9 +89,9 @@ function PLUGIN:HUDPaint()
 
 					local distance = LocalPlayer():GetPos():Distance(v:GetPos())
 					local x, y = headPos.x, headPos.y
-					local f = math.abs(350 / distance)
+					local f = math_abs(350 / distance)
 					local size = 52 * f
-					local col = (p and team.GetColor(v:Team()) or self.entslist[v:GetClass()]) or color_white
+					local col = (p and team_GetColor(v:Team()) or self.entslist[v:GetClass()]) or color_white
 
 					createText(tostring(v2[1]), (x - size / 2) + size, y - size / 2, col, _y)
 

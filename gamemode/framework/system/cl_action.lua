@@ -11,6 +11,36 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+local Arbitrage = Arbitrage
+local netstream = netstream
+local istable = istable
+local tostring = tostring
+local tonumber = tonumber
+local SysTime = SysTime
+local render_ClearStencil = render.ClearStencil
+local render_SetStencilEnable = render.SetStencilEnable
+local render_SetStencilWriteMask = render.SetStencilWriteMask
+local render_SetStencilTestMask = render.SetStencilTestMask
+local render_SetStencilFailOperation = render.SetStencilFailOperation
+local render_SetStencilPassOperation = render.SetStencilPassOperation
+local render_SetStencilZFailOperation = render.SetStencilZFailOperation
+local render_SetStencilCompareFunction = render.SetStencilCompareFunction
+local render_SetStencilReferenceValue = render.SetStencilReferenceValue
+local Lerp = Lerp
+local FrameTime = FrameTime
+local CurTime = CurTime
+local math_Clamp = math.Clamp
+local Color = Color
+local draw_SimpleText = draw.SimpleText
+local string_rep = string.rep
+local ScrW = ScrW
+local ScrH = ScrH
+local surface_SetDrawColor = surface.SetDrawColor
+local draw_NoTexture = draw.NoTexture
+local surface_DrawPoly = surface.DrawPoly
+local draw = draw
+local surface_DrawRect = surface.DrawRect
+
 Arbitrage.action = Arbitrage.library.Add("action")
 
 netstream.Hook("arb.ActionEnd", function()
@@ -32,30 +62,30 @@ netstream.Hook("arb.ActionRun", function(data)
 end)
 
 local function hideRender()
-    render.ClearStencil()
-    render.SetStencilEnable(true)
+    render_ClearStencil()
+    render_SetStencilEnable(true)
 
-    render.SetStencilWriteMask(1)
-    render.SetStencilTestMask(1)
+    render_SetStencilWriteMask(1)
+    render_SetStencilTestMask(1)
 
-    render.SetStencilFailOperation(STENCILOPERATION_REPLACE)
-    render.SetStencilPassOperation(STENCILOPERATION_ZERO)
-    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER)
-    render.SetStencilReferenceValue(1)
+    render_SetStencilFailOperation(STENCILOPERATION_REPLACE)
+    render_SetStencilPassOperation(STENCILOPERATION_ZERO)
+    render_SetStencilZFailOperation(STENCILOPERATION_ZERO)
+    render_SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER)
+    render_SetStencilReferenceValue(1)
 end
 
 local function showRender()
-    render.SetStencilFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilPassOperation(STENCILOPERATION_REPLACE)
-    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
-    render.SetStencilReferenceValue(1)
+    render_SetStencilFailOperation(STENCILOPERATION_ZERO)
+    render_SetStencilPassOperation(STENCILOPERATION_REPLACE)
+    render_SetStencilZFailOperation(STENCILOPERATION_ZERO)
+    render_SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
+    render_SetStencilReferenceValue(1)
 end
 
 local function disableRender()
-    render.SetStencilEnable(false)
-    render.ClearStencil()
+    render_SetStencilEnable(false)
+    render_ClearStencil()
 end
 
 function Arbitrage.action.Draw()
@@ -75,7 +105,7 @@ function Arbitrage.action.Draw()
         Arbitrage.action.timeDot = CurTime() + 1
     end
 
-    local circledraw = math.Clamp((SysTime() + Arbitrage.action.data.systime) * (360 / Arbitrage.action.data.time), 0, 360)
+    local circledraw = math_Clamp((SysTime() + Arbitrage.action.data.systime) * (360 / Arbitrage.action.data.time), 0, 360)
 
     Arbitrage.action.data.color = Arbitrage.action.data.color or {
         r = 255,
@@ -96,12 +126,12 @@ function Arbitrage.action.Draw()
 
     local text = Arbitrage.action.data.text or "Отсутствует"
 
-    draw.SimpleText(text .. string.rep(".", Arbitrage.action.dot), "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 + 30, color, TEXT_ALIGN_CENTER)
+    draw_SimpleText(text .. string_rep(".", Arbitrage.action.dot), "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 + 30, color, TEXT_ALIGN_CENTER)
 
     local circle = Arbitrage.hud.GeneratePoly(ScrW() / 2, ScrH() / 2, 25, 25)
-    surface.SetDrawColor(Color(0, 0, 0, Arbitrage.action.data.alpha * 0.3))
-    draw.NoTexture()
-    surface.DrawPoly(circle)
+    surface_SetDrawColor(Color(0, 0, 0, Arbitrage.action.data.alpha * 0.3))
+    draw_NoTexture()
+    surface_DrawPoly(circle)
 
     hideRender()
 
@@ -109,8 +139,8 @@ function Arbitrage.action.Draw()
 
     showRender()
 
-    surface.SetDrawColor(Color(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5))
-    surface.DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)
+    surface_SetDrawColor(Color(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5))
+    surface_DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)
 
     disableRender()
 end

@@ -12,44 +12,36 @@
 ]]--
 
 -- Localize Global Calls
+local math_cos = math.cos
+local math_sin = math.sin
+local W = W
+local H = H
+local math_floor = math.floor
 local LocalPlayer = LocalPlayer
 local surface_SetDrawColor = surface.SetDrawColor
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
-local math_floor = math.floor
-local math_fmod = math.fmod
-local string_format = string.format
 local Format = Format
 local Arbitrage = Arbitrage
-local math_rad = math.rad
-local math_cos = math.cos
-local math_sin = math.sin
 local ScrW = ScrW
 local ScrH = ScrH
-local surface_SetDrawColor = surface.SetDrawColor
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
 local Lerp = Lerp
 local FrameTime = FrameTime
 local draw = draw
 local ColorAlpha = ColorAlpha
-local surface_SetMaterial = surface.SetMaterial
-local surface_DrawTexturedRect = surface.DrawTexturedRect
-local draw_DrawText = draw.DrawText
 local draw_SimpleText = draw.SimpleText
 local tostring = tostring
 local surface_DrawRect = surface.DrawRect
-local input_IsKeyDown = input.IsKeyDown
 local vgui_CursorVisible = vgui.CursorVisible
 local IsValid = IsValid
 local Color = Color
 local SortedPairs = SortedPairs
 local math_Clamp = math.Clamp
-local GetNetVar = GetNetVar
 local pairs = pairs
 local util_TraceLine = util.TraceLine
 local math_Round = math.Round
-local math_abs = math.abs
 local Vector = Vector
 local surface_DrawCircle = surface.DrawCircle
 local math_Approach = math.Approach
@@ -99,8 +91,8 @@ function Arbitrage.hud.GeneratePoly(x, y, radius, passes)
 	        local deg_in_rad = i * math.pi / (passes * 0.5)
 
 	        info[i] = {
-	            x = x + math.cos(deg_in_rad) * radius,
-	            y = y + math.sin(deg_in_rad) * radius
+	            x = x + math_cos(deg_in_rad) * radius,
+	            y = y + math_sin(deg_in_rad) * radius
 	        }
 	    end
 
@@ -604,7 +596,7 @@ function Arbitrage.hud.StaminaDraw()
 
 		stmData.alphastamina = Lerp(FrameTime() * 10, stmData.alphastamina, stmData.stamina < 98 and 255 or 0)
 
-		draw_SimpleText(math.floor(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
+		draw_SimpleText(math_floor(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
 	end
 end
 

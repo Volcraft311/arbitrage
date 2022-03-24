@@ -13,6 +13,8 @@
 
 local PLUGIN = PLUGIN
 
+PLUGIN.isAllow = false
+
 local Arbitrage = Arbitrage
 local IsValid = IsValid
 local RealFrameTime = RealFrameTime
@@ -67,7 +69,7 @@ local function allow()
 end
 
 function PLUGIN:ShouldDrawLocalPlayer()
-	if !allow() then return end
+	if !self.isAllow then return end
 
 	if traceHit and !Arbitrage.Client():InVehicle() then
 		return false
@@ -77,7 +79,7 @@ function PLUGIN:ShouldDrawLocalPlayer()
 end
 
 function PLUGIN:CalcView(ply, pos, angles, fov)
-	if !allow() then return end
+	if !self.isAllow then return end
 
 	eyeAtt = ply:GetAttachment(ply:LookupAttachment("eyes"))
 	local forwardVec = ply:GetAimVector()
@@ -121,7 +123,8 @@ function PLUGIN:CalcView(ply, pos, angles, fov)
 end
 
 function PLUGIN:Think()
-	if !allow() then return end
+	self.isAllow = allow()
+	if !self.isAllow then return end
 
 	local ply = Arbitrage.Client()
 	ply.BuildBonePositions = function(ply, numbon, numphysbon)
@@ -155,7 +158,7 @@ end
 
 
 function PLUGIN:CreateMove(ucmd)
-	if !allow() then return end
+	if !self.isAllow then return end
 
 	local m = LocalPlayer():Team() == TEAM_HIFUMI and 55 or 68
 	local s = LocalPlayer():Team() == TEAM_MONDO and 32 or 90

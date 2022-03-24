@@ -13,8 +13,6 @@
 
 local PLUGIN = PLUGIN
 
--- CreateClientConVar("arb_showdev", 1, FCVAR_NONE)
-
 function PLUGIN:HUDPaint()
     if SETTINGS.options.Get("show_gamemode_info") then
         draw.SimpleText("yeah! arbitrage works :)", "arb.Font_FuturaPTBook_5", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(10), Color(14, 255, 151, 10), TEXT_ALIGN_RIGHT)
@@ -27,6 +25,4 @@ function PLUGIN:HUDPaint()
         local alpha = math.sin(CurTime() * 1) * 7
         draw.SimpleText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", ScrW() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(110), Color(255, 255, 255, alpha), TEXT_ALIGN_RIGHT)
     end
-
-    self:HUDProfiler()
 end

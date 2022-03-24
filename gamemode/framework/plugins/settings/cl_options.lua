@@ -12,12 +12,12 @@ SETTINGS.options.Add("show_gamemode_info", SETTINGS.type.bool, true, {
     image = "danganronpa/settings/show_gamemode_info.png"
 })
 
-SETTINGS.options.Add("show_profiler_info", SETTINGS.type.bool, false, {
-    name = "Отображение нагрузки сервера",
-    title = "Текст о нагрузке",
-    description = "Информационный блок, находящийся в нижнем левом углу, отвечающий за отображение нагрузки которую испытывает сервер на текущий момент.",
-    image = "danganronpa/settings/show_profiler_info.png"
-})
+-- SETTINGS.options.Add("show_profiler_info", SETTINGS.type.bool, false, {
+--     name = "Отображение нагрузки сервера",
+--     title = "Текст о нагрузке",
+--     description = "Информационный блок, находящийся в нижнем левом углу, отвечающий за отображение нагрузки которую испытывает сервер на текущий момент.",
+--     image = "danganronpa/settings/show_profiler_info.png"
+-- })
 
 SETTINGS.options.Add("show_crosshair", SETTINGS.type.bool, true, {
     name = "Отображение прицела",

@@ -260,7 +260,7 @@ netstream.Hook("arb.MonoGiveWeapon", function(client, target, weapon_id)
     if !client:IsAdmin() then return end
 
     if IsValid(target.client) then
-        target.client:Give(weapon_id)
+        target.client:Give(weapon_id, true)
 
         timer.Simple(0.2, function()
             PLUGIN:OpenMonoMenu(client)

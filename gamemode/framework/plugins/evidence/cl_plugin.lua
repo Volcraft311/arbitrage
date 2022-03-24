@@ -48,54 +48,71 @@ function PLUGIN:PostDrawOpaqueRenderables()
     render_DrawLine(trace.HitPos, trace.HitPos + 8 * angle:Up(), Color(0, 0, 255), true)
 end
 
+local evidences = {}
+timer.Create("Evidence:UpdateDraw", 1, 0, function()
+	local eyePos = EyePos()
+	evidences = ents_FindInSphere(eyePos, 1000)
+
+	for k, v in ipairs(evidences) do
+		local idx = v:GetEvidence()
+
+		if !idx then
+			evidences[k] = nil
+		else
+			local data = PLUGIN:GetEvidence(idx)
+
+			if !data then
+				evidences[k] = nil
+			end
+		end
+	end
+end)
+
 function PLUGIN:HUDPaint()
     local client = LocalPlayer()
 
-    for k, v in ipairs(ents_FindInSphere(client:GetPos(), 800)) do
-        local idx = v:GetEvidence()
+    for k, v in pairs(evidences) do
+    	if IsValid(v) then
+	        local idx = v:GetEvidence()
+	        local data = self:GetEvidence(idx)
+	        local pos = v:GetPos()
+	        local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
 
-        if idx then
-            local data = self:GetEvidence(idx)
-            if !data then continue end
+	        local data2D = pos:ToScreen()
+	        if !data2D.visible then continue end
 
-            local pos = v:GetPos()
-            local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
+	        local x, y = data2D.x, data2D.y
 
-            local data2D = pos:ToScreen()
-            if !data2D.visible then continue end
+	        local max_alpha = 150
+	        local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
+	        local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, 150)
 
-            local x, y = data2D.x, data2D.y
+	        local faction = Arbitrage.teams.Get(client:Team())
 
-            local max_alpha = 150
-            local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
-            local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, 150)
+	        local ignore_list = {}
+	        ignore_list[#ignore_list + 1] = client
+	        ignore_list[#ignore_list + 1] = v
 
-            local faction = Arbitrage.teams.Get(client:Team())
+	        for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
 
-            local ignore_list = {}
-            ignore_list[#ignore_list + 1] = client
-            ignore_list[#ignore_list + 1] = v
+	        v.evData = v.evData or 0
 
-            for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
+	        if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
+	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - v.evData) * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(curalpha - alpha - v.evData, 0, 150))
 
-            v.evData = v.evData or 0
+	            surface_SetDrawColor(ColorAlpha(color, math_Clamp(curalpha - alpha - v.evData - (255 * 0.5 - alphaA), 0, 150)))
+	            draw_NoTexture()
+	            surface_DrawPoly(circle)
+	        end
 
-            if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
-                local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - v.evData) * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(curalpha - alpha - v.evData, 0, 150))
+	        if Arbitrage:IsDeveloping() or client:IsNocliping() then
+	            if !client:IsAdmin() then return end
+	            if client.GetSitting and client:GetSitting() then return end
+	            if !SETTINGS.options.Get("show_admin_esp") then return end
 
-                surface_SetDrawColor(ColorAlpha(color, math_Clamp(curalpha - alpha - v.evData - (255 * 0.5 - alphaA), 0, 150)))
-                draw_NoTexture()
-                surface_DrawPoly(circle)
-            end
-
-            if Arbitrage:IsDeveloping() or client:IsNocliping() then
-                if !client:IsAdmin() then return end
-                if client.GetSitting and client:GetSitting() then return end
-                if !SETTINGS.options.Get("show_admin_esp") then return end
-
-                draw_SimpleText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
-            end
-        end
+	            draw_SimpleText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
+	        end
+    	end
     end
 end
 

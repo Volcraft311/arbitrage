@@ -269,7 +269,7 @@ timer.Create("Doors:UpdateDraw", 1, 0, function()
 	local eyePos = EyePos()
 	doors = ents.FindInSphere(eyePos, 1000)
 
-	for k, v in pairs(doors) do
+	for k, v in ipairs(doors) do
 		local faction = Arbitrage.teams.Get(v:GetNetVar("arb.team", -1))
 
 		if v:GetClass() != "func_door_rotating" or !faction then
@@ -285,7 +285,7 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
 	cam.Start3D(eyePos, eyeAngle)
 		for k, v in pairs(doors or {}) do
-			if IsValid(v) and eyePos:Distance(v:GetPos()) <= 1500 then
+			if IsValid(v) then
 				self:DrawDoorText(v, eyePos, eyeAngles, "arb.Font_FuturaPTBook_20", Color(255, 61, 96), Color(255, 220, 228))
 			end
 		end

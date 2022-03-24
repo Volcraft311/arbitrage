@@ -28,17 +28,23 @@ local function aEqualto(b, c)
     return false
 end
 
+local isSixByNine = nil
+
 local function IsSixByNine()
-    return aEqualto(ScrW(), math.Round(ScrH() * 1.77777777778))
+    if isSixByNine == nil then
+        isSixByNine = aEqualto(ScrW(), math.Round(ScrH() * 1.77777777778))
+    end
+
+    return isSixByNine
 end
 
 local testSize = 1.5 -- ScrW() / (ScrW() * 0.65)
 function Arbitrage.ResolutionW(size)
-    return IsSixByNine() and math.Clamp(ScrW() * (size / 1920), 0, ScrW()) or math.Clamp(1920 * (size / 1920) / testSize, 0, ScrW())
+    return IsSixByNine() and ScrW() * (size / 1920) or math.Clamp(1920 * (size / 1920) / testSize, 0, ScrW())
 end
 
 function Arbitrage.ResolutionH(size)
-    return IsSixByNine() and math.Clamp(ScrH() * (size / 1080), 0, ScrH()) or math.Clamp(1080 * (size / 1080) / testSize, 0, ScrH())
+    return IsSixByNine() and ScrH() * (size / 1080) or math.Clamp(1080 * (size / 1080) / testSize, 0, ScrH())
 end
 
 W = Arbitrage.ResolutionW

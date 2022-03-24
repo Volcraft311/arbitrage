@@ -736,7 +736,7 @@ function PANEL:Paint(width, height)
 	local tab = self.tabs:GetActiveTab()
 	local alpha = self:GetAlpha()
 
-	if Arbitrage and Arbitrage.DrawBlur then
+	if Arbitrage and Arbitrage.DrawBlur and alpha > 0 then
 		Arbitrage.DrawBlur(self, 5)
 	end
 

@@ -32,6 +32,10 @@ local d_weapon = {
 local function allow()
 	local client = Arbitrage.Client()
 
+	if Arbitrage.lawEnable then return false end
+	if client:IsNocliping() then return false end
+	if client:GetNetVar("inbed") then return false end
+
 	if !IsValid(client) then return true end
 	if !client:oldAlive() then return false end
 	if !client:IsPlaying() then return false end
@@ -45,10 +49,7 @@ local function allow()
 	local weaponData = Arbitrage.weapon.views
 	if !weaponData then return true end
 
-	if client:GetNetVar("inbed") then return false end
 	if d_weapon[class] then return false end
-	if client:IsNocliping() then return false end
-	if Arbitrage.lawEnable then return false end
 
 	return !weaponData[class]
 end

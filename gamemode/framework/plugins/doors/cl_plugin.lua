@@ -264,17 +264,24 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, font, nameColor, textCol
 	end
 end
 
-function PLUGIN:PostDrawTranslucentRenderables()
-	local eyePos, eyeAngle = EyePos(), EyeAngles()
-	local doors = ents.FindInSphere(eyePos, 1000)
+local doors = {}
+timer.Create("Doors:UpdateDraw", 1, 0, function()
+	local eyePos = EyePos()
+	doors = ents.FindInSphere(eyePos, 1000)
 
 	for k, v in pairs(doors) do
-		if v:GetClass() != "func_door_rotating" then
+		local faction = Arbitrage.teams.Get(v:GetNetVar("arb.team", -1))
+
+		if v:GetClass() != "func_door_rotating" or !faction then
 			doors[k] = nil
 		end
 	end
+end)
 
+function PLUGIN:PostDrawTranslucentRenderables()
 	if table.Count(doors) <= 0 then return end
+
+	local eyePos, eyeAngle = EyePos(), EyeAngles()
 
 	cam.Start3D(eyePos, eyeAngle)
 		for k, v in pairs(doors or {}) do

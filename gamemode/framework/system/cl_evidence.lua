@@ -32,7 +32,6 @@ local Lerp = Lerp
 local FrameTime = FrameTime
 local draw_GetFontHeight = draw.GetFontHeight
 local draw_SimpleText = draw.SimpleText
-local isvector = isvector
 local ents_FindInSphere = ents.FindInSphere
 
 Arbitrage.evidence = Arbitrage.library.Add("evidence")
@@ -118,79 +117,41 @@ function Arbitrage.evidence.CreateText(data)
     end
 end
 
+local entities = {}
+timer.Create("Entities:UpdateDraw", 1, 0, function()
+	local eyePos = EyePos()
+	entities = ents_FindInSphere(eyePos, 500)
+
+	for k, v in ipairs(entities) do
+		local entity = Arbitrage.evidence.entities[v:GetClass()]
+
+		if !entity then
+			entities[k] = nil
+		end
+	end
+end)
+
 function Arbitrage.evidence.Draw()
-    for k, v in pairs(Arbitrage.evidence.repository or {}) do
-        local evidence = Arbitrage.evidence.Get(v.index)
+	for k, v in pairs(entities) do
+		if IsValid(v) then
+			local entity = Arbitrage.evidence.entities[v:GetClass()]
 
-        local data = k
-        local pos = v.data
-        local class = nil
+			local up = entity.up or 0
+		    local right = entity.right or 0
+		    local forward = entity.forward or 0
 
-        if LocalPlayer():GetPos():Distance(pos) >= 500 then continue end
+		    local newPos = v:GetPos()
+		    newPos = newPos + (v:GetUp() * up)
+		    newPos = newPos + (v:GetRight() * right)
+		    newPos = newPos + (v:GetForward() * forward)
 
-        if isentity(pos) then
-            pos = v.data:GetPos()
-            class = v.data:GetClass()
-            data = v.data
-        end
-
-        if isvector(pos) and evidence then
-            Arbitrage.evidence.CreateText({
-                pos = pos,
-                name = evidence.name,
-                desc = "",
-                class = class,
-                data = data
-            })
-        end
-    end
-
-    for k2, v2 in pairs(ents_FindInSphere(EyePos(), 500)) do
-        local entity = Arbitrage.evidence.entities[v2:GetClass()]
-        if !entity then continue end
-
-        local up = entity.up or 0
-        local right = entity.right or 0
-        local forward = entity.forward or 0
-
-        local newPos = v2:GetPos()
-        newPos = newPos + (v2:GetUp() * up)
-        newPos = newPos + (v2:GetRight() * right)
-        newPos = newPos + (v2:GetForward() * forward)
-
-        Arbitrage.evidence.CreateText({
-            pos = newPos,
-            name = entity.name,
-            desc = entity.desc,
-            class = v2:GetClass(),
-            data = v2
-        })
-    end
+			Arbitrage.evidence.CreateText({
+		        pos = newPos,
+		        name = entity.name,
+		        desc = entity.desc,
+		        class = v:GetClass(),
+		        data = v
+		    })
+		end
+	end
 end
-
-
---[[    ПЕРЕПИСАНО В ПЛАГИН `evidence`
-netstream.Hook("arbAddEvidence", function(data)
-    if !data then return end
-
-    Arbitrage.evidence.repository = data
-end)
-
-netstream.Hook("arb.evidenceSend", function(data, replace)
-    if !data then return end
-
-    Arbitrage.evidence.data = replace and {} or (Arbitrage.evidence.data or {})
-
-    for k, v in pairs(data) do
-        Arbitrage.evidence.data[k] = v
-    end
-end)
-
-netstream.Hook("arb.evidenceClearAll", function()
-    Arbitrage.evidence.repository = {}
-end)
-
-netstream.Hook("arb.evidenceDataSend", function(data)
-    Arbitrage.evidence.repository = data
-end)
-]]--

@@ -44,7 +44,7 @@ local d_weapon = {
 }
 
 local function allow()
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 
 	if Arbitrage.lawEnable then return false end
 	if client:IsNocliping() then return false end
@@ -71,7 +71,7 @@ end
 function PLUGIN:ShouldDrawLocalPlayer()
 	if !self.isAllow then return end
 
-	if traceHit and !Arbitrage.Client():InVehicle() then
+	if traceHit and !LocalPlayer():InVehicle() then
 		return false
 	else
 		return true
@@ -126,7 +126,7 @@ function PLUGIN:Think()
 	self.isAllow = allow()
 	if !self.isAllow then return end
 
-	local ply = Arbitrage.Client()
+	local ply = LocalPlayer()
 	ply.BuildBonePositions = function(ply, numbon, numphysbon)
 		local bone = ply:LookupBone("ValveBiped.Bip01_Head1")
 		local matrix = ply:GetBoneMatrix(bone)

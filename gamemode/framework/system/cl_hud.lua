@@ -166,7 +166,7 @@ end
 function Arbitrage.hud.ALTMenuDraw()
 	if Arbitrage.lawEnable then return end
 
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 	if !client:IsPlaying() then return end
 
 	Arbitrage.hud.alpha = Lerp(FrameTime() * 7, Arbitrage.hud.alpha, ((SETTINGS.binds.IsClampedID("open_interface") and !vgui_CursorVisible()) or IsValid(Arbitrage.gui.context)) and 255 or 0)
@@ -222,7 +222,7 @@ function Arbitrage.hud.CrosshairDraw()
 	if Arbitrage.lawEnable then return end
 	if !SETTINGS.options.Get("show_crosshair") then return end
 
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 	if client:IsSpectate() then return end
 	if !client:oldAlive() then return end
 
@@ -246,7 +246,7 @@ function Arbitrage.hud.CrosshairDraw()
 	traceline.filter = client
 	local trace = util_TraceLine(traceline)
 
-	local distance = Arbitrage.Client():GetPos():Distance(trace.HitPos)
+	local distance = client:GetPos():Distance(trace.HitPos)
 	local drawColor = Color(255, 255, 255)
 	local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
 
@@ -365,7 +365,7 @@ Arbitrage.hud.hpcolor = {
 function Arbitrage.hud.LowHealthDraw()
 	if Arbitrage.lawEnable then return end
 
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 	if !client:IsPlaying() then return end
 
 	local health = client:Health()
@@ -418,7 +418,7 @@ function Arbitrage.hud.GrayCorrect()
 	local GrayColorModify = {}
 	local colour = 0.65
 
-	if Arbitrage.Client():WaterLevel() > 2 then
+	if LocalPlayer():WaterLevel() > 2 then
 	    colour = 0.4
 	    render_UpdateScreenEffectTexture()
 	        FishEyeTexture:SetFloat("$envmap", 0)
@@ -452,7 +452,7 @@ local vignitte = surface_GetTextureID("vgui/vignette")
 function Arbitrage.hud.VignetteDraw()
 	if Arbitrage.lawEnable then return end
 
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 	if !client:IsPlaying() then return end
 
 	local blur = math_Clamp(50 - (Arbitrage.statistics.Get(client, "Sleep") or 100), 0, 255)
@@ -488,7 +488,7 @@ function Arbitrage.hud.VectorObstructed(vec1, vec2, filter)
 end
 
 function Arbitrage.hud.SeeVector(a, b, _debug)
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 	local zPos = client:GetPos()[3]
 
 	for i = 1, 4 do a[i] = Vector(a[i][1], a[i][2], zPos) end
@@ -572,7 +572,7 @@ function Arbitrage.hud.StaminaDraw()
 	if Arbitrage.lawEnable then return end
 	if !SETTINGS.options.Get("show_stamina") then return end
 
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 	if !client:IsPlaying() then return end
 
 	if client and client:Alive() then
@@ -625,7 +625,7 @@ end
 function Arbitrage.hud.PlayerInfoDraw()
 	if Arbitrage.lawEnable then return end
 
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 
 	if client:IsSpectate() then return end
 
@@ -642,7 +642,7 @@ function Arbitrage.hud.PlayerInfoDraw()
 	local endpos2 = vec + ang:Forward() * _forward - ang:Right() * _right + ang:Up() * _up
 
 	for k, v in ipairs(player_GetAll()) do
-		if v == LocalPlayer() then continue end
+		if v == client then continue end
 		if v:IsSpectate() then continue end
 		if client:GetPos():Distance(v:GetPos()) >= 500 then continue end
 		if v:IsNocliping() then continue end

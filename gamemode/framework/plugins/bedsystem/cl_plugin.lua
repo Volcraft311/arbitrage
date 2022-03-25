@@ -15,7 +15,7 @@ local PLUGIN = PLUGIN
 PLUGIN.dot = 1
 
 function PLUGIN:Think()
-    local client = Arbitrage.Client()
+    local client = LocalPlayer()
 
     if !client:oldAlive() then return end
     if !client:GetNetVar("inbed") then client.inbedpos = client:EyePos() client.inbedang = client:EyeAngles() return end
@@ -55,7 +55,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 end
 
 function PLUGIN:RenderScreenspaceEffects()
-    local client = Arbitrage.Client()
+    local client = LocalPlayer()
 
     if !client:oldAlive() then return end
 

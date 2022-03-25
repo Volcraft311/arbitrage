@@ -213,7 +213,7 @@ function PANEL:InitCategory()
                 surface.DrawRect(w * 0.2, 0, w - w * 0.4, h)
             end
 
-            v.data(Arbitrage.Client(), self.inPanel)
+            v.data(LocalPlayer(), self.inPanel)
         end
 
         self.panels[k] = category

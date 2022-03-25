@@ -39,7 +39,7 @@ function PANEL:Init()
         self.lines[i] = 0
     end
 
-    Arbitrage.Client():EmitSound("garrysmod/content_downloaded.wav")
+    LocalPlayer():EmitSound("garrysmod/content_downloaded.wav")
 end
 
 function PANEL:Paint(w, h)

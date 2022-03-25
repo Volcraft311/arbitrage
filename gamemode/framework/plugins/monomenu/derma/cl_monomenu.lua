@@ -191,7 +191,7 @@ function PANEL:AddAction(panel, data, bInGame)
     actionButton.DoClick = function()
         if IsValid(self.monoList) then self.monoList:Remove() end
 
-        Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+        LocalPlayer():EmitSound(PLUGIN.ClickSound)
 
         self.monoList = vgui.Create("arb.MonoMenuList")
         self.monoList:SetPos(gui.MouseX(), gui.MouseY())
@@ -211,7 +211,7 @@ function PANEL:SetData(data)
         for k, v in ipairs(tableData) do
             local allow = true
             if v.onCreate then
-                local bState = v.onCreate(Arbitrage.Client())
+                local bState = v.onCreate(LocalPlayer())
 
                 if !bState then
                     allow = false
@@ -248,7 +248,7 @@ function PANEL:SetData(data)
 
             button.DoClick = function()
                 if v.onRun then
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     v.onRun(client)
 
                     netstream.Start("arb.MonoRunCommandC", i, k)

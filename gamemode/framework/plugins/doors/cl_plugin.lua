@@ -14,7 +14,7 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:Think()
-	local client = Arbitrage.Client()
+	local client = LocalPlayer()
 
 	if input.IsKeyDown(KEY_F2) and client:IsAdmin() then
 		local trace = client:GetEyeTraceNoCursor()

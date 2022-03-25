@@ -149,7 +149,7 @@ function PANEL:InitClue()
         button.DoClick = function()
             local dermaPanel = DermaMenu()
             dermaPanel:AddOption("Удалить данную улику", function()
-                Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                LocalPlayer():EmitSound(PLUGIN.ClickSound)
                 netstream.Start("arb.RemoveEvidence", id)
 
                 timer.Simple(0.2, function()

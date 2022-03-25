@@ -143,7 +143,7 @@ function PANEL:AddAction(name, callback, icon)
     panel.DoClick = function()
         if !callback then return end
 
-        callback(Arbitrage.Client())
+        callback(LocalPlayer())
     end
 
     self.actPanel:SetTall(self.actPanel:GetTall() + Arbitrage.ResolutionH(45))

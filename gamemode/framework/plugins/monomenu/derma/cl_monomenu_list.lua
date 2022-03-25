@@ -99,7 +99,7 @@ function PANEL:InitCategory(client)
             end
             button.DoClick = function()
                 if v2.onRun and allow then
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     v2.onRun(client)
 
                     netstream.Start("arb.MonoRunCommand", client, k, k2)

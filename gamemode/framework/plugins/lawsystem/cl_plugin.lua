@@ -31,7 +31,7 @@ function PLUGIN:StartPointing()
         hook.Add("ArbitrageVoiceStart", "arb.LawStartVoice", function(client)
             if !Arbitrage.lawEnable then return end
 
-            if client == Arbitrage.Client() and self._entity != Arbitrage.Client() then
+            if client == LocalPlayer() and self._entity != LocalPlayer() then
                 netstream.Start("arb.StartVoice")
             end
         end)
@@ -324,7 +324,7 @@ end
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawOpaqueRenderables()
     if self.placesList[game.GetMap()] and !Arbitrage.lawEnable then
-        local client = Arbitrage.Client()
+        local client = LocalPlayer()
         local var = client:GetNetVar("arbLaw", -1)
         local place = self.placesList[game.GetMap()][var]
 

@@ -126,10 +126,6 @@ function Arbitrage.GetTime()
     return Format("%s:%s", _h, _m)
 end
 
-function Arbitrage.Client()
-    return LocalPlayer()
-end
-
 function Arbitrage.IsClient(client)
     return client == LocalPlayer()
 end
@@ -142,7 +138,7 @@ end
 
 Arbitrage.hud.AddCircle("health", {
     value = function()
-        return Arbitrage.Client():Health()
+        return LocalPlayer():Health()
     end,
     color = Color(255, 61, 96),
     image = Arbitrage.GetMaterial("danganronpa/hud/health.png")
@@ -150,7 +146,7 @@ Arbitrage.hud.AddCircle("health", {
 
 Arbitrage.hud.AddCircle("hunger", {
     value = function()
-        return Arbitrage.statistics.Get(Arbitrage.Client(), "hunger")
+        return Arbitrage.statistics.Get(LocalPlayer(), "hunger")
     end,
     color = Color(255, 220, 228),
     image = Arbitrage.GetMaterial("danganronpa/hud/hunger.png")
@@ -158,7 +154,7 @@ Arbitrage.hud.AddCircle("hunger", {
 
 Arbitrage.hud.AddCircle("thirst", {
     value = function()
-        return Arbitrage.statistics.Get(Arbitrage.Client(), "thirst")
+        return Arbitrage.statistics.Get(LocalPlayer(), "thirst")
     end,
     color = Color(255, 220, 228),
     image = Arbitrage.GetMaterial("danganronpa/hud/thirst.png")
@@ -166,7 +162,7 @@ Arbitrage.hud.AddCircle("thirst", {
 
 Arbitrage.hud.AddCircle("sleep", {
     value = function()
-        return Arbitrage.statistics.Get(Arbitrage.Client(), "sleep")
+        return Arbitrage.statistics.Get(LocalPlayer(), "sleep")
     end,
     color = Color(255, 220, 228),
     image = Arbitrage.GetMaterial("danganronpa/hud/sleep.png")
@@ -218,7 +214,7 @@ function Arbitrage:KeyPress(client, key)
             local parentMenu = DermaMenu()
 
             for k, v in pairs(action) do
-                if v.isadmin and !Arbitrage.Client():IsAdmin() then continue end
+                if v.isadmin and !LocalPlayer():IsAdmin() then continue end
 
                 local panel = parentMenu:AddOption(k, function()
                     netstream.Start("arb.ActionEntity", entity, k)

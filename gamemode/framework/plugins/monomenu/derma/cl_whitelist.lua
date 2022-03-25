@@ -151,7 +151,7 @@ function PANEL:SetData(data)
 
             local dermaPanel = DermaMenu()
             dermaPanel:AddOption("Удалить из WhiteList-а", function()
-                Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                LocalPlayer():EmitSound(PLUGIN.ClickSound)
                 netstream.Start("arb.MonoRemoveWhiteList", k)
             end)
             dermaPanel:Open()

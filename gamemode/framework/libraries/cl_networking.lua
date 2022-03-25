@@ -23,8 +23,8 @@ net.Receive("ArbitrageLocalVarSet", function()
 	local key = net.ReadString()
 	local var = net.ReadType()
 
-	Arbitrage.net[Arbitrage.Client():EntIndex()] = Arbitrage.net[Arbitrage.Client():EntIndex()] or {}
-	Arbitrage.net[Arbitrage.Client():EntIndex()][key] = var
+	Arbitrage.net[LocalPlayer():EntIndex()] = Arbitrage.net[LocalPlayer():EntIndex()] or {}
+	Arbitrage.net[LocalPlayer():EntIndex()][key] = var
 
 	hook.Run("OnLocalVarSet", key, var)
 end)

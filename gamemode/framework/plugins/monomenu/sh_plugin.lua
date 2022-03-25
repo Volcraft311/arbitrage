@@ -150,7 +150,7 @@ PLUGIN.GameData = {
                 local data = i > 0 and i or "Глава отсутствует"
 
                 dermaPanel:AddOption(data, function()
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetChapter", i)
                 end)
             end
@@ -464,7 +464,7 @@ PLUGIN.ActionData = {
                 local dermaPanel = DermaMenu()
                 for k, v in pairs(Arbitrage.teams.data) do
                     dermaPanel:AddOption(v.name .. " (" .. k .. ")", function()
-                        Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                        LocalPlayer():EmitSound(PLUGIN.ClickSound)
                         netstream.Start("arb.MonoSetTeam", client, k, false)
                     end)
                 end
@@ -483,7 +483,7 @@ PLUGIN.ActionData = {
                 local dermaPanel = DermaMenu()
                 for k, v in pairs(Arbitrage.teams.data) do
                     dermaPanel:AddOption(v.name .. " (" .. k .. ")", function()
-                        Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                        LocalPlayer():EmitSound(PLUGIN.ClickSound)
                         netstream.Start("arb.MonoSetTeam", client, k, true)
                     end)
                 end
@@ -530,7 +530,7 @@ PLUGIN.ActionData = {
                     local data = i > 0 and i .. " место" or (i == 0 and "* Место Монокума" or "- Обнулить место")
 
                     dermaPanel:AddOption(data, function()
-                        Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                        LocalPlayer():EmitSound(PLUGIN.ClickSound)
                         netstream.Start("arb.MonoSetPlace", client.steamid, i)
                     end)
                 end
@@ -547,7 +547,7 @@ PLUGIN.ActionData = {
                 if SERVER then return false end
 
                 Derma_StringRequest("Выдать оружие", "Введите UniquieID оружия которое вы хотите выдать", "weapon_physgun", function(text)
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoGiveWeapon", client, text)
                 end)
             end,
@@ -562,7 +562,7 @@ PLUGIN.ActionData = {
                 if SERVER then return false end
 
                 Derma_StringRequest("Изменить модель", "Укажите путь к моделе которую вы хотите поменять игроку", "models/player/combine_super_soldier.mdl", function(text)
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetModel", client, text)
                 end)
             end,
@@ -598,7 +598,7 @@ PLUGIN.ActionData = {
                 Derma_StringRequest("Установить здоровье", "Введите количество здоровье которое вы хотите установить игроку", 100, function(text)
                     if !tonumber(text) then return end
 
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetStats", client, "health", math.Clamp(tonumber(text), 1, 1000))
                 end)
             end,
@@ -615,7 +615,7 @@ PLUGIN.ActionData = {
                 Derma_StringRequest("Установить броню", "Введите количество брони которое вы хотите установить игроку", 100, function(text)
                     if !tonumber(text) then return end
 
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetStats", client, "armor", math.Clamp(tonumber(text), 0, 1000))
                 end)
             end,
@@ -632,7 +632,7 @@ PLUGIN.ActionData = {
                 Derma_StringRequest("Установить голод", "Введите количество голода которое вы хотите установить игроку", 100, function(text)
                     if !tonumber(text) then return end
 
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetStats", client, "hunger", math.Clamp(tonumber(text), 0, 100))
                 end)
             end,
@@ -649,7 +649,7 @@ PLUGIN.ActionData = {
                 Derma_StringRequest("Установить жажду", "Введите количество жажды которое вы хотите установить игроку", 100, function(text)
                     if !tonumber(text) then return end
 
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetStats", client, "thirst", math.Clamp(tonumber(text), 0, 100))
                 end)
             end,
@@ -666,7 +666,7 @@ PLUGIN.ActionData = {
                 Derma_StringRequest("Установить сон", "Введите количество сна которое вы хотите установить игроку", 100, function(text)
                     if !tonumber(text) then return end
 
-                    Arbitrage.Client():EmitSound(PLUGIN.ClickSound)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
                     netstream.Start("arb.MonoSetStats", client, "sleep", math.Clamp(tonumber(text), 0, 100))
                 end)
             end,

@@ -41,7 +41,7 @@ local color = Color(255, 61, 96)
 function Arbitrage.evidence.CreateText(data)
     if !data then return end
 
-    local client = Arbitrage.Client()
+    local client = LocalPlayer()
     local pos = data.pos
     local name = data.name
     local desc = data.desc

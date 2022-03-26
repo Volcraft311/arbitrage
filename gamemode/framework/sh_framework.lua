@@ -216,8 +216,35 @@ do
     Arbitrage.weapon.Add("tfa_arcade_nmrih_big", "blunt", false)
     Arbitrage.weapon.Add("tfa_arcade_nmrih_etool", "big", false)
 
-    Arbitrage.weapon.Add("weapon_crowbar", "blunt", false)
-    Arbitrage.weapon.Add("weapon_stunstick", "blunt", false)
+    Arbitrage.weapon.Add("weapon_crowbar", "big", false)
+    Arbitrage.weapon.Add("weapon_stunstick", "small", false)
+
+    Arbitrage.weapon.Add("weapon_sky_akaviri_katana", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_bladeofsacrifice", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_bladeofwoe", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_axe_daedric", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_daedricbow", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_daedric_dagger", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_daedric_greatsword", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_mace_daedric", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_daedricsword", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_waraxe_daedric", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_warhammer_daedric", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_axe_draugr", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_draugr_greatsword", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_draugrsword", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_waraxe_draugr", "big", false)
+    Arbitrage.weapon.Add("weapon_sky_axe_wuuthrad", "big", false)
+
+    Arbitrage.weapon.Add("epee_daedric", "big", false)
+    Arbitrage.weapon.Add("epee_argent", "big", false)
+    Arbitrage.weapon.Add("epee_fer", "big", false)
+    Arbitrage.weapon.Add("epee_verre", "big", false)
+    Arbitrage.weapon.Add("epee_ebonite", "big", false)
+
+
+    -- Луки
+    Arbitrage.weapon.Add("weapon_sky_draugrbow", "bow", false)
 
 
     -- Разное
@@ -242,6 +269,23 @@ do
     Arbitrage.weapon.Add("weapon_cuff_rope", "cuffs", false)
     Arbitrage.weapon.Add("weapon_cuff_shackles", "cuffs", false)
     Arbitrage.weapon.Add("weapon_cuff_tactical", "cuffs", false)
+
+
+    -- Магия
+    Arbitrage.weapon.Add("wow_entangling_roots", "wow_entangling_roots", false)
+    Arbitrage.weapon.Add("psi_smokeout", "psi_smokeout", false)
+    Arbitrage.weapon.Add("wow_moonfire", "wow_moonfire", false)
+    Arbitrage.weapon.Add("pk_armor", "pk_armor", false)
+    Arbitrage.weapon.Add("psi_vaporizetrap", "psi_vaporizetrap", false)
+    Arbitrage.weapon.Add("psi_picklock", "psi_picklock", false)
+    Arbitrage.weapon.Add("psi_phantomsummon", "psi_phantomsummon", false)
+    Arbitrage.weapon.Add("wow_taunt", "wow_taunt", false)
+    Arbitrage.weapon.Add("wow_regrowth", "wow_regrowth", false)
+    Arbitrage.weapon.Add("wow_charge", "wow_charge", false)
+    Arbitrage.weapon.Add("psi_psijammercharge", "psi_psijammercharge", false)
+    Arbitrage.weapon.Add("pk_shift", "pk_shift", false)
+    Arbitrage.weapon.Add("psi_psychoshock", "psi_psychoshock", false)
+    Arbitrage.weapon.Add("psi_staticburst", "psi_staticburst", false)
 end
 
 function Arbitrage.ReturnTime()

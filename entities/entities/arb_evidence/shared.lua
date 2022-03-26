@@ -14,7 +14,7 @@
 ENT.Type = "anim"
 ENT.Author = "Selenter"
 ENT.PrintName = "Arbitrage Evidence"
-ENT.Category = "Bullet Of Hope"
+ENT.Category = "Asterion Academy"
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
 ENT.PhysgunDisable = true

@@ -14,7 +14,7 @@
 ENT.Type = "anim"
 ENT.Author = "Selenter"
 ENT.PrintName = "Холодильник"
-ENT.Category = "Bullet Of Hope"
+ENT.Category = "Asterion Academy"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true
 ENT.PhysgunDisable = true

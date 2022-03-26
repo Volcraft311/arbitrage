@@ -50,15 +50,23 @@ do
 
     Arbitrage.evidence.AddEnt("arb_fridge", {
         name = "Холодильник",
-        desc = "Ладно",
+        desc = "Обычный холодильник, внутри находится огромное количество еды.",
         up = 55,
+        right = 0,
+        forward = 0
+    })
+
+    Arbitrage.evidence.AddEnt("arb_wardrobe", {
+        name = "Гардероб",
+        desc = "Шкаф с одеждой, можно попробовать сменить свою одежду.",
+        up = 0,
         right = 0,
         forward = 0
     })
 
     Arbitrage.evidence.AddEnt("arb_player", {
         name = "Спящий персонаж",
-        desc = "Данный персонаж вышел с сервера",
+        desc = "Данный персонаж вышел с сервера.",
         up = 10,
         right = 5,
         forward = 0

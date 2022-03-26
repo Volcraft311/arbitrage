@@ -60,6 +60,12 @@ local function allow()
 	local class = weapon:GetClass()
 	if !class then return true end
 
+	if class == "tfa_arcade_first" then
+		if weapon:GetAttack() then
+			return false
+		end
+	end
+
 	local weaponData = Arbitrage.weapon.views
 	if !weaponData then return true end
 

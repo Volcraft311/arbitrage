@@ -8,13 +8,13 @@ if CLIENT then
 end
 
 SWEP.PrintName = "Руки"
-SWEP.Author = "Selenter"
-SWEP.Instructions = "Левая клик - Закрыть дверь\nПравый клик - Открыть дверь"
+SWEP.Author = ""
+SWEP.Instructions = "Левая клик - Закрыть дверь\nПравый клик - Открыть дверь\nR - Поднять руки"
 SWEP.Contact = ""
 SWEP.Purpose = ""
 
 SWEP.WorldModel = ""
-SWEP.ViewModel = ""
+SWEP.ViewModel = Model( "models/weapons/c_arms.mdl" )
 
 SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false
@@ -37,10 +37,197 @@ SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = ""
 
-function SWEP:PrimaryAttack() hook.Run("ArcadeFistsSecondary", self:GetOwner()) end
+SWEP.DrawAmmo = false
+SWEP.HitDistance = 48
+
+local SwingSound = Sound( "WeaponFrag.Throw" )
+local HitSound = Sound( "Flesh.ImpactHard" )
+
+function SWEP:Initialize()
+    self:SetHoldType("normal")
+    self:SetAttack(false)
+end
+
+function SWEP:SetupDataTables()
+    self:NetworkVar("Float", 0, "NextMeleeAttack")
+    self:NetworkVar("Float", 1, "NextIdle")
+    self:NetworkVar("Int", 2, "Combo")
+    self:NetworkVar("Bool", 3, "Attack")
+end
+
+function SWEP:UpdateNextIdle()
+    local vm = self.Owner:GetViewModel()
+    self:SetNextIdle( CurTime() + vm:SequenceDuration() / vm:GetPlaybackRate() )
+end
+
+function SWEP:PrimaryAttack( right )
+    if self:GetAttack() then
+        self.Owner:SetAnimation(PLAYER_ATTACK1)
+
+        local anim = "fists_left"
+        if ( right ) then anim = "fists_right" end
+        if ( self:GetCombo() >= 2 ) then
+            anim = "fists_uppercut"
+        end
+
+        local vm = self.Owner:GetViewModel()
+        vm:SendViewModelMatchingSequence(vm:LookupSequence(anim))
+
+        self:EmitSound(SwingSound)
+
+        self:UpdateNextIdle()
+        self:SetNextMeleeAttack(CurTime() + 0.2)
+
+        self:SetNextPrimaryFire(CurTime() + 0.9)
+        self:SetNextSecondaryFire(CurTime() + 0.9)
+    else
+        hook.Run("ArcadeFistsSecondary", self:GetOwner())
+    end
+end
+
+function SWEP:Reload()
+    local client = self:GetOwner()
+    if !client:KeyPressed(IN_RELOAD) then return end
+
+    self:SetAttack(!self:GetAttack())
+    self:ChangeType()
+end
+
+function SWEP:ChangeType()
+    local data = self:GetAttack()
+
+    self:SetHoldType(data and "fist" or "normal")
+end
 
 function SWEP:SecondaryAttack()
     hook.Run("ArcadeFistsSecondary", self:GetOwner())
+end
+
+local phys_pushscale = GetConVar( "phys_pushscale" )
+
+function SWEP:DealDamage()
+    local anim = self:GetSequenceName(self.Owner:GetViewModel():GetSequence())
+
+    self.Owner:LagCompensation(true)
+
+    local tr = util.TraceLine( {
+        start = self.Owner:GetShootPos(),
+        endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * self.HitDistance,
+        filter = self.Owner,
+        mask = MASK_SHOT_HULL
+    } )
+
+    if ( !IsValid( tr.Entity ) ) then
+        tr = util.TraceHull( {
+            start = self.Owner:GetShootPos(),
+            endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * self.HitDistance,
+            filter = self.Owner,
+            mins = Vector( -10, -10, -8 ),
+            maxs = Vector( 10, 10, 8 ),
+            mask = MASK_SHOT_HULL
+        } )
+    end
+
+    if ( tr.Hit && !( game.SinglePlayer() && CLIENT ) ) then
+        self:EmitSound( HitSound )
+    end
+
+    local hit = false
+    local scale = phys_pushscale:GetFloat()
+
+    if ( SERVER && IsValid( tr.Entity ) && ( tr.Entity:IsNPC() || tr.Entity:IsPlayer() || tr.Entity:Health() > 0 ) ) then
+        local dmginfo = DamageInfo()
+
+        local attacker = self.Owner
+        if ( !IsValid( attacker ) ) then attacker = self end
+        dmginfo:SetAttacker( attacker )
+
+        dmginfo:SetInflictor( self )
+        dmginfo:SetDamage( math.random( 8, 12 ) )
+
+        if ( anim == "fists_left" ) then
+            dmginfo:SetDamageForce( self.Owner:GetRight() * 4912 * scale + self.Owner:GetForward() * 9998 * scale )
+        elseif ( anim == "fists_right" ) then
+            dmginfo:SetDamageForce( self.Owner:GetRight() * -4912 * scale + self.Owner:GetForward() * 9989 * scale )
+        elseif ( anim == "fists_uppercut" ) then
+            dmginfo:SetDamageForce( self.Owner:GetUp() * 5158 * scale + self.Owner:GetForward() * 10012 * scale )
+            dmginfo:SetDamage( math.random( 12, 24 ) )
+        end
+
+        SuppressHostEvents(NULL)
+        tr.Entity:TakeDamageInfo(dmginfo)
+        SuppressHostEvents(self.Owner)
+
+        hit = true
+    end
+
+    if ( IsValid( tr.Entity ) ) then
+        local phys = tr.Entity:GetPhysicsObject()
+        if ( IsValid( phys ) ) then
+            phys:ApplyForceOffset( self.Owner:GetAimVector() * 80 * phys:GetMass() * scale, tr.HitPos )
+        end
+    end
+
+    if ( SERVER ) then
+        if ( hit && anim != "fists_uppercut" ) then
+            self:SetCombo( self:GetCombo() + 1 )
+        else
+            self:SetCombo( 0 )
+        end
+    end
+
+    self.Owner:LagCompensation( false )
+end
+
+function SWEP:OnDrop()
+    self:Remove()
+end
+
+function SWEP:Deploy()
+    local speed = GetConVarNumber( "sv_defaultdeployspeed" )
+
+    local vm = self.Owner:GetViewModel()
+    vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )
+    vm:SetPlaybackRate( speed )
+
+    self:SetNextPrimaryFire( CurTime() + vm:SequenceDuration() / speed )
+    self:SetNextSecondaryFire( CurTime() + vm:SequenceDuration() / speed )
+    self:UpdateNextIdle()
+
+    if ( SERVER ) then
+        self:SetCombo( 0 )
+    end
+
+    return true
+end
+
+function SWEP:Holster()
+    self:SetNextMeleeAttack(0)
+    self:SetHoldType("normal")
+    self:SetAttack(false)
+
+    return true
+end
+
+function SWEP:Think()
+    local vm = self.Owner:GetViewModel()
+    local idletime = self:GetNextIdle()
+
+    if ( idletime > 0 && CurTime() > idletime ) then
+        vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_idle_0" .. math.random( 1, 2 ) ) )
+        self:UpdateNextIdle()
+    end
+
+    local meleetime = self:GetNextMeleeAttack()
+
+    if ( meleetime > 0 && CurTime() > meleetime ) then
+        self:DealDamage()
+        self:SetNextMeleeAttack(0)
+    end
+
+    if ( SERVER && CurTime() > self:GetNextPrimaryFire() + 0.1 ) then
+        self:SetCombo(0)
+    end
 end
 
 if CLIENT then
@@ -74,8 +261,4 @@ if CLIENT then
             self.dragentity = nil
         end
     end
-end
-
-function SWEP:Initialize()
-    self:SetHoldType("normal")
 end

@@ -110,6 +110,11 @@ do
     PLUGIN:AddIcon("camera.png")
     PLUGIN:AddIcon("Pistol.png")
     PLUGIN:AddIcon("Documents.png")
+    PLUGIN:AddIcon("antiquebook.png")
+    PLUGIN:AddIcon("knife.png")
+    PLUGIN:AddIcon("papers.png")
+    PLUGIN:AddIcon("deadbody.png")
+
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

@@ -54,5 +54,6 @@ netstream.Hook("arb.WardrobeChange", function(client, bg, skin)
 		end
 
 		client:SetSkin(skin)
+		netstream.Start(client, "arb.Notify", "Вы успешно изменили одежду!")
 	end
 end)

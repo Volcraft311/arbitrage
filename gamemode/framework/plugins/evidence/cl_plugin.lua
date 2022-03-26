@@ -75,6 +75,8 @@ function PLUGIN:HUDPaint()
     	if IsValid(v) then
 	        local idx = v:GetEvidence()
 	        local data = self:GetEvidence(idx)
+	        if !data then continue end
+
 	        local pos = v:GetPos()
 	        local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
 

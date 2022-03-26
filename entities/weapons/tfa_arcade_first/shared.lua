@@ -60,8 +60,22 @@ function SWEP:UpdateNextIdle()
     self:SetNextIdle( CurTime() + vm:SequenceDuration() / vm:GetPlaybackRate() )
 end
 
-function SWEP:PrimaryAttack( right )
+function SWEP:PrimaryAttack()
+    local right = math.random(1, 2) == 1 and true or false
+
     if self:GetAttack() then
+        local client = self:GetOwner()
+        local stamina = client:GetNetVar("stm", 100)
+        if stamina <= 4 then return end
+
+        if SERVER then
+            stamina = client.Stamina - 4
+
+            client.Stamina = math.Clamp(stamina, 0, 100)
+            client:SetNetVar("stm", math.Clamp(stamina, 0, 100), client)
+            client.StaminaCD = CurTime() + 2
+        end
+
         self.Owner:SetAnimation(PLAYER_ATTACK1)
 
         local anim = "fists_left"
@@ -78,8 +92,8 @@ function SWEP:PrimaryAttack( right )
         self:UpdateNextIdle()
         self:SetNextMeleeAttack(CurTime() + 0.2)
 
-        self:SetNextPrimaryFire(CurTime() + 0.9)
-        self:SetNextSecondaryFire(CurTime() + 0.9)
+        self:SetNextPrimaryFire(CurTime() + 0.4)
+        self:SetNextSecondaryFire(CurTime() + 0.4)
     else
         hook.Run("ArcadeFistsSecondary", self:GetOwner())
     end
@@ -184,7 +198,7 @@ function SWEP:OnDrop()
 end
 
 function SWEP:Deploy()
-    local speed = GetConVarNumber( "sv_defaultdeployspeed" )
+    local speed = 4
 
     local vm = self.Owner:GetViewModel()
     vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )

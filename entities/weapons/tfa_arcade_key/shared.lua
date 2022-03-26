@@ -68,7 +68,7 @@ function SWEP:SecondaryAttack()
                     if !client.keyAnim or CurTime() >= client.keyAnim then
                         netstream.Start(nil, "arb.PlayerSetAnim", client, GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
-                        client.keyAnim = CurTime() + 0.9
+                        client.keyAnim = CurTime() + 2.1
                     end
 
                     return false
@@ -120,7 +120,7 @@ function SWEP:PrimaryAttack()
                     if !client.keyAnim or CurTime() >= client.keyAnim then
                         netstream.Start(nil, "arb.PlayerSetAnim", client, GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
-                        client.keyAnim = CurTime() + 0.9
+                        client.keyAnim = CurTime() + 2.1
                     end
 
                     return false

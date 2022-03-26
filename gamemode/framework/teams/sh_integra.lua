@@ -17,7 +17,7 @@ TEAM.description = "Абсолютный Охотник за Нежитью"
 TEAM.admin = true
 TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/dewobedil/celestia_ludenberg/default_p.mdl"
-TEAM.path = "danganronpa/characters/celestia"
+TEAM.path = "danganronpa/characters/integra"
 
 TEAM.color = Color(255, 0, 0)
 TEAM.evidenceVisibility = 1

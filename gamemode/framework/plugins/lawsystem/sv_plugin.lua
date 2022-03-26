@@ -140,17 +140,25 @@ function PLUGIN:StartVoice(client, anim)
 
         self.talk_entity = client
         self.interruption = CurTime() + 5
-
-        print(client, anim)
     end
 end
 
 function PLUGIN:PlayerInitialSpawn(client)
+    local steamid = client:SteamID()
+
+    timer.Simple(3, function()
+        if Arbitrage.players[steamid] then
+            local place = tonumber(Arbitrage.players[steamid].place)
+
+            if place then
+                client:SetNetVar("arbLaw", place, client)
+            end
+        end
+    end)
+
     if !Arbitrage.lawEnable then return end
 
     timer.Simple(3, function()
-        local steamid = client:SteamID()
-
         client:SetNetVar("arbEmojiShow", nil)
         client:SetMoveType(MOVETYPE_WALK)
         client:SelectWeapon("tfa_arcade_key")

@@ -32,15 +32,16 @@ function Arbitrage.statistics.PlayerPostThink(client)
     if !client:Alive() then return end
     if !client:IsPlaying() then return end
 
+    if !Arbitrage.IsStartGame() then return end
+    if Arbitrage.lawEnable then return end
+    if Arbitrage.OffFallStatictic() then return end
+
     for k, v in pairs(Arbitrage.statistics.list or {}) do
         local data = v.data
         local colddown = v.data .. "CD"
 
         client[data] = client[data] or 100
         client[colddown] = client[colddown] or 0
-
-        if !Arbitrage.IsStartGame() then continue end
-        if Arbitrage.lawEnable then continue end
 
         if v.data and (!client[colddown] or CurTime() >= client[colddown]) then
             client[data] = client[data] - 1

@@ -180,7 +180,7 @@ PLUGIN.GameData = {
         end
     },
     {
-        data = "Сбросить всем все харак...",
+        data = "Сбросить всем все характери...",
         icon = "icon16/chart_line.png",
         onRun = function(client)
             if CLIENT then return end
@@ -290,7 +290,39 @@ PLUGIN.GameData = {
         onCreate = function(client)
             return !Arbitrage.OffOOC()
         end
-    }
+    },
+    {
+        data = "Включить трату характеристик",
+        icon = "icon16/cup_add.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffFallStatictic", false)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return Arbitrage.OffFallStatictic()
+        end
+    },
+    {
+        data = "Выключить трату характеристик",
+        icon = "icon16/cup_delete.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffFallStatictic", true)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return !Arbitrage.OffFallStatictic()
+        end
+    },
 }
 
 PLUGIN.AdminData = {

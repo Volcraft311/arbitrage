@@ -219,7 +219,7 @@ function PANEL:SetData(data)
             end
 
             local h = Arbitrage.ResolutionH(30)
-            local text = isfunction(v.data) and v2.data(client) or tostring(v.data)
+            local text = isfunction(v.data) and v.data(client) or tostring(v.data)
             local alpha = v.onRun and 255 or 150
 
             local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")

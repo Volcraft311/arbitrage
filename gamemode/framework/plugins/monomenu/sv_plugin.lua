@@ -291,7 +291,8 @@ netstream.Hook("arb.MonoRunCommandC", function(client, type_id, button_id)
             PLUGIN:OpenMonoMenu(client)
         end)
 
-        Arbitrage.adminnotify:SendNotify("monocommandc", client:Name() .. " (" .. client:SteamName() .. ")", data.data)
+        local str = isfunction(data.data) and data.data() or tostring(data.data)
+        Arbitrage.adminnotify:SendNotify("monocommandc", client:Name() .. " (" .. client:SteamName() .. ")", str)
     end
 end)
 

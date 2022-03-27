@@ -328,6 +328,10 @@ function Arbitrage.IsStartGame()
     return GetNetVar("arb.StartGame", false)
 end
 
+function Arbitrage.OffOOC()
+	return GetNetVar("arb.OffOOC", false)
+end
+
 function Arbitrage.ReturnEntity(client)
     local data = {}
     data.start = client:GetShootPos()

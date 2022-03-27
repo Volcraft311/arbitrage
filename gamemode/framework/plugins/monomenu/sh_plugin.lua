@@ -254,6 +254,38 @@ PLUGIN.GameData = {
         onCreate = function(client)
             return Arbitrage.IsShowClassTrial()
         end
+    },
+    {
+        data = "Включить OOC",
+        icon = "icon16/world_add.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffOOC", false)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return Arbitrage.OffOOC()
+        end
+    },
+    {
+        data = "Выключить OOC",
+        icon = "icon16/world_delete.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffOOC", true)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return !Arbitrage.OffOOC()
+        end
     }
 }
 

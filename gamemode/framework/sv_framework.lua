@@ -127,6 +127,10 @@ Arbitrage.commands.Add("ooc", {
         },
     },
     OnAction = function(client, text)
+        if Arbitrage.OffOOC() then
+            return Arbitrage.commands.Notify(client, "Глобальный чат отключен!")
+        end
+
         Arbitrage.chat.SendCommand("ooc", client, text)
     end
 })

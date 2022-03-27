@@ -134,7 +134,7 @@ function PANEL:Paint(w, h)
 
     Arbitrage.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, 255)
 
-    draw.DrawText(Format("%s | Эпизод %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.DrawText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, 255), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.ScoreBoard", PANEL, "EditablePanel")

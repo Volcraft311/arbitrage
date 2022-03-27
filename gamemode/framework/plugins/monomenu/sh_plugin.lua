@@ -140,18 +140,22 @@ PLUGIN.GameData = {
         end
     },
     {
-        data = "Изменить номер главы",
+        data = "Изменить название главы",
         icon = "icon16/color_swatch.png",
         onRun = function(client)
             if SERVER then return false end
 
             local dermaPanel = DermaMenu()
-            for i = 0, 9 do
-                local data = i > 0 and i or "Глава отсутствует"
+            local data = {"Эпизод отсутствует", "Пролог", "Эпилог"}
 
-                dermaPanel:AddOption(data, function()
+            for i = 1, 9 do
+                data[#data + 1] = "Эпизод " .. i
+            end
+
+            for k, v in ipairs(data) do
+                dermaPanel:AddOption(v, function()
                     LocalPlayer():EmitSound(PLUGIN.ClickSound)
-                    netstream.Start("arb.MonoSetChapter", i)
+                    netstream.Start("arb.MonoSetChapter", v)
                 end)
             end
             dermaPanel:Open()

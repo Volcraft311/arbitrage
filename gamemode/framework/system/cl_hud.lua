@@ -199,7 +199,7 @@ function Arbitrage.hud.ALTMenuDraw()
 		draw_SimpleText(Arbitrage.teams.Get(client:Team()).name, "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 		draw_SimpleText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 
-		draw_SimpleText(Format("%s | Эпизод %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 	end
 
 	Arbitrage.hud.update = Arbitrage.hud.alpha > 0.01

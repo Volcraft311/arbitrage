@@ -299,8 +299,6 @@ end)
 netstream.Hook("arb.MonoSetChapter", function(client, chapter_id)
     if !client:IsAdmin() then return end
 
-    chapter_id = math.Clamp(chapter_id, 0, 9)
-
     SetNetVar("arb.Chapter", chapter_id)
     Arbitrage.adminnotify:SendNotify("setchapter", client:Name() .. " (" .. client:SteamName() .. ")", chapter_id)
 

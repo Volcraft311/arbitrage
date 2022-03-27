@@ -108,7 +108,7 @@ function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size)
 end
 
 function Arbitrage.GetChapter()
-    return GetNetVar("arb.Chapter", 0) > 0 and GetNetVar("arb.Chapter", 0) or "отсутствует"
+    return !GetNetVar("arb.Chapter") and "Эпизод отсутствует" or GetNetVar("arb.Chapter")
 end
 
 function Arbitrage.GetTime()

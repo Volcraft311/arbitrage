@@ -22,8 +22,14 @@ function PANEL:Init()
 
     self.characterButton:SetDisabled(Arbitrage.IsStartGame())
 
-    self.spectateButton = self:AddButton("Стать наблюдателем", nil, ScrW() / 2 - W(276) / 2, H(505), W(276), H(52), function()
-        netstream.Start("arb.SelectCharacter", TEAM_SPECTATE)
+    local isSpectate = LocalPlayer():IsSpectate()
+    self.spectateButton = self:AddButton(isSpectate and "Выйти из наблюдения" or "Стать наблюдателем", nil, ScrW() / 2 - W(276) / 2, H(505), W(276), H(52), function()
+        if isSpectate then
+            RunConsoleCommand("arb_join_notcharacter")
+        else
+            netstream.Start("arb.SelectCharacter", TEAM_SPECTATE)
+        end
+
         parent:ClosePanel()
     end)
 

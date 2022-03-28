@@ -143,6 +143,16 @@ function PLUGIN:StartVoice(client, anim)
     end
 end
 
+function PLUGIN:Focus(client, anim)
+    if !self.focusCD or CurTime() >= self.focusCD then
+        netstream.Start(nil, "arb.LawTalking", client, anim, true)
+
+        self.talk_entity = client
+        self.interruption = CurTime() + 20
+        self.focusCD = CurTime() + 40
+    end
+end
+
 function PLUGIN:PlayerInitialSpawn(client)
     local steamid = client:SteamID()
 
@@ -193,16 +203,29 @@ function PLUGIN:PlayerInitialSpawn(client)
 end
 
 netstream.Hook("arb.ChangeEmoji", function(client, data)
+    if !Arbitrage.lawEnable then return end
+
     PLUGIN:ChangeEmoji(client, data)
 end)
 
 netstream.Hook("arb.StartVoice", function(client)
+    if !Arbitrage.lawEnable then return end
+
     if client:InGame() and client:Alive() then
         PLUGIN:StartVoice(client, math.random(1, #PLUGIN.CamAnimData))
     end
 end)
 
+netstream.Hook("arb.LawFocus", function(client)
+    if !Arbitrage.lawEnable then return end
+
+    if client:InGame() and client:Alive() then
+        PLUGIN:Focus(client, math.random(1, #PLUGIN.CamAnimData))
+    end
+end)
+
 netstream.Hook("arb.ShowEvidence", function(client, data)
+    if !Arbitrage.lawEnable then return end
     if !client:InGame() then return end
     if !client:Alive() then return end
 

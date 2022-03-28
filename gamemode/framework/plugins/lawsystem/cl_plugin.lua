@@ -203,6 +203,7 @@ function PLUGIN:Clear()
     hook.Remove("HUDPaint", "arb.LawCylinder")
     hook.Remove("RenderScreenspaceEffects", "arb.LawCylinder")
     hook.Remove("ArbitrageVoiceStart", "arb.LawStartVoice")
+    hook.Remove("HUDPaint", "arb.VignitteFocus")
 end
 
 function PLUGIN:Interruption(client)
@@ -777,11 +778,45 @@ netstream.Hook("arb.LawInterruption", function(client)
     PLUGIN:Interruption(client)
 end)
 
-netstream.Hook("arb.LawTalking", function(client, anim)
+netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
     PLUGIN:Talking(client, anim)
 
     if IsValid(Arbitrage.gui.playertable) then
         Arbitrage.gui.playertable:SetPlayer(client)
+    end
+
+    if IsValid(Arbitrage.gui.lawaction) and isFocus then
+        Arbitrage.gui.lawaction.focusSize = RealTime() + 40
+
+        local vignitte_a = 0
+        local vignitte = surface.GetTextureID("vgui/vignette")
+        hook.Add("HUDPaint", "arb.VignitteFocus", function()
+            vignitte_a = Lerp(FrameTime() * 2, vignitte_a, 255)
+
+            surface.SetTexture(vignitte)
+            surface.SetDrawColor(255, 255, 255, vignitte_a)
+
+            for i = 1, 2 do
+                surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+            end
+        end)
+
+        timer.Simple(20, function()
+            hook.Add("HUDPaint", "arb.VignitteFocus", function()
+                vignitte_a = Lerp(FrameTime() * 2, vignitte_a, 0)
+
+                surface.SetTexture(vignitte)
+                surface.SetDrawColor(255, 255, 255, vignitte_a)
+
+                for i = 1, 2 do
+                    surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+                end
+            end)
+
+            timer.Simple(2, function()
+                hook.Remove("HUDPaint", "arb.VignitteFocus")
+            end)
+        end)
     end
 end)
 

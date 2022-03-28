@@ -323,6 +323,38 @@ PLUGIN.GameData = {
             return !Arbitrage.OffFallStatictic()
         end
     },
+    {
+        data = "Включить смерть из-за характ...",
+        icon = "icon16/cup_add.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OnDeadLowStatictic", true)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return !Arbitrage.OnDeadLowStatictic()
+        end
+    },
+    {
+        data = "Выключить смерть из-за харак...",
+        icon = "icon16/cup_delete.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OnDeadLowStatictic", false)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return Arbitrage.OnDeadLowStatictic()
+        end
+    },
 }
 
 PLUGIN.AdminData = {

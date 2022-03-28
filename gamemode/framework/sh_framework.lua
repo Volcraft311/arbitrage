@@ -88,8 +88,16 @@ do
             local amount = Arbitrage.statistics.Get(client, info.data)
             if !amount then return end
 
-            if amount <= 10 and client:Health() > 10 then
+            if Arbitrage.OnDeadLowStatictic() and amount <= 10 then
                 client:TakeDamage(1)
+
+                if client:Health() <= 1 then
+                    client:Kill()
+                end
+            else
+                if amount <= 10 and client:Health() > 10 then
+                    client:TakeDamage(1)
+                end
             end
         end,
     })
@@ -99,7 +107,23 @@ do
         time = function(client)
             local faction = Arbitrage.teams.Get(client:Team())
             return faction and (faction.thirstSpeed and faction.thirstSpeed) or 25
-        end
+        end,
+        action = function(client, info)
+            local amount = Arbitrage.statistics.Get(client, info.data)
+            if !amount then return end
+
+            if Arbitrage.OnDeadLowStatictic() and amount <= 10 then
+                client:TakeDamage(1)
+
+                if client:Health() <= 1 then
+                    client:Kill()
+                end
+            else
+                if amount <= 10 and client:Health() > 10 then
+                    client:TakeDamage(1)
+                end
+            end
+        end,
     })
 
     Arbitrage.statistics.Add("sleep", {
@@ -329,11 +353,15 @@ function Arbitrage.IsStartGame()
 end
 
 function Arbitrage.OffOOC()
-	return GetNetVar("arb.OffOOC", false)
+    return GetNetVar("arb.OffOOC", false)
 end
 
 function Arbitrage.OffFallStatictic()
-	return GetNetVar("arb.OffFallStatictic", false)
+    return GetNetVar("arb.OffFallStatictic", false)
+end
+
+function Arbitrage.OnDeadLowStatictic()
+    return GetNetVar("arb.OnDeadLowStatictic", false)
 end
 
 function Arbitrage.ReturnEntity(client)

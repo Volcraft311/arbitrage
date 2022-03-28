@@ -158,6 +158,15 @@ PLUGIN.GameData = {
                     netstream.Start("arb.MonoSetChapter", v)
                 end)
             end
+
+            local customButton = dermaPanel:AddOption("Ввести свое", function()
+                Derma_StringRequest("Изменить название главы", "Введите название которое вы хотите установить для главы", "", function(text)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
+                    netstream.Start("arb.MonoSetChapter", text)
+                end)
+            end)
+            customButton:SetIcon("icon16/pencil.png")
+
             dermaPanel:Open()
         end
     },

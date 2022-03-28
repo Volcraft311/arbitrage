@@ -1,3 +1,17 @@
+--[[
+        © Asterion Project 2022.
+        This script was created from the developers of the AsterionTeam.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru
+            Discord - https://discord.gg/Cz3EQJ7WrF
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
 local PLUGIN = PLUGIN
 Interaction = PLUGIN
 
@@ -24,13 +38,8 @@ function PLUGIN:GetToolData(client)
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
 
-    local tool = client:GetTool()
-
-    local interactionUrl = tool:GetClientInfo("url")
-
     local data = {
-        entity = entity,
-        url = interactionUrl
+        entity = entity
     }
 
     return data

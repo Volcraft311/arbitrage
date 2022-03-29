@@ -111,6 +111,18 @@ function SWEP:ChangeType()
     local data = self:GetAttack()
 
     self:SetHoldType(data and "fist" or "normal")
+
+    local speed = 1
+
+    if data then
+        local vm = self.Owner:GetViewModel()
+        vm:SendViewModelMatchingSequence(vm:LookupSequence("fists_draw"))
+        vm:SetPlaybackRate(speed)
+    end
+end
+
+function SWEP:ShouldDrawViewModel()
+    return self:GetAttack()
 end
 
 function SWEP:SecondaryAttack()

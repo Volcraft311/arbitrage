@@ -470,7 +470,7 @@ function Arbitrage.IsoDurationToSeconds(iso)
     if !iso then return end
     if tonumber(iso) then return iso end
 
-    local duration = 0;
+    local duration = 0
     local oldiso = iso
 
     for i = 1, 9 do
@@ -679,6 +679,39 @@ player_manager.AddValidModel("group01female07", "models/player/group01/female_07
 player_manager.AddValidHands("group01female07", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
 player_manager.AddValidModel("group02female03", "models/player/group01/female_03.mdl")
 player_manager.AddValidHands("group02female03", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
+
+player_manager.AddValidModel("Fuyuhiko Kuzuryu", "models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl")
+player_manager.AddValidHands("Fuyuhiko Kuzuryu", "models/player/dewobedil/danganronpa/fuyuhiko/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Chiaki Nanami", "models/player/dewobedil/chiaki_nanami/default_p.mdl")
+player_manager.AddValidHands("Chiaki Nanami", "models/player/dewobedil/chiaki_nanami/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Gundam Tanaka", "models/player/dewobedil/gundam_tanaka/default_p.mdl")
+player_manager.AddValidHands("Gundam Tanaka", "models/player/dewobedil/gundam_tanaka/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Hajime Hinata", "models/player/dewobedil/danganronpa/hajime_hinata/default_p.mdl")
+player_manager.AddValidHands("Hajime Hinata", "models/player/dewobedil/danganronpa/hajime_hinata/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Ibuki Mioda", "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl")
+player_manager.AddValidHands("Ibuki Mioda", "models/player/dewobedil/danganronpa/ibuki_mioda/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Kazuichi Soda", "models/player/danganronpa/kazuichi_soda.mdl")
+player_manager.AddValidHands("Kazuichi Soda", "models/player/danganronpa/c_arms/kazuichi_arms.mdl", 0, "00000000")
+player_manager.AddValidModel("Mahiru Koizumi", "models/player/dewobedil/danganronpa/mahiru_koizumi/default_p.mdl")
+player_manager.AddValidHands("Mahiru Koizumi", "models/player/dewobedil/danganronpa/mahiru_koizumi/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Mikan Tsumiki", "models/player/dewobedil/mikan_tsumiki/default_p.mdl")
+player_manager.AddValidHands("Mikan Tsumiki", "models/player/dewobedil/mikan_tsumiki/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Monomi", "models/player/dewobedil/monomi/default_p.mdl")
+player_manager.AddValidHands("Monomi", "models/player/dewobedil/monomi/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Nagito Komaeda", "models/player/dewobedil/nagito_komaeda/default_p.mdl")
+player_manager.AddValidHands("Nagito Komaeda", "models/player/dewobedil/nagito_komaeda/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Peko Pekoyama", "models/player/dewobedil/peko_pekoyama/default_p.mdl")
+player_manager.AddValidHands("Peko Pekoyama", "models/player/dewobedil/peko_pekoyama/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Hiyoko Saionji (Danganronpa)", "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl")
+player_manager.AddValidHands("Hiyoko Saionji (Danganronpa)", "models/player/dewobedil/danganronpa/hiyoko_saionji/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Sonia Nevermind", "models/player/dewobedil/danganronpa/sonia_nevermind/default_p.mdl")
+player_manager.AddValidHands("Sonia Nevermind", "models/player/dewobedil/danganronpa/sonia_nevermind/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Teruteru Hanamura", "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl")
+player_manager.AddValidHands("Teruteru Hanamura", "models/player/yourtoast4/danganronpa/c_arms/teruteru_arms.mdl", 0, "00000000")
+player_manager.AddValidModel("Akane Owari", "models/player/yourtoast4/danganronpa/akane_owari.mdl")
+player_manager.AddValidHands("Akane Owari", "models/player/yourtoast4/danganronpa/c_arms/akane_arms.mdl", 0, "00000000")
+player_manager.AddValidModel("Byakuya Togami (DR2)", "models/player/dewobedil/danganronpa2/byakuya_togami/default_p.mdl")
+player_manager.AddValidHands("Byakuya Togami (DR2)", "models/player/dewobedil/danganronpa2/byakuya_togami/c_arms/default_p.mdl", 0, "00000000")
 
 -- отключаем звук при инициализации игрока
 sound.Add( {

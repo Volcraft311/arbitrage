@@ -139,6 +139,7 @@ end
 
 
 Arbitrage.base.Include("sh_constants.lua")
+Arbitrage.base.Include("player_arbitrage.lua", "shared")
 
 Arbitrage.base.Include("cl_props.lua")
 Arbitrage.base.Include("cl_fonts.lua")

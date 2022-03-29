@@ -590,6 +590,8 @@ function Arbitrage.GM:PlayerSpawn(client)
     client:SetNotSolid(false)
     client:SetMoveType(MOVETYPE_WALK)
     client:SetupHands()
+
+    player_manager.SetPlayerClass(client, "player_arbitrage")
 end
 
 function Arbitrage:PlayerSpray(client)

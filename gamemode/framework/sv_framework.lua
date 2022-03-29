@@ -585,6 +585,13 @@ function Arbitrage:PlayerCanPickupWeapon(client, entity)
     return false
 end
 
+function Arbitrage.GM:PlayerSpawn(client)
+    client:SetNoDraw(false)
+    client:SetNotSolid(false)
+    client:SetMoveType(MOVETYPE_WALK)
+    client:SetupHands()
+end
+
 function Arbitrage:PlayerSpray(client)
     return true
 end

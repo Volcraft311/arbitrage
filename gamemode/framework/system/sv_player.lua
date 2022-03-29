@@ -127,5 +127,7 @@ function Arbitrage.player.Respawn(client)
 
     Arbitrage.player.SetupStatistics(client)
 
+    client:SetupHands()
+
     client.weapons = {}
 end

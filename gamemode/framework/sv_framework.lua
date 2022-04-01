@@ -585,13 +585,24 @@ function Arbitrage:PlayerCanPickupWeapon(client, entity)
     return false
 end
 
-function Arbitrage.GM:PlayerSpawn(client)
+function Arbitrage.GM:PlayerSpawn(client, transiton)
     client:SetNoDraw(false)
     client:SetNotSolid(false)
     client:SetMoveType(MOVETYPE_WALK)
-    client:SetupHands()
 
     player_manager.SetPlayerClass(client, "player_arbitrage")
+
+    client:UnSpectate()
+    client:SetupHands()
+
+    player_manager.OnPlayerSpawn(client, transiton)
+    player_manager.RunClass(client, "Spawn")
+
+    if ( !transiton ) then
+        hook.Call("PlayerLoadout", GAMEMODE, client)
+    end
+
+    hook.Call("PlayerSetModel", GAMEMODE, client)
 end
 
 function Arbitrage:PlayerSpray(client)

@@ -38,7 +38,7 @@ function PLUGIN:PlayerSwitchWeapon(client, old, new)
                 if !client.switchAnim or CurTime() >= client.switchAnim then
                     netstream.Start(nil, "arb.PlayerSetAnim", client, GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
-                    client.switchAnim = CurTime() + 0.6
+                    client.switchAnim = CurTime() + 1.2
                 end
 
                 return false

@@ -43,6 +43,7 @@ local speed = 0.3
 function PANEL:Init()
     local sizeW, sizeH = ScrW(), ScrH()
 
+    self:SetZPos(9999)
     self:SetAlpha(0)
     self:AlphaTo(255, 0.2)
     self:SetPos(ScrW() / 2 - sizeW / 2, sizeH)
@@ -115,4 +116,4 @@ function PANEL:SetCharacter(data)
     end
 end
 
-vgui.Register("arb.InterruptionMenu", PANEL, "DFrame")
+vgui.Register("arb.InterruptionMenu", PANEL, "EditablePanel")

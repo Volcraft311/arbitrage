@@ -32,6 +32,7 @@ function Arbitrage.teams.Create(data)
         data.dead           =     Format(path, "dead")
         data.white          =     Format(path, "white")
         data.splash         =     Format(path, "splash")
+        data.argue          =     Format(path, "argue")
     end
 
     data.emodjiList = data.emodjiList or {}

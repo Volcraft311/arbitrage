@@ -133,6 +133,7 @@ function PANEL:Init()
     self:MakePopup()
     self.select = 0
     self.focusSize = RealTime()
+    self.interruptionSize = RealTime()
 
     Arbitrage.gui.lawaction = self
 
@@ -149,6 +150,30 @@ function PANEL:Init()
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
+    end
+
+    local interruptionButton = self:Add("DButton")
+    interruptionButton:SetText("")
+    interruptionButton:SetTall(H(25))
+    interruptionButton:Dock(BOTTOM)
+    interruptionButton.alpha = 0.1
+    interruptionButton.Paint = function(panel, w, h)
+        panel.alpha = Lerp(FrameTime() * 10, panel.alpha, (panel:IsHovered() and panel:IsEnabled()) and 1 or 0.1)
+
+        surface.SetDrawColor(15, 5, 6, 204)
+        surface.DrawRect(0, 0, w, h)
+
+        local t = (self.interruptionSize or 0) - RealTime()
+        surface.SetDrawColor(99, 17, 32, 255 / 2)
+        surface.DrawRect(0, 0, t * (w / 40), h)
+
+        surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
+        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+        draw.DrawText("Перебить", "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+    end
+    interruptionButton.DoClick = function()
+        netstream.Start("arb.LawInterruption")
     end
 
     local focusButton = self:Add("DButton")

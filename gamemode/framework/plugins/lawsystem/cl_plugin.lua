@@ -206,10 +206,9 @@ function PLUGIN:Clear()
     hook.Remove("HUDPaint", "arb.VignitteFocus")
 end
 
-function PLUGIN:Interruption(client)
-    if !IsValid(client) then return end
-
-    -- тут типо анимация должна быть охуенная да?
+function PLUGIN:Interruption(data)
+    local panel = vgui.Create("arb.InterruptionMenu")
+    panel:SetCharacter(data)
 end
 
 function PLUGIN:Talking(client, anim)
@@ -775,8 +774,13 @@ netstream.Hook("arb.DrawSprites", function()
     Arbitrage.drawSprites = true
 end)
 
-netstream.Hook("arb.LawInterruption", function(client)
-    PLUGIN:Interruption(client)
+netstream.Hook("arb.LawInterruption", function(data)
+    PLUGIN:Interruption(data)
+
+    if IsValid(Arbitrage.gui.lawaction) then
+        Arbitrage.gui.lawaction.focusSize = RealTime() + 40
+        Arbitrage.gui.lawaction.interruptionSize = RealTime() + 60
+    end
 end)
 
 netstream.Hook("arb.LawTalking", function(client, anim, isFocus)

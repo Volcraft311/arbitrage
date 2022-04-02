@@ -153,6 +153,21 @@ function PLUGIN:Focus(client, anim)
     end
 end
 
+function PLUGIN:Interruption(client, anim)
+    if !self.interruptionCD or CurTime() >= self.interruptionCD then
+        netstream.Start(nil, "arb.LawInterruption", client:Team())
+
+        timer.Simple(2.5, function()
+            netstream.Start(nil, "arb.LawTalking", client, anim)
+        end)
+
+        self.talk_entity = client
+        self.interruption = CurTime() + 20
+        self.focusCD = CurTime() + 40
+        self.interruptionCD = CurTime() + 60
+    end
+end
+
 function PLUGIN:PlayerInitialSpawn(client)
     local steamid = client:SteamID()
 
@@ -221,6 +236,14 @@ netstream.Hook("arb.LawFocus", function(client)
 
     if client:InGame() and client:Alive() then
         PLUGIN:Focus(client, math.random(1, #PLUGIN.CamAnimData))
+    end
+end)
+
+netstream.Hook("arb.LawInterruption", function(client)
+    if !Arbitrage.lawEnable then return end
+
+    if client:InGame() and client:Alive() then
+        PLUGIN:Interruption(client, math.random(1, #PLUGIN.CamAnimData))
     end
 end)
 

@@ -12,24 +12,25 @@
 
 local TEAM = {emodjiList = {}}
 
-TEAM.name = "Хиёко Сайонджии"
-TEAM.description = "Абсолютный Традиционный Танцор"
-TEAM.category = "GOODBYE DESPAIR"
-TEAM.model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl"
-TEAM.path = "danganronpa/characters/hiyoko"
+TEAM.name = "Клэр Рэдфилд"
+TEAM.description = "Абсолютная ???"
+TEAM.admin = true
+TEAM.weapons = {"gmod_tool", "weapon_physgun"}
+TEAM.model = "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl"
+TEAM.path = "danganronpa/characters/junko"
 
-TEAM.color = Color(240, 201, 73)
-TEAM.evidenceVisibility = 0.6
-TEAM.staminaSpeed = 1
+TEAM.color = Color(255, 0, 0)
+TEAM.evidenceVisibility = 1
+TEAM.staminaSpeed = 0
 TEAM.walkSpeed = 1
-TEAM.runSpeed = 1
-TEAM.hungerSpeed = 33
-TEAM.thirstSpeed = 33
-TEAM.sleepSpeed = 33
-TEAM.max = 1
+TEAM.runSpeed = 1.3
+TEAM.hungerSpeed = 10000
+TEAM.thirstSpeed = 10000
+TEAM.sleepSpeed = 10000
+TEAM.max = 10
 
-for i = 1, 23 do
+for i = 1, 19 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
 end
 
-TEAM_HIYOKO = Arbitrage.teams.Create(TEAM)
+TEAM_CLAIR = Arbitrage.teams.Create(TEAM)

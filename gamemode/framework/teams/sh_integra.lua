@@ -12,8 +12,8 @@
 
 local TEAM = {emodjiList = {}}
 
-TEAM.name = "Интегра Роммель"
-TEAM.description = "Абсолютный Охотник за Нежитью"
+TEAM.name = "Алексия Эшфорд"
+TEAM.description = "Абсолютный Вирусолог"
 TEAM.admin = true
 TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/dewobedil/celestia_ludenberg/default_p.mdl"
@@ -29,7 +29,6 @@ TEAM.thirstSpeed = 10000
 TEAM.sleepSpeed = 10000
 TEAM.max = 10
 
-TEAM.monokuma = true
 
 for i = 1, 23 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"

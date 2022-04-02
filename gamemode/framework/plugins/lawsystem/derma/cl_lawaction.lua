@@ -30,6 +30,8 @@ local categoryData = {
             List:SetSpaceY(5)
             List:SetSpaceX(5)
 
+            client.selectedEmoji = client.selectedEmoji or 1
+
             for k, v in pairs(emotes) do
                 local mat = Arbitrage.GetMaterial(v)
 
@@ -38,7 +40,9 @@ local categoryData = {
                 ListItem:SetSize(Arbitrage.ResolutionW(100), Arbitrage.ResolutionH(140))
                 ListItem.alpha = 0
                 ListItem.Paint = function(_, w, h)
-                    _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
+                    local isSelect = client.selectedEmoji == k and true or false
+
+                    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or isSelect) and 20 or 0)
 
                     surface.SetDrawColor(255, 61, 96, _.alpha)
                     surface.DrawRect(0, 0, w, h)
@@ -52,6 +56,7 @@ local categoryData = {
                 end
 
                 ListItem.DoClick = function()
+                    client.selectedEmoji = k
                     netstream.Start("arb.ChangeEmoji", k)
                 end
             end
@@ -159,6 +164,7 @@ function PANEL:Init()
     interruptionButton:SetText("")
     interruptionButton:SetTall(H(25))
     interruptionButton:Dock(BOTTOM)
+    interruptionButton:DockMargin(0, 2, 0, 0)
     interruptionButton.alpha = 0.1
     interruptionButton.Paint = function(panel, w, h)
         panel.alpha = Lerp(FrameTime() * 10, panel.alpha, (panel:IsHovered() and panel:IsEnabled()) and 1 or 0.1)

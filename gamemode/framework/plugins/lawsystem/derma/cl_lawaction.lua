@@ -132,7 +132,10 @@ function PANEL:Init()
     self:AlphaTo(255, 0.3)
     self:MakePopup()
     self.select = 0
+
+    self.focusSizeMax = 0
     self.focusSize = RealTime()
+    self.interruptionSizeMax = 0
     self.interruptionSize = RealTime()
 
     Arbitrage.gui.lawaction = self
@@ -165,7 +168,7 @@ function PANEL:Init()
 
         local t = (self.interruptionSize or 0) - RealTime()
         surface.SetDrawColor(99, 17, 32, 255 / 2)
-        surface.DrawRect(0, 0, t * (w / 40), h)
+        surface.DrawRect(0, 0, t * (w / self.interruptionSizeMax), h)
 
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
@@ -189,7 +192,7 @@ function PANEL:Init()
 
         local t = (self.focusSize or 0) - RealTime()
         surface.SetDrawColor(99, 17, 32, 255 / 2)
-        surface.DrawRect(0, 0, t * (w / 20), h)
+        surface.DrawRect(0, 0, t * (w / self.focusSizeMax), h)
 
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)

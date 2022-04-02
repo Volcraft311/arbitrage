@@ -149,7 +149,7 @@ function PLUGIN:Focus(client, anim)
 
         self.talk_entity = client
         self.interruption = CurTime() + 20
-        self.focusCD = CurTime() + 40
+        self.focusCD = CurTime() + 30
     end
 end
 
@@ -162,9 +162,9 @@ function PLUGIN:Interruption(client, anim)
         end)
 
         self.talk_entity = client
-        self.interruption = CurTime() + 20
-        self.focusCD = CurTime() + 40
-        self.interruptionCD = CurTime() + 60
+        self.interruption = CurTime() + 10
+        self.focusCD = CurTime() + 10
+        self.interruptionCD = CurTime() + 15
     end
 end
 

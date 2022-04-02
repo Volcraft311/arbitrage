@@ -778,8 +778,10 @@ netstream.Hook("arb.LawInterruption", function(data)
     PLUGIN:Interruption(data)
 
     if IsValid(Arbitrage.gui.lawaction) then
-        Arbitrage.gui.lawaction.focusSize = RealTime() + 40
-        Arbitrage.gui.lawaction.interruptionSize = RealTime() + 60
+        Arbitrage.gui.lawaction.focusSizeMax = 10
+        Arbitrage.gui.lawaction.focusSize = RealTime() + 10
+        Arbitrage.gui.lawaction.interruptionSizeMax = 15
+        Arbitrage.gui.lawaction.interruptionSize = RealTime() + 15
     end
 end)
 
@@ -791,7 +793,8 @@ netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
     end
 
     if IsValid(Arbitrage.gui.lawaction) and isFocus then
-        Arbitrage.gui.lawaction.focusSize = RealTime() + 40
+        Arbitrage.gui.lawaction.focusSizeMax = 30
+        Arbitrage.gui.lawaction.focusSize = RealTime() + 30
 
         local vignitte_a = 0
         local vignitte = surface.GetTextureID("vgui/vignette")

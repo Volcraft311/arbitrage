@@ -334,7 +334,7 @@ timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
         local length = v:GetVelocity():LengthSqr()
 
         if (v:KeyDown(IN_SPEED) and !v:IsNocliping()) and length >= 10000 then
-            v:SetNetVar("stm", math.Clamp(stamina - (frametime * 80 * staminaSpending), 0, 100), v)
+            v:SetNetVar("stm", math.Clamp(stamina - (frametime * 60 * staminaSpending), 0, 100), v)
             v.StaminaCD = CurTime() + 1.5
         else
             local amount = Arbitrage.statistics.Get(v, "Thirst")

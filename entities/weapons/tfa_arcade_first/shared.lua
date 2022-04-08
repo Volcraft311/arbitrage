@@ -65,14 +65,12 @@ function SWEP:PrimaryAttack()
 
     if self:GetAttack() then
         local client = self:GetOwner()
+
         local stamina = client:GetNetVar("stm", 100)
         if stamina <= 4 then return end
 
         if SERVER then
-            stamina = client.Stamina - 4
-
-            client.Stamina = math.Clamp(stamina, 0, 100)
-            client:SetNetVar("stm", math.Clamp(stamina, 0, 100), client)
+            client:SetNetVar("stm", math.Clamp(stamina - 4, 0, 100), client)
             client.StaminaCD = CurTime() + 2
         end
 

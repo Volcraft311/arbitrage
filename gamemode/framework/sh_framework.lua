@@ -385,7 +385,7 @@ function Arbitrage.ReturnEntity(client)
 end
 
 function Arbitrage:StartCommand(client, ucmd)
-    local stamina = client.Stamina or 100
+    local stamina = client:GetNetVar("stm", 100)
 
     if client:IsPlaying() and !client:IsNocliping() then
         local jump = ucmd:KeyDown(IN_JUMP)

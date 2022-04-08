@@ -245,10 +245,9 @@ end
 
 function Arbitrage:KeyPress(client, key)
     if client:oldAlive() and client:IsPlaying() and key == IN_JUMP and !client:IsNocliping() then
-        local stamina = client.Stamina - (12.5 / 2)
+        local stamina = client:GetNetVar("stm", 100)
 
-        client.Stamina = math.Clamp(stamina, 0, 100)
-        client:SetNetVar("stm", math.Clamp(stamina, 0, 100), client)
+        client:SetNetVar("stm", math.Clamp(stamina - (12.5 / 2), 0, 100), client)
         client.StaminaCD = CurTime() + 3
     end
 
@@ -312,49 +311,49 @@ function Arbitrage:KeyPress(client, key)
     end
 end
 
-function Arbitrage:PlayerPostThink(client)
-    if Arbitrage.statistics then Arbitrage.statistics.PlayerPostThink(client) end
+timer.Create("Arbitrage:StatisticsThink", 1, 0, function()
+    for k, v in ipairs(player.GetAll()) do
+        Arbitrage.statistics.PlayerPostThink(v)
+    end
+end)
 
-    -- Стамина
-    if client:oldAlive() and client:IsPlaying() then
-        client.Stamina = client.Stamina or 100
+timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
+    for k, v in ipairs(player.GetAll()) do
+        if !v:oldAlive() then continue end
+        if !v:IsPlaying() then continue end
 
-        local stamina = client.Stamina
+        local stamina = v:GetNetVar("stm", 100)
         local frametime = FrameTime()
-        local factionData = Arbitrage.teams.Get(client:Team())
+        local factionData = Arbitrage.teams.Get(v:Team())
 
         local staminaSpending = 1
         if factionData and factionData.staminaSpeed then
             staminaSpending = factionData.staminaSpeed
         end
 
-        if (client:KeyDown(IN_SPEED) and client:GetVelocity():Length() > 20 and !client:IsNocliping()) then
-            client.Stamina = math.Clamp(client.Stamina - (frametime * 6 * staminaSpending), 0, 100)
-            client.StaminaCD = CurTime() + 1.5
+        local length = v:GetVelocity():LengthSqr()
+
+        if (v:KeyDown(IN_SPEED) and !v:IsNocliping()) and length >= 10000 then
+            v:SetNetVar("stm", math.Clamp(stamina - (frametime * 130 * staminaSpending), 0, 100), v)
+            v.StaminaCD = CurTime() + 1.5
         else
-            local amount = Arbitrage.statistics.Get(client, "Thirst")
-            local staminaColdDown = client.StaminaCD
+            local amount = Arbitrage.statistics.Get(v, "Thirst")
+            local staminaColdDown = v.StaminaCD
 
             if (!staminaColdDown or CurTime() >= staminaColdDown) and amount >= 10 then
-                client.Stamina = math.Clamp(client.Stamina + (frametime * 12), 0, 100)
+                v:SetNetVar("stm", math.Clamp(stamina + (frametime * 250), 0, 100), v)
             end
         end
 
-        client:SetNetVar("stm", math.Clamp(client.Stamina, 0, 100), client)
+        if stamina >= 100 then continue end
+        timer.Simple(0.2, function() -- Обработка после прыжка (если обрабатывать по тику, то после прыжка сила будет сразу же падать вниз из-за чего у нас прыжок сразу же уходит на несколько поинтов вниз)
+            if !IsValid(v) then return end
 
-        -- Высота прыжка
-        stamina = client.Stamina -- Обновление переменной стамины стамины
-        if stamina < 100 then
-            timer.Simple(0.2, function() -- Обработка после прыжка (если обрабатывать по тику, то после прыжка сила будет сразу же падать вниз из-за чего у нас прыжок сразу же уходит на несколько поинтов вниз)
-                if !IsValid(client) then return end
-                if !stamina then return end
-
-                local jumppower = math.Clamp(stamina * 4, 50, ARBITRAGE_JUMP_POWER)
-                client:SetJumpPower(jumppower)
-            end)
-        end
+            local jumppower = math.Clamp(stamina * 4, 50, ARBITRAGE_JUMP_POWER)
+            v:SetJumpPower(jumppower)
+        end)
     end
-end
+end)
 
 function Arbitrage:PlayerDeath(client, inflictor, attacker)
     netstream.Start(client, "arb.OpenDeathMenu")

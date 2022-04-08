@@ -21,18 +21,20 @@ Arbitrage.chat.Colors = {
 function Arbitrage.chat:GetIcon(client)
     local mat = Arbitrage.GetMaterial
 
-    if client:SteamID() == "STEAM_0:1:127526733" then
-        return mat("icon16/application_osx_terminal.png")
-    elseif client:GetUserGroup() == "founder" then
-        return mat("icon16/key.png")
-    elseif client:GetUserGroup() == "gamemaster" then
-        return mat("icon16/controller.png")
-    elseif client:GetUserGroup() == "tester" then
-        return mat("icon16/lock.png")
-    elseif client:IsSuperAdmin() then
-        return mat("icon16/award_star_gold_1.png")
-    elseif client:IsAdmin() then
-        return mat("icon16/medal_gold_2.png")
+    if IsValid(client) then
+        if client.SteamID and client:SteamID() == "STEAM_0:1:127526733" then
+            return mat("icon16/application_osx_terminal.png")
+        elseif client:GetUserGroup() == "founder" then
+            return mat("icon16/key.png")
+        elseif client:GetUserGroup() == "gamemaster" then
+            return mat("icon16/controller.png")
+        elseif client:GetUserGroup() == "tester" then
+            return mat("icon16/lock.png")
+        elseif client:IsSuperAdmin() then
+            return mat("icon16/award_star_gold_1.png")
+        elseif client:IsAdmin() then
+            return mat("icon16/medal_gold_2.png")
+        end
     end
 
     return mat("icon16/user.png")

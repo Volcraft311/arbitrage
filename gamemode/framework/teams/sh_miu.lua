@@ -12,11 +12,11 @@
 
 local TEAM = {emodjiList = {}}
 
-TEAM.name = "Нагито Комаэда"
-TEAM.description = "Абсолютный Везунчик"
-TEAM.category = "GOODBYE DESPAIR"
-TEAM.model = "models/player/dewobedil/nagito_komaeda/default_p.mdl"
-TEAM.path = "danganronpa/characters/nagito"
+TEAM.name = "Миу Ирума"
+TEAM.description = "Абсолютный Изобретатель"
+TEAM.category = "KILLING HARMONY"
+TEAM.model = "models/player/dewobedil/danganronpa/miu_iruma/default_p.mdl"
+TEAM.path = "danganronpa/characters/miu"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6
@@ -28,8 +28,8 @@ TEAM.thirstSpeed = 33
 TEAM.sleepSpeed = 33
 TEAM.max = 1
 
-for i = 1, 27 do
+for i = 1, 32 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
 end
 
-TEAM_NAGITO = Arbitrage.teams.Create(TEAM)
+TEAM_MIU = Arbitrage.teams.Create(TEAM)

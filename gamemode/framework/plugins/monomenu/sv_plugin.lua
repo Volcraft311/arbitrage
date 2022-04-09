@@ -394,6 +394,7 @@ netstream.Hook("arb.MonoSetModel", function(client, target, model)
     if !IsValid(target.client) then return end
 
     target.client:SetModel(model)
+    target.client:SetupHands()
 
     timer.Simple(0.2, function()
         PLUGIN:OpenMonoMenu(client)

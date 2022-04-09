@@ -22,7 +22,7 @@ function PLUGIN:HUDPaint()
 end
 
 function PLUGIN:DrawPhysgunBeam(client, physgun, enabled, target, bone, hitPos)
-    if client != LocalPlayer() and client:IsNocliping() then
+    if client != LocalPlayer() then
         return false
     end
 end

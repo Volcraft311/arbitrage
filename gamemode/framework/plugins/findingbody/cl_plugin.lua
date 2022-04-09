@@ -56,9 +56,10 @@ function PLUGIN:EnableEffect(entity)
             self.isOn = false
         end)
 
+        local volume = SETTINGS.options.Get("corpse_find_volume") or 50
         sound.PlayFile("sound/discoverycreepy.wav", "", function(station)
             if IsValid(station) then
-                station:SetVolume(50 / 100)
+                station:SetVolume(volume / 100)
             end
         end)
 

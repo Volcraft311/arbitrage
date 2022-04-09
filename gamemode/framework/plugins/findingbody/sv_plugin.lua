@@ -13,6 +13,8 @@ function PLUGIN:EntityRemoved(entity)
 end
 
 netstream.Hook("fb:ChangeFOV", function(client)
+    if Arbitrage.OffCorpseEffect() then return end
+
     local oldFOV = client:GetFOV()
     client:SetFOV(oldFOV - 15, PLUGIN.turnoff_time * 0.65)
 
@@ -24,6 +26,7 @@ netstream.Hook("fb:ChangeFOV", function(client)
 end)
 
 netstream.Hook("fb:TraceBody", function(client, entity)
+    if Arbitrage.OffCorpseEffect() then return end
     if !entity:IsCorpse() then return end
 
     entity.findClients = entity.findClients or {}

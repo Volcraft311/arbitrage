@@ -76,6 +76,7 @@ timer.Create("fb:CheckTrace", 0.1, 0, function()
     local client = LocalPlayer()
     if !IsValid(client) then return end
 
+    if Arbitrage.OffCorpseEffect() then return end
     if !PLUGIN:AllowDetectCorpse(client) then return end
 
     local trace = client:GetEyeTrace()

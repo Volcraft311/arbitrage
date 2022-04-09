@@ -364,6 +364,38 @@ PLUGIN.GameData = {
             return Arbitrage.OnDeadLowStatictic()
         end
     },
+    {
+        data = "Включить эффект от трупа",
+        icon = "icon16/world_add.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffCorpseEffect", false)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return Arbitrage.OffCorpseEffect()
+        end
+    },
+    {
+        data = "Выключить эффект от трупа",
+        icon = "icon16/world_delete.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffCorpseEffect", true)
+
+            for k, v in ipairs(player.GetAll()) do
+                v:SyncVars()
+            end
+        end,
+        onCreate = function(client)
+            return !Arbitrage.OffCorpseEffect()
+        end
+    },
 }
 
 PLUGIN.AdminData = {

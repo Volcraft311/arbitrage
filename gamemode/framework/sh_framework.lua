@@ -370,6 +370,10 @@ function Arbitrage.OnDeadLowStatictic()
     return GetNetVar("arb.OnDeadLowStatictic", false)
 end
 
+function Arbitrage.OffCorpseEffect()
+    return GetNetVar("arb.OffCorpseEffect", false)
+end
+
 function Arbitrage.ReturnEntity(client)
     local data = {}
     data.start = client:GetShootPos()

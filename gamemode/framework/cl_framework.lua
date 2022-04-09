@@ -386,7 +386,7 @@ end
 
 function Arbitrage:PreDrawViewModel(vm, client, weapon)
     if client:IsSpectate() then
-        return false
+        return true
     end
 end
 

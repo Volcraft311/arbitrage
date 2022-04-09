@@ -9,7 +9,6 @@ TOOL.Information = {
 }
 
 TOOL.ClientConVar.name = "Название улики"
--- TOOL.ClientConVar.description = "Описание улики"
 EvidenceDescription = EvidenceDescription or "Описание улики"
 TOOL.ClientConVar.r = 255
 TOOL.ClientConVar.g = 255

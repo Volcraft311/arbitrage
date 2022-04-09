@@ -66,6 +66,7 @@ function Arbitrage.player.SetupSpeed(client)
 
     client:SetWalkSpeed(ARBITRAGE_WALK_SPEED * walkSpeed)
     client:SetRunSpeed(ARBITRAGE_RUN_SPEED * runSpeed)
+    client:SetSlowWalkSpeed(ARBITRAGE_WALK_SPEED * walkSpeed)
 end
 
 function Arbitrage.player.SetupStatistics(client)

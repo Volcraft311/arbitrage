@@ -16,7 +16,7 @@ local sliderMat = Arbitrage.GetMaterial("danganronpa/ui/slider.png")
 local PANEL = {}
 
 function PANEL:Init()
-    local sizeX, sizeY, sizeT = W(1400), H(800), H(35)
+    local sizeX, sizeY, sizeT = W(1200), H(800), H(46)
 
     Arbitrage.gui.wardrobe = self
 
@@ -38,31 +38,19 @@ function PANEL:Init()
     titlePanel:SetTall(sizeT)
     titlePanel:Dock(TOP)
     titlePanel.Paint = function(_, w, h)
-        surface.SetDrawColor(15, 5, 6)
-        surface.DrawRect(0, 0, w, h)
-
-        surface.SetDrawColor(99, 17, 32)
-        surface.DrawOutlinedRect(0, 0, w, h, 2)
-
-        local tW = draw.SimpleText("Гардероб", "arb.Font_FuturaPTDemi_10", 10, 0, Color(255, 234, 238), TEXT_ALIGN_LEFT)
-        draw.SimpleText("Смените образ своего персонажа", "arb.Font_FuturaPTBook_7", tW + 25, H(7), Color(255, 234, 238, 30), TEXT_ALIGN_LEFT)
+        local tW = draw.SimpleText("Гардероб", "arb.Font_FuturaPTDemi_13", 71, H(5), Color(255, 234, 238), TEXT_ALIGN_LEFT)
+        draw.SimpleText("Смените образ своего персонажа", "arb.Font_FuturaPTBook_7", tW + 71 + W(22), H(19), Color(255, 234, 238, 30), TEXT_ALIGN_LEFT)
     end
 
     local closeButton = titlePanel:Add("DButton")
     closeButton:SetText("")
-    closeButton:SetWide(W(100))
+    closeButton:SetWide(sizeT)
     closeButton:Dock(RIGHT)
     closeButton.alpha = 0.1
     closeButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 5, _.alpha, _:IsHovered() and 1 or 0.1)
 
-        surface.SetDrawColor(175, 67, 67, 255 * _.alpha)
-        surface.DrawRect(0, 0, w, h)
-
-        surface.SetDrawColor(99, 17, 32)
-        surface.DrawOutlinedRect(0, 0, w, h, 1)
-
-        draw.SimpleText("X", "arb.Font_FuturaPTBook_8", w / 2, H(5), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText("X", "arb.Font_FuturaPTDemi_10", w / 2, H(10), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
     end
     closeButton.DoClick = function()
         self:AlphaTo(0, 0.3, 0, function()
@@ -74,109 +62,93 @@ function PANEL:Init()
     leftPanel:SetWide(sizeX * 0.3)
     leftPanel:Dock(LEFT)
 
-    self.modelPanel = leftPanel:Add("DModelPanel")
-    self.modelPanel:Dock(FILL)
-    self.modelPanel:SetFOV(50)
-    self.modelPanel.LayoutEntity = function(this)
-        local scrW, scrH = ScrW(), ScrH()
-        local xRatio = gui.MouseX() / scrW
-        local yRatio = gui.MouseY() / scrH
-        local x, _ = self:LocalToScreen(sizeX / 2)
-        local xRatio2 = x / scrW
-        local entity = this.Entity
+	self.modelPanel = leftPanel:Add( "DModelPanel" )
+	self.modelPanel:Dock(FILL)
+	self.modelPanel:SetFOV(40)
+	self.modelPanel:SetDirectionalLight(BOX_RIGHT, Color( 255, 160, 80, 255 ))
+	self.modelPanel:SetDirectionalLight(BOX_LEFT, Color( 80, 160, 255, 255 ))
+	self.modelPanel:SetAmbientLight(Vector( -64, -64, -64 ))
+	self.modelPanel:SetAnimated(true)
+	self.modelPanel.Angles = Angle(0, 50, 0)
 
-        entity:SetPoseParameter("head_pitch", yRatio * 90 - 30)
-        entity:SetPoseParameter("head_yaw", (xRatio - xRatio2) * 90 - 5)
-        entity:SetIK(false)
+	self.modelPanel.DragMousePress = function(this)
+		this.PressX, this.PressY = gui.MousePos()
+		this.Pressed = true
+	end
 
-        if (self.copyLocalSequence) then
-            entity:SetSequence(LocalPlayer():GetSequence())
-            entity:SetPoseParameter("move_yaw", 360 * LocalPlayer():GetPoseParameter("move_yaw") - 180)
-        end
-    end
+	self.modelPanel.DragMouseRelease = function(this)
+		this.Pressed = false
+	end
 
-    local scrollPanel = leftPanel:Add("Panel")
-    scrollPanel:SetTall(H(40))
-    scrollPanel:Dock(BOTTOM)
+	self.modelPanel.LayoutEntity = function(this, entity)
+		local scrW, scrH = ScrW(), ScrH()
+	    local xRatio = gui.MouseX() / scrW
+	    local yRatio = gui.MouseY() / scrH
+	    local x, _ = this:LocalToScreen(sizeX / 2)
+	    local xRatio2 = x / scrW
 
-    local sliderPanel = scrollPanel:Add("DNumSlider")
-    sliderPanel:Dock(FILL)
-    sliderPanel:DockMargin(20, 0, 20, 0)
-    sliderPanel:SetWide(W(180))
-    sliderPanel:SetMin(-360)
-    sliderPanel:SetMax(360)
+	    entity:SetPoseParameter("head_pitch", yRatio * 90 - 30)
+	    entity:SetPoseParameter("head_yaw", (xRatio - xRatio2) * 90 - 5)
+	    entity:SetIK(false)
 
-    local children = sliderPanel:GetChildren()
-    local dtextentry = children[1]
-    local dslider = children[2]
-    local dlabel = children[3]
+		if this.Pressed then
+			local mx = gui.MousePos()
+			this.Angles = this.Angles - Angle(0, ((this.PressX or mx) - mx) / 2, 0)
 
-    dtextentry:SetWide(0)
-    dlabel:SetWide(0)
+			this.PressX, this.PressY = gui.MousePos()
+		end
 
-    dslider.Paint = function(_, w, h)
-        surface.SetDrawColor(46, 12, 17)
-        surface.DrawRect(0, h / 2 - 1, w, 2)
-    end
+		entity:SetAngles(this.Angles)
+	end
 
-    dslider:GetChildren()[1]:SetTall(dslider:GetChildren()[1]:GetTall() * 1.3)
-    dslider:GetChildren()[1]:SetWide(dslider:GetChildren()[1]:GetWide() * 1.3)
-    dslider:GetChildren()[1].Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255)
-        surface.SetMaterial(sliderMat)
-        surface.DrawTexturedRect(0, 0, w, h)
-    end
+	local rightPanel = self:Add("Panel")
+	rightPanel:Dock(FILL)
+	rightPanel:DockMargin(W(50), 0, W(200), 0)
 
-    sliderPanel.PerformLayout = function(_, w, h) end
+	self.bgPanel = rightPanel:Add("DScrollPanel")
+	self.bgPanel:Dock(FILL)
+	self.bgPanel:DockMargin(0, 50, 0, 0)
 
-    local labelPanel = scrollPanel:Add("DLabel")
-    labelPanel:SetContentAlignment(6)
-    labelPanel:SetFont("arb.Font_FuturaPTBook_8")
-    labelPanel:Dock(RIGHT)
-    labelPanel:DockMargin(0, 0, W(20), 0)
+	local bar = self.bgPanel:GetVBar()
+	bar:SetWide(30)
+	bar:DockMargin(0, 0, 0, 0)
 
-    sliderPanel.OnValueChanged = function(_, value)
-        value = math.floor(value)
-        labelPanel:SetText(value)
+	bar.Paint = function(_, w, h)
+	    surface.SetDrawColor(255, 255, 255, 3)
+	    surface.DrawRect(20 + 7, 30, w, h - 60)
+	end
+	bar.btnUp.Paint = function(_, w, h) end
+	bar.btnDown.Paint = function(_, w, h) end
+	bar.btnGrip.Paint = function(_, w, h)
+	    surface.SetDrawColor(255, 255, 255)
+	    surface.DrawRect(20 + 7, 0, w, h)
+	end
 
-        local entity = self.modelPanel.Entity
-        if IsValid(entity) then
-            entity:SetAngles(Angle(0, value, 0))
-        end
-    end
+	local saveButton = rightPanel:Add("DButton")
+	saveButton:SetText("")
+	saveButton:SetTall(H(30))
+	saveButton:Dock(BOTTOM)
+	saveButton:DockMargin(0, 0, 0, H(10))
+	saveButton.alpha = 0.1
+	saveButton.Paint = function(_, w, h)
+	    _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 1 or 0.1)
 
-    sliderPanel:SetValue(45)
-    labelPanel:SetText(sliderPanel:GetValue())
+	    surface.SetDrawColor(15, 5, 6, 255 * _.alpha)
+	    surface.DrawRect(0, 0, w, h)
 
-    self.bgPanel = self:Add("Panel")
-    self.bgPanel:Dock(FILL)
-    self.bgPanel:DockMargin(W(50), 0, W(200), 0)
+	    surface.SetDrawColor(99, 17, 32, 255 * _.alpha)
+	    surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-    local saveButton = self.bgPanel:Add("DButton")
-    saveButton:SetText("")
-    saveButton:SetTall(H(30))
-    saveButton:Dock(BOTTOM)
-    saveButton:DockMargin(0, 0, 0, H(10))
-    saveButton.alpha = 0.1
-    saveButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 1 or 0.1)
+	    draw.SimpleText("Сохранить изменения", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+	end
+	saveButton.DoClick = function()
+	    netstream.Start("arb.WardrobeChange", self.bg, self.skin)
 
-        surface.SetDrawColor(15, 5, 6)
-        surface.DrawRect(0, 0, w, h)
-
-        surface.SetDrawColor(99, 17, 32)
-        surface.DrawOutlinedRect(0, 0, w, h, 2)
-
-        draw.SimpleText("Сохранить изменения", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
-    end
-    saveButton.DoClick = function()
-        netstream.Start("arb.WardrobeChange", self.bg, self.skin)
-
-        self:SizeTo(self:GetWide(), 0, 0.2)
-        self:AlphaTo(0, 0.2, 0, function()
-            self:Remove()
-        end)
-    end
+	    self:SizeTo(self:GetWide(), 0, 0.2)
+	    self:AlphaTo(0, 0.2, 0, function()
+	        self:Remove()
+	    end)
+	end
 end
 
 function PANEL:SetData(model)
@@ -201,17 +173,12 @@ function PANEL:SetData(model)
             ListItem.alpha = 0.1
             ListItem.Paint = function(_, w, h)
                 local bSelect = self.skin == i2
-                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or bSelect) and 1 or 0.1)
+                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or bSelect) and 1 or 0.05)
 
-                surface.SetDrawColor(15, 5, 6)
+                surface.SetDrawColor(15, 5, 6, 255 * _.alpha)
                 surface.DrawRect(0, 0, w, h)
 
-                if bSelect then
-                    surface.SetDrawColor(175, 67, 67, 200)
-                    surface.DrawRect(0, 0, w, h)
-                end
-
-                surface.SetDrawColor(99, 17, 32)
+                surface.SetDrawColor(99, 17, 32, 255 * _.alpha)
                 surface.DrawOutlinedRect(0, 0, w, h, 2)
 
                 draw.SimpleText(i2, "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
@@ -252,17 +219,12 @@ function PANEL:SetData(model)
             ListItem.alpha = 0.1
             ListItem.Paint = function(_, w, h)
                 local bSelect = self.bg[name] == i2
-                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or bSelect) and 1 or 0.1)
+                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or bSelect) and 1 or 0.05)
 
-                surface.SetDrawColor(15, 5, 6)
+                surface.SetDrawColor(15, 5, 6, 255 * _.alpha)
                 surface.DrawRect(0, 0, w, h)
 
-                if bSelect then
-                    surface.SetDrawColor(175, 67, 67, 200)
-                    surface.DrawRect(0, 0, w, h)
-                end
-
-                surface.SetDrawColor(99, 17, 32)
+                surface.SetDrawColor(99, 17, 32, 255 * _.alpha)
                 surface.DrawOutlinedRect(0, 0, w, h, 2)
 
                 draw.SimpleText(i2, "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
@@ -297,9 +259,6 @@ end
 function PANEL:Paint(w, h)
     surface.SetDrawColor(4, 2, 2)
     surface.DrawRect(0, 0, w, h)
-
-    surface.SetDrawColor(99, 17, 32)
-    surface.DrawOutlinedRect(0, 0, w, h)
 end
 
 vgui.Register("arb.OpenWardrobe", PANEL, "EditablePanel")

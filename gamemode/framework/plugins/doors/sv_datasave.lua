@@ -87,6 +87,9 @@ function PLUGIN:InitPlayersDoor()
 
 			entity:SetNetVar("arb.team", v:Team())
 
+			entity:Fire("close")
+			entity:Fire("lock")
+
 			num = num + 1
 		end
 	end

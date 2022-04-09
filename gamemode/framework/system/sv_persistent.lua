@@ -35,4 +35,5 @@ function Arbitrage.persistent.DoPlayerDeath(client, attacker, damageinfo)
     local entity = Arbitrage.persistent.CreateRagdoll(client)
     entity.client = client
     entity.name = client:Name()
+    entity:SetCorpse(true)
 end

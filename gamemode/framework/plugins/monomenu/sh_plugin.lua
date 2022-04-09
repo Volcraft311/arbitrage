@@ -243,10 +243,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.ClassTrial", true)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return !Arbitrage.IsShowClassTrial()
@@ -260,9 +256,6 @@ PLUGIN.GameData = {
 
             SetNetVar("arb.ClassTrial", false)
 
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return Arbitrage.IsShowClassTrial()
@@ -275,10 +268,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OffOOC", false)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return Arbitrage.OffOOC()
@@ -291,10 +280,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OffOOC", true)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return !Arbitrage.OffOOC()
@@ -307,10 +292,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OffFallStatictic", false)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return Arbitrage.OffFallStatictic()
@@ -323,10 +304,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OffFallStatictic", true)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return !Arbitrage.OffFallStatictic()
@@ -339,10 +316,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OnDeadLowStatictic", true)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return !Arbitrage.OnDeadLowStatictic()
@@ -355,10 +328,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OnDeadLowStatictic", false)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return Arbitrage.OnDeadLowStatictic()
@@ -371,10 +340,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OffCorpseEffect", false)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return Arbitrage.OffCorpseEffect()
@@ -387,10 +352,6 @@ PLUGIN.GameData = {
             if CLIENT then return end
 
             SetNetVar("arb.OffCorpseEffect", true)
-
-            for k, v in ipairs(player.GetAll()) do
-                v:SyncVars()
-            end
         end,
         onCreate = function(client)
             return !Arbitrage.OffCorpseEffect()

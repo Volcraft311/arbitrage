@@ -533,10 +533,6 @@ function Arbitrage:StopGame()
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)
 
     for k, v in pairs(player.GetAll()) do
-        v:SyncVars()
-    end
-
-    for k, v in pairs(player.GetAll()) do
         v:Freeze(false)
     end
 

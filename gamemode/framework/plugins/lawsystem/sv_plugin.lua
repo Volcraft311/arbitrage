@@ -40,9 +40,6 @@ end
 function Arbitrage:StartLaw()
     Arbitrage.lawEnable = true
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)
-    for k, v in ipairs(player.GetAll()) do
-        v:SyncVars()
-    end
 
     ScriptMusic:ChangeTheme("law", true)
     netstream.Start(nil, "arb.StartLaw")
@@ -106,7 +103,6 @@ function Arbitrage:EndLaw()
     netstream.Start(nil, "arb.EndLaw")
     timer.Simple(2, function()
         for k, v in ipairs(player.GetAll()) do
-            v:SyncVars()
             v:Freeze(false)
             PLUGIN:DrawSprites(v, false)
 

@@ -314,10 +314,6 @@ netstream.Hook("arb.MonoSetChapter", function(client, chapter_id)
 
     SetNetVar("arb.Chapter", chapter_id)
     Arbitrage.adminnotify:SendNotify("setchapter", client:Name() .. " (" .. client:SteamName() .. ")", chapter_id)
-
-    for k, v in pairs(player.GetAll()) do
-        v:SyncVars()
-    end
 end)
 
 netstream.Hook("arb.MonoRemoveWhiteList", function(client, id)
@@ -391,9 +387,6 @@ netstream.Hook("arb.MonoSetCharter", function(client, data)
     if !client:IsAdmin() then return end
 
     SetNetVar("arb.Charter", data)
-    for k, v in pairs(player.GetAll()) do
-        v:SyncVars()
-    end
 end)
 
 netstream.Hook("arb.MonoSetModel", function(client, target, model)

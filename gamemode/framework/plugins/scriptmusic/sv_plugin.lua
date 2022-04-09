@@ -108,10 +108,6 @@ end
 function PLUGIN:ChangeTheme(theme, bStopOldTheme)
     SetNetVar("arb.theme", theme)
 
-    for k, v in ipairs(player.GetAll()) do
-        v:SyncVars()
-    end
-
     if bStopOldTheme then
         netstream.Start(nil, "ScriptMusic:StopTheme")
     end

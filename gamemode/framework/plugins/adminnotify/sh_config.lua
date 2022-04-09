@@ -75,6 +75,10 @@ PLUGIN:AddNewNotify("giveweapon", function(client, target, data)
     return Color(63, 162, 184), client, Color(255, 255, 255), " выдал игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " оружие ", Color(48, 218, 187), data
 end)
 
+PLUGIN:AddNewNotify("setfakename", function(client, target, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " изменил имя игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " на ", Color(48, 218, 187), data
+end)
+
 PLUGIN:AddNewNotify("setchapter", function(client, data)
     return Color(63, 162, 184), client, Color(255, 255, 255), " установил главу ", Color(48, 218, 187), data
 end)

@@ -256,6 +256,19 @@ netstream.Hook("arb.MonoSetPlace", function(client, steamid, place)
     Arbitrage.adminnotify:SendNotify("setplace", client:Name() .. " (" .. client:SteamName() .. ")", place, target and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid)
 end)
 
+netstream.Hook("arb.SetFakeName", function(client, target, name)
+    if !client:IsAdmin() then return end
+
+    if IsValid(target.client) then
+        target.client:SetFakeName(name)
+
+        timer.Simple(0.2, function()
+            PLUGIN:OpenMonoMenu(client)
+        end)
+        Arbitrage.adminnotify:SendNotify("setfakename", client:Name() .. " (" .. client:SteamName() .. ")", target.client:Name() .. " (" .. target.client:SteamName() .. ")", name)
+    end
+end)
+
 netstream.Hook("arb.MonoGiveWeapon", function(client, target, weapon_id)
     if !client:IsAdmin() then return end
 

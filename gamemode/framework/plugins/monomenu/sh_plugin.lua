@@ -557,11 +557,33 @@ PLUGIN.ActionData = {
                     pl:SetPos(data[2])
                     Arbitrage.player.SetupHealth(pl)
                 end)
+
+                for k, v in ipairs(ents.FindByClass("prop_ragdoll")) do
+                    if v.client == pl then
+                        v:Remove()
+                    end
+                end
             end,
             onCreate = function(client)
                 local pl = player.GetBySteamID(client.steamid)
 
                 return pl and pl:GetNetVar("arb.oldData") -- player.GetBySteamID(client.steamid) and GetNetVar("arb.StartGame") and (SERVER and true or Arbitrage.gui.monomenu.data.character[client.steamid])
+            end
+        },
+        {
+            data = "Изменить имя",
+            icon = "icon16/page_white_edit.png",
+            onRun = function(client)
+                if SERVER then return false end
+
+                Derma_StringRequest("Изменить имя", "Введите имя, которое вы хотите присвоить данному персонажу.\n(Если вы хотите вернуть стандартное имя, то оставьте это поле пустым)", "", function(text)
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
+
+                    netstream.Start("arb.SetFakeName", client, text)
+                end)
+            end,
+            onCreate = function(client)
+                return player.GetBySteamID(client.steamid)
             end
         },
         {

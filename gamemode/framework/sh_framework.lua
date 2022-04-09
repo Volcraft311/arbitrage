@@ -565,9 +565,21 @@ end
 do
     local playerMeta = FindMetaTable("Player")
 
+    function playerMeta:FakeName()
+        local name = self:GetNetVar("fakename")
+        return (name ~= "" and name ~= " ") and name or nil
+    end
+
+    playerMeta.GetFakeName = playerMeta.FakeName
+
     playerMeta.SteamName = playerMeta.SteamName or playerMeta.Name
     function playerMeta:GetName()
         if !IsValid(self) then return "" end -- Tried to use a NULL entity! (WTF??)
+
+        local fakeName = self:FakeName()
+        if fakeName then
+            return fakeName
+        end
 
         local faction = self:Team()
         local data = Arbitrage.teams.Get(faction)
@@ -673,6 +685,10 @@ do
             local steamid = self:SteamID()
 
             return Arbitrage.players[steamid] and true or false
+        end
+
+        function playerMeta:SetFakeName(name)
+            self:SetNetVar("fakename", name)
         end
     end
 end

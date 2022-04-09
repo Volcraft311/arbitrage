@@ -86,8 +86,13 @@ function PANEL:Init()
         matPing = Arbitrage.GetMaterial(matPing)
 
         local factionName = factionData.name
-        local clientName = v:SteamName() -- v:Name() .. "(" .. v:SteamName() .. ")"
+        local clientName = v:SteamName()
         local groupName = v:GetUserGroup() ~= "user" and v:GetUserGroup() or ""
+
+        local fakename = v:FakeName()
+        if fakename then
+            factionName = fakename
+        end
 
         local panel = scrollBar:Add("DPanel")
         panel:SetTall(H(44))

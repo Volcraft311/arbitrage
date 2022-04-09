@@ -23,6 +23,9 @@ PLUGIN.groupAccess = {
     ["senior_administrator"] = true,
     ["regular_administrator"] = true,
     ["junior_administrator"] = true,
+    ["gamemaster"] = true,
+    ["game_master"] = true,
+    ["guard"] = true
 }
 
 PLUGIN:AddNewNotify("killed", function(client, target, weapon)

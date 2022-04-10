@@ -182,9 +182,13 @@ function Arbitrage.hud.ALTMenuDraw()
 
 		Arbitrage.hud.moved = -180
 
+		local mat = Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud)
+		local size = 0.5
+		local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
+
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
 		surface_SetMaterial(Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud))
-		surface_DrawTexturedRect(ScrW() / 2 - (ScrW() * 0.378) / 2, ScrH() - ScrH() * 1.08, ScrW() * 0.378, ScrH() * 1.08)
+		surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
 
 		for k, v in SortedPairs(Arbitrage.hud.CircleData or {}) do
 			local name = v[1]

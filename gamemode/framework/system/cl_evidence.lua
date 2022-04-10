@@ -47,14 +47,6 @@ function Arbitrage.evidence.CreateText(data)
     local class = data.class
     local dataEvidence = data.data
 
-    local vec = client:GetPos()
-    local ang = Angle(client:GetAngles()[1], client:GetAngles()[2], 0)
-
-    local start1 = vec + ang:Right() * 15
-    local start2 = vec - ang:Right() * 15
-    local endpos1 = vec + ang:Forward() * 150 + ang:Right() * 15 + ang:Up() * 10
-    local endpos2 = vec + ang:Forward() * 150 - ang:Right() * 15 + ang:Up() * 10
-
     local ignore_list = {}
     ignore_list[#ignore_list + 1] = client
 
@@ -92,16 +84,24 @@ function Arbitrage.evidence.CreateText(data)
 
         evData.alpha = evData.alpha or 0
 
-        local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - evData.alpha) * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(curalpha - alpha - evData.alpha, 0, 150))
-        surface_SetDrawColor(ColorAlpha(color, math_Clamp(curalpha - alpha - evData.alpha, 0, 150)))
+        local aM = curalpha - alpha - evData.alpha
+        local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp(aM * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(aM, 0, 150))
+        surface_SetDrawColor(ColorAlpha(color, math_Clamp(aM, 0, 150)))
         draw_NoTexture()
         surface_DrawPoly(circle)
 
-        if Arbitrage.hud.SeeVector({start1, start2, endpos2, endpos1}, pos, false) and client:GetPos():Distance(pos) < 150 then
-            evData.alpha = Lerp(FrameTime(), evData.alpha, 255)
-        else
-            evData.alpha = Lerp(FrameTime() * 3, evData.alpha, 0)
-        end
+		local vec = client:GetPos()
+		local ang = Angle(client:GetAngles()[1], client:GetAngles()[2], 0)
+
+		local start1 = vec + ang:Right() * 15
+		local start2 = vec - ang:Right() * 15
+		local endpos1 = vec + ang:Forward() * 150 + ang:Right() * 15 + ang:Up() * 10
+		local endpos2 = vec + ang:Forward() * 150 - ang:Right() * 15 + ang:Up() * 10
+
+		local bVisible = Arbitrage.hud.SeeVector({start1, start2, endpos2, endpos1}, pos, false) and client:GetPos():Distance(pos) < 150
+		local speed = bVisible and FrameTime() or FrameTime() * 3
+
+		evData.alpha = Lerp(speed, evData.alpha, bVisible and 255 or 0)
 
         local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTDemi_8")
         local descHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_6")
@@ -133,7 +133,7 @@ end)
 
 function Arbitrage.evidence.Draw()
 	for k, v in pairs(entities) do
-		if IsValid(v) then
+		if IsValid(v) and !v:IsDormant() then
 			local entity = Arbitrage.evidence.entities[v:GetClass()]
 
 			local up = entity.up or 0

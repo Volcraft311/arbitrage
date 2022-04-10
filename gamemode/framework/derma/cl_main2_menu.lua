@@ -33,6 +33,18 @@ function PANEL:Init()
         parent:ClosePanel()
     end)
 
+    self.spectateButton:SetDisabled(false)
+
+    if !isSpectate then
+        if !Arbitrage.IsStartGame() then
+            self.spectateButton:SetDisabled(true)
+        else
+            if LocalPlayer():Alive() then
+                self.spectateButton:SetDisabled(true)
+            end
+        end
+    end
+
     self.discordButton = self:AddButton(nil, Arbitrage.GetMaterial("danganronpa/ui/discord_mini.png"), ScrW() / 2 - W(276) / 2, H(577), W(52), H(52), function()
         gui.OpenURL(ds_link)
     end)

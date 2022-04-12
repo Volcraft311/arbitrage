@@ -31,3 +31,7 @@ end
 function ENT:GetData(key, default)
     return ItemBase.data[self:GetItemID()] and (ItemBase.data[self:GetItemID()][key] or default) or default
 end
+
+function ENT:GetItem()
+    return ItemBase.instances[self:GetItemID()]
+end

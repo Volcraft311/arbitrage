@@ -46,7 +46,7 @@ end)
 
 netstream.Hook("ItemBase:OpenActions", function(uniqueID, data, entity)
     local sendOptions = {}
-    for _, name in ipairs(data) do
+    for _, name in SortedPairsByValue(data) do
         local action = ItemBase.list[uniqueID].functions[name]
         if !action then continue end
 

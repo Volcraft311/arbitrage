@@ -14,7 +14,7 @@ function BASE:GetDescription()
 end
 
 local function RecoveryFunc(item, target)
-    if !IsValid(target) and !target:IsPlayer() then return false, "Не валидный игрок!" end
+    if !IsValid(target) or !target:IsPlayer() then return false, "Не валидный игрок!" end
 
     local song = item.sound
     if song and song != "" and song != " " then

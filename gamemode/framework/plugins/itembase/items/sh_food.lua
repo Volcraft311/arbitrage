@@ -310,7 +310,7 @@ do
     ITEM.model = "models/foodnhouseholditems/nutella.mdl"
 
     ITEM.maxuse = 5
-    ITEM.thirst = -10 
+    ITEM.thirst = -10
     ITEM.hunger = 15
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/eating.wav"
@@ -326,7 +326,7 @@ do
     ITEM.model = "models/foodnhouseholditems/grapes1.mdl"
 
     ITEM.maxuse = 3
-    ITEM.thirst = 7 
+    ITEM.thirst = 7
     ITEM.hunger = 5
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/eating.wav"
@@ -342,7 +342,7 @@ do
     ITEM.model = "models/foodnhouseholditems/grapes2.mdl"
 
     ITEM.maxuse = 3
-    ITEM.thirst = 7 
+    ITEM.thirst = 7
     ITEM.hunger = 5
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/eating.wav"
@@ -412,4 +412,226 @@ do
     ITEM.sound = "eating_and_drinking/chips.wav"
 
     ItemBase:RegisterItem("chips_sour_cream_onion", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Печенье"
+    ITEM.description = "Классическое сдобное печенье"
+    ITEM.model = "models/foodnhouseholditems/digestive.mdl"
+
+    ITEM.maxuse = 3
+    ITEM.thirst = -6
+    ITEM.hunger = 6
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/crunchy_double.wav"
+
+    ItemBase:RegisterItem("biscuits", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Печенье шоколадное"
+    ITEM.description = "Печенье с добавлением какао и шоколадной глазури."
+    ITEM.model = "models/foodnhouseholditems/digestivechoko.mdl"
+    ITEM.maxuse = 3
+    ITEM.thirst = -6
+    ITEM.hunger = 6
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/crunchy_double.wav"
+
+    ItemBase:RegisterItem("biscuits_chocolate", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Чипсы со вкусом барбекю"
+    ITEM.description = "Чёрная пачка с пряным вкусом"
+    ITEM.model = "models/foodnhouseholditems/chipslays3.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = -9
+    ITEM.hunger = 8
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/chips.wav"
+
+    ItemBase:RegisterItem("chips_bbq", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Чипсы со вкусом сыра"
+    ITEM.description = "Яркая пачка и приятный вкус."
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos2.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = -8
+    ITEM.hunger = 12
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/chips.wav"
+
+    ItemBase:RegisterItem("chips_cheese", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Острые Чипсы"
+    ITEM.description = "Пачка в агрессивном красном стиле, вкус настолько острый что их можно есть наспор."
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos2.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = -15
+    ITEM.hunger = 18
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/chips.wav"
+
+    ItemBase:RegisterItem("chips_diablo", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Чипсы со вкусом малосольных огурчиков"
+    ITEM.description = "Болотно-зелёная пачка с изображением огурцов и укропа."
+    ITEM.model = "models/foodnhouseholditems/chipslays5.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = -6
+    ITEM.hunger = 9
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/chips.wav"
+
+    ItemBase:RegisterItem("chips_dull_pickle", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Чипсы с солью"
+    ITEM.description = "Небесно синяя пачка, с классическим солёным вкусом"
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos5.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = -8
+    ITEM.hunger = 10
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/chips.wav"
+
+    ItemBase:RegisterItem("chips_salty", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Чипсы со вкусом васаби"
+    ITEM.description = "Пачка в кислотно-зелёном стиле, не сильно острые, имеют приятный запах"
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos5.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = -12
+    ITEM.hunger = 10
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/chips.wav"
+
+    ItemBase:RegisterItem("chips_wasabi", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Кола"
+    ITEM.description = "Всемирно известный и любимый напиток."
+    ITEM.model = "models/foodnhouseholditems/sodacan01.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 15
+    ITEM.hunger = 7
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/can.wav"
+
+    ItemBase:RegisterItem("cola1", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Вишнёвая Кола"
+    ITEM.description = "Второй по популярности напиток, знаменит эталонным вкусом и нулевым содержанием сахара."
+    ITEM.model = "models/foodnhouseholditems/sodacan2.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 15
+    ITEM.hunger = 0
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/can.wav"
+
+    ItemBase:RegisterItem("cola2", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Кола (Лайф)"
+    ITEM.description = "Кола с натуральными сахарозаменителями"
+    ITEM.model = "models/foodnhouseholditems/sodacan3.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 15
+    ITEM.hunger = 0
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/can.wav"
+
+    ItemBase:RegisterItem("cola3", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Мохито"
+    ITEM.description = "Газировка с нежным лимонно-лаймовым вкусом."
+    ITEM.model = "models/foodnhouseholditems/sodacan6.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 15
+    ITEM.hunger = 5
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/can.wav"
+
+    ItemBase:RegisterItem("cola4", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Печенье с шоколадными каплями"
+    ITEM.description = "Излюбленное печенье американцев с кусочками шоколада"
+    ITEM.model = "models/foodnhouseholditems/сookies.mdl"
+    ITEM.maxuse = 3
+    ITEM.thirst = -6
+    ITEM.hunger = 6
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/crunchy_double.wav"
+
+    ItemBase:RegisterItem("cookies", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Сладкий Рулет"
+    ITEM.description = "Очень известный десерт, угадайте сами почему."
+    ITEM.model = "models/foodnhouseholditems/sweetroll.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 0
+    ITEM.hunger = 9
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("sweetroll", ITEM)
 end

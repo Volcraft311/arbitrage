@@ -20,7 +20,7 @@ function PLUGIN:HUDPaint()
             local uniqueID = v:GetUniqueID()
             local id = v:GetItemID()
 
-            local item = self.instances[id] or self.list[uniqueID]
+            local item = (self.instances[id] or self.list[uniqueID]) or Arbitrage.meta.item
             if !item then continue end
 
             Arbitrage.evidence.CreateText({
@@ -34,8 +34,9 @@ function PLUGIN:HUDPaint()
     end
 end
 
-netstream.Hook("ItemBase:SyncItem", function(uniqueID, itemID)
+netstream.Hook("ItemBase:SyncItem", function(uniqueID, itemID, data)
     ItemBase:New(uniqueID, itemID)
+    ItemBase.data[itemID] = data
 end)
 
 netstream.Hook("ItemBase:SetData", function(id, key, value)

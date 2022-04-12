@@ -1,7 +1,7 @@
 local ITEM = Arbitrage.meta.item or {}
 ITEM.__index = ITEM
-ITEM.name = "Неизвестно"
-ITEM.description = "Не указано"
+ITEM.name = "База предметов"
+ITEM.description = "Стандартная база для создания предметов."
 ITEM.category = "Остальное"
 ITEM.id = ITEM.id or 0
 ITEM.model = "models/props_lab/box01a.mdl"
@@ -22,27 +22,22 @@ end
 function ITEM:GetID()
     return self.id
 end
-ITEM.ID = ITEM.GetID
 
 function ITEM:GetName()
     return self.name
 end
-ITEM.Name = ITEM.GetName
 
 function ITEM:GetDescription()
     return self.description
 end
-ITEM.Description = ITEM.GetDescription
 
 function ITEM:GetModel()
     return self.model
 end
-ITEM.Model = ITEM.GetModel
 
 function ITEM:GetSkin()
     return self.skin or 0
 end
-ITEM.Skin = ITEM.GetSkin
 
 function ITEM:AddAction(name, data)
     self.functions[name] = data
@@ -113,6 +108,12 @@ if SERVER then
         entity:SetItem(self:GetID())
 
         return entity
+    end
+
+    function ITEM:Sync(receivers)
+        local data = ItemBase.data[self:GetID()] or {}
+
+        netstream.Start(receivers, "ItemBase:SyncItem", self.uniqueID, self:GetID(), data)
     end
 end
 

@@ -39,7 +39,7 @@ function ENT:Use(activator, caller)
 	local itemID = self:GetItemID()
 	if !itemID then return end
 
-	local item = ItemBase.instances[itemID]
+	local item = self:GetItem()
 	if !item then return end
 
 	item.player = activator
@@ -62,11 +62,11 @@ end
 function ENT:SetItem(itemID)
 	if !itemID then return end
 
-	local item = ItemBase.instances[itemID]
+	local item = self:GetItem() or ItemBase.instances[itemID]
 	if !item then return end
 
-	self:SetModel(item:Model())
-	self:SetSkin(item:Skin())
+	self:SetModel(item:GetModel())
+	self:SetSkin(item:GetSkin())
 
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
@@ -92,7 +92,7 @@ function ENT:OnTakeDamage(damageInfo)
 	self:SetHealth(self:Health() - damage)
 
 	if self:Health() <= 0 then
-		local item = ItemBase.instances[self:GetItemID()]
+		local item = self:GetItem()
 		if item then
 			item:Remove()
 		end

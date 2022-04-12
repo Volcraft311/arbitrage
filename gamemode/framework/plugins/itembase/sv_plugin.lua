@@ -3,21 +3,13 @@ local PLUGIN = PLUGIN
 function ItemBase.CreateItemInWorld(uniqueID, pos, ang)
     local item = ItemBase.CreateItem(uniqueID)
     item:Spawn(pos, ang)
-
-    netstream.Start(nil, "ItemBase:SyncItem", uniqueID, item:GetID())
+    item:Sync()
 end
 
 function ItemBase:PlayerInitialSpawn(client)
-    -- Синхранизируем дату предметов
-    for id, info in pairs(self.data) do
-        for key, value in pairs(info) do
-            netstream.Start(client, "ItemBase:SetData", id, key, value)
-        end
-    end
-
-    -- Синхранизируем id предметов
+    -- Синхранизируем предметы
     for id, item in pairs(self.instances) do
-        netstream.Start(client, "ItemBase:SyncItem", item.uniqueID, id)
+        item:Sync(client)
     end
 end
 

@@ -67,14 +67,14 @@ function ItemBase:RegisterBase(uniqueID, data)
 end
 
 function ItemBase:New(uniqueID, id)
-    if (self.instances[id] and self.instances[id].uniqueID == uniqueID) then
+    if self.instances[id] and self.instances[id].uniqueID == uniqueID then
         return self.instances[id]
     end
 
     local itemData = self.list[uniqueID]
 
     if itemData then
-        local item = setmetatable({id = id, data = {}}, {
+        local item = setmetatable({id = id}, {
             __index = itemData,
             __eq = itemData.__eq,
             __tostring = itemData.__tostring

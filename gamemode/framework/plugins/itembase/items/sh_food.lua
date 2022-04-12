@@ -419,7 +419,7 @@ do
 
     ITEM.name = "Печенье"
     ITEM.description = "Классическое сдобное печенье"
-    ITEM.model = "models/foodnhouseholditems/digestive.mdl"
+    ITEM.model = "models/foodnhouseholditems/digestive2.mdl"
 
     ITEM.maxuse = 3
     ITEM.thirst = -6
@@ -435,7 +435,7 @@ do
 
     ITEM.name = "Печенье шоколадное"
     ITEM.description = "Печенье с добавлением какао и шоколадной глазури."
-    ITEM.model = "models/foodnhouseholditems/digestivechoko.mdl"
+    ITEM.model = "models/foodnhouseholditems/digestive.mdl"
     ITEM.maxuse = 3
     ITEM.thirst = -6
     ITEM.hunger = 6
@@ -482,7 +482,7 @@ do
 
     ITEM.name = "Острые Чипсы"
     ITEM.description = "Пачка в агрессивном красном стиле, вкус настолько острый что их можно есть наспор."
-    ITEM.model = "models/foodnhouseholditems/chipsdoritos2.mdl"
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos4.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = -15
@@ -530,7 +530,7 @@ do
 
     ITEM.name = "Чипсы со вкусом васаби"
     ITEM.description = "Пачка в кислотно-зелёном стиле, не сильно острые, имеют приятный запах"
-    ITEM.model = "models/foodnhouseholditems/chipsdoritos5.mdl"
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos6.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = -12

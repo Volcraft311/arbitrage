@@ -1,6 +1,7 @@
 local PLUGIN = PLUGIN
 PLUGIN.actionMenu = PLUGIN.actionMenu or {}
 PLUGIN.actionMenu.stored = {}
+PLUGIN.actionMenu.font = "arb.Font_FuturaPTBook_9"
 
 function PLUGIN.actionMenu:New(data)
     self.stored[data.entity] = data
@@ -30,7 +31,10 @@ function PLUGIN.actionMenu:GetMaxWidth(id)
     end
 
     if #data > 0 then
-        return math.max(unpack(data))
+        local max = math.max(unpack(data))
+        self.stored[id].maxWidth = max
+
+        return max
     end
 
     return 0
@@ -49,11 +53,10 @@ function PLUGIN.actionMenu:IsSelected(x, y, w, h)
     return false
 end
 
-local font = "arb.Font_FuturaPTBook_8"
 function PLUGIN.actionMenu:Paint()
     local client = LocalPlayer()
 
-    surface.SetFont(font)
+    surface.SetFont(self.font)
     local size = W(20)
 
     for k, v in pairs(self.stored) do
@@ -93,11 +96,9 @@ function PLUGIN.actionMenu:Paint()
                 surface.SetDrawColor(95, 28, 39, buttonAlpha)
                 surface.DrawOutlinedRect(_x, _y, _w, _h, 2)
 
-                draw.SimpleText(v2, font, x, tall, Color(255, 255, 255, textAlpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(v2, self.font, x, tall, Color(255, 255, 255, textAlpha), TEXT_ALIGN_CENTER)
 
-                if bSelected then
-                    isSelect = v2
-                end
+                if bSelected then isSelect = v2 end
             end
 
             if client:KeyPressed(IN_USE) and isSelect and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then

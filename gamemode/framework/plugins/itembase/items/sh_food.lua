@@ -562,7 +562,7 @@ do
 
     ITEM.name = "Вишнёвая Кола"
     ITEM.description = "Второй по популярности напиток, знаменит эталонным вкусом и нулевым содержанием сахара."
-    ITEM.model = "models/foodnhouseholditems/sodacan2.mdl"
+    ITEM.model = "models/foodnhouseholditems/sodacan02.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = 15
@@ -578,7 +578,7 @@ do
 
     ITEM.name = "Кола (Лайф)"
     ITEM.description = "Кола с натуральными сахарозаменителями"
-    ITEM.model = "models/foodnhouseholditems/sodacan3.mdl"
+    ITEM.model = "models/foodnhouseholditems/sodacan03.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = 15
@@ -594,7 +594,7 @@ do
 
     ITEM.name = "Мохито"
     ITEM.description = "Газировка с нежным лимонно-лаймовым вкусом."
-    ITEM.model = "models/foodnhouseholditems/sodacan6.mdl"
+    ITEM.model = "models/foodnhouseholditems/sodacan06.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = 15

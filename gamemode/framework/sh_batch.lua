@@ -17,6 +17,7 @@ Arbitrage.GamemodeStart = os.clock()
 Arbitrage.base = Arbitrage.base or {}
 Arbitrage.util = Arbitrage.util or {}
 Arbitrage.players = Arbitrage.players or {}
+Arbitrage.meta = Arbitrage.meta or {}
 
 function Arbitrage.Initialize()
 	function Arbitrage.GM:GetGameDescription()

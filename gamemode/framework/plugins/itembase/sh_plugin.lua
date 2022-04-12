@@ -21,7 +21,7 @@ function ItemBase.GetBase(base)
             return false
         end,
         OnCanRun = function(item)
-            return true
+            return false
         end
     })
 
@@ -41,11 +41,13 @@ function ItemBase.GetBase(base)
     if base then
         local baseInfo = ItemBase.base[base]
         if baseInfo then
-            for k, v in pairs(baseInfo) do
-                if k == "__index" then continue end
+            baseInfo.__index = nil
 
+            for k, v in pairs(baseInfo) do
                 meta[k] = v
             end
+
+            meta.base = base
         end
     end
 

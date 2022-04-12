@@ -6,6 +6,7 @@ ITEM.category = "Остальное"
 ITEM.id = ITEM.id or 0
 ITEM.model = "models/props_lab/box01a.mdl"
 ITEM.uniqueID = "undefined"
+ITEM.base = nil
 
 ITEM.hooks = {}
 ITEM.postHooks = {}

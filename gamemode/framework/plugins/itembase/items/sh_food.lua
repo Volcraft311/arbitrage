@@ -67,7 +67,7 @@ do
 
     ITEM.name = "Шоколад с апельсином"
     ITEM.description = "Устоявшееся сочетание тёмного горького шоколада и апельсина, раскрывающее вкус с другой стороны."
-    ITEM.model = "models/foodnhouseholditems/marabou3.mdl"
+    ITEM.model = "models/foodnhouseholditems/marabou2.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = -8

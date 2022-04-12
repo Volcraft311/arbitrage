@@ -102,6 +102,7 @@ function Arbitrage.evidence.CreateText(data)
 		local speed = bVisible and FrameTime() or FrameTime() * 3
 
 		evData.alpha = Lerp(speed, evData.alpha, bVisible and 255 or 0)
+        if evData.alpha <= 5 then return end
 
         local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTDemi_8")
         local descHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_6")

@@ -144,6 +144,7 @@ PLUGIN:AddEntityESPCustomization("name_en", {
     },
     data = function(entity)
         -- eh...
+        return entity:GetClass() == "arb_item" and (entity:GetItemTable() and entity:GetItemTable():GetName() or "Неизвестно")
     end
 })
 

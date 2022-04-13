@@ -419,7 +419,7 @@ concommand.Add("arb_getpos", function(client, cmd, args)
     local m_r = 3
     local pos, ang = client:GetPos(), client:GetAngles()
     local text = Format("Vector(%s, %s, %s), Angle(%s, %s, %s)",
-        r(pos.x, m_r), r(pos.y, m_r), r(pos.z, m_r),
+        r(pos.x, m_r), r(pos.y, m_r), r(pos.z + 64, m_r),
         r(ang[1], m_r), r(ang[2], m_r), r(ang[3], m_r))
 
     MsgC(Color(0, 255, 0), text .. "\n")

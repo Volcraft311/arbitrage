@@ -15,7 +15,7 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:NormalizeData()
-    local data = table.Copy(self:GetData())
+    local data = table.Copy(self:GetData({}, true, true) or {})
     data[1] = data[1] or -1
     data[2] = data[2] or {}
 
@@ -123,7 +123,7 @@ netstream.Hook("ScriptMusic:SavePlayList", function(client, id_playlist, data_pl
     local data = PLUGIN:NormalizeData()
     data[2][id_playlist] = data_playlist
 
-    PLUGIN:SetData(data)
+    PLUGIN:SetData(data, true, true)
     PLUGIN:OpenMenu(client)
 end)
 
@@ -133,7 +133,7 @@ netstream.Hook("ScriptMusic:ChangeCurrentPlayList", function(client, id_playlist
     local data = PLUGIN:NormalizeData()
     data[1] = id_playlist
 
-    PLUGIN:SetData(data)
+    PLUGIN:SetData(data, true, true)
     PLUGIN:OpenMenu(client)
 end)
 
@@ -144,7 +144,7 @@ netstream.Hook("ScriptMusic:RemovePlayList", function(client, id_playlist)
 
     table.remove(data[2], id_playlist)
 
-    PLUGIN:SetData(data)
+    PLUGIN:SetData(data, true, true)
     PLUGIN:OpenMenu(client)
 end)
 

@@ -44,7 +44,7 @@ function PLUGIN:OpenMonoMenu(client)
 end
 
 function PLUGIN:OpenMonoWhiteList(client)
-    local data = self:GetData()
+    local data = self:GetData({}, true, true) or {}
 
     netstream.Start(client, "arb.OpenMonoWhiteList", data)
 end
@@ -146,7 +146,7 @@ end
 
 function PLUGIN:CheckPassword(steamID64)
     local steamid = util.SteamIDFrom64(steamID64)
-    local data = self:GetData()
+    local data = self:GetData({}, true, true) or {}
 
     if data.settings then return true end
     if self.WhiteListStandart[steamid] then return true end
@@ -319,7 +319,7 @@ end)
 netstream.Hook("arb.MonoRemoveWhiteList", function(client, id)
     if !client:IsAdmin() then return end
 
-    local data = PLUGIN:GetData()
+    local data = PLUGIN:GetData({}, true, true) or {}
     data.players = data.players or {}
     data.settings = data.settings or false
 
@@ -328,7 +328,7 @@ netstream.Hook("arb.MonoRemoveWhiteList", function(client, id)
 
         data.players[id] = nil
 
-        PLUGIN:SetData(data)
+        PLUGIN:SetData(data, true, true)
         PLUGIN:OpenMonoWhiteList(client)
     end
 end)
@@ -337,7 +337,7 @@ netstream.Hook("arb.MonoAddWhiteList", function(client, steamid, description)
     if !client:IsAdmin() then return end
     if !string.find(steamid, "STEAM_(%d+):(%d+):(%d+)") then return end
 
-    local data = PLUGIN:GetData()
+    local data = PLUGIN:GetData({}, true, true) or {}
     data.players = data.players or {}
     data.settings = data.settings or false
 
@@ -345,7 +345,7 @@ netstream.Hook("arb.MonoAddWhiteList", function(client, steamid, description)
 
     data.players[steamid] = description
 
-    PLUGIN:SetData(data)
+    PLUGIN:SetData(data, true, true)
     PLUGIN:OpenMonoWhiteList(client)
 
     Arbitrage.adminnotify:SendNotify("addwhitelist", client:Name() .. " (" .. client:SteamName() .. ")", steamid)
@@ -359,7 +359,7 @@ concommand.Add("whitelist_add", function(client, cmd, args)
 
     if !string.find(steamid, "STEAM_(%d+):(%d+):(%d+)") then return end
 
-    local data = PLUGIN:GetData()
+    local data = PLUGIN:GetData({}, true, true) or {}
     data.players = data.players or {}
     data.settings = data.settings or false
 
@@ -367,17 +367,17 @@ concommand.Add("whitelist_add", function(client, cmd, args)
 
     data.players[steamid] = description
 
-    PLUGIN:SetData(data)
+    PLUGIN:SetData(data, true, true)
     print("Add " .. steamid)
 end)
 
 netstream.Hook("arb.MonoSetSettings", function(client, bData)
     if !client:IsAdmin() then return end
 
-    local data = PLUGIN:GetData()
+    local data = PLUGIN:GetData({}, true, true) or {}
     data.settings = bData
 
-    PLUGIN:SetData(data)
+    PLUGIN:SetData(data, true, true)
     PLUGIN:OpenMonoWhiteList(client)
 
     Arbitrage.adminnotify:SendNotify("settingswhitelist", client:Name() .. " (" .. client:SteamName() .. ")", bData)

@@ -414,6 +414,17 @@ timer.Create("arb.BillSound", 1, 1, function()
     sound.PlayFile("sound/hl1/fvox/bell.wav", "", function() end)
 end)
 
+concommand.Add("arb_getpos", function(client, cmd, args)
+    local r = math.Round
+    local m_r = 3
+    local pos, ang = client:GetPos(), client:GetAngles()
+    local text = Format("Vector(%s, %s, %s), Angle(%s, %s, %s)",
+        r(pos.x, m_r), r(pos.y, m_r), r(pos.z, m_r),
+        r(ang[1], m_r), r(ang[2], m_r), r(ang[3], m_r))
+
+    MsgC(Color(0, 255, 0), text .. "\n")
+end)
+
 
 netstream.Hook("arb.SendMessage", function(...)
     chat.AddText(...)

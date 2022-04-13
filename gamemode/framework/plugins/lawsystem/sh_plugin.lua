@@ -22,29 +22,30 @@ PLUGIN.copy = {}
 function PLUGIN:ReplaceVariables()
     -- Позиции начальной камеры
     PLUGIN.camPos = {
-        ["drp_hopespeak"] = {
-            [1] = {pos = Vector(-557.674011, -2769.518799, -690.412659), ang = Angle(36.070911, 36.665367, 0.000000)},
-            -- eh...
-        }
+        ["drp_hopespeak"] = {{pos = Vector(-557.674011, -2769.518799, -690.412659), ang = Angle(36.070911, 36.665367, 0.000000)}},
+        ["gm_tokyo_hospital"] = {{pos = Vector(-221.558, -1381.533, 234.014), ang = Angle(24.704, -88.683, 0.234)}},
     }
     PLUGIN.copy.camPos = table.Copy(PLUGIN.camPos)
 
     -- Где должна находится камера в конце
     PLUGIN.camPosEnd = {
-        ["drp_hopespeak"] = Vector(-201.094284, -2496.078613, -887.968750)
+        ["drp_hopespeak"] = Vector(-201.094284, -2496.078613, -887.968750),
+        ["gm_tokyo_hospital"] = Vector(-208.29, -1559.263, 152.031)
     }
     PLUGIN.copy.camPosEnd = table.Copy(PLUGIN.camPosEnd)
 
 
     -- Где должен сидеть Моно "CUM"?
     PLUGIN.monokumPlace = {
-        ["drp_hopespeak"] = {pos = Vector(-528.077271, -2354.913086, -822.366394), ang = Angle(-1.174964, -27.304247, 0.093104)}
+        ["drp_hopespeak"] = {pos = Vector(-528.077271, -2354.913086, -822.366394), ang = Angle(-1.174964, -27.304247, 0.093104)},
+        ["gm_tokyo_hospital"] = {pos = Vector(-352.209, -1370.199, 194.144), ang = Angle(19.372, -51.342, 0)},
     }
     PLUGIN.copy.monokumPlace = table.Copy(PLUGIN.monokumPlace)
 
     -- Камера которая смотрит на МоноКуму
     PLUGIN.monokumCam = {
-        ["drp_hopespeak"] = Vector(-393.274109, -2414.661377, -842.831726)
+        ["drp_hopespeak"] = Vector(-393.274109, -2414.661377, -842.831726),
+        ["gm_tokyo_hospital"] = Vector(-277.833, -1437.178, 152.031)
     }
     PLUGIN.copy.monokumCam = table.Copy(PLUGIN.monokumCam)
 
@@ -68,6 +69,22 @@ function PLUGIN:ReplaceVariables()
             {pos = Vector(-100.362938, -2465.932617, -887.968750), ang = Angle(-0.172372, -158.530289, -0.097806)},
             {pos = Vector(-123.768608, -2426.896484, -887.968750), ang = Angle(-0.933975, -135.699966, 0.012694)},
             {pos = Vector(-161.782700, -2404.253418, -887.968750), ang = Angle(0.147995, -112.951431, -0.043005)}
+        },
+        ["gm_tokyo_hospital"] = {
+            {pos = Vector(-284.371, -1492.754, 152.037), ang = Angle(3.664, -43.491, 0)},
+            {pos = Vector(-247.895, -1467.339, 152.038), ang = Angle(2.443, -65.238, 0)},
+            {pos = Vector(-209.053, -1462.356, 152.039), ang = Angle(0.859, -88.041, 0)},
+            {pos = Vector(-170.426, -1463.968, 152.04), ang = Angle(0.958, -109.161, 0)},
+            {pos = Vector(-131.941, -1483.458, 152.04), ang = Angle(-0.343, -129.885, 0)},
+            {pos = Vector(-105.905, -1520.509, 152.039), ang = Angle(-0.211, -153.612, 0)},
+            {pos = Vector(-100.294, -1560.397, 152.039), ang = Angle(0.812, -177.504, 0)},
+            {pos = Vector(-122.949, -1637.424, 152.026), ang = Angle(0.35, 139.377, 0)},
+            {pos = Vector(-159.292, -1662.543, 152.024), ang = Angle(1.934, 116.574, 0)},
+            {pos = Vector(-236.629, -1665.905, 152.02), ang = Angle(0.845, 69.913, 0)},
+            {pos = Vector(-274.602, -1646.672, 152.019), ang = Angle(0.878, 48.528, 0)},
+            {pos = Vector(-301.013, -1609.318, 152.021), ang = Angle(0.878, 24.373, 0)},
+            {pos = Vector(-305.998, -1570.411, 152.023), ang = Angle(-0.376, 2.461, 0.234)},
+            {pos = Vector(-283.991, -1492.327, 152.033), ang = Angle(1.736, -37.997, 0.234)}
         }
     }
     PLUGIN.copy.placesList = table.Copy(PLUGIN.placesList)

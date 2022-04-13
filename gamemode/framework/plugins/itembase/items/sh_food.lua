@@ -635,3 +635,83 @@ do
 
     ItemBase:RegisterItem("sweetroll", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Красное Яблоко"
+    ITEM.description = "Сладкое красное яблоко."
+    ITEM.model = "models/foodnhouseholditems/apple.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 5
+    ITEM.hunger = 5
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("apple1", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Зелёное Яблоко"
+    ITEM.description = "Кислое зелёное яблоко."
+    ITEM.model = "models/foodnhouseholditems/apple1.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 3
+    ITEM.hunger = 5
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("apple2", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Розовое Яблоко"
+    ITEM.description = "Очень редко можно найти, невероятно красивый цвет."
+    ITEM.model = "models/foodnhouseholditems/apple2.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 5
+    ITEM.hunger = 5
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("apple3", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Ананас"
+    ITEM.description = "Тропический фрукт с сладким вкусом и слегка томным послевкусием."
+    ITEM.model = "models/foodnhouseholditems/pineapple.mdl"
+
+    ITEM.maxuse = 2
+    ITEM.thirst = 3
+    ITEM.hunger = 6
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("pineapple", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Кола со вкусом ежевики"
+    ITEM.description = "Премиальный вкус колы, продаётся за огромные суммы."
+    ITEM.model = "models/foodnhouseholditems/cola_swift2.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 5
+    ITEM.hunger = 0
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/beerbottle.wav"
+
+    ItemBase:RegisterItem("cola5", ITEM)
+end

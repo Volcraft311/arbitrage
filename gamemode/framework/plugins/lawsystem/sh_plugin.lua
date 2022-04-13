@@ -30,7 +30,7 @@ function PLUGIN:ReplaceVariables()
     -- Где должна находится камера в конце
     PLUGIN.camPosEnd = {
         ["drp_hopespeak"] = Vector(-201.094284, -2496.078613, -887.968750),
-        ["gm_tokyo_hospital"] = Vector(-208.29, -1559.263, 152.031)
+        ["gm_tokyo_hospital"] = Vector(-202.072, -1541.493, 171.961)
     }
     PLUGIN.copy.camPosEnd = table.Copy(PLUGIN.camPosEnd)
 

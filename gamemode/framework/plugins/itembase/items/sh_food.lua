@@ -18,7 +18,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Сыр c плесенью"
-    ITEM.description = "Классический твёрдый голландский сыр."
+    ITEM.description = "Вкуснейший дор блю, признанный годами выбор."
     ITEM.model = "models/foodnhouseholditems/cheesewheel2c.mdl"
 
     ITEM.maxuse = 1
@@ -67,7 +67,7 @@ do
 
     ITEM.name = "Шоколад с апельсином"
     ITEM.description = "Устоявшееся сочетание тёмного горького шоколада и апельсина, раскрывающее вкус с другой стороны."
-    ITEM.model = "models/foodnhouseholditems/marabou3.mdl"
+    ITEM.model = "models/foodnhouseholditems/marabou2.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = -2
@@ -161,8 +161,8 @@ end
 do
     local ITEM = ItemBase.GetBase("base_food")
 
-    ITEM.name = "Мороженое (Клубничное И Шоколадное)"
-    ITEM.description = "Прекрасное сочетание вкусов, которое порадует ваши ожидания!"
+    ITEM.name = "Мороженое (Неаполитанское)"
+    ITEM.description = "Прекрасное сочетание ванили, шоколада и клубники!"
     ITEM.model = "models/foodnhouseholditems/icecream_open1.mdl"
 
     ITEM.maxuse = 2
@@ -273,7 +273,7 @@ end
 do
     local ITEM = ItemBase.GetBase("base_food")
 
-    ITEM.name = "Энергетик (c cахаром)"
+    ITEM.name = "Энергетик (С Сахаром)"
     ITEM.description = "Тонизирующий напиток, который пробудит вас от сонливости, а также даст чувство сытости!"
     ITEM.model = "models/foodnhouseholditems/sodacanb03.mdl"
 
@@ -299,7 +299,7 @@ do
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/drinking.wav"
 
-    ItemBase:RegisterItem("food_water", ITEM)
+    ItemBase:RegisterItem("water_can", ITEM)
 end
 
 do
@@ -401,7 +401,7 @@ end
 do
     local ITEM = ItemBase.GetBase("base_food")
 
-    ITEM.name = "Чипсы (Сметана и лук)"
+    ITEM.name = "Чипсы со вкусом сметаны и лука"
     ITEM.description = "Прекрасная калорийная закуска из картошки со вкусом сметаны и лука!"
     ITEM.model = "models/foodnhouseholditems/chipslays4.mdl"
 
@@ -528,9 +528,9 @@ end
 do
     local ITEM = ItemBase.GetBase("base_food")
 
-    ITEM.name = "Чипсы со вкусом васаби"
-    ITEM.description = "Пачка в кислотно-зелёном стиле, не сильно острые, имеют приятный запах"
-    ITEM.model = "models/foodnhouseholditems/chipsdoritos5.mdl"
+    ITEM.name = "Чипсы со вкусом гуакамоле"
+    ITEM.description = "Пачка в кислотно-зелёном стиле, имеют приятный запах"
+    ITEM.model = "models/foodnhouseholditems/chipsdoritos6.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = -6
@@ -562,7 +562,7 @@ do
 
     ITEM.name = "Вишнёвая Кола"
     ITEM.description = "Второй по популярности напиток, знаменит эталонным вкусом и нулевым содержанием сахара."
-    ITEM.model = "models/foodnhouseholditems/sodacan2.mdl"
+    ITEM.model = "models/foodnhouseholditems/sodacan02.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = 15
@@ -578,7 +578,7 @@ do
 
     ITEM.name = "Кола (Лайф)"
     ITEM.description = "Кола с натуральными сахарозаменителями"
-    ITEM.model = "models/foodnhouseholditems/sodacan3.mdl"
+    ITEM.model = "models/foodnhouseholditems/sodacan03.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = 15
@@ -594,7 +594,7 @@ do
 
     ITEM.name = "Мохито"
     ITEM.description = "Газировка с нежным лимонно-лаймовым вкусом."
-    ITEM.model = "models/foodnhouseholditems/sodacan6.mdl"
+    ITEM.model = "models/foodnhouseholditems/sodacan06.mdl"
 
     ITEM.maxuse = 1
     ITEM.thirst = 15

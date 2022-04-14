@@ -15,7 +15,7 @@ local TEAM = {emodjiList = {}}
 TEAM.name = "Рёма Хоши"
 TEAM.description = "Абсолютный Теннисист"
 TEAM.category = "KILLING HARMONY"
-TEAM.model = "models/player/danganronpa/kazuichi_soda.mdl"
+TEAM.model = "models/player/dewobedil/danganronpa/ryoma_hoshi/default_p.mdl"
 TEAM.path = "danganronpa/characters/ryoma"
 
 TEAM.color = Color(240, 201, 73)

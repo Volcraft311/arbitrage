@@ -272,7 +272,7 @@ timer.Create("Doors:UpdateDraw", 1, 0, function()
 	for k, v in ipairs(doors) do
 		local faction = Arbitrage.teams.Get(v:GetNetVar("arb.team", -1))
 
-		if v:GetClass() != "func_door_rotating" or !faction then
+		if (v:GetClass() != "func_door_rotating" and v:GetClass() != "prop_door_rotating") or !faction then
 			doors[k] = nil
 		end
 	end

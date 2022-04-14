@@ -76,6 +76,16 @@ PLUGIN.allowBed = {
             ang = Angle(10, 180, 3)
         }
     },
+    ["models/props_c17/furniturebed001a.mdl"] = {
+        pos = Vector(-5, 0, -5),
+        ang = Angle(0, 180, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * 1 + ang:Forward() * -15 + Vector(0, 0, 0)
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
 }
 
 function PLUGIN:CalcMainActivity(client, vector)

@@ -156,7 +156,6 @@ Arbitrage.base.Include("cl_framework.lua")
 Arbitrage.base.Include("sv_framework.lua")
 
 
-
 Arbitrage.GamemodeCompletion = os.clock()
 
 if Arbitrage.util.IsServerSide() then

@@ -42,7 +42,7 @@ function PLUGIN:GetUpBed(client, entity)
 end
 
 function PLUGIN:PlayerUse(client, entity)
-    local allow = self.allowBed[entity:GetModel()]
+    local allow = self.allowBed[string.lower(entity:GetModel())]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
         Arbitrage.action.ActionRun(client, "Ложимся на кровать", 5, function()

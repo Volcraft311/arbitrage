@@ -238,7 +238,7 @@ end)
 netstream.Hook("arb.MonoSetPlace", function(client, steamid, place)
     if !client:IsAdmin() then return end
 
-    place = math.Clamp(tonumber(place), -1, #Arbitrage.law.placesList[game.GetMap()])
+    -- place = math.Clamp(tonumber(place), -1, #Arbitrage.placesList)
 
     if Arbitrage.players[steamid] then
         Arbitrage.players[steamid].place = place

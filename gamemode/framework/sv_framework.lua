@@ -232,6 +232,17 @@ Arbitrage.commands.Add("freezeprops", {
     end
 })
 
+Arbitrage.commands.Add("editor", {
+    arguments = {},
+    OnAction = function(client)
+        if !client:IsAdmin() then return end
+
+        local bEditor = client:IsEditing()
+
+        client:SetEditing(!bEditor)
+    end
+})
+
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
@@ -513,8 +524,8 @@ function Arbitrage:StartGame()
             timer.Simple(5, function()
                 if !IsValid(client) then return end
 
-                if ARBITRAGE_SPAWN[game.GetMap()] then
-                    local vector, _ = table.Random(ARBITRAGE_SPAWN[game.GetMap()])
+                if Arbitrage.spawnList then
+                    local vector, _ = table.Random(Arbitrage.spawnList)
                     client:SetPos(vector)
                 end
 
@@ -541,7 +552,7 @@ function Arbitrage:StopGame()
         netstream.Start(nil, "arb.ClearLaw")
 
         for k, v in pairs(player.GetAll()) do
-            local vector, _ = ARBITRAGE_LOBBY[game.GetMap()] and table.Random(ARBITRAGE_LOBBY[game.GetMap()]) or Vector(0, 0, 0)
+            local vector, _ = Arbitrage.lobbyList and table.Random(Arbitrage.lobbyList) or Vector(0, 0, 0)
             v:SetPos(vector)
         end
     end)

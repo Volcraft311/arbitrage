@@ -33,29 +33,6 @@ ARBITRAGE_SAY_LENGTH = 300
 -- Стандартная модель игрока
 ARBITRAGE_STANDART_MODEL = "models/player/skeleton.mdl"
 
--- Расположения спавна при заходе на сервер
-ARBITRAGE_SPAWN = {
-	drp_hopespeak = {
-		Vector(-1121, -3375, -48), Vector(-1194, -3375, -48), Vector(-1276, -3374, -48), Vector(-1377, -3374, -48),
-		Vector(-1478, -3374, -48), Vector(-1603, -3374, -48), Vector(-1715, -3374, -48), Vector(-1700, -3263, -48),
-		Vector(-1549, -3263, -48), Vector(-1458, -3263, -48), Vector(-1355, -3263, -48), Vector(-1221, -3263, -48),
-		Vector(-1108, -3263, -48), Vector(-1106, -3156, -48), Vector(-1212, -3155, -48), Vector(-1321, -3155, -48),
-		Vector(-1447, -3155, -48), Vector(-1542, -3154, -48), Vector(-1632, -3154, -48), Vector(-1714, -3154, -48),
-		Vector(-1714, -3076, -48), Vector(-1612, -3075, -48), Vector(-1513, -3075, -48), Vector(-1418, -3076, -48),
-		Vector(-1301, -3076, -48), Vector(-1238, -3076, -48), Vector(-1144, -3076, -48), Vector(-1083, -3077, -48)
-	}
-}
-
--- Расположение спавна при начале игры
-ARBITRAGE_LOBBY = {
-	drp_hopespeak = {
-		Vector(-4134, 2138, 77), Vector(-4592, 2513, 77),
-		Vector(-4140, 3155, 77), Vector(-4890, 2401, 77),
-		Vector(-4327, 2732, 77), Vector(-4919, 3159, 77),
-		Vector(-4833, 2225, 77), Vector(-4414, 2636, 77)
-	}
-}
-
 -- Кнопки в `C` менюшке
 ARBITRAGE_CONTEXT_DATA = {
 	dance = {

@@ -19,8 +19,7 @@ function PLUGIN:StartPointing()
     self._fov = 90
     self._entity = NULL
     self.oldEntity = self._entity
-    self.__camPos = self.camPosEnd[game.GetMap()]
-
+    self.__camPos = Arbitrage.camPosEnd
     self.animID = 1
 
     timer.Simple(0.5, function()
@@ -43,7 +42,7 @@ function PLUGIN:StartPointing()
 
     hook.Add("CalcView", "arb.LawStartPointing", function(client, pos, angles, fov)
         if IsValid(self._entity) then
-            self:ReplaceVariables()
+            Arbitrage:ReplaceVariables()
             self.__camPos, self._angles, self._fov, self._entity = self.CamAnimData[self.animID](
                 self,
                 self.__camPos,
@@ -74,24 +73,24 @@ function PLUGIN:RednessScreen()
     -- eh...
 end
 
-function PLUGIN:TransferCamPos(id)
-    local data = self.camPos[game.GetMap()][id]
-    self._camPos = data.pos
+function PLUGIN:TransferCamPos()
+    local data = Arbitrage.camPos
+    self._camPos = data[1]
     self._angCam = 0
     self._movescene = false
     self.__movescene = 0
     self._angUp = 0
 
     hook.Add("CalcView", "arb.LawTransferCamPos", function(client, pos, angles, fov)
-        self._camPos = Lerp(FrameTime() * 1.3, self._camPos, self.camPosEnd[game.GetMap()])
+        self._camPos = Lerp(FrameTime() * 1.3, self._camPos, Arbitrage.camPosEnd)
 
         local frame = FrameTime() * 60
-        self._angCam = (id % 2 == 1 and (self._angCam + frame) or (self._angCam - frame))
+        self._angCam = self._angCam + frame
         self._angUp = Lerp(FrameTime(), self._angUp, 30)
 
         local view = {
             origin = self._camPos,
-            angles = data.ang + Angle(0, self._angCam, 0) - Angle(self._angUp, 0, 0),
+            angles = data[2] + Angle(0, self._angCam, 0) - Angle(self._angUp, 0, 0),
             fov = fov,
             drawviewer = true
         }
@@ -273,10 +272,11 @@ local gradientDown = surface.GetTextureID("vgui/gradient-d")
 local bulletMat = Arbitrage.GetMaterial("danganronpa/law/bullet.png")
 local bulletMatL = Arbitrage.GetMaterial("danganronpa/law/bullet_l.png")
 
-function PLUGIN:HUDPaint()
+-- function PLUGIN:HUDPaint()
+hook.Add("HUDPaint", "arb.DrawBullets", function()
     if !Arbitrage.lawEnable then return end
 
-    for k, v in pairs(self.bulletList) do
+    for k, v in pairs(PLUGIN.bulletList) do
         v.alphato = v.alphato or v.alpha
         v.alphato = Lerp(FrameTime() * 5, v.alphato, v.alpha)
 
@@ -301,7 +301,7 @@ function PLUGIN:HUDPaint()
 
         v.x = Lerp(FrameTime() * v.speed, v.x, ScrW() * 1.4)
     end
-end
+end)
 
 local tab = {
     ["$pp_colour_addr"] = 0.05,
@@ -323,14 +323,14 @@ end
 
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawOpaqueRenderables()
-    if self.placesList[game.GetMap()] and !Arbitrage.lawEnable then
+    if Arbitrage.placesList and !Arbitrage.lawEnable then
         local client = LocalPlayer()
         local var = client:GetNetVar("arbLaw", -1)
-        local place = self.placesList[game.GetMap()][var]
+        local place = Arbitrage.placesList[var]
 
         if var >= 0 and place then
             local anim = math.sin(CurTime() * 1.5) * 5
-            local vec = place.pos - Vector(0, 0, 10 + anim)
+            local vec = place[1] - Vector(0, 0, 10 + anim)
 
             local ang = Angle(0, EyeAngles().y, EyeAngles().z)
             ang:RotateAroundAxis(ang:Forward(), 90)
@@ -349,7 +349,7 @@ function PLUGIN:PostDrawOpaqueRenderables()
     if !Arbitrage.lawEnable then return end
     if !Arbitrage.IsShowClassTrial() then return end
 
-    local pos = self.camPosEnd[game.GetMap()]
+    local pos = Arbitrage.camPosEnd
     if !pos then return end
 
     local angle = Angle(90, 0, 0)
@@ -426,7 +426,7 @@ end
 function PLUGIN:CameraTwist()
     hook.Add("CalcView", "arb.LawCameraTwist", function(ply, pos, angles, fov)
         local view = {
-            origin = self.camPosEnd[game.GetMap()],
+            origin = Arbitrage.camPosEnd,
             angles = Angle(0, -CurTime() % 2 * 180, 0),
             fov = fov,
             drawviewer = true
@@ -628,7 +628,7 @@ end
 
 
 netstream.Hook("arb.StartLaw", function()
-    PLUGIN:ReplaceVariables()
+    Arbitrage:ReplaceVariables()
     PLUGIN:Clear()
 
     PLUGIN:BlackScreen(4, 1)
@@ -644,7 +644,7 @@ netstream.Hook("arb.StartLaw", function()
 
     timer.Simple(6, function()
         hook.Remove("CalcView", "arb.LawCameraTwist")
-        PLUGIN:TransferCamPos(1)
+        PLUGIN:TransferCamPos()
     end)
 
     timer.Simple(6.5, function()
@@ -715,7 +715,7 @@ netstream.Hook("arb.StartLaw", function()
 end)
 
 netstream.Hook("arb.EndLaw", function()
-    PLUGIN:ReplaceVariables()
+    Arbitrage:ReplaceVariables()
     PLUGIN:BlackScreen(4, 1)
 
     timer.Simple(2, function()
@@ -746,7 +746,7 @@ netstream.Hook("arb.ClearLaw", function()
     Arbitrage.lawEnable = false
 
     PLUGIN:Clear()
-    PLUGIN:ReplaceVariables()
+    Arbitrage:ReplaceVariables()
 
     if IsValid(Arbitrage.gui.lawaction) then
         Arbitrage.gui.lawaction:AlphaTo(0, 0.5, 0, function()

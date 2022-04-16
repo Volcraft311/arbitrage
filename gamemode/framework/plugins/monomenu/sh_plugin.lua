@@ -61,7 +61,7 @@ PLUGIN.GameData = {
             Arbitrage:StartLaw()
         end,
         onCreate = function(client)
-            return Arbitrage.law.placesList[game.GetMap()] and (Arbitrage.IsStartGame() and !GetNetVar("arb.StartLaw")) or false
+            return Arbitrage.placesList and (Arbitrage.IsStartGame() and !GetNetVar("arb.StartLaw")) or false
         end
     },
     {
@@ -234,6 +234,23 @@ PLUGIN.GameData = {
 
             Evidence.list = {}
             netstream.Start(nil, "evidence.Clear")
+        end
+    },
+    {
+        data = "Очистить чат",
+        icon = "icon16/application_delete.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            for k, v in pairs(player.GetAll()) do
+                v:SendLua([[
+                    RunConsoleCommand("arb_chatbox_reload")
+
+                    timer.Simple(0.5, function()
+                        chat.AddText("Администрация очистила чат!")
+                    end)
+                ]])
+            end
         end
     },
     {
@@ -505,7 +522,7 @@ PLUGIN.ActionData = {
 
                 Arbitrage.players[client.steamid] = {
                     faction = client.client:Team(),
-                    place = Arbitrage.law.placesList[game.GetMap()] and math.Clamp(count + 1, 1, #Arbitrage.law.placesList[game.GetMap()]) or -1,
+                    place = Arbitrage.placesList and math.Clamp(count + 1, 1, #Arbitrage.placesList) or -1,
                     steamname = client.client:SteamName()
                 }
 
@@ -647,15 +664,15 @@ PLUGIN.ActionData = {
             onRun = function(client)
                 if SERVER then return false end
 
-                if !Arbitrage.law.placesList[game.GetMap()] then return end
+                if !Arbitrage.placesList then return end
 
                 local dermaPanel = DermaMenu()
-                for i = -1, #Arbitrage.law.placesList[game.GetMap()] do
-                    local data = i > 0 and i .. " место" or (i == 0 and "* Место Монокума" or "- Обнулить место")
+                for k, v in pairs(Arbitrage.placesList) do
+                    local data = k > 0 and k .. " место" or (k == 0 and "* Место Монокума" or "- Обнулить место")
 
                     dermaPanel:AddOption(data, function()
                         LocalPlayer():EmitSound(PLUGIN.ClickSound)
-                        netstream.Start("arb.MonoSetPlace", client.steamid, i)
+                        netstream.Start("arb.MonoSetPlace", client.steamid, k)
                     end)
                 end
                 dermaPanel:Open()

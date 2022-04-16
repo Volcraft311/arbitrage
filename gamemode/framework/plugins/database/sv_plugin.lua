@@ -30,8 +30,8 @@ function PLUGIN:OneSecond()
             local entity = self.deathPlaques[k]
             if !IsValid(entity) then
                 entity = ents.Create("arb_dead")
-                entity:SetPos(Arbitrage.law.placesList[game.GetMap()][place].pos - lifting)
-                entity:SetAngles(Arbitrage.law.placesList[game.GetMap()][place].ang)
+                entity:SetPos(Arbitrage.placesList[place][1] - lifting)
+                entity:SetAngles(Arbitrage.placesList[place][2])
                 entity:Spawn()
 
                 entity:SetCharacter({

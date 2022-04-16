@@ -122,7 +122,7 @@ function Arbitrage.player.Respawn(client)
     client:SetNoTarget(false)
     client:SetCollisionGroup(COLLISION_GROUP_PLAYER)
 
-    local vector, _ = ARBITRAGE_LOBBY[game.GetMap()] and table.Random(ARBITRAGE_LOBBY[game.GetMap()]) or Vector(0, 0, 0)
+    local vector, _ = Arbitrage.lobbyList and table.Random(Arbitrage.lobbyList) or Vector(0, 0, 0)
     client:SetPos(vector)
     client:SetEyeAngles(Angle(0, 0, 0))
 

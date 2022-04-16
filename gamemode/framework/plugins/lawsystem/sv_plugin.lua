@@ -60,8 +60,8 @@ function Arbitrage:StartLaw()
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then
-                local pos = place == 0 and PLUGIN.monokumPlace[game.GetMap()].pos or (PLUGIN.placesList[game.GetMap()][place] and PLUGIN.placesList[game.GetMap()][place].pos or nil)
-                local ang = place == 0 and PLUGIN.monokumPlace[game.GetMap()].ang or (PLUGIN.placesList[game.GetMap()][place] and PLUGIN.placesList[game.GetMap()][place].ang or nil)
+                local pos = place == 0 and Arbitrage.monokumPlace[1] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][1] or nil)
+                local ang = place == 0 and Arbitrage.monokumPlace[2] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][2] or nil)
 
                 if pos and ang then
                     players_ignore[k] = true
@@ -80,7 +80,7 @@ function Arbitrage:StartLaw()
             if !players_ignore[v:SteamID()] then
                 v.arbOldPos = v:GetPos()
 
-                v:SetPos(PLUGIN.camPosEnd[game.GetMap()])
+                v:SetPos(Arbitrage.camPosEnd)
             end
 
             timer.Simple(0.1, function()
@@ -191,8 +191,8 @@ function PLUGIN:PlayerInitialSpawn(client)
                 local place = tonumber(Arbitrage.players[steamid].place)
                 if !place then return end
 
-                local pos = place == 0 and PLUGIN.monokumPlace[game.GetMap()].pos or (PLUGIN.placesList[game.GetMap()][place] and PLUGIN.placesList[game.GetMap()][place].pos or nil)
-                local ang = place == 0 and PLUGIN.monokumPlace[game.GetMap()].ang or (PLUGIN.placesList[game.GetMap()][place] and PLUGIN.placesList[game.GetMap()][place].ang or nil)
+                local pos = place == 0 and Arbitrage.monokumPlace[1] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][1] or nil)
+                local ang = place == 0 and Arbitrage.monokumPlace[2] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][2] or nil)
 
                 if pos and ang then
                     client:SetPos(pos)
@@ -203,7 +203,7 @@ function PLUGIN:PlayerInitialSpawn(client)
         else
             client.arbOldPos = client:GetPos()
 
-            client:SetPos(PLUGIN.camPosEnd[game.GetMap()])
+            client:SetPos(Arbitrage.camPosEnd)
         end
 
         timer.Simple(0.1, function()

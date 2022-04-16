@@ -32,8 +32,13 @@ end
 function Arbitrage.persistent.DoPlayerDeath(client, attacker, damageinfo)
     if !client:InGame() then return end
 
-    local entity = Arbitrage.persistent.CreateRagdoll(client)
-    entity.client = client
-    entity.name = client:Name()
-    entity:SetCorpse(true)
+	local entity = Arbitrage.persistent.CreateRagdoll(client)
+	entity.client = client
+	entity.name = client:Name()
+
+	timer.Simple(3, function()
+		if !IsValid(entity) then return end
+
+		entity:SetCorpse(true)
+	end)
 end

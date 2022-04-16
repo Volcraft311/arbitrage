@@ -81,7 +81,7 @@ function PLUGIN:InitPlayersDoor()
 			if !IsValid(entity) then continue end
 
 			db[entity:MapCreationID()] = db[entity:MapCreationID()] or {}
-			db[entity:MapCreationID()].arbOwnerID = {}
+			db[entity:MapCreationID()].arbOwnerID = db[entity:MapCreationID()].arbOwnerID or {}
 			db[entity:MapCreationID()].arbOwnerID[v:SteamID()] = v:Name()
 			db[entity:MapCreationID()].indexDoor = entity:EntIndex()
 
@@ -115,7 +115,7 @@ netstream.Hook("arb.DoorAddOwner", function(client, data)
 		local db = Arbitrage.plugin.list.doors.DoorsData or {}
 		db[entity:MapCreationID()] = db[entity:MapCreationID()] or {}
 
-		db[entity:MapCreationID()].arbOwnerID = {}
+		db[entity:MapCreationID()].arbOwnerID = db[entity:MapCreationID()].arbOwnerID or {}
 		db[entity:MapCreationID()].arbOwnerID[data[1]] = data[2]
 		db[entity:MapCreationID()].indexDoor = entity:EntIndex()
 
@@ -137,7 +137,7 @@ netstream.Hook("arb.DoorRemoveOwner", function(client, data)
 		local db = Arbitrage.plugin.list.doors.DoorsData or {}
 		db[entity:MapCreationID()] = db[entity:MapCreationID()] or {}
 
-		db[entity:MapCreationID()].arbOwnerID = {}
+		db[entity:MapCreationID()].arbOwnerID = db[entity:MapCreationID()].arbOwnerID or {}
 		db[entity:MapCreationID()].arbOwnerID[data] = nil
 		db[entity:MapCreationID()].indexDoor = entity:EntIndex()
 

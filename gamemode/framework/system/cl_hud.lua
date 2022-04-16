@@ -582,6 +582,9 @@ function Arbitrage.hud.StaminaDraw()
 		stmData.stamina = Lerp(FrameTime() * 10, stmData.stamina, client.Stamina)
 
 		local staminaMax = 100 * (ScrW() * 0.001)
+		stmData.alphastamina = Lerp(FrameTime() * 10, stmData.alphastamina, stmData.stamina < 98 and 255 or 0)
+
+		if stmData.alphastamina <= 0.1 then return end
 
 		surface_SetDrawColor(ColorAlpha(stmData.color, stmData.alphastamina * (10 / 255)))
 		surface_DrawRect(ScrW() / 2 - staminaMax, ScrH() - 30, staminaMax * 2, 4)
@@ -595,8 +598,6 @@ function Arbitrage.hud.StaminaDraw()
 		stmData.color.r = Lerp(FrameTime() * 2, stmData.color.r, stmData.stamina <= 30 and 255 or 255)
 		stmData.color.g = Lerp(FrameTime() * 2, stmData.color.g, stmData.stamina <= 30 and 0 or 255)
 		stmData.color.b = Lerp(FrameTime() * 2, stmData.color.b, stmData.stamina <= 30 and 0 or 255)
-
-		stmData.alphastamina = Lerp(FrameTime() * 10, stmData.alphastamina, stmData.stamina < 98 and 255 or 0)
 
 		draw_SimpleText(math_floor(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
 	end

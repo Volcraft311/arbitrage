@@ -162,7 +162,7 @@ function PANEL:SetData(data, votingList)
     local isVoting = false
 
     for k, v in pairs(votingList or {}) do
-        if LocalPlayer():SteamID() == v:SteamID() then
+        if LocalPlayer():SteamID() == (v.SteamID and v:SteamID()) then
             isVoting = true
         end
     end
@@ -224,7 +224,7 @@ function PANEL:SetData(data, votingList)
 end
 
 function PANEL:RemovingPanels()
-    for k, v in pairs(self.panels) do
+    for k, v in pairs(self.panels or {}) do
         if !IsValid(v) then continue end
 
         v:AlphaTo(0, 0.5, 0, function()

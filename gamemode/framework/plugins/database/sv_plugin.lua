@@ -83,7 +83,7 @@ function PLUGIN:PlayerInitial(client)
     if leaveEntity and IsValid(leaveEntity) then
         local data = leaveEntity.data
 
-        client:SetPos(leaveEntity:GetPos() + lifting)
+        client:SetPos(leaveEntity:GetPos() + Vector(0, 0, 10))
         client:SetEyeAngles(leaveEntity:GetAngles())
 
         Arbitrage.player.SetTeam(client, data.faction)

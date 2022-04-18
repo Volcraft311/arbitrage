@@ -50,66 +50,74 @@ function PANEL:SetPlayer(data)
 end
 
 function PANEL:InitCategory(client)
+    local count = -1
+
     for k, v in ipairs(PLUGIN.ActionData) do
-        local category = self.categoryPanel:Add("Panel")
-        category:SetTall(0)
-        category:Dock(TOP)
-        category:DockMargin(0, Arbitrage.ResolutionH(5), 0, 0)
-        category.Paint = function(_, w, h)
-            surface.SetDrawColor(255, 255, 255, 100)
-            surface.DrawRect(0, h - 2, w, 2)
-        end
+        count = count + 1
 
-        for k2, v2 in pairs(v) do
-            local allow = true
-            if v2.onCreate then
-                local bState = v2.onCreate(client)
+        timer.Simple(count * 0.07, function()
+            if !IsValid(self) then return end
 
-                if !bState then
-                    allow = false
+            local category = self.categoryPanel:Add("Panel")
+            category:SetTall(0)
+            category:Dock(TOP)
+            category:DockMargin(0, Arbitrage.ResolutionH(5), 0, 0)
+            category.Paint = function(_, w, h)
+                surface.SetDrawColor(255, 255, 255, 100)
+                surface.DrawRect(0, h - 2, w, 2)
+            end
+
+            for k2, v2 in pairs(v) do
+                local allow = true
+                if v2.onCreate then
+                    local bState = v2.onCreate(client)
+
+                    if !bState then
+                        allow = false
+                    end
                 end
-            end
 
-            local h = Arbitrage.ResolutionH(30)
-            local text = isfunction(v2.data) and v2.data(client) or tostring(v2.data)
+                local h = Arbitrage.ResolutionH(30)
+                local text = isfunction(v2.data) and v2.data(client) or tostring(v2.data)
 
-            local alpha = v2.onRun and 255 or 150
-            local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v2.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
+                local alpha = v2.onRun and 255 or 150
+                local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v2.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
 
-            local button = category:Add((v2.onRun and allow) and "DButton" or "DPanel")
-            if v2.onRun then
-                button:SetText("")
-            end
+                local button = category:Add((v2.onRun and allow) and "DButton" or "DPanel")
+                if v2.onRun then
+                    button:SetText("")
+                end
 
-            button:SetTall(h)
-            button:Dock(TOP)
-            button.alpha = 0
-            button.Paint = function(_, w, h)
-                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and v2.onRun and allow) and 200 or 0)
+                button:SetTall(h)
+                button:Dock(TOP)
+                button.alpha = 0
+                button.Paint = function(_, w, h)
+                    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and v2.onRun and allow) and 200 or 0)
 
-                surface.SetDrawColor(27, 10, 13, _.alpha)
-                surface.DrawRect(0, 0, w, h)
-
-                parsed:draw(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(4), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-
-                if !allow then
-                    surface.SetDrawColor(255, 0, 0, 20)
+                    surface.SetDrawColor(27, 10, 13, _.alpha)
                     surface.DrawRect(0, 0, w, h)
+
+                    parsed:draw(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(4), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+
+                    if !allow then
+                        surface.SetDrawColor(255, 0, 0, 20)
+                        surface.DrawRect(0, 0, w, h)
+                    end
                 end
-            end
-            button.DoClick = function()
-                if v2.onRun and allow then
-                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
-                    v2.onRun(client)
+                button.DoClick = function()
+                    if v2.onRun and allow then
+                        LocalPlayer():EmitSound(PLUGIN.ClickSound)
+                        v2.onRun(client)
 
-                    netstream.Start("arb.MonoRunCommand", client, k, k2)
+                        netstream.Start("arb.MonoRunCommand", client, k, k2)
+                    end
                 end
+
+                category:SetTall(category:GetTall() + button:GetTall() + 2)
             end
 
-            category:SetTall(category:GetTall() + button:GetTall() + 2)
-        end
-
-        self.categoryPanel:AddItem(category)
+            self.categoryPanel:AddItem(category)
+        end)
     end
 end
 

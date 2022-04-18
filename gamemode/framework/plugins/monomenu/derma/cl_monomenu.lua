@@ -205,55 +205,62 @@ function PANEL:SetData(data)
 
     self.data = data
 
+    local count = -1
     for i = 1, 2 do
         local tableData = i == 1 and PLUGIN.GameData or PLUGIN.AdminData
 
         for k, v in ipairs(tableData) do
-            local allow = true
-            if v.onCreate then
-                local bState = v.onCreate(LocalPlayer())
+        	count = count + 1
 
-                if !bState then
-                    allow = false
-                end
-            end
+        	timer.Simple(count * 0.01, function()
+        		if !IsValid(self) then return end
 
-            local h = Arbitrage.ResolutionH(30)
-            local text = isfunction(v.data) and v.data(client) or tostring(v.data)
-            local alpha = v.onRun and 255 or 150
+	            local allow = true
+	            if v.onCreate then
+	                local bState = v.onCreate(LocalPlayer())
 
-            local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
+	                if !bState then
+	                    allow = false
+	                end
+	            end
 
-            local panel_add = i == 1 and self.gamePanel or self.adminPanel
+	            local h = Arbitrage.ResolutionH(30)
+	            local text = isfunction(v.data) and v.data(client) or tostring(v.data)
+	            local alpha = v.onRun and 255 or 150
 
-            local button = panel_add:Add((v.onRun and allow) and "DButton" or "DPanel")
-            button:SetText("")
-            button:SetTall(Arbitrage.ResolutionH(30))
-            button:Dock(TOP)
-            button:DockMargin(0, 0, 0, Arbitrage.ResolutionH(5))
-            button.alpha = 0
-            button.Paint = function(_, w, h)
-                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and v.onRun and allow) and 200 or 0)
+	            local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
 
-                surface.SetDrawColor(27, 10, 13, _.alpha)
-                surface.DrawRect(0, 0, w, h)
+	            local panel_add = i == 1 and self.gamePanel or self.adminPanel
 
-                parsed:draw(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(4), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+	            local button = panel_add:Add((v.onRun and allow) and "DButton" or "DPanel")
+	            button:SetText("")
+	            button:SetTall(Arbitrage.ResolutionH(30))
+	            button:Dock(TOP)
+	            button:DockMargin(0, 0, 0, Arbitrage.ResolutionH(5))
+	            button.alpha = 0
+	            button.Paint = function(_, w, h)
+	                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and v.onRun and allow) and 200 or 0)
 
-                if !allow then
-                    surface.SetDrawColor(255, 0, 0, 20)
-                    surface.DrawRect(0, 0, w, h)
-                end
-            end
+	                surface.SetDrawColor(27, 10, 13, _.alpha)
+	                surface.DrawRect(0, 0, w, h)
 
-            button.DoClick = function()
-                if v.onRun then
-                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
-                    v.onRun(client)
+	                parsed:draw(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(4), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 
-                    netstream.Start("arb.MonoRunCommandC", i, k)
-                end
-            end
+	                if !allow then
+	                    surface.SetDrawColor(255, 0, 0, 20)
+	                    surface.DrawRect(0, 0, w, h)
+	                end
+	            end
+
+	            button.DoClick = function()
+	                if v.onRun then
+	                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
+	                    v.onRun(client)
+
+	                    netstream.Start("arb.MonoRunCommandC", i, k)
+	                end
+	            end
+	        end)
         end
     end
 

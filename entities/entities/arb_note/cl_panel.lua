@@ -387,32 +387,32 @@ function PANEL:SetData(data, bEdit)
                 v:Remove()
             end
         end
-    end
 
-    for k, v in ipairs(NOTE_FONTS) do
-        local panel = self.fontsPanel:Add("DButton")
-        panel:SetText("")
-        panel:SetFont(v.font .. 7)
-        panel:Dock(TOP)
-        panel.alpha = 185
-        panel.width = 0
-        panel.Paint = function(_, w, h)
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.data.font == k) and 255 or 185)
+		for k, v in ipairs(NOTE_FONTS) do
+			local panel = self.fontsPanel:Add("DButton")
+			panel:SetText("")
+			panel:SetFont(v.font .. 7)
+			panel:Dock(TOP)
+			panel.alpha = 185
+			panel.width = 0
+			panel.Paint = function(_, w, h)
+			    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.data.font == k) and 255 or 185)
 
-            draw.DrawText(v.name, v.font .. 7, 25, Arbitrage.ResolutionH(3), Color(0, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
+			    draw.DrawText(v.name, v.font .. 7, 25, Arbitrage.ResolutionH(3), Color(0, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
 
-            surface.SetFont(v.font .. 7)
-            local width = surface.GetTextSize(v.name)
-            _.width = Lerp(FrameTime() * 5, _.width, (_:IsHovered() or self.data.font == k) and width or 0)
+			    surface.SetFont(v.font .. 7)
+			    local width = surface.GetTextSize(v.name)
+			    _.width = Lerp(FrameTime() * 5, _.width, (_:IsHovered() or self.data.font == k) and width or 0)
 
-            surface.SetDrawColor(0, 0, 0, _.alpha)
-            surface.DrawRect(25, h - 1, _.width, 1)
-        end
-        panel.DoClick = function(_, w, h)
-            netstream.Start("arb.NoteAction", "CHANGE_FONT", data.entity, data.page, k)
-        end
+			    surface.SetDrawColor(0, 0, 0, _.alpha)
+			    surface.DrawRect(25, h - 1, _.width, 1)
+			end
+			panel.DoClick = function(_, w, h)
+			    netstream.Start("arb.NoteAction", "CHANGE_FONT", data.entity, data.page, k)
+			end
 
-        self.fontsPanel:AddItem(panel)
+			self.fontsPanel:AddItem(panel)
+		end
     end
 
     self.panels = {}

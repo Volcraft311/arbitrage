@@ -70,6 +70,12 @@ function PLUGIN:PlayerPostThink(client)
     end
 end
 
+function PLUGIN:PlayerDisconnected(client)
+    if client:GetNetVar("inbed") then
+        client:SetNetVar("inbed", false)
+    end
+end
+
 netstream.Hook("arb.GetUpBed", function(client)
     Arbitrage.action.ActionRun(client, "Вы просыпаетесь", 5, function()
         return false

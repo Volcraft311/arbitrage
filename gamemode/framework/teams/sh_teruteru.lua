@@ -15,7 +15,7 @@ local TEAM = {emodjiList = {}}
 TEAM.name = "Тэрутэру Ханамура"
 TEAM.description = "Абсолютный Повар"
 TEAM.category = "GOODBYE DESPAIR"
-TEAM.model = "models/player/yourtoast4/danganronpa/teruteru_hanamure.mdl"
+TEAM.model = "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl"
 TEAM.path = "danganronpa/characters/teruteru"
 
 TEAM.color = Color(240, 201, 73)

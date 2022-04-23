@@ -161,7 +161,4 @@ function PANEL:FixTall()
     self.actPanel:DockMargin(0, ScrH() / 2 - a / 2, 0, W(20))
 end
 
-function PANEL:Paint(w, h)
-end
-
-vgui.Register("arb.ContextMenu", PANEL, "DPanel")
+vgui.Register("arb.ContextMenu", PANEL, "EditablePanel")

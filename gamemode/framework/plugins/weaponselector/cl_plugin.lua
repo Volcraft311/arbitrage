@@ -122,6 +122,8 @@ end)
 
 for i = 1, 9 do
     PLUGIN:AddBind("slot" .. i, function(panel)
+        if IsValid(Arbitrage.gui.fastSlots) then return true end
+
         panel.timeFocus = RealTime() + 5
 
         if IsValid(panel.panels[i]) then
@@ -145,15 +147,15 @@ PLUGIN:CreateCategory("build", "СТРОИТЕЛЬСТВО")
 
 PLUGIN:StandartCategory("weapons")
 
-PLUGIN:AddWeapon("tfa_arcade_first", "main")
-PLUGIN:AddWeapon("tfa_arcade_key", "main")
+PLUGIN:AddWeapon("academy_first", "main")
+PLUGIN:AddWeapon("academy_key", "main")
 
 PLUGIN:AddWeapon("weapon_physgun", "build")
 PLUGIN:AddWeapon("gmod_tool", "build")
 PLUGIN:AddWeapon("gmod_camera", "main")
 
-PLUGIN:AddIcon("tfa_arcade_first", "danganronpa/selector/first.png")
-PLUGIN:AddIcon("tfa_arcade_key", "danganronpa/selector/key.png")
+PLUGIN:AddIcon("academy_first", "danganronpa/selector/first.png")
+PLUGIN:AddIcon("academy_key", "danganronpa/selector/key.png")
 
 
 

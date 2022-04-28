@@ -43,6 +43,7 @@ function Arbitrage.player.SetTeam(client, data, bRespawn)
     end
 
     Arbitrage.player.SetupSpeed(client)
+    Arbitrage.player.SetupInventory(client)
 
     hook.Run("SelectCharacter", client, data)
 end
@@ -85,10 +86,24 @@ end
 function Arbitrage.player.SetupWeapons(client)
     if !IsValid(client) then return end
 
-    client:Give("tfa_arcade_first")
-    client:Give("tfa_arcade_key")
+    client:Give("academy_first")
+    client:Give("academy_key")
 
-    client:SelectWeapon("tfa_arcade_key")
+    client:SelectWeapon("academy_key")
+end
+
+function Arbitrage.player.SetupInventory(client)
+    local inventory = client:GetInventory() or InventoryBase.CreateInventory()
+    inventory:SetOwner(client)
+
+    local faction = Arbitrage.teams.Get(client:Team())
+    if !faction then return end
+
+    local w = faction.inventoryW or 4
+    local h = faction.inventoryH or 2
+
+    inventory:SetSize(w, h)
+    inventory:Sync()
 end
 
 function Arbitrage.player.Respawn(client)

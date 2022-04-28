@@ -47,7 +47,7 @@ function Arbitrage:StartLaw()
     for k, v in ipairs(player.GetAll()) do
         v:SetNetVar("arbEmojiShow", nil)
         v:SetMoveType(MOVETYPE_WALK)
-        v:SelectWeapon("tfa_arcade_key")
+        v:SelectWeapon("academy_key")
     end
 
     timer.Simple(2, function()
@@ -182,7 +182,7 @@ function PLUGIN:PlayerInitialSpawn(client)
     timer.Simple(3, function()
         client:SetNetVar("arbEmojiShow", nil)
         client:SetMoveType(MOVETYPE_WALK)
-        client:SelectWeapon("tfa_arcade_key")
+        client:SelectWeapon("academy_key")
 
         netstream.Start(client, "arb.StartLaw")
 

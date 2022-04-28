@@ -29,7 +29,7 @@ end
 function PLUGIN:PlayerPostThink(client)
     if client and client:oldAlive() then
         local weapon = client:GetActiveWeapon()
-        if weapon and IsValid(weapon) and weapon:GetClass() == "tfa_arcade_first" then
+        if weapon and IsValid(weapon) and weapon:GetClass() == "academy_first" then
             if !client.Drag then return end
 
             local pos = client:GetShootPos()
@@ -146,7 +146,7 @@ function PLUGIN:EntityTakeDamage(target, dmginfo)
         local weapon = attacker:GetActiveWeapon()
         if weapon and IsValid(weapon) then
         	local class = weapon:GetClass()
-        	if class != "tfa_arcade_first" then return end
+        	if class != "academy_first" then return end
 
             dmginfo:SetDamage(target:Health() <= 20 and 0 or 2)
         end

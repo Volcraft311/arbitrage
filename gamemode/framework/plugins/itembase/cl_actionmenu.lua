@@ -102,7 +102,7 @@ function PLUGIN.actionMenu:Paint()
             end
 
             if client:KeyPressed(IN_USE) and isSelect and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then
-                netstream.Start("ItemBase:SendAction", v.entity, isSelect)
+                netstream.Start("ItemBase:SendAction", v.entity:GetItemID(), isSelect)
 
                 self.stored[k] = nil
                 PLUGIN.actionMenu.cd = CurTime() + 0.2

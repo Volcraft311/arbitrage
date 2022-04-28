@@ -13,12 +13,19 @@ function ItemBase:PlayerInitialSpawn(client)
     end
 end
 
-netstream.Hook("ItemBase:SendAction", function(client, entity, action)
-    if entity:GetClass() != "arb_item" then return end
-    if entity:GetPos():DistToSqr(client:GetPos()) >= 25000 then return end
-
-    local item = ItemBase.instances[entity:GetItemID()]
+netstream.Hook("ItemBase:SendAction", function(client, itemID, action)
+    local item = ItemBase.instances[itemID]
     if !item then return end
+
+    local entity = item:GetEntity()
+    if IsValid(entity) then
+        if entity:GetClass() != "arb_item" then return end
+        if entity:GetPos():DistToSqr(client:GetPos()) >= 25000 then return end
+    else
+        local inventory = item:GetInventory()
+        if !inventory then return end
+        if !inventory:IsReceiver(client) then return end
+    end
 
     item.player = client
     item.entity = entity
@@ -59,4 +66,29 @@ netstream.Hook("ItemBase:SpawnItem", function(client, uniqueID)
     ang.pitch = 0
 
     ItemBase.CreateItemInWorld(uniqueID, tr.HitPos + Vector(0, 0, 10), ang)
+end)
+
+netstream.Hook("ItemBase:GiveItem", function(client, target, uniqueID)
+    if !uniqueID then return end
+    if !client:IsAdmin() then return end
+
+    if !IsValid(target) and !target:IsPlayer() then return end
+
+    local inventory = target:GetInventory()
+    if !inventory then return end
+
+    local item = ItemBase.CreateItem(uniqueID)
+    if !item then return end
+
+    local errNotify = item:Transfer(inventory:GetID())
+
+    if errNotify then
+        return Arbitrage.commands.Notify(client, errNotify)
+    end
+
+    Arbitrage.commands.Notify(client, "Вы успешно выдали \"" .. item:GetName() .. "\" игроку \"" .. target:Name() .. "\"!")
+
+    if client != target then
+        Arbitrage.commands.Notify(target, "Администратор выдал вам предмет \"" .. item:GetName() .. "\"!")
+    end
 end)

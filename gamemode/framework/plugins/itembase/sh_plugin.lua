@@ -12,29 +12,30 @@ PLUGIN.data = PLUGIN.data or {}
 function ItemBase.GetBase(base)
     local meta = table.Copy(Arbitrage.meta.item)
 
-    meta:AddAction("Выбросить (DEV)", {
-        icon = "icon16/world.png",
+    meta:AddAction("Выбросить", {
         OnRun = function(item)
-            local client = item.player
-
-            Arbitrage.commands.Notify(client, "В разработке!")
+            item:Transfer(nil)
             return false
         end,
         OnCanRun = function(item)
-            return false
+            return !IsValid(item.entity)
         end
     })
 
-    meta:AddAction("Взять (DEV)", {
-        icon = "icon16/box.png",
+    meta:AddAction("Взять", {
         OnRun = function(item)
             local client = item.player
 
-            Arbitrage.commands.Notify(client, "В разработке!")
+            local notify = client:GetInventory():AddItem(item:GetID())
+
+            if notify then
+                Arbitrage.commands.Notify(client, notify)
+            end
+
             return false
         end,
         OnCanRun = function(item)
-            return true
+            return IsValid(item.entity)
         end
     })
 

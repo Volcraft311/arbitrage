@@ -18,14 +18,16 @@ local icons = {
 
 spawnmenu.AddContentType("Item", function(container, item)
     local name = item:GetName()
-    local uniqueID = item.uniqueID
-
     if !name then return end
 
+    local uniqueID = item.uniqueID
+
     local icon = vgui.Create("ContentIcon", container)
+    icon:SetName(name)
     icon:SetContentType("Item")
     icon:SetSpawnName(uniqueID)
-    icon:SetName(name)
+    icon:SetMaterial(item.icon)
+
 
     icon.DoClick = function()
         netstream.Start("ItemBase:SpawnItem", uniqueID)
@@ -36,9 +38,28 @@ spawnmenu.AddContentType("Item", function(container, item)
     icon.OpenMenu = function()
         local Menu = DermaMenu()
 
-        Menu:AddOption("Скопировать ID", function()
+        local _ = Menu:AddOption("Скопировать ID", function()
             SetClipboardText(uniqueID)
         end)
+        _:SetIcon("icon16/brick_link.png")
+
+        local _ = Menu:AddOption("Выдать себе", function()
+            netstream.Start("ItemBase:GiveItem", LocalPlayer(), uniqueID)
+        end)
+        _:SetIcon("icon16/accept.png")
+
+        local subMenu, parentMenuOption = Menu:AddSubMenu("Выдать игроку")
+        parentMenuOption:SetIcon("icon16/status_online.png")
+
+        for k, v in ipairs(player.GetAll()) do
+            if v == LocalPlayer() then continue end
+
+            local mat = Arbitrage.chat:GetIcon(v):GetName() .. ".png"
+            local _ = subMenu:AddOption(v:Name() .. " (" .. v:SteamName() .. ")", function()
+                netstream.Start("ItemBase:GiveItem", v, uniqueID)
+            end)
+            _:SetIcon(mat)
+        end
 
         Menu:Open()
     end
@@ -54,9 +75,9 @@ spawnmenu.AddCreationTab("Предметы", function()
     local categories = {}
 
     for k, v in pairs(ItemBase.list) do
-        if categories[v.category] then continue end
+        if categories[v:GetCategory()] then continue end
 
-        local node = tree:AddNode(v.category, icons[v.category] and ("icon16/" .. icons[v.category] .. ".png") or "icon16/brick.png")
+        local node = tree:AddNode(v:GetCategory(), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")
 
         node.DoPopulate = function(this)
             if (this.Container) then return end
@@ -66,7 +87,7 @@ spawnmenu.AddCreationTab("Предметы", function()
             this.Container:SetTriggerSpawnlistChange(false)
 
             for k2, v2 in pairs(ItemBase.list) do
-                if v.category == v2.category then
+                if v:GetCategory() == v2:GetCategory() then
                     spawnmenu.CreateContentIcon("Item", this.Container, v2)
                 end
             end
@@ -77,12 +98,12 @@ spawnmenu.AddCreationTab("Предметы", function()
             base:SwitchPanel(this.Container)
         end
 
-        categories[v.category] = node
+        categories[v:GetCategory()] = node
     end
 
     local FirstNode = tree:Root():GetChildNode(0)
 
-    if (IsValid(FirstNode)) then
+    if IsValid(FirstNode) then
         FirstNode:InternalDoClick()
     end
 

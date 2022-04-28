@@ -2,6 +2,7 @@ local ITEM = Arbitrage.meta.item or {}
 ITEM.__index = ITEM
 ITEM.name = "База предметов"
 ITEM.description = "Стандартная база для создания предметов."
+ITEM.icon = "danganronpa/inventory/items/antiquebooktest.png"
 ITEM.category = "Остальное"
 ITEM.id = ITEM.id or 0
 ITEM.model = "models/props_lab/box01a.mdl"
@@ -28,6 +29,10 @@ function ITEM:GetName()
     return self.name
 end
 
+function ITEM:GetIcon()
+    return self.icon
+end
+
 function ITEM:GetDescription()
     return self.description
 end
@@ -40,8 +45,22 @@ function ITEM:GetSkin()
     return self.skin or 0
 end
 
+function ITEM:GetCategory()
+    return self.category
+end
+
 function ITEM:AddAction(name, data)
     self.functions[name] = data
+end
+
+function ITEM:HookAdd(name, func)
+    ITEM.hooks[name] = func
+end
+
+function ITEM:HookRun(name)
+    if ITEM.hooks[name] then
+        ITEM.hooks[name](self)
+    end
 end
 
 function ITEM:GetValidActions()
@@ -76,7 +95,62 @@ function ITEM:GetData(key, default)
     return ItemBase.data[self:GetID()] and (ItemBase.data[self:GetID()][key] or default) or default
 end
 
+function ITEM:GetInventory()
+    return self.inventory
+end
+
 if SERVER then
+    function ITEM:Transfer(id, x, y)
+        local inventory = InventoryBase.instances[id]
+        if inventory then
+            if x and y then
+                local find = inventory:GetItemAt(x, y)
+
+                if find then
+                    return "Данный слот занят!"
+                end
+            else
+                x, y = inventory:FindEmptySlot()
+            end
+
+            if !x or !y then return "Инвентарь заполнен!" end
+
+            self:HookRun("transfer")
+            self:Remove(true, true)
+            inventory.slots[x][y] = self
+        else
+            inventory = self:GetInventory()
+            if !inventory then return "Невозможно передвинуть предмет!" end
+
+            local owner = inventory:GetOwner()
+            if !IsValid(owner) then return end
+
+            local dist = 100
+            local tr = owner:GetPos() + owner:GetAngles():Forward() * dist
+
+            if owner:IsPlayer() then
+                tr = util.TraceLine({
+                    start = owner:EyePos(),
+                    endpos = owner:EyePos() + owner:EyeAngles():Forward() * dist,
+                    filter = owner
+                })
+            end
+
+            self:HookRun("drop")
+            self:Remove(true, true)
+            self:Spawn(tr.HitPos + Vector(0, 0, 5))
+            inventory = nil -- чистим инвентарь, ибо выбросили
+        end
+
+        local backUpInventory = inventory or self.inventory
+
+        if backUpInventory then
+            backUpInventory:Sync()
+        end
+
+        self.inventory = inventory
+    end
+
     function ITEM:SetData(key, value, receivers)
         if !ItemBase.instances[self:GetID()] then return end
 
@@ -86,15 +160,29 @@ if SERVER then
         netstream.Start(receivers, "ItemBase:SetData", self:GetID(), key, value)
     end
 
-    function ITEM:Remove(bNoDelete)
+    function ITEM:Remove(bNoDelete, bNoSync)
         local entity = self:GetEntity()
 
         if IsValid(entity) then
             entity:Remove()
         end
 
+        local inventory = self.inventory
+        if inventory then
+            local x, y = inventory:GetItemSlot(self:GetID())
+
+            if x and y then
+                inventory.slots[x][y] = nil
+            end
+        end
+
         if !bNoDelete then
+            self:HookRun("remove")
             ItemBase.instances[self:GetID()] = nil
+        end
+
+        if !bNoSync and inventory then
+            inventory:Sync()
         end
     end
 
@@ -107,6 +195,7 @@ if SERVER then
         entity:Spawn()
 
         entity:SetItem(self:GetID())
+        self:Sync()
 
         return entity
     end

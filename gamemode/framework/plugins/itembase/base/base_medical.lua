@@ -29,7 +29,6 @@ local function RecoveryFunc(item, target)
 end
 
 BASE:AddAction("Использовать на себе", {
-    icon = "icon16/world.png",
     OnRun = function(item)
         local client = item.player
 
@@ -47,7 +46,6 @@ BASE:AddAction("Использовать на себе", {
 })
 
 BASE:AddAction("Использовать на другом игроке", {
-    icon = "icon16/world.png",
     OnRun = function(item)
         local client = item.player
 

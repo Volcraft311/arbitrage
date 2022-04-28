@@ -207,8 +207,9 @@ function PANEL:AddTab(id, filter)
 
 	button:SetWide(width + x)
 	button.Paint = function(_, w, h)
-		Arbitrage.DrawTextBlur(id, "arb.Font_FuturaPTBook_12", w / 2 - x * 0.125, H(3), Color(255, 238, 177, 255), TEXT_ALIGN_CENTER)
+		if Arbitrage.gui.chat:GetAlpha() <= 1 then return end
 
+		Arbitrage.DrawTextBlur(id, "arb.Font_FuturaPTBook_12", w / 2 - x * 0.125, H(3), Color(255, 238, 177, 255), TEXT_ALIGN_CENTER)
 		draw.DrawText("/", "arb.Font_FuturaPTBook_12", w - x * 0.25, H(3), Color(255, 255, 255, 10), TEXT_ALIGN_CENTER)
 	end
 

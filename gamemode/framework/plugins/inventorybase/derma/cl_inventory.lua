@@ -1,0 +1,169 @@
+local crossMat = Arbitrage.GetMaterial("danganronpa/inventory/cross.png")
+
+local PANEL = {}
+
+function PANEL:Init()
+	self:SetPos(0, 0)
+	self:SetSize(0, 0)
+
+	self.item = nil
+	self.inventory = nil
+	self.slots = {}
+
+	-- self:CreateHook()
+end
+
+function PANEL:SetInventory(inventory)
+	InventoryBase.invpanels[inventory:GetID()] = self
+
+	self.inventory = inventory
+	self:InitInventory()
+end
+
+function PANEL:InitInventory()
+	for k, v in ipairs(self:GetChildren()) do
+	    v:Remove()
+	end
+
+	local sizeW, sizeH, indentW, indentH = W(90), H(90), W(20), H(16)
+	local w, h = sizeW * self.inventory.w + indentW * self.inventory.w - indentW, sizeH * self.inventory.h + indentH * self.inventory.h - indentH
+
+	self:SetSize(w, h)
+
+	for x = 1, self.inventory.w do
+	    self.slots[x] = self.slots[x] or {}
+
+	    for y = 1, self.inventory.h do
+	        local slot = self:Add("DPanel")
+	        slot:SetPos(sizeW * (x - 1) + indentW * (x - 1), sizeH * (y - 1) + indentH * (y - 1))
+	        slot:SetSize(sizeW, sizeH)
+	        slot.slotX = x
+	        slot.slotY = y
+
+	        self:InitSlot(slot)
+	        self.slots[x][y] = slot
+	    end
+	end
+end
+
+function PANEL:InitSlot(panel)
+    local x, y = panel.slotX, panel.slotY
+
+    panel.alpha = 14
+    panel.PaintReceive = function(_, w, h, previewX, previewY, itemPanel)
+        if itemPanel.selectPanel == panel then
+            local hasItem = panel.item
+            local color = hasItem and Color(255, 0, 0) or Color(255, 234, 238)
+
+            surface.SetDrawColor(ColorAlpha(color, 10))
+            surface.DrawRect(0, 0, w, h)
+        end
+    end
+
+    local color = ColorAlpha(Color(99, 17, 32), 20)
+
+    panel.Paint = function(this, w, h)
+    	local bSelect = panel.itemPanel and ((panel.itemPanel:IsHovered() or panel.item == self.item) and true) or false
+
+    	this.alpha = Lerp(FrameTime() * 10, this.alpha, bSelect and 255 or 14)
+
+        surface.SetDrawColor(1, 1, 1, 229.5)
+        surface.DrawRect(0, 0, w, h)
+
+        if panel.itemPanel and panel.itemPanel.selectPanel then
+            surface.SetDrawColor(color)
+            surface.DrawRect(0, 0, w, h)
+        end
+
+        local panels = dragndrop.GetDroppable() or {}
+        local itemPanel = panels[1]
+
+        if IsValid(itemPanel) then
+            this:PaintReceive(w, h, this.previewX, this.previewY, itemPanel)
+        end
+
+        if !panel.item then
+            surface.SetDrawColor(255, 255, 255, 12.75)
+            surface.SetMaterial(crossMat)
+            surface.DrawTexturedRect(0, 0, w, h)
+        else
+            if panel.item.Paint then
+                panel.item:Paint(panel.item, w, h)
+            end
+        end
+
+        surface.SetDrawColor(99, 17, 32, this.alpha)
+        surface.DrawOutlinedRect(0, 0, w, h, 2)
+    end
+
+    panel:Receiver("transferItem", function(this, panels, bDoDrop)
+        local item = panels[1]
+        if !item then return end
+
+        if bDoDrop then
+            item.selectPanel = nil
+
+            local parent = item:GetParent()
+            if !parent then return end
+            if panel.item then return end
+
+            netstream.Start("InventoryBase:TransferItem", item.item:GetID(), this.slotX, this.slotY)
+        else
+            item.selectPanel = this
+        end
+    end)
+
+    local item = self.inventory:GetItemAt(x, y)
+    if item then
+    	local icon = Arbitrage.GetMaterial(item:GetIcon())
+
+        local itemPanel = panel:Add("DButton")
+        itemPanel:SetText("")
+        itemPanel:Dock(FILL)
+        itemPanel:Droppable("transferItem")
+        itemPanel.Paint = function(this, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(icon)
+            surface.DrawTexturedRect(0, 0, w, h)
+
+            if this:IsHovered() and self.HoveredItem then
+                self:HoveredItem(item)
+
+                if self.item == item then return end
+                self.item = item
+            end
+        end
+
+        itemPanel.DoClick = function()
+        	if self.item == item then return end
+
+        	self.item = item
+
+            if self.SelectItem then
+            	self:SelectItem(item)
+            end
+        end
+
+        local oldOnMouseReleased = itemPanel.OnMouseReleased
+        itemPanel.OnMouseReleased = function(this, key)
+            itemPanel.selectPanel = nil
+
+            oldOnMouseReleased(this, key)
+        end
+
+        local oldOnMousePressed = itemPanel.OnMousePressed
+        itemPanel.OnMousePressed = function(this, key)
+            if key == MOUSE_RIGHT then
+                netstream.Start("InventoryBase:GetActions", item:GetID())
+            end
+
+            oldOnMousePressed(this, key)
+        end
+
+        itemPanel.item = item
+        panel.item = item
+        panel.itemPanel = itemPanel
+    end
+end
+
+vgui.Register("InventoryBase:Inventory", PANEL, "EditablePanel")

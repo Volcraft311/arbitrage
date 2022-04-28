@@ -65,7 +65,8 @@ function PLUGIN:PlayerDisconnected(client)
             weapons = weaponsList,
             activeweapon = client:GetActiveWeapon():GetClass(),
             statistic = {},
-            evidence = client:GetEvidences()
+            evidence = client:GetEvidences(),
+            inventoryID = client:GetInventory():GetID()
         }
 
         for k, v in ipairs({"Hunger", "Thirst", "Sleep"}) do
@@ -107,6 +108,17 @@ function PLUGIN:PlayerInitial(client)
         end
 
         Arbitrage.player.SetupSpeed(client)
+        Arbitrage.player.SetupInventory(client)
+
+        local invID = data.inventoryID
+        if invID then
+            local inventory = InventoryBase.instances[itemID]
+
+            if inventory then
+                inventory:SetOwner(client)
+                inventory:Sync()
+            end
+        end
 
         leaveEntity:Remove()
         self.disconnectPlayers[steamid] = nil

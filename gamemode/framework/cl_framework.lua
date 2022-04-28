@@ -283,15 +283,13 @@ function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
     end
 
     if id == "open_context" and !IsValid(Arbitrage.gui.context) and !IsValid(Arbitrage.menu) and !isUseTool and !Arbitrage.gui.chat:GetActive() then
-        local panel = vgui.Create("arb.ContextMenu")
-        -- eh...
+        vgui.Create("arb.ContextMenu")
     elseif id == "open_scoreboard" and !IsValid(Arbitrage.menu) and !Arbitrage.gui.chat:GetActive() then
         if IsValid(Arbitrage.gui.scoreboard) then
             Arbitrage.gui.scoreboard:Remove()
         end
 
-        local panel = vgui.Create("arb.ScoreBoard")
-        -- eh...
+        vgui.Create("arb.ScoreBoard")
     elseif id == "open_mainmenu_ui" then
         if IsValid(Arbitrage.menu) then
             Arbitrage.menu:AlphaTo(0, 0.3, 0, function()
@@ -323,6 +321,20 @@ function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
         end
 
         Arbitrage.gui.logmenu = vgui.Create("arb.EvidenceMenu")
+    elseif id == "open_interface" then
+        if IsValid(Arbitrage.gui.inventory) then
+            Arbitrage.gui.inventory:SetMouseInputEnabled(false)
+
+            Arbitrage.gui.inventory:AlphaTo(0, 0.5, 0, function()
+                Arbitrage.gui.inventory:Remove()
+            end)
+
+            return
+        end
+
+        if !vgui.CursorVisible() then
+            vgui.Create("InventoryBase:Menu")
+        end
     end
 end
 

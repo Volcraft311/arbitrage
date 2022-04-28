@@ -50,6 +50,9 @@ ARBITRAGE_CONTEXT_DATA = {
 		end},
 		["Устав академии"] = {"danganronpa/hud/action/charter.png", function(client)
 			vgui.Create("arb.AcademyCharter")
+		end},
+		["Открыть инвентарь"] = {"danganronpa/hud/action/charter.png", function(client)
+			vgui.Create("InventoryBase:Menu")
 		end}
 	}
 }

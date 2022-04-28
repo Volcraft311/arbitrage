@@ -79,48 +79,58 @@ end
 
 function PLUGIN:PlayerInitial(client)
     local steamid = client:SteamID()
+
     local leaveEntity = self.disconnectPlayers[steamid]
+    if !IsValid(leaveEntity) then return end
 
-    if leaveEntity and IsValid(leaveEntity) then
-        local data = leaveEntity.data
+    local data = leaveEntity.data
+    if !data then return end
 
-        client:SetPos(leaveEntity:GetPos() + Vector(0, 0, 10))
-        client:SetEyeAngles(leaveEntity:GetAngles())
+    client:SetPos(leaveEntity:GetPos() + Vector(0, 0, 10))
+    client:SetEyeAngles(leaveEntity:GetAngles())
 
-        Arbitrage.player.SetTeam(client, data.faction)
+    Arbitrage.player.SetTeam(client, data.faction)
 
-        client:SetHealth(data.health)
-        client:SetArmor(data.armor)
+    client:SetHealth(data.health)
+    client:SetArmor(data.armor)
 
-        client:StripWeapons()
-        for k, v in pairs(data.weapons) do
-            client:Give(v)
-        end
-
-        client:SelectWeapon(data.activeweapon)
-
-        for k, v in pairs(data.statistic) do
-            Arbitrage.statistics.Set(client, k, v)
-        end
-
-        for id in pairs(data.evidence) do
-            client:AddEvidence(id)
-        end
-
-        Arbitrage.player.SetupSpeed(client)
-        Arbitrage.player.SetupInventory(client)
-
-        local invID = data.inventoryID
-        if invID then
-            local inventory = InventoryBase.instances[itemID]
-
-            if inventory then
-                inventory:SetOwner(client)
-                inventory:Sync()
-            end
-        end
-
-        leaveEntity:Remove()
-        self.disconnectPlayers[steamid] = nil
+    client:StripWeapons()
+    for k, v in pairs(data.weapons) do
+        client:Give(v)
     end
+
+    client.saveData = data
+
+    leaveEntity:Remove()
+    self.disconnectPlayers[steamid] = nil
+end
+
+function PLUGIN:PlayerInitialSpawnForRealz(client)
+    local data = client.saveData
+    if !data then return end
+
+    client:SelectWeapon(data.activeweapon)
+
+    for k, v in pairs(data.statistic) do
+        Arbitrage.statistics.Set(client, k, v)
+    end
+
+    for id in pairs(data.evidence) do
+        client:AddEvidence(id)
+    end
+
+    Arbitrage.player.SetupSpeed(client)
+    Arbitrage.player.SetupInventory(client)
+
+    local invID = data.inventoryID
+    if invID then
+        local inventory = InventoryBase.instances[invID]
+
+        if inventory then
+            inventory:SetOwner(client)
+            inventory:Sync()
+        end
+    end
+
+    client.saveData = nil
 end

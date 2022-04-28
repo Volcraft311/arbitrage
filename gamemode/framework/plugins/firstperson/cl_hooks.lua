@@ -60,7 +60,7 @@ local function allow()
 	local class = weapon:GetClass()
 	if !class then return true end
 
-	if class == "tfa_arcade_first" then
+	if class == "academy_first" then
 		if weapon:GetAttack() then
 			return false
 		end
@@ -102,6 +102,10 @@ function PLUGIN:CalcView(ply, pos, angles, fov)
 		CurView = angles
 	else
 		CurView = LerpAngle(FT * camera_smoothness, CurView, angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency))
+	end
+
+	if camera_smoothness == 25 then
+		CurView = angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency)
 	end
 
 	ViewOffsetLeftRight = math_Approach(ViewOffsetLeftRight, 0, 0.5)
@@ -166,7 +170,7 @@ end
 function PLUGIN:CreateMove(ucmd)
 	if !self.isAllow then return end
 
-	local m = LocalPlayer():Team() == TEAM_HIFUMI and 55 or 68
+	local m = LocalPlayer():Team() == TEAM_HIFUMI and 55 or 75
 	local s = LocalPlayer():Team() == TEAM_MONDO and 32 or 90
 
 	local eyeAng = ucmd:GetViewAngles()

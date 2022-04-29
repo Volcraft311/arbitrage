@@ -52,6 +52,12 @@ ARBITRAGE_CONTEXT_DATA = {
 			vgui.Create("arb.AcademyCharter")
 		end},
 		["Открыть инвентарь"] = {"danganronpa/hud/action/charter.png", function(client)
+			local panel = Arbitrage.gui.inventory
+
+			if IsValid(panel) then
+				panel:Remove()
+			end
+
 			vgui.Create("InventoryBase:Menu")
 		end}
 	}

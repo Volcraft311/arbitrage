@@ -84,6 +84,15 @@ netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
 
     item:UnEquip(client, item)
 
+    local eqItem = nil
+    if data and data[2] then
+        eqItem = ItemBase.instances[data[2]]
+    end
+
+    if eqItem and item != eqItem then
+        eqItem:UnEquip(client, eqItem)
+    end
+
     if !data or data[2] != itemID then
         item:Equip(client, item, slotID)
     end

@@ -506,6 +506,17 @@ function Arbitrage:StartGame()
             client:SendLua([[RunConsoleCommand("stopsound")]])
             client:SendLua([[RunConsoleCommand("r_cleardecals")]])
 
+            local inventory = client:GetInventory()
+            if inventory then
+                local items = inventory:GetItems()
+
+                for k2, v2 in pairs(items) do
+                    if v2:GetData("equip") then
+                        v2:UnEquip(client, v2)
+                    end
+                end
+            end
+
             client:StripAmmo()
             client:StripWeapons()
 

@@ -15,9 +15,9 @@ end
 
 
 SETTINGS.binds.Add("open_interface", KEY_Q, {
-    name = "Кнопка открытия интерфейса",
+    name = "Кнопка открытия инвентаря",
     title = "Интерфейс",
-    description = "Открывает интерфейса с информацией о персонаже"
+    description = "Открывает интерфейса инвентаря"
 })
 
 SETTINGS.binds.Add("open_context", KEY_C, {

@@ -20,6 +20,7 @@ Arbitrage.base.Include(path .. "sh_tween.lua")
 Arbitrage.base.Include(path .. "sh_animation.lua")
 Arbitrage.base.Include(path .. "sh_utf8.lua")
 Arbitrage.base.Include(path .. "sh_pisfr.lua")
+Arbitrage.base.Include(path .. "sh_lerpcolor.lua")
 
 Arbitrage.base.Include(path .. "cl_networking.lua")
 Arbitrage.base.Include(path .. "sv_networking.lua")

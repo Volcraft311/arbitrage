@@ -674,6 +674,13 @@ timer.Create("arb.UpdateTheme", 10, 0, function()
     end
 end)
 
+netstream.Hook("arb.HideState", function(client, state)
+    local bHide = state and true or false
+
+    client:SetNetVar("hideStatus", bHide)
+    Arbitrage.commands.Notify(client, "Вы " .. (bHide and "скрыли" or "раскрыли") .. " свое состояние!")
+end)
+
 netstream.Hook("arb.ActionEntity", function(client, entity, index)
     if !entity then return end
     if !IsValid(entity) then return end

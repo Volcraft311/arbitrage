@@ -42,8 +42,10 @@ ARBITRAGE_CONTEXT_DATA = {
 		dance = "Танец",			pers = "Поза льва",			halt = "Стоять",			salute = "Отдать честь"
 	},
 	action = {
-		["Выбросить оружие"] = {"danganronpa/hud/action/drop.png", function(client)
-			client:ConCommand(Format("say /%s", "drop"))
+		["Скрыть свое состояние"] = {"danganronpa/hud/action/drop.png", function(client)
+			local a = !client:GetNetVar("hideStatus", false)
+
+			netstream.Start("arb.HideState", a)
 		end},
 		["Найденные материалы"] = {"danganronpa/hud/action/material.png", function(client)
 			vgui.Create("arb.EvidenceMenu")

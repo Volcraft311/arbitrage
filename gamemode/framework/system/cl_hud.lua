@@ -288,65 +288,65 @@ function Arbitrage.hud.CrosshairDraw()
 	surface_DrawCircle(traceNew.x, traceNew.y, curGap, ColorAlpha(drawColor, 255 - Arbitrage.hud.alpha))
 end
 
-local infowl = {}
-function Arbitrage.hud.WalkEffect(client, pos, ang, fov)
-	if Arbitrage.lawEnable then return end
+-- local infowl = {}
+-- function Arbitrage.hud.WalkEffect(client, pos, ang, fov)
+-- 	if Arbitrage.lawEnable then return end
 
-	if !client:Alive() then return end
-	if !client:IsPlaying() then return end
+-- 	if !client:Alive() then return end
+-- 	if !client:IsPlaying() then return end
 
-	if (client:GetMoveType() ~= MOVETYPE_NOCLIP) then
-		local activeweapon = client:GetActiveWeapon()
-		if !IsValid(activeweapon) then return end
+-- 	if (client:GetMoveType() ~= MOVETYPE_NOCLIP) then
+-- 		local activeweapon = client:GetActiveWeapon()
+-- 		if !IsValid(activeweapon) then return end
 
-		if activeweapon.Base and activeweapon.Base:find("tfa_") then return end
+-- 		if activeweapon.Base and activeweapon.Base:find("tfa_") then return end
 
-	    local v = {}
-	    v.pos = pos
-	    v.ang = ang
-	    v.fov = fov
+-- 	    local v = {}
+-- 	    v.pos = pos
+-- 	    v.ang = ang
+-- 	    v.fov = fov
 
-	    client.OLDANG = v.ang
-	    client.OLDPOS = v.pos
-	    v.ang.pitch = v.ang.pitch + 0 * 1
-	    v.ang.roll = v.ang.roll + 0 * 1
-	    v.pos.z = v.pos.z - math_cos(0 * 1)
+-- 	    client.OLDANG = v.ang
+-- 	    client.OLDPOS = v.pos
+-- 	    v.ang.pitch = v.ang.pitch + 0 * 1
+-- 	    v.ang.roll = v.ang.roll + 0 * 1
+-- 	    v.pos.z = v.pos.z - math_cos(0 * 1)
 
-	    local frameTime = FrameTime()
-	    local approachTime = frameTime * 2
-	    local info = {
-	    	speed = 1,
-	    	yaw = 0.5 * (1 + 4 * 0),
-	    	roll = 0.1 * (1 + 40 * 0)
-	    }
+-- 	    local frameTime = FrameTime()
+-- 	    local approachTime = frameTime * 2
+-- 	    local info = {
+-- 	    	speed = 1,
+-- 	    	yaw = 0.5 * (1 + 4 * 0),
+-- 	    	roll = 0.1 * (1 + 40 * 0)
+-- 	    }
 
-	    if !infowl.HeadbobAngle then infowl.HeadbobAngle = 0 end
-	    if !infowl.headinfo then infowl.headinfo = info end
+-- 	    if !infowl.HeadbobAngle then infowl.HeadbobAngle = 0 end
+-- 	    if !infowl.headinfo then infowl.headinfo = info end
 
-	    infowl.headinfo.yaw = math_Approach(infowl.headinfo.yaw, info.yaw, approachTime)
-	    infowl.headinfo.roll = math_Approach(infowl.headinfo.roll, info.roll, approachTime)
-	    infowl.headinfo.speed = math_Approach(infowl.headinfo.speed, info.speed, approachTime)
-	    infowl.HeadbobAngle = infowl.HeadbobAngle + (infowl.headinfo.speed * frameTime)
+-- 	    infowl.headinfo.yaw = math_Approach(infowl.headinfo.yaw, info.yaw, approachTime)
+-- 	    infowl.headinfo.roll = math_Approach(infowl.headinfo.roll, info.roll, approachTime)
+-- 	    infowl.headinfo.speed = math_Approach(infowl.headinfo.speed, info.speed, approachTime)
+-- 	    infowl.HeadbobAngle = infowl.HeadbobAngle + (infowl.headinfo.speed * frameTime)
 
-	    local yawAngle = math_sin(infowl.HeadbobAngle)
-	    local rollAngle = math_cos(infowl.HeadbobAngle)
+-- 	    local yawAngle = math_sin(infowl.HeadbobAngle)
+-- 	    local rollAngle = math_cos(infowl.HeadbobAngle)
 
-	    ang.y = ang.y + (yawAngle * infowl.headinfo.yaw)
-	    ang.r = ang.r + (rollAngle * infowl.headinfo.roll)
+-- 	    ang.y = ang.y + (yawAngle * infowl.headinfo.yaw)
+-- 	    ang.r = ang.r + (rollAngle * infowl.headinfo.roll)
 
-	    local velocity = client:GetVelocity()
+-- 	    local velocity = client:GetVelocity()
 
-	    if !infowl.smooth then infowl.smooth = 0 end
-	    if !infowl.WalkTimer then infowl.WalkTimer = 0 end
+-- 	    if !infowl.smooth then infowl.smooth = 0 end
+-- 	    if !infowl.WalkTimer then infowl.WalkTimer = 0 end
 
-	    infowl.smooth = math_Clamp(infowl.smooth * 0.9 + velocity:Length() * 0.1, 0, 700)
-	    infowl.WalkTimer = infowl.WalkTimer + infowl.smooth * FrameTime() * 0.05
+-- 	    infowl.smooth = math_Clamp(infowl.smooth * 0.9 + velocity:Length() * 0.1, 0, 700)
+-- 	    infowl.WalkTimer = infowl.WalkTimer + infowl.smooth * FrameTime() * 0.05
 
-	    ang.p = ang.p + math_cos(infowl.WalkTimer * 0.5) * infowl.smooth * 0.000002 * infowl.smooth
-	    ang.r = ang.r + math_sin(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
-	    ang.y = ang.y + math_cos(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
-	end
-end
+-- 	    ang.p = ang.p + math_cos(infowl.WalkTimer * 0.5) * infowl.smooth * 0.000002 * infowl.smooth
+-- 	    ang.r = ang.r + math_sin(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
+-- 	    ang.y = ang.y + math_cos(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
+-- 	end
+-- end
 
 Arbitrage.hud.intensity = 0
 local hpwait = 0
@@ -596,9 +596,8 @@ function Arbitrage.hud.StaminaDraw()
 		surface_DrawRect(ScrW() / 2 - staminaMax - 4, ScrH() - 30, 4, 4)
 		surface_DrawRect(ScrW() / 2 + staminaMax - 1, ScrH() - 30, 4, 4)
 
-		stmData.color.r = Lerp(FrameTime() * 2, stmData.color.r, stmData.stamina <= 30 and 255 or 255)
-		stmData.color.g = Lerp(FrameTime() * 2, stmData.color.g, stmData.stamina <= 30 and 0 or 255)
-		stmData.color.b = Lerp(FrameTime() * 2, stmData.color.b, stmData.stamina <= 30 and 0 or 255)
+		local a = stmData.stamina <= 30
+		stmData.color = LerpColor(FrameTime() * 2, stmData.color, a and Color(255, 0, 0) or Color(255, 255, 255))
 
 		draw_SimpleText(math_floor(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
 	end
@@ -624,6 +623,22 @@ function Arbitrage.hud.CreateTextPlayer(client)
 
 	surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), alpha))
 	surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
+
+	if client:GetNetVar("hideStatus") then return end
+
+	local color = Color(61, 210, 101)
+	local stText = "На вид в порядке"
+	local health = client:Health()
+
+	if health <= 40 then
+		color = Color(218, 52, 52)
+		stText = "Выглядит неважно"
+	elseif health <= 80 then
+		color = Color(218, 162, 52)
+		stText = "Слегка потрепанный"
+	end
+
+	draw_SimpleText(stText, "arb.Font_FuturaPTBook_5", x, y + 4, ColorAlpha(color, alpha), TEXT_ALIGN_CENTER)
 end
 
 function Arbitrage.hud.PlayerInfoDraw()

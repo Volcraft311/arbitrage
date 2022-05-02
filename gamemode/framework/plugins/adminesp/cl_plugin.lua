@@ -60,7 +60,7 @@ timer_Create("AdminESP:Update", 1, 0, function()
 
 	if !allow then return end
 
-	for k, v in pairs(ents_GetAll()) do
+	for k, v in ipairs(ents_GetAll()) do
 		if v:IsPlayer() then
 			PLUGIN.showEntsList[#PLUGIN.showEntsList + 1] = v
 		elseif PLUGIN.entslist[v:GetClass()] then

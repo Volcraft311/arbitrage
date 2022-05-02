@@ -35,12 +35,12 @@ function ItemBase.GetBase(base)
             return false
         end,
         OnCanRun = function(item)
-            return IsValid(item.entity)
+            return IsValid(item.entity) and !item:GetData("disableTake", false)
         end
     })
 
     if base then
-        local baseInfo = ItemBase.base[base]
+        local baseInfo = table.Copy(ItemBase.base[base])
         if baseInfo then
             baseInfo.__index = nil
 
@@ -74,7 +74,7 @@ function ItemBase:New(uniqueID, id)
         return self.instances[id]
     end
 
-    local itemData = self.list[uniqueID]
+    local itemData = table.Copy(self.list[uniqueID])
 
     if itemData then
         local item = setmetatable({id = id}, {

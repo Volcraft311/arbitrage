@@ -1,9 +1,9 @@
 --[[
-        © Asterion Project 2021.
-        This script was created from the developers of the AsterionTeam.
+        © AsterionStaff 2022.
+        This script was created from the developers of the Asterion Staff.
         You can get more information from one of the links below:
-            Site - https://asterionproject.ru
-            Discord - https://discord.gg/Cz3EQJ7WrF
+            Site - https://asterionproject.ru (not work)
+            Discord - https://discord.gg/Np5evb5ZsR
         
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
@@ -17,7 +17,6 @@ local surface_CreateFont = surface.CreateFont
 local draw_SimpleText = draw.SimpleText
 local IsValid = IsValid
 local timer_Create = timer.Create
-local LocalPlayer = LocalPlayer
 local pairs = pairs
 local ents_GetAll = ents.GetAll
 local ipairs = ipairs

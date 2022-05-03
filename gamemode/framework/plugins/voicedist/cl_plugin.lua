@@ -1,9 +1,9 @@
 --[[
-        © Asterion Project 2021.
-        This script was created from the developers of the AsterionTeam.
+        © AsterionStaff 2022.
+        This script was created from the developers of the Asterion Staff.
         You can get more information from one of the links below:
-            Site - https://asterionproject.ru
-            Discord - https://discord.gg/Cz3EQJ7WrF
+            Site - https://asterionproject.ru (not work)
+            Discord - https://discord.gg/Np5evb5ZsR
         
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
@@ -113,30 +113,8 @@ do
         render.ClearStencil()
     end
 
-    local cache = {}
-
     function surface.draw_circle(x, y, radius, passes)
-        if !x or !y or !radius then error('surface.draw_circle - Too few arguments to function call (3 expected)') end
-
-        passes = passes or 100
-
-        local id = x .. '|' .. y .. '|' .. radius .. '|' .. passes
-        local info = cache[id]
-
-        if !info then
-            info = {}
-
-            for i = 1, passes + 1 do
-                local deg_in_rad = i * math.pi / (passes * 0.5)
-
-                info[i] = {
-                    x = x + math.cos(deg_in_rad) * radius,
-                    y = y + math.sin(deg_in_rad) * radius
-                }
-            end
-
-            cache[id] = info
-        end
+        local info = Arbitrage.hud.GeneratePoly(x, y, radius, passes)
 
         draw.NoTexture()
         surface.DrawPoly(info)

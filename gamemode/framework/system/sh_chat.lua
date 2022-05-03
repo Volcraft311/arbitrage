@@ -56,6 +56,7 @@ Arbitrage.chat.List = {
             if !data then return end
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH)) do
+                TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -63,12 +64,13 @@ Arbitrage.chat.List = {
     ["try"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. data[1], data[2] and Color(59, 238, 133) or Color(2225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH)) do
+                TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -81,6 +83,7 @@ Arbitrage.chat.List = {
             if !data then return end
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH)) do
+                TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -132,6 +135,7 @@ Arbitrage.chat.List = {
             if !data then return end
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+                TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -144,6 +148,7 @@ Arbitrage.chat.List = {
             if !data then return end
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+                TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -157,6 +162,7 @@ Arbitrage.chat.List = {
             if !data then return end
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH)) do
+                TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end

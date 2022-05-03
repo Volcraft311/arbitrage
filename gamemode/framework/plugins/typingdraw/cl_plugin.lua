@@ -52,7 +52,7 @@ function PLUGIN:GetTypingColor(entity)
 end
 
 PLUGIN.infoList = {}
-timer.Create("AdminESP:Update", 1, 0, function()
+timer.Create("TypingDraw:Update", 1, 0, function()
 	PLUGIN.infoList = {}
 
 	local client = LocalPlayer()

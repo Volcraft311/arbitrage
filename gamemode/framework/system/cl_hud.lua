@@ -614,6 +614,9 @@ function Arbitrage.hud.CreateTextPlayer(client)
 	local data2D = position:ToScreen()
 	if !data2D.visible then return end
 
+	local bNotVisible = Arbitrage.hud.VectorObstructed(EyePos(), client:GetPos(), {LocalPlayer(), client})
+	if bNotVisible then return end
+
 	local x = data2D.x
 	local y = data2D.y
 	draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)

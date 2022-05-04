@@ -17,7 +17,7 @@ local PLUGIN = PLUGIN
 local standingOffset = Vector(0, 0, 72)
 local crouchingOffset = Vector(0, 0, 38)
 local boneOffset = Vector(0, 0, 15)
-local font = "arb.Font_FuturaPTBook_5"
+local font = "arb.Font_FuturaPTBook_7"
 
 function PLUGIN:GetTypingIndicatorPosition(client)
 	local head

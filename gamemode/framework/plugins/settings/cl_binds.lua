@@ -61,3 +61,9 @@ SETTINGS.binds.Add("voice_down", KEY_LBRACKET, {
     title = "Громкость микрофона",
     description = "Понижает расстояние слышимости вашего голоса"
 })
+
+SETTINGS.binds.Add("sitting", KEY_N, {
+    name = "Кнопка для сидения",
+    title = "Сесть на пол",
+    description = "Кнопка при помощи которой вы можете сесть на землю"
+})

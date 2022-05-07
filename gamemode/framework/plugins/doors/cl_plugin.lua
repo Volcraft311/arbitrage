@@ -13,6 +13,116 @@
 
 local PLUGIN = PLUGIN
 
+local function CreatePanels(data, parent)
+	for k, v in ipairs(data or {}) do
+		local panel, subMenu = nil, nil
+
+		if isfunction(v.data) then
+			panel = parent:AddOption(v.name, v.data)
+		else
+			subMenu, panel = parent:AddSubMenu(v.name)
+
+			CreatePanels(v.data, subMenu)
+		end
+
+		panel:SetImage(v.icon)
+
+		for k2, v2 in ipairs(panel:GetChildren()) do
+			if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then
+				local size = parent:GetTall() * 1.5
+
+				v2:SetSize(size, size)
+			end
+		end
+	end
+end
+
+local function gRequestAddDoorFaction()
+	local data = {}
+
+	for k, v in pairs(Arbitrage.teams.data) do
+		data[#data + 1] = {
+			name = v.name,
+			icon = v.pixel,
+			data = function()
+				Derma_Query("Вы точно хотите дать этому персонажу доступ к данной двери?",  "[DoorSaver] Добавление доступа", "Да", function()
+					netstream.Start("arb.DoorAddOwner", k)
+				end, "Нет")
+			end
+		}
+	end
+
+	return data
+end
+
+local function gRequestSetIcon()
+	local data = {}
+
+	for k, v in pairs(Arbitrage.teams.data) do
+		data[#data + 1] = {
+			name = v.name,
+			icon = v.pixel,
+			data = function()
+				Derma_Query("Вы точно хотите изменить иконку двери?",  "[DoorSaver] Изменение иконки", "Да", function()
+					netstream.Start("arb.DoorSetIcon", k)
+				end, "Нет")
+			end
+		}
+	end
+
+	return data
+end
+
+local function gRequestAddDoorPlayer()
+	local data = {}
+
+	for k, v in ipairs(player.GetAll()) do
+		local id = v:Team()
+
+		local info = v:SteamID() or "NULL"
+		local faction = Arbitrage.teams.Get(id)
+		local icon = "icon16/user_add.png"
+
+		if faction and faction.pixel then
+			icon = faction.pixel
+		end
+
+		data[#data + 1] = {
+			name = faction.name .. " (" .. info .. ")",
+			icon = icon,
+			data = function()
+				Derma_Query("Вы точно хотите дать этому персонажу доступ к данной двери?",  "[DoorSaver] Добавление доступа", "Да", function()
+					netstream.Start("arb.DoorAddOwner", id)
+				end, "Нет")
+			end
+		}
+	end
+
+	return data
+end
+
+local function gRequestRemoveDoorPlayer(doorData)
+	if !doorData then return end
+
+	local data = {}
+
+	for k, v in pairs(doorData.list or {}) do
+		local faction = Arbitrage.teams.Get(k)
+
+		data[#data + 1] = {
+			name = faction.name,
+			icon = faction.pixel,
+			data = function()
+				Derma_Query("Вы точно хотите удалить данного игрока из двери?",  "[DoorSaver] Удаление из базы", "Да", function()
+					netstream.Start("arb.DoorRemoveOwner", k)
+				end, "Нет")
+			end
+		}
+	end
+
+	return data
+end
+
 function PLUGIN:Think()
 	local client = LocalPlayer()
 
@@ -26,84 +136,66 @@ function PLUGIN:Think()
 
 		local doorData
 		for k, v in pairs(self.DoorsData) do
-			if v.indexDoor == entity:EntIndex() then
+			if v.idx == entity:EntIndex() then
 				doorData = self.DoorsData[k]
 			end
 		end
 
-		-- Ебать ну и хуйня, надо бы переписать под таблицы когда нить
+		local RequestAddDoorPlayer = gRequestAddDoorPlayer()
+		local RequestAddDoorFaction = gRequestAddDoorFaction()
+		local RequestRemoveDoorPlayer = gRequestRemoveDoorPlayer(doorData)
+		local RequestSetIcon = gRequestSetIcon()
+
+		local ActionData = {
+			{
+				name = "Действия с дверью:",
+				icon = "icon16/report_disk.png",
+				data = {
+					{
+						name = "Запретить/Разрешить взламывать",
+						icon = "icon16/attach.png",
+						data = function()
+							
+						end
+					}
+				}
+			},
+			{
+				name = "Добавить доступ к двери:",
+				icon = "icon16/pencil_add.png",
+				data = {
+					{
+						name = "Поиск по игрокам:",
+						icon = "icon16/user_go.png",
+						data = RequestAddDoorPlayer
+					},
+					{
+						name = "Поиск по всем фракциям:",
+						icon = "icon16/transmit_go.png",
+						data = RequestAddDoorFaction
+					}
+				}
+			},
+			{
+				name = "Удалить из двери игрока:",
+				icon = "icon16/pencil_delete.png",
+				data = RequestRemoveDoorPlayer
+			},
+			{
+				name = "Изменить иконку двери:",
+				icon = "icon16/camera_go.png",
+				data = RequestSetIcon
+			}
+		}
+
 		local parentMenu = DermaMenu()
-
-		local subMenu5, _ = parentMenu:AddSubMenu("Действия с дверью:") _:SetIcon("icon16/report_disk.png")
-		local subMenu, _ = parentMenu:AddSubMenu("Добавить игрока в дверь:") _:SetIcon("icon16/pencil_add.png")
-		local subMenu3, _ = parentMenu:AddSubMenu("Удалить из двери игрока:") _:SetIcon("icon16/pencil_delete.png")
-		local subMenu4, _ = parentMenu:AddSubMenu("Изменить иконку двери:") _:SetIcon("icon16/camera_go.png")
-		local subMenu2, _ = subMenu:AddSubMenu("Игроки на сервере:") _:SetIcon("icon16/user_go.png")
-
-		local _ = subMenu:AddOption("По SteamID", function()
-			Derma_StringRequest("[DoorSaver] Добавление по SteamID", "Введите SteamID игрока которого вы хотите добавить в дверь", "", function(data)
-				netstream.Start("arb.DoorAddOwner", {
-					data,
-					"НЕИЗВЕСТНО"
-				})
-
-				chat.AddText("[DoorSaver] Вы успешно дали игроку НЕИЗВЕСТНО (" .. data .. ") доступ к двери.")
-			end)
-		end)
-		_:SetIcon("icon16/transmit_go.png")
-
-		for k, v in pairs(player.GetAll()) do
-			local data = v:SteamID() or "NULL"
-
-			local _ = subMenu2:AddOption(data .. " (".. v:Name() .. ")", function()
-				Derma_Query("Вы точно хотите дать этому игроку доступ к данной двери?",  "[DoorSaver] Добавление игрока", "Да", function()
-					if v and IsValid(v) then
-						netstream.Start("arb.DoorAddOwner", {
-							data,
-							v:Name()
-						})
-						chat.AddText("[DoorSaver] Вы успешно дали игроку " .. v:Name() .. "(" .. v:SteamID() .. ") доступ к двери.")
-					end
-				end, "Нет")
-			end)
-			_:SetIcon("icon16/user_add.png")
-		end
-
-		if doorData then
-			for k, v in pairs(doorData.arbOwnerID or {}) do
-				local _ = subMenu3:AddOption(k .. " (" .. v .. ")", function()
-					Derma_Query("Вы точно хотите удалить данного игрока из двери?",  "[DoorSaver] Удаление из базы", "Да", function()
-					netstream.Start("arb.DoorRemoveOwner", k)
-
-					chat.AddText("[DoorSaver] Вы успешно удалили игрока " .. v .. "(" .. k .. ") из двери.")
-				end, "Нет")
-				end)
-				_:SetIcon("icon16/user_delete.png")
-			end
-		end
-
-		local _ = subMenu4:AddOption("Убрать иконку", function()
-			Derma_Query("Вы точно хотите изменить иконку двери?",  "[DoorSaver] Изменение иконки", "Да", function()
-				netstream.Start("arb.DoorSetIcon", 0)
-			end, "Нет")
-		end)
-		_:SetIcon("icon16/user_add.png")
-
-		for k, v in pairs(Arbitrage.teams.data) do
-			local _ = subMenu4:AddOption(v.name, function()
-				Derma_Query("Вы точно хотите изменить иконку двери?",  "[DoorSaver] Изменение иконки", "Да", function()
-					netstream.Start("arb.DoorSetIcon", k)
-				end, "Нет")
-			end)
-			_:SetIcon("icon16/user_add.png")
-		end
-
+		CreatePanels(ActionData, parentMenu)
 
 		parentMenu:Open(ScrW() / 2, ScrH() / 2)
 	end
 end
 
-function PLUGIN:CalculateDoorTextPosition(door, reversed)
+function PLUGIN:CalculateDoorPosition(door, reversed)
 	local traceData = {}
 	local obbCenter = door:OBBCenter()
 	local obbMaxs = door:OBBMaxs()
@@ -113,7 +205,7 @@ function PLUGIN:CalculateDoorTextPosition(door, reversed)
 	traceData.filter = ents.FindInSphere(traceData.endpos, 20)
 
 	for k, v in pairs(traceData.filter) do
-		if (v == door) then
+		if v == door then
 			traceData.filter[k] = nil
 		end
 	end
@@ -126,29 +218,29 @@ function PLUGIN:CalculateDoorTextPosition(door, reversed)
 	size.y = math.abs(size.y)
 	size.z = math.abs(size.z)
 
-	if (size.z < size.x and size.z < size.y) then
+	if size.z < size.x and size.z < size.y then
 		length = size.z
 		width = size.y
 
-		if (reverse) then
+		if reverse then
 			traceData.start = traceData.endpos - (door:GetUp() * length)
 		else
 			traceData.start = traceData.endpos + (door:GetUp() * length)
 		end
-	elseif (size.x < size.y) then
+	elseif size.x < size.y then
 		length = size.x
 		width = size.y
 
-		if (reverse) then
+		if reverse then
 			traceData.start = traceData.endpos - (door:GetForward() * length)
 		else
 			traceData.start = traceData.endpos + (door:GetForward() * length)
 		end
-	elseif (size.y < size.x) then
+	elseif size.y < size.x then
 		length = size.y
 		width = size.x
 
-		if (reverse) then
+		if reverse then
 			traceData.start = traceData.endpos - (door:GetRight() * length)
 		else
 
@@ -160,7 +252,7 @@ function PLUGIN:CalculateDoorTextPosition(door, reversed)
 	local angles = trace.HitNormal:Angle()
 
 	if (trace.HitWorld and !reversed) then
-		return self:CalculateDoorTextPosition(door, true)
+		return self:CalculateDoorPosition(door, true)
 	end
 
 	angles:RotateAroundAxis(angles:Forward(), 90)
@@ -184,15 +276,15 @@ function PLUGIN:CalculateDoorTextPosition(door, reversed)
 end
 
 function PLUGIN:CalculateAlphaFromDistance(maximum, start, finish)
-	if (type(start) == "Player") then
+	if type(start) == "Player" then
 		start = start:GetShootPos()
-	elseif (type(start) == "Entity") then
+	elseif type(start) == "Entity" then
 		start = start:GetPos()
 	end
 
-	if (type(finish) == "Player") then
+	if type(finish) == "Player" then
 		finish = finish:GetShootPos()
-	elseif (type(finish) == "Entity") then
+	elseif type(finish) == "Entity" then
 		finish = finish:GetPos()
 	end
 
@@ -207,7 +299,7 @@ PLUGIN.Gradients = {
 }
 
 function PLUGIN:DrawGradient(gradientType, x, y, width, height, color)
-	if (!self.Gradients[gradientType]) then return end
+	if !self.Gradients[gradientType] then return end
 
 	surface.SetDrawColor(color.r, color.g, color.b, color.a)
 	surface.SetTexture(self.Gradients[gradientType])
@@ -218,7 +310,7 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, font, nameColor, textCol
 	local entityColor = entity:GetColor()
 	if entityColor.a <= 0 or entity:IsEffectActive(EF_NODRAW) then return end
 
-	local doorData = self:CalculateDoorTextPosition(entity)
+	local doorData = self:CalculateDoorPosition(entity)
 	if doorData.hitWorld then return end
 
 	local alpha = self:CalculateAlphaFromDistance(1000, eyePos, entity:GetPos())
@@ -237,8 +329,7 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, font, nameColor, textCol
 		local textWidth, _ = surface.GetTextSize(text)
 		local longWidth = nameWidth
 
-		if (textWidth > longWidth) then longWidth = textWidth end
-
+		if textWidth > longWidth then longWidth = textWidth end
 
 		if faction and faction.pixel then
 			local logo = Arbitrage.GetMaterial(faction.pixel)

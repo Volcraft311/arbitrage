@@ -29,7 +29,7 @@ function PLUGIN:LoadData()
 			for k2, v2 in pairs(v) do
 				entity[k2] = v2
 
-				data[k].indexDoor = entity:EntIndex()
+				data[k].idx = entity:EntIndex()
 			end
 		end
 	end
@@ -66,9 +66,11 @@ function PLUGIN:InitPlayersDoor()
 	if !Arbitrage.plugin.list then return end
 	if !Arbitrage.plugin.list.doors then return end
 
+	local map = game.GetMap()
+
 	local doorsEntity = {}
 	for _, v in ipairs(ents.GetAll()) do
-		if v:GetClass() == "func_door_rotating" and initData[game.GetMap()][v:MapCreationID()] then
+		if v:GetClass() == "func_door_rotating" and initData[map][v:MapCreationID()] then
 			doorsEntity[#doorsEntity + 1] = v
 		end
 	end
@@ -76,19 +78,23 @@ function PLUGIN:InitPlayersDoor()
 	local db = Arbitrage.plugin.list.doors.DoorsData or {}
 	local num = 1
 	for k, v in pairs(player.GetAll()) do
-		if v:IsPlaying() and num <= 16 then
+		if v:IsPlaying() and num <= table.Count(initData[map]) then
 			local entity = doorsEntity[num]
 			if !IsValid(entity) then continue end
 
-			db[entity:MapCreationID()] = db[entity:MapCreationID()] or {}
-			db[entity:MapCreationID()].arbOwnerID = db[entity:MapCreationID()].arbOwnerID or {}
-			db[entity:MapCreationID()].arbOwnerID[v:SteamID()] = v:Name()
-			db[entity:MapCreationID()].indexDoor = entity:EntIndex()
+			local id = entity:MapCreationID()
+			local faction = v:Team()
+
+			db[id] = db[id] or {}
+			db[id].list = db[id].list or {}
+			db[id].list[faction] = true
+			db[id].idx = entity:EntIndex()
 
 			entity:SetNetVar("arb.team", v:Team())
 
 			entity:Fire("close")
 			entity:Fire("lock")
+			entity:SetNWBool("Locked", true)
 
 			num = num + 1
 		end
@@ -103,47 +109,63 @@ function Arbitrage:InitDoors()
 	PLUGIN:InitPlayersDoor()
 end
 
-netstream.Hook("arb.DoorAddOwner", function(client, data)
-	if !data then return end
+netstream.Hook("arb.DoorAddOwner", function(client, faction)
+	if !client:IsAdmin() then return end
+	if !faction then return end
+
+	local factionData = Arbitrage.teams.Get(faction)
+	if !factionData then return end
 
 	local trace = client:GetEyeTraceNoCursor()
+
 	local entity = trace.Entity
+	if !IsValid(entity) then return end
 
-	if !client:IsAdmin() then return end
+	local class = entity:GetClass()
+	if class != "prop_door_rotating" and class != "func_door_rotating" then return end
 
-	if IsValid(entity) and (entity:GetClass() == "prop_door_rotating" or entity:GetClass() == "func_door_rotating") then
-		local db = Arbitrage.plugin.list.doors.DoorsData or {}
-		db[entity:MapCreationID()] = db[entity:MapCreationID()] or {}
+	local id = entity:MapCreationID()
+	local db = Arbitrage.plugin.list.doors.DoorsData or {}
 
-		db[entity:MapCreationID()].arbOwnerID = db[entity:MapCreationID()].arbOwnerID or {}
-		db[entity:MapCreationID()].arbOwnerID[data[1]] = data[2]
-		db[entity:MapCreationID()].indexDoor = entity:EntIndex()
+	db[id] = db[id] or {}
+	db[id].list = db[id].list or {}
+	db[id].list[faction] = true
+	db[id].idx = entity:EntIndex()
 
-		for k, v in pairs(player.GetAll()) do
-			PLUGIN:SendDoorData(v, PLUGIN.DoorsData)
-		end
+	Arbitrage.commands.Notify(client, "Вы успешно дали " .. factionData.name .. " доступ к двери!")
+
+	for k, v in pairs(player.GetAll()) do
+		PLUGIN:SendDoorData(v, PLUGIN.DoorsData)
 	end
 end)
 
-netstream.Hook("arb.DoorRemoveOwner", function(client, data)
-	if !data then return end
+netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
+	if !client:IsAdmin() then return end
+	if !faction then return end
+
+	local factionData = Arbitrage.teams.Get(faction)
+	if !factionData then return end
 
 	local trace = client:GetEyeTraceNoCursor()
+
 	local entity = trace.Entity
+	if !IsValid(entity) then return end
 
-	if !client:IsAdmin() then return end
+	local class = entity:GetClass()
+	if class != "prop_door_rotating" and class != "func_door_rotating" then return end
 
-	if IsValid(entity) and (entity:GetClass() == "prop_door_rotating" or entity:GetClass() == "func_door_rotating") then
-		local db = Arbitrage.plugin.list.doors.DoorsData or {}
-		db[entity:MapCreationID()] = db[entity:MapCreationID()] or {}
+	local id = entity:MapCreationID()
+	local db = Arbitrage.plugin.list.doors.DoorsData or {}
 
-		db[entity:MapCreationID()].arbOwnerID = db[entity:MapCreationID()].arbOwnerID or {}
-		db[entity:MapCreationID()].arbOwnerID[data] = nil
-		db[entity:MapCreationID()].indexDoor = entity:EntIndex()
+	db[id] = db[id] or {}
+	db[id].list = db[id].list or {}
+	db[id].list[faction] = nil
+	db[id].idx = entity:EntIndex()
 
-		for k, v in pairs(player.GetAll()) do
-			PLUGIN:SendDoorData(v, PLUGIN.DoorsData)
-		end
+	Arbitrage.commands.Notify(client, "Вы успешно убрали у " .. factionData.name .. " доступ к двери!")
+
+	for k, v in pairs(player.GetAll()) do
+		PLUGIN:SendDoorData(v, PLUGIN.DoorsData)
 	end
 end)
 
@@ -151,15 +173,19 @@ netstream.Hook("arb.DoorGetData", function(client)
 	PLUGIN:SendDoorData(client, PLUGIN.DoorsData)
 end)
 
-netstream.Hook("arb.DoorSetIcon", function(client, data)
-	if !data then return end
+netstream.Hook("arb.DoorSetIcon", function(client, faction)
+	if !client:IsAdmin() then return end
+	if !faction then return end
 
 	local trace = client:GetEyeTraceNoCursor()
-	local door = trace.Entity
 
-	if !client:IsAdmin() then return end
+	local entity = trace.Entity
+	if !IsValid(entity) then return end
 
-	if IsValid(door) and (door:GetClass() == "prop_door_rotating" or door:GetClass() == "func_door_rotating") then
-		door:SetNetVar("arb.team", data > 0 and data or nil)
-	end
+	local class = entity:GetClass()
+	if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+
+	entity:SetNetVar("arb.team", faction > 0 and faction or nil)
+
+	Arbitrage.commands.Notify(client, "Вы успешно изменили иконку двери!")
 end)

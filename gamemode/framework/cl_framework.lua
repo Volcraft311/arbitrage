@@ -269,28 +269,23 @@ function Arbitrage:ArbitrageContextMenu(data)
     end
 end
 
-function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
-    if bIsVisibleGUI then return end
+local ActionPressIDList = {
+    ["open_context"] = function(client, id, bIsVisibleGUI)
+        if bIsVisibleGUI then return end
+        if client:IsUseTool() then return end
 
-    local isUseTool = false
-    local weapon = client:GetActiveWeapon()
-
-    if IsValid(weapon) then
-        local class = weapon:GetClass()
-        if !class then return false end
-
-        isUseTool = class == "gmod_tool" or class == "weapon_physgun"
-    end
-
-    if id == "open_context" and !IsValid(Arbitrage.gui.context) and !IsValid(Arbitrage.menu) and !isUseTool and !Arbitrage.gui.chat:GetActive() then
         vgui.Create("arb.ContextMenu")
-    elseif id == "open_scoreboard" and !IsValid(Arbitrage.menu) and !Arbitrage.gui.chat:GetActive() then
+    end,
+    ["open_scoreboard"] = function(client, id, bIsVisibleGUI)
+        if bIsVisibleGUI then return end
+
         if IsValid(Arbitrage.gui.scoreboard) then
             Arbitrage.gui.scoreboard:Remove()
         end
 
         vgui.Create("arb.ScoreBoard")
-    elseif id == "open_mainmenu_ui" then
+    end,
+    ["open_mainmenu_ui"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.menu) then
             Arbitrage.menu:AlphaTo(0, 0.3, 0, function()
                 Arbitrage.menu:Remove()
@@ -301,7 +296,8 @@ function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
 
         local panel = vgui.Create("arb.MainRemake:UI")
         panel:Menu()
-    elseif id == "open_monomenu_ui" then
+    end,
+    ["open_monomenu_ui"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.monomenu) then
             Arbitrage.gui.monomenu:AlphaTo(0, 0.3, 0, function()
                 Arbitrage.gui.monomenu:Remove()
@@ -311,7 +307,8 @@ function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
         end
 
         netstream.Start("arb.OpenMonoMenu")
-    elseif id == "open_material_ui" then
+    end,
+    ["open_material_ui"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.logmenu) then
             Arbitrage.gui.logmenu:AlphaTo(0, 0.3, 0, function()
                 Arbitrage.gui.logmenu:Remove()
@@ -321,7 +318,8 @@ function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
         end
 
         Arbitrage.gui.logmenu = vgui.Create("arb.EvidenceMenu")
-    elseif id == "open_interface" then
+    end,
+    ["open_interface"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.inventory) then
             Arbitrage.gui.inventory:SetMouseInputEnabled(false)
 
@@ -336,20 +334,37 @@ function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
             vgui.Create("InventoryBase:Menu")
         end
     end
+}
+
+function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
+    if ActionPressIDList[id] then
+        ActionPressIDList[id](client, id, bIsVisibleGUI)
+    end
 end
 
-function Arbitrage:KeyReleaseID(client, id)
-    if id == "open_context" and IsValid(Arbitrage.gui.context) then
-        Arbitrage.gui.context:AlphaTo(0, 0.1, 0, function()
-            Arbitrage.gui.context:Remove()
-        end)
-    elseif id == "open_scoreboard" and IsValid(Arbitrage.gui.scoreboard) then
-        Arbitrage.gui.scoreboard:SetMouseInputEnabled(false)
-        Arbitrage.gui.scoreboard:SetKeyboardInputEnabled(false)
+local ActionReleaseIDList = {
+    ["open_context"] = function(client, id, bIsVisibleGUI)
+        if IsValid(Arbitrage.gui.context) then
+            Arbitrage.gui.context:AlphaTo(0, 0.1, 0, function()
+                Arbitrage.gui.context:Remove()
+            end)
+        end
+    end,
+    ["open_scoreboard"] = function(client, id, bIsVisibleGUI)
+        if IsValid(Arbitrage.gui.scoreboard) then
+            Arbitrage.gui.scoreboard:SetMouseInputEnabled(false)
+            Arbitrage.gui.scoreboard:SetKeyboardInputEnabled(false)
 
-        Arbitrage.gui.scoreboard:AlphaTo(0, 0.5, 0, function()
-            Arbitrage.gui.scoreboard:Remove()
-        end)
+            Arbitrage.gui.scoreboard:AlphaTo(0, 0.5, 0, function()
+                Arbitrage.gui.scoreboard:Remove()
+            end)
+        end
+    end
+}
+
+function Arbitrage:KeyReleaseID(client, id, bIsVisibleGUI)
+    if ActionReleaseIDList[id] then
+        ActionReleaseIDList[id](client, id, bIsVisibleGUI)
     end
 end
 

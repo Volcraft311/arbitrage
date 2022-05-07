@@ -152,7 +152,8 @@ function PLUGIN:DoSit(trace)
 	self:StartSit(trace)
 end
 
-function PLUGIN:KeyPressID(client, id)
+function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
+	if bIsVisibleGUI then return end
 	if id != sitBindID then return end
 	if !SitAnywhere then return end
 

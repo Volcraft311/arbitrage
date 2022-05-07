@@ -517,6 +517,12 @@ function Arbitrage:StartGame()
                 end
             end
 
+            local item = ItemBase.CreateItem("keys")
+            if item and inventory then
+                item:SetData("faction", client:Team())
+                item:Transfer(inventory:GetID())
+            end
+
             client:StripAmmo()
             client:StripWeapons()
 

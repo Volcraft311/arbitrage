@@ -791,6 +791,20 @@ do
     end
 end
 
+do
+    local entityMeta = FindMetaTable("Entity")
+
+    function entityMeta:IsDoor()
+        local class = self:GetClass()
+
+        if class == "prop_door_rotating" or class == "func_door_rotating" or class == "func_door" then
+            return true
+        end
+
+        return false
+    end
+end
+
 -- original
 player_manager.AddValidModel("group02male01", "models/humans/group02/male_01.mdl")
 player_manager.AddValidHands("group02male01", "models/weapons/c_arms_citizen.mdl", 1, "0000000")

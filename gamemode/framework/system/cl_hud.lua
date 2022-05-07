@@ -264,6 +264,7 @@ function Arbitrage.hud.CrosshairDraw()
 	if IsValid(tr) and (tr:GetClass() == "prop_physics" or tr:IsPlayer() or
 		tr:GetClass() == "prop_door_rotating" or
 		tr:GetClass() == "func_door_rotating" or
+		tr:GetClass() == "func_door" or
 		tr:GetClass() == "arb_item" or
 		Arbitrage.evidence.entities[tr:GetClass()]) then
 

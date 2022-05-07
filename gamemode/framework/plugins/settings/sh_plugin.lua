@@ -143,6 +143,39 @@ function PLUGIN.binds.GetClampedKey()
     end
 end
 
+local function IsVisibleGUI()
+    -- Консоль и ESC
+    if gui.IsConsoleVisible() or gui.IsGameUIVisible() then
+        return true
+    end
+
+    -- Контекстное меню
+    if IsValid(Arbitrage.gui.context) then return true end
+
+    -- Список игроков
+    if IsValid(Arbitrage.gui.scoreboard) then return true end
+
+    -- Инвентарь
+    if IsValid(Arbitrage.gui.inventory) then return true end
+
+    -- Меню улик
+    if IsValid(Arbitrage.gui.logmenu) then return true end
+
+    -- Мономеню
+    if IsValid(Arbitrage.gui.monomenu) then return true end
+
+    -- Главное меню
+    if IsValid(Arbitrage.menu) then return true end
+
+    -- Блокнот
+    if IsValid(Arbitrage.gui.note) then return true end
+
+    -- Открыт чат
+    if Arbitrage.gui.chat:GetActive() then return true end
+
+    return false
+end
+
 function PLUGIN.binds.IsClampedID(id, bCallHooks)
     local data = SETTINGS.binds.Get(id)
 
@@ -150,7 +183,7 @@ function PLUGIN.binds.IsClampedID(id, bCallHooks)
         local info = input.IsKeyDown(data)
 
         if info and bCallHooks then
-            hook.Run("KeyClampID", LocalPlayer(), id, gui.IsConsoleVisible() or gui.IsGameUIVisible())
+            hook.Run("KeyClampID", LocalPlayer(), id, IsVisibleGUI())
         end
 
         return info
@@ -168,7 +201,7 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
                 PLUGIN.pressed[id] = false
 
                 if bCallHooks then
-                    hook.Run("KeyReleaseID", LocalPlayer(), id, gui.IsConsoleVisible() or gui.IsGameUIVisible())
+                    hook.Run("KeyReleaseID", LocalPlayer(), id, IsVisibleGUI())
                 end
             end
 
@@ -178,7 +211,7 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
                 PLUGIN.pressed[id] = true
 
                 if bCallHooks then
-                    hook.Run("KeyPressID", LocalPlayer(), id, gui.IsConsoleVisible() or gui.IsGameUIVisible())
+                    hook.Run("KeyPressID", LocalPlayer(), id, IsVisibleGUI())
                 end
 
                 return true

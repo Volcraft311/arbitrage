@@ -239,21 +239,7 @@ end
 function Arbitrage:ContextMenuOpen()
     gui.EnableScreenClicker(true)
 
-    local client = LocalPlayer()
-    local weapon = client:GetActiveWeapon()
-
-    if IsValid(weapon) then
-        local class = weapon:GetClass()
-        if !class then return false end
-
-        if class == "gmod_tool" or class == "weapon_physgun" then
-            return true
-        end
-
-        return false
-    end
-
-    return true
+    return LocalPlayer():IsUseTool()
 end
 
 function Arbitrage:ArbitrageContextMenu(data)

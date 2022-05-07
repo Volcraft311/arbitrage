@@ -152,10 +152,10 @@ function PLUGIN:Think()
 				icon = "icon16/report_disk.png",
 				data = {
 					{
-						name = "Запретить/Разрешить взламывать",
+						name = (entity:GetNWBool("disableHack") and "Разрешить" or "Запретить") .. " взламывать",
 						icon = "icon16/attach.png",
 						data = function()
-
+							netstream.Start("arb.DoorSetHack")
 						end
 					}
 				}
@@ -363,7 +363,7 @@ timer.Create("Doors:UpdateDraw", 1, 0, function()
 	for k, v in ipairs(doors) do
 		local faction = Arbitrage.teams.Get(v:GetNetVar("arb.team", -1))
 
-		if v:IsDoor() or !faction then
+		if !v:IsDoor() or !faction then
 			doors[k] = nil
 		end
 	end

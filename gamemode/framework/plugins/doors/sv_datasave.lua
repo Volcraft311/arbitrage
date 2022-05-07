@@ -95,6 +95,7 @@ function PLUGIN:InitPlayersDoor()
 			entity:Fire("close")
 			entity:Fire("lock")
 			entity:SetNWBool("Locked", true)
+			entity:SetNWBool("disableHack", true)
 
 			num = num + 1
 		end
@@ -185,4 +186,20 @@ netstream.Hook("arb.DoorSetIcon", function(client, faction)
 	entity:SetNetVar("arb.team", faction > 0 and faction or nil)
 
 	Arbitrage.commands.Notify(client, "Вы успешно изменили иконку двери!")
+end)
+
+netstream.Hook("arb.DoorSetHack", function(client)
+	if !client:IsAdmin() then return end
+
+	local trace = client:GetEyeTraceNoCursor()
+
+	local entity = trace.Entity
+	if !IsValid(entity) then return end
+
+	if !entity:IsDoor() then return end
+
+	local data = entity:GetNWBool("disableHack", false)
+	entity:SetNWBool("disableHack", !data)
+
+	Arbitrage.commands.Notify(client, "Вы успешно " .. (data and "разрешили" or "запретили") .. " взламывать двеь!")
 end)

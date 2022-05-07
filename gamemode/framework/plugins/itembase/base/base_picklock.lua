@@ -32,6 +32,7 @@ local function FindDoor(client)
     if !IsValid(entity) then return end
 
     if !entity:IsDoor() then return end
+    if entity:GetNWBool("disableHack") then return end
 
     return entity
 end

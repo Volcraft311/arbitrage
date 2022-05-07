@@ -741,6 +741,19 @@ do
         return self:GetNetVar("arbEmojiShow") == -1
     end
 
+    function playerMeta:IsUseTool()
+        local weapon = self:GetActiveWeapon()
+
+        if IsValid(weapon) then
+            local class = weapon:GetClass()
+            if !class then return false end
+
+            return class == "gmod_tool" or class == "weapon_physgun"
+        end
+
+        return false
+    end
+
 
     playerMeta.oldAlive = playerMeta.oldAlive or playerMeta.Alive
     function playerMeta:Alive()

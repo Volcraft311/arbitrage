@@ -25,7 +25,7 @@ function PLUGIN:LoadData()
 	for k, v in pairs(data) do
 		local entity = ents.GetMapCreatedEntity(k)
 
-		if (IsValid(entity) and (entity:GetClass() == "prop_door_rotating" or entity:GetClass() == "func_door_rotating")) then
+		if IsValid(entity) and entity:IsDoor() then
 			for k2, v2 in pairs(v) do
 				entity[k2] = v2
 
@@ -70,7 +70,7 @@ function PLUGIN:InitPlayersDoor()
 
 	local doorsEntity = {}
 	for _, v in ipairs(ents.GetAll()) do
-		if v:GetClass() == "func_door_rotating" and initData[map][v:MapCreationID()] then
+		if v:IsDoor() and initData[map][v:MapCreationID()] then
 			doorsEntity[#doorsEntity + 1] = v
 		end
 	end
@@ -121,8 +121,7 @@ netstream.Hook("arb.DoorAddOwner", function(client, faction)
 	local entity = trace.Entity
 	if !IsValid(entity) then return end
 
-	local class = entity:GetClass()
-	if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+	if !entity:IsDoor() then return end
 
 	local id = entity:MapCreationID()
 	local db = Arbitrage.plugin.list.doors.DoorsData or {}
@@ -151,8 +150,7 @@ netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
 	local entity = trace.Entity
 	if !IsValid(entity) then return end
 
-	local class = entity:GetClass()
-	if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+	if !entity:IsDoor() then return end
 
 	local id = entity:MapCreationID()
 	local db = Arbitrage.plugin.list.doors.DoorsData or {}
@@ -182,8 +180,7 @@ netstream.Hook("arb.DoorSetIcon", function(client, faction)
 	local entity = trace.Entity
 	if !IsValid(entity) then return end
 
-	local class = entity:GetClass()
-	if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+	if !entity:IsDoor() then return end
 
 	entity:SetNetVar("arb.team", faction > 0 and faction or nil)
 

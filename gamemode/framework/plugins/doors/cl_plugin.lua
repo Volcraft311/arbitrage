@@ -126,12 +126,12 @@ end
 function PLUGIN:Think()
 	local client = LocalPlayer()
 
-	if input.IsKeyDown(KEY_F2) and client:IsAdmin() then
+	if input.IsKeyDown(KEY_F2) and client:IsAdmin() and !vgui.CursorVisible() then
 		local trace = client:GetEyeTraceNoCursor()
 		local entity = trace.Entity
 
 		if !IsValid(entity) then return end
-		if entity:GetClass() != "prop_door_rotating" and entity:GetClass() != "func_door_rotating" then return end
+		if !entity:IsDoor() then return end
 		if EyePos():Distance(entity:GetPos()) >= 300 then return end
 
 		local doorData
@@ -155,7 +155,7 @@ function PLUGIN:Think()
 						name = "Запретить/Разрешить взламывать",
 						icon = "icon16/attach.png",
 						data = function()
-							
+
 						end
 					}
 				}
@@ -177,7 +177,7 @@ function PLUGIN:Think()
 				}
 			},
 			{
-				name = "Удалить из двери игрока:",
+				name = "Убрать доступ из двери:",
 				icon = "icon16/pencil_delete.png",
 				data = RequestRemoveDoorPlayer
 			},
@@ -363,7 +363,7 @@ timer.Create("Doors:UpdateDraw", 1, 0, function()
 	for k, v in ipairs(doors) do
 		local faction = Arbitrage.teams.Get(v:GetNetVar("arb.team", -1))
 
-		if (v:GetClass() != "func_door_rotating" and v:GetClass() != "prop_door_rotating") or !faction then
+		if v:IsDoor() or !faction then
 			doors[k] = nil
 		end
 	end

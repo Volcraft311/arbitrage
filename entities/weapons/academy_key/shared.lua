@@ -114,8 +114,7 @@ function SWEP:SecondaryAttack()
 
     if door:GetPos():Distance(client:GetPos()) > 100 then return end
 
-    local class = door:GetClass()
-    if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+    if !door:IsDoor() then return end
 
     if (!client.doorSpam or CurTime() >= client.doorSpam) then
         local doorData = FindDoorData(door)
@@ -145,8 +144,7 @@ function SWEP:PrimaryAttack()
 
     if door:GetPos():Distance(client:GetPos()) > 100 then return end
 
-    local class = door:GetClass()
-    if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+    if !door:IsDoor() then return end
 
     if (!client.doorSpam or CurTime() >= client.doorSpam) then
         local doorData = FindDoorData(door)

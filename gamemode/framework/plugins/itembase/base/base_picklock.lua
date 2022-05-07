@@ -29,10 +29,9 @@ local function FindDoor(client)
     local trace = client:GetEyeTrace()
 
     local entity = trace.Entity
-    if !entity then return end
+    if !IsValid(entity) then return end
 
-    local class = entity:GetClass()
-    if class != "prop_door_rotating" and class != "func_door_rotating" then return end
+    if !entity:IsDoor() then return end
 
     return entity
 end

@@ -90,6 +90,13 @@ function Arbitrage.player.SetupWeapons(client)
     client:Give("academy_key")
 
     client:SelectWeapon("academy_key")
+
+    local faction = Arbitrage.teams.Get(client:Team())
+    if !faction then return end
+
+    for k, v in ipairs(faction.weapons or {}) do
+        client:Give(v)
+    end
 end
 
 function Arbitrage.player.SetupInventory(client)

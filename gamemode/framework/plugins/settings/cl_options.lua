@@ -57,7 +57,7 @@ SETTINGS.options.Add("show_invisible", SETTINGS.type.bool, true, {
     end
 })
 
-SETTINGS.options.Add("enable_autocache", SETTINGS.type.bool, true, {
+SETTINGS.options.Add("enable_autocache", SETTINGS.type.bool, false, {
     name = "Включить автокэширование ассетов",
     title = "Включить автокэширование ассетов",
     description = "Автокэширование позволяет избегать провисаний и падения кадров в секунду на этапах игры, в которых используются материалы-изображения и спрайты.",

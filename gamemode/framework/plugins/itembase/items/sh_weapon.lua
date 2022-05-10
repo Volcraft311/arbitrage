@@ -102,3 +102,62 @@ do
     ItemBase:RegisterItem("mac10", ITEM)
 
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Бейсбольная бита"
+    ITEM.description = "Вот теперь вы можете сыграть в бейсбол, наверное."
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_bat_metal.mdl"
+    ITEM.class = "tfa_nmrih_bat"
+
+    ItemBase:RegisterItem("bat", ITEM)
+
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Кухонный Нож"
+    ITEM.description = "Обычно предназначается для готовки."
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_kitknife.mdl"
+    ITEM.class = "tfa_nmrih_kknife"
+
+    ItemBase:RegisterItem("knife", ITEM)
+
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Топор"
+    ITEM.description = "Оружие дровосека?"
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_hatchet.mdl"
+    ITEM.class = "tfa_nmrih_hatchet"
+
+    ItemBase:RegisterItem("hatchet", ITEM)
+
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Пожарный Топор"
+    ITEM.description = "Считается оружием психопатов. Действительно, кто будет тушить огонь топором?"
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_axe_fire.mdl"
+    ITEM.class = "tfa_nmrih_fireaxe"
+
+    ItemBase:RegisterItem("fireaxe", ITEM)
+
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Огнетушитель (бесконечный)"
+    ITEM.description = "Самая полезная вещь при пожаре."
+    ITEM.model = "models/weapons/w_fire_extinguisher.mdl"
+    ITEM.class = "weapon_extinguisher_infinite"
+
+    ItemBase:RegisterItem("extinguisher_infinite", ITEM)
+end

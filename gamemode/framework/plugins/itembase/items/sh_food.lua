@@ -276,9 +276,9 @@ do
     ITEM.model = "models/foodnhouseholditems/sodacanb02.mdl"
 
     ITEM.maxuse = 1
-    ITEM.thirst = 20
+    ITEM.thirst = 10
     ITEM.hunger = 0
-    ITEM.sleep = 25
+    ITEM.sleep = 15
     ITEM.sound = "eating_and_drinking/can.wav"
 
     ItemBase:RegisterItem("monster_low_carb", ITEM)
@@ -293,8 +293,8 @@ do
 
     ITEM.maxuse = 1
     ITEM.thirst = 10
-    ITEM.hunger = 15
-    ITEM.sleep = 25
+    ITEM.hunger = 0
+    ITEM.sleep = 20
     ITEM.sound = "eating_and_drinking/can.wav"
 
     ItemBase:RegisterItem("monster_assault", ITEM)
@@ -324,7 +324,7 @@ do
     ITEM.model = "models/foodnhouseholditems/nutella.mdl"
 
     ITEM.maxuse = 5
-    ITEM.thirst = -4
+    ITEM.thirst = -2
     ITEM.hunger = 7
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/eating.wav"
@@ -387,9 +387,9 @@ do
     ITEM.description = "Излюбленный американцами десерт, используется с огромным спектром продуктов."
     ITEM.model = "models/foodnhouseholditems/peanut_butter.mdl"
 
-    ITEM.maxuse = 7
+    ITEM.maxuse = 5
     ITEM.thirst = -1
-    ITEM.hunger = 4
+    ITEM.hunger = 6
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/eating.wav"
 

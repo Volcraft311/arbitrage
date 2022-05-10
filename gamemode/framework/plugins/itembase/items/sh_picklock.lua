@@ -19,8 +19,8 @@ do
     ITEM.description = "Отмычка для взлома дверей"
     ITEM.model = "models/weapons/w_crowbar.mdl"
 
-    ITEM.maxuse = 2
-    ITEM.hacktime = 20
+    ITEM.maxuse = 3
+    ITEM.hacktime = 15
 
     ItemBase:RegisterItem("picklock", ITEM)
 end

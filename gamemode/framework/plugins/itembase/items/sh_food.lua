@@ -729,3 +729,51 @@ do
 
     ItemBase:RegisterItem("cola5", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Чизбургер"
+    ITEM.description = "Классический чизбургер."
+    ITEM.model = "models/foodnhouseholditems/burgersims2.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 0
+    ITEM.hunger = 15
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("cheeseburger", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Кусок торта"
+    ITEM.description = "Кусочек прекрасного торта."
+    ITEM.model = "models/foodnhouseholditems/cakeslice1.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 0
+    ITEM.hunger = 9
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("cakeslice", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Блинчики"
+    ITEM.description = "Блинчики с сливочным маслом, идеально."
+    ITEM.model = "models/foodnhouseholditems/pancakes.mdl"
+
+    ITEM.maxuse = 2
+    ITEM.thirst = 0
+    ITEM.hunger = 8
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("pancakes", ITEM)
+end

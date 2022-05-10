@@ -261,3 +261,13 @@ do
 
 	ItemBase:RegisterItem("radio", ITEM)
 end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Средство для очистки стёкол"
+	ITEM.description = "Позволяет очистить стёкла с большей лёгкостью."
+	ITEM.model = "models/foodnhouseholditems/cillitbang.mdl"
+
+	ItemBase:RegisterItem("cilitbang", ITEM)
+end

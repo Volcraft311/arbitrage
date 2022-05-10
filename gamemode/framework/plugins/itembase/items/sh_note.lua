@@ -17,7 +17,7 @@ do
 
     ITEM.name = "Блокнот"
     ITEM.description = "Самый обычный блокнот, скорее всего содержит в себе какие-то записи."
-    ITEM.model = "models/props_lab/clipboard.mdl"
+    ITEM.model = "models/props_vtmb/dayplanner_closed.mdl"
 
     ItemBase:RegisterItem("notepad", ITEM)
 end

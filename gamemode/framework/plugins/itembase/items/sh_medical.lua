@@ -19,7 +19,7 @@ do
     ITEM.description = "Стеклянная банка с пластиковой крышкой, внутри которой находится зеленая жидкость."
     ITEM.model = "models/healthvial.mdl"
 
-    ITEM.health = 20
+    ITEM.health = 15
     ITEM.maxuse = 2
     ITEM.sound = "items/medshot4.wav"
 
@@ -47,7 +47,7 @@ do
     ITEM.description = "Пластиковая конструкция с красным крестом посередине, внутри которой находятся флакон биогеля, бинты и различные таблетки."
     ITEM.model = "models/Items/HealthKit.mdl"
 
-    ITEM.health = 30
+    ITEM.health = 20
     ITEM.maxuse = 3
     ITEM.sound = "items/medshot4.wav"
 

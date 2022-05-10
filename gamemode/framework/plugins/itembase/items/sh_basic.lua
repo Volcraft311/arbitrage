@@ -271,3 +271,24 @@ do
 
 	ItemBase:RegisterItem("cilitbang", ITEM)
 end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Туалетная бумага"
+	ITEM.description = "Трёхслойная белая туалетная бумага с запахом свежести."
+	ITEM.model = "models/props/interior/toiletpaperroll.mdl"
+
+	ItemBase:RegisterItem("toiletpaper", ITEM)
+end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Диктофон"
+	ITEM.description = "Не похоже что он рабочий, но можете попробовать."
+	ITEM.model = "models/props_vtmb/taperecorder.mdl"
+
+	ItemBase:RegisterItem("taperecorder", ITEM)
+end
+

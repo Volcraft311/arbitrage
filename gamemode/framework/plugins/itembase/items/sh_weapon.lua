@@ -161,3 +161,92 @@ do
 
     ItemBase:RegisterItem("extinguisher_infinite", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Масляная лампа"
+    ITEM.description = "Старенькая масляная лампа."
+    ITEM.model = "models/weapons/w_lantern.mdl"
+    ITEM.class = "buu_lantern_oil"
+
+    ItemBase:RegisterItem("lantern_oil", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Масляная лампа (Бесконечная)"
+    ITEM.description = "Старенькая масляная лампа."
+    ITEM.model = "models/weapons/w_lantern.mdl"
+    ITEM.class = "buu_lantern"
+
+    ItemBase:RegisterItem("lantern", ITEM)
+
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Очки ночного зрения."
+    ITEM.description = "Очень популярны из-за фильмов про шпионов."
+    ITEM.model = "models/weapons/cbinocularsbp/w_nvbinoculars.mdl"
+    ITEM.class = "nightvision"
+
+    ItemBase:RegisterItem("nightvision", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Бензопила"
+    ITEM.description = "Устройте свою резню!"
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_chainsaw.mdl"
+    ITEM.class = "tfa_nmrih_chainsaw"
+
+    ItemBase:RegisterItem("chainsaw", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Арбалет"
+    ITEM.description = "Арбалёт с раскаллёными метталическими болтами."
+    ITEM.model = "models/weapons/w_crossbow.mdl"
+    ITEM.class = "weapon_crossbow"
+
+    ItemBase:RegisterItem("crossbow", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Desert Eagle"
+    ITEM.description = "Крупнокалиберный израильский пистолет."
+    ITEM.model = "models/weapons/3_pist_deagle.mdl"
+    ITEM.class = "tfcss_deagle_alt"
+
+    ItemBase:RegisterItem("deagle", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "HK USP"
+    ITEM.description = "Лёгкокалиберный немецкий пистолет"
+    ITEM.model = "models/weapons/3_pist_usp.mdl"
+    ITEM.class = "tfcss_usp_alt"
+
+    ItemBase:RegisterItem("usp", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Кувалда"
+    ITEM.description = "Мощное оружие для вышибания мозгов"
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_sledge.mdl"
+    ITEM.class = "tfa_nmrih_sledge"
+
+    ItemBase:RegisterItem("sledge", ITEM)
+end

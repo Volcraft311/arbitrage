@@ -240,7 +240,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Фастфудовый ужин"
-    ITEM.description = "Любимые бургеры, картошечка, соус и газировка. Что может быть не так?"
+    ITEM.description = "Любимые бургеры, картошечка, куриные ножки и газировка. Что может быть не так?"
     ITEM.model = "models/foodnhouseholditems/mcdmeal2.mdl"
 
     ITEM.maxuse = 1
@@ -776,4 +776,37 @@ do
     ITEM.sound = "eating_and_drinking/eating.wav"
 
     ItemBase:RegisterItem("pancakes", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Большой бургер"
+    ITEM.description = "Вкуснейший бургер с  беконом, кетчупом, майонезом, солёными огурчиками, сыром, салатом, томатами и булочкой с кунжутом."
+    ITEM.model = "models/foodnhouseholditems/mcdburger.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 0
+    ITEM.hunger = 35
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("bigburger", ITEM)
+end
+
+do
+    
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = "Цезарь Ролл"
+    ITEM.description = "Прекрасная закуска с курочкой, овощами и чесночным соусом."
+    ITEM.model = "models/foodnhouseholditems/chicken_wrap.mdl"
+
+    ITEM.maxuse = 1
+    ITEM.thirst = 0
+    ITEM.hunger = 20
+    ITEM.sleep = 0
+    ITEM.sound = "eating_and_drinking/eating.wav"
+
+    ItemBase:RegisterItem("bigburger", ITEM)
 end

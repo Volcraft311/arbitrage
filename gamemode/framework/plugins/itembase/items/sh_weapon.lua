@@ -250,3 +250,27 @@ do
 
     ItemBase:RegisterItem("sledge", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Фубар"
+    ITEM.description = "Мультизадачный инструмент. Очень мультизадачный."
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_fubar.mdl"
+    ITEM.class = "tfa_nmrih_fubar"
+
+    ItemBase:RegisterItem("fubar", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Мачете"
+    ITEM.description = "Прекрасен для рубки кокосов. И не только"
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_machete.mdl"
+    ITEM.class = "tfa_nmrih_machete"
+
+    ItemBase:RegisterItem("machete", ITEM)
+end
+
+

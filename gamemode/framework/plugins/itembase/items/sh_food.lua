@@ -432,7 +432,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Печенье"
-    ITEM.description = "Классическое сдобное печенье"
+    ITEM.description = "Классическое сдобное печенье."
     ITEM.model = "models/foodnhouseholditems/digestive2.mdl"
 
     ITEM.maxuse = 3
@@ -463,7 +463,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Чипсы со вкусом барбекю"
-    ITEM.description = "Чёрная пачка с пряным вкусом"
+    ITEM.description = "Чёрная пачка с пряным вкусом."
     ITEM.model = "models/foodnhouseholditems/chipslays3.mdl"
 
     ITEM.maxuse = 1
@@ -527,7 +527,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Чипсы с солью"
-    ITEM.description = "Небесно синяя пачка, с классическим солёным вкусом"
+    ITEM.description = "Небесно синяя пачка, с классическим солёным вкусом."
     ITEM.model = "models/foodnhouseholditems/chipsdoritos5.mdl"
 
     ITEM.maxuse = 1
@@ -543,7 +543,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Чипсы со вкусом гуакамоле"
-    ITEM.description = "Пачка в кислотно-зелёном стиле, имеют приятный запах"
+    ITEM.description = "Пачка в кислотно-зелёном стиле, имеют приятный запах."
     ITEM.model = "models/foodnhouseholditems/chipsdoritos6.mdl"
 
     ITEM.maxuse = 1
@@ -591,7 +591,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Кола (Лайф)"
-    ITEM.description = "Кола с натуральными сахарозаменителями"
+    ITEM.description = "Кола с натуральными сахарозаменителями."
     ITEM.model = "models/foodnhouseholditems/sodacan03.mdl"
 
     ITEM.maxuse = 1
@@ -623,7 +623,7 @@ do
     local ITEM = ItemBase.GetBase("base_food")
 
     ITEM.name = "Печенье с шоколадными каплями"
-    ITEM.description = "Излюбленное печенье американцев с кусочками шоколада"
+    ITEM.description = "Излюбленное печенье американцев с кусочками шоколада."
     ITEM.model = "models/foodnhouseholditems/cookies.mdl"
     ITEM.maxuse = 3
     ITEM.thirst = -3

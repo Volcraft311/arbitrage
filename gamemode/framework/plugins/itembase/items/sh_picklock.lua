@@ -16,11 +16,24 @@ do
     local ITEM = ItemBase.GetBase("base_picklock")
 
     ITEM.name = "Отмычка"
-    ITEM.description = "Отмычка для взлома дверей"
+    ITEM.description = "Отмычка для взлома дверей."
     ITEM.model = "models/weapons/w_crowbar.mdl"
 
-    ITEM.maxuse = 3
+    ITEM.maxuse = 2
     ITEM.hacktime = 15
+
+    ItemBase:RegisterItem("picklock", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_picklock")
+
+    ITEM.name = "Скелетный Ключ"
+    ITEM.description = "Позволяет автоматически открыть любую дверь."
+    ITEM.model = "models/weapons/w_crowbar.mdl"
+
+    ITEM.maxuse = 999
+    ITEM.hacktime = 1
 
     ItemBase:RegisterItem("picklock", ITEM)
 end

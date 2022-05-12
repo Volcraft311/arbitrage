@@ -143,7 +143,7 @@ do
     local ITEM = ItemBase.GetBase("base_weapon")
 
     ITEM.name = "Пожарный Топор"
-    ITEM.description = "Считается оружием психопатов. Действительно, кто будет тушить огонь топором?"
+    ITEM.description = "Считается оружием психопатов. Действительно, кто в здравом уме будет тушить огонь топором?"
     ITEM.model = "models/weapons/tfa_nmrih/w_me_axe_fire.mdl"
     ITEM.class = "tfa_nmrih_fireaxe"
 
@@ -272,5 +272,17 @@ do
 
     ItemBase:RegisterItem("machete", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Dual Elites"
+    ITEM.description = "Теперь вы похожи на профессионального киллера."
+    ITEM.model = "models/weapons/w_pist_elite_dropped.mdl"
+    ITEM.class = "tfcss_dualelites_alt"
+
+    ItemBase:RegisterItem("dualelites", ITEM)
+end
+
 
 

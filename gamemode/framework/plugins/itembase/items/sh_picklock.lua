@@ -33,7 +33,7 @@ do
     ITEM.model = "models/weapons/w_crowbar.mdl"
 
     ITEM.maxuse = 999
-    ITEM.hacktime = 1
+    ITEM.hacktime = 0.1
 
-    ItemBase:RegisterItem("picklock", ITEM)
+    ItemBase:RegisterItem("skeletonkey", ITEM)
 end

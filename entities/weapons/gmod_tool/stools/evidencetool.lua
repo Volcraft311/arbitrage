@@ -129,7 +129,7 @@ function TOOL.BuildCPanel(CPanel)
     List:SetSpaceX(5)
 
     for k, v in pairs(Evidence.icons) do
-        local mat = Arbitrage.GetMaterial(v)
+        local mat = Material(v)
 
         local ListItem = List:Add("DButton")
         ListItem:SetText("")

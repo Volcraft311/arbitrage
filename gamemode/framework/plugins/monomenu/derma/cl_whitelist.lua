@@ -43,7 +43,7 @@ function PANEL:Init()
     Arbitrage.gui.whitelist = self
 end
 
-local deleteMat = Arbitrage.GetMaterial("danganronpa/ui/delete.png")
+local deleteMat = Material("danganronpa/ui/delete.png")
 function PANEL:SetData(data)
     self.data = data
     self.data.players = self.data.players or {}

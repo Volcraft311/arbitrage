@@ -145,7 +145,6 @@ Arbitrage.base.Include("player_arbitrage.lua", "shared")
 Arbitrage.base.Include("cl_props.lua")
 Arbitrage.base.Include("cl_fonts.lua")
 Arbitrage.base.Include("sh_system.lua")
-Arbitrage.base.Include("sh_libraries.lua")
 
 Arbitrage.base.IncludeDir("derma")
 Arbitrage.base.IncludeDir("system")

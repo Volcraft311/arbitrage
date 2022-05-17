@@ -14,7 +14,7 @@ local categoryData = {
                 if !data then continue end
 
                 local d = Evidence.icons
-                local mat = Arbitrage.GetMaterial(d[data.image] and d[data.image] or d[1])
+                local mat = Material(d[data.image] and d[data.image] or d[1])
 
                 local ListItem = List:Add("DButton")
                 ListItem:SetText("")
@@ -37,7 +37,7 @@ local categoryData = {
                     surface.DrawOutlinedRect(0, 0, w, h, 1)
 
                     local descHeight = draw.GetFontHeight("arb.Font_FuturaPTBook_7")
-                    local descriptionText = Arbitrage.WrapText(data.name, Arbitrage.ResolutionW(140), "arb.Font_FuturaPTBook_7")
+                    local descriptionText = asterionlib.WrapText(data.name, Arbitrage.ResolutionW(140), "arb.Font_FuturaPTBook_7")
 
                     for i, _ in pairs(descriptionText) do
                         local y2 = descHeight * i - descHeight
@@ -183,7 +183,7 @@ function PANEL:Init()
     end
 end
 
-local mat = Arbitrage.GetMaterial("danganronpa/ui/evidence.png")
+local mat = Material("danganronpa/ui/evidence.png")
 function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 255, 255)
     surface.SetMaterial(mat)

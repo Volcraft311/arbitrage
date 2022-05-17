@@ -33,7 +33,7 @@ local categoryData = {
             client.selectedEmoji = client.selectedEmoji or 1
 
             for k, v in pairs(emotes) do
-                local mat = Arbitrage.GetMaterial(v)
+                local mat = Material(v)
 
                 local ListItem = List:Add("DButton")
                 ListItem:SetText("")
@@ -71,7 +71,7 @@ local categoryData = {
                 if !data then continue end
 
                 local d = Evidence.icons
-                local mat = Arbitrage.GetMaterial(d[data.image] and d[data.image] or d[1])
+                local mat = Material(d[data.image] and d[data.image] or d[1])
 
                 local description = data.name
                 if utf8.len(description) > 30 then
@@ -224,7 +224,7 @@ function PANEL:InitCategory()
     for k, v in pairs(categoryData) do
         local s = self.topPanel:GetTall()
 
-        local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_6><colour=255,255,255><img=materials/" .. v.icon .. ", " .. s / 2 .. "x" .. s / 2 .. ", 255, 255, 255> " .. v.name .. "</colour></font>")
+        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_6><colour=255,255,255><img=materials/" .. v.icon .. ", " .. s / 2 .. "x" .. s / 2 .. ", 255, 255, 255> " .. v.name .. "</colour></font>")
 
         local category = self.topPanel:Add("DButton")
         category:SetText("")

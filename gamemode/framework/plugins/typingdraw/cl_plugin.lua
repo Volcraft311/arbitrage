@@ -113,7 +113,7 @@ function PLUGIN:DrawText(client, text, color, alpha)
 	local x, y = data2D.x, data2D.y
 
 	local genericHeight = draw.GetFontHeight(font)
-	local drawText = Arbitrage.WrapText(text, size, font)
+	local drawText = asterionlib.WrapText(text, size, font)
 	for k, v in ipairs(drawText) do
 		local y2 = genericHeight * (k - 1)
 

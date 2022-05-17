@@ -13,9 +13,9 @@
 
 local PANEL = {}
 
-local mat = Arbitrage.GetMaterial("danganronpa/law/table/base.png")
-local active = Arbitrage.GetMaterial("danganronpa/law/table/active.png")
-local disable = Arbitrage.GetMaterial("danganronpa/law/table/disable.png")
+local mat = Material("danganronpa/law/table/base.png")
+local active = Material("danganronpa/law/table/active.png")
+local disable = Material("danganronpa/law/table/disable.png")
 
 function PANEL:Init()
     self:SetPos(ScrW() - Arbitrage.ResolutionW(582) - 30, 30)

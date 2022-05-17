@@ -19,7 +19,7 @@ Arbitrage.chat.Colors = {
 }
 
 function Arbitrage.chat:GetIcon(client)
-    local mat = Arbitrage.GetMaterial
+    local mat = Material
 
     if IsValid(client) then
         if client.SteamID and client:SteamID() == "STEAM_0:1:127526733" then

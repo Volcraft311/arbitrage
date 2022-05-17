@@ -103,7 +103,7 @@ function PANEL:SetData(data)
     self.data = data
 
     local descHeight = draw.GetFontHeight("ArcadeDescFont")
-    self.text = Arbitrage.WrapText(self.data, Arbitrage.notifypanel:GetWide() * 0.85, "ArcadeDescFont")
+    self.text = asterionlib.WrapText(self.data, Arbitrage.notifypanel:GetWide() * 0.85, "ArcadeDescFont")
 
     local y = 0
 

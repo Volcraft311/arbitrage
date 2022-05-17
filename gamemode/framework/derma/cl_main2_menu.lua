@@ -59,19 +59,19 @@ function PANEL:Init()
         end
     end
 
-    self.discordButton = self:AddButton(nil, Arbitrage.GetMaterial("danganronpa/ui/discord_mini.png"), ScrW() / 2 - W(276) / 2, H(577), W(52), H(52), function()
+    self.discordButton = self:AddButton(nil, Material("danganronpa/ui/discord_mini.png"), ScrW() / 2 - W(276) / 2, H(577), W(52), H(52), function()
         gui.OpenURL(ds_link)
     end)
 
-    self.vkButton = self:AddButton(nil, Arbitrage.GetMaterial("danganronpa/ui/vk_mini.png"), ScrW() / 2 - W(276) / 2 + (W(23) + W(52)) * 1, H(577), W(52), H(52), function()
+    self.vkButton = self:AddButton(nil, Material("danganronpa/ui/vk_mini.png"), ScrW() / 2 - W(276) / 2 + (W(23) + W(52)) * 1, H(577), W(52), H(52), function()
         gui.OpenURL(vk_link)
     end)
 
-    self.wikiButton = self:AddButton(nil, Arbitrage.GetMaterial("danganronpa/ui/wiki_mini.png"), ScrW() / 2 - W(276) / 2 + (W(23) + W(52)) * 2, H(577), W(52), H(52), function()
+    self.wikiButton = self:AddButton(nil, Material("danganronpa/ui/wiki_mini.png"), ScrW() / 2 - W(276) / 2 + (W(23) + W(52)) * 2, H(577), W(52), H(52), function()
         gui.OpenURL(wiki_link)
     end)
 
-    self.settingsButton = self:AddButton(nil, Arbitrage.GetMaterial("danganronpa/ui/settings_mini.png"), ScrW() / 2 - W(276) / 2 + (W(23) + W(52)) * 3, H(577), W(52), H(52), function()
+    self.settingsButton = self:AddButton(nil, Material("danganronpa/ui/settings_mini.png"), ScrW() / 2 - W(276) / 2 + (W(23) + W(52)) * 3, H(577), W(52), H(52), function()
         parent:Bluring(true)
         parent:ShowLogo(false)
         self:Show(false)

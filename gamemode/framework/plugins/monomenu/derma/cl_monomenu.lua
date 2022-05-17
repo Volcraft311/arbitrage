@@ -171,7 +171,7 @@ function PANEL:ClearCategory()
     end
 end
 
-local settingMat = Arbitrage.GetMaterial("danganronpa/ui/settings.png")
+local settingMat = Material("danganronpa/ui/settings.png")
 function PANEL:AddAction(panel, data, bInGame)
     data.ingame = bInGame
 
@@ -228,7 +228,7 @@ function PANEL:SetData(data)
 	            local text = isfunction(v.data) and v.data(client) or tostring(v.data)
 	            local alpha = v.onRun and 255 or 150
 
-	            local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
+	            local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
 
 	            local panel_add = i == 1 and self.gamePanel or self.adminPanel
 
@@ -292,7 +292,7 @@ function PANEL:SetData(data)
             draw.DrawText("Место на суде: " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + Arbitrage.ResolutionW(200), Arbitrage.ResolutionH(8), placeColor, TEXT_ALIGN_CENTER)
         end
 
-        local mat = (factionData and factionData.pixel) and Arbitrage.GetMaterial(factionData.pixel) or nil
+        local mat = (factionData and factionData.pixel) and Material(factionData.pixel) or nil
 
         local modelPanel = panel:Add("Panel")
         modelPanel:SetWide(panel:GetTall())
@@ -337,7 +337,7 @@ function PANEL:SetData(data)
             draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, Arbitrage.ResolutionH(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
 
-        local mat = (factionData and factionData.pixel) and Arbitrage.GetMaterial(factionData.pixel) or nil
+        local mat = (factionData and factionData.pixel) and Material(factionData.pixel) or nil
 
         local modelPanel = panel:Add("Panel")
         modelPanel:SetWide(panel:GetTall())

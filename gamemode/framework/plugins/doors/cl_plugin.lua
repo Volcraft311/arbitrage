@@ -332,7 +332,7 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, font, nameColor, textCol
 		if textWidth > longWidth then longWidth = textWidth end
 
 		if faction and faction.pixel then
-			local logo = Arbitrage.GetMaterial(faction.pixel)
+			local logo = Material(faction.pixel)
 
 			cam.Start3D2D(doorData.position + doorData.angles:Right() * -30 + doorData.angles:Forward() * -10, doorData.angles, 0.05)
 				surface.SetDrawColor(15, 6, 7, alpha)

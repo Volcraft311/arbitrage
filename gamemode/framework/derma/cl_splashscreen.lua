@@ -77,7 +77,7 @@ function PANEL:Init()
             _.alpha2 = Lerp(FrameTime() * 3, _.alpha2, _.malpha2)
 
             surface.SetDrawColor(255, 255, 255, _.alpha)
-            surface.SetMaterial(Arbitrage.GetMaterial("danganronpa/splashscreen/bg.png"))
+            surface.SetMaterial(Material("danganronpa/splashscreen/bg.png"))
             surface.DrawTexturedRect(0, 0, w, h)
 
             local scrollMod1 = (CurTime() * 2000) % (h + 3000)
@@ -100,11 +100,11 @@ function PANEL:Init()
             surface.SetDrawColor(0, 0, 0, bA)
             surface.DrawRect(0, 0, w, h)
 
-            Arbitrage.DrawBlurAt(0, scrollMod5, ScrW(), 25, 5, nil, 255)
-            Arbitrage.DrawBlurAt(0, h - scrollMod6, ScrW(), 10, 5, nil, 255)
+            asterionlib.DrawBlurAt(0, scrollMod5, ScrW(), 25, 5, nil, 255)
+            asterionlib.DrawBlurAt(0, h - scrollMod6, ScrW(), 10, 5, nil, 255)
 
             surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(Arbitrage.GetMaterial("danganronpa/splashscreen/vignette.png"))
+            surface.SetMaterial(Material("danganronpa/splashscreen/vignette.png"))
             surface.DrawTexturedRect(0, 0, w, h)
         end
         self.matScreen.Think = function(_)
@@ -237,7 +237,7 @@ function PANEL:ShowSurvival()
         local factionData = Arbitrage.teams.Get(faction)
         if !factionData then continue end
 
-        local mat = Arbitrage.GetMaterial(factionData.white or "error.png")
+        local mat = Material(factionData.white or "error.png")
 
         self.survival.List[steamid] = {
             material = mat,

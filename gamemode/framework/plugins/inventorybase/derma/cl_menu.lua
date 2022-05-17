@@ -62,7 +62,7 @@ function PANEL:Paint()
     surface.SetDrawColor(15, 6, 7, alpha * 0.9)
     surface.DrawRect(0, 0, ScrW(), ScrH())
 
-    Arbitrage.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, alpha)
+    asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, alpha)
 
     draw.SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
 
@@ -72,14 +72,14 @@ function PANEL:Paint()
         local icon = faction.hud
         if !icon then return end
 
-        local mat = Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud or "err.png")
+        local mat = Material(Arbitrage.teams.Get(client:Team()).hud or "err.png")
         local size = 0.6
         local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
 
         local w, h = W(70), ScrH() / 2 - sizeH / 2 - H(100)
 
         surface.SetDrawColor(255, 255, 255, 255 * 0.6)
-        surface.SetMaterial(Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud))
+        surface.SetMaterial(Material(Arbitrage.teams.Get(client:Team()).hud))
         surface.DrawTexturedRect(w, h, sizeW, sizeH)
         -- surface.DrawOutlinedRect(w, h, sizeW, sizeH)
 

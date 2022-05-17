@@ -15,15 +15,15 @@
 local PANEL = {}
 
 local assets = {
-    Arbitrage.GetMaterial("danganronpa/law/argue/asset1.png"),
-    Arbitrage.GetMaterial("danganronpa/law/argue/asset2.png")
+    Material("danganronpa/law/argue/asset1.png"),
+    Material("danganronpa/law/argue/asset2.png")
 }
 
-local bg = Arbitrage.GetMaterial("danganronpa/law/argue/bg1.png")
-local bgA = Arbitrage.GetMaterial("danganronpa/law/argue/bg2.png")
+local bg = Material("danganronpa/law/argue/bg1.png")
+local bgA = Material("danganronpa/law/argue/bg2.png")
 
-local text = Arbitrage.GetMaterial("danganronpa/law/argue/text.png")
-local textA = Arbitrage.GetMaterial("danganronpa/law/argue/textblur.png")
+local text = Material("danganronpa/law/argue/text.png")
+local textA = Material("danganronpa/law/argue/textblur.png")
 
 local function hideRender()
     render.ClearStencil()
@@ -126,7 +126,7 @@ function PANEL:SetCharacter(data)
 
     local argue = faction.argue
     if argue then
-        self.character = Arbitrage.GetMaterial(argue)
+        self.character = Material(argue)
     end
 end
 

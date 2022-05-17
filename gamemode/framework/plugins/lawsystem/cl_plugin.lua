@@ -100,11 +100,11 @@ function PLUGIN:TransferCamPos()
 end
 
 local nsb_path = "danganronpa/law/nsb/%s.png"
-local nsb_1, nsb_1_l = Arbitrage.GetMaterial(string.format(nsb_path, "1")), Arbitrage.GetMaterial(string.format(nsb_path, "1_l"))
-local nsb_2, nsb_2_l = Arbitrage.GetMaterial(string.format(nsb_path, "2")), Arbitrage.GetMaterial(string.format(nsb_path, "2_l"))
-local nsb_3, nsb_3_l = Arbitrage.GetMaterial(string.format(nsb_path, "3")), Arbitrage.GetMaterial(string.format(nsb_path, "3_l"))
-local nsb_4, nsb_4_l = Arbitrage.GetMaterial(string.format(nsb_path, "4")), Arbitrage.GetMaterial(string.format(nsb_path, "4_l"))
-local nsb_5, nsb_5_l = Arbitrage.GetMaterial(string.format(nsb_path, "5")), Arbitrage.GetMaterial(string.format(nsb_path, "5_l"))
+local nsb_1, nsb_1_l = Material(string.format(nsb_path, "1")), Material(string.format(nsb_path, "1_l"))
+local nsb_2, nsb_2_l = Material(string.format(nsb_path, "2")), Material(string.format(nsb_path, "2_l"))
+local nsb_3, nsb_3_l = Material(string.format(nsb_path, "3")), Material(string.format(nsb_path, "3_l"))
+local nsb_4, nsb_4_l = Material(string.format(nsb_path, "4")), Material(string.format(nsb_path, "4_l"))
+local nsb_5, nsb_5_l = Material(string.format(nsb_path, "5")), Material(string.format(nsb_path, "5_l"))
 
 function PLUGIN:SendIntroText()
     local size = 400
@@ -158,9 +158,9 @@ function PLUGIN:SendIntroText()
     end)
 end
 
-local circleMat = Arbitrage.GetMaterial("danganronpa/law/circle.png")
-local circleMatB = Arbitrage.GetMaterial("danganronpa/law/circle_b.png")
-local startMat = Arbitrage.GetMaterial("danganronpa/law/start.png")
+local circleMat = Material("danganronpa/law/circle.png")
+local circleMatB = Material("danganronpa/law/circle_b.png")
+local startMat = Material("danganronpa/law/start.png")
 function PLUGIN:SendStartText()
     local size = 0
     local alpha = 255
@@ -233,7 +233,7 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
         local emojiList = charTeam.emodjiList
         if emojiList and #emojiList > 0 and v:GetNetVar("arbEmojiShow") then
-            local mat = Arbitrage.GetMaterial(v:GetNetVar("emoji", emojiList[1]))
+            local mat = Material(v:GetNetVar("emoji", emojiList[1]))
 
             local size = 1.26
 
@@ -269,8 +269,8 @@ local bulletColors = {
 
 local gradientUp = surface.GetTextureID("vgui/gradient-u")
 local gradientDown = surface.GetTextureID("vgui/gradient-d")
-local bulletMat = Arbitrage.GetMaterial("danganronpa/law/bullet.png")
-local bulletMatL = Arbitrage.GetMaterial("danganronpa/law/bullet_l.png")
+local bulletMat = Material("danganronpa/law/bullet.png")
+local bulletMatL = Material("danganronpa/law/bullet_l.png")
 
 -- function PLUGIN:HUDPaint()
 hook.Add("HUDPaint", "arb.DrawBullets", function()
@@ -443,10 +443,10 @@ surface.CreateFont( "arb.LawBulletFont", {
     weight = 400
 })
 
-local mat = Arbitrage.GetMaterial("danganronpa/law/cylinder.png")
-local bullet = Arbitrage.GetMaterial("danganronpa/law/big_bullet.png")
-local bulletblur = Arbitrage.GetMaterial("danganronpa/law/big_bullet_blur.png")
-local interface = Arbitrage.GetMaterial("danganronpa/law/interface.png")
+local mat = Material("danganronpa/law/cylinder.png")
+local bullet = Material("danganronpa/law/big_bullet.png")
+local bulletblur = Material("danganronpa/law/big_bullet_blur.png")
+local interface = Material("danganronpa/law/interface.png")
 
 local moving = 0
 local _moving = moving
@@ -830,7 +830,7 @@ end)
 
 netstream.Hook("arb.ShowEvidence", function(client, data, indx)
     local d = Evidence.icons
-    local icon = Arbitrage.GetMaterial(d[data] and d[data] or d[1])
+    local icon = Material(d[data] and d[data] or d[1])
 
     local prestation = vgui.Create("arb.Prestation")
     prestation:AddMaterial(icon)

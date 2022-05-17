@@ -12,7 +12,7 @@
 ]]--
 
 
-local matBG = Arbitrage.GetMaterial("danganronpa/ui/bg.png")
+local matBG = Material("danganronpa/ui/bg.png")
 
 local PANEL = {}
 
@@ -103,7 +103,7 @@ function PANEL:SetInfo(faction, steamid)
     if !faction then return end
 
     local data = Arbitrage.teams.Get(faction)
-    local splashscreen = Arbitrage.GetMaterial(data.splash or "err.png")
+    local splashscreen = Material(data.splash or "err.png")
 
     if IsValid(self.infoPanel) then
         self.infoPanel:AlphaTo(0, 0.25, 0, function()
@@ -132,7 +132,7 @@ function PANEL:SetInfo(faction, steamid)
 
         self.panels[#self.panels + 1] = self.infoPanel
 
-        local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы уже проголосовали за данного персонажа</colour></font>")
+        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы уже проголосовали за данного персонажа</colour></font>")
 
         local textPanel = self.infoPanel:Add("Panel")
         textPanel:Dock(FILL)
@@ -192,7 +192,7 @@ function PANEL:SetData(data, votingList)
         local factionData = Arbitrage.teams.Get(faction)
         if !factionData then continue end
 
-        local mat = Arbitrage.GetMaterial(factionData.logo or "err.png")
+        local mat = Material(factionData.logo or "err.png")
 
         local character = self.charactersPanel:Add("DButton")
         character:SetAlpha(0)
@@ -253,7 +253,7 @@ function PANEL:ShowWinning(data)
     local factionData = Arbitrage.teams.Get(data)
     if !factionData then return end
 
-    local mat = Arbitrage.GetMaterial(factionData.splash or "err.png")
+    local mat = Material(factionData.splash or "err.png")
 
     local size = self:GetTall() * 0.7
 
@@ -296,7 +296,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 190)
     surface.DrawRect(0, 0, w, h)
 
-    Arbitrage.DrawBlur(self, 5, passes, alpha)
+    asterionlib.DrawBlur(self, 5, passes, alpha)
 end
 
 vgui.Register("arb.VoteScreen", PANEL, "EditablePanel")

@@ -14,11 +14,11 @@
 
 local PANEL = {}
 
-local material_logo = Arbitrage.GetMaterial("danganronpa/ui/logo.png")
+local material_logo = Material("danganronpa/ui/logo.png")
 
-local material_bg = Arbitrage.GetMaterial("danganronpa/ui/bg.png")
-local material_bg_glass = Arbitrage.GetMaterial("danganronpa/ui/bg_glassshards.png")
-local material_bg_light = Arbitrage.GetMaterial("danganronpa/ui/bg_light.png")
+local material_bg = Material("danganronpa/ui/bg.png")
+local material_bg_glass = Material("danganronpa/ui/bg_glassshards.png")
+local material_bg_light = Material("danganronpa/ui/bg_light.png")
 
 function PANEL:Init()
     Arbitrage.menu = self
@@ -227,7 +227,7 @@ local lerpX_l, lerpY_l = lerpX, lerpY
 local padding = 0.07
 local speed = 1
 
-local mat = Arbitrage.GetMaterial("danganronpa/ui/circle.png")
+local mat = Material("danganronpa/ui/circle.png")
 
 local function GenerateCircle(screenWide, screenTall)
     local data = {
@@ -313,7 +313,7 @@ function PANEL:Paint(w, h)
     self.bluringM = Lerp(FrameTime() * 2, self.bluringM, self.bluring and 1 or 0)
 
     if self.bluringM >= 0.01 then
-        Arbitrage.DrawBlur(self, 10 * self.bluringM)
+        asterionlib.DrawBlur(self, 10 * self.bluringM)
 
         surface.SetDrawColor(0, 0, 0, 200 * self.bluringM)
         surface.DrawRect(0, 0, w, h)

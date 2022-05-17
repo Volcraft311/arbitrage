@@ -20,7 +20,7 @@ PLUGIN.realtime = RealTime()
 PLUGIN.lerp = 0
 PLUGIN.lerp2 = 0
 
-local mat = Arbitrage.GetMaterial("danganronpa/hud/voice.png")
+local mat = Material("danganronpa/hud/voice.png")
 local standingOffset = Vector(0, 0, 72)
 local crouchingOffset = Vector(0, 0, 38)
 local boneOffset = Vector(0, 0, 15)

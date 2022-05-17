@@ -108,7 +108,7 @@ function Arbitrage.evidence.CreateText(data)
 
         draw_SimpleText(name, "arb.Font_FuturaPTDemi_8", x, y - (genericHeight / 2), ColorAlpha(color, evData.alpha), TEXT_ALIGN_CENTER)
 
-        local descriptionText = Arbitrage.WrapText(desc, 300, "arb.Font_FuturaPTBook_6")
+        local descriptionText = asterionlib.WrapText(desc, 300, "arb.Font_FuturaPTBook_6")
 
         for i, _ in pairs(descriptionText) do
             local y2 = y + (descHeight * i) - (genericHeight / 2) + 5

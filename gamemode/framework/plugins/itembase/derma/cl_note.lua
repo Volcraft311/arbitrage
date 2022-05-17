@@ -12,9 +12,9 @@
 ]]--
 
 
-local matBG = Arbitrage.GetMaterial("danganronpa/note/bg.png")
-local matYellow = Arbitrage.GetMaterial("danganronpa/note/yellow.png")
-local matRed = Arbitrage.GetMaterial("danganronpa/note/red.png")
+local matBG = Material("danganronpa/note/bg.png")
+local matYellow = Material("danganronpa/note/yellow.png")
+local matRed = Material("danganronpa/note/red.png")
 
 local size = 0.6
 

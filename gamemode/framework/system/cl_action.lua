@@ -135,7 +135,7 @@ function Arbitrage.action.Draw()
 
     hideRender()
 
-    draw.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, Color(255, 255, 255), -12.5, 0)
+    asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, Color(255, 255, 255), -12.5, 0)
 
     showRender()
 

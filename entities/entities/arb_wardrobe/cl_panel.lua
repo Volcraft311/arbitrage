@@ -11,7 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local sliderMat = Arbitrage.GetMaterial("danganronpa/ui/slider.png")
+local sliderMat = Material("danganronpa/ui/slider.png")
 
 local PANEL = {}
 

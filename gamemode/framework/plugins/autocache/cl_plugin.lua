@@ -42,7 +42,7 @@ end
 function PLUGIN:CacheMat(data, num, max_num)
     if !SETTINGS.options.Get("enable_autocache") then return end
 
-    Arbitrage.GetMaterial(data)
+    Material(data)
 
     data = data .. "  [" .. num .. "/" .. max_num .. "]"
 
@@ -190,7 +190,7 @@ function PLUGIN:StartSaving()
     self:EndSaving()
 end
 
-local settings_mat = Arbitrage.GetMaterial("danganronpa/ui/settings.png")
+local settings_mat = Material("danganronpa/ui/settings.png")
 function PLUGIN:HUDPaint()
     if !self.caching then return end
     if !SETTINGS.options.Get("enable_autocache") then return end

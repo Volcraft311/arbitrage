@@ -318,6 +318,50 @@ do
     Arbitrage.weapon.Add("psi_staticburst", "psi_staticburst", false)
 end
 
+do
+    local workshop = asterionlib.workshop
+
+    hook.Add("asterionlib.workshop:Initialize", "asterionlib.workshop", function()
+        workshop:Add("2715755590") -- Danganronpa - Main Content
+        workshop:Add("2786490267") -- Danganronpa - Main Content #2
+        workshop:Add("2717853308") -- Danganronpa - Models Content #1
+        workshop:Add("2723789180") -- Danganronpa - Models Content #3
+        workshop:Add("2780751458") -- Danganronpa - Models Content #2
+
+        -- OTHER
+        workshop:Add("246756300") -- Stream Radio
+        workshop:Add("415143062") -- TFA Base [ Reduxed ]
+        workshop:Add("2463165156") -- [OPTIMIZED] vFire - Dynamic Fire
+        workshop:Add("108024198") -- Food and Household items
+        workshop:Add("131759821") -- VJ Base
+        workshop:Add("1920810365") -- Facial Emote Mod
+        workshop:Add("1784911999") -- LED screens
+
+        -- WEAPONS
+        workshop:Add("582366370") -- [TFA] No More Room in Hell Melee SWEPs
+        workshop:Add("582493650") -- [TFA] No More Room in Hell Firearm SWEPs
+        workshop:Add("244540803") -- Customizable Flashlight
+        workshop:Add("921195220") -- TFA CS:S Weapons
+        workshop:Add("1414153810") -- [TTT] Night vision
+        workshop:Add("1292873521") -- Amnesia Lantern Rework
+        workshop:Add("244540803") -- Customizable Flashlight
+        workshop:Add("104607228") -- Fire Extinguisher
+
+        -- MAPS
+        workshop:Add("1892549430") -- drp_hopespeak (WIP) Danganronpa map
+        workshop:Add("1892565701") -- drp_hopespeak - Content
+
+        -- MODELS
+        workshop:Add("1246554779") -- Roleplay Props Extended
+        workshop:Add("958532452") -- Interior Props Pack.
+        workshop:Add("263266938") -- Developer Style Props!
+        workshop:Add("1990021079") -- Some school props
+        workshop:Add("213181442") -- Mobile Computing Pack
+        workshop:Add("104477476") -- Misc Props Pack
+        workshop:Add("2546157752") -- Stockplus - More Construct Props
+    end)
+end
+
 function Arbitrage:GetStored()
     local data = {
         -- Позиции начальной камеры

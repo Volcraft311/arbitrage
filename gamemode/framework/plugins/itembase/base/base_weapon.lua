@@ -22,7 +22,7 @@ BASE.class = "weapon_pistol"
 BASE.isWeapon = true
 
 if CLIENT then
-	local ribbon = Arbitrage.GetMaterial("danganronpa/inventory/ribbon.png")
+	local ribbon = Material("danganronpa/inventory/ribbon.png")
 
 	function BASE:Paint(item, w, h)
 		if item:GetData("equip") then

@@ -30,7 +30,7 @@ function ENT:Draw()
 	if !faction then return end
 	if !faction.dead then return end
 
-	local mat = Arbitrage.GetMaterial(faction.dead)
+	local mat = Material(faction.dead)
 
 	cam.Start3D2D(position + self:GetForward() * 0.91 + self:GetRight() * 7.7 + self:GetUp() * 77, angles, 0.1)
 		render.PushFilterMin(TEXFILTER.NONE)

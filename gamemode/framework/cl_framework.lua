@@ -56,7 +56,7 @@ Arbitrage.Gradients = {
     [GRADIENT_LEFT] = surface.GetTextureID("vgui/gradient-l"),
     [GRADIENT_DOWN] = surface.GetTextureID("vgui/gradient-d"),
     [GRADIENT_UP] = surface.GetTextureID("vgui/gradient-u"),
-    [GRADIENT_ROUNDING] = Arbitrage.GetMaterial("vgui/gradient-rounding.png")
+    [GRADIENT_ROUNDING] = Material("vgui/gradient-rounding.png")
 }
 
 function Arbitrage.DrawGradient(gradientType, x, y, width, height, color)
@@ -136,37 +136,57 @@ function Arbitrage.AddDisableElement(data)
     Arbitrage.DisableElements[data] = true
 end
 
-Arbitrage.hud.AddCircle("health", {
-    value = function()
-        return LocalPlayer():Health()
-    end,
-    color = Color(255, 61, 96),
-    image = Arbitrage.GetMaterial("danganronpa/hud/health.png")
-})
+do
+    Arbitrage.hud.AddCircle("health", {
+        value = function()
+            return LocalPlayer():Health()
+        end,
+        color = Color(255, 61, 96),
+        image = Material("danganronpa/hud/health.png")
+    })
 
-Arbitrage.hud.AddCircle("hunger", {
-    value = function()
-        return Arbitrage.statistics.Get(LocalPlayer(), "hunger")
-    end,
-    color = Color(255, 220, 228),
-    image = Arbitrage.GetMaterial("danganronpa/hud/hunger.png")
-})
+    Arbitrage.hud.AddCircle("hunger", {
+        value = function()
+            return Arbitrage.statistics.Get(LocalPlayer(), "hunger")
+        end,
+        color = Color(255, 220, 228),
+        image = Material("danganronpa/hud/hunger.png")
+    })
 
-Arbitrage.hud.AddCircle("thirst", {
-    value = function()
-        return Arbitrage.statistics.Get(LocalPlayer(), "thirst")
-    end,
-    color = Color(255, 220, 228),
-    image = Arbitrage.GetMaterial("danganronpa/hud/thirst.png")
-})
+    Arbitrage.hud.AddCircle("thirst", {
+        value = function()
+            return Arbitrage.statistics.Get(LocalPlayer(), "thirst")
+        end,
+        color = Color(255, 220, 228),
+        image = Material("danganronpa/hud/thirst.png")
+    })
 
-Arbitrage.hud.AddCircle("sleep", {
-    value = function()
-        return Arbitrage.statistics.Get(LocalPlayer(), "sleep")
-    end,
-    color = Color(255, 220, 228),
-    image = Arbitrage.GetMaterial("danganronpa/hud/sleep.png")
-})
+    Arbitrage.hud.AddCircle("sleep", {
+        value = function()
+            return Arbitrage.statistics.Get(LocalPlayer(), "sleep")
+        end,
+        color = Color(255, 220, 228),
+        image = Material("danganronpa/hud/sleep.png")
+    })
+end
+
+do
+    local rpc = asterionlib.rpc
+
+    rpc:Set("details", "IP: asterionacademy.ddns.net")
+    rpc:Set("smallImageKey", "small1")
+    rpc:Set("smallImageText", "discord.gg/Np5evb5ZsR")
+    rpc:Set("largeImageKey", "big1")
+    rpc:Set("largeImageText", "discord.gg/WCT65T4uzR")
+
+    hook.Add("asterionlib.rpc:AppID", "asterionlib.rpc", function()
+        return "948976762136719380"
+    end)
+
+    hook.Add("asterionlib.rpc:Update", "asterionlib.rpc", function()
+        rpc:Set("state", "Map: " .. game.GetMap() .. " (" .. #player.GetAll() .. "/" .. game.MaxPlayers() .. ")")
+    end)
+end
 
 function Arbitrage:HUDPaint()
     if !Arbitrage.hud then return end
@@ -248,7 +268,7 @@ function Arbitrage:ArbitrageContextMenu(data)
     end
 
     for k, v in pairs(ARBITRAGE_CONTEXT_DATA.action) do
-        local mat = v[1] and Arbitrage.GetMaterial(v[1])
+        local mat = v[1] and Material(v[1])
         local func = v[2]
 
         data:AddAction(k, func, mat)
@@ -386,12 +406,12 @@ function Arbitrage:ChatText(index, name, text, type)
 end
 
 function Arbitrage:OnSettingsLoad()
-    Arbitrage.menu = vgui.Create("arb.MainRemake:UI")
+    local panel = asterionlib.netgui:Create("arb.MainRemake:UI")
 
     if SETTINGS.options.Get("show_beta_test") then
-        Arbitrage.menu:Menu()
+        panel:Menu()
     else
-        Arbitrage.menu:Intro()
+        panel:Intro()
     end
 
     RunConsoleCommand("stopsound")
@@ -457,20 +477,6 @@ netstream.Hook("arb.ReturnCurTime", function(data)
     if !data then return end
 
     Arbitrage.CurTime = tonumber(data)
-end)
-
-netstream.Hook("arb.OpenMainMenu", function(bState)
-    local panel = vgui.Create("arb.MainRemake:UI")
-
-    if bState then
-        panel:Menu()
-    else
-        panel:Intro()
-    end
-end)
-
-netstream.Hook("arb.OpenDeathMenu", function()
-    vgui.Create("arb.DeathMenu")
 end)
 
 netstream.Hook("arb.PlayerSetAnim", function(client, slot, activity, autokill)

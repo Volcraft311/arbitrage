@@ -63,7 +63,17 @@ local function OpenNote(item, client, page, bEdit, bClose)
         itemID = item:GetID()
     }
 
-    netstream.Start(client, "ItemBase:OpenNote", data, bEdit, bClose)
+    if bClose then
+        asterionlib.netgui:Close(client, "ItemBase:OpenNote")
+    end
+
+    asterionlib.netgui:Get(client, "ItemBase:OpenNote", "IsValid", function(bState)
+        if bState then
+            asterionlib.netgui:Call(client, "ItemBase:OpenNote", "SetData", data, bEdit)
+        else
+            asterionlib.netgui:Create(client, "ItemBase:OpenNote", nil, "SetData", data, bEdit)
+        end
+    end)
 end
 
 local function ReadNote(item, client, page, bClose)
@@ -222,15 +232,6 @@ if SERVER then
         if actionList[name] then
             actionList[name](client, item, data)
         end
-    end)
-else
-    netstream.Hook("ItemBase:OpenNote", function(data, bEdit, bClose)
-        if bClose and IsValid(Arbitrage.gui.note) then
-            Arbitrage.gui.note:Remove()
-        end
-
-        local panel = IsValid(Arbitrage.gui.note) and Arbitrage.gui.note or vgui.Create("ItemBase:OpenNote")
-        panel:SetData(data, bEdit)
     end)
 end
 

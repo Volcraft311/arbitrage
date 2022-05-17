@@ -17,12 +17,3 @@ include("shared.lua")
 function ENT:Draw()
     self:DrawModel()
 end
-
-netstream.Hook("arb.OpenWardrobe", function(model)
-    if bClose and IsValid(Arbitrage.gui.wardrobe) then
-        Arbitrage.gui.wardrobe:Remove()
-    end
-
-    local panel = IsValid(Arbitrage.gui.wardrobe) and Arbitrage.gui.wardrobe or vgui.Create("arb.OpenWardrobe")
-    panel:SetData(model)
-end)

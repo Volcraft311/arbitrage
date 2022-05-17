@@ -32,7 +32,7 @@ function PLUGIN:ArbitrageContextMenu(data)
     if LocalPlayer():IsAdmin() then
         data:AddAction("Открыть Моно-Меню", function(client)
             netstream.Start("arb.OpenMonoMenu")
-        end, Arbitrage.GetMaterial("danganronpa/hud/action/mono.png"))
+        end, Material("danganronpa/hud/action/mono.png"))
     end
 end
 

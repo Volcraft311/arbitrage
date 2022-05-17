@@ -45,7 +45,7 @@ function PANEL:Init()
     self:InitClue()
 end
 
-local deleteMat = Arbitrage.GetMaterial("danganronpa/ui/delete.png")
+local deleteMat = Material("danganronpa/ui/delete.png")
 function PANEL:InitClue()
     if IsValid(self.mainPanel) then self.mainPanel:Remove() end
     if IsValid(self.createButton) then self.createButton:Remove() end
@@ -106,7 +106,7 @@ function PANEL:InitClue()
         local creator = v.creator
 
         local d = Arbitrage.evidence.materials
-        local mat = Arbitrage.GetMaterial(d[v.mat] and d[v.mat] or d[1])
+        local mat = Material(d[v.mat] and d[v.mat] or d[1])
 
         local panel = self.cluePanel:Add("Panel")
         panel.num = num
@@ -303,7 +303,7 @@ function PANEL:Init()
     self.List:SetSpaceX(5)
 
     for k, v in ipairs(Arbitrage.evidence.materials) do
-        local mat = Arbitrage.GetMaterial(v)
+        local mat = Material(v)
 
         local ListItem = self.List:Add("DButton")
         ListItem:SetText("")

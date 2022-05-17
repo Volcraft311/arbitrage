@@ -12,8 +12,8 @@
 ]]--
 
 
-local deleteMat = Arbitrage.GetMaterial("danganronpa/ui/delete.png")
-local settingsMat = Arbitrage.GetMaterial("danganronpa/ui/settings.png")
+local deleteMat = Material("danganronpa/ui/delete.png")
+local settingsMat = Material("danganronpa/ui/settings.png")
 
 local PLUGIN = PLUGIN
 

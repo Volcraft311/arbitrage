@@ -119,7 +119,7 @@ function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 
 	element.progress = Lerp(FrameTime() * 2, element.progress, status)
 
-	draw.CircleCustom(position, ScrH() - 70, 5, 5, element.progress - 1, ColorAlpha(color, Arbitrage.hud.alpha / 2), 0, -35)
+	asterionlib.CircleCustom(position, ScrH() - 70, 5, 5, element.progress - 1, ColorAlpha(color, Arbitrage.hud.alpha / 2), 0, -35)
 
 	local size = 25
 
@@ -131,8 +131,8 @@ function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 end
 
 
-local spectate_l_mat = Arbitrage.GetMaterial("danganronpa/hud/spectate_l.png")
-local spectate_r_mat = Arbitrage.GetMaterial("danganronpa/hud/spectate_r.png")
+local spectate_l_mat = Material("danganronpa/hud/spectate_l.png")
+local spectate_r_mat = Material("danganronpa/hud/spectate_r.png")
 function Arbitrage.hud.SpectateDraw()
 	local client = LocalPlayer()
 
@@ -177,16 +177,16 @@ function Arbitrage.hud.ALTMenuDraw()
 		surface_SetDrawColor(15, 6, 7, Arbitrage.hud.alpha * 0.9)
 		surface_DrawRect(0, 0, ScrW(), ScrH())
 
-		Arbitrage.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, Arbitrage.hud.alpha)
+		asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, Arbitrage.hud.alpha)
 
 		Arbitrage.hud.moved = -180
 
-		local mat = Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud)
+		local mat = Material(Arbitrage.teams.Get(client:Team()).hud)
 		local size = 0.5
 		local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
 
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
-		surface_SetMaterial(Arbitrage.GetMaterial(Arbitrage.teams.Get(client:Team()).hud))
+		surface_SetMaterial(Material(Arbitrage.teams.Get(client:Team()).hud))
 		surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
 
 		for k, v in SortedPairs(Arbitrage.hud.CircleData or {}) do
@@ -416,7 +416,7 @@ function Arbitrage.hud.LowHealthDraw()
 	end
 end
 
-local FishEyeTexture = Arbitrage.GetMaterial("models/props_c17/fisheyelens")
+local FishEyeTexture = Material("models/props_c17/fisheyelens")
 function Arbitrage.hud.GrayCorrect()
 	local GrayColorModify = {}
 	local colour = 0.65
@@ -465,7 +465,7 @@ function Arbitrage.hud.VignetteDraw()
 	vignitte_a = Lerp(FrameTime() * 5, vignitte_a, client:KeyDown(IN_ZOOM) and 257 or 150)
 
 	if blur > 1 then
-		Arbitrage.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
+		asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
 	end
 
 	surface_SetTexture(vignitte)

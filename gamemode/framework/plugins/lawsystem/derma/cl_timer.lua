@@ -13,9 +13,9 @@
 
 local PANEL = {}
 
-local ffMat = Arbitrage.GetMaterial("danganronpa/law/timer/time_ff.png")
-local baseMat = Arbitrage.GetMaterial("danganronpa/law/timer/base.png")
-local baseSMat = Arbitrage.GetMaterial("danganronpa/law/timer/base_s.png")
+local ffMat = Material("danganronpa/law/timer/time_ff.png")
+local baseMat = Material("danganronpa/law/timer/base.png")
+local baseSMat = Material("danganronpa/law/timer/base_s.png")
 
 function PANEL:Init()
     local sizeW, sizeH = Arbitrage.ResolutionW(450), Arbitrage.ResolutionH(64)

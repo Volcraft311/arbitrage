@@ -71,8 +71,8 @@ local stagesData = {
         panel.charactersPanel:AlphaTo(255, 0.5)
         panel.charactersPanel.character = -1
 
-        local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж уже выбран</colour></font>")
-        local parsed2 = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж доступен лишь игровым мастерам</colour></font>")
+        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж уже выбран</colour></font>")
+        local parsed2 = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж доступен лишь игровым мастерам</colour></font>")
 
         panel.charactersInfo = panel:Add("DPanel")
         panel.charactersInfo:SetZPos(100)
@@ -84,7 +84,7 @@ local stagesData = {
 
             if panel.charactersPanel.character == -1 then
                 surface.SetDrawColor(255, 255, 255, 255 * _.alpha)
-                surface.SetMaterial(Arbitrage.GetMaterial("danganronpa/ui/unknown.png"))
+                surface.SetMaterial(Material("danganronpa/ui/unknown.png"))
                 surface.DrawTexturedRect(0, 0, w, h)
 
                 draw.DrawText("Кликните по портрету для\nпросмотра персонажа", "arb.Font_FuturaPTBook_10", w / 2, h - H(100), Color(255, 234, 238, 5 * _.alpha), TEXT_ALIGN_CENTER)
@@ -92,7 +92,7 @@ local stagesData = {
                 local faction = Arbitrage.teams.Get(panel.charactersPanel.character)
                 if !faction then return end
 
-                local splash = Arbitrage.GetMaterial(faction.splash or "err.png")
+                local splash = Material(faction.splash or "err.png")
 
                 surface.SetDrawColor(255, 255, 255, 255 * _.alpha)
                 surface.SetMaterial(splash)
@@ -146,7 +146,7 @@ local stagesData = {
         end
 
         for k, v in ipairs(data) do
-            local mat = Arbitrage.GetMaterial(v.logo or "err.png")
+            local mat = Material(v.logo or "err.png")
 
             local character = panel.charactersPanel:Add("DPanel")
             character:SetAlpha(0)
@@ -235,25 +235,25 @@ function PANEL:Init()
     self:AddCategory({
         name = "TRIGGER HAPPY HAVOC",
         desc = "Играйте за одного из 16 оригинальных\nперсонажей из игры Danganronpa:\nTrigger Happy Havoc",
-        image = Arbitrage.GetMaterial("danganronpa/ui/category/trigger_happy_havoc.png")
+        image = Material("danganronpa/ui/category/trigger_happy_havoc.png")
     })
 
     self:AddCategory({
         name = "GOODBYE DESPAIR",
         desc = "Играйте за одного из 16 оригинальных\nперсонажей из игры Danganronpa:\nGoodbye Despair",
-        image = Arbitrage.GetMaterial("danganronpa/ui/category/goodbye_dispair.png")
+        image = Material("danganronpa/ui/category/goodbye_dispair.png")
     })
 
     self:AddCategory({
         name = "KILLING HARMONY",
         desc = "Играйте за одного из 16 оригинальных\nперсонажей из игры Danganronpa:\nKilling Harmony",
-        image = Arbitrage.GetMaterial("danganronpa/ui/category/killing_harmony.png")
+        image = Material("danganronpa/ui/category/killing_harmony.png")
     })
 
     self:AddCategory({
         name = "ULTRA DESPAIR GIRLS",
         desc = "Играйте за одного из 12 оригинальных\nперсонажей из игры Danganronpa:\nUltra Despair Girls",
-        image = Arbitrage.GetMaterial("danganronpa/ui/category/ultra_despair_girls.png")
+        image = Material("danganronpa/ui/category/ultra_despair_girls.png")
     })
 
     parent:AddOption(self.optionPanel, "ESC", "Назад", W(50), W(100))

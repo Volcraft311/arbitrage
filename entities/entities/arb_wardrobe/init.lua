@@ -33,7 +33,8 @@ function ENT:Initialize()
 end
 
 function ENT:Use(client, caller)
-	netstream.Start(client, "arb.OpenWardrobe", client:GetModel())
+	asterionlib.netgui:Close(client, "arb.OpenWardrobe")
+	asterionlib.netgui:Create(client, "arb.OpenWardrobe", nil, "SetData", client:GetModel())
 end
 
 

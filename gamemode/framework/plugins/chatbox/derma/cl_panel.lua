@@ -73,7 +73,7 @@ local tall = 10
 function PANEL:SetMarkup(text)
 	self.text = text
 
-	self.markup = Arbitrage.markup.Parse(self.text, self:GetWide() - wide)
+	self.markup = asterionlib.markup.Parse(self.text, self:GetWide() - wide)
 	self.markup.onDrawText = PaintMarkupOverride
 
 	self:SetTall(self.markup:GetHeight() + tall)
@@ -100,7 +100,7 @@ function PANEL:PerformLayout(width, height)
 		return
 	end
 
-	self.markup = Arbitrage.markup.Parse(self.text, width - tall)
+	self.markup = asterionlib.markup.Parse(self.text, width - tall)
 	self.markup.onDrawText = PaintMarkupOverride
 
 	self:SetTall(self.markup:GetHeight() + tall)
@@ -737,8 +737,8 @@ function PANEL:Paint(width, height)
 	local tab = self.tabs:GetActiveTab()
 	local alpha = self:GetAlpha()
 
-	if Arbitrage and Arbitrage.DrawBlur and alpha > 0 then
-		Arbitrage.DrawBlur(self, 5)
+	if Arbitrage and asterionlib.DrawBlur and alpha > 0 then
+		asterionlib.DrawBlur(self, 5)
 	end
 
 	surface.SetDrawColor(0, 0, 0, 240)

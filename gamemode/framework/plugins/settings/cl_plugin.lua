@@ -1,7 +1,7 @@
 local PLUGIN = PLUGIN
 
-local sliderMat = Arbitrage.GetMaterial("danganronpa/ui/slider.png")
-local resetMat = Arbitrage.GetMaterial("danganronpa/ui/reset.png")
+local sliderMat = Material("danganronpa/ui/slider.png")
+local resetMat = Material("danganronpa/ui/reset.png")
 
 PLUGIN.type = {
     number = function(data, panel, panelinfo)
@@ -215,7 +215,7 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
 
         local text = data.description
         local font = "arb.Font_FuturaPTBook_8"
-        local textData = Arbitrage.WrapText(text, panelinfo:GetWide(), font)
+        local textData = asterionlib.WrapText(text, panelinfo:GetWide(), font)
 
         surface.SetFont(font)
         local _, height = surface.GetTextSize(text)
@@ -238,7 +238,7 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
         end
 
         if data.image then
-            local mat = Arbitrage.GetMaterial(data.image)
+            local mat = Material(data.image)
 
             local w = mat:Width()
             local h = mat:Height()

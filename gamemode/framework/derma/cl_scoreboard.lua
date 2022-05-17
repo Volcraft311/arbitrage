@@ -83,7 +83,7 @@ function PANEL:Init()
             end
         end
 
-        matPing = Arbitrage.GetMaterial(matPing)
+        matPing = Material(matPing)
 
         local factionName = factionData.name
         local clientName = v:SteamName()
@@ -137,7 +137,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(15, 6, 7, 255 * 0.9)
     surface.DrawRect(0, 0, ScrW(), ScrH())
 
-    Arbitrage.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, 255)
+    asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, 255)
 
     draw.DrawText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, 255), TEXT_ALIGN_CENTER)
 end

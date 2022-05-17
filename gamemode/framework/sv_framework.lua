@@ -167,19 +167,12 @@ Arbitrage.commands.Add("sg", {
         local client_name = client:SteamName()
         local client_steamid = client:SteamID()
 
-        local target_name = target:SteamName()
-        local target_steamid = target:SteamID()
-
         Arbitrage.commands.Notify(client, "Обрабатываем...")
 
-        WSUPPORT:GetAvatar(client, function(client_avatar)
-            local a = ("Администратор **%s**(%s) запросил скриншот экрана у игрока **%s**(%s)"):format(client_name, client_steamid, target_name, target_steamid)
-            WScreenGrab:SendNotify(16774131, a, client_name, client_steamid, client_avatar)
+        local b = ("Ответ администратору **%s**(%s)"):format(client_name, client_steamid)
 
-            local b = ("Ответ администратору **%s**(%s)"):format(client_name, client_steamid)
-            WScreenGrab:Capture(b, target, function(url)
-                Arbitrage.commands.Notify(client, "Скриншот экрана: " .. url)
-            end)
+        asterionlib.sg:Capture(b, target, function(url)
+            Arbitrage.commands.Notify(client, "Скриншот экрана: " .. url)
         end)
     end
 })
@@ -369,7 +362,7 @@ timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
 end)
 
 function Arbitrage:PlayerDeath(client, inflictor, attacker)
-    netstream.Start(client, "arb.OpenDeathMenu")
+    asterionlib.netgui:Create(client, "arb.DeathMenu")
 
     if client:InGame() then -- чтобы можно было вернуть в игру
         client:SetNetVar("arb.oldData", {

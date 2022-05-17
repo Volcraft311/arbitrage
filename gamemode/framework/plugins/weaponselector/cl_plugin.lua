@@ -37,7 +37,7 @@ function PLUGIN:CreatePanel()
         self.panel:Remove()
     end
 
-    local panel = vgui.Create("arb.WeaponSelector")
+    local panel = asterionlib.netgui:Create("arb.WeaponSelector")
 
     return panel
 end

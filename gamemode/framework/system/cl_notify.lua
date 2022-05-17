@@ -44,5 +44,5 @@ timer.Simple(0, function()
         Arbitrage.notifypanel:Remove()
     end
 
-    Arbitrage.notifypanel = vgui.Create("arb.NotifyPanel")
+    Arbitrage.notifypanel = asterionlib.netgui:Create("arb.NotifyPanel")
 end)

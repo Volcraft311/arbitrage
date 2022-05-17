@@ -99,7 +99,7 @@ function PANEL:InitWeapons()
 
 			if PLUGIN.icons[k] then
 				surface.SetDrawColor(isSelect and Color(255, 61, 96) or Color(255, 234, 238))
-				surface.SetMaterial(Arbitrage.GetMaterial(PLUGIN.icons[k]))
+				surface.SetMaterial(Material(PLUGIN.icons[k]))
 				surface.DrawTexturedRect(W(12) + 5, 5, h - 10, h - 10)
 			end
 

@@ -32,12 +32,12 @@ function Arbitrage.plugin.Load(uniqueID, path, isSingleFile, variable)
 
 	local uniqueID2 = uniqueID
 
-	function PLUGIN:SetData(value, global, ignoreMap)
-		Arbitrage.data.Set(uniqueID2, value, global, ignoreMap)
+	function PLUGIN:SetData(value)
+		asterionlib.data:Set(uniqueID2, value)
 	end
 
-	function PLUGIN:GetData(default, global, ignoreMap, refresh)
-		return Arbitrage.data.Get(uniqueID2, default, global, ignoreMap, refresh) or {}
+	function PLUGIN:GetData(default)
+		return asterionlib.data:Get(uniqueID2, default) or {}
 	end
 
 	PLUGIN.name = PLUGIN.name or "Unknown"

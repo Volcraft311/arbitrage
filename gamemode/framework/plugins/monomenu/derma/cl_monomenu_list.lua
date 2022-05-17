@@ -81,7 +81,7 @@ function PANEL:InitCategory(client)
                 local text = isfunction(v2.data) and v2.data(client) or tostring(v2.data)
 
                 local alpha = v2.onRun and 255 or 150
-                local parsed = Arbitrage.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v2.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
+                local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v2.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
 
                 local button = category:Add((v2.onRun and allow) and "DButton" or "DPanel")
                 if v2.onRun then

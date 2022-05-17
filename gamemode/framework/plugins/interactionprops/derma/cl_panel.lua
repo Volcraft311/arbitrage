@@ -227,7 +227,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 120)
     surface.DrawRect(0, 0, w, h)
 
-    Arbitrage.DrawBlur(self, 5)
+    asterionlib.DrawBlur(self, 5)
 end
 
 vgui.Register("arb.InteractionMenu", PANEL, "DFrame")

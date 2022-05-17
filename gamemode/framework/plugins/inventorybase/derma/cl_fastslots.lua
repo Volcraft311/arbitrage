@@ -12,7 +12,7 @@
 ]]--
 
 
-local crossMat = Arbitrage.GetMaterial("danganronpa/inventory/cross.png")
+local crossMat = Material("danganronpa/inventory/cross.png")
 
 local PANEL = {}
 
@@ -99,7 +99,7 @@ function PANEL:InitSlot(panel)
 		local item = ItemBase.instances[itemID]
 		if !item then return end
 
-		local icon = Arbitrage.GetMaterial(item:GetIcon())
+		local icon = Material(item:GetIcon())
 
 		local itemPanel = panel:Add("DButton")
 	    itemPanel:SetText("")

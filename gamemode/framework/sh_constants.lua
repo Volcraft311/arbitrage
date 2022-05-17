@@ -48,10 +48,10 @@ ARBITRAGE_CONTEXT_DATA = {
 			netstream.Start("arb.HideState", a)
 		end},
 		["Найденные материалы"] = {"danganronpa/hud/action/material.png", function(client)
-			vgui.Create("arb.EvidenceMenu")
+			asterionlib.netgui:Create("arb.EvidenceMenu")
 		end},
 		["Устав академии"] = {"danganronpa/hud/action/charter.png", function(client)
-			vgui.Create("arb.AcademyCharter")
+			asterionlib.netgui:Create("arb.AcademyCharter")
 		end},
 		["Открыть инвентарь"] = {"danganronpa/hud/action/charter.png", function(client)
 			local panel = Arbitrage.gui.inventory
@@ -60,22 +60,22 @@ ARBITRAGE_CONTEXT_DATA = {
 				panel:Remove()
 			end
 
-			vgui.Create("InventoryBase:Menu")
+			asterionlib.netgui:Create("InventoryBase:Menu")
 		end}
 	}
 }
 
 -- Отключенные типы сообщений в чате
 ARBITRAGE_DISABLE_DATA = {
-	joinleave 	= 	true,
-	namechange 	= 	true,
-	teamchange 	= 	true,
+	joinleave = true,
+	namechange = true,
+	teamchange = true,
 }
 
 -- ID Градиентов
-GRADIENT_CENTER		= 		1
-GRADIENT_RIGHT		= 		2
-GRADIENT_DOWN		= 		3
-GRADIENT_UP			= 		4
-GRADIENT_LEFT		=		5
-GRADIENT_ROUNDING	=		6
+GRADIENT_CENTER	= 1
+GRADIENT_RIGHT = 2
+GRADIENT_DOWN = 3
+GRADIENT_UP = 4
+GRADIENT_LEFT = 5
+GRADIENT_ROUNDING = 6

@@ -14,6 +14,76 @@
 
 local PANEL = {}
 
+local function workshop_gui(panel)
+    local count = 0
+    for k, v in pairs(asterionlib.workshop.list) do
+        local space = W(20)
+        local size = W(200)
+
+        timer.Simple(count * 0.2, function()
+            if !IsValid(panel) then return end
+
+            local html = panel:Add("DHTML")
+            html:SetWide(W(220) + space)
+            html:SetTall(W(220))
+            html.PerformLayout = function(_, w, h)
+                html:SetHTML([[
+                    <html>
+                    <head>
+                        <meta charset="utf-8">
+                        <style>
+                            .image {
+                                position: absolute;
+                                top: 0px;
+                                left: ]] .. space .. [[px;
+                                margin: 0px;
+                                max-width: ]] .. size .. [[px;
+                                max-height: ]] .. size .. [[px;
+                                min-width: ]] .. size .. [[px;
+                                min-height: ]] .. size .. [[px;
+                            }
+                        </style>
+                    </head>
+
+                    <body>
+                        <img id="image" class="image" src="]] .. v.image .. [[" alt="">
+                    </body>
+                </html>
+                ]])
+            end
+
+            local info = asterionlib.workshop.status[v.status]
+            local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/" .. info.mat .. ", 17x17, 255, 255, 255><colour=" .. info.color.r .. "," .. info.color.g .. "," .. info.color.b .. "," .. info.color.a .. "> " .. info.text .. "</colour></font>")
+
+            local button = html:Add("DButton")
+            button:SetText("")
+            button:Dock(FILL)
+            button.alpha = 0.3
+            button.Paint = function(_, w, h)
+                _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 0 or 0.3)
+                surface.SetDrawColor(99, 17, 32, 255)
+                surface.DrawOutlinedRect(space, 0, size, size, 2)
+
+                if v.status == 0 then
+                    _.alpha = 0.95
+                end
+
+                surface.SetDrawColor(0, 0, 0, 255 * _.alpha)
+                surface.DrawRect(space, 0, size, size)
+
+                parsed:draw(w / 2, size + H(10), TEXT_ALIGN_CENTER, TEXT_ALIGN_LEFT)
+            end
+            button.DoClick = function(arguments)
+                steamworks.ViewFile(k)
+            end
+
+            panel:AddPanel(html)
+        end)
+
+        count = count + 1
+    end
+end
+
 local stagesData = {
     ["game_process"] = function(panel)
         local parent = panel:GetParent()
@@ -111,9 +181,7 @@ local stagesData = {
             draw.DrawText(text, "arb.Font_FuturaPTBook_8", 0, 0, Color(255, 234, 238), TEXT_ALIGN_LEFT)
         end
 
-        if WORKSHOP and WORKSHOP.gui then
-            WORKSHOP.gui(panel.scrollPanel, panel.informationPanel)
-        end
+        workshop_gui(panel.scrollPanel, panel.informationPanel)
     end
 }
 

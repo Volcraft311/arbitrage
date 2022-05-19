@@ -114,6 +114,7 @@ do
     ITEM.name = "Кофе"
     ITEM.description = "Классический горячий напиток греющий душу!"
     ITEM.model = "models/themask/scenebuildthemes/groceries/sm_coffee_cup_paper_02.mdl"
+    ITEM.icon = "danganronpa/inventory/items/coffeecup.png"
 
     ITEM.maxuse = 1
     ITEM.thirst = 6

@@ -18,6 +18,7 @@ do
     ITEM.description = "Ключи от комнаты: \"%s\""
     ITEM.model = "models/gibs/metal_gib4.mdl"
     ITEM.category = "Двери"
+    ITEM.icon = "danganronpa/inventory/items/key_dormatory.png"
 
     function ITEM:GetDescription()
         local data = "Отсутствует"

@@ -673,6 +673,7 @@ do
     ITEM.name = "Зелёное Яблоко"
     ITEM.description = "Кислое зелёное яблоко."
     ITEM.model = "models/foodnhouseholditems/apple1.mdl"
+    ITEM.icon = "danganronpa/inventory/items/applegreen.png"
 
     ITEM.maxuse = 1
     ITEM.thirst = 3

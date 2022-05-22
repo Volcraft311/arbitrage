@@ -225,6 +225,7 @@ do
     ITEM.description = "Крупнокалиберный израильский пистолет."
     ITEM.model = "models/weapons/3_pist_deagle.mdl"
     ITEM.class = "tfcss_deagle_alt"
+    ITEM.icon = "danganronpa/inventory/items/wep_deserteagle.png"
 
     ItemBase:RegisterItem("deagle", ITEM)
 end

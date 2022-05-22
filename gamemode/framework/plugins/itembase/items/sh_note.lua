@@ -18,7 +18,7 @@ do
     ITEM.name = "Блокнот"
     ITEM.description = "Самый обычный блокнот, скорее всего содержит в себе какие-то записи."
     ITEM.model = "models/props_vtmb/dayplanner_closed.mdl"
-    ITEM.icon = "danganronpa/inventory/items/papernotebook.png"
+    ITEM.icon = "danganronpa/inventory/items/notebook_paper.png"
 
     ItemBase:RegisterItem("notepad", ITEM)
 end

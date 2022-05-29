@@ -893,8 +893,8 @@ player_manager.AddValidModel("Junko Enoshima (Default)", "models/player/dewobedi
 player_manager.AddValidHands("Junko Enoshima (Default)", "models/player/dewobedil/danganronpa/junko_enoshima/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Kiyotaka Ishimaru", "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/default_p.mdl")
 player_manager.AddValidHands("Kiyotaka Ishimaru", "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/c_arms/default_p.mdl", 0, "00000000")
-player_manager.AddValidModel("Kyoko Kirigiri", "models/player/dewobedil/kyouko_kirigiri/default_p.mdl")
-player_manager.AddValidHands("Kyoko Kirigiri", "models/player/dewobedil/kyouko_kirigiri/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Danganronpa Kyoko Kirigiri (Yoru)", "models/Kyoko_Kirigiri_Yoru/Danganronpa/rstar/Kyoko_Kirigiri_Yoru/Kyoko_Kirigiri_Yoru.mdl");
+player_manager.AddValidHands("Danganronpa Kyoko Kirigiri (Yoru)", "models/Kyoko_Kirigiri_Yoru/Danganronpa/rstar/Kyoko_Kirigiri_Yoru/arms/Kyoko_Kirigiri_Yoru_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Leon Kuwata", "models/player/yourtoast4/danganronpa/leon_kuwata.mdl")
 player_manager.AddValidHands("Leon Kuwata", "models/player/yourtoast4/danganronpa/c_arms/leon_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Makoto Naegi", "models/player/yourtoast4/danganronpa/makoto_naegi.mdl")

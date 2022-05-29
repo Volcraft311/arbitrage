@@ -16,7 +16,7 @@ local TEAM = {emodjiList = {}}
 TEAM.name = "Кёко Киригири"
 TEAM.description = "Абсолютный Детектив"
 TEAM.category = "TRIGGER HAPPY HAVOC"
-TEAM.model = "models/kyoko_kirigiri_yoru/danganronpa/rstar/kyoko_kirigiri_yoru"
+TEAM.model = "models/kyoko_kirigiri_yoru/danganronpa/rstar/kyoko_kirigiri_yoru/kyoko_kirigiri_yoru.mdl"
 TEAM.path = "danganronpa/characters/kyoko"
 
 TEAM.color = Color(240, 201, 73)

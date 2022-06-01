@@ -287,6 +287,7 @@ do
     Arbitrage.weapon.Add("weapon_thrusterpack", "thruster", false)
     Arbitrage.weapon.Add("weapon_roulette", "roulette", false)
     Arbitrage.weapon.Add("item_lighter", "lighter", false)
+    Arbitrage.weapon.Add("academy_monopad", "monopad", false)
 
 
     -- Наручники

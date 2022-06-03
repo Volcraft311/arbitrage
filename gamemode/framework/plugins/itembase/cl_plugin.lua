@@ -20,8 +20,8 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	entities = {}
 	ent = nil
 
-	local eyePos = EyePos()
 	local client = LocalPlayer()
+	if !IsValid(client) then return end
 
 	local traceline = {}
 	traceline.start = client:GetShootPos()
@@ -29,7 +29,7 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	traceline.filter = client
 	local tr = util.TraceLine(traceline)
 
-	for k, v in ipairs(ents.FindInSphere(eyePos, 500)) do
+	for k, v in ipairs(ents.FindInSphere(EyePos(), 500)) do
 		if v:GetClass() == "arb_item" and !v:IsDormant() then
 			local uniqueID = v:GetUniqueID()
 			local id = v:GetItemID()

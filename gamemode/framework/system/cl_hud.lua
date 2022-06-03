@@ -214,6 +214,7 @@ Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
 function Arbitrage.hud.CrosshairDraw()
 	if Arbitrage.lawEnable then return end
 	if !SETTINGS.options.Get("show_crosshair") then return end
+	if table.Count(ItemBase.actionMenu.stored) > 0 then return end
 
 	local client = LocalPlayer()
 	if client:IsSpectate() then return end

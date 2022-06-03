@@ -15,37 +15,59 @@
 local PLUGIN = PLUGIN
 
 local entities = {}
+local ent = nil
 timer.Create("ItemBase:UpdateDraw", 1, 0, function()
-    local eyePos = EyePos()
-    entities = ents.FindInSphere(eyePos, 500)
+	entities = {}
+	ent = nil
 
-    for k, v in ipairs(entities) do
-        if v:GetClass() != "arb_item" then
-            entities[k] = nil
-        end
-    end
+	local eyePos = EyePos()
+	local client = LocalPlayer()
+
+	local traceline = {}
+	traceline.start = client:GetShootPos()
+	traceline.endpos = traceline.start + client:GetAimVector() * 180
+	traceline.filter = client
+	local tr = util.TraceLine(traceline)
+
+	for k, v in ipairs(ents.FindInSphere(eyePos, 500)) do
+		if v:GetClass() == "arb_item" and !v:IsDormant() then
+			local uniqueID = v:GetUniqueID()
+			local id = v:GetItemID()
+
+			local item = (PLUGIN.instances[id] or PLUGIN.list[uniqueID]) or Arbitrage.meta.item
+			if !item then continue end
+
+			local name = item:GetName()
+			local desc = item:GetDescription()
+			local category = item:GetCategory()
+			local icon = item:GetIcon()
+
+			entities[#entities + 1] = {v, name, desc, category, icon}
+
+			if tr.Entity == v then
+				ent = v
+			end
+		end
+	end
 end)
 
 function PLUGIN:HUDPaint()
-    self.actionMenu:Paint()
+	self.actionMenu:Paint()
 
-    for k, v in pairs(entities) do
-        if IsValid(v) and !v:IsDormant() and !self.actionMenu.stored[v] then
-            local uniqueID = v:GetUniqueID()
-            local id = v:GetItemID()
+	for k, v in ipairs(entities) do
+		local entity = v[1]
+		if !IsValid(entity) then continue end
+		if self.actionMenu.stored[entity] then continue end
 
-            local item = (self.instances[id] or self.list[uniqueID]) or Arbitrage.meta.item
-            if !item then continue end
+		local name, desc, category, icon = v[2], v[3], v[4], v[5]
 
-            Arbitrage.evidence.CreateText({
-                pos = v:GetPos(),
-                name = item:GetName(),
-                desc = item:GetDescription(),
-                class = v:GetClass(),
-                data = v
-            })
-        end
-    end
+		entity.panelAlpha = entity.panelAlpha or 0
+		if ent != entity and entity.panelAlpha <= 0.1 then continue end
+
+		entity.panelAlpha = Lerp(FrameTime() * 3, entity.panelAlpha, ent == entity and 256 or 0)
+
+		self.infoMenu:Paint(entity, name, desc, category, icon, entity.panelAlpha)
+	end
 end
 
 netstream.Hook("ItemBase:SyncItem", function(uniqueID, itemID, data)

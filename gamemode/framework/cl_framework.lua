@@ -39,12 +39,28 @@ local function IsSixByNine()
 end
 
 local testSize = 1.5 -- ScrW() / (ScrW() * 0.65)
+local cacheW = {}
 function Arbitrage.ResolutionW(size)
-    return IsSixByNine() and ScrW() * (size / 1920) or math.Clamp(1920 * (size / 1920) / testSize, 0, ScrW())
+    if cacheW[size] then
+        return cacheW[size]
+    end
+
+    local data = IsSixByNine() and ScrW() * (size / 1920) or math.Clamp(1920 * (size / 1920) / testSize, 0, ScrW())
+    cacheW[size] = data
+
+    return data
 end
 
+local cacheH = {}
 function Arbitrage.ResolutionH(size)
-    return IsSixByNine() and ScrH() * (size / 1080) or math.Clamp(1080 * (size / 1080) / testSize, 0, ScrH())
+    if cacheH[size] then
+        return cacheH[size]
+    end
+
+    local data = IsSixByNine() and ScrH() * (size / 1080) or math.Clamp(1080 * (size / 1080) / testSize, 0, ScrH())
+    cacheH[size] = data
+
+    return data
 end
 
 W = Arbitrage.ResolutionW

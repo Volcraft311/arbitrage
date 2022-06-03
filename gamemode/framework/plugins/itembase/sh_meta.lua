@@ -156,10 +156,21 @@ if SERVER then
             inventory = nil -- чистим инвентарь, ибо выбросили
         end
 
-        local backUpInventory = inventory or self.inventory
+        -- Синхранизация
+        do
+            -- Инвентарь предмета
+            local inventoryItem = inventory or self.inventory
 
-        if backUpInventory then
-            backUpInventory:Sync()
+            if inventoryItem then
+                inventoryItem:Sync()
+            end
+
+            -- Инвентарь в который был перемещен предмет
+            local inventoryTransfer = InventoryBase.instances[id]
+
+            if inventoryTransfer and inventoryItem:GetID() != inventoryTransfer:GetID() then
+                inventoryTransfer:Sync()
+            end
         end
 
         self.inventory = inventory

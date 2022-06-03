@@ -67,16 +67,19 @@ netstream.Hook("InventoryBase:GetActions", function(client, itemID)
     netstream.Start(client, "InventoryBase:OpenActions", itemID, data)
 end)
 
-netstream.Hook("InventoryBase:TransferItem", function(client, itemID, x, y)
+netstream.Hook("InventoryBase:TransferItem", function(client, itemID, invID, x, y)
     local item = ItemBase.instances[itemID]
     if !item then return end
 
-    local inventory = item:GetInventory()
-    if !inventory then return end
+    local inventoryItem = item:GetInventory()
+    if !inventoryItem then return end
+    if !inventoryItem:IsReceiver(client) then return end
 
-    if !inventory:IsReceiver(client) then return end
+    local inventoryTransfer = InventoryBase.instances[invID]
+    if !inventoryTransfer then return end
+    if !inventoryTransfer:IsReceiver(client) then return end
 
-    local errNotify = item:Transfer(inventory:GetID(), x, y)
+    local errNotify = item:Transfer(invID, x, y)
 
     if errNotify then
         return Arbitrage.commands.Notify(client, errNotify)

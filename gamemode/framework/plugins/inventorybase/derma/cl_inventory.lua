@@ -35,29 +35,30 @@ function PANEL:SetInventory(inventory)
 end
 
 function PANEL:InitInventory()
-	for k, v in ipairs(self:GetChildren()) do
-	    v:Remove()
-	end
+    for k, v in ipairs(self:GetChildren()) do
+        v:Remove()
+    end
 
-	local sizeW, sizeH, indentW, indentH = W(90), H(90), W(20), H(16)
-	local w, h = sizeW * self.inventory.w + indentW * self.inventory.w - indentW, sizeH * self.inventory.h + indentH * self.inventory.h - indentH
+    local sizeW, sizeH, indentW, indentH = W(90), H(90), W(20), H(16)
+    local w, h = sizeW * self.inventory.w + indentW * self.inventory.w - indentW, sizeH * self.inventory.h + indentH * self.inventory.h - indentH
 
-	self:SetSize(w, h)
+    self:SetSize(w, h)
 
-	for x = 1, self.inventory.w do
-	    self.slots[x] = self.slots[x] or {}
+    for x = 1, self.inventory.w do
+        self.slots[x] = self.slots[x] or {}
 
-	    for y = 1, self.inventory.h do
-	        local slot = self:Add("DPanel")
-	        slot:SetPos(sizeW * (x - 1) + indentW * (x - 1), sizeH * (y - 1) + indentH * (y - 1))
-	        slot:SetSize(sizeW, sizeH)
-	        slot.slotX = x
-	        slot.slotY = y
+        for y = 1, self.inventory.h do
+            local slot = self:Add("DPanel")
+            slot:SetPos(sizeW * (x - 1) + indentW * (x - 1), sizeH * (y - 1) + indentH * (y - 1))
+            slot:SetSize(sizeW, sizeH)
+            slot.slotX = x
+            slot.slotY = y
+            slot.invID = self.inventory.id
 
-	        self:InitSlot(slot)
-	        self.slots[x][y] = slot
-	    end
-	end
+            self:InitSlot(slot)
+            self.slots[x][y] = slot
+        end
+    end
 end
 
 function PANEL:InitSlot(panel)
@@ -121,7 +122,7 @@ function PANEL:InitSlot(panel)
             if !parent then return end
             if panel.item then return end
 
-            netstream.Start("InventoryBase:TransferItem", item.item:GetID(), this.slotX, this.slotY)
+            netstream.Start("InventoryBase:TransferItem", item.item:GetID(), this.invID, this.slotX, this.slotY)
         else
             item.selectPanel = this
         end

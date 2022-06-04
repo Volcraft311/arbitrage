@@ -11,6 +11,9 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+local asterionlib = asterionlib
+local timer_Create = timer.Create
+local ipairs = ipairs
 local Arbitrage = Arbitrage
 local Color = Color
 local Angle = Angle
@@ -118,7 +121,7 @@ function Arbitrage.evidence.CreateText(data)
 end
 
 local entities = {}
-timer.Create("Entities:UpdateDraw", 1, 0, function()
+timer_Create("Entities:UpdateDraw", 1, 0, function()
 	local eyePos = EyePos()
 	entities = ents_FindInSphere(eyePos, 500)
 

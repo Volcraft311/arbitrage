@@ -42,6 +42,8 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 			local category = item:GetCategory()
 			local icon = item:GetIcon()
 
+			v.panelAlpha = v.panelAlpha or 0
+
 			entities[#entities + 1] = {v, name, desc, category, icon}
 
 			if tr.Entity == v then
@@ -61,7 +63,6 @@ function PLUGIN:HUDPaint()
 
 		local name, desc, category, icon = v[2], v[3], v[4], v[5]
 
-		entity.panelAlpha = entity.panelAlpha or 0
 		if ent != entity and entity.panelAlpha <= 0.1 then continue end
 
 		entity.panelAlpha = Lerp(FrameTime() * 3, entity.panelAlpha, ent == entity and 256 or 0)

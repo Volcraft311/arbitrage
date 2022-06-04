@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+local asterionlib = asterionlib
 local Arbitrage = Arbitrage
 local netstream = netstream
 local istable = istable
@@ -38,7 +39,6 @@ local ScrH = ScrH
 local surface_SetDrawColor = surface.SetDrawColor
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
-local draw = draw
 local surface_DrawRect = surface.DrawRect
 
 Arbitrage.action = Arbitrage.library.Add("action")

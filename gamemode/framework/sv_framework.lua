@@ -18,16 +18,16 @@ Arbitrage.commands.Add("discord", {
     end
 })
 
-Arbitrage.commands.Add("drop", {
-    arguments = {},
-    OnAction = function(client)
-        local message = Arbitrage.weapon.Drop(client)
+-- Arbitrage.commands.Add("drop", {
+--     arguments = {},
+--     OnAction = function(client)
+--         local message = Arbitrage.weapon.Drop(client)
 
-        if message then
-            Arbitrage.commands.Notify(client, message)
-        end
-    end
-})
+--         if message then
+--             Arbitrage.commands.Notify(client, message)
+--         end
+--     end
+-- })
 
 Arbitrage.commands.Add("me", {
     arguments = {

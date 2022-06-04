@@ -173,6 +173,8 @@ do
     Arbitrage.weapon.Add("tfa_nmrih_1892", "automatic_machines", true)
     Arbitrage.weapon.Add("tfa_nmrih_superx3", "automatic_machines", true)
     Arbitrage.weapon.Add("tfa_nmrih_cz", "automatic_machines", true)
+    Arbitrage.weapon.Add("demogorgon_claws", "automatic_machines", true)
+    Arbitrage.weapon.Add("hillbilly_chainsaw", "automatic_machines", true)
 
     Arbitrage.weapon.Add("weapon_ar2", "automatic_machines", true)
     Arbitrage.weapon.Add("weapon_crossbow", "automatic_machines", true)

@@ -208,20 +208,17 @@ end
 
 local gap = 8
 local curGap = gap
+local isUseTool = false
+local isWeaponTFA = false
 
 Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
 
-function Arbitrage.hud.CrosshairDraw()
-	if Arbitrage.lawEnable then return end
-	if !SETTINGS.options.Get("show_crosshair") then return end
-	if table.Count(ItemBase.actionMenu.stored) > 0 then return end
-
+timer.Create("Crosshair:Update", 1, 0, function()
 	local client = LocalPlayer()
-	if client:IsSpectate() then return end
-	if !client:oldAlive() then return end
+	if !IsValid(client) then return end
 
-	local isUseTool = false
-	local isWeaponTFA = false
+	isUseTool = false
+	isWeaponTFA = false
 
 	local weapon = client:GetActiveWeapon()
 	if IsValid(weapon) then
@@ -231,8 +228,16 @@ function Arbitrage.hud.CrosshairDraw()
 		isUseTool = class and (class == "gmod_tool" or class == "weapon_physgun")
 		isWeaponTFA = class and weaponData[class]
 	end
+end)
+
+function Arbitrage.hud.CrosshairDraw()
+	if Arbitrage.lawEnable then return end
+	if !SETTINGS.options.Get("show_crosshair") then return end
+	if table.Count(ItemBase.actionMenu.stored) > 0 then return end
 
 	if isWeaponTFA then return end
+
+	local client = LocalPlayer()
 
 	local traceline = {}
 	traceline.start = client:GetShootPos()
@@ -250,96 +255,30 @@ function Arbitrage.hud.CrosshairDraw()
 	end
 
 	local velocity = client:GetVelocity():Length2D() * 0.03
-
 	curGap = Lerp(FrameTime() * 6, curGap, realGap + velocity)
 
 	local tr = trace.Entity
-	if IsValid(tr) and (tr:GetClass() == "prop_physics" or tr:IsPlayer() or
-		tr:GetClass() == "prop_door_rotating" or
-		tr:GetClass() == "func_door_rotating" or
-		tr:GetClass() == "func_door" or
-		tr:GetClass() == "arb_item" or
-		Arbitrage.evidence.entities[tr:GetClass()]) then
 
+	if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or Arbitrage.evidence.entities[tr:GetClass()]) then
 		drawColor = Color(255, 61, 96)
-	elseif IsValid(tr) and tr:IsNPC() then
-		drawColor = Color(119, 104, 176)
 	end
 
 	if client:IsNocliping() or isUseTool then
 		curGap = realGap
 	end
 
+	local frametime = FrameTime() * 10
 	local x, y, z = trace.HitPos.x, trace.HitPos.y, trace.HitPos.z
+	local bAllow = client:IsPlaying() and !isUseTool
 
-	Arbitrage.hud.lerpX = (client:IsPlaying() and !isUseTool) and Lerp(FrameTime() * 10, Arbitrage.hud.lerpX, x) or x
-	Arbitrage.hud.lerpY = (client:IsPlaying() and !isUseTool) and Lerp(FrameTime() * 10, Arbitrage.hud.lerpY, y) or y
-	Arbitrage.hud.lerpZ = (client:IsPlaying() and !isUseTool) and Lerp(FrameTime() * 10, Arbitrage.hud.lerpZ, z) or z
+	Arbitrage.hud.lerpX = bAllow and Lerp(frametime, Arbitrage.hud.lerpX, x) or x
+	Arbitrage.hud.lerpY = bAllow and Lerp(frametime, Arbitrage.hud.lerpY, y) or y
+	Arbitrage.hud.lerpZ = bAllow and Lerp(frametime, Arbitrage.hud.lerpZ, z) or z
 
 	local traceNew = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
 
 	surface_DrawCircle(traceNew.x, traceNew.y, curGap, ColorAlpha(drawColor, 255 - Arbitrage.hud.alpha))
 end
-
--- local infowl = {}
--- function Arbitrage.hud.WalkEffect(client, pos, ang, fov)
--- 	if Arbitrage.lawEnable then return end
-
--- 	if !client:Alive() then return end
--- 	if !client:IsPlaying() then return end
-
--- 	if (client:GetMoveType() ~= MOVETYPE_NOCLIP) then
--- 		local activeweapon = client:GetActiveWeapon()
--- 		if !IsValid(activeweapon) then return end
-
--- 		if activeweapon.Base and activeweapon.Base:find("tfa_") then return end
-
--- 	    local v = {}
--- 	    v.pos = pos
--- 	    v.ang = ang
--- 	    v.fov = fov
-
--- 	    client.OLDANG = v.ang
--- 	    client.OLDPOS = v.pos
--- 	    v.ang.pitch = v.ang.pitch + 0 * 1
--- 	    v.ang.roll = v.ang.roll + 0 * 1
--- 	    v.pos.z = v.pos.z - math_cos(0 * 1)
-
--- 	    local frameTime = FrameTime()
--- 	    local approachTime = frameTime * 2
--- 	    local info = {
--- 	    	speed = 1,
--- 	    	yaw = 0.5 * (1 + 4 * 0),
--- 	    	roll = 0.1 * (1 + 40 * 0)
--- 	    }
-
--- 	    if !infowl.HeadbobAngle then infowl.HeadbobAngle = 0 end
--- 	    if !infowl.headinfo then infowl.headinfo = info end
-
--- 	    infowl.headinfo.yaw = math_Approach(infowl.headinfo.yaw, info.yaw, approachTime)
--- 	    infowl.headinfo.roll = math_Approach(infowl.headinfo.roll, info.roll, approachTime)
--- 	    infowl.headinfo.speed = math_Approach(infowl.headinfo.speed, info.speed, approachTime)
--- 	    infowl.HeadbobAngle = infowl.HeadbobAngle + (infowl.headinfo.speed * frameTime)
-
--- 	    local yawAngle = math_sin(infowl.HeadbobAngle)
--- 	    local rollAngle = math_cos(infowl.HeadbobAngle)
-
--- 	    ang.y = ang.y + (yawAngle * infowl.headinfo.yaw)
--- 	    ang.r = ang.r + (rollAngle * infowl.headinfo.roll)
-
--- 	    local velocity = client:GetVelocity()
-
--- 	    if !infowl.smooth then infowl.smooth = 0 end
--- 	    if !infowl.WalkTimer then infowl.WalkTimer = 0 end
-
--- 	    infowl.smooth = math_Clamp(infowl.smooth * 0.9 + velocity:Length() * 0.1, 0, 700)
--- 	    infowl.WalkTimer = infowl.WalkTimer + infowl.smooth * FrameTime() * 0.05
-
--- 	    ang.p = ang.p + math_cos(infowl.WalkTimer * 0.5) * infowl.smooth * 0.000002 * infowl.smooth
--- 	    ang.r = ang.r + math_sin(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
--- 	    ang.y = ang.y + math_cos(infowl.WalkTimer) * infowl.smooth * 0.000002 * infowl.smooth
--- 	end
--- end
 
 Arbitrage.hud.intensity = 0
 local hpwait = 0

@@ -12,6 +12,17 @@
 ]]--
 
 -- Localize Global Calls
+local asterionlib = asterionlib
+local Material = Material
+local W = W
+local H = H
+local SETTINGS = SETTINGS
+local timer_Create = timer.Create
+local table_Count = table.Count
+local LerpColor = LerpColor
+local util_TraceLine = util.TraceLine
+local ents_FindInSphere = ents.FindInSphere
+local EyePos = EyePos
 local math_cos = math.cos
 local math_sin = math.sin
 local math_floor = math.floor
@@ -31,13 +42,11 @@ local ColorAlpha = ColorAlpha
 local draw_SimpleText = draw.SimpleText
 local tostring = tostring
 local surface_DrawRect = surface.DrawRect
-local vgui_CursorVisible = vgui.CursorVisible
 local IsValid = IsValid
 local Color = Color
 local SortedPairs = SortedPairs
 local math_Clamp = math.Clamp
 local pairs = pairs
-local util_TraceLine = util.TraceLine
 local math_Round = math.Round
 local Vector = Vector
 local surface_DrawCircle = surface.DrawCircle
@@ -57,8 +66,6 @@ local draw_GetFontHeight = draw.GetFontHeight
 local select = select
 local surface_SetFont = surface.SetFont
 local surface_GetTextSize = surface.GetTextSize
-local Angle = Angle
-local player_GetAll = player.GetAll
 
 
 
@@ -213,7 +220,7 @@ local isWeaponTFA = false
 
 Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
 
-timer.Create("Crosshair:Update", 1, 0, function()
+timer_Create("Crosshair:Update", 1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 
@@ -233,7 +240,7 @@ end)
 function Arbitrage.hud.CrosshairDraw()
 	if Arbitrage.lawEnable then return end
 	if !SETTINGS.options.Get("show_crosshair") then return end
-	if table.Count(ItemBase.actionMenu.stored) > 0 then return end
+	if table_Count(ItemBase.actionMenu.stored) > 0 then return end
 
 	if isWeaponTFA then return end
 
@@ -536,21 +543,15 @@ function Arbitrage.hud.StaminaDraw()
 end
 
 function Arbitrage.hud.CreateTextPlayer(client)
-	if !IsValid(client) then return end
-
 	local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_8")
-
 	local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
 	local alpha = client.textalpha
 
 	local data2D = position:ToScreen()
 	if !data2D.visible then return end
 
-	local bNotVisible = Arbitrage.hud.VectorObstructed(EyePos(), client:GetPos(), {LocalPlayer(), client})
-	if bNotVisible then return end
+	local x, y = data2D.x, data2D.y
 
-	local x = data2D.x
-	local y = data2D.y
 	draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
 
 	surface_SetFont( "arb.Font_FuturaPTBook_8" )
@@ -576,37 +577,49 @@ function Arbitrage.hud.CreateTextPlayer(client)
 	draw_SimpleText(stText, "arb.Font_FuturaPTBook_5", x, y + 4, ColorAlpha(color, alpha), TEXT_ALIGN_CENTER)
 end
 
+local entities = {}
+local ent = nil
+timer_Create("PlayerInfoDraw:Update", 1, 0, function()
+	entities = {}
+	ent = nil
+
+	local client = LocalPlayer()
+	if !IsValid(client) then return end
+	if client:IsSpectate() then return end
+
+	local traceline = {}
+	traceline.start = client:GetShootPos()
+	traceline.endpos = traceline.start + client:GetAimVector() * 180
+	traceline.filter = client
+	local tr = util_TraceLine(traceline)
+
+	for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
+		if v:IsPlayer() then
+			if v == client then continue end
+			if v:IsSpectate() then continue end
+			if v:IsNocliping() then continue end
+			if Arbitrage.hud.VectorObstructed(EyePos(), EyePos(), {LocalPlayer(), v}) then continue end
+
+			v.textalpha = v.textalpha or 0
+
+			entities[#entities + 1] = v
+
+			if tr.Entity == v then
+				ent = v
+			end
+		end
+	end
+end)
+
 function Arbitrage.hud.PlayerInfoDraw()
 	if Arbitrage.lawEnable then return end
 
-	local client = LocalPlayer()
+	for k, v in ipairs(entities) do
+		if !IsValid(v) then continue end
+		if ent != v and v.textalpha <= 0.1 then continue end
 
-	if client:IsSpectate() then return end
+		v.textalpha = Lerp(FrameTime() * 5, v.textalpha, ent == v and 256 or 0)
 
-	local vec = client:GetPos()
-	local ang = Angle(client:GetAngles()[1], client:GetAngles()[2], 0)
-
-	local _forward = 150
-	local _up = 10
-	local _right = 30
-
-	local start1 = vec + ang:Right() * _right
-	local start2 = vec - ang:Right() * _right
-	local endpos1 = vec + ang:Forward() * _forward + ang:Right() * _right + ang:Up() * _up
-	local endpos2 = vec + ang:Forward() * _forward - ang:Right() * _right + ang:Up() * _up
-
-	for k, v in ipairs(player_GetAll()) do
-		if v == client then continue end
-		if v:IsSpectate() then continue end
-		if client:GetPos():Distance(v:GetPos()) >= 500 then continue end
-		if v:IsNocliping() then continue end
-
-		v.textalpha = v.textalpha or 0
-
-		local isDraw = v:oldAlive() and client:GetPos():Distance(v:GetPos()) < 150 and client ~= v and Arbitrage.hud.SeeVector({start1, start2, endpos2, endpos1}, v:GetPos(), false)
-		v.textalpha = Lerp(FrameTime() * 5, v.textalpha, isDraw and 255 or 0)
-
-		if v.textalpha <= 0.1 then continue end
 		Arbitrage.hud.CreateTextPlayer(v)
 	end
 end

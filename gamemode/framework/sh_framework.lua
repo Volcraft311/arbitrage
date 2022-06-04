@@ -874,8 +874,8 @@ player_manager.AddValidModel("group02female03", "models/player/group01/female_03
 player_manager.AddValidHands("group02female03", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
 
 -- v1
-player_manager.AddValidModel("Sayaka Maizono", "models/player/dewobedil/sayaka_maizono/default_p.mdl")
-player_manager.AddValidHands("Sayaka Maizono", "models/player/dewobedil/sayaka_maizono/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Danganronpa Sayaka (Yoru)", "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/Sayaka_Yoru.mdl");
+player_manager.AddValidHands("Danganronpa Sayaka (Yoru)", "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/arms/Sayaka_Yoru_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Sakura Ogami", "models/player/yourtoast4/danganronpa/sakura_ogami.mdl")
 player_manager.AddValidHands("Sakura Ogami", "models/player/yourtoast4/danganronpa/c_arms/sakura_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Toko Fukawa", "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl")

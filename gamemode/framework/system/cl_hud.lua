@@ -385,11 +385,6 @@ function Arbitrage.hud.GrayCorrect()
 	GrayColorModify["$pp_colour_mulg"] = 0 * 0.1
 	GrayColorModify["$pp_colour_mulb"] = 0 * 0.1
 
-	if (system_IsOSX()) then
-	    GrayColorModify["$pp_colour_brightness"] = 0
-	    GrayColorModify["$pp_colour_contrast"] = 1
-	end
-
 	DrawColorModify(GrayColorModify)
 end
 

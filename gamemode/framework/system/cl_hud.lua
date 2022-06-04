@@ -16,7 +16,6 @@ local asterionlib = asterionlib
 local Material = Material
 local W = W
 local H = H
-local SETTINGS = SETTINGS
 local timer_Create = timer.Create
 local table_Count = table.Count
 local LerpColor = LerpColor
@@ -217,6 +216,12 @@ local gap = 8
 local curGap = gap
 local isUseTool = false
 local isWeaponTFA = false
+local weaponData = {
+	["weapon_physgun"] = true,
+	["gmod_tool"] = true,
+	["academy_key"] = true,
+	["academy_first"] = true
+}
 
 Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
 
@@ -229,11 +234,10 @@ timer_Create("Crosshair:Update", 1, 0, function()
 
 	local weapon = client:GetActiveWeapon()
 	if IsValid(weapon) then
-		local weaponData = Arbitrage.weapon.views
 		local class = weapon:GetClass()
 
 		isUseTool = class and (class == "gmod_tool" or class == "weapon_physgun")
-		isWeaponTFA = class and weaponData[class]
+		isWeaponTFA = class and !weaponData[class]
 	end
 end)
 

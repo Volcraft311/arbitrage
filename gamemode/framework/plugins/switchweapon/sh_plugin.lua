@@ -14,6 +14,13 @@
 local PLUGIN = PLUGIN
 PLUGIN.name = "SwitchWeapon"
 
+local weaponData = {
+    ["weapon_physgun"] = true,
+    ["gmod_tool"] = true,
+    ["academy_key"] = true,
+    ["academy_first"] = true
+}
+
 function PLUGIN:PlayerSwitchWeapon(client, old, new)
     if !IsValid(client) then return false end
     if !client:oldAlive() then return false end
@@ -25,14 +32,11 @@ function PLUGIN:PlayerSwitchWeapon(client, old, new)
 
     if class == new:GetClass() then return false end
 
-    local weaponData = Arbitrage.weapon.views
-    if !weaponData then return false end
-
     if Arbitrage.util.IsServerSide() then
         Arbitrage.action.ActionEnd(client:EntIndex(), client)
     end
 
-    if weaponData[new:GetClass()] then
+    if !weaponData[new:GetClass()] then
         if Arbitrage.util.IsServerSide() and !client.allowSwitch then
             Arbitrage.action.ActionRun(client, "Достаем оружие", 1, function()
                 if !client.switchAnim or CurTime() >= client.switchAnim then

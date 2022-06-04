@@ -42,6 +42,13 @@ local d_weapon = {
 	["weapon_physgun"] = true
 }
 
+local weaponData = {
+	["weapon_physgun"] = true,
+	["gmod_tool"] = true,
+	["academy_key"] = true,
+	["academy_first"] = true
+}
+
 local function allow()
 	local client = LocalPlayer()
 
@@ -65,12 +72,9 @@ local function allow()
 		end
 	end
 
-	local weaponData = Arbitrage.weapon.views
-	if !weaponData then return true end
-
 	if d_weapon[class] then return false end
 
-	return !weaponData[class]
+	return weaponData[class]
 end
 
 function PLUGIN:ShouldDrawLocalPlayer()

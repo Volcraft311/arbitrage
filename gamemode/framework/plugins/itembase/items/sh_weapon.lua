@@ -285,5 +285,69 @@ do
     ItemBase:RegisterItem("dualelites", ITEM)
 end
 
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
 
+    ITEM.name = "Fort-500"
+    ITEM.description = "Одноствольное гладкоствольное ружьё производства НПО «Форт»."
+    ITEM.model = "models/weapons/w_shotgun.mdl"
+    ITEM.class = "tfa_ins2_fort500"
+
+    ItemBase:RegisterItem("fort_500", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "AN-94 \"Абакан\""
+    ITEM.description = "Советский автомат, разработанный Геннадием Никоновым."
+    ITEM.model = "models/weapons/tfa_ins2/w_abakan.mdl"
+    ITEM.class = "tfa_ins2_abakan"
+
+    ItemBase:RegisterItem("abakan", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Бензопила"
+    ITEM.description = "Всемиизвестное оружие из фильмов ужасов. C ней следует быть осторожным."
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_chainsaw.mdl"
+    ITEM.class = "tfa_nmrih_chainsaw"
+
+    ItemBase:RegisterItem("benzopila", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Sako 85"
+    ITEM.description = "Карабин из Финляндии. Был разработан на основе предыдущей модели винтовки – Sako-75"
+    ITEM.model = "models/weapons/tfa_nmrih/v_fa_sako85.mdl"
+    ITEM.class = "tfa_nmrih_sako"
+
+    ItemBase:RegisterItem("sako85", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "H&K mp5a4"
+    ITEM.description = "Семейство пистолетов-пулемётов, разработанных немецким производителем стрелкового оружия, фирмой Heckler & Koch в 1960-х годах на основе HK G3."
+    ITEM.model = "models/weapons/tfa_nmrih/w_fa_mp5.mdl"
+    ITEM.class = "tfa_nmrih_mp5"
+
+    ItemBase:RegisterItem("mp5a4", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Лом"
+    ITEM.description = "Ручной ударный и рычажный инструмент, один из наиболее древних видов инструмента, известных человечеству"
+    ITEM.model = "models/weapons/tfa_nmrih/w_me_crowbar.mdl"
+    ITEM.class = "tfa_nmrih_crowbar"
+
+    ItemBase:RegisterItem("mp5a4", ITEM)
+end
 

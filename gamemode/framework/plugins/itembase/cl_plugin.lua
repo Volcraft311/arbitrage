@@ -30,7 +30,7 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	local tr = util.TraceLine(traceline)
 
 	for k, v in ipairs(ents.FindInSphere(EyePos(), 500)) do
-		if v:GetClass() == "arb_item" and !v:IsDormant() then
+		if v:GetClass() == "arb_item" and !v:IsDormant() and v.GetUniqueID and v.GetItemID then
 			local uniqueID = v:GetUniqueID()
 			local id = v:GetItemID()
 

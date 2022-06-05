@@ -292,3 +292,32 @@ do
 	ItemBase:RegisterItem("taperecorder", ITEM)
 end
 
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Доска"
+	ITEM.description = "Строительный материал..."
+	ITEM.model = "models/mosi/fallout4/props/fortifications/planks01.mdl"
+
+	ItemBase:RegisterItem("wood1", ITEM)
+end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Кусок металлолома"
+	ITEM.description = "Строительный материал..."
+	ITEM.model = "models/mosi/fallout4/props/fortifications/bos/walkwayfiller01.mdl"
+
+	ItemBase:RegisterItem("metall", ITEM)
+end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "мешки с песком"
+	ITEM.description = "Строительный материал..."
+	ITEM.model = "models/mosi/fallout4/props/fortifications/sandbag01.mdl"
+
+	ItemBase:RegisterItem("sandd", ITEM)
+end

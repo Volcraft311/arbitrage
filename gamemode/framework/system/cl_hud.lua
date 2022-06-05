@@ -13,9 +13,6 @@
 
 -- Localize Global Calls
 local asterionlib = asterionlib
-local Material = Material
-local W = W
-local H = H
 local timer_Create = timer.Create
 local table_Count = table.Count
 local LerpColor = LerpColor
@@ -30,8 +27,6 @@ local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local Format = Format
 local Arbitrage = Arbitrage
-local ScrW = ScrW
-local ScrH = ScrH
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
 local Lerp = Lerp

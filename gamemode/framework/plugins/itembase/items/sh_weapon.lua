@@ -348,6 +348,5 @@ do
     ITEM.model = "models/weapons/tfa_nmrih/w_me_crowbar.mdl"
     ITEM.class = "tfa_nmrih_crowbar"
 
-    ItemBase:RegisterItem("mp5a4", ITEM)
+    ItemBase:RegisterItem("crowbar", ITEM)
 end
-

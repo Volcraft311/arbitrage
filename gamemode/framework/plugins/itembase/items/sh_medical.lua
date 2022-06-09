@@ -47,7 +47,7 @@ do
     ITEM.description = "Пластиковая конструкция с красным крестом посередине, внутри которой находятся флакон биогеля, бинты и различные таблетки."
     ITEM.model = "models/Items/HealthKit.mdl"
 
-    ITEM.health = 20
+    ITEM.health = 30
     ITEM.maxuse = 3
     ITEM.sound = "items/medshot4.wav"
 

@@ -315,9 +315,39 @@ end
 do
 	local ITEM = ItemBase.GetBase()
 
-	ITEM.name = "мешки с песком"
+	ITEM.name = "Мешки с песком"
 	ITEM.description = "Строительный материал..."
 	ITEM.model = "models/mosi/fallout4/props/fortifications/sandbag01.mdl"
 
 	ItemBase:RegisterItem("sandd", ITEM)
+end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Флакон с ртутью"
+	ITEM.description = "Будьте с ним предельно аккуратными,ведь вещество внутри очень ядовито."
+	ITEM.model = "models/props_junk/glassjug01.mdl"
+
+	ItemBase:RegisterItem("vial_of_mercury", ITEM)
+end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Неизвестное растение"
+	ITEM.description = "Растение, листья которого обладают снотворным эффектом."
+	ITEM.model = "models/props/de_inferno/flower_barrel.mdl"
+
+	ItemBase:RegisterItem("flower_sleep", ITEM)
+end
+
+do
+	local ITEM = ItemBase.GetBase()
+
+	ITEM.name = "Значок старосты"
+	ITEM.description = "Данный значок дается ученику,являющимся старостой в классе."
+	ITEM.model = "models/aschool25/dirtfish.mdl"
+
+	ItemBase:RegisterItem("headman_icon", ITEM)
 end

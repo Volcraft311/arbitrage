@@ -437,7 +437,7 @@ do
     ITEM.model = "models/foodnhouseholditems/digestive2.mdl"
 
     ITEM.maxuse = 3
-    ITEM.thirst = -6
+    ITEM.thirst = -2
     ITEM.hunger = 6
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/crunchy_double.wav"
@@ -452,7 +452,7 @@ do
     ITEM.description = "Печенье с добавлением какао и шоколадной глазури."
     ITEM.model = "models/foodnhouseholditems/digestive.mdl"
     ITEM.maxuse = 3
-    ITEM.thirst = -4
+    ITEM.thirst = -2
     ITEM.hunger = 4
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/crunchy_double.wav"
@@ -468,7 +468,7 @@ do
     ITEM.model = "models/foodnhouseholditems/chipslays3.mdl"
 
     ITEM.maxuse = 1
-    ITEM.thirst = -5
+    ITEM.thirst = -4
     ITEM.hunger = 8
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/chips.wav"
@@ -484,7 +484,7 @@ do
     ITEM.model = "models/foodnhouseholditems/chipsdoritos2.mdl"
 
     ITEM.maxuse = 1
-    ITEM.thirst = -5
+    ITEM.thirst = -3
     ITEM.hunger = 9
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/chips.wav"
@@ -500,7 +500,7 @@ do
     ITEM.model = "models/foodnhouseholditems/chipsdoritos2.mdl"
 
     ITEM.maxuse = 1
-    ITEM.thirst = -5
+    ITEM.thirst = -4
     ITEM.hunger = 9
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/chips.wav"
@@ -548,7 +548,7 @@ do
     ITEM.model = "models/foodnhouseholditems/chipsdoritos6.mdl"
 
     ITEM.maxuse = 1
-    ITEM.thirst = -6
+    ITEM.thirst = -4
     ITEM.hunger = 10
     ITEM.sleep = 0
     ITEM.sound = "eating_and_drinking/chips.wav"

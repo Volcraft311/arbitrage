@@ -204,6 +204,26 @@ do
     end)
 end
 
+do
+    hook.Add("asterionlib.cleaner:Initialize", "asterionlib.cleaner", function()
+        local cleaner = asterionlib.cleaner
+
+        -- Base
+        cleaner:DeathNotice()
+        cleaner:HudPickup()
+        cleaner:PickTeam()
+        cleaner:ScoreBoard()
+        cleaner:TargetID()
+        cleaner:Voice()
+
+        -- Sandbox
+        cleaner:Hints()
+        cleaner:PhysgunBeam()
+        cleaner:PropSpawnEffect()
+        cleaner:WorldTips()
+    end)
+end
+
 function Arbitrage:HUDPaint()
     if !Arbitrage.hud then return end
 

@@ -15,7 +15,7 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:NormalizeData()
-    local data = table.Copy(self:GetData({}, true, true) or {})
+    local data = table.Copy(asterionlib.data:Get("scriptmusic", {}, true))
     data[1] = data[1] or -1
     data[2] = data[2] or {}
 

@@ -602,14 +602,24 @@ PLUGIN.ActionData = {
             onRun = function(client)
                 if SERVER then return false end
 
-                local dermaPanel = DermaMenu()
+                local parent = DermaMenu()
                 for k, v in pairs(Arbitrage.teams.data) do
-                    dermaPanel:AddOption(v.name .. " (" .. k .. ")", function()
+                    local panel = parent:AddOption(v.name .. " (" .. k .. ")", function()
                         LocalPlayer():EmitSound(PLUGIN.ClickSound)
                         netstream.Start("arb.MonoSetTeam", client, k, false)
                     end)
+
+                    panel:SetIcon(v.pixel)
+
+                    for k2, v2 in ipairs(panel:GetChildren()) do
+                        if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then
+                            local size = parent:GetTall() * 1.5
+
+                            v2:SetSize(size, size)
+                        end
+                    end
                 end
-                dermaPanel:Open()
+                parent:Open()
             end,
             onCreate = function(client)
                 return player.GetBySteamID(client.steamid)
@@ -621,14 +631,24 @@ PLUGIN.ActionData = {
             onRun = function(client)
                 if SERVER then return false end
 
-                local dermaPanel = DermaMenu()
+                local parent = DermaMenu()
                 for k, v in pairs(Arbitrage.teams.data) do
-                    dermaPanel:AddOption(v.name .. " (" .. k .. ")", function()
+                    local panel = parent:AddOption(v.name .. " (" .. k .. ")", function()
                         LocalPlayer():EmitSound(PLUGIN.ClickSound)
                         netstream.Start("arb.MonoSetTeam", client, k, true)
                     end)
+
+                    panel:SetIcon(v.pixel)
+
+                    for k2, v2 in ipairs(panel:GetChildren()) do
+                        if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then
+                            local size = parent:GetTall() * 1.5
+
+                            v2:SetSize(size, size)
+                        end
+                    end
                 end
-                dermaPanel:Open()
+                parent:Open()
             end,
             onCreate = function(client)
                 return player.GetBySteamID(client.steamid)

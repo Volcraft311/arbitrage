@@ -126,7 +126,7 @@ function PLUGIN:SetTypingText(client, data, color)
 	local time = math.Clamp(len * 0.2, 2, 15)
 
 	client.tDrawText = data
-	client.tDrawTime = RealTime() + time
+	client.tDrawTime = RealTime() + time + 5
 	client.tDrawAlpha = 0
 	client.tDrawColor = color
 end

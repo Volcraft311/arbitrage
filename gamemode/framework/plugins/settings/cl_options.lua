@@ -113,3 +113,9 @@ SETTINGS.options.Add("show_typingdraw", SETTINGS.type.bool, true, {
     title = "Отображение текста",
     description = "Включить отображение текста игрока который написал в чат над его головой."
 })
+
+SETTINGS.options.Add("show_hints", SETTINGS.type.bool, true, {
+    name = "Отображать подсказки",
+    title = "Отображение подсказок на экране",
+    description = "Включить отображение подсказок в левом верхнем углу экрана."
+})

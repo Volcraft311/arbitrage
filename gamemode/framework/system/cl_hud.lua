@@ -411,8 +411,6 @@ function Arbitrage.hud.VignetteDraw()
 	end
 end
 
-Arbitrage.hud.evidence = {}
-
 function Arbitrage.hud.VectorObstructed(vec1, vec2, filter)
 	local trace = util_TraceLine({
 		start = vec1,

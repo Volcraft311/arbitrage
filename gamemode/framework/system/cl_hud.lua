@@ -265,7 +265,7 @@ function Arbitrage.hud.CrosshairDraw()
 
 	local tr = trace.Entity
 
-	if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or Arbitrage.evidence.entities[tr:GetClass()]) then
+	if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or Arbitrage.evidence.entities[tr:GetClass()]) then
 		drawColor = Color(255, 61, 96)
 	end
 

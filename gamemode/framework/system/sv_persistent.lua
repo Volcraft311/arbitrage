@@ -32,13 +32,31 @@ end
 function Arbitrage.persistent.DoPlayerDeath(client, attacker, damageinfo)
     if !client:InGame() then return end
 
-	local entity = Arbitrage.persistent.CreateRagdoll(client)
-	entity.client = client
-	entity.name = client:Name()
+    local entity = Arbitrage.persistent.CreateRagdoll(client)
+    entity.client = client
+    entity.name = client:Name()
 
-	timer.Simple(3, function()
-		if !IsValid(entity) then return end
+    do
+        local inventory = client:GetInventory()
+        if !inventory then return end
 
-		entity:SetCorpse(true)
-	end)
+        entity._containerName = client:Name()
+        entity.Inventory = InventoryBase.CreateInventory(inventory.w, inventory.h)
+
+        for x = 1, inventory.w do
+            for y = 1, inventory.h do
+                local item = inventory:GetItemAt(x, y)
+
+                if item and !item:GetData("equip") then
+                    item:Transfer(entity.Inventory:GetID(), x, y)
+                end
+            end
+        end
+    end
+
+    timer.Simple(3, function()
+    	if !IsValid(entity) then return end
+
+    	entity:SetCorpse(true)
+    end)
 end

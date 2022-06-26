@@ -32,9 +32,7 @@ function PLUGIN:IsEntityInteraction(entity)
 end
 
 function PLUGIN:OpenInteraction(client, data)
-    if !NetGUI then return end
-
-    NetGUI:Create(client, "arb.InteractionMenu", nil, "OpenData", data)
+    asterionlib.netgui:Create(client, "arb.InteractionMenu", nil, "OpenData", data)
 end
 
 

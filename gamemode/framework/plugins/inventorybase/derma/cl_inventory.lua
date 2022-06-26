@@ -28,6 +28,8 @@ function PANEL:Init()
 end
 
 function PANEL:SetInventory(inventory)
+    if !inventory then return end
+
 	InventoryBase.invpanels[inventory:GetID()] = self
 
 	self.inventory = inventory

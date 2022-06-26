@@ -100,11 +100,9 @@ function InventoryBase:UpdateInventory(id)
     end
 end
 
-netstream.Hook("InventoryBase:SyncInventory", function(id, w, h, invData, itemsData)
-    local client = LocalPlayer()
-
+netstream.Hook("InventoryBase:SyncInventory", function(id, w, h, invData, itemsData, owner)
     local inventory = InventoryBase:New(id, w, h)
-    inventory:SetOwner(client)
+    inventory:SetOwner(owner)
     inventory.slots = {} -- чистим слоты
 
     for itemID, value in pairs(itemsData or {}) do
@@ -135,6 +133,21 @@ end)
 
 netstream.Hook("InventoryBase:UpdateInventory", function(id)
     InventoryBase:UpdateInventory(id)
+end)
+
+netstream.Hook("InventoryBase:OpenInventory", function(id, name)
+    local ran = SysTime() + math.random(1, 9999)
+    local uniqueID = "InventoryBase:ValidTimer_" .. ran
+
+    timer.Create(uniqueID, 0.01, 500, function() -- Если инвентарь не успет синхронизироваться
+        local inventory = InventoryBase.instances[id]
+        if !inventory then return end
+
+        timer.Remove(uniqueID)
+
+        local container = vgui.Create("InventoryBase:Container")
+        container:SetContainerInv(inventory, name)
+    end)
 end)
 
 netstream.Hook("InventoryBase:OpenActions", function(itemID, data)

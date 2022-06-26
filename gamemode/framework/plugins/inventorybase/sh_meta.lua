@@ -25,6 +25,10 @@ function INVENTORY:__tostring()
     return "inventory[" .. self.id .. "]"
 end
 
+function INVENTORY:__eq(other)
+    return self:GetID() == other:GetID()
+end
+
 function INVENTORY:GetID()
     return self.id
 end
@@ -127,7 +131,7 @@ if SERVER then
         return item:Transfer(self:GetID())
     end
 
-    function INVENTORY:Sync()
+    function INVENTORY:Sync(client)
         local itemsData = {}
         local invData = {}
 
@@ -151,9 +155,17 @@ if SERVER then
             end
         end
 
+        local function sync(pl)
+            netstream.Start(pl, "InventoryBase:SyncInventory", self.id, self.w, self.h, invData, itemsData, self.owner)
+        end
+
+        if IsValid(client) then
+            sync(client)
+        end
+
         for id, receiver in ipairs(self:GetReceivers()) do
-            if IsValid(receiver) and receiver:IsPlayer() then
-                netstream.Start(receiver, "InventoryBase:SyncInventory", self.id, self.w, self.h, invData, itemsData)
+            if IsValid(receiver) and receiver:IsPlayer() and client != receiver then
+                sync(receiver)
             end
         end
     end

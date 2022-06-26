@@ -20,7 +20,17 @@ local PLUGIN = PLUGIN
     -- inventory:SetOwner(client)
 -- end
 
-function PLUGIN:PlayerDeath(client)
+function InventoryBase.Open(client, id, name)
+    local inventory = InventoryBase.instances[id]
+    if !inventory then return end
+
+    inventory.receivers[client] = true
+
+    inventory:Sync(client)
+    netstream.Start(client, "InventoryBase:OpenInventory", id, name)
+end
+
+function InventoryBase:PlayerDeath(client)
     local inventory = client:GetInventory()
     if !inventory then return end
 
@@ -39,7 +49,7 @@ function PLUGIN:PlayerDeath(client)
     end
 end
 
-function PLUGIN:PlayerDisconnected(client)
+function InventoryBase:PlayerDisconnected(client)
     local inventory = client:GetInventory()
     if !inventory then return end
 
@@ -84,6 +94,13 @@ netstream.Hook("InventoryBase:TransferItem", function(client, itemID, invID, x, 
     if errNotify then
         return Arbitrage.commands.Notify(client, errNotify)
     end
+end)
+
+netstream.Hook("InventoryBase:StopReceiving", function(client, invID)
+    local inventory = InventoryBase.instances[invID]
+    if !inventory then return end
+
+    inventory.receivers[client] = nil
 end)
 
 netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)

@@ -71,9 +71,9 @@ function ITEM:HookAdd(name, func)
     ITEM.hooks[name] = func
 end
 
-function ITEM:HookRun(name)
+function ITEM:HookRun(name, ...)
     if ITEM.hooks[name] then
-        ITEM.hooks[name](self)
+        ITEM.hooks[name](self, ...)
     end
 end
 
@@ -159,7 +159,7 @@ if SERVER then
         -- Синхранизация
         do
             -- Инвентарь предмета
-            local inventoryItem = inventory or self.inventory
+            local inventoryItem = self.inventory or inventory
 
             if inventoryItem then
                 inventoryItem:Sync()
@@ -170,6 +170,10 @@ if SERVER then
 
             if inventoryTransfer and inventoryItem:GetID() != inventoryTransfer:GetID() then
                 inventoryTransfer:Sync()
+
+                if inventoryItem then
+                    self:HookRun("transferOtherInventory", inventoryItem, inventoryTransfer)
+                end
             end
         end
 

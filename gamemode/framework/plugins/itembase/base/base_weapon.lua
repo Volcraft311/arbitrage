@@ -117,11 +117,17 @@ BASE:HookAdd("drop", function(item)
 	local inventory = item:GetInventory()
 	if !inventory then return end
 
-	local client = FindClient(inventory:GetOwner())
+	if item:GetData("equip") then
+		item:UnEquip(item.player, item)
+	end
+end)
+
+BASE:HookAdd("transferOtherInventory", function(item, old, new)
+	local client = FindClient(old:GetOwner())
 	if !IsValid(client) then return end
 
 	if item:GetData("equip") then
-		item:UnEquip(item.player, item)
+		item:UnEquip(client, item)
 	end
 end)
 

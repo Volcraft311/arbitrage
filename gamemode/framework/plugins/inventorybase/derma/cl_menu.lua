@@ -28,14 +28,13 @@ function PANEL:Init()
     self:SetKeyboardInputEnabled(false)
 
     self.item = nil
-    self.slots = {}
-    self.inventory = LocalPlayer():GetInventory()
+    self.inventory = client:GetInventory()
     if !self.inventory then return end
 
     self:Add("InventoryBase:FastSlots")
 
     local inventoryPanel = self:Add("InventoryBase:Inventory")
-    inventoryPanel:SetInventory(client:GetInventory())
+    inventoryPanel:SetInventory(self.inventory)
 
     local w, h, sizeH = inventoryPanel:GetWide(), inventoryPanel:GetTall(), H(90)
     inventoryPanel:SetPos(ScrW() - w - W(278), ScrH() / 2 - h + sizeH / 2)

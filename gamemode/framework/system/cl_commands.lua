@@ -12,6 +12,60 @@
 ]]--
 
 Arbitrage.commands = Arbitrage.library.Add("commands")
+Arbitrage.commands.stored = {}
+
+local function RegisterCommand(command, help, arguments, optionalArguments)
+    Arbitrage.commands.stored[command] = {
+        help = help,
+        arguments = arguments,
+        optionalArguments = optionalArguments
+    }
+end
+
+RegisterCommand("me", "Говорить от третьего лица с окружающими.", {
+    "text"
+})
+
+RegisterCommand("try", "Возможное действие случая.", {
+    "text"
+})
+
+RegisterCommand("w", "Шептать персонажам рядом с вами.", {
+    "text"
+})
+
+RegisterCommand("y", "Крикнуть персонажам рядом с вами.", {
+    "text"
+})
+
+RegisterCommand("it", "Описать местное действие или событие.", {
+    "text"
+})
+
+RegisterCommand("looc", "Написать в локальный НонРП чат.", {
+    "text"
+})
+
+RegisterCommand("ooc", "Написать в глобальный НонРП чат.", {
+    "text"
+})
+
+RegisterCommand("broadcast", "Написать уведомление в общий чат.", {
+    "text"
+})
+
+RegisterCommand("sg", "Получить изображение экрана игрока.", {
+    "player"
+})
+
+RegisterCommand("settime", "Установить время на сервере.", {
+    "time"
+})
+
+RegisterCommand("roll", "Крутить число от 0 до 100.")
+RegisterCommand("freezeprops", "Заморозить все физические пропы.")
+RegisterCommand("editor", "Зайти в режим редактирования.")
+
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

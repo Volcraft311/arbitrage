@@ -754,13 +754,13 @@ function PANEL:Paint(width, height)
 	surface.SetDrawColor(0, 0, 0, 240)
 	surface.DrawRect(0, 0, width, height)
 
-	if (tab) then
+	if tab then
 		surface.SetAlphaMultiplier(1)
 			tab:PaintManual()
 		surface.SetAlphaMultiplier(alpha / 255)
 	end
 
-	if (alpha > 0) then
+	if alpha > 0 then
 		hook.Run("PostChatboxDraw", width, height, self:GetAlpha())
 	end
 end
@@ -770,14 +770,22 @@ local function GetAllCommands(text, onlySG)
 
 	for command, stored in pairs(serverguard.command.stored) do
 		if string.find(command:lower(), text:lower()) then
-			data[command] = stored.help
+			data[command] = {
+				stored.arguments or {},
+				stored.optionalArguments or {},
+				stored.help
+			}
 		end
 	end
 
 	if !onlySG then
-		for command, help in pairs(Arbitrage.commands.stored) do
+		for command, stored in pairs(Arbitrage.commands.stored) do
 			if string.find(command:lower(), text:lower()) then
-				data[command] = help
+				data[command] = {
+					stored.arguments or {},
+					stored.optionalArguments or {},
+					stored.help
+				}
 			end
 		end
 	end
@@ -785,14 +793,28 @@ local function GetAllCommands(text, onlySG)
 	return data
 end
 
-local padding = 10
+local function isSelect(arguments, id, numSel, bHaveOptional)
+	if numSel == id then
+		return true
+	end
+
+	if !bHaveOptional and id - 1 == arguments and numSel >= id then
+		return true
+	end
+
+	return false
+end
+
+local padding = 5
 function PANEL:OnTextChanged(text)
 	hook.Run("ChatTextChanged", text)
 
 	local prefix = string.sub(text, 1, 1)
 	if prefix == "!" or prefix == "/" then
 		local inputCommand = text:utf8sub(2, text:utf8len())
-		inputCommand = string.Explode(" ", inputCommand)[1]
+		local explode = string.Explode(" ", inputCommand)
+		inputCommand = explode[1]
+		self._numEx = #explode
 
 		local commands = GetAllCommands(inputCommand, prefix == "!")
 
@@ -817,8 +839,11 @@ function PANEL:OnTextChanged(text)
 			end
 		end
 
-		for command, description in pairs(commands) do
+		for command, data in pairs(commands) do
 			local isSG = serverguard.command.stored[command:lower()] and true or false
+			local arguments = data[1]
+			local optionalArguments = data[2]
+			local description = data[3]
 
 			if !IsValid(self.commandsPanel.stored[command]) then
 				local panel = self.commandsPanel:Add("DPanel")
@@ -826,8 +851,32 @@ function PANEL:OnTextChanged(text)
 				panel:Dock(BOTTOM)
 				panel:SizeTo(0, H(20), 0.2)
 				panel.Paint = function(_, w, h)
-					local x, _ = draw.SimpleText((isSG and "!" or "/") .. command, "arb.Font_FuturaPTDemi_7", padding, 0, Color(255, 61, 96), TEXT_ALIGN_LEFT)
-					draw.SimpleText(" — " .. description, "arb.Font_FuturaPTBook_7", padding + x, 0, Color(255, 234, 238, 200), TEXT_ALIGN_LEFT)
+					local x = 10
+
+					do
+						local _x, _ = draw.SimpleText((isSG and "!" or "/") .. command, "arb.Font_FuturaPTDemi_7", x, 0, Color(255, 61, 96), TEXT_ALIGN_LEFT)
+						x = x + _x + padding
+					end
+
+					do
+						for k, v in ipairs(arguments) do
+							local col = isSelect(#arguments, k + 1, self._numEx, #optionalArguments > 0) and Color(255, 61, 96) or Color(255, 234, 238)
+
+							local _x, _ = draw.SimpleText("<" .. v .. ">", "arb.Font_FuturaPTBook_7", x, 0, col, TEXT_ALIGN_LEFT)
+							x = x + _x + padding
+						end
+					end
+
+					do
+						for k, v in ipairs(optionalArguments) do
+							local col = isSelect(#optionalArguments + #arguments, #arguments + k + 1, self._numEx, false) and Color(255, 61, 96) or Color(255, 234, 238)
+
+							local _x, _ = draw.SimpleText("[" .. v .. "]", "arb.Font_FuturaPTBook_7", x, 0, col, TEXT_ALIGN_LEFT)
+							x = x + _x + padding
+						end
+					end
+
+					draw.SimpleText(" — " .. description, "arb.Font_FuturaPTBook_7", x, 0, Color(255, 234, 238, 180), TEXT_ALIGN_LEFT)
 				end
 
 				self.commandsPanel.stored[command] = panel
@@ -845,6 +894,8 @@ function PANEL:OnTextChanged(text)
 				self.commandsPanel.stored[k] = nil
 			end
 		end)
+
+		self._numEx = 0
 	end
 end
 
@@ -880,6 +931,8 @@ function PANEL:OnMessageSent()
 			self.commandsPanel.stored[k] = nil
 		end
 	end)
+
+	self._numEx = 0
 
 	self:SetActive(false)
 end

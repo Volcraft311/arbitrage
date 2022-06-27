@@ -153,28 +153,6 @@ function Arbitrage.AddDisableElement(data)
 end
 
 do
-    Arbitrage.commands.stored = {}
-
-    local function RegisterCommand(command, description)
-        Arbitrage.commands.stored[command] = description
-    end
-
-    RegisterCommand("me", "Говорить от третьего лица с окружающими.")
-    RegisterCommand("try", "Возможное действие случая.")
-    RegisterCommand("w", "Шептать персонажам рядом с вами.")
-    RegisterCommand("y", "Крикнуть персонажам рядом с вами.")
-    RegisterCommand("it", "Описать местное действие или событие.")
-    RegisterCommand("looc", "Написать в локальный НонРП чат.")
-    RegisterCommand("ooc", "Написать в глобальный НонРП чат.")
-    RegisterCommand("broadcast", "Написать уведомление в общий чат.")
-    RegisterCommand("sg", "Получить изображение экрана игрока.")
-    RegisterCommand("settime", "Установить время на сервере.")
-    RegisterCommand("roll", "Крутить число от 0 до 100.")
-    RegisterCommand("freezeprops", "Заморозить все физические пропы.")
-    RegisterCommand("editor", "Зайти в режим редактирования.")
-end
-
-do
     Arbitrage.hud.AddCircle("health", {
         value = function()
             return LocalPlayer():Health()

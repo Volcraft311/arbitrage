@@ -36,7 +36,7 @@ function Hints:Select(id)
 
     LocalPlayer():EmitSound("garrysmod/ui_return.wav")
 
-    timer.Simple(data:utf8len() * 0.1, function()
+    timer.Simple(data:utf8len() * 0.1 + 8, function()
         self.alphaTo = 0
 
         timer.Simple(2, function()

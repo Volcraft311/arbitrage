@@ -503,6 +503,16 @@ function PANEL:Init()
 		surface.DrawOutlinedRect(0, 0, w, h, 2)
 	end
 
+	self.commandsPanel = self:Add("DPanel")
+	self.commandsPanel:SetPos(0, 0)
+	self.commandsPanel:SetAlpha(0)
+	self.commandsPanel:SetSize(self:GetWide(), self:GetTall() - H(30))
+	self.commandsPanel.stored = {}
+	self.commandsPanel.Paint = function(_, w, h)
+		surface.SetDrawColor(0, 0, 0, 240)
+		surface.DrawRect(0, 0, w, h)
+	end
+
 	self.entry.OnEnter = function(entry)
 		local value = entry:GetValue()
 		if entry.history[1] ~= value then
@@ -755,8 +765,87 @@ function PANEL:Paint(width, height)
 	end
 end
 
+local function GetAllCommands(text, onlySG)
+	local data = {}
+
+	for command, stored in pairs(serverguard.command.stored) do
+		if string.find(command:lower(), text:lower()) then
+			data[command] = stored.help
+		end
+	end
+
+	if !onlySG then
+		for command, help in pairs(Arbitrage.commands.stored) do
+			if string.find(command:lower(), text:lower()) then
+				data[command] = help
+			end
+		end
+	end
+
+	return data
+end
+
+local padding = 10
 function PANEL:OnTextChanged(text)
 	hook.Run("ChatTextChanged", text)
+
+	local prefix = string.sub(text, 1, 1)
+	if prefix == "!" or prefix == "/" then
+		local inputCommand = text:utf8sub(2, text:utf8len())
+		inputCommand = string.Explode(" ", inputCommand)[1]
+
+		local commands = GetAllCommands(inputCommand, prefix == "!")
+
+		for k, v in pairs(self.commandsPanel.stored) do
+			local isFind = false
+
+			for k2, v2 in pairs(commands) do
+				if k == k2 then
+					isFind = true
+					break
+				end
+			end
+
+			if !isFind then
+				if IsValid(v) then
+					v:SizeTo(0, 0, 0.2, 0, -1, function()
+						v:Remove()
+					end)
+				end
+
+				self.commandsPanel.stored[k] = nil
+			end
+		end
+
+		for command, description in pairs(commands) do
+			local isSG = serverguard.command.stored[command:lower()] and true or false
+
+			if !IsValid(self.commandsPanel.stored[command]) then
+				local panel = self.commandsPanel:Add("DPanel")
+				panel:SetTall(0)
+				panel:Dock(BOTTOM)
+				panel:SizeTo(0, H(20), 0.2)
+				panel.Paint = function(_, w, h)
+					local x, _ = draw.SimpleText((isSG and "!" or "/") .. command, "arb.Font_FuturaPTDemi_7", padding, 0, Color(255, 61, 96), TEXT_ALIGN_LEFT)
+					draw.SimpleText(" — " .. description, "arb.Font_FuturaPTBook_7", padding + x, 0, Color(255, 234, 238, 200), TEXT_ALIGN_LEFT)
+				end
+
+				self.commandsPanel.stored[command] = panel
+			end
+		end
+
+		self.commandsPanel:AlphaTo(255, 0.2)
+	else
+		self.commandsPanel:AlphaTo(0, 0.2, 0, function()
+			for k, v in pairs(self.commandsPanel.stored) do
+				if IsValid(v) then
+					v:Remove()
+				end
+
+				self.commandsPanel.stored[k] = nil
+			end
+		end)
+	end
 end
 
 DEFINE_BASECLASS("DTextEntry")
@@ -781,6 +870,16 @@ function PANEL:OnMessageSent()
 			net.WriteString(text)
 		net.SendToServer()
 	end
+
+	self.commandsPanel:AlphaTo(0, 0.2, 0, function()
+		for k, v in pairs(self.commandsPanel.stored) do
+			if IsValid(v) then
+				v:Remove()
+			end
+
+			self.commandsPanel.stored[k] = nil
+		end
+	end)
 
 	self:SetActive(false)
 end

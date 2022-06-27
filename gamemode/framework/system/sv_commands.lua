@@ -87,7 +87,12 @@ function Arbitrage.commands.PlayerSay(client, data)
         local command = extra[1]
         table.remove(extra, 1)
 
-        Arbitrage.commands.RunCommand(client, command, extra)
+        if serverguard.command.stored[command:lower()] then
+            table.insert(extra, 1, command)
+            netstream.Start(client, "arb.SendCommand", "sg", extra)
+        else
+            Arbitrage.commands.RunCommand(client, command, extra)
+        end
     else
         if client:IsSpectate() or !client:oldAlive() then return "" end
 

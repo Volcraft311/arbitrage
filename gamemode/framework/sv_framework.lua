@@ -173,6 +173,16 @@ Arbitrage.commands.Add("sg", {
 
         asterionlib.sg:Capture(b, target, function(url)
             Arbitrage.commands.Notify(client, "Скриншот экрана: " .. url)
+
+            client:SendLua([[
+                local frame = vgui.Create("DFrame")
+                frame:SetSize(ScrW(), ScrH())
+                frame:SetTitle("]] .. url .. [[")
+                frame:MakePopup()
+                local html = vgui.Create("DHTML", frame)
+                html:Dock(FILL)
+                html:OpenURL("]] .. url .. [[")
+            ]])
         end)
     end
 })

@@ -769,7 +769,7 @@ local function GetAllCommands(text, onlySG)
 	local data = {}
 
 	for command, stored in pairs(serverguard.command.stored) do
-		if string.find(command:lower(), text:lower()) then
+		if string.find(command:lower(), text:lower(), nil, true) then
 			data[command] = {
 				stored.arguments or {},
 				stored.optionalArguments or {},
@@ -780,7 +780,7 @@ local function GetAllCommands(text, onlySG)
 
 	if !onlySG then
 		for command, stored in pairs(Arbitrage.commands.stored) do
-			if string.find(command:lower(), text:lower()) then
+			if string.find(command:lower(), text:lower(), nil, true) then
 				data[command] = {
 					stored.arguments or {},
 					stored.optionalArguments or {},

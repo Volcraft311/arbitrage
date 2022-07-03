@@ -61,7 +61,8 @@ function PANEL:Init()
     self.ImagePanel:SetAlpha(0)
     self.ImagePanel:Dock(FILL)
     self.ImagePanel.Paint = function(_, w, h)
-        local image = Material("data/" .. self.image)
+        local id = "data/" .. self.image
+        local image = Material(id)
 
         if type(image) == "IMaterial" and !image:IsError() then
             local size = 0.9
@@ -83,6 +84,10 @@ function PANEL:Init()
             surface.SetDrawColor(255, alpha, 255)
             surface.DrawRect(w / 2 - sizeW / 2, h / 2 - sizeH / 2, sizeW, sizeH)
             draw.DrawText("Loading" .. dotStr, "Default", sizeW, sizeH, Color(alpha, 0, 0), TEXT_ALIGN_CENTER)
+
+            if Material.cache and Material.old then
+            	Material.cache[id] = Material.old(id)
+            end
         end
     end
 

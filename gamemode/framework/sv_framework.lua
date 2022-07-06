@@ -677,7 +677,11 @@ concommand.Add("arb_returnnormalflashlight", function(client, command, arguments
 
     for k, v in ipairs(player.GetAll()) do
         v:AllowFlashlight(true)
-        v:Flashlight(true)
+        v:Flashlight(false)
+
+        if TPF_RemoveProjectedTexture then
+    		TPF_RemoveProjectedTexture(v)
+    	end
     end
 end)
 

@@ -16,7 +16,7 @@ local PLUGIN = PLUGIN
 
 function PLUGIN:Set(key, value)
     local data = self:Get()
-    if !data[key] then return end
+    if data[key] == nil then return end
 
     data[key] = value
 
@@ -27,7 +27,7 @@ netstream.Hook("ColorModify:Set", function(client, key, value)
     if !client:IsAdmin() then return end
 
     PLUGIN:Set(key, value)
-    Arbitrage.adminnotify:SendNotify("changecolormodify", client:Name() .. " (" .. client:SteamName() .. ")", key, value)
+    Arbitrage.adminnotify:SendNotify("changecolormodify", client:Name() .. " (" .. client:SteamName() .. ")", key, tostring(value))
 end)
 
 netstream.Hook("ColorModify:Standart", function(client)

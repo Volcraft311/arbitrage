@@ -56,6 +56,17 @@ function PANEL:InitColorModify()
 
     local data = PLUGIN:Get()
 
+    local enableButton = self.mainPanel:Add("DCheckBoxLabel")
+    enableButton:SetTall(H(30))
+    enableButton:Dock(TOP)
+    enableButton:DockMargin(W(25), H(3), 0, H(20))
+    enableButton:SetText("Включить изменение цветокоррекции")
+    enableButton:SetFont("arb.Font_FuturaPTBook_8")
+    enableButton:SetValue(data.enabled)
+    enableButton.OnChange = function(_, value)
+        netstream.Start("ColorModify:Set", "enabled", tobool(value))
+    end
+
     for k, v in pairs(data) do
         local info = PLUGIN:GetInfo(k)
         if !info then continue end

@@ -101,3 +101,11 @@ end)
 PLUGIN:AddNewNotify("setmodel", function(client, target, data)
     return Color(63, 162, 184), client, Color(255, 255, 255), " изменил игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " модель на ", Color(48, 218, 187), data
 end)
+
+PLUGIN:AddNewNotify("changecolormodify", function(client, key, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " изменил значение цветокоррекции ", Color(197, 181, 60), key, Color(255, 255, 255), " на ", Color(48, 218, 187), data
+end)
+
+PLUGIN:AddNewNotify("standartcolormodify", function(client, key, data)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " вернул стандартную цветокоррекцию"
+end)

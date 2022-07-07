@@ -180,6 +180,15 @@ PLUGIN.GameData = {
         end
     },
     {
+        data = "Изменить цветокоррекцию",
+        icon = "icon16/color_wheel.png",
+        onRun = function(client)
+            if SERVER then return end
+
+            vgui.Create("ColorModify:Menu")
+        end
+    },
+    {
         data = "Открыть редактор музыки",
         icon = "icon16/music.png",
         onRun = function(client)

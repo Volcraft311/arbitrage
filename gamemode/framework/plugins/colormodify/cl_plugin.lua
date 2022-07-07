@@ -1,0 +1,38 @@
+--[[
+        © AsterionStaff 2022.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru (not work)
+            Discord - https://discord.gg/Np5evb5ZsR
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
+local PLUGIN = PLUGIN
+
+function PLUGIN:RenderScreenspaceEffects()
+    local data = self:Get()
+    if !data.enabled then return end
+
+    local ColorModify = {}
+    ColorModify["$pp_colour_brightness"] = data.brightness
+    ColorModify["$pp_colour_contrast"] = data.contrast
+    ColorModify["$pp_colour_colour"] = data.color
+    ColorModify["$pp_colour_addr"] = data.addr * 0.025
+    ColorModify["$pp_colour_addg"] = data.addg * 0.025
+    ColorModify["$pp_colour_addb"] = data.addg * 0.025
+    ColorModify["$pp_colour_mulr"] = data.mulr * 0.1
+    ColorModify["$pp_colour_mulg"] = data.mulg * 0.1
+    ColorModify["$pp_colour_mulb"] = data.mulb * 0.1
+
+    if system.IsOSX() then
+        ColorModify["$pp_colour_brightness"] = 0
+        ColorModify["$pp_colour_contrast"] = 1
+    end
+
+    DrawColorModify(ColorModify)
+end

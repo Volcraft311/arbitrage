@@ -15,6 +15,10 @@
 local PANEL = {}
 
 function PANEL:Init()
+    if IsValid(Arbitrage.gui.inventory) then
+        Arbitrage.gui.inventory:Remove()
+    end
+
     Arbitrage.gui.inventory = self
 
     local client = LocalPlayer()

@@ -40,6 +40,10 @@ do
     ITEM.description = "Лучший помощник, дабы ориентироваться в темноте."
     ITEM.model = "models/weapons/w_flashlight_zm.mdl"
     ITEM.class = "weapon_flashlight"
+        
+    ITEM:HookAdd("unequip", function(item, client)
+	client:Flashlight(false)
+    end)
 
     ItemBase:RegisterItem("flashlight", ITEM)
 end

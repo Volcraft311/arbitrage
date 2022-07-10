@@ -68,12 +68,12 @@ function ITEM:AddAction(name, data)
 end
 
 function ITEM:HookAdd(name, func)
-    ITEM.hooks[name] = func
+    self.hooks[name] = func
 end
 
 function ITEM:HookRun(name, ...)
-    if ITEM.hooks[name] then
-        ITEM.hooks[name](self, ...)
+    if self.hooks[name] then
+        self.hooks[name](self, ...)
     end
 end
 

@@ -103,6 +103,8 @@ function BASE:UnEquip(client, item)
 	client:SetNetVar("fast_slot_" .. id, nil, client)
 	item:SetData("equip", nil)
 	item.slotID = nil
+
+	item:HookRun("unequip", client)
 end
 
 local function FindClient(owner)

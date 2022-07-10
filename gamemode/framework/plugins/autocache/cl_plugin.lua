@@ -75,9 +75,11 @@ function PLUGIN:EndSaving()
     local data = table.Copy(PLUGIN.cache)
     PLUGIN.cache = {}
 
-    for k, v in pairs(data) do
-        if Arbitrage.cachedMaterials[v] then
-            data[k] = nil
+    if Material.cache then
+        for k, v in pairs(data) do
+            if Material.cache[v] then
+                data[k] = nil
+            end
         end
     end
 

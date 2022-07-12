@@ -56,6 +56,7 @@ function BASE:Equip(client, item, id)
 		client:StripWeapon(class)
 	end
 
+	local saveAmmoTable = client:GetAmmo() -- копия всех патрон
 	local weapon = client:Give(class)
 
 	if IsValid(weapon) then
@@ -68,16 +69,21 @@ function BASE:Equip(client, item, id)
 			item:GetID()
 		}, client)
 
-		if client:GetAmmoCount(ammoType) == weapon:Clip1() and item:GetData("ammo", 0) == 0 then
-			client:RemoveAmmo(weapon:Clip1(), ammoType)
+		-- некоторые паки оружия выдают патроны при эквипе, по этому сохраняет копию и после выдаем ее обратно
+		client:RemoveAmmo(weapon:Clip1(), ammoType)
+		client:SetAmmo(0, ammoType)
+		weapon:SetClip1(0)
+
+		for k, v in pairs(saveAmmoTable) do
+			client:SetAmmo(v, k)
 		end
 
-		if weapon:GetMaxClip1() == -1 and weapon:GetMaxClip2() == -1 and client:GetAmmoCount(ammoType) == 0 then
-			client:SetAmmo(1, ammoType)
+		local count = item:GetData("ammoClip", 0)
+		if count > 0 then
+			weapon:SetClip1(count)
 		end
 
 		item:SetData("equip", true)
-		weapon:SetClip1(item:GetData("ammo", 0))
 		item.slotID = id
 	end
 end
@@ -95,8 +101,8 @@ function BASE:UnEquip(client, item)
 	end
 
 	if IsValid(weapon) then
-		item:SetData("ammo", weapon:Clip1())
 		client:StripWeapon(item.class)
+		item:SetData("ammoClip", weapon:Clip1())
 	end
 
 	client.carryWeapons[item.class] = nil

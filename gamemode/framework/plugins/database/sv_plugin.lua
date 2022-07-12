@@ -53,6 +53,8 @@ function PLUGIN:PlayerDisconnected(client)
         entity:SetModel(client:GetModel())
         entity:Spawn()
 
+        hook.Run("OnCreateDisconnectEntity", client)
+
         local weaponsList = {}
         for k, v in pairs(client:GetWeapons()) do
             weaponsList[#weaponsList + 1] = v:GetClass()
@@ -66,7 +68,8 @@ function PLUGIN:PlayerDisconnected(client)
             activeweapon = client:GetActiveWeapon():GetClass(),
             statistic = {},
             evidence = client:GetEvidences(),
-            inventoryID = client:GetInventory():GetID()
+            inventoryID = client:GetInventory():GetID(),
+            ammo = client:GetAmmo()
         }
 
         for k, v in ipairs({"Hunger", "Thirst", "Sleep"}) do
@@ -97,6 +100,11 @@ function PLUGIN:PlayerInitial(client)
     client:StripWeapons()
     for k, v in pairs(data.weapons) do
         client:Give(v)
+    end
+
+    client:StripAmmo()
+    for k, v in pairs(data.ammo) do
+        client:SetAmmo(v, k)
     end
 
     client.saveData = data

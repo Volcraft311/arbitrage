@@ -49,7 +49,7 @@ function InventoryBase:PlayerDeath(client)
     end
 end
 
-function InventoryBase:PlayerDisconnected(client)
+function InventoryBase:OnCreateDisconnectEntity(client)
     local inventory = client:GetInventory()
     if !inventory then return end
 

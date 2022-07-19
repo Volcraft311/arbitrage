@@ -354,3 +354,14 @@ do
 
     ItemBase:RegisterItem("crowbar", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Фотоаппарат"
+    ITEM.description = "Фотоаппарат Полароид, имеющий функцию мгновенной распечатки фотографии"
+    ITEM.model = "models/MaxOfS2D/camera.mdl"
+    ITEM.class = "academy_camera"
+
+    ItemBase:RegisterItem("camera", ITEM)
+end

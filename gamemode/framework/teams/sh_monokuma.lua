@@ -15,6 +15,7 @@ local TEAM = {emodjiList = {}}
 
 TEAM.name = "Монокума"
 TEAM.description = "Директор Абсолютного Отчаяния"
+TEAM.category = "Ведущие"
 TEAM.admin = true
 TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/yourtoast4/danganronpa/monokuma.mdl"

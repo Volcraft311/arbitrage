@@ -193,9 +193,7 @@ function PANEL:AddAction(panel, data, bInGame)
 
         LocalPlayer():EmitSound(PLUGIN.ClickSound)
 
-        self.monoList = vgui.Create("arb.MonoMenuList")
-        self.monoList:SetPos(gui.MouseX(), gui.MouseY())
-        self.monoList:SetPlayer(data)
+        PLUGIN:OpenEntityMenu(data)
     end
 end
 

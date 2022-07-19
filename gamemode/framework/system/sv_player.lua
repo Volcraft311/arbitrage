@@ -42,6 +42,10 @@ function Arbitrage.player.SetTeam(client, data, bRespawn)
         client:Give(v)
     end
 
+    timer.Simple(2, function()
+        client:SetupHands()
+    end)
+
     Arbitrage.player.SetupSpeed(client)
     Arbitrage.player.SetupInventory(client)
 

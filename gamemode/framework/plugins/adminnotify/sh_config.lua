@@ -106,6 +106,34 @@ PLUGIN:AddNewNotify("changecolormodify", function(client, key, data)
     return Color(63, 162, 184), client, Color(255, 255, 255), " изменил значение цветокоррекции ", Color(197, 181, 60), key, Color(255, 255, 255), " на ", Color(48, 218, 187), data
 end)
 
-PLUGIN:AddNewNotify("standartcolormodify", function(client, key, data)
+PLUGIN:AddNewNotify("standartcolormodify", function(client)
     return Color(63, 162, 184), client, Color(255, 255, 255), " вернул стандартную цветокоррекцию"
+end)
+
+PLUGIN:AddNewNotify("resetstats", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " обнулил характеристики игроку ", Color(48, 218, 187), target
+end)
+
+PLUGIN:AddNewNotify("changestatus", function(client, target, state)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " изменил игровой статус игроку ", Color(197, 181, 60), target, Color(255, 255, 255), " на ", Color(48, 218, 187), state
+end)
+
+PLUGIN:AddNewNotify("returngame", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " вернул в игру игрока ", Color(48, 218, 187), target
+end)
+
+PLUGIN:AddNewNotify("removegame", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " убрал из игры игрока ", Color(48, 218, 187), target
+end)
+
+PLUGIN:AddNewNotify("addgame", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " добавил в игру игрока ", Color(48, 218, 187), target
+end)
+
+PLUGIN:AddNewNotify("claerinventory", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " очистил инвентарь игроку ", Color(48, 218, 187), target
+end)
+
+PLUGIN:AddNewNotify("openinventory", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " открыл инвентарь игрока ", Color(48, 218, 187), target
 end)

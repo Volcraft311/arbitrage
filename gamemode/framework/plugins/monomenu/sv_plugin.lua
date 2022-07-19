@@ -13,7 +13,7 @@
 
 local PLUGIN = PLUGIN
 
-function PLUGIN:OpenMonoMenu(client)
+function PLUGIN:OpenMonoMenu(client, bRefresh)
     local data = {character = {}, notcharacter = {}}
     Arbitrage.players = Arbitrage.players or {}
 
@@ -40,7 +40,7 @@ function PLUGIN:OpenMonoMenu(client)
         end
     end
 
-    netstream.Start(client, "arb.OpenMonoMenu", data)
+    netstream.Start(client, bRefresh and "arb.UpdateMonoMenu" or "arb.OpenMonoMenu", data)
 end
 
 function PLUGIN:OpenMonoWhiteList(client)
@@ -161,125 +161,186 @@ netstream.Hook("arb.OpenMonoMenu", function(client)
     PLUGIN:OpenMonoMenu(client)
 end)
 
-netstream.Hook("arb.MonoRunCommand", function(client, target, category_id, button_id)
-    if !client:IsAdmin() then return end
+local actionList = {
+    ["setfaction"] = function(client, steamid, faction, bRespawn)
+        local factionData = Arbitrage.teams.Get(faction)
+        if !factionData then return end
 
-    local data = PLUGIN.ActionData[category_id] and (PLUGIN.ActionData[category_id][button_id] and PLUGIN.ActionData[category_id][button_id])
-    if !data then return end
+        local data = Arbitrage.players[steamid]
+        if data then
+            data.faction = faction
+        end
 
-    if data.onCreate then
-        local bState = data.onCreate(target)
+        local target = player.GetBySteamID(steamid)
+        if IsValid(target) then
+            Arbitrage.player.SetTeam(target, faction, bRespawn)
+        end
 
-        if !bState then return end
-    end
+        Arbitrage.adminnotify:SendNotify("transfercharacter", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")", faction)
+    end,
+    ["addgame"] = function(client, target)
+        if !IsValid(target) then return end
 
-    if data.onRun then
-        local bState = data.onRun(target)
-        if bState == false then return end
+        local count = table.Count(Arbitrage.players)
 
-        timer.Simple(0.2, function()
-            PLUGIN:OpenMonoMenu(client)
+        Arbitrage.players[target:SteamID()] = {
+            faction = target:Team(),
+            place = Arbitrage.placesList and math.Clamp(count + 1, 1, #Arbitrage.placesList) or -1,
+            steamname = target:SteamName()
+        }
+
+        target:SetNetVar("arbLaw", count + 1, target)
+
+        Arbitrage.adminnotify:SendNotify("addgame", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+    end,
+    ["removegame"] = function(client, steamid)
+        if !Arbitrage.players[steamid] then return end
+
+        Arbitrage.players[steamid] = nil
+
+        local target = player.GetBySteamID(steamid)
+        if IsValid(target) then
+            target:SetNetVar("arbLaw", -1, target)
+        end
+
+        Arbitrage.adminnotify:SendNotify("removegame", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+    end,
+    ["returngame"] = function(client, target)
+        if !IsValid(target) then return end
+
+        local data = target:GetNetVar("arb.oldData")
+        if !data then return end
+
+        target:SetNetVar("arb.oldData", nil)
+        Arbitrage.player.SetTeam(target, data[1], true)
+        timer.Simple(0.1, function()
+            target:SetPos(data[2])
+            Arbitrage.player.SetupHealth(target)
         end)
 
-        if !IsValid(target.client) then return end
-        Arbitrage.adminnotify:SendNotify("monocommand", client:Name() .. " (" .. client:SteamName() .. ")", data.data, target.client:Name() .. " (" .. target.client:SteamName() .. ")")
-    end
-end)
+        for k, v in ipairs(ents.FindByClass("prop_ragdoll")) do
+            if v.client == target then
+                v:Remove()
+            end
+        end
 
-netstream.Hook("arb.MonoSetTeam", function(client, target, faction, bRespawn)
-    if !client:IsAdmin() then return end
+        Arbitrage.adminnotify:SendNotify("returngame", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+    end,
+    ["setfakename"] = function(client, target, name)
+        if !IsValid(target) then return end
 
-    local factionData = Arbitrage.teams.Get(faction)
-    if !factionData then return end
+        target:SetFakeName(name)
 
-    local data = Arbitrage.players[target.client:SteamID()]
-    if data then
-        data.faction = faction
-    end
+        Arbitrage.adminnotify:SendNotify("setfakename", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")", name)
+    end,
+    ["changestatus"] = function(client, target, state)
+        if !IsValid(target) then return end
 
-    if !IsValid(target.client) then return end
-    Arbitrage.player.SetTeam(target.client, faction, bRespawn)
+        target:SetNetVar("arbAlive", state)
 
-    timer.Simple(0.2, function()
-        PLUGIN:OpenMonoMenu(client)
-    end)
+        Arbitrage.adminnotify:SendNotify("changestatus", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")", state == nil and "Живой" or "Мертвый")
+    end,
+    ["setplace"] = function(client, steamid, place)
+        if !Arbitrage.players[steamid] then return end
 
-
-    Arbitrage.adminnotify:SendNotify("transfercharacter", client:Name() .. " (" .. client:SteamName() .. ")", target.client:Name() .. " (" .. target.client:SteamName() .. ")", faction)
-end)
-
-netstream.Hook("arb.MonoSetStats", function(client, target, data, amount)
-    if !client:IsAdmin() then return end
-    if !IsValid(target.client) then return end
-
-    amount = math.Clamp(tonumber(amount), 0, 1000)
-
-    if data == "health" then
-        target.client:SetHealth(amount)
-    elseif data == "armor" then
-        target.client:SetArmor(amount)
-    elseif data == "hunger" then
-        Arbitrage.statistics.Set(target.client, "Hunger", amount)
-    elseif data == "thirst" then
-        Arbitrage.statistics.Set(target.client, "Thirst", amount)
-    elseif data == "sleep" then
-        Arbitrage.statistics.Set(target.client, "Sleep", amount)
-    else
-        return
-    end
-
-    timer.Simple(0.2, function()
-        PLUGIN:OpenMonoMenu(client)
-    end)
-
-    Arbitrage.adminnotify:SendNotify("setstats", client:Name() .. " (" .. client:SteamName() .. ")", data, target.client:Name() .. " (" .. target.client:SteamName() .. ")", amount)
-end)
-
-netstream.Hook("arb.MonoSetPlace", function(client, steamid, place)
-    if !client:IsAdmin() then return end
-
-    -- place = math.Clamp(tonumber(place), -1, #Arbitrage.placesList)
-
-    if Arbitrage.players[steamid] then
         Arbitrage.players[steamid].place = place
-    end
 
-    local target = player.GetBySteamID(steamid)
-    if IsValid(target) then
-        target:SetNetVar("arbLaw", place, target)
+        local target = player.GetBySteamID(steamid)
+        if IsValid(target) then
+            target:SetNetVar("arbLaw", place, target)
+
+            Arbitrage.adminnotify:SendNotify("setplace", client:Name() .. " (" .. client:SteamName() .. ")", place, target and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid)
+        end
+    end,
+    ["setmodel"] = function(client, target, model)
+        if !IsValid(target) then return end
+
+        target:SetModel(model)
+        target:SetupHands()
+
+        Arbitrage.adminnotify:SendNotify("setmodel", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")", model)
+    end,
+    ["resetstats"] = function(client, target)
+        if !IsValid(target) then return end
+
+        target:SetHealth(ARBITRAGE_HEALTH)
+        target:SetArmor(ARBITRAGE_ARMOR)
+
+        for k, v in pairs(Arbitrage.statistics.list) do
+            Arbitrage.statistics.Set(target, v.data, 100)
+        end
+
+        Arbitrage.adminnotify:SendNotify("resetstats", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+    end,
+    ["setstats"] = function(client, target, data, amount)
+        if !IsValid(target) then return end
+
+        amount = math.Clamp(tonumber(amount), 0, 1000)
+
+        if data == "health" then
+            target:SetHealth(amount)
+        elseif data == "armor" then
+            target:SetArmor(amount)
+        elseif data == "hunger" then
+            Arbitrage.statistics.Set(target, "Hunger", amount)
+        elseif data == "thirst" then
+            Arbitrage.statistics.Set(target, "Thirst", amount)
+        elseif data == "sleep" then
+            Arbitrage.statistics.Set(target, "Sleep", amount)
+        else
+            return
+        end
+
+        Arbitrage.adminnotify:SendNotify("setstats", client:Name() .. " (" .. client:SteamName() .. ")", data, target:Name() .. " (" .. target:SteamName() .. ")", amount)
+    end,
+    ["claerinventory"] = function(client, target)
+        if !IsValid(target) then return end
+
+        local inventory = target:GetInventory()
+        if inventory then
+            local items = inventory:GetItems()
+
+            for k, v in pairs(items) do
+                if v:GetData("equip") then
+                    v:UnEquip(target, v)
+                end
+
+                v:Remove()
+            end
+        end
+
+        Arbitrage.adminnotify:SendNotify("claerinventory", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+    end,
+    ["openinventory"] = function(client, target)
+        if !IsValid(target) then return end
+
+        if client == target then
+            return Arbitrage.commands.Notify(client, "Нельзя открыть собственный инвентарь!")
+        end
+
+        local inventory = target:GetInventory()
+        if inventory then
+            InventoryBase.Open(client, inventory:GetID(), target:Name())
+
+            Arbitrage.adminnotify:SendNotify("openinventory", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+        else
+            Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!")
+        end
     end
+}
+
+netstream.Hook("arb.MonoRunCommand", function(client, id, ...)
+    if !client:IsAdmin() then return end
+
+    local action = actionList[id]
+    if !action then return end
+
+    local data = {client, ...}
+    action(unpack(data))
 
     timer.Simple(0.2, function()
-        PLUGIN:OpenMonoMenu(client)
+        PLUGIN:OpenMonoMenu(client, true)
     end)
-
-    Arbitrage.adminnotify:SendNotify("setplace", client:Name() .. " (" .. client:SteamName() .. ")", place, target and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid)
-end)
-
-netstream.Hook("arb.SetFakeName", function(client, target, name)
-    if !client:IsAdmin() then return end
-
-    if IsValid(target.client) then
-        target.client:SetFakeName(name)
-
-        timer.Simple(0.2, function()
-            PLUGIN:OpenMonoMenu(client)
-        end)
-        Arbitrage.adminnotify:SendNotify("setfakename", client:Name() .. " (" .. client:SteamName() .. ")", target.client:Name() .. " (" .. target.client:SteamName() .. ")", name)
-    end
-end)
-
-netstream.Hook("arb.MonoGiveWeapon", function(client, target, weapon_id)
-    if !client:IsAdmin() then return end
-
-    if IsValid(target.client) then
-        target.client:Give(weapon_id, true)
-
-        timer.Simple(0.2, function()
-            PLUGIN:OpenMonoMenu(client)
-        end)
-        Arbitrage.adminnotify:SendNotify("giveweapon", client:Name() .. " (" .. client:SteamName() .. ")", target.client:Name() .. " (" .. target.client:SteamName() .. ")", weapon_id)
-    end
 end)
 
 netstream.Hook("arb.MonoRunCommandC", function(client, type_id, button_id)
@@ -387,20 +448,6 @@ netstream.Hook("arb.MonoSetCharter", function(client, data)
     if !client:IsAdmin() then return end
 
     SetNetVar("arb.Charter", data)
-end)
-
-netstream.Hook("arb.MonoSetModel", function(client, target, model)
-    if !client:IsAdmin() then return end
-    if !IsValid(target.client) then return end
-
-    target.client:SetModel(model)
-    target.client:SetupHands()
-
-    timer.Simple(0.2, function()
-        PLUGIN:OpenMonoMenu(client)
-    end)
-
-    Arbitrage.adminnotify:SendNotify("setmodel", client:Name() .. " (" .. client:SteamName() .. ")", target.client:Name() .. " (" .. target.client:SteamName() .. ")", model)
 end)
 
 netstream.Hook("arb.MonoSplashScreen", function(client, data)

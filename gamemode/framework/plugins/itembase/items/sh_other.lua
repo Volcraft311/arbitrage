@@ -100,3 +100,29 @@ do
 
     ItemBase:RegisterItem("keys_all", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase()
+
+    ITEM.name = "Фотография"
+    ITEM.description = "Обычная фотография, на ней есть какое-то изображение"
+    ITEM.model = "models/gibs/metal_gib4.mdl"
+    ITEM.category = "Фотографии"
+    ITEM.image = nil
+
+    ITEM:AddAction("Посмотреть", {
+        OnRun = function(item)
+            local client = item.player
+            local url = item.image
+
+            asterionlib.netgui:Create(client, "Photos:Menu", nil, "OpenData", url)
+
+            return false
+        end,
+        OnCanRun = function(item)
+            return item.image
+        end
+    })
+
+    ItemBase:RegisterItem("camera_image", ITEM)
+end

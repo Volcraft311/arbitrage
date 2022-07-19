@@ -14,7 +14,7 @@
 
 local PANEL = {}
 
-local path = "interactiontool"
+local path = "asterion_cache"
 file.CreateDir(path)
 
 local ValidExtension = {

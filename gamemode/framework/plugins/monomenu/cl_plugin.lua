@@ -237,9 +237,9 @@ local function getActionList(clientinfo)
                         data = function()
                             runAction("addgame", client)
                         end,
-                        check = function()
-                            return !clientinfo.ingame
-                        end
+                        -- check = function()
+                        --     return !clientinfo.ingame
+                        -- end
                     },
                     {
                         name = "Убрать из игры",
@@ -247,9 +247,9 @@ local function getActionList(clientinfo)
                         data = function()
                             runAction("removegame", m_steamid)
                         end,
-                        check = function()
-                            return clientinfo.ingame
-                        end
+                        -- check = function()
+                        --     return clientinfo.ingame
+                        -- end
                     },
                     {
                         name = "Вернуть в игру",

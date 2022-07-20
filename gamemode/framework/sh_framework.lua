@@ -553,19 +553,14 @@ do
     playerMeta.Nick = playerMeta.GetName
     playerMeta.Name = playerMeta.GetName
 
-    function IsMonoKum(idx)
-        if !idx then return false end
+    function IsHost(steamid)
+        local data = GetNetVar("hostList", {})
 
-        local factionData = Arbitrage.teams.Get(idx)
-        if !factionData then return false end
-
-        return factionData.monokuma or false
+        return data[steamid]
     end
 
-    function playerMeta:IsMonoKum()
-        local faction = self:Team()
-
-        return IsMonoKum(faction)
+    function playerMeta:IsHost()
+        return IsHost(self:SteamID())
     end
 
     function playerMeta:IsSpectate()

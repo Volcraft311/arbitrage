@@ -44,7 +44,7 @@ local stagesData = {
             for k, v in pairs(Arbitrage.teams.data) do
                 v.key = k
 
-                if v.monokuma then
+                if v.category == "Ведущие" then
                     data[#data + 1] = v
                 end
             end

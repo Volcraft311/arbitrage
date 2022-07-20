@@ -20,14 +20,14 @@ PLUGIN.turnoff_time = 7
 function PLUGIN:AllowDetectCorpse(client)
     if client:IsNocliping() then return false end
     if !client:Alive() then return false end
-    if client:IsMonoKum() then return false end
+    if client:IsHost() then return false end
 
     return true
 end
 
 function PLUGIN:AllowLogFindCorpse(client)
     if !client:IsAdmin() then return false end
-    if !client:IsMonoKum() and client:IsPlaying() then return false end
+    if !client:IsHost() and client:IsPlaying() then return false end
 
     return true
 end

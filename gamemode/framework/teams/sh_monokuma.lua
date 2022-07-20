@@ -31,8 +31,6 @@ TEAM.thirstSpeed = 10000
 TEAM.sleepSpeed = 10000
 TEAM.max = 10
 
-TEAM.monokuma = true
-
 for i = 1, 36 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
 end

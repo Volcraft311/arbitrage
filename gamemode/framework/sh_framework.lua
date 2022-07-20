@@ -139,6 +139,7 @@ do
     local workshop = asterionlib.workshop
 
     hook.Add("asterionlib.workshop:Initialize", "asterionlib.workshop", function()
+        -- MAIN
         workshop:Add("2715755590") -- Danganronpa - Main Content
         workshop:Add("2786490267") -- Danganronpa - Main Content #2
         workshop:Add("2717853308") -- Danganronpa - Models Content #1
@@ -153,6 +154,7 @@ do
         workshop:Add("131759821") -- VJ Base
         workshop:Add("1920810365") -- Facial Emote Mod
         workshop:Add("1784911999") -- LED screens
+        workshop:Add("1161268544") -- Pink Blood
 
         -- WEAPONS
         workshop:Add("582366370") -- [TFA] No More Room in Hell Melee SWEPs

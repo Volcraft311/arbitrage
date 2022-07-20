@@ -137,3 +137,11 @@ end)
 PLUGIN:AddNewNotify("openinventory", function(client, target)
     return Color(63, 162, 184), client, Color(255, 255, 255), " открыл инвентарь игрока ", Color(48, 218, 187), target
 end)
+
+PLUGIN:AddNewNotify("addhost", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " сделал ведущим игрока ", Color(48, 218, 187), target
+end)
+
+PLUGIN:AddNewNotify("removehost", function(client, target)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " убрал из ведущих игрока ", Color(48, 218, 187), target
+end)

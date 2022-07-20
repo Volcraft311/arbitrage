@@ -72,7 +72,7 @@ function PLUGIN:StartVoting()
 
     local data = {}
     for k, v in pairs(Arbitrage.players) do
-        if !IsMonoKum(v.faction) then
+        if !IsHost(v.steamid) then
             data[#data + 1] = {
                 v.steamid,
                 v.faction,
@@ -172,11 +172,13 @@ local actionList = {
         end
 
         local target = player.GetBySteamID(steamid)
+        local m_target = IsValid(target) and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid
+
         if IsValid(target) then
             Arbitrage.player.SetTeam(target, faction, bRespawn)
         end
 
-        Arbitrage.adminnotify:SendNotify("transfercharacter", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")", faction)
+        Arbitrage.adminnotify:SendNotify("transfercharacter", client:Name() .. " (" .. client:SteamName() .. ")", m_target, faction)
     end,
     ["addgame"] = function(client, target)
         if !IsValid(target) then return end
@@ -199,11 +201,13 @@ local actionList = {
         Arbitrage.players[steamid] = nil
 
         local target = player.GetBySteamID(steamid)
+        local m_target = IsValid(target) and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid
+
         if IsValid(target) then
             target:SetNetVar("arbLaw", -1, target)
         end
 
-        Arbitrage.adminnotify:SendNotify("removegame", client:Name() .. " (" .. client:SteamName() .. ")", target:Name() .. " (" .. target:SteamName() .. ")")
+        Arbitrage.adminnotify:SendNotify("removegame", client:Name() .. " (" .. client:SteamName() .. ")", m_target)
     end,
     ["returngame"] = function(client, target)
         if !IsValid(target) then return end
@@ -246,11 +250,13 @@ local actionList = {
         Arbitrage.players[steamid].place = place
 
         local target = player.GetBySteamID(steamid)
+        local m_target = IsValid(target) and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid
+
         if IsValid(target) then
             target:SetNetVar("arbLaw", place, target)
-
-            Arbitrage.adminnotify:SendNotify("setplace", client:Name() .. " (" .. client:SteamName() .. ")", place, target and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid)
         end
+
+        Arbitrage.adminnotify:SendNotify("setplace", client:Name() .. " (" .. client:SteamName() .. ")", place, m_target)
     end,
     ["setmodel"] = function(client, target, model)
         if !IsValid(target) then return end
@@ -326,6 +332,32 @@ local actionList = {
         else
             Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!")
         end
+    end,
+    ["addhost"] = function(client, steamid)
+        if IsHost(steamid) then return end
+
+        local data = GetNetVar("hostList", {})
+        data[steamid] = true
+
+        SetNetVar("hostList", data)
+
+        local target = player.GetBySteamID(steamid)
+        local m_target = IsValid(target) and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid
+
+        Arbitrage.adminnotify:SendNotify("addhost", client:Name() .. " (" .. client:SteamName() .. ")", m_target)
+    end,
+    ["removehost"] = function(client, steamid)
+        if !IsHost(steamid) then return end
+
+        local data = GetNetVar("hostList", {})
+        data[steamid] = nil
+
+        SetNetVar("hostList", data)
+
+        local target = player.GetBySteamID(steamid)
+        local m_target = IsValid(target) and (target:Name() .. " (" .. target:SteamName() .. ")") or steamid
+
+        Arbitrage.adminnotify:SendNotify("removehost", client:Name() .. " (" .. client:SteamName() .. ")", m_target)
     end
 }
 
@@ -456,7 +488,7 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
     local el = {{}, {}, data[1], data[2], data[3]}
 
     for k, v in pairs(Arbitrage.players) do
-        if !IsMonoKum(v.faction) then
+        if !IsHost(v.steamid) then
             el[1][#el[1] + 1] = {
                 k,
                 v.faction

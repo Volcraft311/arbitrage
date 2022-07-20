@@ -202,6 +202,32 @@ local function getActionList(clientinfo)
                 data = getCharacters(m_steamid)
             },
             {
+                name = "Изменить роль",
+                icon = "icon16/ruby_gear.png",
+                data = {
+                    {
+                        name = "Сделать участником",
+                        icon = "icon16/ruby_delete.png",
+                        data = function()
+                            runAction("removehost", m_steamid)
+                        end,
+                        check = function()
+                            return IsHost(m_steamid)
+                        end
+                    },
+                    {
+                        name = "Сделать ведущим",
+                        icon = "icon16/ruby_add.png",
+                        data = function()
+                            runAction("addhost", m_steamid)
+                        end,
+                        check = function()
+                            return !IsHost(m_steamid)
+                        end
+                    }
+                }
+            },
+            {
                 name = "Действия с игрой",
                 icon = "icon16/database_go.png",
                 data = {
@@ -288,10 +314,7 @@ local function getActionList(clientinfo)
             {
                 name = "Изменить место на суде",
                 icon = "icon16/group.png",
-                data = getPlaces(m_steamid),
-                check = function()
-                    return a_isvalid
-                end
+                data = getPlaces(m_steamid)
             },
             {
                 name = "Изменить инвентарь",
@@ -492,7 +515,7 @@ local function paintOption(panel, drawline)
         end
 
         if !_:IsEnabled() then
-            draw.RoundedBox(3, 2, 0, w - 2, h, Color(255, 0, 0))
+            draw.RoundedBox(3, 2, 0, w - 2, h, Color(255, 71, 71))
 
             color = Color(200, 200, 200)
         end

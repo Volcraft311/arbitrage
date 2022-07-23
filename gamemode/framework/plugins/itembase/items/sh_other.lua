@@ -17,7 +17,7 @@ do
     ITEM.name = "Ключи"
     ITEM.description = "Ключи от комнаты: \"%s\""
     ITEM.model = "models/gibs/metal_gib4.mdl"
-    ITEM.category = "Двери"
+    ITEM.category = "Уникальные"
     ITEM.icon = "danganronpa/inventory/items/key_dormatory.png"
 
     function ITEM:GetDescription()
@@ -96,7 +96,7 @@ do
     ITEM.name = "Ключ ко всем дверям"
     ITEM.description = "Ключи от всех дверей"
     ITEM.model = "models/gibs/metal_gib4.mdl"
-    ITEM.category = "Двери"
+    ITEM.category = "Уникальные"
 
     ItemBase:RegisterItem("keys_all", ITEM)
 end
@@ -107,7 +107,7 @@ do
     ITEM.name = "Фотография"
     ITEM.description = "Обычная фотография, на ней есть какое-то изображение"
     ITEM.model = "models/gibs/metal_gib4.mdl"
-    ITEM.category = "Фотографии"
+    ITEM.category = "Уникальные"
     ITEM.image = nil
 
     ITEM:AddAction("Посмотреть", {
@@ -125,4 +125,35 @@ do
     })
 
     ItemBase:RegisterItem("camera_image", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase()
+
+    ITEM.name = "Шокер"
+    ITEM.description = "Уникальный тазер Токо Фукавы, которым она приручила свою вторую личность «Геноцид Сё». В экстренных случаях он может быть использован для намеренной смены личности."
+    ITEM.model = "models/weapons/w_alyx_gun.mdl"
+    ITEM.category = "Уникальные"
+    ITEM.image = nil
+
+    ITEM:AddAction("Использовать", {
+        OnRun = function(item)
+            local client = item.player
+
+            local isGenocide = client:IsTokoGenocide()
+            local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
+
+            client:SetModel(model)
+            Arbitrage.commands.Notify(client, "Вы сменили личность на \"" .. (isGenocide and "Токо Фукава" or "Геноцид Сё") .. "\".")
+
+            return false
+        end,
+        OnCanRun = function(item)
+            local client = item.player
+
+            return client:IsToko()
+        end
+    })
+
+    ItemBase:RegisterItem("toko_shocker", ITEM)
 end

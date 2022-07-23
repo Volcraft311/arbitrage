@@ -514,6 +514,7 @@ function Arbitrage:StartGame()
 
             local inventory = client:GetInventory()
             if inventory then
+                -- Анэквипаем все предметы
                 local items = inventory:GetItems()
 
                 for k2, v2 in pairs(items) do
@@ -521,12 +522,27 @@ function Arbitrage:StartGame()
                         v2:UnEquip(client, v2)
                     end
                 end
-            end
 
-            local item = ItemBase.CreateItem("keys")
-            if item and inventory then
-                item:SetData("faction", client:Team())
-                item:Transfer(inventory:GetID())
+                -- выдаем всем персонажам ключи от своих дверей
+                do
+                    local item = ItemBase.CreateItem("keys")
+
+                    if item then
+                        item:SetData("faction", client:Team())
+                        item:Transfer(inventory:GetID())
+                    end
+                end
+
+                -- выдает токо шокер
+                do
+                    if client:IsToko() then
+                        local item = ItemBase.CreateItem("deagle")
+
+                        if item then
+                            item:Transfer(inventory:GetID())
+                        end
+                    end
+                end
             end
 
             client:StripAmmo()
@@ -754,4 +770,36 @@ netstream.Hook("arb.SelectCharacter", function(client, data)
             Arbitrage.statistics.Set(client, v.data, 100)
         end
     end
+end)
+
+local function ChangeTokoType(client, idx)
+    timer.Create(idx, math.random(600, 3600), 1, function()
+        if !IsValid(client) then return timer.Remove(idx) end
+        if !client:IsToko() then return timer.Remove(idx) end
+
+        local isGenocide = client:IsTokoGenocide()
+        local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
+        local text = isGenocide and "Токо Фукава" or "Геноцид Сё"
+
+        Arbitrage.commands.Notify(client, "Вы сменили личность на \"" .. text .. "\".")
+        Arbitrage.commands.RunCommand(client, "me", {"сменила личность на \"" .. text .. "\"."})
+        client:SetModel(model)
+
+        ChangeTokoType(client, idx)
+    end)
+end
+
+netstream.Hook("arb.TokoSneezing", function(client)
+    if !client:IsToko() then return end
+
+    local idx = "TokoTimer_" .. client:EntIndex()
+    if timer.Exists(idx) then
+        timer.Remove(idx)
+
+        return Arbitrage.commands.Notify(client, "Вы выключили автоматическую смену личности.")
+    end
+
+    ChangeTokoType(client, idx)
+
+    Arbitrage.commands.Notify(client, "Вы включили автоматическую смену личности.")
 end)

@@ -307,6 +307,12 @@ function Arbitrage:ArbitrageContextMenu(data)
 
         data:AddAction(k, func, mat)
     end
+
+    if LocalPlayer():IsToko() then
+        data:AddAction("Вкл/Откл случайные чихания", function(client)
+            netstream.Start("arb.TokoSneezing")
+        end)
+    end
 end
 
 local ActionPressIDList = {

@@ -542,6 +542,10 @@ do
             return fakeName
         end
 
+        if self:IsTokoGenocide() then
+        	return "Геноцид Сё"
+        end
+
         local faction = self:Team()
         local data = Arbitrage.teams.Get(faction)
 
@@ -569,6 +573,20 @@ do
         local faction = self:Team()
 
         return faction == TEAM_SPECTATE
+    end
+
+    Arbitrage.TokoGenocideModel = "models/player/dewobedil/danganronpa/toko_fukawa/genocide_p.mdl"
+    function playerMeta:IsTokoGenocide()
+    	local model = self:GetModel()
+
+    	return model == Arbitrage.TokoGenocideModel
+    end
+
+    Arbitrage.TokoModel = "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl"
+    function playerMeta:IsToko()
+    	local model = self:GetModel()
+
+    	return model == Arbitrage.TokoModel or self:IsTokoGenocide()
     end
 
     function playerMeta:IsPlaying()

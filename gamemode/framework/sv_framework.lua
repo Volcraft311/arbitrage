@@ -533,10 +533,10 @@ function Arbitrage:StartGame()
                     end
                 end
 
-                -- выдает токо шокер
+                -- выдаем Токо шокер
                 do
                     if client:IsToko() then
-                        local item = ItemBase.CreateItem("deagle")
+                        local item = ItemBase.CreateItem("toko_shocker")
 
                         if item then
                             item:Transfer(inventory:GetID())

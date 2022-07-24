@@ -270,10 +270,12 @@ local categoryData = {
             local inventory = LocalPlayer():GetInventory()
             local items = {}
 
-            for _, item in ipairs(inventory:GetItems()) do
-                local id = item:GetID()
+            if inventory then
+                for _, item in ipairs(inventory:GetItems()) do
+                    local id = item:GetID()
 
-                items[id] = true
+                    items[id] = true
+                end
             end
 
             for id in pairs(Arbitrage.gui.lawaction.items) do
@@ -296,7 +298,7 @@ local categoryData = {
                     createItemButton(showItemsPanel, id, icon, name, data)
                 end
 
-                if inventory:HasItem(id) then
+                if inventory and inventory:HasItem(id) then
                     createItemButton(yourItemsPanel, id, icon, name, data)
                 end
             end

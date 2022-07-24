@@ -829,22 +829,46 @@ netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
 end)
 
 netstream.Hook("arb.ShowEvidence", function(client, data, indx)
+    local name = client:Name()
     local d = Evidence.icons
     local icon = Material(d[data] and d[data] or d[1])
 
     local prestation = vgui.Create("arb.Prestation")
-    prestation:AddMaterial(icon)
+    prestation:AddMaterial(icon, name)
 
     local panel = Arbitrage.gui.lawaction
     if !IsValid(panel) then return end
 
     if !panel.evidences[indx] then
-        panel.evidences[indx] = client:Name()
+        panel.evidences[indx] = name
     end
 
     timer.Simple(1, function()
         if panel.select == 2 then
             for i = 1, 2 do -- upd
+                panel.panels[i].DoClick()
+            end
+        end
+    end)
+end)
+
+netstream.Hook("arb.ShowItem", function(client, data, indx)
+    local name = client:Name()
+    local icon = Material(data)
+
+    local prestation = vgui.Create("arb.Prestation")
+    prestation:AddMaterial(icon, name)
+
+    local panel = Arbitrage.gui.lawaction
+    if !IsValid(panel) then return end
+
+    if !panel.items[indx] then
+        panel.items[indx] = name
+    end
+
+    timer.Simple(1, function()
+        if panel.select == 3 then
+            for i = 2, 3 do -- upd
                 panel.panels[i].DoClick()
             end
         end

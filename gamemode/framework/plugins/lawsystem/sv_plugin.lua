@@ -262,3 +262,54 @@ netstream.Hook("arb.ShowEvidence", function(client, data)
         PLUGIN.ShowEvidenceCD = CurTime() + 10
     end
 end)
+
+netstream.Hook("arb.ShowItem", function(client, id)
+    if !Arbitrage.lawEnable then return end
+    if !client:InGame() then return end
+    if !client:Alive() then return end
+
+    if (!PLUGIN.ShowItemCD or CurTime() >= PLUGIN.ShowItemCD) then
+        local item = ItemBase.instances[id]
+        if !item then return end
+
+        local inventory = client:GetInventory()
+        if !inventory:HasItem(id) then return end
+
+        item:Sync()
+
+        local mat = item:GetIcon()
+        netstream.Start(nil, "arb.ShowItem", client, mat, id)
+
+        PLUGIN.ShowItemCD = CurTime() + 10
+    end
+end)
+
+netstream.Hook("arb.InspectItem", function(client, id)
+    if !Arbitrage.lawEnable then return end
+    if !client:InGame() then return end
+    if !client:Alive() then return end
+
+    local item = ItemBase.instances[id]
+    if !item then return end
+
+    local action = item.lawInspect
+    if !action then return end
+
+    item.player = client
+
+    local actionList = item:GetValidActions()
+    local actionInfo = actionList[action]
+    if actionInfo then
+        local actionRun = actionInfo.OnRun
+
+        if actionRun then
+            local data = actionRun(item)
+
+            if data != false then
+                item:Remove()
+            end
+        end
+    end
+
+    item.player = nil
+end)

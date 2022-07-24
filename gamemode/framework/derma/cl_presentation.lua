@@ -16,12 +16,21 @@ local PANEL = {}
 
 function PANEL:Init()
     self.t = {Arbitrage.ResolutionW(1000), Arbitrage.ResolutionH(200)}
+    self.alpha = 0
 
     timer.Simple(1, function()
         self.Think = nil
     end)
 
     timer.Simple(1.6, function()
+        self.Think = nil
+
+        self:SizeTo(self:GetWide(), self:GetTall() + H(50), 0.5, 0, -1, function()
+            self.Think = function()
+                self.alpha = Lerp(FrameTime(), self.alpha, 255)
+            end
+        end)
+
         local icon = self:Add("Panel")
         icon:SetAlpha(0)
         icon:AlphaTo(255, 1, 0)
@@ -40,10 +49,11 @@ function PANEL:Init()
             surface.DrawOutlinedRect(0, 0, w, h, 1)
         end
 
+        local tall = self:GetTall()
         icon.Think = function()
-            local t = self:GetTall() * 0.8
+            local t = tall * 0.8
 
-            icon:SetPos(self:GetWide() / 2 - t / 2, self:GetTall() / 2 - t / 2)
+            icon:SetPos(self:GetWide() / 2 - t / 2, tall / 2 - t / 2)
             icon:SetSize(t, t)
         end
 
@@ -51,6 +61,8 @@ function PANEL:Init()
             self.t = {0, 0}
 
             self.Think = function()
+                self.alpha = Lerp(FrameTime() * 20, self.alpha, 0)
+
                 local wide = Lerp(FrameTime() * 1, self:GetWide(), self.t[1])
                 local tall = Lerp(FrameTime() * 1, self:GetTall(), self.t[2])
 
@@ -73,8 +85,9 @@ function PANEL:Think()
     self:SetSize(wide, tall)
 end
 
-function PANEL:AddMaterial(data)
+function PANEL:AddMaterial(data, name)
     self.mat = data
+    self.name = name or ""
 end
 
 function PANEL:Paint(w, h)
@@ -84,6 +97,8 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 255, 255, 76)
     surface.DrawRect(0, 0, w, 2)
     surface.DrawRect(0, h - 2, w, 2)
+
+    draw.SimpleText("Предъявил: " .. self.name, "arb.Font_FuturaPTBook_10", w / 2, h - H(50), Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.Prestation", PANEL, "EditablePanel")

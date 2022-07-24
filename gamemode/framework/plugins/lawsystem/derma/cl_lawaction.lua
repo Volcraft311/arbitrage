@@ -259,7 +259,7 @@ local categoryData = {
     },
     {
     	name = "Предметы",
-    	icon = "icon16/image.png",
+    	icon = "icon16/book_addresses.png",
         data = function(client, panel)
 
     		local showItemsPanel = createCategory(panel, "Показанные предметы")

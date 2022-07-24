@@ -98,6 +98,14 @@ function INVENTORY:GetItems()
     return data
 end
 
+function INVENTORY:HasItem(id)
+    for k, v in ipairs(self:GetItems()) do
+        if v:GetID() == id then
+            return true
+        end
+    end
+end
+
 function INVENTORY:GetReceivers()
     local data = {}
 

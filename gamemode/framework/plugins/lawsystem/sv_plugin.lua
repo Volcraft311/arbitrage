@@ -208,7 +208,7 @@ function PLUGIN:PlayerInitialSpawn(client)
 
         timer.Simple(0.1, function()
             client:Freeze(true)
-            PLUGIN:DrawSprites(v, true)
+            PLUGIN:DrawSprites(client, true)
         end)
     end)
 end

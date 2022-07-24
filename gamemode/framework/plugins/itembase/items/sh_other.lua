@@ -108,6 +108,7 @@ do
     ITEM.description = "Обычная фотография, на ней есть какое-то изображение"
     ITEM.model = "models/gibs/metal_gib4.mdl"
     ITEM.category = "Уникальные"
+    ITEM.lawInspect = "Посмотреть"
     ITEM.image = nil
 
     ITEM:AddAction("Посмотреть", {

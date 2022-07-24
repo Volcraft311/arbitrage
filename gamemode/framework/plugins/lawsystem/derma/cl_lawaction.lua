@@ -249,11 +249,14 @@ local categoryData = {
                     description = description:utf8sub(1, 27) .. "..."
                 end
 
-                if Arbitrage.gui.lawaction.evidences[k] then
+                local l_evidence = Arbitrage.gui.lawaction.evidences[k]
+                if l_evidence then
                 	createEvidenceButton(showEvidencePanel, k, mat, description, data)
                 end
 
-                createEvidenceButton(yourEvidencePanel, k, mat, description, data)
+                if !l_evidence or l_evidence == LocalPlayer():Name() then
+                    createEvidenceButton(yourEvidencePanel, k, mat, description, data)
+                end
             end
         end
     },
@@ -261,24 +264,42 @@ local categoryData = {
     	name = "Предметы",
     	icon = "icon16/book_addresses.png",
         data = function(client, panel)
-
     		local showItemsPanel = createCategory(panel, "Показанные предметы")
     		local yourItemsPanel = createCategory(panel, "Ваши предметы")
 
-    		for k, v in ipairs(LocalPlayer():GetInventory():GetItems()) do
-    			local name = v:GetName()
-    			local icon = Material(v:GetIcon())
-    			local data = {
-    				name = name,
-    				description = v:GetDescription()
-    			}
+            local inventory = LocalPlayer():GetInventory()
+            local items = {}
 
-    			if Arbitrage.gui.lawaction.items[k] then
-    				createItemButton(showItemsPanel, v:GetID(), icon, name, data)
-    			end
+            for _, item in ipairs(inventory:GetItems()) do
+                local id = item:GetID()
 
-    			createItemButton(yourItemsPanel, v:GetID(), icon, name, data)
-        	end
+                items[id] = true
+            end
+
+            for id in pairs(Arbitrage.gui.lawaction.items) do
+                items[id] = true
+            end
+
+            for id in pairs(items) do
+                local item = ItemBase.instances[id]
+                if !item then continue end
+
+                local name = item:GetName()
+                local icon = Material(item:GetIcon())
+                local data = {
+                    name = name,
+                    description = item:GetDescription()
+                }
+
+                local l_item = Arbitrage.gui.lawaction.items[id]
+                if l_item then
+                    createItemButton(showItemsPanel, id, icon, name, data)
+                end
+
+                if inventory:HasItem(id) then
+                    createItemButton(yourItemsPanel, id, icon, name, data)
+                end
+            end
         end
     }
 }

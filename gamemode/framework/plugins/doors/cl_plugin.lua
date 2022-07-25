@@ -13,6 +13,42 @@
 
 local PLUGIN = PLUGIN
 
+local function paintMenu(panel)
+    panel.Paint = function(_, w, h)
+        draw.RoundedBox(3, 0, 0, w, h, Color(200, 200, 200))
+        draw.RoundedBox(3, 2, 0, w - 2, h, Color(230, 230, 230))
+    end
+end
+
+local function paintOption(panel, drawline)
+    panel:SetTextColor(Color(100, 100, 100))
+
+    panel.alpha = 0
+    panel.Paint = function(_, w, h)
+        local color = Color(100, 100, 100)
+
+        if _:IsHovered() and _:IsEnabled() then
+            draw.RoundedBox(3, 2, 0, w - 2, h, Color(255, 61, 96))
+
+            color = Color(200, 200, 200)
+        end
+
+        if !_:IsEnabled() then
+            draw.RoundedBox(3, 2, 0, w - 2, h, Color(255, 71, 71))
+
+            color = Color(200, 200, 200)
+        end
+
+        panel:SetTextColor(color)
+
+        if drawline then
+            surface.SetDrawColor(0, 0, 0, 100)
+            surface.DrawRect(2, h - 1, w, 1)
+        end
+    end
+end
+
+
 local function CreatePanels(data, parent)
 	for k, v in ipairs(data or {}) do
 		local panel, subMenu = nil, nil
@@ -21,10 +57,12 @@ local function CreatePanels(data, parent)
 			panel = parent:AddOption(v.name, v.data)
 		else
 			subMenu, panel = parent:AddSubMenu(v.name)
+			paintMenu(subMenu)
 
 			CreatePanels(v.data, subMenu)
 		end
 
+		paintOption(panel)
 		panel:SetImage(v.icon)
 
 		for k2, v2 in ipairs(panel:GetChildren()) do
@@ -55,17 +93,47 @@ local function gRequestAddDoorFaction()
 	return data
 end
 
-local function gRequestSetIcon()
+local function formatedImages(data)
+	local info = {}
+
+	for k, v in ipairs(data) do
+		info[v] = true
+	end
+
+	return info
+end
+
+local function gAddIcon(entity)
 	local data = {}
+	local useImages = formatedImages(entity:GetNetVar("arb.image", {}))
 
 	for k, v in pairs(Arbitrage.teams.data) do
+		if v.pixel and !useImages[k] then
+			data[#data + 1] = {
+				name = v.name,
+				icon = v.pixel,
+				data = function()
+					netstream.Start("arb.DoorAddIcon", entity, k)
+				end
+			}
+		end
+	end
+
+	return data
+end
+
+local function gRemoveIcon(entity)
+	local data = {}
+
+	for k, v in ipairs(entity:GetNetVar("arb.image", {})) do
+		local faction = Arbitrage.teams.Get(v)
+		if !faction then continue end
+
 		data[#data + 1] = {
-			name = v.name,
-			icon = v.pixel,
+			name = faction.name,
+			icon = faction.pixel,
 			data = function()
-				Derma_Query("Вы точно хотите изменить иконку двери?",  "[DoorSaver] Изменение иконки", "Да", function()
-					netstream.Start("arb.DoorSetIcon", k)
-				end, "Нет")
+				netstream.Start("arb.DoorRemoveIcon", entity, k)
 			end
 		}
 	end
@@ -79,16 +147,15 @@ local function gRequestAddDoorPlayer()
 	for k, v in ipairs(player.GetAll()) do
 		local id = v:Team()
 
-		local info = v:SteamID() or "NULL"
 		local faction = Arbitrage.teams.Get(id)
-		local icon = "icon16/user_add.png"
+		local icon = nil
 
 		if faction and faction.pixel then
 			icon = faction.pixel
 		end
 
 		data[#data + 1] = {
-			name = faction.name .. " (" .. info .. ")",
+			name = v:FullName(true),
 			icon = icon,
 			data = function()
 				Derma_Query("Вы точно хотите дать этому персонажу доступ к данной двери?",  "[DoorSaver] Добавление доступа", "Да", function()
@@ -123,6 +190,75 @@ local function gRequestRemoveDoorPlayer(doorData)
 	return data
 end
 
+local function getActionList(entity, doorData)
+	return {
+		{
+			name = "Действия с дверью",
+			icon = "icon16/report_disk.png",
+			data = {
+				{
+					name = (entity:GetNWBool("disableHack") and "Разрешить" or "Запретить") .. " взламывать",
+					icon = "icon16/attach.png",
+					data = function()
+						netstream.Start("arb.DoorSetHack")
+					end
+				}
+			}
+		},
+		{
+			name = "Добавить доступ к двери",
+			icon = "icon16/pencil_add.png",
+			data = {
+				{
+					name = "Поиск по игрокам",
+					icon = "icon16/user_go.png",
+					data = gRequestAddDoorPlayer()
+				},
+				{
+					name = "Поиск по всем фракциям",
+					icon = "icon16/transmit_go.png",
+					data = gRequestAddDoorFaction()
+				}
+			}
+		},
+		{
+			name = "Убрать доступ из двери",
+			icon = "icon16/pencil_delete.png",
+			data = gRequestRemoveDoorPlayer(doorData)
+		},
+		{
+			name = "Добавить иконку к двери",
+			icon = "icon16/camera_add.png",
+			data = gAddIcon(entity)
+		},
+		{
+			name = "Удалить иконку у двери",
+			icon = "icon16/camera_delete.png",
+			data = gRemoveIcon(entity)
+		}
+	}
+end
+
+local function openDoorMenu(entity)
+	local doorData
+	for k, v in pairs(PLUGIN.DoorsData) do
+		if v.idx == entity:EntIndex() then
+			doorData = PLUGIN.DoorsData[k]
+		end
+	end
+
+	local actionList = getActionList(entity, doorData)
+
+	local parentMenu = DermaMenu()
+	paintMenu(parentMenu)
+	CreatePanels(actionList, parentMenu)
+
+	parentMenu:Open(ScrW() / 2, ScrH() / 2)
+
+	parentMenu:SetAlpha(0)
+	parentMenu:AlphaTo(255, 0.3)
+end
+
 function PLUGIN:Think()
 	local client = LocalPlayer()
 
@@ -131,67 +267,12 @@ function PLUGIN:Think()
 		local entity = trace.Entity
 
 		if !IsValid(entity) then return end
-		if !entity:IsDoor() then return end
-		if EyePos():Distance(entity:GetPos()) >= 300 then return end
 
-		local doorData
-		for k, v in pairs(self.DoorsData) do
-			if v.idx == entity:EntIndex() then
-				doorData = self.DoorsData[k]
-			end
+		if entity:IsDoor() then
+			openDoorMenu(entity)
+		elseif entity:IsPlayer() then
+			MonoMenu:OpenEntityMenu(entity, ScrW() / 2, ScrH() / 2)
 		end
-
-		local RequestAddDoorPlayer = gRequestAddDoorPlayer()
-		local RequestAddDoorFaction = gRequestAddDoorFaction()
-		local RequestRemoveDoorPlayer = gRequestRemoveDoorPlayer(doorData)
-		local RequestSetIcon = gRequestSetIcon()
-
-		local ActionData = {
-			{
-				name = "Действия с дверью:",
-				icon = "icon16/report_disk.png",
-				data = {
-					{
-						name = (entity:GetNWBool("disableHack") and "Разрешить" or "Запретить") .. " взламывать",
-						icon = "icon16/attach.png",
-						data = function()
-							netstream.Start("arb.DoorSetHack")
-						end
-					}
-				}
-			},
-			{
-				name = "Добавить доступ к двери:",
-				icon = "icon16/pencil_add.png",
-				data = {
-					{
-						name = "Поиск по игрокам:",
-						icon = "icon16/user_go.png",
-						data = RequestAddDoorPlayer
-					},
-					{
-						name = "Поиск по всем фракциям:",
-						icon = "icon16/transmit_go.png",
-						data = RequestAddDoorFaction
-					}
-				}
-			},
-			{
-				name = "Убрать доступ из двери:",
-				icon = "icon16/pencil_delete.png",
-				data = RequestRemoveDoorPlayer
-			},
-			{
-				name = "Изменить иконку двери:",
-				icon = "icon16/camera_go.png",
-				data = RequestSetIcon
-			}
-		}
-
-		local parentMenu = DermaMenu()
-		CreatePanels(ActionData, parentMenu)
-
-		parentMenu:Open(ScrW() / 2, ScrH() / 2)
 	end
 end
 
@@ -306,7 +387,25 @@ function PLUGIN:DrawGradient(gradientType, x, y, width, height, color)
 	surface.DrawTexturedRect(x, y, width, height)
 end
 
-function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, font, nameColor, textColor)
+local sSize = 400
+function PLUGIN:DrawImage(alpha, data)
+	local size = sSize / math.max(#data / 2, 1)
+	local margin = (sSize - size) / 2
+
+	for k, v in ipairs(data) do
+		local index = k - 1
+		local padding = ((#data - 1) * size) / 2
+
+		surface.SetDrawColor(15, 6, 7, alpha)
+		surface.DrawRect(index * size - padding + margin, margin, size, size)
+
+		surface.SetDrawColor(255, 255, 255, alpha)
+		surface.SetMaterial(v)
+		surface.DrawTexturedRect(index * size - padding + margin, margin, size, size)
+	end
+end
+
+function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, data)
 	local entityColor = entity:GetColor()
 	if entityColor.a <= 0 or entity:IsEffectActive(EF_NODRAW) then return end
 
@@ -314,58 +413,39 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, font, nameColor, textCol
 	if doorData.hitWorld then return end
 
 	local alpha = self:CalculateAlphaFromDistance(1000, eyePos, entity:GetPos())
-	if (alpha <= 0) then return end
+	if alpha <= 0 then return end
 
-	local faction = Arbitrage.teams.Get(entity:GetNetVar("arb.team", -1))
-	if !faction then return end
+	cam.Start3D2D(doorData.position + doorData.angles:Right() * -30 + doorData.angles:Forward() * -10, doorData.angles, 0.05)
+		self:DrawImage(alpha, data)
+	cam.End3D2D()
 
-	local name = "Железная дверь"
-	local text = "Данная дверь принадлежит: " .. faction.name
-
-	if name or text then
-		surface.SetFont(font)
-
-		local nameWidth, _ = surface.GetTextSize(name)
-		local textWidth, _ = surface.GetTextSize(text)
-		local longWidth = nameWidth
-
-		if textWidth > longWidth then longWidth = textWidth end
-
-		if faction and faction.pixel then
-			local logo = Material(faction.pixel)
-
-			cam.Start3D2D(doorData.position + doorData.angles:Right() * -30 + doorData.angles:Forward() * -10, doorData.angles, 0.05)
-				surface.SetDrawColor(15, 6, 7, alpha)
-				surface.DrawRect(0, 0, 400, 400)
-
-				surface.SetDrawColor(255, 255, 255, alpha)
-				surface.SetMaterial(logo)
-				surface.DrawTexturedRect(0, 0, 400, 400)
-			cam.End3D2D()
-
-			cam.Start3D2D(doorData.positionBack + doorData.anglesBack:Right() * -30 + doorData.anglesBack:Forward() * -10, doorData.anglesBack, 0.05)
-				surface.SetDrawColor(15, 6, 7, alpha)
-				surface.DrawRect(0, 0, 400, 400)
-
-				surface.SetDrawColor(255, 255, 255, alpha)
-				surface.SetMaterial(logo)
-				surface.DrawTexturedRect(0, 0, 400, 400)
-			cam.End3D2D()
-		end
-	end
+	cam.Start3D2D(doorData.positionBack + doorData.anglesBack:Right() * -30 + doorData.anglesBack:Forward() * -10, doorData.anglesBack, 0.05)
+		self:DrawImage(alpha, data)
+	cam.End3D2D()
 end
 
 local doors = {}
 timer.Create("Doors:UpdateDraw", 1, 0, function()
+	doors = {}
+
 	local eyePos = EyePos()
-	doors = ents.FindInSphere(eyePos, 1000)
 
-	for k, v in ipairs(doors) do
-		local faction = Arbitrage.teams.Get(v:GetNetVar("arb.team", -1))
+	for k, v in ipairs(ents.FindInSphere(eyePos, 1000)) do
+		if !v:IsDoor() then continue end
 
-		if !v:IsDoor() or !faction then
-			doors[k] = nil
+		local data = v:GetNetVar("arb.image", {})
+		if #data <= 0 then continue end
+
+		local info = {}
+		for k2, v2 in ipairs(data) do
+			local faction = Arbitrage.teams.Get(v2)
+			if !faction then continue end
+			if !faction.pixel then continue end
+
+			info[#info + 1] = Material(faction.pixel)
 		end
+
+		doors[#doors + 1] = {v, info}
 	end
 end)
 
@@ -375,9 +455,12 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	local eyePos, eyeAngle = EyePos(), EyeAngles()
 
 	cam.Start3D(eyePos, eyeAngle)
-		for k, v in pairs(doors or {}) do
-			if IsValid(v) then
-				self:DrawDoorText(v, eyePos, eyeAngles, "arb.Font_FuturaPTBook_20", Color(255, 61, 96), Color(255, 220, 228))
+		for k, v in ipairs(doors or {}) do
+			local entity = v[1]
+			local data = v[2]
+
+			if IsValid(entity) then
+				self:DrawDoorText(entity, eyePos, eyeAngles, data)
 			end
 		end
 	cam.End3D()

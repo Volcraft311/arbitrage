@@ -90,7 +90,10 @@ function PLUGIN:InitPlayersDoor()
 			db[id].list[faction] = true
 			db[id].idx = entity:EntIndex()
 
-			entity:SetNetVar("arb.team", v:Team())
+			local data = entity:GetNetVar("arb.image", {})
+			table.insert(data, v:Team())
+
+			entity:SetNetVar("arb.image", data)
 
 			entity:Fire("close")
 			entity:Fire("lock")
@@ -172,20 +175,37 @@ netstream.Hook("arb.DoorGetData", function(client)
 	PLUGIN:SendDoorData(client, PLUGIN.DoorsData)
 end)
 
-netstream.Hook("arb.DoorSetIcon", function(client, faction)
+netstream.Hook("arb.DoorAddIcon", function(client, entity, id)
 	if !client:IsAdmin() then return end
+	if !id then return end
+
+	local faction = Arbitrage.teams.Get(id)
 	if !faction then return end
+	if !faction.pixel then return end
 
-	local trace = client:GetEyeTraceNoCursor()
-
-	local entity = trace.Entity
 	if !IsValid(entity) then return end
-
 	if !entity:IsDoor() then return end
 
-	entity:SetNetVar("arb.team", faction > 0 and faction or nil)
+	local data = entity:GetNetVar("arb.image", {})
+	table.insert(data, id)
 
-	Arbitrage.commands.Notify(client, "Вы успешно изменили иконку двери!")
+	entity:SetNetVar("arb.image", data)
+
+	Arbitrage.commands.Notify(client, "Вы успешно добавили новую иконку к двери!")
+end)
+
+netstream.Hook("arb.DoorRemoveIcon", function(client, entity, indx)
+	if !client:IsAdmin() then return end
+
+	if !IsValid(entity) then return end
+	if !entity:IsDoor() then return end
+
+	local data = entity:GetNetVar("arb.image", {})
+	table.remove(data, indx)
+
+	entity:SetNetVar("arb.image", data)
+
+	Arbitrage.commands.Notify(client, "Вы успешно удалили иконку у двери!")
 end)
 
 netstream.Hook("arb.DoorSetHack", function(client)

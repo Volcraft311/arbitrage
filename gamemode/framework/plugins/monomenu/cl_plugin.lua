@@ -569,7 +569,7 @@ local function CreateMenu(info, parent, drawline)
     end
 end
 
-function PLUGIN:OpenEntityMenu(entity)
+function PLUGIN:OpenEntityMenu(entity, w, h)
     local actionList = getActionList(entity)
 
     local Menu = DermaMenu()
@@ -581,7 +581,7 @@ function PLUGIN:OpenEntityMenu(entity)
         end
     end
 
-    Menu:Open()
+    Menu:Open(w, h)
 
     Menu:SetAlpha(0)
     Menu:AlphaTo(255, 0.3)

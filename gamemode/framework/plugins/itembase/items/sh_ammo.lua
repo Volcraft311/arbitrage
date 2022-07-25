@@ -15,12 +15,12 @@
 do
     local ITEM = ItemBase.GetBase("base_ammo")
 
-    ITEM.name = "Пули для 9мм Пистолета"
-    ITEM.description = "Контейнер, заполненный пулями и 9мм напечатаны на стороне."
+    ITEM.name = "Патроны 9mm Para"
+    ITEM.description = "Коробка с 15-ью патронами 9mm Para."
     ITEM.model = "models/items/boxsrounds.mdl"
 
     ITEM.ammoClass = "pistol"
-    ITEM.ammoAmount = 20
+    ITEM.ammoAmount = 15
 
     ItemBase:RegisterItem("ammo_pistol", ITEM)
 end
@@ -28,12 +28,12 @@ end
 do
     local ITEM = ItemBase.GetBase("base_ammo")
 
-    ITEM.name = "Пули для Магнума .357"
-    ITEM.description = "Маленькая коробочка с пулями для магнума на боку."
+    ITEM.name = "Патроны .357 Magnum"
+    ITEM.description = "Коробка с патронами для магнума."
     ITEM.model = "models/items/357ammo.mdl"
 
     ITEM.ammoClass = "357"
-    ITEM.ammoAmount = 21
+    ITEM.ammoAmount = 6
 
     ItemBase:RegisterItem("ammo_357", ITEM)
 end
@@ -41,12 +41,12 @@ end
 do
     local ITEM = ItemBase.GetBase("base_ammo")
 
-    ITEM.name = "Пули для ПП"
-    ITEM.description = "Тяжелый контейнер, наполненный множеством пуль."
+    ITEM.name = "Патроны для ПП"
+    ITEM.description = "Пехотный контейнер с аммуницией, наполненный мелкокалиберными патронами."
     ITEM.model = "models/items/boxmrounds.mdl"
 
     ITEM.ammoClass = "smg1"
-    ITEM.ammoAmount = 30
+    ITEM.ammoAmount = 40
 
     ItemBase:RegisterItem("ammo_smg1", ITEM)
 end
@@ -54,12 +54,12 @@ end
 do
     local ITEM = ItemBase.GetBase("base_ammo")
 
-    ITEM.name = "Картечь"
-    ITEM.description = "Красная коробка с картечью."
+    ITEM.name = "Картечь 12x7mm"
+    ITEM.description = "Коробка с патронами 12-го калибра."
     ITEM.model = "models/items/boxbuckshot.mdl"
 
     ITEM.ammoClass = "buckshot"
-    ITEM.ammoAmount = 16
+    ITEM.ammoAmount = 7
 
     ItemBase:RegisterItem("ammo_buckshot", ITEM)
 end
@@ -67,12 +67,12 @@ end
 do
     local ITEM = ItemBase.GetBase("base_ammo")
 
-    ITEM.name = "Импульсно-винтовочная энергия"
-    ITEM.description = "Картридж с голубым свечением."
+    ITEM.name = "Магазин с инопланетной системой заражания"
+    ITEM.description = "Хранит в себе картриджи, выстреливающие тёмной энергией."
     ITEM.model = "models/items/combine_rifle_cartridge01.mdl"
 
     ITEM.ammoClass = "ar2"
-    ITEM.ammoAmount = 30
+    ITEM.ammoAmount = 40
 
     ItemBase:RegisterItem("ammo_ar2", ITEM)
 end

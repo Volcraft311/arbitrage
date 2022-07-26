@@ -90,7 +90,7 @@ function PLUGIN:InitPlayersDoor()
 			db[id].list[faction] = true
 			db[id].idx = entity:EntIndex()
 
-			local data = entity:GetNetVar("arb.image", {})
+			local data = {}
 			table.insert(data, v:Team())
 
 			entity:SetNetVar("arb.image", data)

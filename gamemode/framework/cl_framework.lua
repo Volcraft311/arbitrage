@@ -189,18 +189,36 @@ end
 do
     local rpc = asterionlib.rpc
 
-    rpc:Set("details", "IP: asterionacademy.ddns.net")
-    rpc:Set("smallImageKey", "small1")
-    rpc:Set("smallImageText", "discord.gg/Np5evb5ZsR")
-    rpc:Set("largeImageKey", "big1")
-    rpc:Set("largeImageText", "discord.gg/WCT65T4uzR")
+    rpc:Set("smallImageKey", "small")
+    rpc:Set("largeImageKey", "big")
+
+    rpc:Set("buttonText", "Присоединиться")
+    rpc:Set("buttonURL", "https://asterion.wiki")
 
     hook.Add("asterionlib.rpc:AppID", "asterionlib.rpc", function()
         return "948976762136719380"
     end)
 
     hook.Add("asterionlib.rpc:Update", "asterionlib.rpc", function()
-        rpc:Set("state", "Map: " .. game.GetMap() .. " (" .. #player.GetAll() .. "/" .. game.MaxPlayers() .. ")")
+    	local client = LocalPlayer()
+    	local upperText = string.format("%s [%s]", Arbitrage.GetChapter(), Arbitrage.IsDay() and "День" or "Ночь")
+    	local lowerText = string.format("%s (%s/%s)", game.GetMap(), #player.GetAll(), game.MaxPlayers())
+
+    	rpc:Set("details", upperText)
+        rpc:Set("state", lowerText)
+
+        local faction = Arbitrage.teams.Get(client:Team())
+        if faction then
+        	local username = client:Name()
+        	local steamname = client:SteamName()
+        	local factionname = faction.name
+
+        	local lImageText = "Играет за персонажа: " .. (username == steamname and (factionname and factionname or "Не выбран") or username)
+        	rpc:Set("largeImageText", lImageText)
+
+        	local lImageKey = faction.uniqueID or "big"
+        	rpc:Set("largeImageKey", lImageKey)
+        end
     end)
 end
 

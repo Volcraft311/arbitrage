@@ -494,38 +494,60 @@ local function getActionList(clientinfo)
     }
 end
 
+local cornerRadius = 5
 local function paintMenu(panel)
     panel.Paint = function(_, w, h)
-        draw.RoundedBox(3, 0, 0, w, h, Color(200, 200, 200))
-        draw.RoundedBox(3, 2, 0, w - 2, h, Color(230, 230, 230))
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
     end
 end
 
 local function paintOption(panel, drawline)
-    panel:SetTextColor(Color(100, 100, 100))
-
-    panel.alpha = 0
+    panel:SetFont("arb.Font_FuturaPTBook_6")
     panel.Paint = function(_, w, h)
-        local color = Color(100, 100, 100)
+        local alpha = 130
 
         if _:IsHovered() and _:IsEnabled() then
-            draw.RoundedBox(3, 2, 0, w - 2, h, Color(255, 61, 96))
+            surface.SetDrawColor(27, 10, 13, 200)
+            surface.DrawRect(2, 2, w - 4, h - 4)
 
-            color = Color(200, 200, 200)
+            alpha = 255
         end
 
         if !_:IsEnabled() then
-            draw.RoundedBox(3, 2, 0, w - 2, h, Color(255, 71, 71))
+            surface.SetDrawColor(255, 0, 0, 20)
+            surface.DrawRect(2, 0, w - 4, h)
 
-            color = Color(200, 200, 200)
+            alpha = 255
         end
 
-        panel:SetTextColor(color)
+        panel:SetTextColor(Color(240, 240, 240, alpha))
 
         if drawline then
-            surface.SetDrawColor(0, 0, 0, 100)
-            surface.DrawRect(2, h - 1, w, 1)
+            surface.SetDrawColor(255, 255, 255, 50)
+            surface.DrawRect(w * 0.1, h - 2, w - w * 0.2, 2)
         end
+    end
+end
+
+local barMargin = 23
+local function paintBar(panel)
+    local children = panel:GetChildren()
+    local bar = children[2]
+    if !IsValid(bar) then return end
+
+    bar:SetWide(30)
+    bar:DockMargin(0, 0, 0, 0)
+
+    bar.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 255, 255, 3)
+        surface.DrawRect(barMargin, 30, w - barMargin - 4, h - 60)
+    end
+    bar.btnUp.Paint = function(_, w, h) end
+    bar.btnDown.Paint = function(_, w, h) end
+    bar.btnGrip.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 255, 255)
+        surface.DrawRect(barMargin, 0, w - barMargin - 4, h)
     end
 end
 
@@ -551,6 +573,8 @@ local function CreateMenu(info, parent, drawline)
         for k, v in ipairs(info.data) do
             CreateMenu(v, subMenu)
         end
+
+        paintBar(subMenu)
     end
 
     paintOption(panel, drawline)
@@ -577,7 +601,7 @@ function PLUGIN:OpenEntityMenu(entity, w, h)
 
     for k, v in ipairs(actionList) do
         for k2, v2 in ipairs(v) do
-            CreateMenu(v2, Menu, k2 == #v)
+            CreateMenu(v2, Menu, k2 == #v and #actionList != k)
         end
     end
 

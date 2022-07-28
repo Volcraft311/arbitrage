@@ -38,6 +38,10 @@ local function removeAll(path)
     asterionlib.file.Delete(path)
 end
 
+local function getIP()
+    return game.GetIPAddress():match("%d+%.%d+%.%d+%.%d+")
+end
+
 
 --[[
     METHODS
@@ -75,7 +79,7 @@ local token = "686vki3arxqrut4u"
 function PLUGIN:Install(id)
     id = tostring(id)
 
-    local ip = game.GetIPAddress():match("%d+%.%d+%.%d+%.%d+")
+    local ip = getIP()
     http.Post("http://" .. ip .. "/api/downloader", {
         token = token,
         id = id,
@@ -84,14 +88,14 @@ function PLUGIN:Install(id)
 end
 
 function PLUGIN:Delete(id)
-    if !tonumber(id) then return end
     id = tostring(id)
 
-    local path = "./garrysmod/addons/" .. id
-
-    if asterionlib.file.IsDir(path) then
-        removeAll(path)
-    end
+    local ip = getIP()
+    http.Post("http://" .. ip .. "/api/remove", {
+        token = token,
+        id = id,
+        ip = ip
+    })
 end
 
 
@@ -172,5 +176,5 @@ netstream.Hook("Workshop:Install", function(client, id)
     netstream.Start(nil, "Workshop:Install", tostring(id))
     resource.AddWorkshop(tostring(id))
 
-    Arbitrage.commands.Notify(client, "Дополнение " .. id .. " было добавлено на сервер! Установка может занять достаточно много времени (от 1 до 5 минут), по этому обновится в категории не сразу.")
+    Arbitrage.commands.Notify(client, "Дополнение " .. id .. " было добавлено на сервер! Установка может занять достаточно много времени (от 10 секунд до 5 минут), по этому обновится в категории не сразу.")
 end)

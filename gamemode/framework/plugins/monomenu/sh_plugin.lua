@@ -181,6 +181,15 @@ PLUGIN.GameData = {
         end
     },
     {
+        data = "Открыть список дополнений",
+        icon = "icon16/database_gear.png",
+        onRun = function(client)
+            if CLIENT then return end
+
+            WORKSHOP:OpenMenu(client)
+        end
+    },
+    {
         data = "Изменить цветокоррекцию",
         icon = "icon16/color_wheel.png",
         onRun = function(client)

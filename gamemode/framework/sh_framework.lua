@@ -148,7 +148,8 @@ do
 
         -- OTHER
         workshop:Add("246756300") -- Stream Radio
-        workshop:Add("415143062") -- TFA Base [ Reduxed ]
+        -- (DELETED) workshop:Add("415143062") -- TFA Base [ Reduxed ]
+        workshop:Add("2840031720") -- TFA Base
         workshop:Add("2463165156") -- [OPTIMIZED] vFire - Dynamic Fire
         workshop:Add("108024198") -- Food and Household items
         workshop:Add("131759821") -- VJ Base

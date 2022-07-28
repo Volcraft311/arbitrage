@@ -29,6 +29,8 @@ function PLUGIN:OneSecond()
         else
             local entity = self.deathPlaques[k]
             if !IsValid(entity) then
+            	if !Arbitrage.placesList[place] then continue end
+
                 entity = ents.Create("arb_dead")
                 entity:SetPos(Arbitrage.placesList[place][1] - lifting)
                 entity:SetAngles(Arbitrage.placesList[place][2])

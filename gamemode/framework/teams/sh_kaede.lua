@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Пианистка"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/kaede_akamatsu/default_p.mdl"
 TEAM.path = "danganronpa/characters/kaede"
+TEAM.uniqueID = "kaede"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 1

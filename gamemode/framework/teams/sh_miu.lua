@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Изобретатель"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/miu_iruma/default_p.mdl"
 TEAM.path = "danganronpa/characters/miu"
+TEAM.uniqueID = "miu"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

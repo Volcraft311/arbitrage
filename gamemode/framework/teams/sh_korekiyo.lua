@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Антрополог"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/korekiyo_shinguji/default_p.mdl"
 TEAM.path = "danganronpa/characters/korekiyo"
+TEAM.uniqueID = "korekiyo"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

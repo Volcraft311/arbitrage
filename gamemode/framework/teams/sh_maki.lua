@@ -17,6 +17,7 @@ TEAM.description = "Абсолютная Воспитательница"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/maki_harukawa/default_p.mdl"
 TEAM.path = "danganronpa/characters/maki"
+TEAM.uniqueID = "maki"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

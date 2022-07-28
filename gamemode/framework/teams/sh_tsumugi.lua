@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Косплеер"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl"
 TEAM.path = "danganronpa/characters/tsumugi"
+TEAM.uniqueID = "tsumugi"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

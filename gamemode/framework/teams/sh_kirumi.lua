@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Горничная"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/kirumi_tojo/default_p.mdl"
 TEAM.path = "danganronpa/characters/kirumi"
+TEAM.uniqueID = "kirumi"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.5

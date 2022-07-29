@@ -571,6 +571,7 @@ function Arbitrage:StartGame()
 
                 client:Freeze(false)
                 client:GodDisable()
+                client:SetEyeAngles(Angle(0, 0, 0))
             end)
         end
     end

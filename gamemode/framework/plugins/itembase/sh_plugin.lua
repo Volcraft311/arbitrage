@@ -192,6 +192,19 @@ function ItemBase.CreationRemoveItem(uniqueID)
     end
 end
 
+function ItemBase.CreationProtectItem(uniqueID, protect)
+    uniqueID = tostring(uniqueID)
+
+    local ITEM = ItemBase.list[uniqueID]
+    if !ITEM then return end
+
+    ITEM.isprotect = protect
+
+    if SERVER then
+        netstream.Start(nil, "ItemBase:CreationProtectItem", uniqueID, protect)
+    end
+end
+
 Arbitrage.base.Include("cl_infomenu.lua")
 Arbitrage.base.Include("cl_actionmenu.lua")
 Arbitrage.base.Include("cl_plugin.lua")

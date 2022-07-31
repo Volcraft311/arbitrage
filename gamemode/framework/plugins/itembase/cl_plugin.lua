@@ -115,6 +115,10 @@ netstream.Hook("ItemBase:CreationRemoveItem", function(uniqueID)
 	ItemBase.CreationRemoveItem(uniqueID)
 end)
 
+netstream.Hook("ItemBase:CreationProtectItem", function(uniqueID, protect)
+	ItemBase.CreationProtectItem(uniqueID, protect)
+end)
+
 netstream.Hook("ItemBase:CreationSync", function(baseID, stored)
 	for uniqueID, info in pairs(stored) do
 		ItemBase.CreationRegisterItem(baseID, uniqueID, info)

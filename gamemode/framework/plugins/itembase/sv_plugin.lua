@@ -255,14 +255,14 @@ netstream.Hook("ItemBase:CreationProtectItem", function(client, baseID, uniqueID
         return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
     end
 
-    if !info.isprotect then
-        info.isprotect = true
-    else
+    if info.isprotect == nil then
         info.isprotect = false
     end
 
+    info.isprotect = !info.isprotect
+
     asterionlib.data:Set("itemslist", itemslist)
-    ItemBase.CreationEditItem(uniqueID, info)
+    ItemBase.CreationProtectItem(uniqueID, info.isprotect)
 
     Arbitrage.commands.Notify(client, "На предмет " .. uniqueID .. " была " .. (info.isprotect and "установлена" or "снята") .. " защита!")
     Arbitrage.adminnotify:SendNotify("protectitem", client:Name() .. " (" .. client:SteamName() .. ")", uniqueID)

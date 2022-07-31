@@ -145,3 +145,19 @@ end)
 PLUGIN:AddNewNotify("removehost", function(client, target)
     return Color(63, 162, 184), client, Color(255, 255, 255), " убрал из ведущих игрока ", Color(48, 218, 187), target
 end)
+
+PLUGIN:AddNewNotify("registeritem", function(client, uniqueID)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " создал предмет с ID ", Color(48, 218, 187), uniqueID
+end)
+
+PLUGIN:AddNewNotify("edititem", function(client, uniqueID)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " изменил предмет с ID ", Color(48, 218, 187), uniqueID
+end)
+
+PLUGIN:AddNewNotify("removeitem", function(client, uniqueID)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " удалил предмет с ID ", Color(48, 218, 187), uniqueID
+end)
+
+PLUGIN:AddNewNotify("protectitem", function(client, uniqueID)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " снял/установил защиту на предмет с ID ", Color(48, 218, 187), uniqueID
+end)

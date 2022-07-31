@@ -190,6 +190,15 @@ PLUGIN.GameData = {
         end
     },
     {
+        data = "Открыть список предметов",
+        icon = "icon16/table_edit.png",
+        onRun = function(client)
+            if SERVER then return end
+
+            vgui.Create("ItemBase:CreationMenu")
+        end
+    },
+    {
         data = "Изменить цветокоррекцию",
         icon = "icon16/color_wheel.png",
         onRun = function(client)

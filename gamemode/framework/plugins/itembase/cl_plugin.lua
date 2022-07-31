@@ -82,23 +82,41 @@ netstream.Hook("ItemBase:SetData", function(id, key, value)
 end)
 
 netstream.Hook("ItemBase:OpenActions", function(uniqueID, data, entity)
-    local sendOptions = {}
-    for _, name in SortedPairsByValue(data) do
-        local action = ItemBase.list[uniqueID].functions[name]
-        if !action then continue end
+	local sendOptions = {}
+	for _, name in SortedPairsByValue(data) do
+	    local action = ItemBase.list[uniqueID].functions[name]
+	    if !action then continue end
 
-        sendOptions[#sendOptions + 1] = name
-    end
+	    sendOptions[#sendOptions + 1] = name
+	end
 
-    local info = {
-        entity = entity,
-        options = sendOptions,
-        alpha = -150
-    }
+	local info = {
+	    entity = entity,
+	    options = sendOptions,
+	    alpha = -150
+	}
 
-    if !PLUGIN.actionMenu.stored[entity] and #sendOptions > 0 and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then
-        PLUGIN.actionMenu:New(info)
+	if !PLUGIN.actionMenu.stored[entity] and #sendOptions > 0 and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then
+	    PLUGIN.actionMenu:New(info)
 
-        PLUGIN.actionMenu.cd = CurTime() + 0.6
-    end
+	    PLUGIN.actionMenu.cd = CurTime() + 0.6
+	end
+end)
+
+netstream.Hook("ItemBase:CreationRegisterItem", function(baseID, uniqueID, info)
+	ItemBase.CreationRegisterItem(baseID, uniqueID, info)
+end)
+
+netstream.Hook("ItemBase:CreationEditItem", function(uniqueID, info)
+	ItemBase.CreationEditItem(uniqueID, info)
+end)
+
+netstream.Hook("ItemBase:CreationRemoveItem", function(uniqueID)
+	ItemBase.CreationRemoveItem(uniqueID)
+end)
+
+netstream.Hook("ItemBase:CreationSync", function(baseID, stored)
+	for uniqueID, info in pairs(stored) do
+		ItemBase.CreationRegisterItem(baseID, uniqueID, info)
+	end
 end)

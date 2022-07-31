@@ -21,9 +21,33 @@ function ItemBase.CreateItemInWorld(uniqueID, pos, ang)
 end
 
 function ItemBase:PlayerInitialSpawn(client)
-    -- Синхранизируем предметы
-    for id, item in pairs(self.instances) do
-        item:Sync(client)
+    ItemBase.CreationSync(client)
+
+    timer.Simple(2, function()
+        -- Синхранизируем предметы
+        for id, item in pairs(self.instances) do
+            item:Sync(client)
+        end
+    end)
+end
+
+function ItemBase:InitPostEntity()
+    ItemBase.CreationSync()
+end
+
+function ItemBase.CreationSync(client)
+    local itemslist = asterionlib.data:Get("itemslist", {}, true)
+
+    for baseID, stored in pairs(itemslist) do
+        if baseID == "basic" or ItemBase.base[baseID] then
+            if client != nil then
+                netstream.Start(client, "ItemBase:CreationSync", baseID, stored)
+            else
+                for uniqueID, info in pairs(stored) do
+                    ItemBase.CreationRegisterItem(baseID, uniqueID, info)
+                end
+            end
+        end
     end
 end
 
@@ -105,4 +129,141 @@ netstream.Hook("ItemBase:GiveItem", function(client, target, uniqueID)
     if client != target then
         Arbitrage.commands.Notify(target, "Администратор выдал вам предмет \"" .. item:GetName() .. "\"!")
     end
+end)
+
+local function getInfo(data)
+    local info = {
+        name = data.name or "Не указано",
+        description = data.description or "Не указано",
+        model = data.model or "models/props_junk/PlasticCrate01a.mdl",
+        icon = data.icon or "danganronpa/inventory/items/antiquebooktest.png"
+    }
+
+    local uniqueID = data.uniqueID
+    if !uniqueID then return end
+
+    local baseID = data.base
+    local example = nil
+
+    if baseID == ItemBase.defaultBaseID then
+        example = {
+            {
+                variable = "category",
+                title = "Категория",
+                default = "Остальное"
+            }
+        }
+    else
+        local itemBase = ItemBase.base[baseID]
+        if !itemBase then return end
+
+        example = itemBase.creationExample
+    end
+
+    if !example then return end
+
+    for k, v in ipairs(example) do
+        info[v.variable] = data[v.variable] or v.default
+    end
+
+    return baseID, tostring(uniqueID), info
+end
+
+netstream.Hook("ItemBase:CreationRegisterItem", function(client, data)
+    if !client:IsAdmin() then return end
+
+    local baseID, uniqueID, info = getInfo(data)
+
+    local itemslist = asterionlib.data:Get("itemslist", {}, true)
+    itemslist[baseID] = itemslist[baseID] or {}
+
+    if itemslist[baseID][uniqueID] or ItemBase.list[uniqueID] then
+        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " уже существует!")
+    end
+
+    itemslist[baseID][uniqueID] = info
+
+    asterionlib.data:Set("itemslist", itemslist)
+    ItemBase.CreationRegisterItem(baseID, uniqueID, info)
+
+    Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был создан! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    Arbitrage.adminnotify:SendNotify("registeritem", client:Name() .. " (" .. client:SteamName() .. ")", uniqueID)
+end)
+
+netstream.Hook("ItemBase:CreationEditItem", function(client, data)
+    if !client:IsAdmin() then return end
+
+    local baseID, uniqueID, info = getInfo(data)
+
+    local itemslist = asterionlib.data:Get("itemslist", {}, true)
+    itemslist[baseID] = itemslist[baseID] or {}
+
+    if !itemslist[baseID][uniqueID] then
+        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
+    end
+
+    if !client:IsSuperAdmin() and itemslist[baseID][uniqueID].isprotect then
+        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " защищен!")
+    end
+
+    info.isprotect = false
+
+    itemslist[baseID][uniqueID] = info
+
+    asterionlib.data:Set("itemslist", itemslist)
+    ItemBase.CreationEditItem(uniqueID, info)
+
+    Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был обновлен! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    Arbitrage.adminnotify:SendNotify("edititem", client:Name() .. " (" .. client:SteamName() .. ")", uniqueID)
+end)
+
+netstream.Hook("ItemBase:CreationRemoveItem", function(client, baseID, uniqueID)
+    if !client:IsAdmin() then return end
+
+    uniqueID = tostring(uniqueID)
+
+    local itemslist = asterionlib.data:Get("itemslist", {}, true)
+    itemslist[baseID] = itemslist[baseID] or {}
+
+    if !itemslist[baseID][uniqueID] then
+        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
+    end
+
+    if !client:IsSuperAdmin() and itemslist[baseID][uniqueID].isprotect then
+        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " защищен!")
+    end
+
+    itemslist[baseID][uniqueID] = nil
+
+    asterionlib.data:Set("itemslist", itemslist)
+    ItemBase.CreationRemoveItem(uniqueID)
+
+    Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был удален! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    Arbitrage.adminnotify:SendNotify("removeitem", client:Name() .. " (" .. client:SteamName() .. ")", uniqueID)
+end)
+
+netstream.Hook("ItemBase:CreationProtectItem", function(client, baseID, uniqueID)
+    if !client:IsSuperAdmin() then return end
+
+    uniqueID = tostring(uniqueID)
+
+    local itemslist = asterionlib.data:Get("itemslist", {}, true)
+    itemslist[baseID] = itemslist[baseID] or {}
+
+    local info = itemslist[baseID][uniqueID]
+    if !info then
+        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
+    end
+
+    if !info.isprotect then
+        info.isprotect = true
+    else
+        info.isprotect = false
+    end
+
+    asterionlib.data:Set("itemslist", itemslist)
+    ItemBase.CreationEditItem(uniqueID, info)
+
+    Arbitrage.commands.Notify(client, "На предмет " .. uniqueID .. " была " .. (info.isprotect and "установлена" or "снята") .. " защита!")
+    Arbitrage.adminnotify:SendNotify("protectitem", client:Name() .. " (" .. client:SteamName() .. ")", uniqueID)
 end)

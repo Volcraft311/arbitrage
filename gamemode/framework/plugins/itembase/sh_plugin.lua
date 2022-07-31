@@ -23,6 +23,8 @@ PLUGIN.instances = PLUGIN.instances or {}
 PLUGIN.lastID = PLUGIN.lastID or 1
 PLUGIN.data = PLUGIN.data or {}
 
+PLUGIN.defaultBaseID = "basic"
+
 function ItemBase.GetBase(base)
     local meta = table.Copy(Arbitrage.meta.item)
 
@@ -108,6 +110,86 @@ function ItemBase.CreateItem(uniqueID)
     ItemBase.lastID = ItemBase.lastID + 1
 
     return item
+end
+
+
+function ItemBase.CreationRegisterItem(baseID, uniqueID, info)
+    uniqueID = tostring(uniqueID)
+
+    local ITEM = ItemBase.GetBase(baseID == ItemBase.defaultBaseID and "" or baseID)
+    ITEM.isCreation = true
+
+    for k, v in pairs(info) do
+        ITEM[k] = v
+    end
+
+    ItemBase:RegisterItem(uniqueID, ITEM)
+
+    if SERVER then
+        netstream.Start(nil, "ItemBase:CreationRegisterItem", baseID, uniqueID, info)
+    end
+end
+
+function ItemBase.CreationEditItem(uniqueID, info)
+    uniqueID = tostring(uniqueID)
+
+    local ITEM = ItemBase.list[uniqueID]
+    if !ITEM then return end
+
+    for k, v in pairs(info) do
+        ITEM[k] = v
+    end
+
+    for k, v in pairs(ItemBase.instances) do
+        if v.uniqueID == uniqueID then
+            for k2, v2 in pairs(info) do
+                v[k2] = v2
+            end
+        end
+    end
+
+    if SERVER then
+        netstream.Start(nil, "ItemBase:CreationEditItem", uniqueID, info)
+    end
+end
+
+function ItemBase.CreationRemoveItem(uniqueID)
+    uniqueID = tostring(uniqueID)
+
+    if SERVER then
+        -- удаляем все предметы на карте с этим ID
+        for k, v in ipairs(ents.FindByClass("arb_item" )) do
+            if v:GetUniqueID() == uniqueID then
+                v:Remove()
+            end
+        end
+
+        -- чистим инвентари
+        if InventoryBase then
+            for k, v in pairs(InventoryBase.instances) do
+                local items = v:GetItems()
+
+                for k2, v2 in ipairs(items) do
+                    if v2.uniqueID == uniqueID then
+                        v2:Remove()
+                    end
+                end
+            end
+        end
+    end
+
+    -- чистим лист
+    for k, v in pairs(ItemBase.instances) do
+        if v.uniqueID == uniqueID then
+            ItemBase.instances[k] = nil
+        end
+    end
+
+    ItemBase.list[uniqueID] = nil
+
+    if SERVER then
+        netstream.Start(nil, "ItemBase:CreationRemoveItem", uniqueID)
+    end
 end
 
 Arbitrage.base.Include("cl_infomenu.lua")

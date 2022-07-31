@@ -275,32 +275,33 @@ Arbitrage.AddDisableElement("CHudSuitPower")
 Arbitrage.AddDisableElement("CHudHistoryResource")
 Arbitrage.AddDisableElement("CHudZoom")
 
-function Arbitrage:KeyPress(client, key)
-    if key == IN_USE and client:oldAlive() then
-        local entity = Arbitrage.ReturnEntity(client)
+-- OLD
+-- function Arbitrage:KeyPress(client, key)
+--     if key == IN_USE and client:oldAlive() then
+--         local entity = Arbitrage.ReturnEntity(client)
 
-        if IsValid(entity) then
-            local action = Arbitrage.actionlist[entity:GetClass()]
-            if !action then return end
+--         if IsValid(entity) then
+--             local action = Arbitrage.actionlist[entity:GetClass()]
+--             if !action then return end
 
-            local parentMenu = DermaMenu()
+--             local parentMenu = DermaMenu()
 
-            for k, v in pairs(action) do
-                if v.isadmin and !LocalPlayer():IsAdmin() then continue end
+--             for k, v in pairs(action) do
+--                 if v.isadmin and !LocalPlayer():IsAdmin() then continue end
 
-                local panel = parentMenu:AddOption(k, function()
-                    netstream.Start("arb.ActionEntity", entity, k)
-                end)
+--                 local panel = parentMenu:AddOption(k, function()
+--                     netstream.Start("arb.ActionEntity", entity, k)
+--                 end)
 
-                if v.icon then
-                    panel:SetIcon(v.icon)
-                end
-            end
+--                 if v.icon then
+--                     panel:SetIcon(v.icon)
+--                 end
+--             end
 
-            parentMenu:Open(ScrW() / 2, ScrH() / 2)
-        end
-    end
-end
+--             parentMenu:Open(ScrW() / 2, ScrH() / 2)
+--         end
+--     end
+-- end
 
 function Arbitrage:HUDShouldDraw(name)
     if Arbitrage.DisableElements[name] then

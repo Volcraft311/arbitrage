@@ -93,6 +93,10 @@ function Arbitrage.Initialize()
 		for k, v in ipairs({"EditingSpawnlistsSave", "ContextClick", "EditingSpawnlists", "OpeningContext", "Annoy2", "Annoy1", "OpeningMenu"}) do
 			timer.Remove("HintSystem_" .. v)
 		end
+
+		Arbitrage.GM.HUDShouldDraw = function()
+			return true
+		end
 	end
 
 	Arbitrage.util.WriteMessage("BATCH has been successfully loaded!")

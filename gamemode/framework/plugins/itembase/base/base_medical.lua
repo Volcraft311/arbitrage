@@ -21,8 +21,31 @@ BASE.health = 50
 BASE.maxuse = 1
 BASE.sound = "items/medshot4.wav"
 
+BASE.creationExample = {
+    {
+        variable = "category",
+        title = "Категория",
+        default = "Медикаменты"
+    },
+    {
+        variable = "health",
+        title = "Количество восстанавливающего здоровья",
+        default = 50
+    },
+    {
+        variable = "maxuse",
+        title = "Максимальное количество использований",
+        default = 1
+    },
+    {
+        variable = "sound",
+        title = "Звук при использовании",
+        default = "items/medshot4.wav"
+    }
+}
+
 function BASE:GetDescription()
-    local left = self:GetData("left", self.maxuse)
+    local left = self:GetData("left", tonumber(self.maxuse))
 
     return self.description .. ". Осталось: " .. left .. "/" .. self.maxuse .. ""
 end
@@ -35,9 +58,9 @@ local function RecoveryFunc(item, target)
         target:EmitSound(song)
     end
 
-    target:SetHealth(math.min(target:Health() + item.health, target:GetMaxHealth()))
+    target:SetHealth(math.min(target:Health() + tonumber(item.health), target:GetMaxHealth()))
 
-    local left = item:GetData("left", item.maxuse)
+    local left = item:GetData("left", tonumber(item.maxuse))
     item:SetData("left", left - 1)
     if (left - 1) <= 0 then return true end
 end

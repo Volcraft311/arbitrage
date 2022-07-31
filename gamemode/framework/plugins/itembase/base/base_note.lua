@@ -22,6 +22,14 @@ BASE.data = {font = 1, editors = {}, pages = {{
     text = "Ваш текст..."
 }}}
 
+BASE.creationExample = {
+    {
+        variable = "category",
+        title = "Категория",
+        default = "Библиотека"
+    },
+}
+
 local function HasAccess(arr, data)
     if !arr then return false end
 

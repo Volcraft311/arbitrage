@@ -19,8 +19,26 @@ BASE.category = "Отмычки"
 BASE.maxuse = 2
 BASE.hacktime = 20
 
+BASE.creationExample = {
+    {
+        variable = "category",
+        title = "Категория",
+        default = "Отмычки"
+    },
+    {
+        variable = "maxuse",
+        title = "Максимальное количество использований",
+        default = 2
+    },
+    {
+        variable = "hacktime",
+        title = "Время взлома",
+        default = 20
+    }
+}
+
 function BASE:GetDescription()
-    local left = self:GetData("left", self.maxuse)
+    local left = self:GetData("left", tonumber(self.maxuse))
 
     return self.description .. ". Осталось: " .. left .. "/" .. self.maxuse .. ""
 end
@@ -67,10 +85,10 @@ BASE:AddAction("Взломать дверь", {
             return false
         end
 
-        local left = item:GetData("left", item.maxuse)
+        local left = item:GetData("left", tonumber(item.maxuse))
         item:SetData("left", left - 1)
 
-        HackDoor(client, entity, item.hacktime)
+        HackDoor(client, entity, tonumber(item.hacktime))
 
         if left > 1 then
             return false

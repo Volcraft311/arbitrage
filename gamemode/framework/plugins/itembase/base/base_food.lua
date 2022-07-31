@@ -23,6 +23,39 @@ BASE.hunger = 10
 BASE.sleep = 10
 BASE.sound = "garrysmod/ui_click.wav"
 
+BASE.creationExample = {
+    {
+        variable = "category",
+        title = "Категория",
+        default = "Продукты"
+    },
+    {
+        variable = "maxuse",
+        title = "Максимальное количество использований",
+        default = 10
+    },
+    {
+        variable = "thirst",
+        title = "Пополнение жажды",
+        default = 10
+    },
+    {
+        variable = "hunger",
+        title = "Пополнение голода",
+        default = 10
+    },
+    {
+        variable = "sleep",
+        title = "Пополнение сна",
+        default = 10
+    },
+    {
+        variable = "sound",
+        title = "Звук при использовании",
+        default = "garrysmod/ui_click.wav"
+    }
+}
+
 function BASE:GetDescription()
     local left = self:GetData("left", self.maxuse)
 

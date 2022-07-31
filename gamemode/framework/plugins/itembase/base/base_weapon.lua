@@ -21,6 +21,19 @@ BASE.model = "models/weapons/w_pistol.mdl"
 BASE.class = "weapon_pistol"
 BASE.isWeapon = true
 
+BASE.creationExample = {
+	{
+	    variable = "category",
+	    title = "Категория",
+	    default = "Оружие"
+	},
+	{
+		variable = "class",
+		title = "Класс оружия",
+		default = "weapon_pistol"
+	}
+}
+
 if CLIENT then
 	local ribbon = Material("danganronpa/inventory/ribbon.png")
 

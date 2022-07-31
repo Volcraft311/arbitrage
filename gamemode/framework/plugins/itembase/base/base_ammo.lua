@@ -20,8 +20,26 @@ BASE.category = "Патроны"
 BASE.ammoClass = "pistol"
 BASE.ammoAmount = 10
 
+BASE.creationExample = {
+    {
+        variable = "category",
+        title = "Категория",
+        default = "Патроны"
+    },
+    {
+        variable = "ammoClass",
+        title = "Тип патронов",
+        default = "pistol"
+    },
+    {
+        variable = "ammoAmount",
+        title = "Количество патронов",
+        default = 10
+    }
+}
+
 function BASE:GetDescription()
-    local amount = self.ammoAmount
+    local amount = tonumber(self.ammoAmount)
 
     return self.description .. ". Количество: " .. amount .. "."
 end
@@ -30,7 +48,7 @@ BASE:AddAction("Использовать", {
     OnRun = function(item)
     	local client = item.player
         local ammoClass = item.ammoClass
-        local ammoAmount = item.ammoAmount
+        local ammoAmount = tonumber(item.ammoAmount)
 
         for k, v in ipairs(client:GetWeapons()) do
         	local ammoType = v:GetPrimaryAmmoType()

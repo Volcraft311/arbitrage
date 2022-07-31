@@ -58,28 +58,23 @@ function PLUGIN:DistanceFits(vec1, vec2, dist)
     return vec1:Distance(vec2) <= dist
 end
 
-local function addStructure(entity, dist, data, settings)
-    if isfunction(data) and PLUGIN:DistanceFits(LocalPlayer():GetPos(), entity:GetPos(), dist) then
-        if settings and settings.index then
-            if ix.option.Get("AdminESP_" .. settings.index, true) then
-                data = data(entity)
-            else
-                data = nil
-            end
-        else
-            data = data(entity)
-        end
+local function addStructure(entity, info)
+    local dist = info.dist
+    local data = info.data
+
+    if isfunction(data) and !info.isfunc then
+        data = data(entity)
     end
 
-    return {data, dist, entity:GetClass()}
+    return {data, dist}
 end
 
 local metaPl = FindMetaTable("Player")
 function metaPl:ESPInfo()
     local data = {}
 
-    for k, v in SortedPairs(PLUGIN.playerinfo) do
-        data[#data + 1] = addStructure(self, v.dist, v.data, v.config)
+    for k, v in ipairs(PLUGIN.playerinfo) do
+        data[#data + 1] = addStructure(self, v)
     end
 
     return data
@@ -89,8 +84,8 @@ local metaEn = FindMetaTable("Entity")
 function metaEn:ESPInfo()
     local data = {}
 
-    for k, v in SortedPairs(PLUGIN.entityinfo) do
-        data[#data + 1] = addStructure(self, v.dist, v.data, v.config)
+    for k, v in ipairs(PLUGIN.entityinfo) do
+        data[#data + 1] = addStructure(self, v)
     end
 
     return data

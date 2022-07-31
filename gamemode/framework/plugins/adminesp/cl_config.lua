@@ -111,13 +111,19 @@ PLUGIN:AddPlayerESPCustomization("trace_pl", {
         tr.filter = {entity}
 
         local trace = util.TraceLine(tr).HitPos
+        local trace2D = trace:ToScreen()
+        local eyePos2D = entity:EyePos():ToScreen()
+
+        if !trace2D.visible then return end
 
         surface.SetDrawColor(col)
-        if trace:ToScreen().visible and entity:EyePos():ToScreen().visible then
-            surface.DrawLine(entity:EyePos():ToScreen().x, entity:EyePos():ToScreen().y, trace:ToScreen().x, trace:ToScreen().y)
-        end
         surface.DrawRect(trace:ToScreen().x - 2.5, trace:ToScreen().y - 2.5, 5, 5)
-    end
+
+        if !eyePos2D.visible then return end
+
+        surface.DrawLine(eyePos2D.x, eyePos2D.y, trace2D.x, trace2D.y)
+    end,
+    isfunc = true
 })
 
 PLUGIN:AddPlayerESPCustomization("observer_pl", {
@@ -209,5 +215,6 @@ PLUGIN:AddEntityESPCustomization("chams_en", {
             render.MaterialOverride()
             render.SuppressEngineLighting(false)
         cam.End3D()
-    end
+    end,
+    isfunc = true
 })

@@ -13,6 +13,7 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
 local surface_CreateFont = surface.CreateFont
 local draw_SimpleText = draw.SimpleText
 local IsValid = IsValid
@@ -23,17 +24,57 @@ local ipairs = ipairs
 local Vector = Vector
 local math_abs = math.abs
 local team_GetColor = team.GetColor
-local tostring = tostring
+local isfunction = isfunction
+local LocalPlayer = LocalPlayer
+local EyePos = EyePos
+local next = next
+local coroutine_yield = coroutine.yield
+local coroutine_resume = coroutine.resume
+local coroutine_create = coroutine.create
 
 surface_CreateFont( "AdminESPFont", {
 	font = "Roboto",
 	size = 17,
 	extended = true,
 	weight = 100,
-} )
+})
 
-local function createText(data, x, y, col, y2)
-	draw_SimpleText(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT)
+local function getScreenPon(isPlayer, pos)
+	local head = Vector(pos.x, pos.y, isPlayer and pos.z + 60 or pos.z)
+	local headPos = head:ToScreen()
+	local x, y = headPos.x, headPos.y
+
+	return headPos, x, y
+end
+
+local function drawing(entity, info, eyePos)
+	if !IsValid(entity) then return end
+
+	local isPlayer = entity:IsPlayer()
+	local entityPos = entity:GetPos()
+
+	local headPos, x, y = getScreenPon(isPlayer, entityPos)
+	if !headPos.visible then return end
+
+	local distance = eyePos:Distance(entityPos)
+	local col = (isPlayer and team_GetColor(entity:Team()) or PLUGIN.entslist[entity:GetClass()]) or color_white
+
+	local f = math_abs(350 / distance)
+	local size = 52 * f
+
+	x = (x - size / 2) + size
+	y = y - size / 2
+
+	local y2 = 0
+	for _, data in ipairs(info) do
+		if isfunction(data) then
+			data(entity)
+			continue
+		end
+
+		draw_SimpleText(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT)
+		y2 = y2 + 15
+	end
 end
 
 local function isAllow(client)
@@ -49,54 +90,83 @@ local function isAllow(client)
 	return true
 end
 
-PLUGIN.showEntsList = {}
-
+local showEntsList = {}
+local cache = {}
+local allow = false
 timer_Create("AdminESP:Update", 1, 0, function()
-	PLUGIN.showEntsList = {}
+	showEntsList = {}
 
 	local client = LocalPlayer()
-	local allow = isAllow(client)
+	allow = isAllow(client)
 
-	if !allow then return end
-
+	if !allow then cache = {} return end
 	for k, v in ipairs(ents_GetAll()) do
-		if v:IsPlayer() then
-			PLUGIN.showEntsList[#PLUGIN.showEntsList + 1] = v
-		elseif PLUGIN.entslist[v:GetClass()] then
-			PLUGIN.showEntsList[#PLUGIN.showEntsList + 1] = v
+		if v:IsPlayer() or PLUGIN.entslist[v:GetClass()] then
+			showEntsList[#showEntsList + 1] = v
 		end
 	end
 end)
 
-function PLUGIN:HUDPaint()
-	for k, v in ipairs(self.showEntsList) do
-		if !IsValid(v) then continue end
+local function caching(entity)
+	local client = LocalPlayer()
 
-		local p = v:IsPlayer()
-		if !p and !self.entslist[v:GetClass()] then continue end
+	local isPlayer = entity:IsPlayer()
+	if !isPlayer and !PLUGIN.entslist[entity:GetClass()] then return end
 
-		if !p or (p and v != LocalPlayer() and v:oldAlive()) then
-			local _y = 0
-			local info = v:ESPInfo()
+	if !isPlayer or (isPlayer and entity != client and entity:oldAlive()) then
+		cache[entity] = {}
 
-			for k2, v2 in pairs(info) do
-				if v2[1] and self:DistanceFits(LocalPlayer():GetPos(), v:GetPos(), v2[2]) then
-					local pos = v:GetPos()
-					local head = Vector(pos.x, pos.y, !p and pos.z or pos.z + 60)
-					local headPos = head:ToScreen()
-					if !headPos.visible then continue end
+		local eyePos = EyePos()
+		local entityPos = entity:GetPos()
 
-					local distance = LocalPlayer():GetPos():Distance(v:GetPos())
-					local x, y = headPos.x, headPos.y
-					local f = math_abs(350 / distance)
-					local size = 52 * f
-					local col = (p and team_GetColor(v:Team()) or self.entslist[v:GetClass()]) or color_white
+		local headPos = getScreenPon(isPlayer, entityPos)
+		if !headPos.visible then return end
 
-					createText(tostring(v2[1]), (x - size / 2) + size, y - size / 2, col, _y)
+		for k, v in pairs(entity:ESPInfo()) do
+			if !v[1] then continue end
+			if !PLUGIN:DistanceFits(eyePos, entityPos, v[2]) then continue end
 
-					_y = _y + 15
+			cache[entity][#cache[entity] + 1] = v[1]
+		end
+	end
+end
+
+local function thread()
+	local showEnts
+
+	while true do
+		showEnts = showEntsList
+
+		if !next(showEnts) then
+			coroutine_yield()
+		else
+			for _, entity in ipairs(showEnts) do
+				coroutine_yield()
+
+				if !IsValid(entity) then
+					cache[entity] = nil
+					continue
 				end
+
+				caching(entity)
 			end
 		end
+	end
+end
+
+local co
+function PLUGIN:Think()
+	if !co or !coroutine_resume(co) then
+		co = coroutine_create(thread)
+		coroutine_resume(co)
+	end
+end
+
+function PLUGIN:HUDPaint()
+	if !allow then return end
+
+	local eyePos = EyePos()
+	for entity, info in pairs(cache) do
+		drawing(entity, info, eyePos)
 	end
 end

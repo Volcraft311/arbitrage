@@ -14,13 +14,10 @@
 Arbitrage.player = Arbitrage.library.Add("player")
 
 function Arbitrage.player.SetStats(client, data, amount)
-    if !IsValid(client) then return end
-
     Arbitrage.statistics.Set(client, data, amount)
 end
 
 function Arbitrage.player.SetTeam(client, data, bRespawn)
-    if !IsValid(client) then return end
     if !data then return end
 
     local team = Arbitrage.teams.data[tonumber(data)]
@@ -38,9 +35,7 @@ function Arbitrage.player.SetTeam(client, data, bRespawn)
         team.OnChange(client)
     end
 
-    for k, v in pairs(team.weapons or {}) do
-        client:Give(v)
-    end
+    Arbitrage.player.SetupWeapons(client)
 
     timer.Simple(2, function()
         client:SetupHands()
@@ -53,8 +48,6 @@ function Arbitrage.player.SetTeam(client, data, bRespawn)
 end
 
 function Arbitrage.player.SetupSpeed(client)
-    if !IsValid(client) then return end
-
     local faction = Arbitrage.teams.Get(client:Team())
     if !faction then return end
 
@@ -75,8 +68,6 @@ function Arbitrage.player.SetupSpeed(client)
 end
 
 function Arbitrage.player.SetupStatistics(client)
-    if !IsValid(client) then return end
-
     for k, v in pairs(Arbitrage.statistics.list) do
         Arbitrage.statistics.Set(client, v.data, 100)
     end
@@ -88,8 +79,6 @@ function Arbitrage.player.SetupHealth(client)
 end
 
 function Arbitrage.player.SetupWeapons(client)
-    if !IsValid(client) then return end
-
     client:Give("academy_first")
     client:Give("academy_key")
 
@@ -118,8 +107,6 @@ function Arbitrage.player.SetupInventory(client)
 end
 
 function Arbitrage.player.Respawn(client)
-    if !IsValid(client) then return end
-
     client:Spawn()
     client:Respawn()
     client:StripAmmo()

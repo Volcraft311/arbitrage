@@ -158,8 +158,9 @@ do
         workshop:Add("1161268544") -- Pink Blood
 
         -- WEAPONS
-        workshop:Add("582366370") -- [TFA] No More Room in Hell Melee SWEPs
-        workshop:Add("582493650") -- [TFA] No More Room in Hell Firearm SWEPs
+        -- (DELETED) workshop:Add("582366370") -- [TFA] No More Room in Hell Melee SWEPs
+        -- (DELETED) workshop:Add("582493650") -- [TFA] No More Room in Hell Firearm SWEPs
+        workshop:Add("2842765511") -- nmrih reupload
         workshop:Add("244540803") -- Customizable Flashlight
         workshop:Add("921195220") -- TFA CS:S Weapons
         workshop:Add("1414153810") -- [TTT] Night vision

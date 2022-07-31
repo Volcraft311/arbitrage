@@ -20,16 +20,21 @@ local Color = Color
 local math_sin = math.sin
 local CurTime = CurTime
 
+local color1 = Color(14, 255, 151, 10)
+local color2 = Color(255, 255, 255, 40)
+local color3 = Color(255, 255, 255, 25)
+local color4 = Color(255, 255, 255, 7)
+
 function PLUGIN:HUDPaint()
     if SETTINGS.options.Get("show_gamemode_info") then
         local a = ScrW() - W(10)
 
-        draw_SimpleText("yeah! arbitrage works :)", "arb.Font_FuturaPTBook_5", a, H(10), Color(14, 255, 151, 10), TEXT_ALIGN_RIGHT)
+        draw_SimpleText("yeah! arbitrage works :)", "arb.Font_FuturaPTBook_5", a, H(10), color1, TEXT_ALIGN_RIGHT)
 
-        draw_SimpleText("GM-Arbitrage Framework", "arb.Font_FuturaPTBook_7", a, H(35), Color(255, 255, 255, 40), TEXT_ALIGN_RIGHT)
-        draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_6", a, H(52), Color(255, 255, 255, 25), TEXT_ALIGN_RIGHT)
+        draw_SimpleText("GM-Arbitrage Framework", "arb.Font_FuturaPTBook_7", a, H(35), color2, TEXT_ALIGN_RIGHT)
+        draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_6", a, H(52), color3, TEXT_ALIGN_RIGHT)
 
-        draw_SimpleText("This gamemode is still in the early stages of development!\nIf you find any errors, please let us know.", "arb.Font_FuturaPTBook_5", a, H(80), Color(255, 255, 255, 7), TEXT_ALIGN_RIGHT)
+        draw_SimpleText("This gamemode is still in the early stages of development!\nIf you find any errors, please let us know.", "arb.Font_FuturaPTBook_5", a, H(80), color4, TEXT_ALIGN_RIGHT)
 
         local alpha = math_sin(CurTime() * 1) * 7
         draw_SimpleText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", a, H(110), Color(255, 255, 255, alpha), TEXT_ALIGN_RIGHT)

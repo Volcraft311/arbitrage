@@ -48,13 +48,14 @@ function PLUGIN:PlayerStartVoice(client)
 
     hook.Run("ArbitrageVoiceStart", client)
 
-    return true -- disable old VoiceDraw
+    return true
 end
 
 function PLUGIN:PlayerEndVoice(client)
     self.players[client] = nil
 end
 
+local sizeMat = 40
 function PLUGIN:HUDPaint()
     local client = LocalPlayer()
     local size = ScrW() * 0.05
@@ -62,14 +63,22 @@ function PLUGIN:HUDPaint()
     local bShow = self.realtime >= RealTime()
 
     self.pos = Lerp(FrameTime() * 10, self.pos, self.players[LocalPlayer()] and 100 or 0)
-    self.alpha = Lerp(FrameTime() * 40, self.alpha, self.players[LocalPlayer()] and 255 or 0)
+    self.alpha = Lerp(FrameTime() * sizeMat, self.alpha, self.players[LocalPlayer()] and 255 or 0)
 
     if self.alpha > 0.2 then
-        local color = client:GetNetVar("arbGlobalVoice") and Color(255, 61, 96, self.alpha) or Color(255, 255, 255, self.alpha * value)
+        local isGlobal = client:GetNetVar("arbGlobalVoice")
+        local color = isGlobal and Color(255, 61, 96, self.alpha) or Color(255, 255, 255, self.alpha * value)
+
+        local x = ScrW() / 2
+        local y = ScrH() - self.pos
 
         surface.SetDrawColor(color)
         surface.SetMaterial(mat)
-        surface.DrawTexturedRect(ScrW() / 2 - 40 / 2, ScrH() - self.pos, 40, 40)
+        surface.DrawTexturedRect(x - sizeMat / 2, y, sizeMat, sizeMat)
+
+        if !isGlobal then
+            draw.SimpleText(value * 100 .. "%", "arb.Font_FuturaPTBook_4", x, y + sizeMat * 1.2, color, TEXT_ALIGN_CENTER)
+        end
     end
 
     self.pos2 = Lerp(FrameTime() * 10, self.pos2, bShow and 100 or 0)
@@ -121,52 +130,85 @@ do
     end
 end
 
-function PLUGIN:PostDrawTranslucentRenderables()
-    if Arbitrage.lawEnable then return end
+local function isAllow(client)
+    if !IsValid(client) then return false end
+
+    if Arbitrage.lawEnable then return false end
+
+    return true
+end
+
+local d = 100000
+local showPlayerList = {}
+local allow = false
+timer.Create("VoiceDist:Update", 1, 0, function()
+    showPlayerList = {}
 
     local client = LocalPlayer()
+    allow = isAllow(client)
+    if !allow then return end
 
     for k, v in pairs(player.GetAll()) do
         if v == client then continue end
         if v:IsNocliping() then continue end
 
-        v.arbTextAlpha = v.arbTextAlpha or 0
-        v.arbTextAlpha = Lerp(FrameTime() * 8, v.arbTextAlpha, self.players[v] and 1 or 0)
+        local distance = v:GetPos():DistToSqr(EyePos())
+        if distance > d then continue end
 
-        if v.arbTextAlpha <= 0.1 then continue end
+        v.arbTextAlpha = v.arbTextAlpha or 0
+        showPlayerList[#showPlayerList + 1] = v
+    end
+end)
+
+local function drawPlayers()
+    local angle = EyeAngles()
+    angle:RotateAroundAxis(angle:Forward(), 90)
+    angle:RotateAroundAxis(angle:Right(), 90)
+
+    surface.SetFont("arb.Font_FuturaPTBook_30")
+    local _, textHeight = surface.GetTextSize(PLUGIN.text)
+
+    for k, v in ipairs(showPlayerList) do
+        if !IsValid(v) then continue end
+
+        v.arbTextAlpha = Lerp(FrameTime() * 8, v.arbTextAlpha, PLUGIN.players[v] and 1 or 0)
 
         local fraction = v.arbTextAlpha
-        local distance = v:GetPos():DistToSqr(LocalPlayer():GetPos())
+        if fraction <= 0.1 then continue end
+        local distance = v:GetPos():DistToSqr(EyePos())
 
-        local angle = EyeAngles()
-        angle:RotateAroundAxis(angle:Forward(), 90)
-        angle:RotateAroundAxis(angle:Right(), 90)
-
-        cam.Start3D2D(self:GetTypingIndicatorPosition(v), Angle(0, angle.y, 90), 0.05)
-            surface.SetFont("arb.Font_FuturaPTBook_30")
-
-            local _, textHeight = surface.GetTextSize(self.text)
-            local alpha = (1 - math.min(distance, 100000) / 100000) * 255 * fraction
-
-            draw.SimpleTextOutlined(self.text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
+        cam.Start3D2D(PLUGIN:GetTypingIndicatorPosition(v), Angle(0, angle.y, 90), 0.05)
+            local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
+            draw.SimpleTextOutlined(PLUGIN.text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
         cam.End3D2D()
     end
+end
 
-    if self.alpha2 > 0.2 then
-        local value = LocalPlayer():GetNetVar("arb.voicescale", 0.5)
+local function drawCircle()
+    local client = LocalPlayer()
+
+    if PLUGIN.alpha2 > 0.2 then
+        local value = client:GetNetVar("arb.voicescale", 0.5)
         local dist = 650
 
-        self.lerp2 = Lerp(FrameTime() * 10, self.lerp2, value)
+        PLUGIN.lerp2 = Lerp(FrameTime() * 10, PLUGIN.lerp2, value)
 
         cam.Start3D2D(client:GetPos() + Vector(0, 0, 5), Angle(0, 0, 0), 1)
-            surface.SetDrawColor(0, 255, 85, self.alpha2)
+            surface.SetDrawColor(0, 255, 85, PLUGIN.alpha2)
             surface.draw_circle_outline(0, 0, dist * 1, 3, 50)
 
-            surface.SetDrawColor(255, 0, 0, self.alpha2)
+            surface.SetDrawColor(255, 0, 0, PLUGIN.alpha2)
             surface.draw_circle_outline(0, 0, dist * 0.1, 3, 50)
 
-            surface.SetDrawColor(255, 255, 255, self.alpha2)
-            surface.draw_circle_outline(0, 0, dist * self.lerp2, 3, 50)
+            surface.SetDrawColor(255, 255, 255, PLUGIN.alpha2)
+            surface.draw_circle_outline(0, 0, dist * PLUGIN.lerp2, 3, 50)
         cam.End3D2D()
     end
+end
+
+function PLUGIN:PostDrawTranslucentRenderables()
+    if !allow then return end
+
+    drawPlayers()
+    drawCircle()
 end

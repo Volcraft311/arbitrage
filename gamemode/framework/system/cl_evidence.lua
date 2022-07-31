@@ -122,20 +122,21 @@ end
 
 local entities = {}
 timer_Create("Entities:UpdateDraw", 1, 0, function()
-	local eyePos = EyePos()
-	entities = ents_FindInSphere(eyePos, 500)
+    entities = {}
 
-	for k, v in ipairs(entities) do
-		local entity = Arbitrage.evidence.entities[v:GetClass()]
+    local eyePos = EyePos()
 
-		if !entity then
-			entities[k] = nil
-		end
-	end
+    for k, v in ipairs(ents_FindInSphere(eyePos, 500)) do
+        local entity = Arbitrage.evidence.entities[v:GetClass()]
+
+        if entity then
+            entities[#entities + 1] = v
+        end
+    end
 end)
 
 function Arbitrage.evidence.Draw()
-	for k, v in pairs(entities) do
+	for k, v in ipairs(entities) do
 		if IsValid(v) and !v:IsDormant() then
 			local entity = Arbitrage.evidence.entities[v:GetClass()]
 

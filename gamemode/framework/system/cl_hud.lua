@@ -52,7 +52,6 @@ local CurTime = CurTime
 local render_UpdateScreenEffectTexture = render.UpdateScreenEffectTexture
 local render_SetMaterial = render.SetMaterial
 local render_DrawScreenQuad = render.DrawScreenQuad
-local system_IsOSX = system.IsOSX
 local ipairs = ipairs
 local surface_DrawLine = surface.DrawLine
 local chat_AddText = chat.AddText
@@ -123,34 +122,48 @@ function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 	Arbitrage.hud.moved = Arbitrage.hud.moved + 120
 end
 
+do
+	local spectate_l_mat = Material("danganronpa/hud/spectate_l.png")
+	local spectate_r_mat = Material("danganronpa/hud/spectate_r.png")
 
-local spectate_l_mat = Material("danganronpa/hud/spectate_l.png")
-local spectate_r_mat = Material("danganronpa/hud/spectate_r.png")
-function Arbitrage.hud.SpectateDraw()
-	local client = LocalPlayer()
+	local function isAllow(client)
+		if !IsValid(client) then return false end
+		if !client:IsSpectate() then return false end
 
-	if !client:IsSpectate() then return end
-
-	local spectate = client:GetNetVar("spectate")
-
-	if spectate and IsValid(spectate) and spectate:IsPlayer() and spectate:IsValid() then
-		spectate = "Вы наблюдаете за " .. spectate:Name()
-	else
-		spectate = "Свободное наблюдение за игрой"
+		return true
 	end
 
-	surface_SetDrawColor(5, 2, 2, 229.5)
-	surface_DrawRect(ScrW() / 2 - W(560) / 2, H(40), W(560), H(46))
+	local allow = false
+	timer_Create("SpectateDraw:Update", 1, 0, function()
+		local client = LocalPlayer()
+		allow = isAllow(client)
+	end)
 
-	draw_SimpleText(spectate, "arb.Font_FuturaPTBook_10", ScrW() / 2, H(46), Color(255, 234, 238, 255), TEXT_ALIGN_CENTER)
+	function Arbitrage.hud.SpectateDraw()
+		if !allow then return end
 
-	surface_SetDrawColor(255, 255, 255)
-	surface_SetMaterial(spectate_l_mat)
-	surface_DrawTexturedRect(ScrW() / 2 - W(560) / 2 + W(14), H(40) + H(11), W(62), H(24))
+		local client = LocalPlayer()
 
-	surface_SetDrawColor(255, 255, 255)
-	surface_SetMaterial(spectate_r_mat)
-	surface_DrawTexturedRect(ScrW() / 2 + W(560) / 2 - W(62) - W(14), H(40) + H(11), W(62), H(24))
+		local spectate = client:GetNetVar("spectate")
+		if spectate and IsValid(spectate) and spectate:IsPlayer() and spectate:IsValid() then
+			spectate = "Вы наблюдаете за " .. spectate:Name()
+		else
+			spectate = "Свободное наблюдение за игрой"
+		end
+
+		surface_SetDrawColor(5, 2, 2, 229.5)
+		surface_DrawRect(ScrW() / 2 - W(560) / 2, H(40), W(560), H(46))
+
+		draw_SimpleText(spectate, "arb.Font_FuturaPTBook_10", ScrW() / 2, H(46), Color(255, 234, 238, 255), TEXT_ALIGN_CENTER)
+
+		surface_SetDrawColor(255, 255, 255)
+		surface_SetMaterial(spectate_l_mat)
+		surface_DrawTexturedRect(ScrW() / 2 - W(560) / 2 + W(14), H(40) + H(11), W(62), H(24))
+
+		surface_SetDrawColor(255, 255, 255)
+		surface_SetMaterial(spectate_r_mat)
+		surface_DrawTexturedRect(ScrW() / 2 + W(560) / 2 - W(62) - W(14), H(40) + H(11), W(62), H(24))
+	end
 end
 
 function Arbitrage.hud.ALTMenuDraw()
@@ -207,83 +220,103 @@ function Arbitrage.hud.ALTMenuDraw()
 	end
 end
 
-local gap = 8
-local curGap = gap
-local isUseTool = false
-local isWeaponTFA = false
-local weaponData = {
-	["weapon_physgun"] = true,
-	["gmod_tool"] = true,
-	["academy_key"] = true,
-	["academy_first"] = true
-}
+do
+	local color_red = Color(255, 61, 96)
+	local gap = 8
+	local curGap = gap
+	local weaponData = {
+		["weapon_physgun"] = true,
+		["gmod_tool"] = true,
+		["academy_key"] = true,
+		["academy_first"] = true
+	}
 
-Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
+	local disableCrossHair = false
+	local function isAllow(client)
+		if !IsValid(client) then return false end
+		if Arbitrage.lawEnable then return false end
+		if !SETTINGS.options.Get("show_crosshair") then return false end
+		if disableCrossHair then return false end
 
-timer_Create("Crosshair:Update", 1, 0, function()
-	local client = LocalPlayer()
-	if !IsValid(client) then return end
-
-	isUseTool = false
-	isWeaponTFA = false
-
-	local weapon = client:GetActiveWeapon()
-	if IsValid(weapon) then
-		local class = weapon:GetClass()
-
-		isUseTool = class and (class == "gmod_tool" or class == "weapon_physgun")
-		isWeaponTFA = class and !weaponData[class]
-	end
-end)
-
-function Arbitrage.hud.CrosshairDraw()
-	if Arbitrage.lawEnable then return end
-	if !SETTINGS.options.Get("show_crosshair") then return end
-	if table_Count(ItemBase.actionMenu.stored) > 0 then return end
-
-	if isWeaponTFA then return end
-
-	local client = LocalPlayer()
-
-	local traceline = {}
-	traceline.start = client:GetShootPos()
-	traceline.endpos = traceline.start + client:GetAimVector() * 3000
-	traceline.filter = client
-	local trace = util_TraceLine(traceline)
-
-	local distance = client:GetPos():Distance(trace.HitPos)
-	local drawColor = Color(255, 255, 255)
-	local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
-
-	if client:GetActiveWeapon().dragentity and (client:KeyDown(IN_ATTACK) or client:KeyDown(IN_ATTACK2)) then
-		realGap = math_Round(gap * 2)
-		drawColor = Color(255, 61, 96)
+		return true
 	end
 
-	local velocity = client:GetVelocity():Length2D() * 0.03
-	curGap = Lerp(FrameTime() * 6, curGap, realGap + velocity)
+	local isNoAnim = false
+	local isNocliping = false
+	local isUseTool = false
+	local isUseFirst = false
+	local allow = false
+	timer_Create("CrosshairDraw:Update", 1, 0, function()
+		isNoAnim, isNocliping, isUseTool, isUseFirst, disableCrossHair = false, false, false, false, false
 
-	local tr = trace.Entity
+		local client = LocalPlayer()
+		if !IsValid(client) then return end
 
-	if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or Arbitrage.evidence.entities[tr:GetClass()]) then
-		drawColor = Color(255, 61, 96)
+		isNocliping = client:IsNocliping()
+
+		local weapon = client:GetActiveWeapon()
+		if IsValid(weapon) then
+			local class = weapon:GetClass()
+
+			isUseFirst = class == "academy_first"
+			isUseTool = class and (class == "gmod_tool" or class == "weapon_physgun")
+			isNoAnim = !isNocliping and (client:IsPlaying() and !isUseTool)
+			disableCrossHair = class and !weaponData[class]
+		end
+
+		allow = isAllow(client)
+	end)
+
+	local function getTrace(client)
+		local traceline = {}
+		traceline.start = client:GetShootPos()
+		traceline.endpos = traceline.start + client:GetAimVector() * 3000
+		traceline.filter = client
+
+		return util_TraceLine(traceline)
 	end
 
-	if client:IsNocliping() or isUseTool then
-		curGap = realGap
+	Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ = 0, 0, 0
+	function Arbitrage.hud.CrosshairDraw()
+		if !allow then return end
+		if table_Count(ItemBase.actionMenu.stored) > 0 then return end
+
+		local client = LocalPlayer()
+
+		local trace = getTrace(client)
+		local distance = EyePos():Distance(trace.HitPos)
+		local drawColor = Color(255, 255, 255)
+		local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
+
+		if isUseFirst and (client:KeyDown(IN_ATTACK) or client:KeyDown(IN_ATTACK2)) then
+			realGap = math_Round(gap * 2)
+			drawColor = color_red
+		else
+			local tr = trace.Entity
+
+			if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or Arbitrage.evidence.entities[tr:GetClass()] or tr:GetClass() == "arb_item") then
+				drawColor = color_red
+			end
+		end
+
+		local velocity = client:GetVelocity():Length2D() * 0.03
+		curGap = Lerp(FrameTime() * 6, curGap, realGap + velocity)
+
+		if isNocliping or isUseTool then
+			curGap = realGap
+		end
+
+		local frametime = FrameTime() * 10
+		local x, y, z = trace.HitPos.x, trace.HitPos.y, trace.HitPos.z
+
+		Arbitrage.hud.lerpX = isNoAnim and Lerp(frametime, Arbitrage.hud.lerpX, x) or x
+		Arbitrage.hud.lerpY = isNoAnim and Lerp(frametime, Arbitrage.hud.lerpY, y) or y
+		Arbitrage.hud.lerpZ = isNoAnim and Lerp(frametime, Arbitrage.hud.lerpZ, z) or z
+
+		local trace2D = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
+
+		surface_DrawCircle(trace2D.x, trace2D.y, curGap, ColorAlpha(drawColor, 255 - Arbitrage.hud.alpha))
 	end
-
-	local frametime = FrameTime() * 10
-	local x, y, z = trace.HitPos.x, trace.HitPos.y, trace.HitPos.z
-	local bAllow = client:IsPlaying() and !isUseTool
-
-	Arbitrage.hud.lerpX = bAllow and Lerp(frametime, Arbitrage.hud.lerpX, x) or x
-	Arbitrage.hud.lerpY = bAllow and Lerp(frametime, Arbitrage.hud.lerpY, y) or y
-	Arbitrage.hud.lerpZ = bAllow and Lerp(frametime, Arbitrage.hud.lerpZ, z) or z
-
-	local traceNew = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
-
-	surface_DrawCircle(traceNew.x, traceNew.y, curGap, ColorAlpha(drawColor, 255 - Arbitrage.hud.alpha))
 end
 
 Arbitrage.hud.intensity = 0
@@ -292,15 +325,15 @@ local hpalpha = 0
 Arbitrage.hud.vignitte = surface_GetTextureID("vgui/vignette_w")
 
 Arbitrage.hud.hpcolor = {
-	[ "$pp_colour_addr" ] = 0,
-	[ "$pp_colour_addg" ] = 0,
-	[ "$pp_colour_addb" ] = 0,
-	[ "$pp_colour_brightness" ] = 0,
-	[ "$pp_colour_contrast" ] = 1,
-	[ "$pp_colour_colour" ] = 1,
-	[ "$pp_colour_mulr" ] = 0,
-	[ "$pp_colour_mulg" ] = 0,
-	[ "$pp_colour_mulb" ] = 0
+	["$pp_colour_addr"] = 0,
+	["$pp_colour_addg"] = 0,
+	["$pp_colour_addb"] = 0,
+	["$pp_colour_brightness"] = 0,
+	["$pp_colour_contrast"] = 1,
+	["$pp_colour_colour"] = 1,
+	["$pp_colour_mulr"] = 0,
+	["$pp_colour_mulg"] = 0,
+	["$pp_colour_mulb"] = 0
 }
 
 function Arbitrage.hud.LowHealthDraw()
@@ -331,7 +364,7 @@ function Arbitrage.hud.LowHealthDraw()
 		surface_SetTexture(Arbitrage.hud.vignitte)
 		surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
 
-		Arbitrage.hud.hpcolor[ "$pp_colour_colour" ] = 1 - Arbitrage.hud.intensity
+		Arbitrage.hud.hpcolor["$pp_colour_colour"] = 1 - Arbitrage.hud.intensity
 		DrawColorModify(Arbitrage.hud.hpcolor)
 
 		if client:Alive() then
@@ -383,31 +416,50 @@ function Arbitrage.hud.GrayCorrect()
 	DrawColorModify(GrayColorModify)
 end
 
-local vignitte_a = 150
-local vignitte = surface_GetTextureID("vgui/vignette")
-function Arbitrage.hud.VignetteDraw()
-	if Arbitrage.lawEnable then return end
+do
+	local vignitte_a = 150
+	local vignitte = surface_GetTextureID("vgui/vignette")
 
-	local client = LocalPlayer()
-	if !client:IsPlaying() then return end
+	local function isAllow(client)
+		if !IsValid(client) then return false end
+		if Arbitrage.lawEnable then return false end
+		if !client:IsPlaying() then return false end
 
-	local blur = math_Clamp(50 - (Arbitrage.statistics.Get(client, "Sleep") or 100), 0, 255)
-	local hunger = 255 - (Arbitrage.statistics.Get(client, "Hunger") or 100) * 2.55
-	local thirst = 255 - (Arbitrage.statistics.Get(client, "Thirst") or 100) * 2.55
-
-	vignitte_a = Lerp(FrameTime() * 5, vignitte_a, client:KeyDown(IN_ZOOM) and 257 or 150)
-
-	if blur > 1 then
-		asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
+		return true
 	end
 
-	surface_SetTexture(vignitte)
-	surface_SetDrawColor(255, 255, 255, vignitte_a)
-	surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+	local blur = 0
+	local hunger = 0
+	local thirst = 0
+	local allow = false
+	timer_Create("VignetteDraw:Update", 1, 0, function()
+		blur, hunger, thirst = 0, 0, 0
 
-	for k, v in ipairs({hunger, thirst}) do
-		surface_SetDrawColor(255, 255, 255, v / 2)
+		local client = LocalPlayer()
+		allow = isAllow(client)
+
+		if !allow then return end
+
+		blur = math_Clamp(50 - (Arbitrage.statistics.Get(client, "Sleep") or 100), 0, 255)
+		hunger = 255 - (Arbitrage.statistics.Get(client, "Hunger") or 100) * 2.55
+		thirst = 255 - (Arbitrage.statistics.Get(client, "Thirst") or 100) * 2.55
+	end)
+
+	function Arbitrage.hud.VignetteDraw()
+		if !allow then return end
+
+		if blur > 1 then
+			asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
+		end
+
+		surface_SetTexture(vignitte)
+		surface_SetDrawColor(255, 255, 255, vignitte_a)
 		surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+
+		for k, v in ipairs({hunger, thirst}) do
+			surface_SetDrawColor(255, 255, 255, v / 2)
+			surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		end
 	end
 end
 
@@ -498,120 +550,142 @@ function Arbitrage.hud.SeeVector(a, b, _debug)
 	return conclusion
 end
 
-local stmData = {}
-stmData.stamina = 100
-stmData.color = Color(255, 255, 255)
-stmData.alphastamina = 0
-function Arbitrage.hud.StaminaDraw()
-	if Arbitrage.lawEnable then return end
-	if !SETTINGS.options.Get("show_stamina") then return end
+do
+	local function isAllow(client)
+		if !IsValid(client) then return false end
 
-	local client = LocalPlayer()
-	if !client:IsPlaying() then return end
+		if Arbitrage.lawEnable then return false end
+		if !SETTINGS.options.Get("show_stamina") then return false end
+		if !client:IsPlaying() then return false end
+		if !client:Alive() then return false end
 
-	if client and client:Alive() then
-		client.Stamina = client:GetNetVar("stm", 100)
-		stmData.stamina = Lerp(FrameTime() * 10, stmData.stamina, client.Stamina)
+		return true
+	end
 
-		local staminaMax = 100 * (ScrW() * 0.001)
-		stmData.alphastamina = Lerp(FrameTime() * 10, stmData.alphastamina, stmData.stamina < 98 and 255 or 0)
+	local stamina = 100
+	local alphastamina = 0
+	local color = Color(255, 255, 255)
+	local allow = false
+	timer_Create("StaminaDraw:Update", 1, 0, function()
+		local client = LocalPlayer()
+		allow = isAllow(client)
+	end)
 
-		if stmData.alphastamina <= 0.1 then return end
+	local size = ScrW() * 0.001
+	local staminaMax = 100 * size
+	function Arbitrage.hud.StaminaDraw()
+		if !allow then return end
 
-		surface_SetDrawColor(ColorAlpha(stmData.color, stmData.alphastamina * (10 / 255)))
+		local client = LocalPlayer()
+		local Stamina = client:GetNetVar("stm", 100)
+		local frametime = FrameTime()
+
+		stamina = Lerp(frametime * 10, stamina, Stamina)
+
+		alphastamina = Lerp(frametime * 10, alphastamina, stamina < 98 and 255 or 0)
+		if alphastamina <= 0.1 then return end
+
+		surface_SetDrawColor(ColorAlpha(color, alphastamina * (10 / 255)))
 		surface_DrawRect(ScrW() / 2 - staminaMax, ScrH() - 30, staminaMax * 2, 4)
 
-		surface_SetDrawColor(ColorAlpha(stmData.color, stmData.alphastamina))
-		surface_DrawRect(ScrW() / 2 - stmData.stamina * (ScrW() * 0.001), ScrH() - 30, stmData.stamina * (ScrW() * 0.001) * 2, 4)
+		surface_SetDrawColor(ColorAlpha(color, alphastamina))
+		surface_DrawRect(ScrW() / 2 - stamina * size, ScrH() - 30, stamina * size * 2, 4)
 
 		surface_DrawRect(ScrW() / 2 - staminaMax - 4, ScrH() - 30, 4, 4)
 		surface_DrawRect(ScrW() / 2 + staminaMax - 1, ScrH() - 30, 4, 4)
 
-		local a = stmData.stamina <= 30
-		stmData.color = LerpColor(FrameTime() * 2, stmData.color, a and Color(255, 0, 0) or Color(255, 255, 255))
+		local isLow = stamina <= 30
+		color = LerpColor(frametime * 2, color, isLow and Color(255, 0, 0) or Color(255, 255, 255))
 
-		draw_SimpleText(math_floor(stmData.stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(stmData.color, stmData.alphastamina), TEXT_ALIGN_CENTER)
+		draw_SimpleText(math_floor(stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(color, alphastamina), TEXT_ALIGN_CENTER)
 	end
 end
 
-function Arbitrage.hud.CreateTextPlayer(client)
+do
 	local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_8")
-	local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
-	local alpha = client.textalpha
+	function createTextPlayer(client)
+		local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
 
-	local data2D = position:ToScreen()
-	if !data2D.visible then return end
+		local data2D = position:ToScreen()
+		if !data2D.visible then return end
 
-	local x, y = data2D.x, data2D.y
+		local x, y = data2D.x, data2D.y
+		local alpha = client.textalpha
 
-	draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
 
-	surface_SetFont( "arb.Font_FuturaPTBook_8" )
-	local width = surface_GetTextSize(client:Name()) * alpha / 255
+		surface_SetFont( "arb.Font_FuturaPTBook_8" )
+		local width = surface_GetTextSize(client:Name()) * alpha / 255
 
-	surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), alpha))
-	surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
+		surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), alpha))
+		surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
 
-	if client:GetNetVar("hideStatus") then return end
+		if client:GetNetVar("hideStatus") then return end
 
-	local color = Color(61, 210, 101)
-	local stText = "На вид в порядке"
-	local health = client:Health()
+		local color = Color(61, 210, 101)
+		local stText = "На вид в порядке"
+		local health = client:Health()
 
-	if health <= 40 then
-		color = Color(218, 52, 52)
-		stText = "Выглядит неважно"
-	elseif health <= 80 then
-		color = Color(218, 162, 52)
-		stText = "Слегка потрепанный"
+		if health <= 40 then
+			color = Color(218, 52, 52)
+			stText = "Выглядит неважно"
+		elseif health <= 80 then
+			color = Color(218, 162, 52)
+			stText = "Слегка потрепанный"
+		end
+
+		draw_SimpleText(stText, "arb.Font_FuturaPTBook_5", x, y + 4, ColorAlpha(color, alpha), TEXT_ALIGN_CENTER)
 	end
 
-	draw_SimpleText(stText, "arb.Font_FuturaPTBook_5", x, y + 4, ColorAlpha(color, alpha), TEXT_ALIGN_CENTER)
-end
+	local function getTrace(client)
+		local traceline = {}
+		traceline.start = client:GetShootPos()
+		traceline.endpos = traceline.start + client:GetAimVector() * 3000
+		traceline.filter = client
 
-local entities = {}
-local ent = nil
-timer_Create("PlayerInfoDraw:Update", 1, 0, function()
-	entities = {}
-	ent = nil
+		return util_TraceLine(traceline)
+	end
 
-	local client = LocalPlayer()
-	if !IsValid(client) then return end
-	if client:IsSpectate() then return end
+	local entities = {}
+	local ent = nil
+	timer_Create("PlayerInfoDraw:Update", 1, 0, function()
+		entities = {}
+		ent = nil
 
-	local traceline = {}
-	traceline.start = client:GetShootPos()
-	traceline.endpos = traceline.start + client:GetAimVector() * 180
-	traceline.filter = client
-	local tr = util_TraceLine(traceline)
+		local client = LocalPlayer()
+		if !IsValid(client) then return end
+		if client:IsSpectate() then return end
 
-	for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
-		if v:IsPlayer() then
-			if v == client then continue end
-			if v:IsSpectate() then continue end
-			if v:IsNocliping() then continue end
-			if Arbitrage.hud.VectorObstructed(EyePos(), EyePos(), {LocalPlayer(), v}) then continue end
+		local tr = getTrace(client)
 
-			v.textalpha = v.textalpha or 0
+		for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
+			if v:IsPlayer() then
+				if v == client then continue end
+				if v:IsSpectate() then continue end
+				if v:IsNocliping() then continue end
+				if Arbitrage.hud.VectorObstructed(EyePos(), EyePos(), {LocalPlayer(), v}) then continue end
 
-			entities[#entities + 1] = v
+				v.textalpha = v.textalpha or 0
 
-			if tr.Entity == v then
-				ent = v
+				entities[#entities + 1] = v
+
+				if tr.Entity == v then
+					ent = v
+				end
 			end
 		end
-	end
-end)
+	end)
 
-function Arbitrage.hud.PlayerInfoDraw()
-	if Arbitrage.lawEnable then return end
+	function Arbitrage.hud.PlayerInfoDraw()
+		if Arbitrage.lawEnable then return end
 
-	for k, v in ipairs(entities) do
-		if !IsValid(v) then continue end
-		if ent != v and v.textalpha <= 0.1 then continue end
+		for k, v in ipairs(entities) do
+			if !IsValid(v) then continue end
+			if ent != v and v.textalpha <= 0.1 then continue end
 
-		v.textalpha = Lerp(FrameTime() * 5, v.textalpha, ent == v and 256 or 0)
+			v.textalpha = Lerp(FrameTime() * 5, v.textalpha, ent == v and 256 or 0)
 
-		Arbitrage.hud.CreateTextPlayer(v)
+			createTextPlayer(v)
+		end
 	end
 end

@@ -22,32 +22,6 @@ function Arbitrage.AddAction(entity, name, data)
 end
 
 do
-    Arbitrage.AddAction("arb_note", "Прочитать", {
-        icon = "icon16/book_open.png",
-        data = function(client, entity)
-            entity:ReadNote(client, 1)
-        end
-    })
-
-    Arbitrage.AddAction("arb_note", "Изменить", {
-        icon = "icon16/pencil.png",
-        data = function(client, entity)
-            entity:AutoAddEditor(client)
-
-            entity:EditNote(client, 1)
-        end
-    })
-end
-
-do
-    Arbitrage.evidence.AddEnt("arb_note", {
-        name = "Блокнот",
-        desc = "Самый обычный блокнот, скорее всего содержит в себе какие-то записи.",
-        up = 0,
-        right = 0,
-        forward = 0
-    })
-
     Arbitrage.evidence.AddEnt("arb_fridge", {
         name = "Холодильник",
         desc = "Обычный холодильник, внутри находится огромное количество еды.",

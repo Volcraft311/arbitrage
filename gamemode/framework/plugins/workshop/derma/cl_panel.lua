@@ -132,18 +132,11 @@ local function panelInit(panel, id, author)
         panel.tags = data.tags
         panel.size = string.NiceSize(data.previewsize)
 
-        local path = id .. ".png"
+        asterionlib.DownloadImage(data.previewurl, function(matPath, path)
+            if !IsValid(panel) then return end
 
-        if file.Exists(path, "DATA") then
-            panel.image = Material("data/" .. path)
-        else
-            http.Fetch(data.previewurl, function(body)
-                if !IsValid(panel) then return end
-
-                file.Write(path, body)
-                panel.image = Material("data/" .. path)
-            end)
-        end
+            panel.image = matPath
+        end)
     end)
 end
 

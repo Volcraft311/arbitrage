@@ -14,35 +14,6 @@
 
 local PANEL = {}
 
-local path = "asterion_cache"
-file.CreateDir(path)
-
-local ValidExtension = {
-    realm = {
-        ["png"] = true,
-        ["jpg"] = true,
-        ["jfif"] = true
-    },
-    content = {
-        ["image/png"] = true,
-        ["image/jpeg"] = true
-    }
-}
-
-local function CheckExtensionImage(body, header)
-    local content = header["Content-Type"]
-    local extension = ValidExtension
-
-    local urlLowerPNG = string.lower(string.sub(body, 2, 4))
-    local urlLowerJPEG = string.lower(string.sub(body, 7, 10))
-
-    if extension.realm[urlLowerPNG] or extension.realm[urlLowerJPEG] or extension.content[content] then
-        return true
-    end
-
-    return false
-end
-
 function PANEL:Init()
     local sizeX, sizeY, sizeT = W(1920) * 0.7, H(1080) * 0.7, H(46)
 
@@ -82,16 +53,26 @@ function PANEL:Init()
         end)
     end
 
+    self.image = nil
+
     self.ImagePanel = self:Add("DPanel")
     self.ImagePanel:Dock(FILL)
     self.ImagePanel.Paint = function(_, w, h)
-        local id = "data/" .. self.image
-        local image = Material(id)
+        if type(self.image) == "IMaterial" and !self.image:IsError() then
+            local maxW = w * 1
+            local maxH = h * 1
 
-        if type(image) == "IMaterial" and !image:IsError() then
+            local _w = self.image:Width()
+            local _h = self.image:Height()
+
+            local a = _h < _w and maxW / _w or  maxH / _h
+
+            local a2 = _w * a
+            local b2 = _h * a
+
             surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(image)
-            surface.DrawTexturedRect(0, 0, w, h)
+            surface.SetMaterial(self.image)
+            surface.DrawTexturedRect(w / 2 - a2 / 2, h / 2 - b2 / 2, a2, b2)
         else
             local curtime = CurTime()
             local alpha = math.sin(curtime * 2) * 255
@@ -104,25 +85,15 @@ function PANEL:Init()
             surface.SetDrawColor(255, alpha, 255)
             surface.DrawRect(w / 2 - sizeW / 2, h / 2 - sizeH / 2, sizeW, sizeH)
             draw.DrawText("Loading" .. dotStr, "Default", sizeW, sizeH, Color(alpha, 0, 0), TEXT_ALIGN_CENTER)
-
-            if Material.cache and Material.old then
-                Material.cache[id] = Material.old(id)
-            end
         end
     end
 end
 
 function PANEL:OpenData(imageURL)
-    local uniqueID = util.CRC(imageURL)
-    self.image = path .. "/" .. uniqueID .. ".png"
+    asterionlib.DownloadImage(imageURL, function(matPath, path)
+        if !IsValid(self) then return end
 
-    imageURL = imageURL:gsub("cdn.discordapp.com", "media.discordapp.net")
-
-    http.Fetch(imageURL, function(body, size, headers)
-        local extension = CheckExtensionImage(body, headers)
-        if !extension then return end
-
-        file.Write(path .. "/" .. uniqueID .. ".png", body)
+        self.image = matPath
     end)
 end
 

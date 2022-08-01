@@ -61,17 +61,21 @@ function PANEL:Init()
     self.ImagePanel:SetAlpha(0)
     self.ImagePanel:Dock(FILL)
     self.ImagePanel.Paint = function(_, w, h)
-        local id = "data/" .. self.image
-        local image = Material(id)
+        if type(self.image) == "IMaterial" and !self.image:IsError() then
+            local maxW = w * 0.7
+            local maxH = h * 0.7
 
-        if type(image) == "IMaterial" and !image:IsError() then
-            local size = 0.9
-            local width = math.Clamp(image:Width() * size, 0, w)
-            local height = math.Clamp(image:Height() * size, 0, h)
+            local _w = self.image:Width()
+            local _h = self.image:Height()
+
+            local a = _h < _w and maxW / _w or  maxH / _h
+
+            local a2 = _w * a
+            local b2 = _h * a
 
             surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(image)
-            surface.DrawTexturedRect(w / 2 - width / 2, h / 2 - height / 2, width, height)
+            surface.SetMaterial(self.image)
+            surface.DrawTexturedRect(w / 2 - a2 / 2, h / 2 - b2 / 2, a2, b2)
         else
             local curtime = CurTime()
             local alpha = math.sin(curtime * 2) * 255
@@ -84,10 +88,6 @@ function PANEL:Init()
             surface.SetDrawColor(255, alpha, 255)
             surface.DrawRect(w / 2 - sizeW / 2, h / 2 - sizeH / 2, sizeW, sizeH)
             draw.DrawText("Loading" .. dotStr, "Default", sizeW, sizeH, Color(alpha, 0, 0), TEXT_ALIGN_CENTER)
-
-            if Material.cache and Material.old then
-            	Material.cache[id] = Material.old(id)
-            end
         end
     end
 
@@ -162,8 +162,13 @@ function PANEL:OpenPage(page)
     local image = self.data[page][1]
     local music = self.data[page][2]
 
-    local uniqueID = util.CRC(image)
-    self.image = path .. "/" .. uniqueID .. ".png"
+    self.image = nil
+    asterionlib.DownloadImage(image, function(matPath)
+        if !IsValid(self) then return end
+
+        self.image = matPath
+    end)
+
     self.page = page
 
     self.ImagePanel:SetAlpha(0)
@@ -195,20 +200,6 @@ end
 
 function PANEL:OpenData(data)
     self.data = data
-
-    for k, v in ipairs(data) do
-        local imageURL = v[1]
-        local uniqueID = util.CRC(imageURL)
-
-        imageURL = imageURL:gsub("cdn.discordapp.com", "media.discordapp.net")
-
-        http.Fetch(imageURL, function(body, size, headers)
-            local extension = CheckExtensionImage(body, headers)
-            if !extension then return end
-
-            file.Write(path .. "/" .. uniqueID .. ".png", body)
-        end)
-    end
 
     if data[1] then
         self:OpenPage(1)

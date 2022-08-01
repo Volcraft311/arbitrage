@@ -14,35 +14,6 @@
 
 local PANEL = {}
 
-local path = "asterion_cache"
-file.CreateDir(path)
-
-local ValidExtension = {
-    realm = {
-        ["png"] = true,
-        ["jpg"] = true,
-        ["jfif"] = true
-    },
-    content = {
-        ["image/png"] = true,
-        ["image/jpeg"] = true
-    }
-}
-
-local function CheckExtensionImage(body, header)
-    local content = header["Content-Type"]
-    local extension = ValidExtension
-
-    local urlLowerPNG = string.lower(string.sub(body, 2, 4))
-    local urlLowerJPEG = string.lower(string.sub(body, 7, 10))
-
-    if extension.realm[urlLowerPNG] or extension.realm[urlLowerJPEG] or extension.content[content] then
-        return true
-    end
-
-    return false
-end
-
 local pagenext = Material("danganronpa/ui/pagenext.png")
 local pageback = Material("danganronpa/ui/pageback.png")
 

@@ -118,8 +118,10 @@ function PLUGIN:StartVoting()
                 local steamid = v[1]
                 local num = v[2]
 
-                local client = player.GetBySteamID(steamid)
-                local info = (client and client:Name() or "НЕИЗВЕСТНО") .. "(" .. steamid .. ")"
+                local clientData = Arbitrage.players[steamid]
+                local factionData = Arbitrage.teams.Get(clientData.faction)
+
+                local info = factionData.name .. " (" .. steamid .. ")"
 
                 str = str .. info .. ". Количество голосов:  " .. num .. "\n"
             end

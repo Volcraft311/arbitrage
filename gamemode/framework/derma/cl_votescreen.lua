@@ -11,18 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-
-local matBG = Material("danganronpa/ui/bg.png")
-
 local PANEL = {}
-
--- function PANEL:CreateText(text, x, y, alpha)
---     for i = 1, 2 do
---         draw.DrawText(text, "arb.LawTimerFontBlur", x, y, Color(254, 110, 21, alpha), TEXT_ALIGN_CENTER)
---     end
-
---     draw.DrawText(text, "arb.LawTimerFont", x, y, Color(255, 238, 177, alpha), TEXT_ALIGN_CENTER)
--- end
 
 function PANEL:Init()
     self:SetSize(ScrW(), ScrH())
@@ -132,7 +121,7 @@ function PANEL:SetInfo(faction, steamid)
 
         self.panels[#self.panels + 1] = self.infoPanel
 
-        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы уже проголосовали за данного персонажа</colour></font>")
+        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы проголосовали за данного персонажа</colour></font>")
 
         local textPanel = self.infoPanel:Add("Panel")
         textPanel:Dock(FILL)
@@ -201,8 +190,10 @@ function PANEL:SetData(data, votingList)
         character:SetEnabled(isVoting)
         character:SetSize(Arbitrage.ResolutionW(139.5), Arbitrage.ResolutionH(135))
         character.alpha = 0
+        character.alpha2 = 0
         character.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.character == faction) and 1 or 0.4)
+            _.alpha2 = Lerp(FrameTime() * 10, _.alpha2, self.voting == steamid and 1 or -0.1)
 
             if !alive then _.alpha = 0.05 end
 
@@ -213,19 +204,18 @@ function PANEL:SetData(data, votingList)
 
             surface.SetDrawColor(255, 255, 255, _.alpha * 255)
             surface.SetMaterial(mat)
-            surface.DrawTexturedRect(xPos + 6, 6, Arbitrage.ResolutionW(100) - 12, Arbitrage.ResolutionH(100) - 12)
+            surface.DrawTexturedRect(xPos + 6, 9, Arbitrage.ResolutionW(100) - 12, Arbitrage.ResolutionH(100) - 12)
 
-            if self.voting == steamid then
-                surface.SetDrawColor(254, 110, 21, 165.75 * (_.alpha + 0.5))
-                surface.DrawOutlinedRect(xPos, 0, Arbitrage.ResolutionW(100), Arbitrage.ResolutionH(100), 2)
+            Arbitrage.DrawTextBlur(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 
-                draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - Arbitrage.ResolutionH(25), Color(254, 110, 21 * _.alpha), TEXT_ALIGN_CENTER)
-            else
-                surface.SetDrawColor(255, 61, 96, 165.75 * (_.alpha + 0.5))
-                surface.DrawOutlinedRect(xPos, 0, Arbitrage.ResolutionW(100), Arbitrage.ResolutionH(100), 2)
-
-                draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - Arbitrage.ResolutionH(25), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            if self.voting != steamid then
+                draw.DrawText(factionData.name, "arb.Font_FuturaPTBookBlurN_7", w / 2, h - H(25), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
+
+            surface.SetDrawColor(255, 61, 96, 165.75 * (_.alpha + 0.5))
+            surface.DrawOutlinedRect(xPos, 3, W(100), H(100), 2)
+
+            Arbitrage.DrawOutlinedRectBlur(xPos, 3, W(100), H(100), Color(255, 238, 177, 255 * _.alpha2), 2, 4)
         end
         character.DoClick = function()
             if !alive then return end
@@ -288,13 +278,47 @@ function PANEL:ClosingAllPanels(panel)
     end)
 end
 
+local material_bg = Material("danganronpa/ui/bg.png")
+local material_bg_glass = Material("danganronpa/ui/bg_glassshards.png")
+local material_bg_light = Material("danganronpa/ui/bg_light.png")
+
+local lerpX, lerpY = 0, 0
+local lerpX_g, lerpY_g = lerpX, lerpY
+local lerpX_l, lerpY_l = lerpX, lerpY
+
+local padding = 0.07
+local speed = 1
+
 function PANEL:Paint(w, h)
+    local x, y = math.Clamp(gui.MouseX(), 0, ScrW()), math.Clamp(gui.MouseY(), 0, ScrH())
+    local Wx, Wy = -((ScrW() / 2 - x) * padding), -((ScrH() / 2 - y) * padding)
+
+    local sizeX = ScrW() / 2 * padding
+    local sizeY = ScrH() / 2 * padding
+
+    lerpX = Lerp(FrameTime() * speed, lerpX, Wx)
+    lerpY = Lerp(FrameTime() * speed, lerpY, Wy)
+
+    lerpX_g = Lerp(FrameTime() * (speed * 3), lerpX_g, Wx)
+    lerpY_g = Lerp(FrameTime() * (speed * 3), lerpY_g, Wy)
+
+    lerpX_l = Lerp(FrameTime() * (speed * 10), lerpX_l, Wx)
+    lerpY_l = Lerp(FrameTime() * (speed * 10), lerpY_l, Wy)
+
     surface.SetDrawColor(255, 255, 255)
-    surface.SetMaterial(matBG)
-    surface.DrawTexturedRect(0, 0, w, h)
+    surface.SetMaterial(material_bg)
+    surface.DrawTexturedRect(0 - lerpX - sizeX, 0 - lerpY - sizeY, w + sizeX * 2, h + sizeY * 2)
 
     surface.SetDrawColor(0, 0, 0, 190)
     surface.DrawRect(0, 0, w, h)
+
+    surface.SetDrawColor(255, 255, 255, 150)
+    surface.SetMaterial(material_bg_glass)
+    surface.DrawTexturedRect(0 - lerpX_g - sizeX, 0 - lerpY_g - sizeY, w + sizeX * 2, h + sizeY * 2)
+
+    surface.SetDrawColor(255, 255, 255, 25)
+    surface.SetMaterial(material_bg_light)
+    surface.DrawTexturedRect(0 - lerpX_l - sizeX, 0 - lerpY_l - sizeY, w + sizeX * 2, h + sizeY * 2)
 
     asterionlib.DrawBlur(self, 5, passes, alpha)
 end

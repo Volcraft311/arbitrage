@@ -77,7 +77,6 @@ Arbitrage.Gradients = {
 
 function Arbitrage.DrawGradient(gradientType, x, y, width, height, color)
     local data = Arbitrage.Gradients[gradientType]
-    if !data then return end
 
     surface.SetDrawColor(color)
     surface.SetTexture(data)

@@ -18,6 +18,10 @@ local deathText = "Вы вернетесь в лобби через: %s секу
 local deathTime = 10
 
 function PANEL:Init()
+    if IsValid(Arbitrage.gui.death) then
+        Arbitrage.gui.death:Remove()
+    end
+
     Arbitrage.gui.death = self
 
     self:SetPos(0, 0)

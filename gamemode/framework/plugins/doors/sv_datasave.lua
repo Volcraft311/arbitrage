@@ -77,8 +77,8 @@ function PLUGIN:InitPlayersDoor()
 
 	local db = Arbitrage.plugin.list.doors.DoorsData or {}
 	local num = 1
-	for k, v in pairs(player.GetAll()) do
-		if v:IsPlaying() and num <= table.Count(initData[map]) then
+	for k, v in ipairs(player.GetAll()) do
+		if v:IsPlaying() and num <= table.Count(initData[map]) and !v:IsHost() then
 			local entity = doorsEntity[num]
 			if !IsValid(entity) then continue end
 

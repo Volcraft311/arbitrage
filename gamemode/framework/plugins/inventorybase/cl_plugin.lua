@@ -37,13 +37,17 @@ function InventoryBase:CreateInfoPanel(panel, x, y, wide)
     itemName:DockMargin(0, H(20), 0, 0)
     itemName:SizeToContents()
 
-    local itemCategory = infoPanel:Add("DLabel")
-    itemCategory:SetFont("arb.Font_FuturaPTDemi_9")
-    itemCategory:SetTextColor(Color(255, 238, 177, 255))
-    itemCategory:SetText("")
+    local itemCategory = infoPanel:Add("DPanel")
     itemCategory:Dock(TOP)
+    itemCategory:SetTall(H(30))
     itemCategory:DockMargin(0, H(5), 0, 0)
-    itemCategory:SizeToContents()
+    itemCategory.value = ""
+    itemCategory.Paint = function(_, w, h)
+        Arbitrage.DrawTextBlur(_.value, "arb.Font_FuturaPTDemi_9", 2, 2, Color(255, 238, 177, 255), TEXT_ALIGN_LEFT)
+    end
+    itemCategory.SetText = function(_, data)
+        _.value = data
+    end
 
     do
         local line = infoPanel:Add("Panel")

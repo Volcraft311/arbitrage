@@ -50,13 +50,15 @@ function Arbitrage.Initialize()
 	end
 
 	timer.Simple(1, function()
-		RunConsoleCommand("mp_show_voice_icons", 0)
-		RunConsoleCommand("sbox_godmode", 0)
-		RunConsoleCommand("sbox_playershurtplayers", 1)
-		RunConsoleCommand("sv_voiceenable", 1)
-		RunConsoleCommand("zoom_sensitivity_ratio", 0.5)
-		RunConsoleCommand("r_decals", 999)
-		RunConsoleCommand("mp_falldamage", 1)
+		local rcmd = SERVER and asterionlib.RunConsoleCommand or RunConsoleCommand
+
+		rcmd("mp_show_voice_icons", 0)
+		rcmd("sbox_godmode", 0)
+		rcmd("sbox_playershurtplayers", 1)
+		rcmd("sv_voiceenable", 1)
+		rcmd("zoom_sensitivity_ratio", 0.5)
+		rcmd("r_decals", 999)
+		rcmd("mp_falldamage", 1)
 	end)
 
 	function Arbitrage.GM:Initialize() end

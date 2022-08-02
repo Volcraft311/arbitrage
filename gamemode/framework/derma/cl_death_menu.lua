@@ -75,14 +75,6 @@ function PANEL:Think()
         self:AlphaTo(0, 1, 0, function()
             self:Remove()
         end)
-
-        Arbitrage.menu = vgui.Create("arb.MainRemake:UI")
-
-        if SETTINGS.options.Get("show_beta_test") then
-            Arbitrage.menu:Menu()
-        else
-            Arbitrage.menu:Intro()
-        end
     end
 end
 

@@ -161,7 +161,7 @@ Arbitrage.commands.Add("sg", {
     OnAction = function(client, target)
         if !client:IsAdmin() then return end
 
-        target = Arbitrage.FindPlayer(target)
+        target = player.GetByIdentifier(target)
         if !IsValid(target) then return end
 
         local client_name = client:SteamName()
@@ -198,7 +198,7 @@ Arbitrage.commands.Add("settime", {
     OnAction = function(client, time)
         if !client:IsAdmin() then return end
 
-        local value = Arbitrage.IsoDurationToSeconds(time)
+        local value = asterionlib.IsoDurationToSeconds(time)
 
         Arbitrage.CurTime = value
         Arbitrage.commands.Notify(client, "Вы успешно изменили время на: " .. time)
@@ -729,21 +729,6 @@ netstream.Hook("arb.HideState", function(client, state)
 
     client:SetNetVar("hideStatus", bHide)
     Arbitrage.commands.Notify(client, "Вы " .. (bHide and "скрыли" or "раскрыли") .. " свое состояние!")
-end)
-
-netstream.Hook("arb.ActionEntity", function(client, entity, index)
-    if !entity then return end
-    if !IsValid(entity) then return end
-    if !index then return end
-    if !Arbitrage.actionlist[entity:GetClass()] then return end
-
-    local action = Arbitrage.actionlist[entity:GetClass()][index]
-    if action then
-        if client:GetPos():Distance(entity:GetPos()) >= 200 then return end
-        if action.isadmin and !client:IsAdmin() then return end
-
-        action.data(client, entity)
-    end
 end)
 
 netstream.Hook("arb.SelectCharacter", function(client, data)

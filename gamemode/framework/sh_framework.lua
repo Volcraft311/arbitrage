@@ -12,14 +12,6 @@
 ]]--
 
 Arbitrage.HookRun("Initialize")
-Arbitrage.actionlist = {}
-
-function Arbitrage.AddAction(entity, name, data)
-    Arbitrage.actionlist = Arbitrage.actionlist or {}
-    Arbitrage.actionlist[entity] = Arbitrage.actionlist[entity] or {}
-
-    Arbitrage.actionlist[entity][name] = data
-end
 
 do
     Arbitrage.evidence.AddEnt("arb_fridge", {
@@ -307,20 +299,6 @@ function Arbitrage.OffCorpseEffect()
     return GetNetVar("arb.OffCorpseEffect", false)
 end
 
-function Arbitrage.ReturnEntity(client)
-    local data = {}
-    data.start = client:GetShootPos()
-    data.endpos = data.start + client:GetAimVector() * 84
-    data.filter = {client}
-
-    local trace = util.TraceLine(data)
-    local entity = trace.Entity
-
-    if IsValid(entity) then
-        return entity
-    end
-end
-
 function Arbitrage:StartCommand(client, ucmd)
     local stamina = client:GetNetVar("stm", 100)
 
@@ -335,181 +313,16 @@ function Arbitrage:StartCommand(client, ucmd)
     end
 end
 
-function Arbitrage.StringMatches(a, b)
-    if !a then return end
-    if !b then return end
-
-    local a2, b2 = a:lower(), b:lower()
-
-    local chars = {
-        [1] = a,  [2] = b,
-        [3] = a2, [4] = b2
-    }
-
-    for k, v in pairs(chars) do
-        local c = utf8.len(v)
-        local d = utf8.sub(v, c, c)
-
-        if d == " " then
-            chars[k] = utf8.sub(v, 1, c - 1)
-        end
-    end
-
-    if chars[1] == chars[2] then return true end
-    if chars[3] == chars[4] then return true end
-
-    if chars[1]:find(chars[2]) then return true end
-    if chars[3]:find(chars[4]) then return true end
-
-    return false
-end
-
-Arbitrage.isoTable = {
-    {
-        syntax = "Год",
-        allias = {["y"] = true, ["year"] = true, ["years"] = true},
-        func = function(currect, data)
-            return currect + tonumber(data) * ((86400 * 30) * 12)
-        end
-    },
-    {
-        syntax = "Месяц",
-        allias = {["mon"] = true, ["month"] = true, ["months"] = true},
-        func = function(currect, data)
-            return currect + tonumber(data) * (86400 * 30)
-        end
-    },
-    {
-        syntax = "День",
-        allias = {["d"] = true, ["day"] = true, ["days"] = true},
-        func = function(currect, data)
-            return currect + tonumber(data) * 86400
-        end
-    },
-    {
-        syntax = "Час",
-        allias = {["h"] = true, ["hour"] = true, ["hours"] = true},
-        func = function(currect, data)
-            return currect + tonumber(data) * 3600
-        end
-    },
-    {
-        syntax = "Минута",
-        allias = {["m"] = true, ["min"] = true, ["minut"] = true, ["minute"] = true, ["minutes"] = true, ["mi"] = true},
-        func = function(currect, data)
-            return currect + tonumber(data) * 60
-        end
-    },
-    {
-        syntax = "Секунда",
-        allias = {["s"] = true, ["sec"] = true, ["second"] = true, ["seconds"] = true, ["se"] = true},
-        func = function(currect, data)
-            return currect + tonumber(data)
-        end
-    }
-}
-
-function Arbitrage.IsoDurationToSeconds(iso)
-    if !iso then return end
-    if tonumber(iso) then return iso end
-
-    local duration = 0
-    local oldiso = iso
-
-    for i = 1, 9 do
-        iso = iso:gsub(i, "0")
-    end
-
-    local explode = string.Explode("0", iso)
-    for k, v in pairs(explode) do
-        if v == "" or v == " " then
-            explode[k] = nil
-        end
-    end
-
-    local a = {}
-    for i = 1, string.len(oldiso) do
-        a[#a + 1] = string.sub(oldiso, i, i)
-    end
-
-    local numberTable = {}
-    local str = ""
-    for k, v in SortedPairs(a) do
-        if tonumber(v) then
-            str = str .. v
-        elseif !tonumber(v) and str ~= "" then
-            numberTable[#numberTable + 1] = str
-            str = ""
-        end
-    end
-
-    if #numberTable <= 0 then return end
-
-    local tableData = {}
-    local num = 1
-    for k, v in SortedPairs(explode) do
-        local _a, _b = string.find(oldiso, v)
-        local sizeNum = string.len(numberTable[num])
-        local sizeStr = string.len(string.sub(oldiso, _a, _b))
-
-        local c1 = string.sub(oldiso, _a - sizeNum, _b - sizeStr)
-        local c2 = string.sub(oldiso, _a, _b)
-
-        tableData[#tableData + 1] = {
-            c1,
-            c2
-        }
-
-        num = num + 1
-    end
-
-    for k, v in SortedPairs(tableData) do
-        local _num = v[1]
-        local _str = v[2]
-
-        local find = false
-        for k2, v2 in pairs(Arbitrage.isoTable) do
-            if v2.allias[_str] then
-                find = k2
-            end
-        end
-
-        if !find then return nil end
-
-        local data = Arbitrage.isoTable[find].func(duration, _num)
-        duration = data
-    end
-
-    return duration
-end
-
-function Arbitrage.FindPlayer(identifier, patterns)
-    if (string.find(identifier, "STEAM_(%d+):(%d+):(%d+)")) then
-        return player.GetBySteamID(identifier)
-    end
-
-    if (!patterns) then
-        identifier = string.PatternSafe(identifier)
-    end
-
-    for _, v in ipairs(player.GetAll()) do
-        if (Arbitrage.StringMatches(v:Name(), identifier)) then
-            return v
-        end
-    end
-end
-
 do
     local playerMeta = FindMetaTable("Player")
 
     function playerMeta:FakeName()
         local name = self:GetNetVar("fakename")
-        return (name ~= "" and name ~= " ") and name or nil
+        return (name != "" and name != " ") and name or nil
     end
 
     playerMeta.GetFakeName = playerMeta.FakeName
 
-    playerMeta.SteamName = playerMeta.SteamName or playerMeta.Name
     function playerMeta:GetName()
         if !IsValid(self) then return "" end -- Tried to use a NULL entity! (WTF??)
 

@@ -14,57 +14,8 @@
 Arbitrage.DisableElements = Arbitrage.DisableElements or {}
 Arbitrage.gui = Arbitrage.gui or {}
 
-local function aEqualto(b, c)
-    if b == c then
-        return true
-    else
-        for i = 1, 12 do
-            if b == (c - i) or b == (c + i) then
-                return true
-            end
-        end
-    end
-
-    return false
-end
-
-local isSixByNine = nil
-
-local function IsSixByNine()
-    if isSixByNine == nil then
-        isSixByNine = aEqualto(ScrW(), math.Round(ScrH() * 1.77777777778))
-    end
-
-    return isSixByNine
-end
-
-local testSize = 1.5 -- ScrW() / (ScrW() * 0.65)
-local cacheW = {}
-function Arbitrage.ResolutionW(size)
-    if cacheW[size] then
-        return cacheW[size]
-    end
-
-    local data = IsSixByNine() and ScrW() * (size / 1920) or math.Clamp(1920 * (size / 1920) / testSize, 0, ScrW())
-    cacheW[size] = data
-
-    return data
-end
-
-local cacheH = {}
-function Arbitrage.ResolutionH(size)
-    if cacheH[size] then
-        return cacheH[size]
-    end
-
-    local data = IsSixByNine() and ScrH() * (size / 1080) or math.Clamp(1080 * (size / 1080) / testSize, 0, ScrH())
-    cacheH[size] = data
-
-    return data
-end
-
-W = Arbitrage.ResolutionW
-H = Arbitrage.ResolutionH
+Arbitrage.ResolutionW = W
+Arbitrage.ResolutionH = H
 
 Arbitrage.Gradients = {
     [GRADIENT_CENTER] = surface.GetTextureID("gui/center_gradient"),
@@ -83,6 +34,7 @@ function Arbitrage.DrawGradient(gradientType, x, y, width, height, color)
     surface.DrawTexturedRect(x, y, width, height)
 end
 
+local cb = Color(254, 110, 21)
 function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign)
     local alpha = color.a or 255
     if alpha <= 0.01 then return end
@@ -94,7 +46,7 @@ function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign)
     local font_blur = font_name .. "Blur_" .. font_size
 
     for i = 1, 2 do
-        draw.SimpleText(text, font_blur, x, y, ColorAlpha(Color(254, 110, 21), alpha), xAlign)
+        draw.SimpleText(text, font_blur, x, y, ColorAlpha(cb, alpha), xAlign)
     end
 
     draw.SimpleText(text, font_normal, x, y, color, xAlign)
@@ -104,7 +56,7 @@ function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size)
     local alpha = color.a or 255
     if alpha <= 0.01 then return end
 
-    local color_blur = ColorAlpha(Color(254, 110, 21), alpha)
+    local color_blur = ColorAlpha(cb, alpha)
 
     Arbitrage.DrawGradient(GRADIENT_DOWN, x, y - size, w, size, color_blur)
     Arbitrage.DrawGradient(GRADIENT_UP, x, y + h, w, size, color_blur)
@@ -123,7 +75,7 @@ function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size)
 end
 
 function Arbitrage.GetChapter()
-    return !GetNetVar("arb.Chapter") and "Эпизод отсутствует" or GetNetVar("arb.Chapter")
+    return GetNetVar("arb.Chapter", "Эпизод отсутствует")
 end
 
 function Arbitrage.GetTime()
@@ -139,10 +91,6 @@ function Arbitrage.GetTime()
     if tonumber(_m) < 10 then _m = "0" .. _m end
 
     return Format("%s:%s", _h, _m)
-end
-
-function Arbitrage.IsClient(client)
-    return client == LocalPlayer()
 end
 
 function Arbitrage.AddDisableElement(data)
@@ -273,34 +221,6 @@ Arbitrage.AddDisableElement("CHudHintDisplay")
 Arbitrage.AddDisableElement("CHudSuitPower")
 Arbitrage.AddDisableElement("CHudHistoryResource")
 Arbitrage.AddDisableElement("CHudZoom")
-
--- OLD
--- function Arbitrage:KeyPress(client, key)
---     if key == IN_USE and client:oldAlive() then
---         local entity = Arbitrage.ReturnEntity(client)
-
---         if IsValid(entity) then
---             local action = Arbitrage.actionlist[entity:GetClass()]
---             if !action then return end
-
---             local parentMenu = DermaMenu()
-
---             for k, v in pairs(action) do
---                 if v.isadmin and !LocalPlayer():IsAdmin() then continue end
-
---                 local panel = parentMenu:AddOption(k, function()
---                     netstream.Start("arb.ActionEntity", entity, k)
---                 end)
-
---                 if v.icon then
---                     panel:SetIcon(v.icon)
---                 end
---             end
-
---             parentMenu:Open(ScrW() / 2, ScrH() / 2)
---         end
---     end
--- end
 
 function Arbitrage:HUDShouldDraw(name)
     if Arbitrage.DisableElements[name] then

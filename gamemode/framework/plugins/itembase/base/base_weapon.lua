@@ -35,7 +35,7 @@ BASE.creationExample = {
 }
 
 if CLIENT then
-	local ribbon = Material("danganronpa/inventory/ribbon.png")
+	local ribbon = Material("danganronpa/ribbon/orange.png")
 
 	function BASE:Paint(item, w, h)
 		if item:GetData("equip") then

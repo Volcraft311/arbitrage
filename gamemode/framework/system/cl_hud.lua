@@ -237,6 +237,7 @@ do
 		if Arbitrage.lawEnable then return false end
 		if !SETTINGS.options.Get("show_crosshair") then return false end
 		if disableCrossHair then return false end
+		if client:IsSpectate() then return false end
 
 		return true
 	end
@@ -261,7 +262,7 @@ do
 			isUseFirst = class == "academy_first"
 			isUseTool = class and (class == "gmod_tool" or class == "weapon_physgun")
 			isNoAnim = !isNocliping and (client:IsPlaying() and !isUseTool)
-			disableCrossHair = class and !weaponData[class]
+			disableCrossHair = (class and !weaponData[class])
 		end
 
 		allow = isAllow(client)

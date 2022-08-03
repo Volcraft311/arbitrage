@@ -171,6 +171,9 @@ function PLUGIN:PlayerUse(client, entity)
             end, function(activator)
                 netstream.Start(client, "arb.Notify", "Ваш журнал улик обновлён.", false)
 
+                local evidence = self:GetEvidence(idx)
+                netstream.Start(client, "Evidence:Draw", entity, evidence)
+
                 client:AddEvidence(idx)
             end)
         else

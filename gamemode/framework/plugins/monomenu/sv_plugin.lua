@@ -154,7 +154,7 @@ function PLUGIN:CheckPassword(steamID64)
     if self.WhiteListStandart[steamid] then return true end
     data.players = data.players or {}
 
-    return data.players[steamid] and true or false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь в тех. поддержку нашего сервера.\n\nНаш дискорд: https://discord.gg/Kqyn2uKrej"
+    return data.players[steamid] and true or false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь в тех. поддержку нашего сервера.\n\nПодробная информация: https://asterion.games"
 end
 
 netstream.Hook("arb.OpenMonoMenu", function(client)

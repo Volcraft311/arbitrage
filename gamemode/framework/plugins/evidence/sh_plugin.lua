@@ -17,9 +17,14 @@ Evidence = PLUGIN
 
 PLUGIN.list = PLUGIN.list or {}
 PLUGIN.icons = {}
+PLUGIN.ribbons = {}
 
 function PLUGIN:AddIcon(file)
     self.icons[#self.icons + 1] = "danganronpa/evidence/" .. file
+end
+
+function PLUGIN:AddRibbon(file)
+    self.ribbons[#self.ribbons + 1] = "danganronpa/ribbon/" .. file
 end
 
 function PLUGIN:GetEvidence(idx)
@@ -60,6 +65,7 @@ function PLUGIN:GetToolData(client)
     local evidenceB = tool:GetClientInfo("b")
     local evidenceAlpha = tool:GetClientInfo("alpha")
     local evidenceIcon = tool:GetClientInfo("icon")
+    local evidenceRibbon = tool:GetClientInfo("ribbon")
 
     if IsValid(entity) and !entity:IsPlayer() and !entity:IsWorld() then
         -- eh...
@@ -75,6 +81,7 @@ function PLUGIN:GetToolData(client)
         alpha = evidenceAlpha,
         position = position + angles:Up() * 0.5,
         image = evidenceIcon,
+        ribbon = evidenceRibbon,
         angles = angles,
     }
 
@@ -114,7 +121,15 @@ do
     PLUGIN:AddIcon("knife.png")
     PLUGIN:AddIcon("papers.png")
     PLUGIN:AddIcon("deadbody.png")
+end
 
+do
+    PLUGIN:AddRibbon("blue.png")
+    PLUGIN:AddRibbon("green.png")
+    PLUGIN:AddRibbon("orange.png")
+    PLUGIN:AddRibbon("red.png")
+    PLUGIN:AddRibbon("violet.png")
+    PLUGIN:AddRibbon("white.png")
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

@@ -40,7 +40,8 @@ local function reg(data)
         description = data.description or "Неизвестно",
         color = data.color or Color(255, 255, 255),
         alpha = data.alpha or 255,
-        image = tonumber(data.image) and math.floor(data.image) or 1
+        image = tonumber(data.image) and math.floor(data.image) or 1,
+        ribbon = tonumber(data.image) and math.floor(data.ribbon) or 1
     })
 end
 

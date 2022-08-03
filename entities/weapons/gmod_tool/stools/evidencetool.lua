@@ -15,6 +15,7 @@ TOOL.ClientConVar.g = 255
 TOOL.ClientConVar.b = 255
 TOOL.ClientConVar.alpha = 255
 TOOL.ClientConVar.icon = 1
+TOOL.ClientConVar.ribbon = 1
 
 if CLIENT then
     language.Add("tool.evidencetool.name", "Evidence Tool")
@@ -114,24 +115,24 @@ function TOOL.BuildCPanel(CPanel)
         Blue = l .. "b"
     })
 
-    local cluePanel = vgui.Create("DScrollPanel")
-    cluePanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
-    cluePanel:SetTall(200)
-    cluePanel.Paint = function(_, w, h)
+    local evidenceScrollPanel = vgui.Create("DScrollPanel")
+    evidenceScrollPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    evidenceScrollPanel:SetTall(200)
+    evidenceScrollPanel.Paint = function(_, w, h)
         surface.SetDrawColor(0, 0, 0)
         surface.DrawOutlinedRect(0, 0, w, h)
     end
-    CPanel:AddPanel(cluePanel)
+    CPanel:AddPanel(evidenceScrollPanel)
 
-    local List = cluePanel:Add("DIconLayout")
-    List:Dock(FILL)
-    List:SetSpaceY(5)
-    List:SetSpaceX(5)
+    local ListIcons = evidenceScrollPanel:Add("DIconLayout")
+    ListIcons:Dock(FILL)
+    ListIcons:SetSpaceY(5)
+    ListIcons:SetSpaceX(5)
 
-    for k, v in pairs(Evidence.icons) do
+    for k, v in ipairs(Evidence.icons) do
         local mat = Material(v)
 
-        local ListItem = List:Add("DButton")
+        local ListItem = ListIcons:Add("DButton")
         ListItem:SetText("")
         ListItem:SetSize(Arbitrage.ResolutionW(60), Arbitrage.ResolutionH(60))
         ListItem.alpha = 0
@@ -157,6 +158,49 @@ function TOOL.BuildCPanel(CPanel)
         end
     end
 
+    local ribbonScrollPanel = vgui.Create("DScrollPanel")
+    ribbonScrollPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    ribbonScrollPanel:SetTall(130)
+    ribbonScrollPanel.Paint = function(_, w, h)
+        surface.SetDrawColor(0, 0, 0)
+        surface.DrawOutlinedRect(0, 0, w, h)
+    end
+    CPanel:AddPanel(ribbonScrollPanel)
+
+    local ListRibbons = ribbonScrollPanel:Add("DIconLayout")
+    ListRibbons:Dock(FILL)
+    ListRibbons:SetSpaceY(5)
+    ListRibbons:SetSpaceX(5)
+
+    for k, v in ipairs(Evidence.ribbons) do
+        local mat = Material(v)
+
+        local ListItem = ListRibbons:Add("DButton")
+        ListItem:SetText("")
+        ListItem:SetSize(Arbitrage.ResolutionW(60), Arbitrage.ResolutionH(60))
+        ListItem.alpha = 0
+        ListItem.index = k
+        ListItem.Paint = function(_, w, h)
+            local convar = GetConVar(l .. "ribbon"):GetInt()
+
+            _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or _.index == convar) and 200 or 0)
+
+            surface.SetDrawColor(255, 61, 96, _.alpha)
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(mat)
+            surface.DrawTexturedRect(5, 5, w - 10, h - 10)
+
+            surface.SetDrawColor(255, 61, 96, 150)
+            surface.DrawOutlinedRect(0, 0, w, h, 1)
+        end
+
+        ListItem.DoClick = function()
+            RunConsoleCommand(l .. "ribbon", k)
+        end
+    end
+
     local ResetButton = vgui.Create("DButton")
     ResetButton:SetText("Сбросить настройки")
     ResetButton.DoClick = function()
@@ -168,6 +212,7 @@ function TOOL.BuildCPanel(CPanel)
         RunConsoleCommand(l .. "b", 255)
         RunConsoleCommand(l .. "alpha", 255)
         RunConsoleCommand(l .. "icon", 1)
+        RunConsoleCommand(l .. "ribbon", 1)
     end
     CPanel:AddPanel(ResetButton)
 end

@@ -121,7 +121,7 @@ local function createItemButton(panel, id, mat, name, data)
 	end
 end
 
-local function createEvidenceButton(panel, id, mat, name, data)
+local function createEvidenceButton(panel, id, evidenceMat, ribbonMat, name, data)
 	local showText = Arbitrage.gui.lawaction.evidences[id] and "Предъвил: " .. Arbitrage.gui.lawaction.evidences[id] or "Никто не показывал эту улику!"
 
 	local evidenceButton = panel:Add("DButton")
@@ -140,8 +140,12 @@ local function createEvidenceButton(panel, id, mat, name, data)
 		surface.DrawOutlinedRect(0, 0, w, h, 1)
 
 		surface.SetDrawColor(255, 255, 255)
-		surface.SetMaterial(mat)
+		surface.SetMaterial(evidenceMat)
 		surface.DrawTexturedRect(0, 0, h, h)
+
+        surface.SetDrawColor(255, 255, 255)
+        surface.SetMaterial(ribbonMat)
+        surface.DrawTexturedRect(0, 0, h, h)
 
 		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 		draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
@@ -241,8 +245,11 @@ local categoryData = {
             	local data = Evidence:GetEvidence(k)
             	if !data then continue end
 
-            	local d = Evidence.icons
-            	local mat = Material(d[data.image] and d[data.image] or d[1])
+            	local dEvidence = Evidence.icons
+            	local evidenceMat = Material(dEvidence[data.image] and dEvidence[data.image] or dEvidence[1])
+
+                local dRibbon = Evidence.ribbons
+                local ribbonMat = Material(dRibbon[data.ribbon] and dRibbon[data.ribbon] or dRibbon[1])
 
             	local description = data.name
                 if utf8.len(description) > 30 then
@@ -251,11 +258,11 @@ local categoryData = {
 
                 local l_evidence = Arbitrage.gui.lawaction.evidences[k]
                 if l_evidence then
-                	createEvidenceButton(showEvidencePanel, k, mat, description, data)
+                	createEvidenceButton(showEvidencePanel, k, evidenceMat, ribbonMat, description, data)
                 end
 
                 if !l_evidence or l_evidence == LocalPlayer():Name() then
-                    createEvidenceButton(yourEvidencePanel, k, mat, description, data)
+                    createEvidenceButton(yourEvidencePanel, k, evidenceMat, ribbonMat, description, data)
                 end
             end
         end

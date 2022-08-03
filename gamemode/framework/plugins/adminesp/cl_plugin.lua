@@ -82,7 +82,7 @@ local function isAllow(client)
 
 	if !client:oldAlive() then return false end
 	if !client:IsAdmin() then return false end
-	if !client:IsNocliping() and !Arbitrage:IsDeveloping() then return false end
+	if !client:IsNocliping() then return false end
 	if !SETTINGS.options.Get("show_admin_esp") then return false end
 	if client.GetSitting and client:GetSitting() then return false end
 	if Arbitrage.lawEnable then return false end

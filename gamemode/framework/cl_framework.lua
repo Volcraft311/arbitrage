@@ -371,14 +371,6 @@ function Arbitrage:SpawnMenuOpen()
     return false
 end
 
-function Arbitrage:IsDeveloping()
-    local client = LocalPlayer()
-
-    if !client:IsAdmin() then return false end
-
-    return GetConVar("developer"):GetInt() > 0
-end
-
 function Arbitrage:ChatText(index, name, text, type)
     return ARBITRAGE_DISABLE_DATA[type]
 end

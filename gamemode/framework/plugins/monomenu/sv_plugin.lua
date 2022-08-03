@@ -127,7 +127,7 @@ function PLUGIN:StartVoting()
             end
 
             for k, v in ipairs(player.GetAll()) do
-                if !v:IsAdmin() then continue end
+                if !v:IsHost() then continue end
 
                 netstream.Start(v, "arb.SendMessage", str)
             end

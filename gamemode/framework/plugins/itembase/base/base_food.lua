@@ -57,19 +57,19 @@ BASE.creationExample = {
 }
 
 function BASE:GetDescription()
-    local left = self:GetData("left", self.maxuse)
+    local left = self:GetData("left", tonumber(self.maxuse))
 
     return self.description .. ". Осталось: " .. left .. "/" .. self.maxuse .. ""
 end
 
 local function RecoveryFunc(item, bAll)
     local client = item.player
-    local left = item:GetData("left", item.maxuse)
+    local left = item:GetData("left", tonumber(item.maxuse))
 
     local data = {"Thirst", "Hunger", "Sleep"}
     for k, v in ipairs(data) do
         local info = Arbitrage.statistics.Get(client, v)
-        local amount = item[string.lower(v)]
+        local amount = tonumber(item[string.lower(v)])
         if !amount then continue end
         if amount == 0 then continue end
 
@@ -86,7 +86,7 @@ BASE:AddAction("Использовать", {
     OnRun = function(item)
         RecoveryFunc(item)
 
-        local left = item:GetData("left", item.maxuse)
+        local left = item:GetData("left", tonumber(item.maxuse))
         item:SetData("left", left - 1)
         if (left - 1) <= 0 then return end
 
@@ -102,7 +102,7 @@ BASE:AddAction("Использовать все", {
         RecoveryFunc(item, true)
     end,
     OnCanRun = function(item)
-        local left = item:GetData("left", item.maxuse)
+        local left = item:GetData("left", tonumber(item.maxuse))
 
         return left > 1
     end

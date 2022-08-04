@@ -79,11 +79,7 @@ function PANEL:SetPlayer(data)
     local steamid = data:SteamID()
     if steamid == self.selectClient then return end
 
-    local faction = data:Team()
-    local factionData = Arbitrage.teams.Get(faction)
-    if !factionData then return end
-
-    local name = factionData.name
+    local name = data:Name()
 
     self:SetText(name)
     self.selectClient = steamid

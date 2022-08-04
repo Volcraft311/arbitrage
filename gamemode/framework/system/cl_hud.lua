@@ -192,7 +192,7 @@ function Arbitrage.hud.ALTMenuDraw()
 		local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
 
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
-		surface_SetMaterial(Material(Arbitrage.teams.Get(client:Team()).hud))
+		surface_SetMaterial(mat)
 		surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
 
 		for k, v in SortedPairs(Arbitrage.hud.CircleData or {}) do
@@ -205,7 +205,7 @@ function Arbitrage.hud.ALTMenuDraw()
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
 		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)
 
-		draw_SimpleText(Arbitrage.teams.Get(client:Team()).name, "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(client:Name(), "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 		draw_SimpleText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 
 		draw_SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)

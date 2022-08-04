@@ -82,14 +82,13 @@ function PANEL:Paint()
         local w, h = W(70), ScrH() / 2 - sizeH / 2 - H(100)
 
         surface.SetDrawColor(255, 255, 255, 255 * 0.6)
-        surface.SetMaterial(Material(Arbitrage.teams.Get(client:Team()).hud))
+        surface.SetMaterial(mat)
         surface.DrawTexturedRect(w, h, sizeW, sizeH)
-        -- surface.DrawOutlinedRect(w, h, sizeW, sizeH)
 
         surface.SetDrawColor(255, 255, 255, 12)
         surface.DrawRect(w + sizeW - sizeW / 2 - W(120) * 1.5, h + sizeH - sizeH * 0.25 + H(60), W(120) * 3, 2)
 
-        draw.SimpleText(Arbitrage.teams.Get(client:Team()).name, "arb.Font_OpenSansLight_15", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(client:Name(), "arb.Font_OpenSansLight_15", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
         draw.SimpleText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25 + H(80), Color( 255, 255, 255), TEXT_ALIGN_CENTER)
     end
 end

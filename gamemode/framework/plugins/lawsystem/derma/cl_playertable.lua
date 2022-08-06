@@ -58,7 +58,10 @@ function PANEL:Init()
             surface.SetMaterial(disable)
             surface.DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2, size, size)
 
-            size = size - 5
+            if _.alpha < 0.1 then return end
+
+            size = (math.abs(math.sin(RealTime() * 4)) * 13) + 10
+
             surface.SetDrawColor(255, 255, 255, _.alpha)
             surface.SetMaterial(active)
             surface.DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2, size, size)

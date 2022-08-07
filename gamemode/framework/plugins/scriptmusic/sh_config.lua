@@ -15,12 +15,12 @@
 local PLUGIN = PLUGIN
 
 PLUGIN:AddEvent("freetime_day", {
-    name = "Дневная музыка (свободное время)",
+    name = "Свободное время (дневное)",
     volume = 30
 })
 
 PLUGIN:AddEvent("freetime_night", {
-    name = "Ночная музыка (свободное время)",
+    name = "Свободное время (ночное)",
     volume = 30
 })
 
@@ -59,7 +59,24 @@ PLUGIN:AddEvent("endgame", {
     volume = 30
 })
 
-PLUGIN:AddEvent("other", {
-    name = "Разное",
+PLUGIN:AddEvent("tension", {
+    name = "Напряженность",
     volume = 30
 })
+
+PLUGIN:AddEvent("mystery", {
+    name = "Загадка",
+    volume = 30
+})
+
+PLUGIN:AddEvent("mono_lesson", {
+    name = "Моно-урок",
+    volume = 30
+})
+
+for i = 1, 5 do
+    PLUGIN:AddEvent("other_" .. i, {
+        name = "Разное " .. i,
+        volume = 30
+    })
+end

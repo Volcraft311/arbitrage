@@ -179,22 +179,23 @@ end
 
 function PLUGIN:ChangeMusic()
     if !Arbitrage.IsStartGame() then return end
-    if !self:IsStoping() then return end
 
     local theme = self:GetTheme()
     if theme == "none" then return end
 
     if (!self.uChangeMusic or CurTime() >= self.uChangeMusic) then
-        netstream.Start("ScriptMusic:PlayEventGL", theme)
+        if self:IsStoping() then
+            netstream.Start("ScriptMusic:PlayEventGL", theme)
 
-        if self:IsValidGlobalSound() then
-            local gSound = self:GetGlobalSound()
-            gSound:Stop()
+            if self:IsValidGlobalSound() then
+                local gSound = self:GetGlobalSound()
+                gSound:Stop()
+
+                PLUGIN.sound = nil
+            end
         end
 
-        PLUGIN.sound = nil
-
-        self.uChangeMusic = CurTime() + 15
+        self.uChangeMusic = CurTime() + 3
     end
 end
 
@@ -233,6 +234,8 @@ netstream.Hook("ScriptMusic:GlobalTrack", function(data, volume, max_volume)
     PLUGIN:InitializeTrack(data, function(channel)
         PLUGIN:StopGlobalSound(function()
             PLUGIN.sound = channel
+
+            print(PLUGIN.sound)
 
             channel:SetVolume(0)
             channel:Play()

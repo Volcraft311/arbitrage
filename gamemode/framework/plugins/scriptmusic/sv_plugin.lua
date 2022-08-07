@@ -192,3 +192,12 @@ netstream.Hook("ScriptMusic:ChangeTheme", function(client, theme, bStopOldTheme)
 
     PLUGIN:ChangeTheme(theme, bStopOldTheme)
 end)
+
+netstream.Hook("ScriptMusic:ChangeMusic", function(client, track, volume, max_volume)
+    if !client:IsAdmin() then return end
+
+    volume = volume or 0
+    max_volume = max_volume or 100
+
+    netstream.Start(nil, "ScriptMusic:GlobalTrack", track, volume, max_volume)
+end)

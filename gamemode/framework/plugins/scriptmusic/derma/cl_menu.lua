@@ -46,6 +46,26 @@ function PANEL:Init()
         end)
     end
 
+    local playButton = self:Add("DButton")
+    playButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    playButton:SetText("")
+    playButton:SetTall(Arbitrage.ResolutionH(25))
+    playButton:Dock(BOTTOM)
+    playButton.alpha = 0
+    playButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText("Запустить музыку", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+
+        surface.SetDrawColor(255, 61, 96, 30)
+        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+    end
+    playButton.DoClick = function()
+        Derma_StringRequest("Запустить музыку", "Укажите путь к файлу или URL", "", function(url)
+            netstream.Start("ScriptMusic:ChangeMusic", url)
+
+        end, nil, "Запустить", "Отменить")
+    end
+
     local addButton = self:Add("DButton")
     addButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
     addButton:SetText("")
@@ -88,7 +108,7 @@ function PANEL:Init()
         end
 
         local menu = DermaMenu()
-        for k, v in pairs(PLUGIN:GetEvents()) do
+        for k, v in SortedPairsByMemberValue(PLUGIN:GetEvents(), "name") do
             menu:AddOption(v.name, function() func(k) end)
         end
 
@@ -508,7 +528,7 @@ function PANEL:SetData(id, data)
 
     local num = 0
 
-    for k, v in pairs(PLUGIN:GetEvents()) do
+    for k, v in SortedPairsByMemberValue(PLUGIN:GetEvents(), "name") do
         local panel = self.eventsPanel:Add("DButton")
         panel.num = num
         panel:SetText("")

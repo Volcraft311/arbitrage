@@ -46,7 +46,8 @@ local weaponData = {
 	["weapon_physgun"] = true,
 	["gmod_tool"] = true,
 	["academy_key"] = true,
-	["academy_first"] = true
+	["academy_first"] = true,
+	["weapon_broom"] = true
 }
 
 local function allow()

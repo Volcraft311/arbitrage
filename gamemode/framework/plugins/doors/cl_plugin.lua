@@ -101,7 +101,7 @@ end
 local function gRequestAddDoorFaction()
 	local data = {}
 
-	for k, v in pairs(Arbitrage.teams.data) do
+	for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
 		data[#data + 1] = {
 			name = v.name,
 			icon = v.pixel,
@@ -130,7 +130,7 @@ local function gAddIcon(entity)
 	local data = {}
 	local useImages = formatedImages(entity:GetNetVar("arb.image", {}))
 
-	for k, v in pairs(Arbitrage.teams.data) do
+	for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
 		if v.pixel and !useImages[k] then
 			data[#data + 1] = {
 				name = v.name,

@@ -41,7 +41,7 @@ local stagesData = {
         :AddButton("Ведущие", W(125), function()
             local data = {}
 
-            for k, v in pairs(Arbitrage.teams.data) do
+            for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
                 v.key = k
 
                 if v.category == "Ведущие" then
@@ -346,7 +346,7 @@ function PANEL:InitCategory()
         panel.DoClick = function()
             local data = {}
 
-            for k2, v2 in pairs(Arbitrage.teams.data) do
+            for k2, v2 in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
                 v2.key = k2
 
                 if v2.category == v.name then

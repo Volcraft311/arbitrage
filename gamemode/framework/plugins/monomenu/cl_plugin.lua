@@ -61,7 +61,7 @@ local function getCharacters(steamid)
     local data = {}
 
     local info = {}
-    for k, v in pairs(Arbitrage.teams.data) do
+    for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
         local category = v.category or "Остальные"
 
         info[category] = info[category] or {}

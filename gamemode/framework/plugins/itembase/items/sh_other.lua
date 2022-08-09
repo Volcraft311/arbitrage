@@ -54,7 +54,7 @@ do
         netstream.Hook("ItemBase:OpenCreateKeyMenu", function(id)
             local parent = DermaMenu()
 
-            for k, v in pairs(Arbitrage.teams.data) do
+            for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
                 local panel = parent:AddOption(v.name, function()
                     netstream.Start("ItemBase:CreateKey", id, k)
                 end)

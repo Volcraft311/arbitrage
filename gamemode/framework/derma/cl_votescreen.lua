@@ -278,6 +278,16 @@ function PANEL:ClosingAllPanels(panel)
     end)
 end
 
+function PANEL:End(data)
+    self:RemovingPanels()
+
+    timer.Simple(1, function()
+        if !IsValid(self) then return end
+
+        self:ShowWinning(data)
+    end)
+end
+
 local material_bg = Material("danganronpa/ui/bg.png")
 local material_bg_glass = Material("danganronpa/ui/bg_glassshards.png")
 local material_bg_light = Material("danganronpa/ui/bg_light.png")

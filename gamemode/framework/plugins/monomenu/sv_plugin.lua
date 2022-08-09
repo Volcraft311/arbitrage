@@ -40,13 +40,11 @@ function PLUGIN:OpenMonoMenu(client, bRefresh)
         end
     end
 
-    asterionlib.netgui:Valid(client, "arb.MonoMenu", function(bValid)
-        if bValid and bRefresh then
-            asterionlib.netgui:Call(client, "arb.MonoMenu", "SetData", data)
-        else
-            asterionlib.netgui:Create(client, "arb.MonoMenu", nil, "SetData", data)
-        end
-    end)
+    if bRefresh then
+        asterionlib.netgui:Call(client, "arb.MonoMenu", "SetData", data)
+    else
+        asterionlib.netgui:Rebuild(client, "arb.MonoMenu", nil, "SetData", data)
+    end
 end
 
 function PLUGIN:OpenMonoWhiteList(client)
@@ -57,13 +55,7 @@ function PLUGIN:OpenMonoWhiteList(client)
         settings = false,
     }
 
-    asterionlib.netgui:Valid(client, "arb.MonoMenuWhiteList", function(bValid)
-        if bValid then
-            asterionlib.netgui:Call(client, "arb.MonoMenuWhiteList", "SetData", data)
-        else
-            asterionlib.netgui:Create(client, "arb.MonoMenuWhiteList", nil, "SetData", data)
-        end
-    end)
+    asterionlib.netgui:Rebuild(client, "arb.MonoMenuWhiteList", nil, "SetData", data)
 end
 
 local function CheckVoting(players, data)

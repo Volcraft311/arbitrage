@@ -59,33 +59,6 @@ netstream.Hook("arb.ActionRun", function(data)
     }
 end)
 
-local function hideRender()
-    render_ClearStencil()
-    render_SetStencilEnable(true)
-
-    render_SetStencilWriteMask(1)
-    render_SetStencilTestMask(1)
-
-    render_SetStencilFailOperation(STENCILOPERATION_REPLACE)
-    render_SetStencilPassOperation(STENCILOPERATION_ZERO)
-    render_SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render_SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER)
-    render_SetStencilReferenceValue(1)
-end
-
-local function showRender()
-    render_SetStencilFailOperation(STENCILOPERATION_ZERO)
-    render_SetStencilPassOperation(STENCILOPERATION_REPLACE)
-    render_SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render_SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
-    render_SetStencilReferenceValue(1)
-end
-
-local function disableRender()
-    render_SetStencilEnable(false)
-    render_ClearStencil()
-end
-
 function Arbitrage.action.Draw()
     if !Arbitrage.action.data then return end
     if !istable(Arbitrage.action.data) then return end
@@ -131,14 +104,10 @@ function Arbitrage.action.Draw()
     draw_NoTexture()
     surface_DrawPoly(circle)
 
-    hideRender()
-
-    asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, Color(255, 255, 255), -12.5, 0)
-
-    showRender()
-
-    surface_SetDrawColor(Color(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5))
-    surface_DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)
-
-    disableRender()
+    asterionlib.DrawRender(function()
+        asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, Color(255, 255, 255), -12.5, 0)
+    end, function()
+        surface_SetDrawColor(Color(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5))
+        surface_DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)
+    end)
 end

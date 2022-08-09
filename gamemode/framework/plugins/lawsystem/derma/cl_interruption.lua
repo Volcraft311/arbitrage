@@ -25,33 +25,6 @@ local bgA = Material("danganronpa/law/argue/bg2.png")
 local text = Material("danganronpa/law/argue/text.png")
 local textA = Material("danganronpa/law/argue/textblur.png")
 
-local function hideRender()
-    render.ClearStencil()
-    render.SetStencilEnable(true)
-
-    render.SetStencilWriteMask(1)
-    render.SetStencilTestMask(1)
-
-    render.SetStencilFailOperation(STENCILOPERATION_REPLACE)
-    render.SetStencilPassOperation(STENCILOPERATION_ZERO)
-    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER)
-    render.SetStencilReferenceValue(1)
-end
-
-local function showRender()
-    render.SetStencilFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilPassOperation(STENCILOPERATION_REPLACE)
-    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
-    render.SetStencilReferenceValue(1)
-end
-
-local function disableRender()
-    render.SetStencilEnable(false)
-    render.ClearStencil()
-end
-
 local speed = 0.3
 
 function PANEL:Init()
@@ -93,7 +66,7 @@ function PANEL:Paint(w, h)
     surface.SetMaterial(bgA)
     surface.DrawTexturedRect(2 + tick_anim, 0, w, h)
 
-    hideRender()
+    asterionlib.DrawRender(function()
         local poly = {
             {x = w * 0.25, y = 0},
             {x = w * 0.85, y = 0},
@@ -103,10 +76,10 @@ function PANEL:Paint(w, h)
 
         draw.NoTexture()
         surface.DrawPoly(poly)
-    showRender()
+    end, function()
         surface.SetMaterial(self.character)
         surface.DrawTexturedRect(-10, movePos * 1.2 + 100, w - movePos, h - movePos)
-    disableRender()
+    end)
 
     surface.SetDrawColor(255, 3, 48)
     surface.SetMaterial(textA)

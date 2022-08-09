@@ -451,34 +451,6 @@ local interface = Material("danganronpa/law/interface.png")
 local moving = 0
 local _moving = moving
 
-local function hideRender()
-    render.ClearStencil()
-    render.SetStencilEnable(true)
-
-    render.SetStencilWriteMask(1)
-    render.SetStencilTestMask(1)
-
-    render.SetStencilFailOperation(STENCILOPERATION_REPLACE)
-    render.SetStencilPassOperation(STENCILOPERATION_ZERO)
-    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER)
-    render.SetStencilReferenceValue(1)
-end
-
-local function showRender()
-    render.SetStencilFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilPassOperation(STENCILOPERATION_REPLACE)
-    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
-    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
-    render.SetStencilReferenceValue(1)
-end
-
-local function disableRender()
-    render.SetStencilEnable(false)
-    render.ClearStencil()
-end
-
-
 function PLUGIN:StartCylinder()
     local cyl = {}
     for i = 1, 4 do
@@ -502,52 +474,48 @@ function PLUGIN:StartCylinder()
             local bulletSizeW = ScrW() * 0.2
             local bulletSizeH = ScrH() * 0.08
 
-            hideRender()
+            asterionlib.DrawRender(function()
+                surface.SetDrawColor(255, 255, 255)
+                surface.DrawRect(0, 0, x, h)
+            end, function()
+                do
+                    local center2 = Vector(w / 2, h / 1.95)
+                    local m = Matrix()
+                    m:Translate( center2 )
+                    m:Rotate(Angle( 0, -50, 0 ))
+                    m:Scale(Vector(0.9, 1.3, 1))
+                    m:Translate( -center2 )
 
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(0, 0, x, h)
+                    cam.PushModelMatrix(m)
+                        surface.SetDrawColor(255, 61, 96, 200)
+                        surface.SetMaterial(mat)
+                        surface.DrawTexturedRectRotated(ScrW() * 0.052, ScrH() * 0.24, ScrW() * 0.104, ScrW() * 0.104, -CurTime() % 360 * 10)
+                    cam.PopModelMatrix()
+                end
 
-            showRender()
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(interface)
+                surface.DrawTexturedRect(ScrW() * 0.035, ScrH() * 0.61, ScrW() * 0.28125, ScrH() * 0.41666666666)
 
-            do
-                local center2 = Vector(w / 2, h / 1.95)
-                local m = Matrix()
-                m:Translate( center2 )
-                m:Rotate(Angle( 0, -50, 0 ))
-                m:Scale(Vector(0.9, 1.3, 1))
-                m:Translate( -center2 )
+                do
+                    local m = Matrix()
+                    m:Translate(center)
+                    m:Rotate(Angle(0, -3, 0))
+                    m:Translate(-center)
 
-                cam.PushModelMatrix(m)
-                    surface.SetDrawColor(255, 61, 96, 200)
-                    surface.SetMaterial(mat)
-                    surface.DrawTexturedRectRotated(ScrW() * 0.052, ScrH() * 0.24, ScrW() * 0.104, ScrW() * 0.104, -CurTime() % 360 * 10)
-                cam.PopModelMatrix()
-            end
+                    cam.PushModelMatrix(m)
+                        surface.SetDrawColor(255, 61, 96, alpha)
+                        surface.SetMaterial(bulletblur)
+                        surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(interface)
-            surface.DrawTexturedRect(ScrW() * 0.035, ScrH() * 0.61, ScrW() * 0.28125, ScrH() * 0.41666666666)
+                        surface.SetDrawColor(208, 61, 88)
+                        surface.SetMaterial(bullet)
+                        surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-            do
-                local m = Matrix()
-                m:Translate(center)
-                m:Rotate(Angle(0, -3, 0))
-                m:Translate(-center)
-
-                cam.PushModelMatrix(m)
-                    surface.SetDrawColor(255, 61, 96, alpha)
-                    surface.SetMaterial(bulletblur)
-                    surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
-
-                    surface.SetDrawColor(208, 61, 88)
-                    surface.SetMaterial(bullet)
-                    surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
-
-                    draw.SimpleText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, Color(0, 0, 0), TEXT_ALIGN_LEFT)
-                cam.PopModelMatrix()
-            end
-
-            disableRender()
+                        draw.SimpleText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, Color(0, 0, 0), TEXT_ALIGN_LEFT)
+                    cam.PopModelMatrix()
+                end
+            end)
         end)
     end
 

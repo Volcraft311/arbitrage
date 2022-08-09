@@ -605,7 +605,7 @@ end
 
 do
 	local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_8")
-	function createTextPlayer(client)
+	local function createTextPlayer(client)
 		local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
 
 		local data2D = position:ToScreen()

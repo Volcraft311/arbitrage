@@ -510,6 +510,20 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
     end)
 end)
 
+netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID)
+    if !client:IsAdmin() then return end
+
+    local factionAttacker = Arbitrage.teams.Get(attackerID)
+    if !factionAttacker then return end
+
+    local factionTarget = Arbitrage.teams.Get(targetID)
+    if !targetID then return end
+
+    for k, v in ipairs(player.GetAll()) do
+        asterionlib.netgui:Create(v, "arb.MonoEndGame", nil, "SetData", title, attackerID, targetID)
+    end
+end)
+
 netstream.Hook("arb.SendVote", function(client, data)
     if !client:InGame() then return end
     if !Arbitrage.players[data] then return end

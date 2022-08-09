@@ -78,12 +78,21 @@ PLUGIN.GameData = {
         end
     },
     {
-        data = "Запустить заставку",
+        data = "Запустить заставку (глава)",
         icon = "icon16/application_add.png",
         onRun = function(client)
             if SERVER then return false end
 
             vgui.Create("arb.MonoMenuSplashScreenSub")
+        end
+    },
+    {
+        data = "Запустить заставку (endgame)",
+        icon = "icon16/application_add.png",
+        onRun = function(client)
+            if SERVER then return false end
+
+            vgui.Create("arb.MonoMenuEndGameSub")
         end
     },
     {

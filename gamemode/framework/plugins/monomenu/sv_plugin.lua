@@ -40,13 +40,30 @@ function PLUGIN:OpenMonoMenu(client, bRefresh)
         end
     end
 
-    netstream.Start(client, bRefresh and "arb.UpdateMonoMenu" or "arb.OpenMonoMenu", data)
+    asterionlib.netgui:Valid(client, "arb.MonoMenu", function(bValid)
+        if bValid and bRefresh then
+            asterionlib.netgui:Call(client, "arb.MonoMenu", "SetData", data)
+        else
+            asterionlib.netgui:Create(client, "arb.MonoMenu", nil, "SetData", data)
+        end
+    end)
 end
 
 function PLUGIN:OpenMonoWhiteList(client)
     local data = self:GetData({}, true, true) or {}
 
-    netstream.Start(client, "arb.OpenMonoWhiteList", data)
+    data = (istable(data) and table.Count(data) > 0) and data or { -- PLUGIN:GetData() - always returns some `table`, but not a `nil` value
+        players = {},
+        settings = false,
+    }
+
+    asterionlib.netgui:Valid(client, "arb.MonoMenuWhiteList", function(bValid)
+        if bValid then
+            asterionlib.netgui:Call(client, "arb.MonoMenuWhiteList", "SetData", data)
+        else
+            asterionlib.netgui:Create(client, "arb.MonoMenuWhiteList", nil, "SetData", data)
+        end
+    end)
 end
 
 local function CheckVoting(players, data)
@@ -86,7 +103,9 @@ function PLUGIN:StartVoting()
         end
     end
 
-    netstream.Start(nil, "arb.OpenVotingScreen", data, showingList)
+    for k, v in ipairs(player.GetAll()) do
+        asterionlib.netgui:Create(v, "arb.VoteScreen", nil, "SetData", data, showingList)
+    end
 
     timer.Remove("arb.CheckVotes")
     timer.Create("arb.CheckVotes", 1, 0, function()
@@ -111,8 +130,6 @@ function PLUGIN:StartVoting()
                 end
             end
 
-            netstream.Start(nil, "arb.EndVoting", faction)
-
             local str = "Информация о голосовании: \n"
             for k, v in ipairs(newData) do
                 local steamid = v[1]
@@ -127,9 +144,11 @@ function PLUGIN:StartVoting()
             end
 
             for k, v in ipairs(player.GetAll()) do
-                if !v:IsHost() then continue end
+                asterionlib.netgui:Call(v, "arb.VoteScreen", "End", faction)
 
-                netstream.Start(v, "arb.SendMessage", str)
+                if v:IsHost() then
+                    netstream.Start(v, "arb.SendMessage", str)
+                end
             end
 
             timer.Simple(2, function()
@@ -503,7 +522,10 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
     end
 
     ScriptMusic:ChangeTheme("splashscreen", true)
-    netstream.Start(nil, "arb.OpenSplashScreen", el)
+
+    for k, v in ipairs(player.GetAll()) do
+        asterionlib.netgui:Create(v, "arb.SplashScreen", nil, "SetData", el)
+    end
 
     timer.Simple(23, function()
         ScriptMusic:ChangeTheme("none", true)

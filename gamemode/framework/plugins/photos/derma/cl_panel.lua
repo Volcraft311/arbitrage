@@ -15,9 +15,13 @@
 local PANEL = {}
 
 function PANEL:Init()
-    local sizeX, sizeY, sizeT = W(1920) * 0.7, H(1080) * 0.7, H(46)
+    if IsValid(Arbitrage.gui.photos) then
+        Arbitrage.gui.photos:Remove()
+    end
 
-    Arbitrage.gui.wardrobe = self
+    Arbitrage.gui.photos = self
+
+    local sizeX, sizeY, sizeT = W(1920) * 0.7, H(1080) * 0.7, H(46)
 
     self:SetPos(ScrW() / 2 - sizeX / 2, ScrH() / 2 - sizeY / 2)
     self:SetSize(0, sizeT)

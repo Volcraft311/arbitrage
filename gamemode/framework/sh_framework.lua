@@ -114,18 +114,14 @@ do
 
         -- OTHER
         workshop:Add("246756300") -- Stream Radio
-        -- (DELETED) workshop:Add("415143062") -- TFA Base [ Reduxed ]
         workshop:Add("2840031720") -- TFA Base
         workshop:Add("2463165156") -- [OPTIMIZED] vFire - Dynamic Fire
         workshop:Add("108024198") -- Food and Household items
-        workshop:Add("131759821") -- VJ Base
         workshop:Add("1920810365") -- Facial Emote Mod
         workshop:Add("1784911999") -- LED screens
         workshop:Add("1161268544") -- Pink Blood
 
         -- WEAPONS
-        -- (DELETED) workshop:Add("582366370") -- [TFA] No More Room in Hell Melee SWEPs
-        -- (DELETED) workshop:Add("582493650") -- [TFA] No More Room in Hell Firearm SWEPs
         workshop:Add("2842765511") -- nmrih reupload
         workshop:Add("244540803") -- Customizable Flashlight
         workshop:Add("921195220") -- TFA CS:S Weapons

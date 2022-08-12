@@ -212,12 +212,14 @@ function Arbitrage:GetInfo()
     local data = {}
 
     -- копируем информацию из основной базы позиций
-    for k, v in pairs(Arbitrage:GetStored()) do
+    local arbStored = table.Copy(Arbitrage:GetStored())
+    for k, v in pairs(arbStored) do
         data[k] = v[game.GetMap()]
     end
 
     -- заменяем информацию из эдитора
-    for k, v in pairs(Editor:GetStored()) do
+    local editorStored = table.Copy(Editor:GetStored())
+    for k, v in pairs(editorStored) do
         data[k] = v
     end
 

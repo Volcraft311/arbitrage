@@ -95,8 +95,10 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
-        self.attackerBox:AddChoice(v.name, k)
-        self.targetBox:AddChoice(v.name, k)
+        if v.pixel then
+            self.attackerBox:AddChoice(v.name, k)
+            self.targetBox:AddChoice(v.name, k)
+        end
     end
 
     local submitButton = self.main:Add("DButton")
@@ -129,4 +131,4 @@ function PANEL:Paint(w, h)
     Derma_DrawBackgroundBlur(self, self.startTime)
 end
 
-vgui.Register("arb.MonoMenuEndGameSub", PANEL, "DFrame")
+vgui.Register("arb.MonoMenuEndGameSub", PANEL, "EditablePanel")

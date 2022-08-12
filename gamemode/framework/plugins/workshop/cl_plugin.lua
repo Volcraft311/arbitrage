@@ -19,12 +19,6 @@ local PLUGIN = PLUGIN
 ]]--
 function PLUGIN:Install(id)
     asterionlib.workshop:Add(id)
-
-    steamworks.DownloadUGC(id, function(path)
-        if path and isstring(path) then
-            game.MountGMA(path)
-        end
-    end)
 end
 
 

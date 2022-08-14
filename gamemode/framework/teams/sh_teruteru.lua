@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Повар"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl"
 TEAM.path = "danganronpa/characters/teruteru"
+TEAM.uniqueID = "teruteru"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

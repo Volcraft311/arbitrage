@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Предсказатель"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/dewobedil/danganronpa/yasuhiro_hagakure/default_p.mdl"
 TEAM.path = "danganronpa/characters/yasuhiro"
+TEAM.uniqueID = "yasuhiro"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.3

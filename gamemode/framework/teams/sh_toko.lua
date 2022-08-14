@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Писательница"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl"
 TEAM.path = "danganronpa/characters/toko"
+TEAM.uniqueID = "toko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.5

@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Робот"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player_kiibo.mdl"
 TEAM.path = "danganronpa/characters/k1b0"
+TEAM.uniqueID = "k1b0"
 TEAM.weapons = {"nightvision"}
 
 TEAM.color = Color(240, 201, 73)

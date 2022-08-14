@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Фокусница"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/himiko_yumeno/default_p.mdl"
 TEAM.path = "danganronpa/characters/himiko"
+TEAM.uniqueID = "himiko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.3

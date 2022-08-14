@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Якудза"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl"
 TEAM.path = "danganronpa/characters/fuyuhiko"
+TEAM.uniqueID = "fuyuhiko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

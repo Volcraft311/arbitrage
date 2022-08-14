@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Мастер Боевых Искусс�
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/yourtoast4/danganronpa/sakura_ogami.mdl"
 TEAM.path = "danganronpa/characters/sakura"
+TEAM.uniqueID = "sakura"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

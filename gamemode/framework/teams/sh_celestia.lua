@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Азартный Игрок"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/dewobedil/celestia_ludenberg/default_p.mdl"
 TEAM.path = "danganronpa/characters/celestia"
+TEAM.uniqueID = "celestia"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Детектив"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/shuichi_saihara/default_p.mdl"
 TEAM.path = "danganronpa/characters/shuichi"
+TEAM.uniqueID = "shuichi"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

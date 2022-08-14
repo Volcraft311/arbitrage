@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный ???"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa/hajime_hinata/default_p.mdl"
 TEAM.path = "danganronpa/characters/hajime"
+TEAM.uniqueID = "hajime"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

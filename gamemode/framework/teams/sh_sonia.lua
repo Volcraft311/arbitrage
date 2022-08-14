@@ -17,6 +17,7 @@ TEAM.description = "Абсолютная Принцесса"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa/sonia_nevermind/default_p.mdl"
 TEAM.path = "danganronpa/characters/sonia"
+TEAM.uniqueID = "sonia"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

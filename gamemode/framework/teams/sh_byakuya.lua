@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Наследник"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/custom/byakuya_togami.mdl"
 TEAM.path = "danganronpa/characters/byakuya"
+TEAM.uniqueID = "byakuya"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.7

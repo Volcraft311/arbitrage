@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Музыкант"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl"
 TEAM.path = "danganronpa/characters/ibuki"
+TEAM.uniqueID = "ibuki"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

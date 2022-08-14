@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Бейсболист"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/yourtoast4/danganronpa/leon_kuwata.mdl"
 TEAM.path = "danganronpa/characters/leon"
+TEAM.uniqueID = "leon"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

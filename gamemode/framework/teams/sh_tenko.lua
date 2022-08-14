@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Мастер Айкидо"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/tenko_chabashira/default_p.mdl"
 TEAM.path = "danganronpa/characters/tenko"
+TEAM.uniqueID = "tenko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.3

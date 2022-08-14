@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Художница"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl"
 TEAM.path = "danganronpa/characters/angie"
+TEAM.uniqueID = "angie"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

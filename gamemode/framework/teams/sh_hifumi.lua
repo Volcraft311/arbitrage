@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Автор Фанфиков"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/yourtoast4/danganronpa/hifumi_yamada.mdl"
 TEAM.path = "danganronpa/characters/hifumi"
+TEAM.uniqueID = "hifumi"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

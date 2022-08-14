@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Теннисист"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/ryoma_hoshi/default_p.mdl"
 TEAM.path = "danganronpa/characters/ryoma"
+TEAM.uniqueID = "ryoma"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

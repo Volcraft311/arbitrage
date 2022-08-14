@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Поп-Звезда"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/sayaka_yoru/danganronpa/rstar/sayaka_yoru/sayaka_yoru.mdl"
 TEAM.path = "danganronpa/characters/sayaka"
+TEAM.uniqueID = "sayaka"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

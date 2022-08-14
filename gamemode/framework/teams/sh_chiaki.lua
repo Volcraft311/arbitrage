@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Геймер"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/chiaki_nanami/default_p.mdl"
 TEAM.path = "danganronpa/characters/chiaki"
+TEAM.uniqueID = "chiaki"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

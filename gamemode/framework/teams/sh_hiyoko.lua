@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Традиционный Танцор"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl"
 TEAM.path = "danganronpa/characters/hiyoko"
+TEAM.uniqueID = "hiyoko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

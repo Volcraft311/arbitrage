@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Механик"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/danganronpa/kazuichi_soda.mdl"
 TEAM.path = "danganronpa/characters/kazuichi"
+TEAM.uniqueID = "kazuichi"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

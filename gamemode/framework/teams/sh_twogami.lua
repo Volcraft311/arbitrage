@@ -17,6 +17,7 @@ TEAM.description = "Абсолютный Самозванец"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa2/byakuya_togami/default_p.mdl"
 TEAM.path = "danganronpa/characters/twogami"
+TEAM.uniqueID = "twogami"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

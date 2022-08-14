@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Пловец"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/custom/aoi_asahina.mdl"
 TEAM.path = "danganronpa/characters/aoi"
+TEAM.uniqueID = "aoi"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

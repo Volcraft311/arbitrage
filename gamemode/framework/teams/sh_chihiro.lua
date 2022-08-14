@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Программист"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/dewobedil/danganronpa/chihiro/default_p.mdl"
 TEAM.path = "danganronpa/characters/chihiro"
+TEAM.uniqueID = "chihiro"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 1.1

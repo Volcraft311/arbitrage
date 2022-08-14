@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Дежурный"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/default_p.mdl"
 TEAM.path = "danganronpa/characters/kiyotaka"
+TEAM.uniqueID = "kiyotaka"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.4

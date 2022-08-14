@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Астронавт"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/kaito_momota/default_p.mdl"
 TEAM.path = "danganronpa/characters/kaito"
+TEAM.uniqueID = "kaito"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.3

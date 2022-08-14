@@ -17,6 +17,7 @@ TEAM.description = "Абсолютная Медсестра"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/mikan_tsumiki/default_p.mdl"
 TEAM.path = "danganronpa/characters/mikan"
+TEAM.uniqueID = "mikan"
 TEAM.weapons = {"weapon_medkit"}
 
 TEAM.color = Color(240, 201, 73)

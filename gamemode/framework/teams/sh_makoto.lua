@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Счастливчик"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/yourtoast4/danganronpa/makoto_naegi.mdl"
 TEAM.path = "danganronpa/characters/makoto"
+TEAM.uniqueID = "makoto"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

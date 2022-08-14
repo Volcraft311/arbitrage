@@ -18,6 +18,7 @@ TEAM.description = "Абсолютный Энтомолог"
 TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player/dewobedil/danganronpa/gonta/default_p.mdl"
 TEAM.path = "danganronpa/characters/gonta"
+TEAM.uniqueID = "gonta"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.2

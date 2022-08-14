@@ -17,6 +17,7 @@ TEAM.description = "Абсолютная Мечница"
 TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/peko_pekoyama/default_p.mdl"
 TEAM.path = "danganronpa/characters/peko"
+TEAM.uniqueID = "peko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

@@ -18,6 +18,7 @@ TEAM.description = "Абсолютная Модница"
 TEAM.category = "TRIGGER HAPPY HAVOC"
 TEAM.model = "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl"
 TEAM.path = "danganronpa/characters/junko"
+TEAM.uniqueID = "junko"
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

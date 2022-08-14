@@ -114,7 +114,12 @@ function Arbitrage.player.Respawn(client)
     client:Freeze(false)
     client:GodDisable()
 
-    client:SetHealth(ARBITRAGE_HEALTH * 10)
+    local health = ARBITRAGE_HEALTH
+    if !Arbitrage.IsStartGame() then
+        health = 999999999
+    end
+
+    client:SetHealth(health)
     client:SetArmor(ARBITRAGE_ARMOR)
 
     Arbitrage.player.SetupSpeed(client)

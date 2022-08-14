@@ -18,7 +18,6 @@ TEAM.category = "GOODBYE DESPAIR"
 TEAM.model = "models/player/dewobedil/danganronpa/mahiru_koizumi/default_p.mdl"
 TEAM.path = "danganronpa/characters/mahiru"
 TEAM.uniqueID = "mahiru"
-TEAM.weapons = {"academy_camera"}
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

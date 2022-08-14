@@ -543,6 +543,17 @@ function Arbitrage:StartGame()
                         end
                     end
                 end
+
+                -- выдаем Махиру фотооаппарат
+                do
+                    if client:Team() == TEAM_MAHIRU then
+                        local item = ItemBase.CreateItem("camera")
+
+                        if item then
+                            item:Transfer(inventory:GetID())
+                        end
+                    end
+                end
             end
 
             client:StripAmmo()

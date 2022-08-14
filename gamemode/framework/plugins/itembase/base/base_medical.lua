@@ -60,6 +60,10 @@ local function RecoveryFunc(item, target)
 
     target:SetHealth(math.min(target:Health() + tonumber(item.health), target:GetMaxHealth()))
 
+    if target:Health() <= 0 then
+        target:Kill()
+    end
+
     local left = item:GetData("left", tonumber(item.maxuse))
     item:SetData("left", left - 1)
     if (left - 1) <= 0 then return true end

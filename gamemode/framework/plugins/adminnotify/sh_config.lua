@@ -161,3 +161,15 @@ end)
 PLUGIN:AddNewNotify("protectitem", function(client, uniqueID)
     return Color(63, 162, 184), client, Color(255, 255, 255), " снял/установил защиту на предмет с ID ", Color(48, 218, 187), uniqueID
 end)
+
+PLUGIN:AddNewNotify("changecharter", function(client)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " изменил устав академии"
+end)
+
+PLUGIN:AddNewNotify("startsplashscreen", function(client)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " запустил заставку (глава)"
+end)
+
+PLUGIN:AddNewNotify("startendgame", function(client)
+    return Color(63, 162, 184), client, Color(255, 255, 255), " запустил заставку (endgame)"
+end)

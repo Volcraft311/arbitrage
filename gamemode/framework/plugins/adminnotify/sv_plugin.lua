@@ -32,26 +32,30 @@ function PLUGIN:player_connect(data)
 end
 
 function PLUGIN:PlayerInitial(client)
-    self:SendNotify("join", client:Name() .. " (" .. client:SteamID() .. ")")
+    self:SendNotify("join", client:FullName(true))
 end
 
 function PLUGIN:PlayerDisconnected(client)
-    self:SendNotify("disconnect", client:Name() .. " [" .. client:SteamName() .. "] (" .. client:SteamID() .. ")")
+    self:SendNotify("disconnect", client:FullName(true))
 end
 
 function PLUGIN:PlayerDeath(client, inflictor, attacker)
     local weapon = attacker:IsPlayer() and attacker:GetActiveWeapon()
 
-    self:SendNotify("killed", attacker:GetName() ~= "" and attacker:GetName() .. " (" .. attacker:SteamName() .. ")" or attacker:GetClass(), client:Name() .. " (" .. client:SteamName() .. ")", IsValid(weapon) and weapon:GetClass())
+    local attackerName = (IsValid(attacker) and attacker:IsPlayer()) and attacker:FullName() or attacker:GetClass()
+    local targetName = client:FullName()
+    local weaponName = IsValid(weapon) and weapon:GetClass()
+
+    self:SendNotify("killed", attackerName, targetName, weaponName)
 end
 
 function PLUGIN:PlayerSpawn(client)
-    self:SendNotify("spawn", client:Name() .. " (" .. client:SteamName() .. ")")
+    self:SendNotify("spawn", client:FullName())
 end
 
 function PLUGIN:SelectCharacter(client, data)
     local factionData = Arbitrage.teams.Get(data)
     local faction = factionData and factionData.name or "НЕИЗВЕСТНО"
 
-    self:SendNotify("joincharacter", client:Name() .. " (" .. client:SteamName() .. ")", data .. "(" .. faction .. ")")
+    self:SendNotify("joincharacter", client:FullName(), faction .. "(" .. data .. ")")
 end

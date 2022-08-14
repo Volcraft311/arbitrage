@@ -69,7 +69,7 @@ spawnmenu.AddContentType("Item", function(container, item)
             if v == LocalPlayer() then continue end
 
             local mat = Arbitrage.chat:GetIcon(v):GetName() .. ".png"
-            local _ = subMenu:AddOption(v:Name() .. " (" .. v:SteamName() .. ")", function()
+            local _ = subMenu:AddOption(v:FullName(), function()
                 netstream.Start("ItemBase:GiveItem", v, uniqueID)
             end)
             _:SetIcon(mat)

@@ -178,7 +178,7 @@ netstream.Hook("InventoryBase:OpenActions", function(itemID, data)
         end
     end
 
-    Menu.Paint = function() end
+    Menu.Paint = zero
 
     Menu:Open()
 

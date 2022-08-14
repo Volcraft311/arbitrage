@@ -30,7 +30,7 @@ function Arbitrage.Initialize()
 
 	for k, v in ipairs(commandData) do
 		concommand.Remove(v)
-		concommand.Add(v, function() end)
+		concommand.Add(v, zero)
 	end
 
 	if Arbitrage.util.IsServerSide() then
@@ -89,7 +89,7 @@ function Arbitrage.Initialize()
 		}
 
 		for k, v in ipairs(funcData) do
-			Arbitrage.GM[v] = function() end
+			Arbitrage.GM[v] = zero
 		end
 
 		for k, v in ipairs({"EditingSpawnlistsSave", "ContextClick", "EditingSpawnlists", "OpeningContext", "Annoy2", "Annoy1", "OpeningMenu"}) do

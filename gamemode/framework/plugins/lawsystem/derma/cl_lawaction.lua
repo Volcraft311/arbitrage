@@ -452,8 +452,8 @@ function PANEL:InitCategory()
                 surface.DrawRect(w * 0.2, bar.btnUp:GetTall(), w - w * 0.4, h - bar.btnUp:GetTall() * 2)
             end
 
-            bar.btnUp.Paint = function() end
-            bar.btnDown.Paint = function() end
+            bar.btnUp.Paint = zero
+            bar.btnDown.Paint = zero
 
             bar.btnGrip.Paint = function(_, w, h)
                 surface.SetDrawColor(255, 255, 255, 100)

@@ -414,7 +414,7 @@ timer.Create("arb.BillSound", 1, 1, function()
     timer.Remove("arb.BillSound")
 
     system.FlashWindow()
-    sound.PlayFile("sound/hl1/fvox/bell.wav", "", function() end)
+    sound.PlayFile("sound/hl1/fvox/bell.wav", "", zero)
 end)
 
 function Arbitrage:GetPos(client)

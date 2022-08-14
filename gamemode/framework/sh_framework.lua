@@ -297,6 +297,27 @@ function Arbitrage.OffCorpseEffect()
     return GetNetVar("arb.OffCorpseEffect", false)
 end
 
+local themes = {
+    investigation = "Расследование",
+    law = "Суд",
+    voting = "Голосование",
+    execution = "Казнь",
+    splashscreen = "Заставка [Глава]",
+    startgame = "Начало игры",
+    endgame = "Конец игры"
+}
+function Arbitrage.GetTheme()
+    local theme = "Свободное время"
+    local sound_theme = ScriptMusic:GetTheme()
+
+    local info = themes[sound_theme]
+    if info then
+        return info
+    end
+
+    return theme
+end
+
 function Arbitrage:StartCommand(client, ucmd)
     local stamina = client:GetNetVar("stm", 100)
 

@@ -149,7 +149,7 @@ do
     hook.Add("asterionlib.rpc:Update", "asterionlib.rpc", function()
     	local client = LocalPlayer()
     	local upperText = string.format("%s [%s]", Arbitrage.GetChapter(), Arbitrage.IsDay() and "День" or "Ночь")
-    	local lowerText = string.format("%s (%s/%s)", game.GetMap(), #player.GetAll(), game.MaxPlayers())
+    	local lowerText = string.format("%s (%s/%s)", Arbitrage.GetTheme(), #player.GetAll(), game.MaxPlayers())
 
     	rpc:Set("details", upperText)
         rpc:Set("state", lowerText)

@@ -126,7 +126,7 @@ do
         workshop:Add("244540803") -- Customizable Flashlight
         workshop:Add("921195220") -- TFA CS:S Weapons
         workshop:Add("1414153810") -- [TTT] Night vision
-        workshop:Add("1292873521") -- Amnesia Lantern Rework
+        -- workshop:Add("1292873521") -- Amnesia Lantern Rework
         workshop:Add("244540803") -- Customizable Flashlight
         workshop:Add("104607228") -- Fire Extinguisher
 

@@ -35,6 +35,16 @@ function ItemBase:InitPostEntity()
     ItemBase.CreationSync()
 end
 
+function ItemBase:CreationInitItem(item)
+    local uniqueID = item.uniqueID
+
+    if uniqueID == "flashlight" then
+        item:HookAdd("unequip", function(item, client)
+            client:Flashlight(false)
+        end)
+    end
+end
+
 function ItemBase.CreationSync(client)
     local itemslist = asterionlib.data:Get("itemslist", {}, true)
 

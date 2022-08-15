@@ -128,6 +128,11 @@ function ItemBase.CreationRegisterItem(baseID, uniqueID, info)
     if SERVER then
         netstream.Start(nil, "ItemBase:CreationRegisterItem", baseID, uniqueID, info)
     end
+
+    do
+        local item = ItemBase.list[uniqueID]
+        hook.Run("CreationInitItem", item)
+    end
 end
 
 function ItemBase.CreationEditItem(uniqueID, info)

@@ -18,6 +18,14 @@ LawSystem = PLUGIN
 Arbitrage.law = PLUGIN
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
+local function getclientpos(client)
+    if client:MonoLawPlace() then
+        return Arbitrage.monokumCam
+    end
+
+    return Arbitrage.camPosEnd
+end
+
 PLUGIN.CamAnimData = {
     [1] = function(plugin, camPos, camAngles, camFov, client)
         local WPos = client:LocalToWorld(Vector(0, 0, 0))
@@ -33,14 +41,14 @@ PLUGIN.CamAnimData = {
             camAngles[v] = Lerp(FrameTime() * speed, camAngles[v], Ang[v])
         end
 
-        camPos = Lerp(FrameTime() * 5, camPos, client:MonoLawPlace() and Arbitrage.monokumCam or Arbitrage.camPosEnd)
+        camPos = Lerp(FrameTime() * 5, camPos, getclientpos(client))
         camFov = Lerp(FrameTime(), camFov, 90)
 
         return camPos, camAngles, camFov, client
     end,
     [2] = function(plugin, camPos, camAngles, camFov, client)
         if plugin.oldEntity != client then
-            camPos = client:MonoLawPlace() and Arbitrage.monokumCam or Arbitrage.camPosEnd
+            camPos = getclientpos(client)
 
             camFov = 130
         end
@@ -59,13 +67,13 @@ PLUGIN.CamAnimData = {
     end,
     [3] = function(plugin, camPos, camAngles, camFov, client)
         if plugin.oldEntity != client then
-            camPos = client:MonoLawPlace() and Arbitrage.monokumCam or Arbitrage.camPosEnd
+            camPos = getclientpos(client)
 
             camFov = 90
             camPos.z = camPos.z - 15
         end
 
-        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, client:MonoLawPlace() and Arbitrage.monokumCam.z or Arbitrage.camPosEnd.z)
+        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, getclientpos(client).z)
 
         local WPos = client:LocalToWorld(Vector(0, 0, 0))
         Ang = WPos - camPos
@@ -89,14 +97,14 @@ PLUGIN.CamAnimData = {
         end
 
         if plugin.oldEntity != client then
-            camPos = client:MonoLawPlace() and Arbitrage.monokumCam or Arbitrage.camPosEnd
+            camPos = getclientpos(client)
 
             camPos = camPos + Ang:Right() * 15
             camFov = 100
         end
 
         for k, v in ipairs({"x", "y", "z"}) do
-            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], client:MonoLawPlace() and Arbitrage.monokumCam[v] or Arbitrage.camPosEnd[v])
+            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], getclientpos(client)[v])
         end
 
         camFov = Lerp(FrameTime() * 0.3, camFov, 75)
@@ -113,14 +121,14 @@ PLUGIN.CamAnimData = {
         end
 
         if plugin.oldEntity != client then
-            camPos = client:MonoLawPlace() and Arbitrage.monokumCam or Arbitrage.camPosEnd
+            camPos = getclientpos(client)
 
             camPos = camPos + Ang:Right() * -15
             camFov = 100
         end
 
         for k, v in ipairs({"x", "y", "z"}) do
-            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], client:MonoLawPlace() and Arbitrage.monokumCam[v] or Arbitrage.camPosEnd[v])
+            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], getclientpos(client)[v])
         end
 
         camFov = Lerp(FrameTime() * 0.3, camFov, 75)
@@ -129,13 +137,13 @@ PLUGIN.CamAnimData = {
     end,
     [6] = function(plugin, camPos, camAngles, camFov, client)
         if plugin.oldEntity != client then
-            camPos = client:MonoLawPlace() and Arbitrage.monokumCam or Arbitrage.camPosEnd
+            camPos = getclientpos(client)
 
             camFov = 90
             camPos.z = camPos.z + 15
         end
 
-        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, client:MonoLawPlace() and Arbitrage.monokumCam.z or Arbitrage.camPosEnd.z)
+        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, getclientpos(client).z)
 
         local WPos = client:LocalToWorld(Vector(0, 0, 0))
         Ang = WPos - camPos

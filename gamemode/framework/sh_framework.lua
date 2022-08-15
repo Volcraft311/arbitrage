@@ -214,20 +214,24 @@ function Arbitrage:GetInfo()
     -- копируем информацию из основной базы позиций
     local arbStored = table.Copy(Arbitrage:GetStored())
     for k, v in pairs(arbStored) do
-        data[k] = v[game.GetMap()]
+        local info = v[game.GetMap()]
+
+        data[k] = info
     end
 
     -- заменяем информацию из эдитора
-    local editorStored = table.Copy(Editor:GetStored())
+    local editorStored = SERVER and table.Copy(Editor:GetStored()) or asterionlib.data:Get("editor_pos", {}, true)
     for k, v in pairs(editorStored) do
-        data[k] = v
+        local info = editorStored[k]
+
+        data[k] = info
     end
 
     return data
 end
 
 function Arbitrage:ReplaceVariables()
-    local data = Arbitrage:GetInfo()
+    local data = asterionlib.DeepCopy(Arbitrage:GetInfo())
 
     -- записываем всю инфу в переменные, ибо с ними проще работать
     for k, v in pairs(data) do

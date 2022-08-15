@@ -74,13 +74,13 @@ local function clearTable(data)
 end
 
 function PLUGIN:PlayerInitialSpawn(client)
-	netstream.Start(client, "Editor:SetVariables", Editor:GetStored())
+	netstream.Start(client, "Editor:SetVariables", Editor.stored)
 end
 
 netstream.Hook("Editor:ChangeProperty", function(client, id, data)
 	if !client:IsAdmin() then return end
 
-	local info = Editor:GetStored()
+	local info = Editor.stored
 	info[id] = info[id] or {}
 	if propertyList[id] then
 		if data == nil then

@@ -17,6 +17,14 @@ local PLUGIN = PLUGIN
 Editor.clientside = Editor.clientside or {}
 Editor.mat = Material("models/debug/debugwhite")
 
+function Editor:Initialize()
+    asterionlib.data:Delete("editor_pos")
+end
+
+function Editor:ShutDown()
+    asterionlib.data:Delete("editor_pos")
+end
+
 function Editor:On()
     local client = LocalPlayer()
 
@@ -133,5 +141,10 @@ end)
 
 netstream.Hook("Editor:SetVariables", function(data)
     Editor.stored = data
+
+    if CLIENT then
+        asterionlib.data:Set("editor_pos", data)
+    end
+
     Arbitrage:ReplaceVariables()
 end)

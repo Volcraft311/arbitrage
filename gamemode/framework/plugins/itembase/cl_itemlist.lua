@@ -15,7 +15,7 @@
 local PLUGIN = PLUGIN
 
 local icons = {
-    ["Боеприпасы"] = "attach",
+    ["Патроны"] = "attach",
     ["Одежда"] = "user_suit",
     ["Коммуникация"] = "transmit",
     ["Продукты"] = "cake",
@@ -27,7 +27,9 @@ local icons = {
     ["Библиотека"] = "report",
     ["Хранилище"] = "briefcase",
     ["Инструменты"] = "wrench_orange",
-    ["Оружие"] = "gun"
+    ["Оружие"] = "gun",
+    ["Отмычки"] = "connect",
+    ["Уникальные"] = "bug"
 }
 
 spawnmenu.AddContentType("Item", function(container, item)

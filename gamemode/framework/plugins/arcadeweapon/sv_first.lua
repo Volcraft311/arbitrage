@@ -40,7 +40,7 @@ function PLUGIN:PlayerPostThink(client)
                 local Phys = entity:GetPhysicsObject()
                 if !IsValid(Phys) then return end
 
-                if Phys:GetMass() >= 300 then
+                if Phys:GetMass() >= 400 then
                     dropEntity(client, entity)
                     return
                 end

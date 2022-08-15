@@ -26,18 +26,13 @@ local optionData = {
 
 		return Format("ID: %s / Vector(%s, %s, %s), Angle(%s, %s, %s)", key, pos.x, pos.y, pos.z, ang[1], ang[2], ang[3])
 	end,
-	monokumCam = function(key, value)
-		return Format("Vector(%s, %s, %s)", key, value.x, value.y, value.z)
-	end,
-	monokumPlace = function(key, value)
-		local pos, ang = value[1], value[2]
-
-		return Format("Vector(%s, %s, %s), Angle(%s, %s, %s)", pos.x, pos.y, pos.z, ang[1], ang[2], ang[3])
-	end,
 	camPos = function(key, value)
 		local pos, ang = value[1], value[2]
 
 		return Format("Vector(%s, %s, %s), Angle(%s, %s, %s)", pos.x, pos.y, pos.z, ang[1], ang[2], ang[3])
+	end,
+	camPosPlaces = function(key, value)
+		return Format("ID: %s / Vector(%s, %s, %s)", key, value.x, value.y, value.z)
 	end,
 }
 
@@ -66,24 +61,6 @@ local actionData = {
 			return {key, data[1], data[2]}
 		end
 	},
-	monokumCam = {
-		remove = function(key, value)
-			return nil
-		end,
-		add = function(key, data)
-			return {data[1]}
-		end,
-		noReqeust = true
-	},
-	monokumPlace = {
-		remove = function(key, value)
-			return nil
-		end,
-		add = function(key, data)
-			return {data[1], data[2]}
-		end,
-		noReqeust = true
-	},
 	camPosEnd = {
 		remove = function(key, value)
 			return nil
@@ -102,26 +79,32 @@ local actionData = {
 		end,
 		noReqeust = true
 	},
+	camPosPlaces = {
+		remove = function(key, value)
+			return {key, nil}
+		end,
+		add = function(key, data)
+			return {key, data[1], data[2]}
+		end
+	},
 }
 
 local titleData = {
 	lobbyList = "Расположение мест в лобби:",
 	spawnList = "Расположение мест при запуске игры:",
 	placesList = "Расположение мест на суде:",
-	monokumCam = "Камера возле монокумы:",
-	monokumPlace = "Расположение места Монокумы:",
 	camPosEnd = "Расположение основной камеры:",
-	camPos = "Расположение начальной камеры:"
+	camPos = "Расположение начальной камеры:",
+	camPosPlaces = "Расположение камеру у мест:"
 }
 
 local textData = {
 	lobbyList = "Установить новое место в лобби",
 	spawnList = "Установить новое место при запуске игры",
 	placesList = "Установить место на суде",
-	monokumCam = "Установить камеру возле Монокумы",
-	monokumPlace = "Установить место для Монокумы",
 	camPosEnd = "Установить основную камеру",
-	camPos = "Установить начальную камеру"
+	camPos = "Установить начальную камеру",
+	camPosPlaces = "Установить камеру у места"
 }
 
 local function ReturnOptionName(id, key, value)
@@ -290,8 +273,6 @@ function PANEL:AddInfo(dp, id, data)
 	end
 
 	for k, v in pairs(data) do
-		if id == "placesList" and k == 0 then continue end
-
 		local text = ReturnOptionName(id, k, v)
 
 		local checkBox = info:Add("DCheckBoxLabel")
@@ -339,10 +320,9 @@ local deleteData = {
 	lobbyList = "Удалить места в лобби",
 	spawnList = "Удалить места при запуске игры",
 	placesList = "Удалить места на суде",
-	monokumCam = "Удалить камеру возле монокумы",
-	monokumPlace = "Удалить место Монокумы",
 	camPosEnd = "Удалить расположение основной камеры",
-	camPos = "Удалить расположение начальной камеры"
+	camPos = "Удалить расположение начальной камеры",
+	camPosPlaces = "Удалить расположение камер у всех мест"
 }
 
 local PANEL = {}

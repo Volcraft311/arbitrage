@@ -27,18 +27,6 @@ local propertyList = {
 
 		return info
 	end,
-	monokumPlace = function(data, info)
-		local vec, ang = data[1], data[2]
-		info = {vec, ang}
-
-		return info
-	end,
-	monokumCam = function(data, info)
-		local vec = data[1]
-		info = vec
-
-		return info
-	end,
 	placesList = function(data, info)
 		local id, vec, ang = data[1], data[2], data[3]
 		info[id] = {vec, ang}
@@ -56,7 +44,13 @@ local propertyList = {
 		info[id] = vec
 
 		return info
-	end
+	end,
+	camPosPlaces = function(data, info)
+		local id, vec = data[1], data[2]
+		info[id] = vec
+
+		return info
+	end,
 }
 
 local function clearTable(data)

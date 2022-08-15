@@ -43,7 +43,7 @@ function PANEL:Init()
     tablePl:SetSpaceY(2)
 
     for k, v in pairs(player.GetAll()) do
-        if !v:GetNetVar("arbEmojiShow") then continue end
+        if v:LawPlace() < 0 then continue end
 
         local panel = tablePl:Add("Panel")
         panel:SetSize(15, 15)

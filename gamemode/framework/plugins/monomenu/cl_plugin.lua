@@ -128,7 +128,7 @@ local function getActionList(clientinfo)
         clientinfo = {
             client = clientinfo,
             faction = clientinfo:Team(),
-            place = clientinfo:GetNetVar("arbLaw", -1),
+            place = clientinfo:LawPlace(),
             steamid = clientinfo:SteamID(),
             steamname = clientinfo:SteamName(),
             alive = clientinfo:Alive()

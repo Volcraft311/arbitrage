@@ -69,6 +69,11 @@ function Editor:DrawInfo(text, vec, ang, color, idx, model, chams)
         if !IsValid(entity) then
             entity = ents.CreateClientProp(model or "models/editor/air_node.mdl")
             entity:Spawn()
+
+            local phys = entity:GetPhysicsObject()
+            if phys and phys:IsValid() then
+                phys:EnableMotion(false)
+            end
         end
 
         entity:SetModel(model or "models/editor/air_node.mdl")
@@ -115,6 +120,14 @@ function Editor:HUDPaint()
     end
 
     do
+        for k, v in pairs(Arbitrage.camPosPlaces or {}) do
+            local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
+
+            self:DrawInfo("Позиция камеры у места " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
+        end
+    end
+
+    do
         for k, v in pairs(Arbitrage.spawnList or {}) do
             self:DrawInfo("Место спавна: " .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
         end
@@ -128,7 +141,6 @@ function Editor:HUDPaint()
 
     self:DrawInfo("Конечное место камеры", Arbitrage.camPosEnd, nil, Color(0, 255, 0), "camPosEnd", "models/editor/air_node_hint.mdl")
     self:DrawInfo("Место начальной камеры", Arbitrage.camPos and Arbitrage.camPos[1], Arbitrage.camPos and Arbitrage.camPos[2], Color(0, 102, 255), "camPos", "models/editor/cone_helper.mdl", true)
-    self:DrawInfo("Позиция камеры монокумы", Arbitrage.monokumCam, nil, Color(145, 0, 255), "monokumCam", "models/editor/air_node_hint.mdl")
 end
 
 netstream.Hook("Editor:SetEditor", function(data)

@@ -155,17 +155,10 @@ function Arbitrage:GetStored()
         camPosEnd = {
             drp_hopespeak = Vector(-201.094284, -2496.078613, -887.968750)
         },
-        -- Где должен сидеть Монокума
-        monokumPlace = {
-            drp_hopespeak = {Vector(-528.077271, -2354.913086, -822.366394), Angle(-1.174964, -27.304247, 0.093104)}
-        },
-        -- Камера которая смотрит на МоноКуму
-        monokumCam = {
-            drp_hopespeak = Vector(-393.274109, -2414.661377, -842.831726)
-        },
         -- Список мест
         placesList = {
             drp_hopespeak = {
+                [0] = {Vector(-528.077271, -2354.913086, -822.366394), Angle(-1.174964, -27.304247, 0.093104)}, -- Монокума
                 [1] = {Vector(-198.881119, -2401.409668, -887.968750), Angle(-1.486018, -90.389771, 0.000000)},
                 [2] = {Vector(-238.035492, -2404.347412, -887.968750), Angle(-0.034027, -68.741699, 0.000000)},
                 [3] = {Vector(-277.119537, -2427.784424, -887.968750), Angle(-0.902689, -44.751057, -0.039650)},
@@ -184,6 +177,11 @@ function Arbitrage:GetStored()
                 [16] = {Vector(-161.782700, -2404.253418, -887.968750), Angle(0.147995, -112.951431, -0.043005)}
             }
         },
+        camPosPlaces = {
+            drp_hopespeak = {
+                [0] = Vector(-393.274109, -2414.661377, -842.831726) -- Монокума
+            }
+        },
         spawnList = {
             drp_hopespeak = {
                 Vector(-1121, -3375, -48), Vector(-1194, -3375, -48), Vector(-1276, -3374, -48), Vector(-1377, -3374, -48),
@@ -192,15 +190,19 @@ function Arbitrage:GetStored()
                 Vector(-1108, -3263, -48), Vector(-1106, -3156, -48), Vector(-1212, -3155, -48), Vector(-1321, -3155, -48),
                 Vector(-1447, -3155, -48), Vector(-1542, -3154, -48), Vector(-1632, -3154, -48), Vector(-1714, -3154, -48),
                 Vector(-1714, -3076, -48), Vector(-1612, -3075, -48), Vector(-1513, -3075, -48), Vector(-1418, -3076, -48),
-                Vector(-1301, -3076, -48), Vector(-1238, -3076, -48), Vector(-1144, -3076, -48), Vector(-1083, -3077, -48)
+                Vector(-1301, -3076, -48), Vector(-1238, -3076, -48), Vector(-1144, -3076, -48), Vector(-1083, -3077, -48),
+                Vector(-1619, -3214, -48), Vector(-1444, -3198, -48), Vector(-1332, -3199, -48), Vector(-1161, -3202, -48),
+                Vector(-1688, -3320, -48), Vector(-1592, -3320, -48), Vector(-1434, -3320, -48), Vector(-1204, -3319, -48)
             }
         },
         lobbyList = {
             drp_hopespeak = {
-                Vector(-4134, 2138, 77), Vector(-4592, 2513, 77),
-                Vector(-4140, 3155, 77), Vector(-4890, 2401, 77),
-                Vector(-4327, 2732, 77), Vector(-4919, 3159, 77),
-                Vector(-4833, 2225, 77), Vector(-4414, 2636, 77)
+                Vector(-4134, 2138, 77), Vector(-4592, 2513, 77), Vector(-5089, 2772, 77), Vector(-4519, 3153, 77),
+                Vector(-4140, 3155, 77), Vector(-4890, 2401, 77), Vector(-4736, 3039, 77), Vector(-4841, 2565, 78),
+                Vector(-4327, 2732, 77), Vector(-4919, 3159, 77), Vector(-4532, 2095, 77), Vector(-4463, 2333, 78),
+                Vector(-4833, 2225, 77), Vector(-4414, 2636, 77), Vector(-4024, 2586, 77), Vector(-5098, 2499, 77),
+                Vector(-5057, 2739, 77), Vector(-5089, 3162, 77), Vector(-4109, 2875, 78), Vector(-4141, 2304, 77),
+                Vector(-4310, 2349, 77), Vector(-5108, 2136, 77), Vector(-5154, 3119, 77), Vector(-4312, 2995, 77)
             }
         }
     }
@@ -236,11 +238,6 @@ function Arbitrage:ReplaceVariables()
     -- записываем всю инфу в переменные, ибо с ними проще работать
     for k, v in pairs(data) do
         Arbitrage[k] = v
-    end
-
-    -- устанавливаем монокуме 0 место
-    if Arbitrage.placesList and data.monokumPlace then
-        Arbitrage.placesList[0] = data.monokumPlace
     end
 end
 Arbitrage:ReplaceVariables()
@@ -418,15 +415,7 @@ do
     end
 
     function playerMeta:LawPlace()
-        return self:GetNetVar("arbEmojiShow")
-    end
-
-    function playerMeta:MonoLawPlace()
-        return self:GetNetVar("arbEmojiShow") == 0
-    end
-
-    function playerMeta:NoLawPlace()
-        return self:GetNetVar("arbEmojiShow") == -1
+        return self:GetNetVar("arbLaw", -1)
     end
 
     function playerMeta:IsUseTool()

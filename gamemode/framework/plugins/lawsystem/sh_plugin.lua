@@ -19,8 +19,13 @@ Arbitrage.law = PLUGIN
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
 local function getclientpos(client)
-    if client:MonoLawPlace() then
-        return Arbitrage.monokumCam
+    local lawPos = client:LawPlace()
+    if lawPos >= 0 and Arbitrage.camPosPlaces then
+        local pos = Arbitrage.camPosPlaces[lawPos]
+
+        if pos then
+            return pos
+        end
     end
 
     return Arbitrage.camPosEnd
@@ -179,7 +184,7 @@ function PLUGIN:StartCommand(client, ucmd)
         ucmd:SetMouseY(0)
         ucmd:SetMouseWheel(0)
 
-        local var = client:GetNetVar("arbLaw", -1)
+        local var = client:LawPlace()
         local place = Arbitrage.placesList[var]
 
         if place then

@@ -232,7 +232,7 @@ function PLUGIN:PostDrawTranslucentRenderables()
         if !charTeam then continue end
 
         local emojiList = charTeam.emodjiList
-        if emojiList and #emojiList > 0 and v:GetNetVar("arbEmojiShow") then
+        if emojiList and #emojiList > 0 and v:LawPlace() >= 0 then
             local mat = Material(v:GetNetVar("emoji", emojiList[1]))
 
             local size = 1.26
@@ -325,7 +325,7 @@ local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawOpaqueRenderables()
     if Arbitrage.placesList and !Arbitrage.lawEnable then
         local client = LocalPlayer()
-        local var = client:GetNetVar("arbLaw", -1)
+        local var = client:LawPlace()
         local place = Arbitrage.placesList[var]
 
         if var >= 0 and place then

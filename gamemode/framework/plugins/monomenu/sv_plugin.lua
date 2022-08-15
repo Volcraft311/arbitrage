@@ -32,7 +32,7 @@ function PLUGIN:OpenMonoMenu(client, bRefresh)
             data.notcharacter[steamid] = {
                 client = v,
                 faction = v:Team(),
-                place = v:GetNetVar("arbLaw", -1),
+                place = v:LawPlace(),
                 steamid = steamid,
                 steamname = v:SteamName(),
                 alive = v:Alive()
@@ -204,7 +204,7 @@ local actionList = {
             steamname = target:SteamName()
         }
 
-        target:SetNetVar("arbLaw", count + 1, target)
+        target:SetNetVar("arbLaw", count + 1)
 
         Arbitrage.adminnotify:SendNotify("addgame", client:FullName(), target:FullName())
     end,
@@ -217,7 +217,7 @@ local actionList = {
         local m_target = IsValid(target) and target:FullName() or steamid
 
         if IsValid(target) then
-            target:SetNetVar("arbLaw", -1, target)
+            target:SetNetVar("arbLaw", -1)
         end
 
         Arbitrage.adminnotify:SendNotify("removegame", client:FullName(), m_target)
@@ -266,7 +266,7 @@ local actionList = {
         local m_target = IsValid(target) and target:FullName() or steamid
 
         if IsValid(target) then
-            target:SetNetVar("arbLaw", place, target)
+            target:SetNetVar("arbLaw", place)
         end
 
         Arbitrage.adminnotify:SendNotify("setplace", client:FullName(), place, m_target)

@@ -13,20 +13,6 @@
 
 local PLUGIN = PLUGIN
 
-function PLUGIN:GameStart()
-    local num = 1
-
-    Arbitrage.players = Arbitrage.players or {}
-    for k, v in pairs(Arbitrage.players) do
-        local client = player.GetBySteamID(k)
-
-        client:SetNetVar("arbLaw", num, client)
-        Arbitrage.players[k].place = num
-
-        num = num + 1
-    end
-end
-
 function PLUGIN:DrawSprites(client, bState)
     if !IsValid(client) then return end
 
@@ -45,7 +31,7 @@ function Arbitrage:StartLaw()
     netstream.Start(nil, "arb.StartLaw")
 
     for k, v in ipairs(player.GetAll()) do
-        v:SetNetVar("arbEmojiShow", nil)
+        v:SetNetVar("arbLaw", nil)
         v:SetMoveType(MOVETYPE_WALK)
         v:SelectWeapon("academy_key")
     end
@@ -60,15 +46,15 @@ function Arbitrage:StartLaw()
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then
-                local pos = place == 0 and Arbitrage.monokumPlace[1] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][1] or nil)
-                local ang = place == 0 and Arbitrage.monokumPlace[2] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][2] or nil)
+                local pos = Arbitrage.placesList[place] and Arbitrage.placesList[place][1]
+                local ang = Arbitrage.placesList[place] and Arbitrage.placesList[place][2]
 
                 if pos and ang then
                     players_ignore[k] = true
 
                     client:SetPos(pos)
                     client:SetEyeAngles(ang)
-                    client:SetNetVar("arbEmojiShow", place)
+                    client:SetNetVar("arbLaw", place)
                 end
             else
                 -- Типо игрока нету понял?
@@ -92,6 +78,14 @@ function Arbitrage:StartLaw()
 
     PLUGIN.talk_entity = nil
     PLUGIN.interruption = nil
+
+    hook.Add("SetupPlayerVisibility", "LawCamera", function(pPlayer, pViewEntity)
+        for k, v in ipairs(player.GetAll()) do
+            if v:LawPlace() >= 0 then
+                AddOriginToPVS(v:GetPos())
+            end
+        end
+    end)
 end
 
 function Arbitrage:EndLaw()
@@ -115,6 +109,8 @@ function Arbitrage:EndLaw()
 
     PLUGIN.talk_entity = nil
     PLUGIN.interruption = nil
+
+    hook.Remove("SetupPlayerVisibility", "LawCamera")
 end
 
 function PLUGIN:ChangeEmoji(client, data)
@@ -172,7 +168,7 @@ function PLUGIN:PlayerInitialSpawn(client)
             local place = tonumber(Arbitrage.players[steamid].place)
 
             if place then
-                client:SetNetVar("arbLaw", place, client)
+                client:SetNetVar("arbLaw", place)
             end
         end
     end)
@@ -180,7 +176,7 @@ function PLUGIN:PlayerInitialSpawn(client)
     if !Arbitrage.lawEnable then return end
 
     timer.Simple(3, function()
-        client:SetNetVar("arbEmojiShow", nil)
+        client:SetNetVar("arbLaw", nil)
         client:SetMoveType(MOVETYPE_WALK)
         client:SelectWeapon("academy_key")
 
@@ -197,7 +193,7 @@ function PLUGIN:PlayerInitialSpawn(client)
                 if pos and ang then
                     client:SetPos(pos)
                     client:SetEyeAngles(ang)
-                    client:SetNetVar("arbEmojiShow", place)
+                    client:SetNetVar("arbLaw", place)
                 end
             end
         else

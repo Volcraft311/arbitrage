@@ -62,6 +62,8 @@ function ItemBase.CreationSync(client)
 end
 
 netstream.Hook("ItemBase:SendAction", function(client, itemID, action)
+    if client:IsSpectate() then return end
+
     local item = ItemBase.instances[itemID]
     if !item then return end
 

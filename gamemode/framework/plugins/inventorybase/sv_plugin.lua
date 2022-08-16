@@ -63,6 +63,8 @@ function InventoryBase:OnCreateDisconnectEntity(client)
 end
 
 netstream.Hook("InventoryBase:GetActions", function(client, itemID)
+    if client:IsSpectate() then return end
+
     local item = ItemBase.instances[itemID]
     if !item then return end
 
@@ -78,6 +80,8 @@ netstream.Hook("InventoryBase:GetActions", function(client, itemID)
 end)
 
 netstream.Hook("InventoryBase:TransferItem", function(client, itemID, invID, x, y)
+    if client:IsSpectate() then return end
+
     local item = ItemBase.instances[itemID]
     if !item then return end
 
@@ -104,6 +108,8 @@ netstream.Hook("InventoryBase:StopReceiving", function(client, invID)
 end)
 
 netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
+    if client:IsSpectate() then return end
+
     local item = ItemBase.instances[itemID]
     if !item then return end
 

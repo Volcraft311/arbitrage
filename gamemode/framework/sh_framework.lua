@@ -232,13 +232,30 @@ function Arbitrage:GetInfo()
     return data
 end
 
-function Arbitrage:ReplaceVariables()
-    local data = asterionlib.DeepCopy(Arbitrage:GetInfo())
+function Arbitrage:ClearVariables(data)
+    local variables = {"camPos", "camPosEnd", "placesList", "camPosPlaces", "spawnList", "lobbyList"}
 
-    -- записываем всю инфу в переменные, ибо с ними проще работать
+    for k, v in ipairs(variables) do
+        if data[v] == nil then
+            Arbitrage[v] = nil
+        end
+    end
+end
+
+function Arbitrage:SaveVariables(data)
     for k, v in pairs(data) do
         Arbitrage[k] = v
     end
+end
+
+function Arbitrage:ReplaceVariables()
+    local data = asterionlib.DeepCopy(Arbitrage:GetInfo())
+
+    -- чистим переменные которые равны nil
+    self:ClearVariables(data)
+
+    -- записываем всю инфу в переменные, ибо с ними проще работать
+    self:SaveVariables(data)
 end
 Arbitrage:ReplaceVariables()
 

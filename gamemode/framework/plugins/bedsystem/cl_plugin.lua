@@ -20,7 +20,7 @@ function PLUGIN:Think()
     if !client:oldAlive() then return end
     if !client:GetNetVar("inbed") then client.inbedpos = client:EyePos() client.inbedang = client:EyeAngles() return end
 
-    if input.IsKeyDown(KEY_SPACE) and (!client.BedCD or CurTime() >= client.BedCD) then
+    if input.IsKeyDown(KEY_SPACE) and !vgui.CursorVisible() and (!client.BedCD or CurTime() >= client.BedCD) then
         netstream.Start("arb.GetUpBed")
         client.BedCD = CurTime() + 5
     end

@@ -147,6 +147,7 @@ local stagesData = {
 
         for k, v in ipairs(data) do
             local mat = Material(v.logo or "err.png")
+            local mat2 = Material(v.select or "err.png")
 
             local character = panel.charactersPanel:Add("DPanel")
             character:SetAlpha(0)
@@ -186,6 +187,10 @@ local stagesData = {
 
                 surface.SetDrawColor(255, 255, 255)
                 surface.SetMaterial(mat)
+                surface.DrawTexturedRect(6, 6, w - 12, w - 12)
+
+                surface.SetDrawColor(255, 255, 255, 255 * character.alpha2)
+                surface.SetMaterial(mat2)
                 surface.DrawTexturedRect(6, 6, w - 12, w - 12)
             end
             button.DoClick = function(_, w, h)

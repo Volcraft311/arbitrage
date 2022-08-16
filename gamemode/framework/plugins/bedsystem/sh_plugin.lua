@@ -81,7 +81,17 @@ PLUGIN.allowBed = {
         ang = Angle(0, 180, 0),
         eye = {
             pos = function(vec, ang)
-                return vec + ang:Right() * 1 + ang:Forward() * -15 + Vector(0, 0, 0)
+                return vec + ang:Right() * 1 + ang:Forward() * -15
+            end,
+            ang = Angle(10, 180, 3)
+        }
+    },
+    ["models/haxxer/normandy/comfybed.mdl"] = {
+        pos = Vector(-5, 0, 30),
+        ang = Angle(0, 180, 0),
+        eye = {
+            pos = function(vec, ang)
+                return vec + ang:Right() * 1 + ang:Forward() * -15 + ang:Up() * 32
             end,
             ang = Angle(10, 180, 3)
         }

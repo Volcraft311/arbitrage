@@ -182,6 +182,7 @@ function PANEL:SetData(data, votingList)
         if !factionData then continue end
 
         local mat = Material(factionData.logo or "err.png")
+        local mat2 = Material(factionData.select or "err.png")
 
         local character = self.charactersPanel:Add("DButton")
         character:SetAlpha(0)
@@ -204,6 +205,10 @@ function PANEL:SetData(data, votingList)
 
             surface.SetDrawColor(255, 255, 255, _.alpha * 255)
             surface.SetMaterial(mat)
+            surface.DrawTexturedRect(xPos + 6, 9, Arbitrage.ResolutionW(100) - 12, Arbitrage.ResolutionH(100) - 12)
+
+            surface.SetDrawColor(255, 255, 255, 255 * _.alpha2)
+            surface.SetMaterial(mat2)
             surface.DrawTexturedRect(xPos + 6, 9, Arbitrage.ResolutionW(100) - 12, Arbitrage.ResolutionH(100) - 12)
 
             Arbitrage.DrawTextBlur(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)

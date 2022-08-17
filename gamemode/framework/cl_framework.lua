@@ -231,7 +231,7 @@ end
 function Arbitrage:ContextMenuOpen()
     gui.EnableScreenClicker(true)
 
-    return LocalPlayer():IsUseTool()
+    return LocalPlayer():IsHoldingSBoxTool()
 end
 
 function Arbitrage:ArbitrageContextMenu(data)
@@ -256,7 +256,7 @@ end
 local ActionPressIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
         if bIsVisibleGUI then return end
-        if client:IsUseTool() then return end
+        if client:IsHoldingSBoxTool() then return end
 
         vgui.Create("arb.ContextMenu")
     end,

@@ -15,23 +15,8 @@
 local PLUGIN = PLUGIN
 Container = PLUGIN
 
-function Container:IsUsesTool(client)
-    if !IsValid(client) then return false end
-
-    local weapon = client:GetActiveWeapon()
-    if !IsValid(weapon) then return false end
-
-    local class = weapon:GetClass()
-    if class != "gmod_tool" then return false end
-
-    local tool = client:GetTool() and client:GetTool().Name or nil
-    if tool != "Container Tool" then return false end
-
-    return true
-end
-
 function PLUGIN:GetToolData(client)
-    if !self:IsUsesTool(client) then return end
+    if !client:IsUsesTool("Container Tool") then return end
 
     local trace = client:GetEyeTrace()
     local entity = trace.Entity

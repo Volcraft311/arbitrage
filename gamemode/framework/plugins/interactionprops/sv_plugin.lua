@@ -81,7 +81,7 @@ end
 
 
 netstream.Hook("Interaction:LeftClick", function(client, data, entity)
-    if !PLUGIN:IsUsesTool(client) then return client:ChatPrint("Вы не используете Interaction Tool!") end
+    if !client:IsUsesTool("Interaction Tool") then return client:ChatPrint("Вы не используете Interaction Tool!") end
     if !IsValid(entity) then return client:ChatPrint("Не валидное Entity!") end
 
     PLUGIN:LeftClick(client, data, entity)

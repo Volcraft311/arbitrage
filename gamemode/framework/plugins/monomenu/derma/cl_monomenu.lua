@@ -203,62 +203,71 @@ function PANEL:SetData(data)
 
     self.data = data
 
-    local count = -1
     for i = 1, 2 do
         local tableData = i == 1 and PLUGIN.GameData or PLUGIN.AdminData
 
         for k, v in ipairs(tableData) do
-        	count = count + 1
+            local allow = true
+            if v.onCreate then
+                local bState = v.onCreate(LocalPlayer())
 
-        	timer.Simple(count * 0.01, function()
-        		if !IsValid(self) then return end
+                if !bState then
+                    allow = false
+                end
+            end
 
-	            local allow = true
-	            if v.onCreate then
-	                local bState = v.onCreate(LocalPlayer())
+            local h = Arbitrage.ResolutionH(30)
+            local text = isfunction(v.data) and v.data(client) or tostring(v.data)
+            local alpha = v.onRun and 255 or 150
 
-	                if !bState then
-	                    allow = false
-	                end
-	            end
+            local panel_add = i == 1 and self.gamePanel or self.adminPanel
 
-	            local h = Arbitrage.ResolutionH(30)
-	            local text = isfunction(v.data) and v.data(client) or tostring(v.data)
-	            local alpha = v.onRun and 255 or 150
+            local panel = panel_add:Add("DPanel")
+            panel:SetTall(Arbitrage.ResolutionH(30))
+            panel:Dock(TOP)
+            panel:DockMargin(0, 0, 0, Arbitrage.ResolutionH(5))
+            panel.alpha = 0
 
-	            local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><colour=" .. alpha .. ", " .. alpha .. ", " .. alpha .. "><img=materials/" .. v.icon .. ", " .. h / 2 .. "x" .. h / 2 .. ", 255, 255, 255>  - " .. text .. "</colour></font>")
+            local a = panel:GetTall() * 0.25
+            local icon = panel:Add("DImage")
+            icon:Dock(LEFT)
+            icon:DockMargin(a, a, a, a)
+            icon:SetWide(panel:GetTall() - a * 2)
+            icon:SetImage(v.icon)
 
-	            local panel_add = i == 1 and self.gamePanel or self.adminPanel
+            local button = panel:Add((v.onRun and allow) and "DButton" or "DPanel")
+            button:SetText("")
+            button:SetPos(0, 0)
+            button:SetSize(panel:GetWide(), panel:GetTall())
+            button.Paint = function()
+            end
 
-	            local button = panel_add:Add((v.onRun and allow) and "DButton" or "DPanel")
-	            button:SetText("")
-	            button:SetTall(Arbitrage.ResolutionH(30))
-	            button:Dock(TOP)
-	            button:DockMargin(0, 0, 0, Arbitrage.ResolutionH(5))
-	            button.alpha = 0
-	            button.Paint = function(_, w, h)
-	                _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and v.onRun and allow) and 200 or 0)
+            button.DoClick = function()
+                if v.onRun then
+                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
+                    v.onRun(client)
 
-	                surface.SetDrawColor(27, 10, 13, _.alpha)
-	                surface.DrawRect(0, 0, w, h)
+                    netstream.Start("arb.MonoRunCommandC", i, k)
+                end
+            end
 
-	                parsed:draw(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(4), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+            panel.PerformLayout = function(_, w, h)
+                button:SetSize(w, h)
+            end
 
-	                if !allow then
-	                    surface.SetDrawColor(255, 0, 0, 20)
-	                    surface.DrawRect(0, 0, w, h)
-	                end
-	            end
+            panel.Paint = function(_, w, h)
+                _.alpha = Lerp(FrameTime() * 10, _.alpha, (button:IsHovered() and v.onRun and allow) and 200 or 0)
 
-	            button.DoClick = function()
-	                if v.onRun then
-	                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
-	                    v.onRun(client)
+                surface.SetDrawColor(27, 10, 13, _.alpha)
+                surface.DrawRect(0, 0, w, h)
 
-	                    netstream.Start("arb.MonoRunCommandC", i, k)
-	                end
-	            end
-	        end)
+                draw.DrawText(text, "arb.Font_FuturaPTBook_7", panel:GetTall(), H(4), Color(alpha, alpha, alpha), TEXT_ALIGN_LEFT)
+
+                if !allow then
+                    surface.SetDrawColor(255, 0, 0, 20)
+                    surface.DrawRect(0, 0, w, h)
+                end
+            end
         end
     end
 

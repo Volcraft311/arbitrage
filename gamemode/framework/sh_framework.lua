@@ -109,8 +109,9 @@ do
         workshop:Add("2715755590") -- Danganronpa - Main Content
         workshop:Add("2786490267") -- Danganronpa - Main Content #2
         workshop:Add("2717853308") -- Danganronpa - Models Content #1
-        workshop:Add("2723789180") -- Danganronpa - Models Content #3
         workshop:Add("2780751458") -- Danganronpa - Models Content #2
+        workshop:Add("2723789180") -- Danganronpa - Models Content #3
+        workshop:Add("2849953494") -- Danganronpa - Models Content #4
 
         -- OTHER
         workshop:Add("246756300") -- Stream Radio

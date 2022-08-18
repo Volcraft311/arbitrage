@@ -121,13 +121,13 @@ do
         workshop:Add("1920810365") -- Facial Emote Mod
         workshop:Add("1784911999") -- LED screens
         workshop:Add("1161268544") -- Pink Blood
+        workshop:Add("160250458") -- Wiremod
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload
         workshop:Add("244540803") -- Customizable Flashlight
         workshop:Add("921195220") -- TFA CS:S Weapons
         workshop:Add("1414153810") -- [TTT] Night vision
-        -- workshop:Add("1292873521") -- Amnesia Lantern Rework
         workshop:Add("244540803") -- Customizable Flashlight
         workshop:Add("104607228") -- Fire Extinguisher
 

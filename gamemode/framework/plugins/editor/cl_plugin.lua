@@ -14,6 +14,8 @@
 
 local PLUGIN = PLUGIN
 
+file.CreateDir("academy_editor_configs")
+
 Editor.clientside = Editor.clientside or {}
 Editor.mat = Material("models/debug/debugwhite")
 

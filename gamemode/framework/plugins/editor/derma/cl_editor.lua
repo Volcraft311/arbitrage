@@ -151,6 +151,48 @@ function PANEL:Init()
 
 	self:SetKeyboardInputEnabled(false)
 
+	local configButton = self:Add("DButton")
+	configButton:SetText("")
+	configButton:Dock(BOTTOM)
+	configButton.alpha = 0
+	configButton:SetTall(H(30))
+	configButton.Paint = function(_, w, h)
+		 _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+
+		surface.SetDrawColor(15, 5, 6, 150)
+		surface.DrawRect(0, 0, w, h)
+
+		surface.SetDrawColor(155, 35, 57, _.alpha)
+		surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+		draw.DrawText("Конфигурация", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	end
+	configButton.DoClick = function()
+		local Menu = DermaMenu()
+			Menu:AddOption("Сохранить конфигурацию", function()
+				Derma_StringRequest("Сохранить конфигурацию", "Введите название документа в который сохраниться конфигурация из Editor-а", "", function(text)
+					local data = util.TableToJSON(Editor:GetStored())
+
+					file.Write("academy_editor_configs/" .. text .. ".txt", data)
+					chat.AddText("Ваш конфиг успешно был сохранен в файл: " .. text .. ".txt")
+				end)
+			end):SetIcon("icon16/add.png")
+
+			local subMenu, parentMenuOption = Menu:AddSubMenu("Загрузить конфигурацию")
+			parentMenuOption:SetIcon("icon16/cd.png")
+
+			local files, _ = file.Find("academy_editor_configs/*.txt", "DATA" )
+			for k, v in ipairs(files) do
+				subMenu:AddOption(v, function()
+					local data = util.JSONToTable(file.Read("academy_editor_configs/" .. v, "DATA"))
+
+					netstream.Start("Editor:LoadConfig", data)
+					timer.Simple(0.3, function() self:GetData() end)
+				end)
+			end
+		Menu:Open()
+	end
+
 	local _ = self:Add("DPanel")
 	_:Dock(FILL)
 	_:DockMargin(5, 5, 5, 5)

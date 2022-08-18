@@ -95,3 +95,13 @@ netstream.Hook("Editor:ChangeProperty", function(client, id, data)
 		netstream.Start(nil, "Editor:SetVariables", info)
 	end
 end)
+
+netstream.Hook("Editor:LoadConfig", function(client, data)
+	if !client:IsAdmin() then return end
+
+	Editor.stored = data
+	Arbitrage:ReplaceVariables()
+	netstream.Start(nil, "Editor:SetVariables", data)
+
+	client:ChatPrint("Ваш конфиг успешно был загружен!")
+end)

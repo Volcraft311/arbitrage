@@ -656,8 +656,11 @@ function Arbitrage.GM:PlayerSpawn(client, transiton)
     player_manager.OnPlayerSpawn(client, transiton)
     player_manager.RunClass(client, "Spawn")
 
-    if ( !transiton ) then
-        hook.Call("PlayerLoadout", GAMEMODE, client)
+    local faction = Arbitrage.teams.Get(client:Team())
+    if faction then
+        timer.Simple(0, function()
+            Arbitrage.player.SetTeam(client, client:Team())
+        end)
     end
 
     hook.Call("PlayerSetModel", GAMEMODE, client)

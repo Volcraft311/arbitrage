@@ -51,16 +51,8 @@ function Arbitrage.player.SetupSpeed(client)
     local faction = Arbitrage.teams.Get(client:Team())
     if !faction then return end
 
-    local walkSpeed = 1
-    local runSpeed = 1
-
-    if faction.walkSpeed then
-        walkSpeed = faction.walkSpeed
-    end
-
-    if faction.runSpeed then
-        runSpeed = faction.runSpeed
-    end
+    local walkSpeed = faction.walkSpeed or 1
+    local runSpeed = faction.runSpeed or 1
 
     client:SetWalkSpeed(ARBITRAGE_WALK_SPEED * walkSpeed)
     client:SetRunSpeed(ARBITRAGE_RUN_SPEED * runSpeed)

@@ -13,7 +13,7 @@
 
 local PLUGIN = PLUGIN
 
-local default = [[Правило #1. Убийственная школьная жизнь абсолютных учеников не имеет даты завершения.
+Arbitrage.DefaultCharter = [[Правило #1. Убийственная школьная жизнь абсолютных учеников не имеет даты завершения.
 Правило #2. По истечению жизни путём убийства, проводится расследование и последующий классный суд. Участие в нём является обязательным для всех выживших учеников.
 Правило #3. По истечению классного суда, ученикам необходимо выявить очерненного и сделать голос. Ученик с наибольшим количеством голосов будет казнён. 
 Правило #4. Очерненный, сумевший совершить идеальное убийство и не быть выявленным по итогам классного суда, становится победителем. Победитель имеет право покинуть академию.
@@ -58,7 +58,7 @@ function PANEL:Init()
     Arbitrage.gui.academycharter = self
 
     self.charterPanel = self:Add("DTextEntry")
-    self.charterPanel:SetValue(GetNetVar("arb.Charter", default))
+    self.charterPanel:SetValue(GetNetVar("arb.Charter", Arbitrage.DefaultCharter))
     self.charterPanel:SetMultiline(true)
     self.charterPanel:SetFont("arb.Font_FuturaPTBook_8")
     self.charterPanel:Dock(FILL)

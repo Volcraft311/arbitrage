@@ -241,7 +241,7 @@ local categoryData = {
             local showEvidencePanel = createCategory(panel, "Показанные улики")
             local yourEvidencePanel = createCategory(panel, "Ваши улики")
 
-            for k, v in pairs(LocalPlayer():GetEvidences()) do
+            for k, v in pairs(client:GetEvidences()) do
             	local data = Evidence:GetEvidence(k)
             	if !data then continue end
 
@@ -269,12 +269,12 @@ local categoryData = {
     },
     {
     	name = "Предметы",
-    	icon = "icon16/book_addresses.png",
+    	icon = "icon16/package.png",
         data = function(client, panel)
     		local showItemsPanel = createCategory(panel, "Показанные предметы")
     		local yourItemsPanel = createCategory(panel, "Ваши предметы")
 
-            local inventory = LocalPlayer():GetInventory()
+            local inventory = client:GetInventory()
             local items = {}
 
             if inventory then
@@ -308,6 +308,27 @@ local categoryData = {
                 if inventory and inventory:HasItem(id) then
                     createItemButton(yourItemsPanel, id, icon, name, data)
                 end
+            end
+        end
+    },
+    {
+        name = "Устав",
+        icon = "icon16/database_table.png",
+        data = function(client, panel)
+            local charterPanel = panel:Add("DTextEntry")
+            charterPanel:SetPos(0, 0)
+            charterPanel:SetValue(GetNetVar("arb.Charter", Arbitrage.DefaultCharter))
+            charterPanel:SetMultiline(true)
+            charterPanel:SetFont("arb.Font_FuturaPTBook_6")
+            charterPanel:SetTextColor(Color(255, 255, 255))
+            charterPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(10), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+            charterPanel:SetEnabled(false)
+            charterPanel:SetVerticalScrollbarEnabled(true)
+            charterPanel:SetDrawBackground(false)
+
+
+            panel.PerformLayout = function(_, w, h)
+                charterPanel:SetSize(w, h)
             end
         end
     }

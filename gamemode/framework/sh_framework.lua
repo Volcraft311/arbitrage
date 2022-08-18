@@ -625,6 +625,10 @@ player_manager.AddValidHands("Angie Yonaga", "models/player/dewobedil/danganronp
 player_manager.AddValidModel("Gonta Gokuhara", "models/player/dewobedil/danganronpa/gonta_gokuhara/default_p.mdl")
 player_manager.AddValidHands("Gonta Gokuhara", "models/player/dewobedil/danganronpa/gonta_gokuhara/c_arms/default_p.mdl", 0, "00000000")
 
+-- UDG
+player_manager.AddValidModel( "Komaru Naegi (UDG)", "models/player/someguy/komaru_p.mdl" )
+player_manager.AddValidHands( "Komaru Naegi (UDG)", "models/player/someguy/komaru_arms.mdl", 0, "00000000")
+
 -- отключаем звук при инициализации игрока
 sound.Add( {
     name = "Player.DrownStart",

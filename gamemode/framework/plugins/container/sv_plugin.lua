@@ -18,6 +18,8 @@ function Container:LeftClick(data)
     local entity = data.entity
     if !IsValid(data.entity) then return end
 
+    entity:SetNetVar("container_name", data.name)
+
     entity._containerName = data.name
     entity.Inventory = InventoryBase.CreateInventory(data.w, data.h)
 
@@ -29,6 +31,8 @@ function Container:RightClick(data)
 
     local entity = data.entity
     if !IsValid(data.entity) then return end
+
+    entity:SetNetVar("container_name", nil)
 
     local inventory = entity.Inventory
     if inventory then

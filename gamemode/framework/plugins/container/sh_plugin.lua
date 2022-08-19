@@ -46,4 +46,5 @@ function PLUGIN:GetToolData(client)
     return data
 end
 
+Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

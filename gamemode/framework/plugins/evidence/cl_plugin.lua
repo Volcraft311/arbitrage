@@ -30,7 +30,7 @@ local surface_SetDrawColor = surface.SetDrawColor
 local ColorAlpha = ColorAlpha
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
-local draw_SimpleText = draw.SimpleText
+local draw_DrawText = draw.DrawText
 local netstream = netstream
 
 function PLUGIN:PostDrawOpaqueRenderables()
@@ -111,7 +111,7 @@ function PLUGIN:HUDPaint()
 	            if client.GetSitting and client:GetSitting() then return end
 	            if !SETTINGS.options.Get("show_admin_esp") then return end
 
-	            draw_SimpleText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
+	            draw_DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
 	        end
     	end
     end

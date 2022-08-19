@@ -642,7 +642,7 @@ do
 	local function getTrace(client)
 		local traceline = {}
 		traceline.start = client:GetShootPos()
-		traceline.endpos = traceline.start + client:GetAimVector() * 3000
+		traceline.endpos = traceline.start + client:GetAimVector() * 150
 		traceline.filter = client
 
 		return util_TraceLine(traceline)
@@ -653,6 +653,8 @@ do
 	timer_Create("PlayerInfoDraw:Update", 1, 0, function()
 		entities = {}
 		ent = nil
+
+		if Arbitrage.lawEnable then return end
 
 		local client = LocalPlayer()
 		if !IsValid(client) then return end
@@ -665,7 +667,6 @@ do
 				if v == client then continue end
 				if v:IsSpectate() then continue end
 				if v:IsNocliping() then continue end
-				if Arbitrage.hud.VectorObstructed(EyePos(), EyePos(), {LocalPlayer(), v}) then continue end
 
 				v.textalpha = v.textalpha or 0
 
@@ -679,8 +680,6 @@ do
 	end)
 
 	function Arbitrage.hud.PlayerInfoDraw()
-		if Arbitrage.lawEnable then return end
-
 		for k, v in ipairs(entities) do
 			if !IsValid(v) then continue end
 			if ent != v and v.textalpha <= 0.1 then continue end

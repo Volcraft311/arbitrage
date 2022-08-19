@@ -52,13 +52,7 @@ local PROP_BLACKLIST = {
 
 if SERVER then
     function PLUGIN:PlayerSpawnObject(client, model, entity)
-        if ((client.arbNextSpawn or 0) < CurTime()) then
-            client.arbNextSpawn = CurTime() + 0.75
-        else
-            return false
-        end
-
-        if (!client:IsAdmin() and PROP_BLACKLIST[model:lower()]) then
+        if !client:IsAdmin() and PROP_BLACKLIST[model:lower()] then
             return false
         end
     end

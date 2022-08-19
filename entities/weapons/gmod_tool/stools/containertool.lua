@@ -48,12 +48,16 @@ function TOOL:RightClick()
     end
 end
 
+local ConVarsDefault = TOOL:BuildConVarList()
+
 function TOOL.BuildCPanel(CPanel)
     local l = "containertool_"
 
     CPanel:AddControl("Header",{
         Description = "Данный инструмент поможет вам создавать контейнеры из пропов."
     })
+
+    CPanel:AddControl("ComboBox", {MenuButton = 1, Folder = "containertool", Options = {["#preset.default"] = ConVarsDefault}, CVars = table.GetKeys(ConVarsDefault)})
 
     CPanel:AddControl("TextBox", {
         Label = "Название контейнера",
@@ -73,13 +77,4 @@ function TOOL.BuildCPanel(CPanel)
         Min = 1,
         Max = 10
     })
-
-    local ResetButton = vgui.Create("DButton")
-    ResetButton:SetText("Сбросить настройки")
-    ResetButton.DoClick = function()
-        RunConsoleCommand(l .. "name", "Название")
-        RunConsoleCommand(l .. "w", 4)
-        RunConsoleCommand(l .. "h", 4)
-    end
-    CPanel:AddPanel(ResetButton)
 end

@@ -74,12 +74,14 @@ function PLUGIN.actionMenu:Paint()
     local size = W(20)
 
     for k, v in pairs(self.stored) do
-        if !IsValid(v.entity) then
+        local entity = v.entity
+
+        if !IsValid(entity) then
             self.stored[k] = nil
             return
         end
 
-        local pos = v.entity:GetPos()
+        local pos = entity:LocalToWorld(entity:OBBCenter())
         local data2D = pos:ToScreen()
         local x, y = data2D.x, data2D.y
         local distance = client:GetPos():Distance(pos)
@@ -116,7 +118,7 @@ function PLUGIN.actionMenu:Paint()
             end
 
             if client:KeyPressed(IN_USE) and isSelect and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then
-                netstream.Start("ItemBase:SendAction", v.entity:GetItemID(), isSelect)
+                netstream.Start("ItemBase:SendAction", entity:GetItemID(), isSelect)
 
                 self.stored[k] = nil
                 PLUGIN.actionMenu.cd = CurTime() + 0.2

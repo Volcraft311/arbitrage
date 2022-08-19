@@ -182,7 +182,7 @@ function PLUGIN:PlayerBindPress(client, bind, bPress)
     if class == "gmod_tool" then
         local tool = client:GetTool() and client:GetTool().Name or nil
 
-        if tool == "SubMaterial" then
+        if tool == "SubMaterial" or tool == "Wire" then
             if !bPress then return end
             if bind == "invnext" then
                 local submaterial = get_active_tool(client, "submaterial")

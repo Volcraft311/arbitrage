@@ -25,7 +25,6 @@ local Vector = Vector
 local math_abs = math.abs
 local team_GetColor = team.GetColor
 local isfunction = isfunction
-local LocalPlayer = LocalPlayer
 local EyePos = EyePos
 local next = next
 local coroutine_yield = coroutine.yield

@@ -1,3 +1,5 @@
+file.CreateDir("academy_evidencetool_configs")
+
 AddCSLuaFile()
 
 TOOL.Name = "Evidence Tool"
@@ -70,12 +72,109 @@ function TOOL:Reload()
     end
 end
 
-function TOOL.BuildCPanel(CPanel)
-    local l = "evidencetool_"
+local l = "evidencetool_"
+local function GetConVars()
+    local vars = {
+        name = GetConVar(l .. "name"):GetString(),
+        r = GetConVar(l .. "r"):GetInt(),
+        g = GetConVar(l .. "g"):GetInt(),
+        b = GetConVar(l .. "b"):GetInt(),
+        alpha = GetConVar(l .. "alpha"):GetInt(),
+        icon = GetConVar(l .. "icon"):GetInt(),
+        ribbon = GetConVar(l .. "ribbon"):GetInt(),
+    }
 
+    vars.EvidenceDescription = EvidenceDescription
+
+    return vars
+end
+
+local select_config = nil
+local function CreateConfigPanel(parent)
+    local panel = vgui.Create("DPanel")
+    panel:SetTall(18)
+
+    local combobox = panel:Add("DComboBox")
+    combobox:Dock(FILL)
+    combobox:DockMargin(0, 0, 5, 0)
+    combobox.list = {}
+    combobox.OnSelect = function(this, _, _, data)
+        select_config = data
+
+        local info = util.JSONToTable(file.Read("academy_evidencetool_configs/" .. data, "DATA"))
+
+        for id, value in pairs(info) do
+            if id != "EvidenceDescription" then
+                RunConsoleCommand(l .. id, value)
+            else
+                EvidenceDescription = value
+
+                local dtextentry = Evidence.dtextentry
+                if IsValid(dtextentry) then
+                    dtextentry:SetValue(value)
+                    dtextentry:OnChange()
+                end
+            end            
+        end
+    end
+
+    local function updateComboBox()
+        select_config = nil
+        combobox:Clear()
+
+        local files, _ = file.Find("academy_evidencetool_configs/*.txt", "DATA")
+        for k, v in ipairs(files) do
+            combobox:AddChoice(v:gsub(".txt", ""), v)
+        end
+    end
+
+    updateComboBox()
+
+    local removebutton = panel:Add("DImageButton")
+    removebutton:SetIcon("icon16/delete.png")
+    removebutton:Dock(RIGHT)
+    removebutton:DockMargin(5, 0, 0, 0)
+    removebutton.DoClick = function()
+        if !select_config then return end
+
+        local Menu = DermaMenu()
+            Menu:AddOption("Удалить данный конфиг", function()
+                file.Delete("academy_evidencetool_configs/" .. select_config)
+                chat.AddText("Конфиг " .. select_config .. " успешно был удален!")
+                updateComboBox()
+
+                select_config = nil
+            end)
+        Menu:Open()
+    end
+
+    local addbutton = panel:Add("DImageButton")
+    addbutton:SetIcon("icon16/add.png")
+    addbutton:Dock(RIGHT)
+    addbutton.DoClick = function()
+        Derma_StringRequest("Сохранить конфигурацию", "Введите название документа в который сохраниться конфигурация из Editor-а", "", function(text)
+            local data = util.TableToJSON(GetConVars())
+
+            file.Write("academy_evidencetool_configs/" .. text .. ".txt", data)
+            chat.AddText("Ваш конфиг успешно был сохранен в файл: " .. text .. ".txt")
+            updateComboBox()
+        end)
+    end
+
+    panel.PerformLayout = function(_, w, h)
+        addbutton:SetWide(h)
+        removebutton:SetWide(h)
+    end
+
+    parent:AddPanel(panel)
+end
+
+function TOOL.BuildCPanel(CPanel)
     CPanel:AddControl("Header",{
         Description = "Данный инструмент поможет вам создавать улики на карте которые смогут собирать игроки."
     })
+
+    CreateConfigPanel(CPanel)
 
     CPanel:AddControl("TextBox", {
         Label = "Название улики",
@@ -100,6 +199,7 @@ function TOOL.BuildCPanel(CPanel)
     end
 
     CPanel:AddPanel(dtextentryDesc)
+    Evidence.dtextentry = dtextentryDesc
 
     CPanel:AddControl("Slider", {
         Label = "Видимость улики",
@@ -108,7 +208,7 @@ function TOOL.BuildCPanel(CPanel)
         Max = 255
     })
 
-    CPanel:AddControl( "Color", {
+    CPanel:AddControl("Color", {
         Label = "Цвет улики",
         Red = l .. "r",
         Green = l .. "g",

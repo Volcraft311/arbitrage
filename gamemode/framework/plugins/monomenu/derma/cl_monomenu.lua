@@ -191,7 +191,7 @@ function PANEL:AddAction(panel, data, bInGame)
     actionButton.DoClick = function()
         if IsValid(self.monoList) then self.monoList:Remove() end
 
-        LocalPlayer():EmitSound(PLUGIN.ClickSound)
+        asterionlib.EmitSound(PLUGIN.ClickSound)
 
         PLUGIN:OpenEntityMenu(data)
     end
@@ -244,7 +244,7 @@ function PANEL:SetData(data)
 
             button.DoClick = function()
                 if v.onRun then
-                    LocalPlayer():EmitSound(PLUGIN.ClickSound)
+                    asterionlib.EmitSound(PLUGIN.ClickSound)
                     v.onRun(client)
 
                     netstream.Start("arb.MonoRunCommandC", i, k)

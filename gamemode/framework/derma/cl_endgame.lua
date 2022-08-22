@@ -47,7 +47,8 @@ end
 local count_up = 5
 local count_right = 120
 function PANEL:Menu()
-	LocalPlayer():EmitSound(endgame_sound)
+	asterionlib.EmitSound(endgame_sound)
+
 	timer.Simple(6.6, function()
 		if !IsValid(self) then return end
 

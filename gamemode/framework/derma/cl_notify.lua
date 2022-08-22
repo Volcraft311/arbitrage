@@ -39,7 +39,7 @@ function PANEL:Init()
         self.lines[i] = 0
     end
 
-    LocalPlayer():EmitSound("garrysmod/content_downloaded.wav")
+    asterionlib.EmitSound("garrysmod/content_downloaded.wav")
 end
 
 function PANEL:Paint(w, h)

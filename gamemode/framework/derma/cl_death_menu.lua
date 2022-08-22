@@ -45,7 +45,7 @@ function PANEL:Init()
 end
 
 function PANEL:TickSound()
-    LocalPlayer():EmitSound("common/talk.wav", 100, math.random(190, 200))
+    asterionlib.EmitSound("common/talk.wav", 100, math.random(190, 200))
 end
 
 function PANEL:Think()

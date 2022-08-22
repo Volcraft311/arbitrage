@@ -34,7 +34,7 @@ function Hints:Select(id)
     self.alphaTo = 125
     self.select = id
 
-    LocalPlayer():EmitSound("garrysmod/ui_return.wav")
+    asterionlib.EmitSound("garrysmod/ui_return.wav")
 
     timer.Simple(data:utf8len() * 0.1 + 8, function()
         self.alphaTo = 0

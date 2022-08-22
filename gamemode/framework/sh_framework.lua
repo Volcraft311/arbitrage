@@ -122,6 +122,7 @@ do
         workshop:Add("1784911999") -- LED screens
         workshop:Add("1161268544") -- Pink Blood
         workshop:Add("160250458") -- Wiremod
+        workshop:Add("2840295308") -- Primitive
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload

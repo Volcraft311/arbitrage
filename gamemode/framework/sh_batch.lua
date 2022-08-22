@@ -38,12 +38,15 @@ function Arbitrage.Initialize()
 		local function permissionFunc(_, client) return client:IsAdmin() end
 		local funcData = {
 			"PlayerSpawnProp", "PlayerGiveSWEP", "PlayerSpawnEffect", "PlayerSpawnNPC", "PlayerSpawnObject",
-			"PlayerSpawnRagdoll", "PlayerSpawnSENT", "PlayerSpawnSWEP", "PlayerSpawnVehicle","CanEditVariable",
-			"CanProperty"
+			"PlayerSpawnRagdoll", "PlayerSpawnSENT", "PlayerSpawnSWEP", "PlayerSpawnVehicle", "CanProperty",
 		}
 
 		for k, v in ipairs(funcData) do
 			Arbitrage.GM[v] = permissionFunc
+		end
+
+		Arbitrage.GM.CanEditVariable = function(_, entity, client)
+			return client:IsAdmin()
 		end
 
 		Arbitrage.util.WriteMessage("The gamemode \"" .. engine.ActiveGamemode() .. "\" was started!")

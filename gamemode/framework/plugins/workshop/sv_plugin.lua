@@ -14,28 +14,18 @@
 
 local PLUGIN = PLUGIN
 
-local function check(id, directories)
-    for k, v in ipairs(directories) do
-        if file.IsDir("addons/" .. id, "GAME") then
-            return true
+local function compactDir(array)
+    local data = {}
+
+    for _, value in ipairs(array) do
+        local id = tonumber(value)
+
+        if id then
+            data[id] = true
         end
     end
 
-    return false
-end
-
-local function removeAll(path)
-    local files, folders = asterionlib.file.List(path)
-
-    for k, v in ipairs(files or {}) do
-        asterionlib.file.Delete(path .. "/" .. v)
-    end
-
-    for k, v in ipairs(folders or {}) do
-        removeAll(path .. "/" .. v)
-    end
-
-    asterionlib.file.Delete(path)
+    return data
 end
 
 local function getIP()
@@ -53,12 +43,15 @@ function PLUGIN:OpenMenu(client)
     local info = asterionlib.data:Get("workshop", {}, true)
 
     local _, directories = file.Find("addons/*", "GAME")
-    for k, v in pairs(info) do
-        if check(k, directories) then
-            data[2][k] = v
-        else
-            data[1][k] = v
-        end
+
+    local dirList = compactDir(directories)
+    for id, author in pairs(info) do
+        id = tonumber(id)
+
+        local bInstall = dirList[id]
+        local stored = bInstall and 2 or 1
+
+        data[stored][id] = author
     end
 
     asterionlib.netgui:Create(client, "WORKSHOP:Menu", nil, "SetData", data)

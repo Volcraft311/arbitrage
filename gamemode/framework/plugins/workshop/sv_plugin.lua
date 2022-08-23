@@ -105,9 +105,12 @@ function PLUGIN:InitPostEntity()
     local info = asterionlib.data:Get("workshop", {}, true)
     local _, directories = file.Find("addons/*", "GAME")
 
-    for k, v in pairs(info) do
-        if check(k, directories) then
-            resource.AddWorkshop(k)
+    local dirList = compactDir(directories)
+    for id, author in pairs(info) do
+        id = tonumber(id)
+
+        if dirList[id] then
+            resource.AddWorkshop(tostring(id))
         end
     end
 end

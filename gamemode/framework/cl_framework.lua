@@ -34,8 +34,7 @@ function Arbitrage.DrawGradient(gradientType, x, y, width, height, color)
     surface.DrawTexturedRect(x, y, width, height)
 end
 
-local cb = Color(254, 110, 21)
-function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign)
+function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign, cb)
     local alpha = color.a or 255
     if alpha <= 0.01 then return end
 
@@ -45,17 +44,21 @@ function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign)
     local font_normal = font_name .. "BlurN_" .. font_size
     local font_blur = font_name .. "Blur_" .. font_size
 
+    cb = cb or Color(254, 110, 21)
+    local color_blur = ColorAlpha(cb, alpha)
+
     for i = 1, 2 do
-        draw.SimpleText(text, font_blur, x, y, ColorAlpha(cb, alpha), xAlign)
+        draw.SimpleText(text, font_blur, x, y, color_blur, xAlign)
     end
 
     draw.SimpleText(text, font_normal, x, y, color, xAlign)
 end
 
-function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size)
+function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size, cb)
     local alpha = color.a or 255
     if alpha <= 0.01 then return end
 
+    cb = cb or Color(254, 110, 21)
     local color_blur = ColorAlpha(cb, alpha)
 
     Arbitrage.DrawGradient(GRADIENT_DOWN, x, y - size, w, size, color_blur)
@@ -72,10 +75,6 @@ function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size)
 
     surface.SetDrawColor(color)
     surface.DrawOutlinedRect(x, y, w, h, thickness)
-end
-
-function Arbitrage.GetChapter()
-    return GetNetVar("arb.Chapter", "Эпизод отсутствует")
 end
 
 function Arbitrage.GetTime()

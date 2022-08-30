@@ -14,49 +14,103 @@
 
 local PANEL = {}
 
-local function workshop_gui(panel)
-    local space = W(20)
-    local size = W(200)
+local subscribeMat = Material("danganronpa/ui/info_7.png")
+local installMat = Material("danganronpa/ui/info_6.png")
+local noInstallMat = Material("danganronpa/ui/info_5.png")
+
+local statusMat = {
+    [0] = {
+        text = "Не установлен",
+        mat = noInstallMat,
+        color = Color(255, 65, 23)
+    },
+    [1] = {
+        text = "Временно скачан",
+        mat = installMat,
+        color = Color(255, 176, 56)
+    },
+    [2] = {
+        text = "Установлен",
+        mat = subscribeMat,
+        color = Color(14, 255, 110)
+    }
+}
+
+local function workshop_gui(scrollPanel, informationPanel)    
+    local selected = nil
+
+    local List = scrollPanel:Add("DIconLayout")
+    List:Dock(FILL)
 
     for k, v in pairs(asterionlib.workshop.list) do
-        local info = asterionlib.workshop.status[v.status]
-        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/" .. info.mat .. ", 17x17, 255, 255, 255><colour=" .. info.color.r .. "," .. info.color.g .. "," .. info.color.b .. "," .. info.color.a .. "> " .. info.text .. "</colour></font>")
-        local image = nil
-
+        local image, imageSize = nil, W(120)
         asterionlib.DownloadImage(v.image, function(matPath)
             image = matPath
         end)
 
-        local button = panel:Add("DButton")
-        button:SetText("")
-        button:SetWide(W(220) + space)
-        button:SetTall(W(220))
-        button.alpha = 0.3
-        button.Paint = function(_, w, h)
-            if image then
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(image)
-                surface.DrawTexturedRect(space, 0, size, size, 2)
-            end
-
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 0 or 0.3)
-            surface.SetDrawColor(99, 17, 32, 255)
-            surface.DrawOutlinedRect(space, 0, size, size, 2)
-
-            if v.status == 0 then
-                _.alpha = 0.95
-            end
-
-            surface.SetDrawColor(0, 0, 0, 255 * _.alpha)
-            surface.DrawRect(space, 0, size, size)
-
-            parsed:draw(w / 2, size + H(10), TEXT_ALIGN_CENTER, TEXT_ALIGN_LEFT)
+        local bInstall = v.status != 0
+        local name = v.name
+        local maxChar = 20
+        if utf8.len(name) > maxChar then
+            name = utf8.sub(name, 1, maxChar - 3) .. "..."
         end
-        button.DoClick = function(arguments)
+
+        local ListItem = List:Add("DButton")
+        ListItem:SetText("")
+        ListItem:SetSize(W(160), H(200))
+        ListItem.alpha = 0
+        ListItem.Paint = function(this, w, h)
+            local isSelect = selected == k
+            local blacked = bInstall and 255 or 100
+
+            this.alpha = Lerp(FrameTime() * 10, this.alpha, isSelect and 1 or -0.1)
+
+            local x, y = w / 2 - imageSize / 2, 4
+
+            surface.SetDrawColor(blacked, blacked, blacked)
+            surface.SetMaterial(image)
+            surface.DrawTexturedRect(x, y, imageSize, imageSize)
+
+            surface.SetDrawColor(15, 15, 15)
+            surface.DrawOutlinedRect(x, y, imageSize, imageSize, 2)
+
+            Arbitrage.DrawTextBlur(name, "arb.Font_FuturaPTBook_7", w / 2, imageSize + H(10), Color(255, 238, 177, 255 * this.alpha), TEXT_ALIGN_CENTER)
+
+            if !isSelect then
+                draw.SimpleText(name, "arb.Font_FuturaPTBook_7", w / 2, imageSize + H(10), Color(blacked, blacked, blacked), TEXT_ALIGN_CENTER)
+            end
+
+            Arbitrage.DrawOutlinedRectBlur(x, y, imageSize, imageSize, Color(255, 238, 177, 255 * this.alpha), 2, 4)
+
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(statusMat[tonumber(v.status)].mat)
+            surface.DrawTexturedRect(imageSize - 12, 0, 33, 33)
+        end
+
+        local function sel()
+            selected = k
+
+            informationPanel.title.text = v.name
+            informationPanel.title.status = v.status
+
+            local desc = v.stored.description
+            informationPanel.desc:SetValue(desc)
+
+            informationPanel:SetAlpha(0)
+            informationPanel:AlphaTo(255, 0.3)
+        end
+
+        ListItem.DoClick = sel
+        ListItem.DoDoubleClick = function()
+            sel()
+
             steamworks.ViewFile(k)
         end
+        ListItem.DoRightClick = function()
+            sel()
 
-        panel:AddPanel(button)
+            steamworks.ViewFile(k)
+        end
     end
 end
 
@@ -67,7 +121,6 @@ local stagesData = {
         panel:SettingsCreatePanels()
 
         panel.titleText = "НАСТРОЙКИ"
-        panel.titleDesc = "Настраиваем игру под себя"
         panel.titleAlpha = 0
 
         for k, v in pairs(SETTINGS.GetStored().options) do
@@ -90,7 +143,6 @@ local stagesData = {
         local parent = panel:GetParent()
 
         panel.titleText = "НАСТРОЙКИ"
-        panel.titleDesc = "Настраиваем игру под себя"
         panel.titleAlpha = 0
 
         panel:SettingsCreatePanels()
@@ -103,57 +155,64 @@ local stagesData = {
         local parent = panel:GetParent()
 
         panel.titleText = "НАСТРОЙКИ"
-        panel.titleDesc = "Настраиваем игру под себя"
         panel.titleAlpha = 0
 
-        panel.scrollPanel = panel:Add("DHorizontalScroller")
+        panel.scrollPanel = panel:Add("DScrollPanel")
         panel.scrollPanel:SetAlpha(0)
         panel.scrollPanel:AlphaTo(255, 0.3)
-        panel.scrollPanel:SetSize(ScrW() - (W(237) * 2), H(251))
-        panel.scrollPanel:SetPos(W(237), ScrH() - H(248) - H(231))
+        panel.scrollPanel:SetPos(W(140), H(156))
+        panel.scrollPanel:SetSize(W(840), H(786))
 
-        panel.scrollPanel:GetChildren()[2]:SetAlpha(0)
-        panel.scrollPanel:GetChildren()[3]:SetAlpha(0)
+        do
+            local bar = panel.scrollPanel:GetVBar()
+            bar:SetWide(30)
+            bar:DockMargin(0, 0, 0, 0)
 
-        local test = panel.scrollPanel:Add("DPanel")
-        test:SetTall(H(15))
-        test:Dock(BOTTOM)
-        test.Paint = function(_, w, h)
-            local main = panel.scrollPanel
-            local x = main.OffsetX
-            local sX = main.pnlCanvas:GetWide()
-
-            local a = main.pnlCanvas:GetWide() - main:GetWide()
-            local b = sX - a
-
-            surface.SetDrawColor(255, 255, 255, 3)
-            surface.DrawRect(0, h - 3, w, 3)
-
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(x * (w / sX), h - 3, b * (w / sX), 3)
+            bar.Paint = function(_, w, h)
+                surface.SetDrawColor(255, 255, 255, 3)
+                surface.DrawRect(20 + 7, 30, w, h - 60)
+            end
+            bar.btnUp.Paint = function(_, w, h) end
+            bar.btnDown.Paint = function(_, w, h) end
+            bar.btnGrip.Paint = function(_, w, h)
+                surface.SetDrawColor(255, 255, 255)
+                surface.DrawRect(20 + 7, 0, w, h)
+            end
         end
 
         panel.informationPanel = panel:Add("Panel")
         panel.informationPanel:SetAlpha(0)
-        panel.informationPanel:AlphaTo(255, 0.3)
-        panel.informationPanel:SetSize(ScrW() - (W(237) * 2), H(350))
-        panel.informationPanel:SetPos(W(237), H(211))
+        panel.informationPanel:SetSize(W(700), H(786))
+        panel.informationPanel:SetPos(ScrW() - W(150) - panel.informationPanel:GetWide(), H(156))
 
-        local text = "Для стабильной и комфортной игры на сервере, Asterion Academy использует коллекцию аддонов и материалов.\nДля того, чтобы значительно сократить время захода на сервер, вы также можете подписаться на них в Workshop’е. Для этого достаточно\nкликнуть по нижерасположанным обложкам необходимого контента.\n\nВ случае возникновения проблем с контентом используйте данную вкладку для выявления непрогруженного контента. Если весь\nконтент фунционирует исправнно, а ошибки с отображение материалов остались — свяжитесь с нами."
+        local Title = panel.informationPanel:Add("DPanel")
+        Title:Dock(TOP)
+        Title:SetTall(H(35))
+        Title.text = ""
+        Title.status = 0
+        Title.Paint = function(this, w, h)
+            if this.text == "" then return end
 
-        local labelTitle = panel.informationPanel:Add("DLabel")
-        labelTitle:SetText("Управление контентом")
-        labelTitle:SetFont("arb.Font_FuturaPTBook_11")
-        labelTitle:SetTextColor(Color(255, 41, 80))
-        labelTitle:Dock(TOP)
-        labelTitle:DockMargin(0, 0, 0, H(6))
-        labelTitle:SizeToContents()
+            local width, height = draw.SimpleText(this.text, "arb.Font_FuturaPTBook_10", 0, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 
-        local labelDesc = panel.informationPanel:Add("DPanel")
-        labelDesc:Dock(FILL)
-        labelDesc.Paint = function(_, w, h)
-            draw.DrawText(text, "arb.Font_FuturaPTBook_8", 0, 0, Color(255, 234, 238), TEXT_ALIGN_LEFT)
+            draw.SimpleText(statusMat[this.status].text, "arb.Font_FuturaPTBook_10", width + 44, 0, statusMat[this.status].color, TEXT_ALIGN_LEFT)
+
+            surface.SetDrawColor(255, 255, 255, 20)
+            surface.DrawRect(width + 20, 0, 2, h)
         end
+
+        panel.informationPanel.title = Title
+
+        local Desc = panel.informationPanel:Add("DTextEntry")
+        Desc:SetFont("arb.Font_FuturaPTBook_7")
+        Desc:SetTextColor(Color(255, 255, 255, 255))
+        Desc:SetValue("")
+        Desc:Dock(FILL)
+        Desc:DockMargin(0, 5, 0, 0)
+        Desc:SetMultiline(true)
+        Desc:SetPaintBackground(false)
+
+        panel.informationPanel.desc = Desc
 
         workshop_gui(panel.scrollPanel, panel.informationPanel)
     end
@@ -167,7 +226,6 @@ function PANEL:Init()
     self:SetSize(ScrW(), ScrH())
 
     self.titleText = ""
-    self.titleDesc = ""
     self.select = ""
     self.pressedCD = RealTime()
     self.titleAlpha = 0
@@ -288,11 +346,6 @@ function PANEL:Paint()
     self.titleAlpha = Lerp(FrameTime() * 3, self.titleAlpha, 1)
 
     draw.DrawText(self.titleText, "arb.Font_FuturaPTDemi_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
-
-    surface.SetFont("arb.Font_FuturaPTDemi_17")
-    local width, _ = surface.GetTextSize(self.titleText)
-
-    draw.DrawText(self.titleDesc, "arb.Font_FuturaPTBook_10", width + W(170), H(74), Color(255, 234, 238, 20 * self.titleAlpha), TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MainRemake:Settings", PANEL, "EditablePanel")

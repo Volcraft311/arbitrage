@@ -544,6 +544,14 @@ netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID)
     Arbitrage.adminnotify:SendNotify("startendgame", client:FullName())
 end)
 
+netstream.Hook("arb.MonoChangeStyle", function(client, text, r, g, b)
+    if !client:IsAdmin() then return end
+
+    for k, v in ipairs(player.GetAll()) do
+        asterionlib.netgui:Create(v, "arb.ChangeStyle", nil, "SetData", text, r, g, b)
+    end
+end)
+
 netstream.Hook("arb.SendVote", function(client, data)
     if !client:InGame() then return end
     if !Arbitrage.players[data] then return end

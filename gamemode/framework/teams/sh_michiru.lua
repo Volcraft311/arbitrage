@@ -15,7 +15,7 @@ local TEAM = {emodjiList = {}}
 
 TEAM.name = "Мичиру Мидзуно"
 TEAM.description = "Абсолютный Стилист"
-TEAM.category = ""
+TEAM.category = "Уникальные"
 TEAM.admin = true
 TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/yourtoast4/danganronpa/monokuma.mdl"

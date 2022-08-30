@@ -317,6 +317,14 @@ function Arbitrage.OffCorpseEffect()
     return GetNetVar("arb.OffCorpseEffect", false)
 end
 
+function Arbitrage.GetChapter()
+    return GetNetVar("arb.Chapter", "Эпизод отсутствует")
+end
+
+function Arbitrage.IsShowClassTrial()
+    return GetNetVar("arb.ClassTrial", false)
+end
+
 local themes = {
     investigation = "Расследование",
     law = "Суд",

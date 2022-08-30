@@ -193,9 +193,5 @@ function PLUGIN:StartCommand(client, ucmd)
     end
 end
 
-function Arbitrage.IsShowClassTrial()
-    return GetNetVar("arb.ClassTrial") and true or false
-end
-
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

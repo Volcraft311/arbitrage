@@ -29,13 +29,17 @@ function PLUGIN:HUDPaint()
 
         local title_color = Color(255, 255, 255, 40 + math_abs(math_sin(CurTime() * 2) * 30))
 
-        draw_SimpleText("GM-Arbitrage Framework", "arb.Font_FuturaPTBook_6", a, H(5), title_color, TEXT_ALIGN_RIGHT)
-        draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", a, H(23), version_color, TEXT_ALIGN_RIGHT)
+        do
+            local w, _ = draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", a, H(8), version_color, TEXT_ALIGN_RIGHT)
+            draw_SimpleText("Arbitrage Framework", "arb.Font_FuturaPTBook_6", a - w - 10, H(5), title_color, TEXT_ALIGN_RIGHT)
+        end
 
-        draw_SimpleText("AsterionLibrary", "arb.Font_FuturaPTBook_6", a, H(50), title_color, TEXT_ALIGN_RIGHT)
-        draw_SimpleText("v" .. asterionlib.version, "arb.Font_FuturaPTBook_5", a, H(68), version_color, TEXT_ALIGN_RIGHT)
+        do
+            local w, _ = draw_SimpleText("v" .. asterionlib.version, "arb.Font_FuturaPTBook_5", a, H(25), version_color, TEXT_ALIGN_RIGHT)
+            draw_SimpleText("AsterionLibrary", "arb.Font_FuturaPTBook_6", a - w - 10, H(22), title_color, TEXT_ALIGN_RIGHT)
+        end
 
         local dev_color = Color(255, 255, 255, math_sin(CurTime()) * 20)
-        draw_SimpleText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", a, H(90), dev_color, TEXT_ALIGN_RIGHT)
+        draw_SimpleText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", a, H(50), dev_color, TEXT_ALIGN_RIGHT)
     end
 end

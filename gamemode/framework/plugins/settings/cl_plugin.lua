@@ -1,7 +1,7 @@
 local PLUGIN = PLUGIN
 
 local sliderMat = Material("danganronpa/ui/slider.png")
-local resetMat = Material("danganronpa/ui/reset.png")
+local resetMat = Material("danganronpa/ui/info_8.png")
 
 PLUGIN.type = {
     number = function(data, panel, panelinfo)
@@ -197,7 +197,7 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
         _.color.b = Lerp(frametime, _.color.b, isselect and 96 or 238)
         _.color.a = Lerp(frametime, _.color.a, (ishover or isselect) and 255 or 50)
 
-        draw.DrawText(data.name, "arb.Font_FuturaPTBook_9", h + 20, 0, Color(_.color.r, _.color.g, _.color.b, _.color.a), TEXT_ALIGN_LEFT)
+        draw.DrawText(data.name, "arb.Font_FuturaPTBook_9", h + 5, 0, Color(_.color.r, _.color.g, _.color.b, _.color.a), TEXT_ALIGN_LEFT)
     end
     frame.DoClick = function()
         if panel.select == frame then return end
@@ -270,8 +270,9 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
     end
 
     local buttonReset = frame:Add("DButton")
+    buttonReset:SetAlpha(0)
     buttonReset:SetText("")
-    buttonReset:SetWide(frame:GetTall() + 10)
+    buttonReset:SetWide(frame:GetTall())
     buttonReset:Dock(LEFT)
     buttonReset.color = Color(255, 234, 238)
     buttonReset.Paint = function(_, w, h)
@@ -284,11 +285,12 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
 
         surface.SetDrawColor(_.color.r, _.color.g, _.color.b)
         surface.SetMaterial(resetMat)
-        surface.DrawTexturedRect(15, 0, h, h)
+        surface.DrawTexturedRect(0, 0, h, h)
 
         if !SETTINGS.binds.IsDefault(data.id) and !SETTINGS.options.IsDefault(data.id) then
-            surface.SetDrawColor(255, 61, 96)
-            surface.DrawRect(0, 0, 2, h)
+            _:SetAlpha(255)
+        else
+            _:SetAlpha(0)
         end
     end
     buttonReset.DoClick = function()

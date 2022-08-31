@@ -14,7 +14,7 @@
 
 local PLUGIN = PLUGIN
 
-PLUGIN.name = "Finding Body"
+PLUGIN.name = "Persistent"
 PLUGIN.turnoff_time = 7
 
 function PLUGIN:AllowDetectCorpse(client)

@@ -108,7 +108,9 @@ timer.Create("fb:CheckTrace", 0.1, 0, function()
 	local entity = trace.Entity
 	if !IsValid(entity) then return end
 
-	if !entity:IsCorpse() then return end
+	local attackerID = entity:IsCorpse()
+	if !attackerID then return end
+	if attackerID == LocalPlayer():SteamID() then return end
 
 	local dist = client:GetPos():DistToSqr(entity:GetPos())
 	if dist >= 270000 then return end

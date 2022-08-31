@@ -16,14 +16,60 @@ local PLUGIN = PLUGIN
 
 local meta = FindMetaTable("Entity")
 
-function meta:SetCorpse(bState)
-    self:SetNetVar("iscorpse", bState)
+function meta:SetCorpse(bSteamID)
+    self:SetNetVar("iscorpse", bSteamID)
 end
 
 function PLUGIN:EntityRemoved(entity)
     if entity:IsCorpse() then
         entity:SetCorpse(false)
     end
+end
+
+function PLUGIN:CreateRagdoll(client)
+    local entity = ents.Create("prop_ragdoll")
+    entity:SetPos(client:GetPos())
+    entity:SetAngles(client:GetAngles())
+    entity:SetModel(client:GetModel())
+    entity:SetSkin(client:GetSkin())
+    entity:Spawn()
+
+    entity:SetNetVar("player", client)
+
+    entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+    entity:Activate()
+
+    return entity
+end
+
+function PLUGIN:DoPlayerDeath(client, attacker, damageinfo)
+    if Arbitrage.OffSpawnPersistent() then return end
+    if !client:InGame() then return end
+
+    local entity = self:CreateRagdoll(client)
+    entity.client = client
+    entity.name = client:Name()
+
+    do
+        local inventory = client:GetInventory()
+        if !inventory then return end
+
+        entity._containerName = client:Name()
+        entity.Inventory = InventoryBase.CreateInventory(inventory.w, inventory.h)
+
+        for x = 1, inventory.w do
+            for y = 1, inventory.h do
+                local item = inventory:GetItemAt(x, y)
+
+                if item and !item:GetData("equip") then
+                    item:Transfer(entity.Inventory:GetID(), x, y)
+                end
+            end
+        end
+    end
+
+    local corpseInfo = (attacker and attacker:IsPlayer()) and attacker:SteamID() or true
+    entity:SetCorpse(corpseInfo)
 end
 
 netstream.Hook("fb:ChangeFOV", function(client)

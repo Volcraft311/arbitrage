@@ -255,10 +255,6 @@ function Arbitrage:PlayerShouldTaunt(client, act)
     return true
 end
 
-function Arbitrage:DoPlayerDeath(client, attacker, damageinfo)
-    Arbitrage.persistent.DoPlayerDeath(client, attacker, damageinfo)
-end
-
 function Arbitrage:KeyPress(client, key)
     if client:oldAlive() and client:IsPlaying() and key == IN_JUMP and !client:IsNocliping() then
         local stamina = client:GetNetVar("stm", 100)

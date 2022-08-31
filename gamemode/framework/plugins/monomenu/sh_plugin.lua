@@ -235,7 +235,7 @@ PLUGIN.GameData = {
         end
     },
     {
-        data = "Сбросить всем все характери...",
+        data = "Сбросить всем всю статистику",
         icon = "icon16/chart_line.png",
         onRun = function(client)
             if CLIENT then return end
@@ -300,126 +300,119 @@ PLUGIN.GameData = {
         end
     },
     {
-        data = "Вкл отображение ClassTrial",
+        isCheckBox = true,
+
+        data = "Надпись ClassTrial",
         icon = "icon16/chart_curve_add.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
-            SetNetVar("arb.ClassTrial", true)
+            SetNetVar("arb.OffShowClassTrial", false)
         end,
-        onCreate = function(client)
-            return !Arbitrage.IsShowClassTrial()
+        onDisable = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffShowClassTrial", true)
+        end,
+        OnCheck = function(client)
+            return !Arbitrage.OffShowClassTrial()
         end
     },
     {
-        data = "Выкл отображение ClassTrial",
-        icon = "icon16/chart_curve_delete.png",
-        onRun = function(client)
-            if CLIENT then return end
+        isCheckBox = true,
 
-            SetNetVar("arb.ClassTrial", false)
-
-        end,
-        onCreate = function(client)
-            return Arbitrage.IsShowClassTrial()
-        end
-    },
-    {
-        data = "Включить OOC",
+        data = "OOC чат",
         icon = "icon16/world_add.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OffOOC", false)
         end,
-        onCreate = function(client)
-            return Arbitrage.OffOOC()
-        end
-    },
-    {
-        data = "Выключить OOC",
-        icon = "icon16/world_delete.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OffOOC", true)
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return !Arbitrage.OffOOC()
         end
     },
     {
-        data = "Включить трату характеристик",
+        isCheckBox = true,
+
+        data = "Падение статистики",
         icon = "icon16/cup_add.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OffFallStatictic", false)
         end,
-        onCreate = function(client)
-            return Arbitrage.OffFallStatictic()
-        end
-    },
-    {
-        data = "Выключить трату характеристик",
-        icon = "icon16/cup_delete.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OffFallStatictic", true)
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return !Arbitrage.OffFallStatictic()
         end
     },
     {
-        data = "Включить смерть из-за характ...",
+        isCheckBox = true,
+
+        data = "Смерть из-за статистики",
         icon = "icon16/cup_add.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OnDeadLowStatictic", true)
         end,
-        onCreate = function(client)
-            return !Arbitrage.OnDeadLowStatictic()
-        end
-    },
-    {
-        data = "Выключить смерть из-за харак...",
-        icon = "icon16/cup_delete.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OnDeadLowStatictic", false)
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return Arbitrage.OnDeadLowStatictic()
         end
     },
     {
-        data = "Включить эффект от трупа",
+        isCheckBox = true,
+
+        data = "Эффект обнаружения трупа",
         icon = "icon16/world_add.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OffCorpseEffect", false)
         end,
-        onCreate = function(client)
-            return Arbitrage.OffCorpseEffect()
-        end
-    },
-    {
-        data = "Выключить эффект от трупа",
-        icon = "icon16/world_delete.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             SetNetVar("arb.OffCorpseEffect", true)
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return !Arbitrage.OffCorpseEffect()
         end
     },
+    {
+        isCheckBox = true,
+
+        data = "Спавн трупа при смерти",
+        icon = "icon16/world_add.png",
+        onEnable = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffSpawnPersistent", false)
+        end,
+        onDisable = function(client)
+            if CLIENT then return end
+
+            SetNetVar("arb.OffSpawnPersistent", true)
+        end,
+        OnCheck = function(client)
+            return !Arbitrage.OffSpawnPersistent()
+        end
+    }
 }
 
 PLUGIN.AdminData = {

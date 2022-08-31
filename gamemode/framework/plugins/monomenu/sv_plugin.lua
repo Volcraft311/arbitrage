@@ -402,16 +402,29 @@ netstream.Hook("arb.MonoRunCommandC", function(client, type_id, button_id)
         if !bState then return end
     end
 
-    if data.onRun then
-        local bState = data.onRun(client)
-        if bState == false then return end
-
+    local function notify()
         timer.Simple(0.2, function()
             PLUGIN:OpenMonoMenu(client)
         end)
 
         local str = isfunction(data.data) and data.data() or tostring(data.data)
         Arbitrage.adminnotify:SendNotify("monocommandc", client:FullName(), str)
+    end
+
+    local isCheckBox = data.isCheckBox
+
+    if isCheckBox then
+        local func = data.OnCheck(client) and data.onDisable or data.onEnable
+        func(client)
+
+        notify()
+    else
+        if data.onRun then
+            local bState = data.onRun(client)
+            if bState == false then return end
+
+            notify()
+        end
     end
 end)
 

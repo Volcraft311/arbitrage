@@ -355,7 +355,7 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Изменить характеристики",
+                name = "Изменить статистику",
                 icon = "icon16/bricks.png",
                 data = {
                     {

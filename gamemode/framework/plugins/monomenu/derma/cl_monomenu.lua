@@ -198,6 +198,8 @@ function PANEL:AddAction(panel, data, bInGame)
 end
 
 function PANEL:SetData(data)
+    local client = LocalPlayer()
+
     self:ClearCategory()
     self:InitPlayersCategory()
 
@@ -209,7 +211,7 @@ function PANEL:SetData(data)
         for k, v in ipairs(tableData) do
             local allow = true
             if v.onCreate then
-                local bState = v.onCreate(LocalPlayer())
+                local bState = v.onCreate(client)
 
                 if !bState then
                     allow = false
@@ -218,7 +220,7 @@ function PANEL:SetData(data)
 
             local h = Arbitrage.ResolutionH(30)
             local text = isfunction(v.data) and v.data(client) or tostring(v.data)
-            local alpha = v.onRun and 255 or 150
+            local alpha = 255
 
             local panel_add = i == 1 and self.gamePanel or self.adminPanel
 
@@ -235,7 +237,22 @@ function PANEL:SetData(data)
             icon:SetWide(panel:GetTall() - a * 2)
             icon:SetImage(v.icon)
 
-            local button = panel:Add((v.onRun and allow) and "DButton" or "DPanel")
+            local isCheckBox = v.isCheckBox
+            local CheckPanel = nil -- PerformLayout size
+            if isCheckBox then
+                local tall = H(7)
+
+                CheckPanel = panel:Add("DPanel")
+                CheckPanel:Dock(RIGHT)
+                CheckPanel.Paint = function(_, w, h)
+                    local color = v.OnCheck(client) and color_green or color_red
+
+                    surface.SetDrawColor(color)
+                    surface.DrawRect(tall, tall, w - tall * 2, h - tall * 2)
+                end
+            end
+
+            local button = panel:Add(((v.onRun and allow) or isCheckBox) and "DButton" or "DPanel")
             button:SetText("")
             button:SetPos(0, 0)
             button:SetSize(panel:GetWide(), panel:GetTall())
@@ -243,20 +260,37 @@ function PANEL:SetData(data)
             end
 
             button.DoClick = function()
-                if v.onRun then
+                local function Csound()
                     asterionlib.EmitSound(PLUGIN.ClickSound)
-                    v.onRun(client)
+                end
+
+                if isCheckBox then
+                    Csound()
+
+                    local func = v.OnCheck(client) and v.onDisable or v.onEnable
+                    func(client)
 
                     netstream.Start("arb.MonoRunCommandC", i, k)
+                else
+                    if v.onRun then
+                        Csound()
+                        v.onRun(client)
+
+                        netstream.Start("arb.MonoRunCommandC", i, k)
+                    end
                 end
             end
 
             panel.PerformLayout = function(_, w, h)
                 button:SetSize(w, h)
+
+                if CheckPanel then
+                    CheckPanel:SetSize(h, h)
+                end
             end
 
             panel.Paint = function(_, w, h)
-                _.alpha = Lerp(FrameTime() * 10, _.alpha, (button:IsHovered() and v.onRun and allow) and 200 or 0)
+                _.alpha = Lerp(FrameTime() * 10, _.alpha, (button:IsHovered() and ((v.onRun and allow) or isCheckBox)) and 200 or 0)
 
                 surface.SetDrawColor(27, 10, 13, _.alpha)
                 surface.DrawRect(0, 0, w, h)

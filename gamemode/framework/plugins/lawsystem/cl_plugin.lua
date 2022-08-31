@@ -347,7 +347,7 @@ function PLUGIN:PostDrawOpaqueRenderables()
     end
 
     if !Arbitrage.lawEnable then return end
-    if !Arbitrage.IsShowClassTrial() then return end
+    if Arbitrage.OffShowClassTrial() then return end
 
     local pos = Arbitrage.camPosEnd
     if !pos then return end

@@ -317,12 +317,16 @@ function Arbitrage.OffCorpseEffect()
     return GetNetVar("arb.OffCorpseEffect", false)
 end
 
-function Arbitrage.GetChapter()
-    return GetNetVar("arb.Chapter", "Эпизод отсутствует")
+function Arbitrage.OffSpawnPersistent()
+    return GetNetVar("arb.OffSpawnPersistent", false)
 end
 
-function Arbitrage.IsShowClassTrial()
-    return GetNetVar("arb.ClassTrial", false)
+function Arbitrage.OffShowClassTrial()
+    return GetNetVar("arb.OffShowClassTrial", false)
+end
+
+function Arbitrage.GetChapter()
+    return GetNetVar("arb.Chapter", "Эпизод отсутствует")
 end
 
 local themes = {

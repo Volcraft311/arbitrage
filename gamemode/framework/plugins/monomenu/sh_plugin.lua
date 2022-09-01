@@ -30,51 +30,44 @@ PLUGIN.WhiteListStandart = {
 
 PLUGIN.GameData = {
     {
-        data = "Запустить игру",
+        isCheckBox = true,
+
+        data = "Игра запущена",
         icon = "icon16/control_play_blue.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             Arbitrage:StartGame()
         end,
-        onCreate = function(client)
-            return !Arbitrage.IsStartGame()
-        end
-    },
-    {
-        data = "Остановить игру",
-        icon = "icon16/control_stop_blue.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             Arbitrage:StopGame()
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return Arbitrage.IsStartGame()
         end
     },
     {
-        data = "Запустить суд",
+        isCheckBox = true,
+
+        data = "Суд запущен",
         icon = "icon16/control_equalizer_blue.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             Arbitrage:StartLaw()
         end,
-        onCreate = function(client)
-            return Arbitrage.placesList and (Arbitrage.IsStartGame() and !GetNetVar("arb.StartLaw")) or false
-        end
-    },
-    {
-        data = "Остановить суд",
-        icon = "icon16/control_eject_blue.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             Arbitrage:EndLaw()
         end,
+        OnCheck = function(client)
+            return Arbitrage.IsStartLaw()
+        end,
         onCreate = function(client)
-            return Arbitrage.IsStartGame() and GetNetVar("arb.StartLaw")
+            return Arbitrage.IsStartGame()
         end
     },
     {
@@ -340,8 +333,8 @@ PLUGIN.GameData = {
     {
         isCheckBox = true,
 
-        data = "Падение статистики",
-        icon = "icon16/cup_add.png",
+        data = "Падение потребности",
+        icon = "icon16/cup.png",
         onEnable = function(client)
             if CLIENT then return end
 
@@ -359,8 +352,8 @@ PLUGIN.GameData = {
     {
         isCheckBox = true,
 
-        data = "Смерть из-за статистики",
-        icon = "icon16/cup_add.png",
+        data = "Смерть из-за потребности",
+        icon = "icon16/transmit.png",
         onEnable = function(client)
             if CLIENT then return end
 
@@ -379,7 +372,7 @@ PLUGIN.GameData = {
         isCheckBox = true,
 
         data = "Эффект обнаружения трупа",
-        icon = "icon16/world_add.png",
+        icon = "icon16/camera.png",
         onEnable = function(client)
             if CLIENT then return end
 
@@ -398,7 +391,7 @@ PLUGIN.GameData = {
         isCheckBox = true,
 
         data = "Спавн трупа при смерти",
-        icon = "icon16/world_add.png",
+        icon = "icon16/status_online.png",
         onEnable = function(client)
             if CLIENT then return end
 
@@ -429,52 +422,42 @@ PLUGIN.AdminData = {
         end
     },
     {
-        data = "Выдать physgun и toolgun",
+        isCheckBox = true,
+
+        data = "PhysGun и ToolGun",
         icon = "icon16/basket_put.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             client:Give("weapon_physgun")
             client:Give("gmod_tool")
         end,
-        onCreate = function(client)
-            return !client:HasWeapon("weapon_physgun") or !client:HasWeapon("gmod_tool")
-        end
-    },
-    {
-        data = "Забрать physgun и toolgun",
-        icon = "icon16/basket_remove.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             client:StripWeapon("weapon_physgun")
             client:StripWeapon("gmod_tool")
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return client:HasWeapon("weapon_physgun") or client:HasWeapon("gmod_tool")
         end
     },
     {
-        data = "Включить глобальный voice",
+        isCheckBox = true,
+
+        data = "Глобальный Voice",
         icon = "icon16/sound_low.png",
-        onRun = function(client)
+        onEnable = function(client)
             if CLIENT then return end
 
             client:SetNetVar("arbGlobalVoice", true, client)
         end,
-        onCreate = function(client)
-            return !client:GetNetVar("arbGlobalVoice")
-        end
-    },
-    {
-        data = "Выключить глобальный voice",
-        icon = "icon16/sound_mute.png",
-        onRun = function(client)
+        onDisable = function(client)
             if CLIENT then return end
 
             client:SetNetVar("arbGlobalVoice", nil, client)
         end,
-        onCreate = function(client)
+        OnCheck = function(client)
             return client:GetNetVar("arbGlobalVoice")
         end
     },

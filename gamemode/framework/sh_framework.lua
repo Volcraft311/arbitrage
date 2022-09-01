@@ -301,6 +301,10 @@ function Arbitrage.IsStartGame()
     return GetNetVar("arb.StartGame", false)
 end
 
+function Arbitrage.IsStartLaw()
+    return GetNetVar("arb.StartLaw", false)
+end
+
 function Arbitrage.OffOOC()
     return GetNetVar("arb.OffOOC", false)
 end

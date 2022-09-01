@@ -28,440 +28,425 @@ PLUGIN.WhiteListStandart = {
     ["STEAM_0:1:109093755"] = "SeekerForDreams"
 }
 
-PLUGIN.GameData = {
-    {
-        isCheckBox = true,
+PLUGIN.GameData = {}
+PLUGIN.AdminData = {}
 
-        data = "Игра запущена",
-        icon = "icon16/control_play_blue.png",
-        onEnable = function(client)
-            if CLIENT then return end
+function PLUGIN:AddGameFunction(name, icon, data)
+    data = data or {}
 
-            Arbitrage:StartGame()
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+    local info = data
+    info.data = name
+    info.icon = icon
 
-            Arbitrage:StopGame()
-        end,
-        OnCheck = function(client)
-            return Arbitrage.IsStartGame()
+    self.GameData[#self.GameData + 1] = info
+end
+
+function PLUGIN:AddAdminFunction(name, icon, data)
+    data = data or {}
+
+    local info = data
+    info.data = name
+    info.icon = icon
+
+    self.AdminData[#self.AdminData + 1] = info
+end
+
+
+--[[
+    ИГРОВЫЕ ФУНКЦИИ
+]]--
+MonoMenu:AddGameFunction("Игра запущена", "icon16/control_play_blue.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        Arbitrage:StartGame()
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        Arbitrage:StopGame()
+    end,
+    OnCheck = function(client)
+        return Arbitrage.IsStartGame()
+    end
+})
+
+MonoMenu:AddGameFunction("Суд запущен", "icon16/control_equalizer_blue.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        Arbitrage:StartLaw()
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        Arbitrage:EndLaw()
+    end,
+    OnCheck = function(client)
+        return Arbitrage.IsStartLaw()
+    end,
+    onCreate = function(client)
+        return Arbitrage.IsStartGame()
+    end
+})
+
+MonoMenu:AddGameFunction("Запустить заставку (глава)", "icon16/application_add.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        vgui.Create("arb.MonoMenuSplashScreenSub")
+    end
+})
+
+MonoMenu:AddGameFunction("Запустить заставку (gameover)", "icon16/application_add.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        vgui.Create("arb.MonoMenuEndGameSub")
+    end
+})
+
+MonoMenu:AddGameFunction("Запустить заставку (статус)", "icon16/application_add.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        vgui.Create("arb.MonoChangeStyleSub")
+    end
+})
+
+MonoMenu:AddGameFunction("Запустить голосование", "icon16/application_view_tile.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        PLUGIN:StartVoting()
+    end
+})
+
+MonoMenu:AddGameFunction("Изменить устав академии", "icon16/book_edit.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        vgui.Create("arb.MonoAcademyCharter")
+    end
+})
+
+MonoMenu:AddGameFunction("Распределить двери", "icon16/chart_organisation.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        Arbitrage:InitDoors()
+    end
+})
+
+MonoMenu:AddGameFunction("Заморозить всех игроков", "icon16/shading.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in pairs(player.GetAll()) do
+            if v:IsAdmin() then continue end
+            if v:IsSpectate() then continue end
+
+            v:Freeze(true)
         end
-    },
-    {
-        isCheckBox = true,
+    end
+})
 
-        data = "Суд запущен",
-        icon = "icon16/control_equalizer_blue.png",
-        onEnable = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("Разморозить всех игроков", "icon16/shape_move_front.png", {
+    onRun = function(client)
+        if CLIENT then return end
 
-            Arbitrage:StartLaw()
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+        for k, v in pairs(player.GetAll()) do
+            if v:IsAdmin() then continue end
 
-            Arbitrage:EndLaw()
-        end,
-        OnCheck = function(client)
-            return Arbitrage.IsStartLaw()
-        end,
-        onCreate = function(client)
-            return Arbitrage.IsStartGame()
+            v:Freeze(false)
         end
-    },
-    {
-        data = "Запустить заставку (глава)",
-        icon = "icon16/application_add.png",
-        onRun = function(client)
-            if SERVER then return false end
+    end
+})
 
-            vgui.Create("arb.MonoMenuSplashScreenSub")
+MonoMenu:AddGameFunction("Изменить название главы", "icon16/color_swatch.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        local dermaPanel = DermaMenu()
+        local data = {"Эпизод отсутствует", "Пролог", "Эпилог"}
+
+        for i = 1, 9 do
+            data[#data + 1] = "Эпизод " .. i
         end
-    },
-    {
-        data = "Запустить заставку (gameover)",
-        icon = "icon16/application_add.png",
-        onRun = function(client)
-            if SERVER then return false end
 
-            vgui.Create("arb.MonoMenuEndGameSub")
-        end
-    },
-    {
-        data = "Запустить заставку (статус)",
-        icon = "icon16/application_add.png",
-        onRun = function(client)
-            if SERVER then return false end
-
-            vgui.Create("arb.MonoChangeStyleSub")
-        end
-    },
-    {
-        data = "Запустить голосование",
-        icon = "icon16/application_view_tile.png",
-        onRun = function(client)
-            if CLIENT then return end
-
-            PLUGIN:StartVoting()
-        end
-    },
-    {
-        data = "Изменить устав академии",
-        icon = "icon16/book_edit.png",
-        onRun = function(client)
-            if SERVER then return false end
-
-            vgui.Create("arb.MonoAcademyCharter")
-        end
-    },
-    {
-        data = "Распределить двери",
-        icon = "icon16/chart_organisation.png",
-        onRun = function(client)
-            if CLIENT then return end
-
-            Arbitrage:InitDoors()
-        end
-    },
-    {
-        data = "Заморозить всех игроков",
-        icon = "icon16/shading.png",
-        onRun = function(client)
-            if CLIENT then return end
-
-            for k, v in pairs(player.GetAll()) do
-                if v:IsAdmin() then continue end
-                if v:IsSpectate() then continue end
-
-                v:Freeze(true)
-            end
-        end
-    },
-    {
-        data = "Разморозить всех игроков",
-        icon = "icon16/shape_move_front.png",
-        onRun = function(client)
-            if CLIENT then return end
-
-            for k, v in pairs(player.GetAll()) do
-                if v:IsAdmin() then continue end
-
-                v:Freeze(false)
-            end
-        end
-    },
-    {
-        data = "Изменить название главы",
-        icon = "icon16/color_swatch.png",
-        onRun = function(client)
-            if SERVER then return false end
-
-            local dermaPanel = DermaMenu()
-            local data = {"Эпизод отсутствует", "Пролог", "Эпилог"}
-
-            for i = 1, 9 do
-                data[#data + 1] = "Эпизод " .. i
-            end
-
-            for k, v in ipairs(data) do
-                dermaPanel:AddOption(v, function()
-                    asterionlib.EmitSound(PLUGIN.ClickSound)
-                    netstream.Start("arb.MonoSetChapter", v)
-                end)
-            end
-
-            local customButton = dermaPanel:AddOption("Ввести свое", function()
-                Derma_StringRequest("Изменить название главы", "Введите название которое вы хотите установить для главы", "", function(text)
-                    asterionlib.EmitSound(PLUGIN.ClickSound)
-                    netstream.Start("arb.MonoSetChapter", text)
-                end)
+        for k, v in ipairs(data) do
+            dermaPanel:AddOption(v, function()
+                asterionlib.EmitSound(PLUGIN.ClickSound)
+                netstream.Start("arb.MonoSetChapter", v)
             end)
-            customButton:SetIcon("icon16/pencil.png")
-
-            dermaPanel:Open()
         end
-    },
-    {
-        data = "Открыть WhiteList список",
-        icon = "icon16/application_view_list.png",
-        onRun = function(client)
-            if CLIENT then return end
 
-            PLUGIN:OpenMonoWhiteList(client)
-        end
-    },
-    {
-        data = "Открыть список дополнений",
-        icon = "icon16/database_gear.png",
-        onRun = function(client)
-            if CLIENT then return end
+        local customButton = dermaPanel:AddOption("Ввести свое", function()
+            Derma_StringRequest("Изменить название главы", "Введите название которое вы хотите установить для главы", "", function(text)
+                asterionlib.EmitSound(PLUGIN.ClickSound)
+                netstream.Start("arb.MonoSetChapter", text)
+            end)
+        end)
+        customButton:SetIcon("icon16/pencil.png")
 
-            WORKSHOP:OpenMenu(client)
-        end
-    },
-    {
-        data = "Открыть список предметов",
-        icon = "icon16/table_edit.png",
-        onRun = function(client)
-            if SERVER then return end
+        dermaPanel:Open()
+    end
+})
 
-            vgui.Create("ItemBase:CreationMenu")
-        end
-    },
-    {
-        data = "Изменить цветокоррекцию",
-        icon = "icon16/color_wheel.png",
-        onRun = function(client)
-            if SERVER then return end
+MonoMenu:AddGameFunction("Открыть WhiteList список", "icon16/application_view_list.png", {
+    onRun = function(client)
+        if CLIENT then return end
 
-            vgui.Create("ColorModify:Menu")
-        end
-    },
-    {
-        data = "Открыть редактор музыки",
-        icon = "icon16/music.png",
-        onRun = function(client)
-            if CLIENT then return end
+        PLUGIN:OpenMonoWhiteList(client)
+    end
+})
 
-            ScriptMusic:OpenMenu(client)
-        end
-    },
-    {
-        data = "Сбросить всем всю статистику",
-        icon = "icon16/chart_line.png",
-        onRun = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("Открыть список дополнений", "icon16/database_gear.png", {
+    onRun = function(client)
+        if CLIENT then return end
 
-            for k, v in pairs(player.GetAll()) do
-                v:SetHealth(ARBITRAGE_HEALTH)
-                v:SetArmor(ARBITRAGE_ARMOR)
+        WORKSHOP:OpenMenu(client)
+    end
+})
 
-                for k2, v2 in pairs(Arbitrage.statistics.list) do
-                    Arbitrage.statistics.Set(v, v2.data, 100)
-                end
+MonoMenu:AddGameFunction("Открыть список предметов", "icon16/table_edit.png", {
+    onRun = function(client)
+        if SERVER then return end
+
+        vgui.Create("ItemBase:CreationMenu")
+    end
+})
+
+MonoMenu:AddGameFunction("Изменить цветокоррекцию", "icon16/color_wheel.png", {
+    onRun = function(client)
+        if SERVER then return end
+
+        vgui.Create("ColorModify:Menu")
+    end
+})
+
+MonoMenu:AddGameFunction("Открыть редактор музыки", "icon16/music.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        ScriptMusic:OpenMenu(client)
+    end
+})
+
+MonoMenu:AddGameFunction("Сбросить всем всю статистику", "icon16/chart_line.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in pairs(player.GetAll()) do
+            v:SetHealth(ARBITRAGE_HEALTH)
+            v:SetArmor(ARBITRAGE_ARMOR)
+
+            for k2, v2 in pairs(Arbitrage.statistics.list) do
+                Arbitrage.statistics.Set(v, v2.data, 100)
             end
         end
-    },
-    {
-        data = "Остановить всем все звуки",
-        icon = "icon16/sound_none.png",
-        onRun = function(client)
-            if CLIENT then return end
+    end
+})
 
-            for k, v in pairs(player.GetAll()) do
-                v:ConCommand("stopsound")
+MonoMenu:AddGameFunction("Остановить всем все звуки", "icon16/sound_none.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in pairs(player.GetAll()) do
+            v:ConCommand("stopsound")
+        end
+    end
+})
+
+MonoMenu:AddGameFunction("Удалить все улики на карте", "icon16/bug_delete.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in pairs(ents.GetAll()) do
+            if v:IsNPC() then v:Remove() end
+            if v:GetClass() == "arb_weapon" then v:Remove() end
+            if v:GetClass() == "arb_evidence" then v:Remove() end
+            if v:GetClass() == "prop_ragdoll" then v:Remove() end
+
+            if v:GetEvidence() then
+                v:Remove()
             end
         end
-    },
-    {
-        data = "Удалить все улики на карте",
-        icon = "icon16/bug_delete.png",
-        onRun = function(client)
-            if CLIENT then return end
 
-            for k, v in pairs(ents.GetAll()) do
-                if v:IsNPC() then v:Remove() end
-                if v:GetClass() == "arb_weapon" then v:Remove() end
-                if v:GetClass() == "arb_evidence" then v:Remove() end
-                if v:GetClass() == "prop_ragdoll" then v:Remove() end
+        Evidence.list = {}
+        netstream.Start(nil, "evidence.Clear")
+    end
+})
 
-                if v:GetEvidence() then
-                    v:Remove()
-                end
-            end
+MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.png", {
+    onRun = function(client)
+        if CLIENT then return end
 
-            Evidence.list = {}
-            netstream.Start(nil, "evidence.Clear")
+        for k, v in pairs(player.GetAll()) do
+            v:SendLua([[
+                RunConsoleCommand("arb_chatbox_reload")
+
+                timer.Simple(0.5, function()
+                    chat.AddText("Администрация очистила чат!")
+                end)
+            ]])
         end
-    },
-    {
-        data = "Очистить чат",
-        icon = "icon16/application_delete.png",
-        onRun = function(client)
-            if CLIENT then return end
+    end
+})
 
-            for k, v in pairs(player.GetAll()) do
-                v:SendLua([[
-                    RunConsoleCommand("arb_chatbox_reload")
+MonoMenu:AddGameFunction("Надпись ClassTrial", "icon16/chart_curve_add.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-                    timer.Simple(0.5, function()
-                        chat.AddText("Администрация очистила чат!")
-                    end)
-                ]])
-            end
-        end
-    },
-    {
-        isCheckBox = true,
+        SetNetVar("arb.OffShowClassTrial", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "Надпись ClassTrial",
-        icon = "icon16/chart_curve_add.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        SetNetVar("arb.OffShowClassTrial", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffShowClassTrial()
+    end
+})
 
-            SetNetVar("arb.OffShowClassTrial", false)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("OOC чат", "icon16/world_add.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            SetNetVar("arb.OffShowClassTrial", true)
-        end,
-        OnCheck = function(client)
-            return !Arbitrage.OffShowClassTrial()
-        end
-    },
-    {
-        isCheckBox = true,
+        SetNetVar("arb.OffOOC", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "OOC чат",
-        icon = "icon16/world_add.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        SetNetVar("arb.OffOOC", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffOOC()
+    end
+})
 
-            SetNetVar("arb.OffOOC", false)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("Падение потребности", "icon16/cup.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            SetNetVar("arb.OffOOC", true)
-        end,
-        OnCheck = function(client)
-            return !Arbitrage.OffOOC()
-        end
-    },
-    {
-        isCheckBox = true,
+        SetNetVar("arb.OffFallStatictic", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "Падение потребности",
-        icon = "icon16/cup.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        SetNetVar("arb.OffFallStatictic", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffFallStatictic()
+    end
+})
 
-            SetNetVar("arb.OffFallStatictic", false)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("Смерть из-за потребности", "icon16/transmit.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            SetNetVar("arb.OffFallStatictic", true)
-        end,
-        OnCheck = function(client)
-            return !Arbitrage.OffFallStatictic()
-        end
-    },
-    {
-        isCheckBox = true,
+        SetNetVar("arb.OnDeadLowStatictic", true)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "Смерть из-за потребности",
-        icon = "icon16/transmit.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        SetNetVar("arb.OnDeadLowStatictic", false)
+    end,
+    OnCheck = function(client)
+        return Arbitrage.OnDeadLowStatictic()
+    end
+})
 
-            SetNetVar("arb.OnDeadLowStatictic", true)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("Эффект обнаружения трупа", "icon16/camera.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            SetNetVar("arb.OnDeadLowStatictic", false)
-        end,
-        OnCheck = function(client)
-            return Arbitrage.OnDeadLowStatictic()
-        end
-    },
-    {
-        isCheckBox = true,
+        SetNetVar("arb.OffCorpseEffect", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "Эффект обнаружения трупа",
-        icon = "icon16/camera.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        SetNetVar("arb.OffCorpseEffect", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffCorpseEffect()
+    end
+})
 
-            SetNetVar("arb.OffCorpseEffect", false)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/status_online.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            SetNetVar("arb.OffCorpseEffect", true)
-        end,
-        OnCheck = function(client)
-            return !Arbitrage.OffCorpseEffect()
-        end
-    },
-    {
-        isCheckBox = true,
+        SetNetVar("arb.OffSpawnPersistent", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "Спавн трупа при смерти",
-        icon = "icon16/status_online.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        SetNetVar("arb.OffSpawnPersistent", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffSpawnPersistent()
+    end
+})
 
-            SetNetVar("arb.OffSpawnPersistent", false)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+--[[
+    АДМИНСКИЕ ФУНКЦИИ
+]]--
+MonoMenu:AddAdminFunction("Зайти за администратора", "icon16/star.png", {
+    onRun = function(client)
+        if CLIENT then return end
 
-            SetNetVar("arb.OffSpawnPersistent", true)
-        end,
-        OnCheck = function(client)
-            return !Arbitrage.OffSpawnPersistent()
-        end
-    }
-}
+        Arbitrage.player.SetTeam(client, TEAM_ADMIN, true)
+    end,
+    onCreate = function(client)
+        return client:Team() != TEAM_ADMIN
+    end
+})
 
-PLUGIN.AdminData = {
-    {
-        data = "Зайти за администратора",
-        icon = "icon16/star.png",
-        onRun = function(client)
-            if CLIENT then return end
+MonoMenu:AddAdminFunction("PhysGun и ToolGun", "icon16/basket_put.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            Arbitrage.player.SetTeam(client, TEAM_ADMIN, true)
-        end,
-        onCreate = function(client)
-            return client:Team() != TEAM_ADMIN
-        end
-    },
-    {
-        isCheckBox = true,
+        client:Give("weapon_physgun")
+        client:Give("gmod_tool")
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "PhysGun и ToolGun",
-        icon = "icon16/basket_put.png",
-        onEnable = function(client)
-            if CLIENT then return end
+        client:StripWeapon("weapon_physgun")
+        client:StripWeapon("gmod_tool")
+    end,
+    OnCheck = function(client)
+        return client:HasWeapon("weapon_physgun") or client:HasWeapon("gmod_tool")
+    end
+})
 
-            client:Give("weapon_physgun")
-            client:Give("gmod_tool")
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
+MonoMenu:AddAdminFunction("Глобальный Voice", "icon16/sound_low.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
 
-            client:StripWeapon("weapon_physgun")
-            client:StripWeapon("gmod_tool")
-        end,
-        OnCheck = function(client)
-            return client:HasWeapon("weapon_physgun") or client:HasWeapon("gmod_tool")
-        end
-    },
-    {
-        isCheckBox = true,
+        client:SetNetVar("arbGlobalVoice", true, client)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
 
-        data = "Глобальный Voice",
-        icon = "icon16/sound_low.png",
-        onEnable = function(client)
-            if CLIENT then return end
-
-            client:SetNetVar("arbGlobalVoice", true, client)
-        end,
-        onDisable = function(client)
-            if CLIENT then return end
-
-            client:SetNetVar("arbGlobalVoice", nil, client)
-        end,
-        OnCheck = function(client)
-            return client:GetNetVar("arbGlobalVoice")
-        end
-    },
-}
+        client:SetNetVar("arbGlobalVoice", nil, client)
+    end,
+    OnCheck = function(client)
+        return client:GetNetVar("arbGlobalVoice")
+    end
+})
 
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

@@ -18,7 +18,7 @@ do
     ITEM.description = "Ключи от комнаты: \"%s\""
     ITEM.model = "models/gibs/metal_gib4.mdl"
     ITEM.category = "Уникальные"
-    ITEM.icon = "danganronpa/inventory/items/key_dormatory.png"
+    ITEM.icon = "danganronpa/inventory/items/key_dorms.png"
 
     function ITEM:GetDescription()
         local data = "Отсутствует"
@@ -97,6 +97,7 @@ do
     ITEM.description = "Ключи от всех дверей"
     ITEM.model = "models/gibs/metal_gib4.mdl"
     ITEM.category = "Уникальные"
+    ITEM.icon = "danganronpa/inventory/items/key_dorms.png"
 
     ItemBase:RegisterItem("keys_all", ITEM)
 end
@@ -110,6 +111,7 @@ do
     ITEM.category = "Уникальные"
     ITEM.lawInspect = "Посмотреть"
     ITEM.image = nil
+    ITEM.icon = "danganronpa/inventory/items/special_photo.png"
 
     ITEM:AddAction("Посмотреть", {
         OnRun = function(item)

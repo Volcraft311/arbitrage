@@ -49,6 +49,8 @@ function Container:PlayerUse(client, entity)
     if entity:IsPlayer() then return end
 
     if !client.containerCD or CurTime() >= client.containerCD then
+        netstream.Start(nil, "arb.PlayerSetAnim", client, GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+
         Arbitrage.action.ActionRun(client, "Обыскиваем", 1, function()
             if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 

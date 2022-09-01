@@ -67,9 +67,11 @@ local function workshop_gui(scrollPanel, informationPanel)
 
             local x, y = w / 2 - imageSize / 2, 4
 
-            surface.SetDrawColor(blacked, blacked, blacked)
-            surface.SetMaterial(image)
-            surface.DrawTexturedRect(x, y, imageSize, imageSize)
+            if image then
+                surface.SetDrawColor(blacked, blacked, blacked)
+                surface.SetMaterial(image)
+                surface.DrawTexturedRect(x, y, imageSize, imageSize)
+            end
 
             surface.SetDrawColor(15, 15, 15)
             surface.DrawOutlinedRect(x, y, imageSize, imageSize, 2)

@@ -245,7 +245,7 @@ function PANEL:SetData(data)
                 CheckPanel = panel:Add("DPanel")
                 CheckPanel:Dock(RIGHT)
                 CheckPanel.Paint = function(_, w, h)
-                    local color = v.OnCheck(client) and color_green or color_red
+                    local color = v.OnCheck(client) and Color(42, 255, 42) or Color(223, 50, 50)
 
                     surface.SetDrawColor(color)
                     surface.DrawRect(tall, tall, w - tall * 2, h - tall * 2)

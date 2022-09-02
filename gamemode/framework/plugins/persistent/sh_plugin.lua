@@ -19,6 +19,7 @@ PLUGIN.turnoff_time = 7
 
 function PLUGIN:AllowDetectCorpse(client)
     if client:IsNocliping() then return false end
+    if !client:oldAlive() then return false end
     if !client:Alive() then return false end
     if client:IsHost() then return false end
 

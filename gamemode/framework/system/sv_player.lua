@@ -79,8 +79,10 @@ function Arbitrage.player.SetupWeapons(client)
     local faction = Arbitrage.teams.Get(client:Team())
     if !faction then return end
 
-    for k, v in ipairs(faction.weapons or {}) do
-        client:Give(v)
+    if !Arbitrage.OffGiveWeapons() then
+        for k, v in ipairs(faction.weapons or {}) do
+            client:Give(v)
+        end
     end
 end
 

@@ -519,35 +519,28 @@ function Arbitrage:StartGame()
                     end
                 end
 
-                -- выдаем всем персонажам ключи от своих дверей
-                do
-                    local item = ItemBase.CreateItem("keys")
+                local function give(uniqueID)
+                    local item = ItemBase.CreateItem(uniqueID)
 
                     if item then
-                        item:SetData("faction", client:Team())
                         item:Transfer(inventory:GetID())
+
+                        return item
                     end
                 end
 
-                -- выдаем Токо шокер
-                do
+                if !Arbitrage.OffGiveItems() then
+                    -- выдаем всем персонажам ключи от своих дверей
+                    give("keys"):SetData("faction", client:Team())
+
+                    -- выдаем Токо шокер
                     if client:IsToko() then
-                        local item = ItemBase.CreateItem("toko_shocker")
-
-                        if item then
-                            item:Transfer(inventory:GetID())
-                        end
+                        give("toko_shocker")
                     end
-                end
 
-                -- выдаем Махиру фотооаппарат
-                do
+                    -- выдаем Махиру фотооаппарат
                     if client:Team() == TEAM_MAHIRU then
-                        local item = ItemBase.CreateItem("camera")
-
-                        if item then
-                            item:Transfer(inventory:GetID())
-                        end
+                        give("camera")
                     end
                 end
             end

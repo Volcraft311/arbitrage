@@ -398,6 +398,40 @@ MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/st
     end
 })
 
+MonoMenu:AddGameFunction("Выдача стандартных оружий", "icon16/gun.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffGiveWeapons", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffGiveWeapons", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffGiveWeapons()
+    end
+})
+
+MonoMenu:AddGameFunction("Выдача стандартных предметов", "icon16/wand.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffGiveItems", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffGiveItems", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffGiveItems()
+    end
+})
+
 --[[
     АДМИНСКИЕ ФУНКЦИИ
 ]]--

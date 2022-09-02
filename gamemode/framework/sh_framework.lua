@@ -329,6 +329,14 @@ function Arbitrage.OffShowClassTrial()
     return GetNetVar("arb.OffShowClassTrial", false)
 end
 
+function Arbitrage.OffGiveWeapons()
+    return GetNetVar("arb.OffGiveWeapons", false)
+end
+
+function Arbitrage.OffGiveItems()
+    return GetNetVar("arb.OffGiveItems", false)
+end
+
 function Arbitrage.GetChapter()
     return GetNetVar("arb.Chapter", "Эпизод отсутствует")
 end

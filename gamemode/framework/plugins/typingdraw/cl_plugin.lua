@@ -101,7 +101,6 @@ function PLUGIN:DrawText(client, text, color, alpha)
 	local distance = EyePos():Distance(pos)
 
 	alpha = alpha - distance
-	if alpha <= 2 then return end
 
 	local data2D = pos:ToScreen()
 	if !data2D.visible then return end

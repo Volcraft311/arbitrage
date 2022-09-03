@@ -19,6 +19,7 @@ TEAM.category = "KILLING HARMONY"
 TEAM.model = "models/player_kokichioumaultimate.mdl"
 TEAM.path = "danganronpa/characters/kokichi"
 TEAM.uniqueID = "kokichi"
+TEAM.items = {"picklock"}
 
 TEAM.color = Color(240, 201, 73)
 TEAM.evidenceVisibility = 0.6

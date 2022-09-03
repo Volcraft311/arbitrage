@@ -503,6 +503,8 @@ function Arbitrage:StartGame()
         local client = v.client
 
         if IsValid(client) and client:Alive() and client:IsPlaying() and Arbitrage.players[client:SteamID()] then
+            local faction = client:Team()
+
             client:Freeze(true)
 
             client:SendLua([[RunConsoleCommand("stopsound")]])
@@ -531,16 +533,13 @@ function Arbitrage:StartGame()
 
                 if !Arbitrage.OffGiveItems() then
                     -- выдаем всем персонажам ключи от своих дверей
-                    give("keys"):SetData("faction", client:Team())
+                    give("keys"):SetData("faction", faction)
 
-                    -- выдаем Токо шокер
-                    if client:IsToko() then
-                        give("toko_shocker")
-                    end
-
-                    -- выдаем Махиру фотооаппарат
-                    if client:Team() == TEAM_MAHIRU then
-                        give("camera")
+                    local factionData = Arbitrage.teams.Get(faction)
+                    if factionData then
+                        for k, v in ipairs(factionData.items or {}) do
+                            give(v)
+                        end
                     end
                 end
             end

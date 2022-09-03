@@ -71,7 +71,9 @@ function PLUGIN:PlayerDisconnected(client)
             statistic = {},
             evidence = client:GetEvidences(),
             inventoryID = client:GetInventory():GetID(),
-            ammo = client:GetAmmo()
+            ammo = client:GetAmmo(),
+
+            saver = client._saver
         }
 
         for k, v in ipairs({"Hunger", "Thirst", "Sleep"}) do
@@ -81,6 +83,37 @@ function PLUGIN:PlayerDisconnected(client)
         self.disconnectPlayers[client:SteamID()] = entity
     end
 end
+
+timer.Create("DataBase:Saver", 60, 0, function()
+    for _, entity in ipairs(player.GetAll()) do
+        entity._saver = {SubMat = {}, BodyG = {}}
+
+        entity._saver.Skin = entity:GetSkin()
+        entity._saver.RenderMode = entity:GetRenderMode()
+        entity._saver.Color = entity:GetColor()
+        entity._saver.Material = entity:GetMaterial()
+
+        local sm = entity:GetMaterials()
+        if sm then
+            for k, v in ipairs(sm) do
+                local mat = entity:GetSubMaterial(k)
+
+                if mat and mat != "" then
+                    entity._saver.SubMat[k] = mat
+                end
+            end
+        end
+
+        local bg = entity:GetBodyGroups()
+        if bg then
+            for k, v in ipairs(bg) do
+                if entity:GetBodygroup(v.id) > 0 then
+                    entity._saver.BodyG[v.id] = entity:GetBodygroup(v.id)
+                end
+            end
+        end
+    end
+end)
 
 function PLUGIN:PlayerInitial(client)
     local steamid = client:SteamID()
@@ -96,8 +129,25 @@ function PLUGIN:PlayerInitial(client)
 
     Arbitrage.player.SetTeam(client, data.faction)
 
+    client:SetModel(leaveEntity:GetModel())
     client:SetHealth(data.health)
     client:SetArmor(data.armor)
+
+    local saver = data.saver
+    if saver then
+        client:SetSkin(saver.Skin)
+        client:SetMaterial(saver.Material)
+        client:SetRenderMode(saver.RenderMode)
+        client:SetColor(saver.Color)
+
+        for k, v in pairs(saver.BodyG) do
+            client:SetBodygroup(k, v)
+        end
+
+        for k, v in pairs(saver.SubMat) do
+            client:SetSubMaterial(k, v)
+        end
+    end
 
     client:StripWeapons()
     for k, v in pairs(data.weapons) do

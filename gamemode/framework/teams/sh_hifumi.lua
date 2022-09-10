@@ -27,7 +27,7 @@ TEAM.walkSpeed = 0.8
 TEAM.runSpeed = 0.8
 TEAM.hungerSpeed = 50
 TEAM.thirstSpeed = 46
-TEAM.sleepSpeed = 40
+TEAM.sleepSpeed = 30
 TEAM.max = 1
 
 for i = 1, 22 do

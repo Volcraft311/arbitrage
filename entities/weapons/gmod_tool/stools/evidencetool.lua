@@ -91,7 +91,7 @@ end
 
 local select_config = nil
 local function CreateConfigPanel(parent)
-    local panel = vgui.Create("DPanel")
+    local panel = vgui.Create("Panel")
     panel:SetTall(18)
 
     local combobox = panel:Add("DComboBox")

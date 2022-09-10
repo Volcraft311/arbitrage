@@ -18,7 +18,7 @@ local PANEL = {}
 function PANEL:Init()
     self:SetTitle("")
     self:SetPos(0, 0)
-    self:SetSize(Arbitrage.ResolutionW(960 * 1.3), Arbitrage.ResolutionH(540 * 1.3))
+    self:SetSize(W(960 * 1.3), H(540 * 1.3))
     self:MakePopup()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
@@ -26,13 +26,13 @@ function PANEL:Init()
     self:ShowCloseButton(false)
 
     local close = self:Add("DButton")
-    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(70), 0)
-    close:SetSize(Arbitrage.ResolutionH(70), Arbitrage.ResolutionH(30))
+    close:SetPos(self:GetWide() - H(70), 0)
+    close:SetSize(H(70), H(30))
     close:SetText("")
     close.alpha = 40
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, Arbitrage.ResolutionH(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
     close.DoClick = function()
         self:AlphaTo(0, 0.2, 0, function()
@@ -54,9 +54,9 @@ function PANEL:SetData(data)
     if IsValid(self.addButton) then self.addButton:Remove() end
 
     self.mainPanel = self:Add("Panel")
-    self.mainPanel:SetWide(Arbitrage.ResolutionW(250))
+    self.mainPanel:SetWide(W(250))
     self.mainPanel:Dock(FILL)
-    self.mainPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(45), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.mainPanel:DockMargin(W(5), H(45), W(5), H(5))
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
@@ -64,12 +64,12 @@ function PANEL:SetData(data)
 
     self.settingButton = self:Add("DButton")
     self.settingButton:SetText("")
-    self.settingButton:SetTall(Arbitrage.ResolutionH(25))
+    self.settingButton:SetTall(H(25))
     self.settingButton:Dock(BOTTOM)
     self.settingButton.alpha = 0
     self.settingButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Сделать сервер: " .. (self.data.settings and "Приватным" or "Общедоступным"), "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Сделать сервер: " .. (self.data.settings and "Приватным" or "Общедоступным"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -79,14 +79,14 @@ function PANEL:SetData(data)
     end
 
     self.addButton = self:Add("DButton")
-    self.addButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    self.addButton:DockMargin(0, H(5), 0, H(5))
     self.addButton:SetText("")
-    self.addButton:SetTall(Arbitrage.ResolutionH(25))
+    self.addButton:SetTall(H(25))
     self.addButton:Dock(BOTTOM)
     self.addButton.alpha = 0
     self.addButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Добавить нового участника в список Whitelist-а", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Добавить нового участника в список Whitelist-а", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -98,7 +98,7 @@ function PANEL:SetData(data)
     self.playersPanel = self.mainPanel:Add("DPanelList")
     self.playersPanel:EnableVerticalScrollbar()
     self.playersPanel:Dock(FILL)
-    self.playersPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.playersPanel:DockMargin(W(5), H(5), W(5), H(5))
 
     local newData = data.players
     for k, v in pairs(PLUGIN.WhiteListStandart) do
@@ -114,18 +114,18 @@ function PANEL:SetData(data)
         local panel = self.playersPanel:Add("Panel")
         panel.num = num
         panel:SetText("")
-        panel:SetTall(Arbitrage.ResolutionH(30))
+        panel:SetTall(H(30))
         panel:Dock(TOP)
-        panel:DockMargin(0, 0, 0, Arbitrage.ResolutionH(0))
+        panel:DockMargin(0, 0, 0, H(0))
         panel.Paint = function(_, w, h)
             if _.num % 2 == 0 then
                 surface.SetDrawColor(255, 61, 96, 1)
                 surface.DrawRect(0, 0, w, h)
             end
 
-            draw.DrawText(steamid, "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(15), Arbitrage.ResolutionH(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(name, "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(390), Arbitrage.ResolutionH(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(steamid64, "arb.Font_FuturaPTBook_7", w - Arbitrage.ResolutionW(100), Arbitrage.ResolutionH(4), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.DrawText(steamid, "arb.Font_FuturaPTBook_7", W(15), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(name, "arb.Font_FuturaPTBook_7", W(390), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(steamid64, "arb.Font_FuturaPTBook_7", w - W(100), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
         end
 
         local bEdit = !PLUGIN.WhiteListStandart[steamid]
@@ -133,7 +133,7 @@ function PANEL:SetData(data)
         local button = panel:Add("DButton")
         button:SetText("")
         button:Dock(RIGHT)
-        button:DockMargin(0, 0, Arbitrage.ResolutionW(10), 0)
+        button:DockMargin(0, 0, W(10), 0)
         button:SetWide(panel:GetTall())
         button.alpha = 0
         button.Paint = function(_, w, h)
@@ -172,16 +172,16 @@ function PANEL:Paint(w, h)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
     surface.SetDrawColor(255, 61, 96, 165.75)
-    surface.DrawOutlinedRect(0, 0, w, Arbitrage.ResolutionH(30), 2)
+    surface.DrawOutlinedRect(0, 0, w, H(30), 2)
 
     surface.SetDrawColor(255, 61, 96, 20)
-    surface.DrawRect(0, 0, w, Arbitrage.ResolutionH(30))
+    surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("WhiteList список", "arb.Font_FuturaPTDemi_8", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("WhiteList список", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 
-    draw.DrawText("SteamID", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(30), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Описание", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(405), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - Arbitrage.ResolutionW(115), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText("SteamID", "arb.Font_FuturaPTBook_7", W(30), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Описание", "arb.Font_FuturaPTBook_7", W(405), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - W(115), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
 end
 
 vgui.Register("arb.MonoMenuWhiteList", PANEL, "DFrame")
@@ -200,10 +200,10 @@ function PANEL:Init()
 
 
     self.main = self:Add("Panel")
-    self.main:SetPos(ScrW() / 2 - (Arbitrage.ResolutionW(600)) / 2, ScrH() / 2 - (Arbitrage.ResolutionH(250) / 2))
-    self.main:SetSize(Arbitrage.ResolutionW(600), 0)
+    self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (H(250) / 2))
+    self.main:SetSize(W(600), 0)
 
-    local t = Arbitrage.ResolutionH(250)
+    local t = H(250)
     self.main.Think = function(panel)
         panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
     end
@@ -216,28 +216,28 @@ function PANEL:Init()
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
         surface.SetDrawColor(255, 61, 96, 165.75)
-        surface.DrawOutlinedRect(0, 0, w, Arbitrage.ResolutionH(23), 2)
+        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
 
         surface.SetDrawColor(255, 61, 96, 20)
-        surface.DrawRect(0, 0, w, Arbitrage.ResolutionH(23))
+        surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Добавить нового участника", "arb.Font_FuturaPTBook_5", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Добавить нового участника", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите SteamID человека, которого вы хотите добавить в WhiteList", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: STEAM_0:1:127526733", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите SteamID человека, которого вы хотите добавить в WhiteList", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: STEAM_0:1:127526733", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите описание, которое будет отображаться рядом со SteamID", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Selenter", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите описание, которое будет отображаться рядом со SteamID", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: Selenter", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
-    close:SetPos(self.main:GetWide() - Arbitrage.ResolutionH(70 / 2), 0)
-    close:SetSize(Arbitrage.ResolutionH(70 / 2), Arbitrage.ResolutionH(23))
+    close:SetPos(self.main:GetWide() - H(70 / 2), 0)
+    close:SetSize(H(70 / 2), H(23))
     close:SetText("")
     close.alpha = 40
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, Arbitrage.ResolutionH(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
     close.DoClick = function()
         self:AlphaTo(0, 0.2, 0, function()
@@ -246,26 +246,26 @@ function PANEL:Init()
     end
 
     self.steamidEntry = self.main:Add("DTextEntry")
-    self.steamidEntry:SetPos(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(75))
-    self.steamidEntry:SetSize(self.main:GetWide() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(25))
+    self.steamidEntry:SetPos(W(5), H(75))
+    self.steamidEntry:SetSize(self.main:GetWide() - W(10), H(25))
     self.steamidEntry:SetPlaceholderText("STEAM_0:0:00000")
     self.steamidEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.descriptionEntry = self.main:Add("DTextEntry")
-    self.descriptionEntry:SetPos(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(155))
-    self.descriptionEntry:SetSize(self.main:GetWide() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(25))
+    self.descriptionEntry:SetPos(W(5), H(155))
+    self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(25))
     self.descriptionEntry:SetPlaceholderText("Описание")
     self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     local submitButton = self.main:Add("DButton")
-    submitButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    submitButton:DockMargin(0, H(5), 0, H(5))
     submitButton:SetText("")
-    submitButton:SetTall(Arbitrage.ResolutionH(25))
+    submitButton:SetTall(H(25))
     submitButton:Dock(BOTTOM)
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Добавить", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Добавить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)

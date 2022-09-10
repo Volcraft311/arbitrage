@@ -22,7 +22,7 @@ local PANEL = {}
 function PANEL:Init()
     self:SetTitle("")
     self:SetPos(0, 0)
-    self:SetSize(Arbitrage.ResolutionW(960 * 1.3), Arbitrage.ResolutionH(540 * 1.3))
+    self:SetSize(W(960 * 1.3), H(540 * 1.3))
     self:MakePopup()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
@@ -32,13 +32,13 @@ function PANEL:Init()
     PLUGIN.panel = self
 
     local close = self:Add("DButton")
-    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(70), 0)
-    close:SetSize(Arbitrage.ResolutionH(70), Arbitrage.ResolutionH(30))
+    close:SetPos(self:GetWide() - H(70), 0)
+    close:SetSize(H(70), H(30))
     close:SetText("")
     close.alpha = 40
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, Arbitrage.ResolutionH(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
     close.DoClick = function()
         self:AlphaTo(0, 0.2, 0, function()
@@ -47,14 +47,14 @@ function PANEL:Init()
     end
 
     local playButton = self:Add("DButton")
-    playButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    playButton:DockMargin(0, H(5), 0, H(5))
     playButton:SetText("")
-    playButton:SetTall(Arbitrage.ResolutionH(25))
+    playButton:SetTall(H(25))
     playButton:Dock(BOTTOM)
     playButton.alpha = 0
     playButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Запустить музыку", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Запустить музыку", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -67,14 +67,14 @@ function PANEL:Init()
     end
 
     local addButton = self:Add("DButton")
-    addButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    addButton:DockMargin(0, H(5), 0, H(5))
     addButton:SetText("")
-    addButton:SetTall(Arbitrage.ResolutionH(25))
+    addButton:SetTall(H(25))
     addButton:Dock(BOTTOM)
     addButton.alpha = 0
     addButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Создать новый плейлист", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Создать новый плейлист", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -88,14 +88,14 @@ function PANEL:Init()
     end
 
     local playEvent = self:Add("DButton")
-    playEvent:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    playEvent:DockMargin(0, H(5), 0, H(5))
     playEvent:SetText("")
-    playEvent:SetTall(Arbitrage.ResolutionH(25))
+    playEvent:SetTall(H(25))
     playEvent:Dock(BOTTOM)
     playEvent.alpha = 0
     playEvent.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Запустить ивент", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Запустить ивент", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -128,9 +128,9 @@ function PANEL:SetData(data)
     if IsValid(self.mainPanel) then self.mainPanel:Remove() end
 
     self.mainPanel = self:Add("Panel")
-    self.mainPanel:SetWide(Arbitrage.ResolutionW(250))
+    self.mainPanel:SetWide(W(250))
     self.mainPanel:Dock(FILL)
-    self.mainPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(45), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.mainPanel:DockMargin(W(5), H(45), W(5), H(5))
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
@@ -140,16 +140,16 @@ function PANEL:SetData(data)
     self.playlistPanel = self.mainPanel:Add("DPanelList")
     self.playlistPanel:EnableVerticalScrollbar()
     self.playlistPanel:Dock(FILL)
-    self.playlistPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.playlistPanel:DockMargin(W(5), H(5), W(5), H(5))
 
     local num = 0
     for k, v in pairs(self.data[2] or {}) do
         local panel = self.playlistPanel:Add("DButton")
         panel.num = num
         panel:SetText("")
-        panel:SetTall(Arbitrage.ResolutionH(30))
+        panel:SetTall(H(30))
         panel:Dock(TOP)
-        panel:DockMargin(0, 0, 0, Arbitrage.ResolutionH(0))
+        panel:DockMargin(0, 0, 0, H(0))
         panel.alpha = 0
         panel.Paint = function(_, w, h)
             if _.num % 2 == 0 then
@@ -167,8 +167,8 @@ function PANEL:SetData(data)
                 surface.DrawOutlinedRect(0, 0, w, h)
             end
 
-            draw.DrawText(v[1], "arb.Font_FuturaPTBook_7", W(10), Arbitrage.ResolutionH(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(k, "arb.Font_FuturaPTBook_7", w - W(200), Arbitrage.ResolutionH(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(v[1], "arb.Font_FuturaPTBook_7", W(10), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(k, "arb.Font_FuturaPTBook_7", w - W(200), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
         end
         panel.DoClick = function()
             self.data[1] = k
@@ -227,15 +227,15 @@ function PANEL:Paint(w, h)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
     surface.SetDrawColor(255, 61, 96, 165.75)
-    surface.DrawOutlinedRect(0, 0, w, Arbitrage.ResolutionH(30), 2)
+    surface.DrawOutlinedRect(0, 0, w, H(30), 2)
 
     surface.SetDrawColor(255, 61, 96, 20)
-    surface.DrawRect(0, 0, w, Arbitrage.ResolutionH(30))
+    surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("ScriptMusic редактор", "arb.Font_FuturaPTDemi_8", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("ScriptMusic редактор", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(30), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("ID", "arb.Font_FuturaPTBook_7", w - Arbitrage.ResolutionW(215), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("ID", "arb.Font_FuturaPTBook_7", w - W(215), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("ScriptMusic:Menu", PANEL, "DFrame")
@@ -259,10 +259,10 @@ function PANEL:Init()
 
 
     self.main = self:Add("Panel")
-    self.main:SetPos(ScrW() / 2 - (Arbitrage.ResolutionW(800)) / 2, ScrH() / 2 - (Arbitrage.ResolutionH(600) / 2))
-    self.main:SetSize(Arbitrage.ResolutionW(800), 0)
+    self.main:SetPos(ScrW() / 2 - (W(800)) / 2, ScrH() / 2 - (H(600) / 2))
+    self.main:SetSize(W(800), 0)
 
-    local t = Arbitrage.ResolutionH(600)
+    local t = H(600)
     self.main.Think = function(panel)
         panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
     end
@@ -275,29 +275,29 @@ function PANEL:Init()
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
         surface.SetDrawColor(255, 61, 96, 165.75)
-        surface.DrawOutlinedRect(0, 0, w, Arbitrage.ResolutionH(23), 2)
+        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
 
         surface.SetDrawColor(255, 61, 96, 20)
-        surface.DrawRect(0, 0, w, Arbitrage.ResolutionH(23))
+        surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Редактор плейлиста", "arb.Font_FuturaPTBook_5", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Редактор плейлиста", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Название плейлиста", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Тестовый плейлист", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Название плейлиста", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: Тестовый плейлист", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Ивенты:", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.DrawText("Действия:", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(320), Arbitrage.ResolutionH(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Ивенты:", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Действия:", "arb.Font_FuturaPTBook_7", W(320), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
     end
 
     self.nameEntry = self.main:Add("DTextEntry")
-    self.nameEntry:SetPos(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(75))
-    self.nameEntry:SetSize(self.main:GetWide() - Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(25))
+    self.nameEntry:SetPos(W(5), H(75))
+    self.nameEntry:SetSize(self.main:GetWide() - W(10), H(25))
     self.nameEntry:SetPlaceholderText("Тестовый плейлист")
     self.nameEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.mainPanel = self.main:Add("Panel")
     self.mainPanel:Dock(FILL)
-    self.mainPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(140), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.mainPanel:DockMargin(W(5), H(140), W(5), H(5))
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
@@ -307,7 +307,7 @@ function PANEL:Init()
     self.eventsPanel:EnableVerticalScrollbar()
     self.eventsPanel:Dock(LEFT)
     self.eventsPanel:SetWide(W(300))
-    self.eventsPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.eventsPanel:DockMargin(W(5), H(5), W(5), H(5))
     self.eventsPanel.Paint = function(_, w, h)
         surface.SetDrawColor(255, 61, 96, 165.75)
         surface.DrawOutlinedRect(0, 0, w, h, 1)
@@ -315,7 +315,7 @@ function PANEL:Init()
 
     local _actionPanel = self.mainPanel:Add("DPanel")
     _actionPanel:Dock(FILL)
-    _actionPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    _actionPanel:DockMargin(W(5), H(5), W(5), H(5))
     _actionPanel.Paint = function(_, w, h)
         surface.SetDrawColor(255, 61, 96, 165.75)
         surface.DrawOutlinedRect(0, 0, w, h, 1)
@@ -329,9 +329,9 @@ function PANEL:Init()
     titlePanel:Dock(TOP)
     titlePanel:SetTall(H(20))
     titlePanel.Paint = function(_, w, h)
-        draw.DrawText("ID", "arb.Font_FuturaPTBook_6", W(20), Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
-        draw.DrawText("Длительность", "arb.Font_FuturaPTBook_6", W(110), Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
-        draw.DrawText("Путь или URL", "arb.Font_FuturaPTBook_6", W(200), Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("ID", "arb.Font_FuturaPTBook_6", W(20), H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Длительность", "arb.Font_FuturaPTBook_6", W(110), H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Путь или URL", "arb.Font_FuturaPTBook_6", W(200), H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 5)
         surface.DrawRect(0, 0, w, h)
@@ -339,14 +339,14 @@ function PANEL:Init()
     self.actionPanel:AddItem(titlePanel)
 
     local addSound = _actionPanel:Add("DButton")
-    addSound:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    addSound:DockMargin(0, H(5), 0, H(5))
     addSound:SetText("")
-    addSound:SetTall(Arbitrage.ResolutionH(20))
+    addSound:SetTall(H(20))
     addSound:Dock(BOTTOM)
     addSound.alpha = 0
     addSound.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Добавить новую музыку", "arb.Font_FuturaPTBook_6", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Добавить новую музыку", "arb.Font_FuturaPTBook_6", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -377,13 +377,13 @@ function PANEL:Init()
     end
 
     local close = self.main:Add("DButton")
-    close:SetPos(self.main:GetWide() - Arbitrage.ResolutionH(70 / 2), 0)
-    close:SetSize(Arbitrage.ResolutionH(70 / 2), Arbitrage.ResolutionH(23))
+    close:SetPos(self.main:GetWide() - H(70 / 2), 0)
+    close:SetSize(H(70 / 2), H(23))
     close:SetText("")
     close.alpha = 40
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, Arbitrage.ResolutionH(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
     close.DoClick = function()
         self:AlphaTo(0, 0.2, 0, function()
@@ -393,14 +393,14 @@ function PANEL:Init()
 
 
     local submitButton = self.main:Add("DButton")
-    submitButton:DockMargin(0, Arbitrage.ResolutionH(5), 0, Arbitrage.ResolutionH(5))
+    submitButton:DockMargin(0, H(5), 0, H(5))
     submitButton:SetText("")
-    submitButton:SetTall(Arbitrage.ResolutionH(25))
+    submitButton:SetTall(H(25))
     submitButton:Dock(BOTTOM)
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Изменить", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Изменить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -453,7 +453,7 @@ function PANEL:AddTrack(id, path)
 
     local panel = self.actionPanel:Add("DButton")
     panel:SetText("")
-    panel:SetTall(Arbitrage.ResolutionH(20))
+    panel:SetTall(H(20))
     panel:Dock(TOP)
     panel.alpha = 0
     panel.Paint = function(_, w, h)
@@ -469,9 +469,9 @@ function PANEL:AddTrack(id, path)
             surface.DrawRect(0, 0, w, h)
         end
 
-        draw.DrawText(id, "arb.Font_FuturaPTBook_6", W(10), Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_LEFT)
-        draw.DrawText(time, "arb.Font_FuturaPTBook_6", W(70), Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_LEFT)
-        draw.DrawText(path, "arb.Font_FuturaPTBook_6", W(165), Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText(id, "arb.Font_FuturaPTBook_6", W(10), H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText(time, "arb.Font_FuturaPTBook_6", W(70), H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText(path, "arb.Font_FuturaPTBook_6", W(165), H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_LEFT)
     end
     panel.DoClick = function()
         local menu = DermaMenu()
@@ -532,9 +532,9 @@ function PANEL:SetData(id, data)
         local panel = self.eventsPanel:Add("DButton")
         panel.num = num
         panel:SetText("")
-        panel:SetTall(Arbitrage.ResolutionH(30))
+        panel:SetTall(H(30))
         panel:Dock(TOP)
-        panel:DockMargin(0, 0, 0, Arbitrage.ResolutionH(0))
+        panel:DockMargin(0, 0, 0, H(0))
         panel.alpha = 0
         panel.Paint = function(_, w, h)
             if _.num % 2 == 0 then
@@ -552,7 +552,7 @@ function PANEL:SetData(id, data)
                 surface.DrawOutlinedRect(0, 0, w, h)
             end
 
-            draw.DrawText(v.name, "arb.Font_FuturaPTBook_7", W(10), Arbitrage.ResolutionH(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(v.name, "arb.Font_FuturaPTBook_7", W(10), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
         end
         panel.DoClick = function()
             self.activemenu = k

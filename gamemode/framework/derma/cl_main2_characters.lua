@@ -66,7 +66,7 @@ local stagesData = {
         panel.charactersPanel:SetZPos(101)
         panel.charactersPanel:SetPos(W(238), H(210))
         panel.charactersPanel:SetSize(W(673), H(660))
-        panel.charactersPanel:SetSpaceY(Arbitrage.ResolutionH(35))
+        panel.charactersPanel:SetSpaceY(H(35))
         panel.charactersPanel:SetAlpha(0)
         panel.charactersPanel:AlphaTo(255, 0.5)
         panel.charactersPanel.character = -1

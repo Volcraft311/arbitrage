@@ -31,7 +31,7 @@ local categoryData = {
 
                 local ListItem = List:Add("DButton")
                 ListItem:SetText("")
-                ListItem:SetSize(Arbitrage.ResolutionW(140), Arbitrage.ResolutionH(190))
+                ListItem:SetSize(W(140), H(190))
                 ListItem.alpha = 0
                 ListItem.Paint = function(_, w, h)
                     _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
@@ -50,7 +50,7 @@ local categoryData = {
                     surface.DrawOutlinedRect(0, 0, w, h, 1)
 
                     local descHeight = draw.GetFontHeight("arb.Font_FuturaPTBook_7")
-                    local descriptionText = asterionlib.WrapText(data.name, Arbitrage.ResolutionW(140), "arb.Font_FuturaPTBook_7")
+                    local descriptionText = asterionlib.WrapText(data.name, W(140), "arb.Font_FuturaPTBook_7")
 
                     for i, _ in pairs(descriptionText) do
                         local y2 = descHeight * i - descHeight
@@ -65,7 +65,7 @@ local categoryData = {
 
                     local x = IsValid(mainPanel) and mainPanel:GetX() or 0
                     local y = IsValid(mainPanel) and mainPanel:GetY() or 0
-                    local wide = IsValid(mainPanel) and mainPanel:GetWide() or Arbitrage.ResolutionW(620)
+                    local wide = IsValid(mainPanel) and mainPanel:GetWide() or W(620)
 
                     local evidence = vgui.Create("arb.EvidenceMenuSub")
                     evidence:SetEvidence(data)
@@ -100,7 +100,7 @@ local categoryData = {
 
 function PANEL:Init()
     self:SetTitle("")
-    self:SetSize(Arbitrage.ResolutionW(620), Arbitrage.ResolutionH(700))
+    self:SetSize(W(620), H(700))
     self:Center()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
@@ -115,8 +115,8 @@ function PANEL:Init()
 
     local close = self:Add("DButton")
     close:SetText("")
-    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(40))
-    close:SetSize(Arbitrage.ResolutionH(32), Arbitrage.ResolutionH(32))
+    close:SetPos(self:GetWide() - H(40))
+    close:SetSize(H(32), H(32))
     close.alpha = 50
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
@@ -130,18 +130,18 @@ function PANEL:Init()
     end
 
     self.main = self:Add("Panel")
-    self.main:SetPos(Arbitrage.ResolutionW(123), Arbitrage.ResolutionH(40))
-    self.main:SetSize(Arbitrage.ResolutionW(490), Arbitrage.ResolutionH(650))
+    self.main:SetPos(W(123), H(40))
+    self.main:SetSize(W(490), H(650))
 
     local categoryPanel = self:Add("Panel")
-    categoryPanel:SetPos(Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(5))
-    categoryPanel:SetSize(Arbitrage.ResolutionW(25), Arbitrage.ResolutionH(270))
+    categoryPanel:SetPos(W(10), H(5))
+    categoryPanel:SetSize(W(25), H(270))
 
     for k, v in pairs(categoryData) do
         local panel = categoryPanel:Add("DButton")
         panel:SetText("")
         panel:Dock(TOP)
-        panel:SetTall(Arbitrage.ResolutionH(270) / #categoryData)
+        panel:SetTall(H(270) / #categoryData)
         panel.alpha = 100
         panel.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.select == k) and 255 or 100)
@@ -159,7 +159,7 @@ function PANEL:Init()
 
             self.scrollTitle = self.main:Add("Panel")
             self.scrollTitle:Dock(TOP)
-            self.scrollTitle:SetTall(Arbitrage.ResolutionH(30))
+            self.scrollTitle:SetTall(H(30))
             self.scrollTitle:SetAlpha(0)
             self.scrollTitle:AlphaTo(255, 0.5)
             self.scrollTitle.Paint = function(_, w, h)
@@ -203,7 +203,7 @@ function PANEL:Paint(w, h)
     surface.DrawTexturedRect(0, 0, w, h)
 
     surface.SetDrawColor(255, 255, 255, 76)
-    surface.DrawRect(Arbitrage.ResolutionW(150), Arbitrage.ResolutionH(32) - 2, w - Arbitrage.ResolutionW(200), 2)
+    surface.DrawRect(W(150), H(32) - 2, w - W(200), 2)
 end
 
 vgui.Register("arb.EvidenceMenu", PANEL, "DFrame")
@@ -213,7 +213,7 @@ local PANEL = {}
 
 function PANEL:Init()
     self:SetTitle("")
-    self:SetSize(Arbitrage.ResolutionW(400), Arbitrage.ResolutionH(600))
+    self:SetSize(W(400), H(600))
     self:Center()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
@@ -224,8 +224,8 @@ function PANEL:Init()
 
     local close = self:Add("DButton")
     close:SetText("")
-    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(40))
-    close:SetSize(Arbitrage.ResolutionH(32), Arbitrage.ResolutionH(32))
+    close:SetPos(self:GetWide() - H(40))
+    close:SetSize(H(32), H(32))
     close.alpha = 50
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
@@ -246,7 +246,7 @@ function PANEL:Init()
     self.textPanel:SetDisabled(truewa)
     self.textPanel:Dock(FILL)
     self.textPanel:SetDrawBackground(false)
-    self.textPanel:DockMargin(5, Arbitrage.ResolutionH(50), 5, 5)
+    self.textPanel:DockMargin(5, H(50), 5, 5)
 
 end
 
@@ -261,11 +261,11 @@ function PANEL:Paint(w, h)
     surface.DrawRect(6, 0, w - 12, h)
 
     surface.SetDrawColor(255, 255, 255, 76)
-    surface.DrawRect(Arbitrage.ResolutionW(50), Arbitrage.ResolutionH(32) - 2, w - Arbitrage.ResolutionW(50) * 2, 2)
+    surface.DrawRect(W(50), H(32) - 2, w - W(50) * 2, 2)
     surface.DrawRect(0, 0, 2, h)
     surface.DrawRect(w - 2, 0, 2, h)
 
-    draw.DrawText(self.data.name or "", "arb.Font_FuturaPTBook_9", w / 2, Arbitrage.ResolutionH(40), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.DrawText(self.data.name or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), Color(255, 255, 255), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.EvidenceMenuSub", PANEL, "DFrame")

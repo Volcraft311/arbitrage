@@ -32,7 +32,7 @@ local PANEL = {}
 function PANEL:Init()
     self:SetTitle("")
     self:SetPos(0, 0)
-    self:SetSize(Arbitrage.ResolutionW(960 * 1.3), Arbitrage.ResolutionH(540 * 1.3))
+    self:SetSize(W(960 * 1.3), H(540 * 1.3))
     self:MakePopup()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
@@ -40,13 +40,13 @@ function PANEL:Init()
     self:ShowCloseButton(false)
 
     local close = self:Add("DButton")
-    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(70), 0)
-    close:SetSize(Arbitrage.ResolutionH(70), Arbitrage.ResolutionH(30))
+    close:SetPos(self:GetWide() - H(70), 0)
+    close:SetSize(H(70), H(30))
     close:SetText("")
     close.alpha = 40
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.SimpleText("X", "arb.Font_FuturaPTBook_7", w / 2, Arbitrage.ResolutionH(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.SimpleText("X", "arb.Font_FuturaPTBook_7", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
 
     close.DoClick = function()
@@ -62,7 +62,7 @@ function PANEL:Init()
     self.charterPanel:SetMultiline(true)
     self.charterPanel:SetFont("arb.Font_FuturaPTBook_8")
     self.charterPanel:Dock(FILL)
-    self.charterPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(10), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.charterPanel:DockMargin(W(5), H(10), W(5), H(5))
     self.charterPanel:SetEditable(false)
 end
 
@@ -75,12 +75,12 @@ function PANEL:Paint(w, h)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
     surface.SetDrawColor(255, 61, 96, 165.75)
-    surface.DrawOutlinedRect(0, 0, w, Arbitrage.ResolutionH(30), 2)
+    surface.DrawOutlinedRect(0, 0, w, H(30), 2)
 
     surface.SetDrawColor(255, 61, 96, 20)
-    surface.DrawRect(0, 0, w, Arbitrage.ResolutionH(30))
+    surface.DrawRect(0, 0, w, H(30))
 
-    draw.SimpleText("Устав академии", "arb.Font_FuturaPTDemi_8", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.SimpleText("Устав академии", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.AcademyCharter", PANEL, "DFrame")

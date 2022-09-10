@@ -15,7 +15,7 @@
 local PANEL = {}
 
 function PANEL:Init()
-    self.t = {Arbitrage.ResolutionW(1000), Arbitrage.ResolutionH(200)}
+    self.t = {W(1000), H(200)}
     self.alpha = 0
 
     timer.Simple(1, function()

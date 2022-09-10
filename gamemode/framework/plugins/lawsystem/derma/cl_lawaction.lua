@@ -66,7 +66,7 @@ local function createItemButton(panel, id, mat, name, data)
 	itemButton.DoClick = function()
 	    local x = 0
 	    local y = ScrH() * 0.25
-	    local wide = Arbitrage.ResolutionW(620)
+	    local wide = W(620)
 
 	    local evidence = vgui.Create("arb.EvidenceMenuSub")
 	    evidence:SetEvidence(data)
@@ -153,7 +153,7 @@ local function createEvidenceButton(panel, id, evidenceMat, ribbonMat, name, dat
 	evidenceButton.DoClick = function()
 	    local x = 0
 	    local y = ScrH() * 0.25
-	    local wide = Arbitrage.ResolutionW(620)
+	    local wide = W(620)
 
 	    local evidence = vgui.Create("arb.EvidenceMenuSub")
 	    evidence:SetEvidence(data)
@@ -209,7 +209,7 @@ local categoryData = {
 
                 local ListItem = List:Add("DButton")
                 ListItem:SetText("")
-                ListItem:SetSize(Arbitrage.ResolutionW(100), Arbitrage.ResolutionH(140))
+                ListItem:SetSize(W(100), H(140))
                 ListItem.alpha = 0
                 ListItem.Paint = function(_, w, h)
                     local isSelect = client.selectedEmoji == k and true or false
@@ -321,7 +321,7 @@ local categoryData = {
             charterPanel:SetMultiline(true)
             charterPanel:SetFont("arb.Font_FuturaPTBook_6")
             charterPanel:SetTextColor(Color(255, 255, 255))
-            charterPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(10), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+            charterPanel:DockMargin(W(5), H(10), W(5), H(5))
             charterPanel:SetEnabled(false)
             charterPanel:SetVerticalScrollbarEnabled(true)
             charterPanel:SetDrawBackground(false)
@@ -356,13 +356,13 @@ function PANEL:Init()
     self:SetKeyboardInputEnabled(false)
 
     self.topPanel = self:Add("Panel")
-    self.topPanel:SetTall(Arbitrage.ResolutionH(27))
+    self.topPanel:SetTall(H(27))
     self.topPanel:Dock(TOP)
     self.topPanel:DockMargin(0, H(5), 0, 0)
 
     self.mainPanel = self:Add("Panel")
     self.mainPanel:Dock(FILL)
-    self.mainPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(2), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.mainPanel:DockMargin(W(5), H(2), W(5), H(5))
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
@@ -454,7 +454,7 @@ function PANEL:InitCategory()
                 surface.DrawOutlinedRect(0, 0, w, h, 1)
             end
 
-            parsed:draw(w / 2, h / 2 - Arbitrage.ResolutionH(10), TEXT_ALIGN_CENTER)
+            parsed:draw(w / 2, h / 2 - H(10), TEXT_ALIGN_CENTER)
         end
 
         category.DoClick = function()

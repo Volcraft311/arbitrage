@@ -18,7 +18,7 @@ local baseMat = Material("danganronpa/law/timer/base.png")
 local baseSMat = Material("danganronpa/law/timer/base_s.png")
 
 function PANEL:Init()
-    local sizeW, sizeH = Arbitrage.ResolutionW(450), Arbitrage.ResolutionH(64)
+    local sizeW, sizeH = W(450), H(64)
 
     self:SetPos(ScrW() - sizeW - 20, ScrH() - sizeH - 50)
     self:SetSize(sizeW, sizeH)
@@ -34,17 +34,17 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(w, h)
-    local offset = Arbitrage.ResolutionW(150)
+    local offset = W(150)
 
     surface.SetDrawColor(255, 255, 255)
     surface.SetMaterial(baseMat)
-    surface.DrawTexturedRect(Arbitrage.ResolutionW(50), 0, w - Arbitrage.ResolutionW(50), h)
+    surface.DrawTexturedRect(W(50), 0, w - W(50), h)
 
     surface.SetMaterial(baseSMat)
-    surface.DrawTexturedRect(0, 0, Arbitrage.ResolutionW(128), Arbitrage.ResolutionW(64))
+    surface.DrawTexturedRect(0, 0, W(128), W(64))
 
     surface.SetMaterial(ffMat)
-    surface.DrawTexturedRect(-Arbitrage.ResolutionW(25), Arbitrage.ResolutionH(10), Arbitrage.ResolutionW(128), Arbitrage.ResolutionW(64))
+    surface.DrawTexturedRect(-W(25), H(10), W(128), W(64))
 
     local thisTime = (RealTime()) - self.startTime
 
@@ -65,15 +65,15 @@ function PANEL:Paint(w, h)
     for k, v in pairs(self.numbers) do
         v.alpha = Lerp(FrameTime() * 8, v.alpha, -10)
         v.x = v.x + FrameTime() * 10
-        -- self:CreateText(v.text, offset + v.x + math.random(-5, 5), Arbitrage.ResolutionH(1) + v.y + math.random(-5, 5), v.alpha)
-        Arbitrage.DrawTextBlur(v.text, "arb.Font_FuturaPTBook_18", offset + v.x + math.random(-5, 5), Arbitrage.ResolutionH(1) + v.y + math.random(-5, 5), Color(255, 238, 177, v.alpha), TEXT_ALIGN_LEFT)
+        -- self:CreateText(v.text, offset + v.x + math.random(-5, 5), H(1) + v.y + math.random(-5, 5), v.alpha)
+        Arbitrage.DrawTextBlur(v.text, "arb.Font_FuturaPTBook_18", offset + v.x + math.random(-5, 5), H(1) + v.y + math.random(-5, 5), Color(255, 238, 177, v.alpha), TEXT_ALIGN_LEFT)
 
         if v.alpha <= 0 then
             table.remove(self.numbers, k)
         end
     end
 
-    --self:CreateText(timeString, offset, Arbitrage.ResolutionH(1), 255)
+    --self:CreateText(timeString, offset, H(1), 255)
     Arbitrage.DrawTextBlur(timeString, "arb.Font_FuturaPTBook_18", offset, H(1), Color(255, 238, 177, 255), TEXT_ALIGN_LEFT)
 end
 
@@ -82,7 +82,7 @@ function PANEL:Think()
     if time >= self.nextThink then
         table.insert(self.numbers, {
             text = math.random(0, 9),
-            x = math.random(-Arbitrage.ResolutionW(10), Arbitrage.ResolutionW(170)),
+            x = math.random(-W(10), W(170)),
             y = math.random(-6, 6),
             bias = math.random(0, 1) == 0,
             alpha = 100

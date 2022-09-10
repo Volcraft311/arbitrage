@@ -19,7 +19,7 @@ local PANEL = {}
 function PANEL:Init()
     self:SetTitle("")
     self:SetPos(0, 0)
-    self:SetSize(Arbitrage.ResolutionW(960 * 1.3), Arbitrage.ResolutionH(540 * 1.3))
+    self:SetSize(W(960 * 1.3), H(540 * 1.3))
     self:MakePopup()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
@@ -27,13 +27,13 @@ function PANEL:Init()
     self:ShowCloseButton(false)
 
     local close = self:Add("DButton")
-    close:SetPos(self:GetWide() - Arbitrage.ResolutionH(70), 0)
-    close:SetSize(Arbitrage.ResolutionH(70), Arbitrage.ResolutionH(30))
+    close:SetPos(self:GetWide() - H(70), 0)
+    close:SetSize(H(70), H(30))
     close:SetText("")
     close.alpha = 40
     close.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, Arbitrage.ResolutionH(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
     close.DoClick = function()
         self:AlphaTo(0, 0.2, 0, function()
@@ -46,9 +46,9 @@ end
 
 function PANEL:InitColorModify()
     self.mainPanel = self:Add("Panel")
-    self.mainPanel:SetWide(Arbitrage.ResolutionW(250))
+    self.mainPanel:SetWide(W(250))
     self.mainPanel:Dock(FILL)
-    self.mainPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(45), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    self.mainPanel:DockMargin(W(5), H(45), W(5), H(5))
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
@@ -105,12 +105,12 @@ function PANEL:InitColorModify()
 
     local returnButton = self:Add("DButton")
     returnButton:SetText("")
-    returnButton:SetTall(Arbitrage.ResolutionH(25))
+    returnButton:SetTall(H(25))
     returnButton:Dock(BOTTOM)
     returnButton.alpha = 0
     returnButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Вернуть стандартную цветокоррекцию", "arb.Font_FuturaPTBook_8", w / 2, Arbitrage.ResolutionH(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("Вернуть стандартную цветокоррекцию", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -133,16 +133,16 @@ function PANEL:Paint(w, h)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
     surface.SetDrawColor(255, 61, 96, 165.75)
-    surface.DrawOutlinedRect(0, 0, w, Arbitrage.ResolutionH(30), 2)
+    surface.DrawOutlinedRect(0, 0, w, H(30), 2)
 
     surface.SetDrawColor(255, 61, 96, 20)
-    surface.DrawRect(0, 0, w, Arbitrage.ResolutionH(30))
+    surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Цветокоррекция", "arb.Font_FuturaPTDemi_8", Arbitrage.ResolutionW(10), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Цветокоррекция", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(30), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Значение", "arb.Font_FuturaPTBook_7", Arbitrage.ResolutionW(550), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    -- draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - Arbitrage.ResolutionW(115), Arbitrage.ResolutionH(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Значение", "arb.Font_FuturaPTBook_7", W(550), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    -- draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - W(115), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
 end
 
 vgui.Register("ColorModify:Menu", PANEL, "DFrame")

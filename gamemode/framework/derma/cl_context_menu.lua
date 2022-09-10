@@ -146,7 +146,7 @@ function PANEL:AddAction(name, callback, icon)
         callback(LocalPlayer())
     end
 
-    self.actPanel:SetTall(self.actPanel:GetTall() + Arbitrage.ResolutionH(45))
+    self.actPanel:SetTall(self.actPanel:GetTall() + H(45))
     self.dancePanel:SetTall(H(465))
 
     self:FixTall()

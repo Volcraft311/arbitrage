@@ -18,8 +18,8 @@ local active = Material("danganronpa/law/table/active.png")
 local disable = Material("danganronpa/law/table/disable.png")
 
 function PANEL:Init()
-    self:SetPos(ScrW() - Arbitrage.ResolutionW(582) - 30, 30)
-    self:SetSize(Arbitrage.ResolutionW(582), Arbitrage.ResolutionH(100))
+    self:SetPos(ScrW() - W(582) - 30, 30)
+    self:SetSize(W(582), H(100))
 
     Arbitrage.gui.playertable = self
 
@@ -37,8 +37,8 @@ function PANEL:Init()
     self.players = {}
 
     local tablePl = self:Add("DIconLayout")
-    tablePl:SetPos(self:GetWide() - Arbitrage.ResolutionW(260), Arbitrage.ResolutionH(58))
-    tablePl:SetSize(Arbitrage.ResolutionW(210), self:GetTall())
+    tablePl:SetPos(self:GetWide() - W(260), H(58))
+    tablePl:SetSize(W(210), self:GetTall())
     tablePl:SetSpaceX(6)
     tablePl:SetSpaceY(2)
 
@@ -105,7 +105,7 @@ function PANEL:Paint(w, h)
     surface.SetMaterial(mat)
     surface.DrawTexturedRect(0, 0, w, h)
 
-    draw.DrawText(self.labelText, "arb.LawTableFont", w - Arbitrage.ResolutionW(30), Arbitrage.ResolutionH(3), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText(self.labelText, "arb.LawTableFont", w - W(30), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
 end
 
 vgui.Register("arb.LawPlayerTable", PANEL, "EditablePanel")

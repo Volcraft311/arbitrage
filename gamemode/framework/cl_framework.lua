@@ -14,9 +14,6 @@
 Arbitrage.DisableElements = Arbitrage.DisableElements or {}
 Arbitrage.gui = Arbitrage.gui or {}
 
-Arbitrage.ResolutionW = W
-Arbitrage.ResolutionH = H
-
 Arbitrage.Gradients = {
     [GRADIENT_CENTER] = surface.GetTextureID("gui/center_gradient"),
     [GRADIENT_RIGHT] = surface.GetTextureID("vgui/gradient-r"),

@@ -70,8 +70,8 @@ function PANEL:Init()
 
     self.charactersPanel = fillPanel:Add("DIconLayout")
     self.charactersPanel:SetWide(W(635))
-    self.charactersPanel:SetSpaceY(Arbitrage.ResolutionH(50))
-    self.charactersPanel:SetSpaceX(Arbitrage.ResolutionW(25))
+    self.charactersPanel:SetSpaceY(H(50))
+    self.charactersPanel:SetSpaceX(W(25))
     self.charactersPanel:Dock(LEFT)
 
     self.selectPanel = fillPanel:Add("Panel")
@@ -127,13 +127,13 @@ function PANEL:SetInfo(faction, steamid)
         textPanel:Dock(FILL)
         textPanel.Paint = function(_, w, h)
             surface.SetDrawColor(255, 220, 228, 10)
-            surface.DrawRect(w * 0.2, h - Arbitrage.ResolutionH(179), w - (w * 0.2) * 2, 2)
+            surface.DrawRect(w * 0.2, h - H(179), w - (w * 0.2) * 2, 2)
 
-            draw.DrawText(data.name, "arb.Font_FuturaPTBook_14", w / 2, h - Arbitrage.ResolutionH(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
-            draw.DrawText(data.description, "arb.Font_FuturaPTBook_9", w / 2, h - Arbitrage.ResolutionH(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
+            draw.DrawText(data.name, "arb.Font_FuturaPTBook_14", w / 2, h - H(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
+            draw.DrawText(data.description, "arb.Font_FuturaPTBook_9", w / 2, h - H(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
 
             if self.voting == steamid then
-                parsed:draw(w / 2, h - Arbitrage.ResolutionH(136), TEXT_ALIGN_CENTER, TEXT_ALIGN_LEFT)
+                parsed:draw(w / 2, h - H(136), TEXT_ALIGN_CENTER, TEXT_ALIGN_LEFT)
             end
         end
 
@@ -151,7 +151,7 @@ function PANEL:SetInfo(faction, steamid)
             surface.SetDrawColor(255, 61, 96, 165.75 * _.alpha)
             surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-            draw.DrawText("Подтвердить голос", "arb.Font_FuturaPTBook_9", w / 2, Arbitrage.ResolutionH(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText("Подтвердить голос", "arb.Font_FuturaPTBook_9", w / 2, H(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
         selectButton.DoClick = function()
             self.voting = steamid
@@ -189,7 +189,7 @@ function PANEL:SetData(data, votingList)
         character:AlphaTo(255, 0.3)
         character:SetText("")
         character:SetEnabled(isVoting)
-        character:SetSize(Arbitrage.ResolutionW(139.5), Arbitrage.ResolutionH(135))
+        character:SetSize(W(139.5), H(135))
         character.alpha = 0
         character.alpha2 = 0
         character.Paint = function(_, w, h)
@@ -198,18 +198,18 @@ function PANEL:SetData(data, votingList)
 
             if !alive then _.alpha = 0.05 end
 
-            local xPos = w / 2 - (Arbitrage.ResolutionW(100) / 2)
+            local xPos = w / 2 - (W(100) / 2)
 
             surface.SetDrawColor(27, 10, 13, 204 * _.alpha)
-            surface.DrawRect(xPos, 0, Arbitrage.ResolutionW(100), Arbitrage.ResolutionH(100))
+            surface.DrawRect(xPos, 0, W(100), H(100))
 
             surface.SetDrawColor(255, 255, 255, _.alpha * 255)
             surface.SetMaterial(mat)
-            surface.DrawTexturedRect(xPos + 6, 9, Arbitrage.ResolutionW(100) - 12, Arbitrage.ResolutionH(100) - 12)
+            surface.DrawTexturedRect(xPos + 6, 9, W(100) - 12, H(100) - 12)
 
             surface.SetDrawColor(255, 255, 255, 255 * _.alpha2)
             surface.SetMaterial(mat2)
-            surface.DrawTexturedRect(xPos + 6, 9, Arbitrage.ResolutionW(100) - 12, Arbitrage.ResolutionH(100) - 12)
+            surface.DrawTexturedRect(xPos + 6, 9, W(100) - 12, H(100) - 12)
 
             Arbitrage.DrawTextBlur(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 

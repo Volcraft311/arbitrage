@@ -149,17 +149,17 @@ end
 local PANEL = {}
 
 function PANEL:Init()
-    self:SetSize(Arbitrage.ResolutionW(1083 * size), Arbitrage.ResolutionH(1448 * size))
+    self:SetSize(W(1083 * size), H(1448 * size))
     self:SetAlpha(0)
     self:AlphaTo(255, 0.5, 0)
 
     self.main = self:Add("Panel")
     self.main:Dock(FILL)
-    self.main:DockMargin(Arbitrage.ResolutionW(85), Arbitrage.ResolutionH(20), Arbitrage.ResolutionW(30), Arbitrage.ResolutionH(20))
+    self.main:DockMargin(W(85), H(20), W(30), H(20))
 
     local titlePanel = self.main:Add("Panel")
     titlePanel:Dock(TOP)
-    titlePanel:SetTall(Arbitrage.ResolutionH(60))
+    titlePanel:SetTall(H(60))
     titlePanel.Paint = function(_, w, h)
         draw.DrawText("Страница №" .. (self.data.page or 1), GetFont(self.data.font) .. 7, w, -2, Color(100, 100, 100), TEXT_ALIGN_RIGHT)
 
@@ -175,7 +175,7 @@ function PANEL:Init()
 
     local bottomPanel = self.main:Add("Panel")
     bottomPanel:Dock(BOTTOM)
-    bottomPanel:SetTall(Arbitrage.ResolutionH(60))
+    bottomPanel:SetTall(H(60))
     bottomPanel.Paint = function(_, w, h)
         surface.SetDrawColor(159, 159, 159)
         surface.DrawRect(w * 0.1, 0, w - (w * 0.1) * 2, 2)
@@ -183,7 +183,7 @@ function PANEL:Init()
 
     local centerPanel = self.main:Add("Panel")
     centerPanel:Dock(FILL)
-    centerPanel:DockMargin(0, Arbitrage.ResolutionH(20), 0, Arbitrage.ResolutionH(20))
+    centerPanel:DockMargin(0, H(20), 0, H(20))
 
     self.text = centerPanel:Add("DTextEntry")
     self.text:Dock(FILL)
@@ -218,14 +218,14 @@ vgui.Register("arb.Note", PANEL, "EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    self:SetSize(Arbitrage.ResolutionW(1683 * size), Arbitrage.ResolutionH(1448 * size))
+    self:SetSize(W(1683 * size), H(1448 * size))
     self:Center()
     self:MakePopup()
 
     self.attachment = self:Add("Panel")
-    self.attachment:SetWide(Arbitrage.ResolutionW(610 * size))
+    self.attachment:SetWide(W(610 * size))
     self.attachment:Dock(RIGHT)
-    self.attachment:DockMargin(0, Arbitrage.ResolutionH(30), 0, Arbitrage.ResolutionH(30))
+    self.attachment:DockMargin(0, H(30), 0, H(30))
 
     local yellowPanel = self.attachment:Add("Panel")
     yellowPanel:SetSize(0, self:GetTall() * 0.65)
@@ -244,17 +244,17 @@ function PANEL:Init()
     self.yellowPanel:Dock(FILL)
 
     self.infoPanel = yellowPanel:Add("Panel")
-    self.infoPanel:SetTall(Arbitrage.ResolutionH(100))
+    self.infoPanel:SetTall(H(100))
     self.infoPanel:Dock(BOTTOM)
     self.infoPanel.Paint = function(_, w, h)
-        draw.DrawText("Количество владельцев: " .. table.Count(self.data.editors) .. "/" .. NOTE_MAX_EDITORS, GetFont(self.data.font) .. 7, 25, Arbitrage.ResolutionH(3), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
-        draw.DrawText("Количество страниц: " .. self.data.pages .. "/" .. NOTE_MAX_PAGES, GetFont(self.data.font) .. 7, 25, Arbitrage.ResolutionH(23), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
-        draw.DrawText("Размер заголовка: " .. utf8.len(self.note.title:GetValue()) .. "/" .. NOTE_SIZE_TITLE, GetFont(self.data.font) .. 7, 25, Arbitrage.ResolutionH(43), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
-        draw.DrawText("Размер текста: " .. utf8.len(self.note.text:GetValue()) .. "/" .. NOTE_SIZE_TEXT, GetFont(self.data.font) .. 7, 25, Arbitrage.ResolutionH(63), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText("Количество владельцев: " .. table.Count(self.data.editors) .. "/" .. NOTE_MAX_EDITORS, GetFont(self.data.font) .. 7, 25, H(3), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText("Количество страниц: " .. self.data.pages .. "/" .. NOTE_MAX_PAGES, GetFont(self.data.font) .. 7, 25, H(23), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText("Размер заголовка: " .. utf8.len(self.note.title:GetValue()) .. "/" .. NOTE_SIZE_TITLE, GetFont(self.data.font) .. 7, 25, H(43), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText("Размер текста: " .. utf8.len(self.note.text:GetValue()) .. "/" .. NOTE_SIZE_TEXT, GetFont(self.data.font) .. 7, 25, H(63), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
     end
 
     self.fontsPanel = yellowPanel:Add("DScrollPanel")
-    self.fontsPanel:SetTall(Arbitrage.ResolutionH(120))
+    self.fontsPanel:SetTall(H(120))
     self.fontsPanel:DockMargin(15, 0, 5, 5)
     self.fontsPanel:Dock(BOTTOM)
     self.fontsPanel.Paint = function(_, w, h)
@@ -263,7 +263,7 @@ function PANEL:Init()
     end
 
     self.editorsPanel = yellowPanel:Add("DPanelList")
-    self.editorsPanel:SetTall(Arbitrage.ResolutionH(140))
+    self.editorsPanel:SetTall(H(140))
     self.editorsPanel:EnableVerticalScrollbar()
     self.editorsPanel:DockMargin(15, 0, 5, 5)
     self.editorsPanel:Dock(BOTTOM)
@@ -291,7 +291,7 @@ function PANEL:Init()
 
     self.redPanel = self.attachment:Add("DScrollPanel")
     self.redPanel:SetY(self:GetTall() * 0.65)
-    self.redPanel:SetSize(0, self:GetTall() - self:GetTall() * 0.65 - Arbitrage.ResolutionH(60))
+    self.redPanel:SetSize(0, self:GetTall() - self:GetTall() * 0.65 - H(60))
     self.redPanel.Paint = function(_, w, h)
         surface.SetDrawColor(255, 255, 255)
         surface.SetMaterial(matRed)
@@ -306,7 +306,7 @@ function PANEL:Init()
             surface.DrawRect(0, 0, 10, h)
         end
 
-        draw.DrawText("Количество страниц: " .. self.data.pages, GetFont(self.data.font) .. 7, 25, h - Arbitrage.ResolutionH(25), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText("Количество страниц: " .. self.data.pages, GetFont(self.data.font) .. 7, 25, h - H(25), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
     end
 
     do
@@ -404,7 +404,7 @@ function PANEL:SetData(data, bEdit)
 			panel.Paint = function(_, w, h)
 			    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.data.font == k) and 255 or 185)
 
-			    draw.DrawText(v.name, v.font .. 7, 25, Arbitrage.ResolutionH(3), Color(0, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
+			    draw.DrawText(v.name, v.font .. 7, 25, H(3), Color(0, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
 
 			    surface.SetFont(v.font .. 7)
 			    local width = surface.GetTextSize(v.name)
@@ -437,7 +437,7 @@ function PANEL:SetData(data, bEdit)
 
             local panel = selectPanel:Add("DButton")
             panel:SetText("")
-            panel:SetTall(Arbitrage.ResolutionH(30))
+            panel:SetTall(H(30))
             panel:Dock(TOP)
             panel.alpha = 185
             panel.width = 0
@@ -445,7 +445,7 @@ function PANEL:SetData(data, bEdit)
             panel.Paint = function(_, w, h)
                 _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and _.onCan) and 230 or 185)
 
-                draw.DrawText(v.name, GetFont(self.data.font) .. 7, 25, Arbitrage.ResolutionH(3), _.onCan and Color(0, 0, 0, _.alpha) or Color(255, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
+                draw.DrawText(v.name, GetFont(self.data.font) .. 7, 25, H(3), _.onCan and Color(0, 0, 0, _.alpha) or Color(255, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
 
                 surface.SetFont(GetFont(self.data.font) .. 7)
                 local width = surface.GetTextSize(v.name)

@@ -501,9 +501,14 @@ function Arbitrage:StartGame()
 
     for k, v in pairs(Arbitrage.players) do
         local client = v.client
+        local storedInfo = Arbitrage.players[client:SteamID()]
 
-        if IsValid(client) and client:Alive() and client:IsPlaying() and Arbitrage.players[client:SteamID()] then
+        if IsValid(client) and client:Alive() and client:IsPlaying() and storedInfo then
             local faction = client:Team()
+
+            if !storedInfo.logo then
+                storedInfo.faction = faction
+            end
 
             client:Freeze(true)
 

@@ -216,7 +216,7 @@ function TOOL.BuildCPanel(CPanel)
     })
 
     local evidenceScrollPanel = vgui.Create("DScrollPanel")
-    evidenceScrollPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    evidenceScrollPanel:DockMargin(W(5), H(5), W(5), H(5))
     evidenceScrollPanel:SetTall(200)
     evidenceScrollPanel.Paint = function(_, w, h)
         surface.SetDrawColor(0, 0, 0)
@@ -234,7 +234,7 @@ function TOOL.BuildCPanel(CPanel)
 
         local ListItem = ListIcons:Add("DButton")
         ListItem:SetText("")
-        ListItem:SetSize(Arbitrage.ResolutionW(60), Arbitrage.ResolutionH(60))
+        ListItem:SetSize(W(60), H(60))
         ListItem.alpha = 0
         ListItem.index = k
         ListItem.Paint = function(_, w, h)
@@ -259,7 +259,7 @@ function TOOL.BuildCPanel(CPanel)
     end
 
     local ribbonScrollPanel = vgui.Create("DScrollPanel")
-    ribbonScrollPanel:DockMargin(Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5), Arbitrage.ResolutionW(5), Arbitrage.ResolutionH(5))
+    ribbonScrollPanel:DockMargin(W(5), H(5), W(5), H(5))
     ribbonScrollPanel:SetTall(130)
     ribbonScrollPanel.Paint = function(_, w, h)
         surface.SetDrawColor(0, 0, 0)
@@ -277,7 +277,7 @@ function TOOL.BuildCPanel(CPanel)
 
         local ListItem = ListRibbons:Add("DButton")
         ListItem:SetText("")
-        ListItem:SetSize(Arbitrage.ResolutionW(60), Arbitrage.ResolutionH(60))
+        ListItem:SetSize(W(60), H(60))
         ListItem.alpha = 0
         ListItem.index = k
         ListItem.Paint = function(_, w, h)

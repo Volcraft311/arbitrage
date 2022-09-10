@@ -81,14 +81,18 @@ function PLUGIN:StartVoting()
 
     local data = {}
     for k, v in pairs(Arbitrage.players) do
-        if !IsHost(v.steamid) then
+        local steamid = v.steamid
+        local faction = v.faction
+        local alive = v.alive
+
+        if !IsHost(steamid) and IsPlaying(faction) then
             data[#data + 1] = {
-                v.steamid,
-                v.faction,
-                v.alive
+                steamid,
+                faction,
+                alive
             }
 
-            local client = player.GetBySteamID(v.steamid)
+            local client = player.GetBySteamID(steamid)
             if IsValid(client) and client:Alive() then
                 showingList[#showingList + 1] = client
             end
@@ -516,13 +520,17 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
     local el = {{}, {}, data[1], data[2], data[3]}
 
     for k, v in pairs(Arbitrage.players) do
-        if !IsHost(v.steamid) then
+        local steamid = v.steamid
+        local faction = v.faction
+        local alive = v.alive
+
+        if !IsHost(steamid) and IsPlaying(faction) then
             el[1][#el[1] + 1] = {
                 k,
-                v.faction
+                faction
             }
 
-            if !v.alive then
+            if !alive then
                 el[2][#el[2] + 1] = k
             end
         end
@@ -548,7 +556,7 @@ netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID)
     if !factionAttacker then return end
 
     local factionTarget = Arbitrage.teams.Get(targetID)
-    if !targetID then return end
+    if !factionTarget then return end
 
     for k, v in ipairs(player.GetAll()) do
         asterionlib.netgui:Create(v, "arb.MonoEndGame", nil, "SetData", title, attackerID, targetID)

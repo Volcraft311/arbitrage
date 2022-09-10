@@ -269,7 +269,9 @@ function PANEL:ShowSurvival()
         end
 
         timer.Simple(table.Count(dead) + 1, function()
-            self.matScreen.malpha2 = 260
+            if IsValid(self.matScreen) then -- attempt to index field 'matScreen' (a nil value)
+                self.matScreen.malpha2 = 260
+            end
 
             timer.Simple(1, function()
                 for k, v in pairs(self.survival.List) do

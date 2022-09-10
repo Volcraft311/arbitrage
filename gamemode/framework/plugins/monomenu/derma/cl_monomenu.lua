@@ -309,7 +309,7 @@ function PANEL:SetData(data)
     for k, v in pairs(data.character) do
         local factionData = Arbitrage.teams.Get(v.faction)
         local nameColor = (IsValid(v.client) and v.client:IsAdmin()) and Color(86, 191, 223) or Color(255, 255, 255)
-        local factionColor = factionData.logo and Color(255, 255, 255) or Color(255, 0, 0)
+        local factionColor = IsPlaying(v.faction) and Color(255, 255, 255) or Color(255, 0, 0)
         local aliveColor = (v.alive and IsValid(v.client)) and Color(71, 235, 117) or Color(204, 99, 99)
         local placeColor = v.place > 0 and Color(255, 255, 255) or (v.place == 0 and Color(86, 191, 223) or Color(242, 73, 73))
 

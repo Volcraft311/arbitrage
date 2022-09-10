@@ -506,7 +506,7 @@ function Arbitrage:StartGame()
         if IsValid(client) and client:Alive() and client:IsPlaying() and storedInfo then
             local faction = client:Team()
 
-            if !storedInfo.logo then
+            if !IsPlaying(storedInfo.faction) then
                 storedInfo.faction = faction
             end
 

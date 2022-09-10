@@ -441,10 +441,12 @@ do
     	return model == Arbitrage.TokoModel or self:IsTokoGenocide()
     end
 
-    function playerMeta:IsPlaying()
-        local faction = self:Team()
-
+    function IsPlaying(faction)
         return faction != 1001 and faction != TEAM_NOTCHARACTER and faction != TEAM_SPECTATE and faction != TEAM_ADMIN
+    end
+
+    function playerMeta:IsPlaying()
+        return IsPlaying(self:Team())
     end
 
     function playerMeta:IsNotCharacter()
@@ -470,7 +472,7 @@ do
         if faction == TEAM_ADMIN then return false end
         if faction == TEAM_NOTCHARACTER then return false end
 
-        if self:IsPlaying() then
+        if IsPlaying(faction) then
             return self:GetNetVar("arbAlive", true)
         end
 

@@ -309,6 +309,7 @@ function PANEL:SetData(data)
     for k, v in pairs(data.character) do
         local factionData = Arbitrage.teams.Get(v.faction)
         local nameColor = (IsValid(v.client) and v.client:IsAdmin()) and Color(86, 191, 223) or Color(255, 255, 255)
+        local factionColor = factionData.logo and Color(255, 255, 255) or Color(255, 0, 0)
         local aliveColor = (v.alive and IsValid(v.client)) and Color(71, 235, 117) or Color(204, 99, 99)
         local placeColor = v.place > 0 and Color(255, 255, 255) or (v.place == 0 and Color(86, 191, 223) or Color(242, 73, 73))
 
@@ -329,7 +330,7 @@ function PANEL:SetData(data)
             surface.DrawPoly(circle)
 
             draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", Arbitrage.ResolutionW(45), Arbitrage.ResolutionH(8), nameColor, TEXT_ALIGN_LEFT)
-            draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, Arbitrage.ResolutionH(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, Arbitrage.ResolutionH(8), factionColor, TEXT_ALIGN_CENTER)
             draw.DrawText("Место на суде: " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + Arbitrage.ResolutionW(200), Arbitrage.ResolutionH(8), placeColor, TEXT_ALIGN_CENTER)
         end
 

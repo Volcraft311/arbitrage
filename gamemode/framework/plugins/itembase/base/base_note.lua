@@ -17,6 +17,7 @@ local BASE = ItemBase.GetBase()
 BASE.name = "База Блокнотов"
 BASE.description = ""
 BASE.category = "Библиотека"
+BASE.lawInspect = "Прочитать"
 BASE.data = {font = 1, editors = {}, pages = {{
     title = "Заголовок",
     text = "Ваш текст..."
@@ -232,9 +233,11 @@ if SERVER then
             if entity:GetClass() != "arb_item" then return end
             if entity:GetPos():DistToSqr(client:GetPos()) >= 25000 then return end
         else
-            local inventory = item:GetInventory()
-            if !inventory then return end
-            if !inventory:IsReceiver(client) then return end
+            if Arbitrage.lawEnable and name != "CHANGE_PAGE" then
+                local inventory = item:GetInventory()
+                if !inventory then return end
+                if !inventory:IsReceiver(client) then return end
+            end
         end
 
         if actionList[name] then

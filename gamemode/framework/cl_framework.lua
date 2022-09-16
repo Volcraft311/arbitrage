@@ -137,6 +137,7 @@ do
 
     rpc:Set("buttonText", "Присоединиться")
     rpc:Set("buttonURL", "https://asterion.games")
+    rpc:Set("smallImageText", "Карта: " .. game.GetMap())
 
     hook.Add("asterionlib.rpc:AppID", "asterionlib.rpc", function()
         return "948976762136719380"

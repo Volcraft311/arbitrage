@@ -60,6 +60,7 @@ local function allow()
 	if !IsValid(client) then return true end
 	if !client:oldAlive() then return false end
 	if !client:IsPlaying() then return false end
+	if client:IsPlayingTaunt() then return false end
 
 	local weapon = client:GetActiveWeapon()
 	if !IsValid(weapon) then return true end
@@ -88,15 +89,15 @@ function PLUGIN:ShouldDrawLocalPlayer()
 	end
 end
 
-function PLUGIN:CalcView(ply, pos, angles, fov)
+function PLUGIN:CalcView(client, pos, angles, fov)
 	if !self.isAllow then return end
 
-	eyeAtt = ply:GetAttachment(ply:LookupAttachment("eyes"))
-	local forwardVec = ply:GetAimVector()
+	eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))
+	local forwardVec = client:GetAimVector()
 	local FT = RealFrameTime()
-	local eyeAngles = ply:EyeAngles()
+	local eyeAngles = client:EyeAngles()
 
-	if (traceHit and !ply:InVehicle()) or !eyeAtt then
+	if (traceHit and !client:InVehicle()) or !eyeAtt then
 		return
 	end
 
@@ -117,7 +118,7 @@ function PLUGIN:CalcView(ply, pos, angles, fov)
 	local m = LocalPlayer():Team() == TEAM_MONDO and 5 or 0
 
 	local view = {}
-	if ply:WaterLevel() >= 3 then
+	if client:WaterLevel() >= 3 then
 		ViewOffsetUp = math_Approach(ViewOffsetUp, 0, 0.5)
 		ViewOffsetForward = math_Approach(ViewOffsetForward, 8, 0.5)
 		RollDependency = Lerp(FT * 15, RollDependency, 0.5)
@@ -128,11 +129,11 @@ function PLUGIN:CalcView(ply, pos, angles, fov)
 	end
 
 	if eyeAtt then
-		view.origin = eyeAtt.Pos + (Vector(forwardVec.x * (ViewOffsetForward + ViewOffsetForward2), forwardVec.y * (ViewOffsetForward + ViewOffsetForward2 - 0.3), 0)) + Vector(0, 0, ViewOffsetUp) + ply:GetRight() * ViewOffsetLeftRight
+		view.origin = eyeAtt.Pos + (Vector(forwardVec.x * (ViewOffsetForward + ViewOffsetForward2), forwardVec.y * (ViewOffsetForward + ViewOffsetForward2 - 0.3), 0)) + Vector(0, 0, ViewOffsetUp) + client:GetRight() * ViewOffsetLeftRight
 		view.angles = CurView
 		view.fov = fov
 
-		return GAMEMODE:CalcView(ply, view.origin, view.angles, view.fov, view.znear)
+		return GAMEMODE:CalcView(client, view.origin, view.angles, view.fov, view.znear)
 	end
 end
 
@@ -140,25 +141,25 @@ function PLUGIN:Think()
 	self.isAllow = allow()
 	if !self.isAllow then return end
 
-	local ply = LocalPlayer()
-	ply.BuildBonePositions = function(ply, numbon, numphysbon)
-		local bone = ply:LookupBone("ValveBiped.Bip01_Head1")
-		local matrix = ply:GetBoneMatrix(bone)
+	local client = LocalPlayer()
+	client.BuildBonePositions = function(client, numbon, numphysbon)
+		local bone = client:LookupBone("ValveBiped.Bip01_Head1")
+		local matrix = client:GetBoneMatrix(bone)
 
 		if matrix then
 			matrix:Scale(Vector(0.001, 0.001, 0.001))
 			matrix:Translate(Vector(0, 0, 0))
-			ply:SetBoneMatrix(bone, matrix)
+			client:SetBoneMatrix(bone, matrix)
 		end
 	end
 
 	if eyeAtt then
-		local forwardVec = ply:GetAimVector()
+		local forwardVec = client:GetAimVector()
 
 		local tr = {}
 		tr.start = eyeAtt.Pos
 		tr.endpos = tr.start + Vector(forwardVec.x, forwardVec.y, 0) * 20
-		tr.filter = ply
+		tr.filter = client
 
 		local trace = util_TraceLine(tr)
 

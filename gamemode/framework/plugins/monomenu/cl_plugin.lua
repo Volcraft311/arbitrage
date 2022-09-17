@@ -634,3 +634,21 @@ function PLUGIN:ArbitrageContextMenu(data)
         end, Material("danganronpa/hud/action/mono.png"))
     end
 end
+
+local function dRender(data)
+    if MonoMenu.onFullBright then
+        render.SetLightingMode(data)
+    end
+end
+
+function PLUGIN:PreRender()
+    dRender(1)
+end
+
+function PLUGIN:PostRender()
+    dRender(0)
+end
+
+function PLUGIN:PreDrawHUD()
+    dRender(0)
+end

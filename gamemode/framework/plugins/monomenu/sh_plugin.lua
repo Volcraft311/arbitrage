@@ -482,5 +482,22 @@ MonoMenu:AddAdminFunction("Глобальный Voice", "icon16/sound_low.png", 
     end
 })
 
+MonoMenu:AddAdminFunction("FullBright", "icon16/lightbulb.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if SERVER then return end
+
+        MonoMenu.onFullBright = true
+    end,
+    onDisable = function(client)
+        if SERVER then return end
+
+        MonoMenu.onFullBright = false
+    end,
+    OnCheck = function(client)
+        return MonoMenu.onFullBright
+    end
+})
+
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

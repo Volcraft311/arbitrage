@@ -53,8 +53,10 @@ local categoryIcons = {
     ["KILLING HARMONY"] = "icon16/bullet_red.png",
     ["TRIGGER HAPPY HAVOC"] = "icon16/bullet_blue.png",
     ["GOODBYE DESPAIR"] = "icon16/bullet_orange.png",
-    ["Остальные"] = "icon16/bullet_black.png",
-    ["Ведущие"] = "icon16/bullet_star.png"
+    ["ULTRA DESPAIR GIRLS"] = "icon16/bullet_green.png",
+    ["Остальные"] = "icon16/bullet_wrench.png",
+    ["Ведущие"] = "icon16/bullet_star.png",
+    ["Уникальные"] = "icon16/bullet_key.png"
 }
 
 local function getCharacters(steamid)

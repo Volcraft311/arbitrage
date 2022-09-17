@@ -260,13 +260,16 @@ if (CLIENT) then
 	end
 
 	function PLUGIN:PostDrawTranslucentRenderables()
-		 if LocalPlayer().GetSitting and LocalPlayer():GetSitting() then return end
+		local client = LocalPlayer()
 
-		 if (LocalPlayer() and !LocalPlayer():InVehicle()) then
+		 if client.GetSitting and client:GetSitting() then return end
+		 if client:IsPlayingTaunt() then return end
+
+		 if (client and !client:InVehicle()) then
 			Legs:DoFinalRender()
 
             if (!self.update or CurTime() >= self.update) then
-                Legs:Setup(LocalPlayer():GetModel())
+                Legs:Setup(client:GetModel())
                 Legs:FixBones()
 
                 self.update = CurTime() + 3
@@ -275,9 +278,12 @@ if (CLIENT) then
 	end
 
 	function PLUGIN:RenderScreenspaceEffects()
-		if LocalPlayer().GetSitting and LocalPlayer():GetSitting() then return end
+		local client = LocalPlayer()
 
-		 if (LocalPlayer():InVehicle()) then
+		if client.GetSitting and client:GetSitting() then return end
+		if client:IsPlayingTaunt() then return end
+
+		 if (client:InVehicle()) then
 			Legs:DoFinalRender()
 		end
 	end

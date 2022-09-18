@@ -148,7 +148,7 @@ function PLUGIN:EntityTakeDamage(target, dmginfo)
         	local class = weapon:GetClass()
         	if class != "academy_first" then return end
 
-            dmginfo:SetDamage(target:Health() <= 20 and 0 or 2)
+            dmginfo:SetDamage(target:Health() <= 5 and 0 or 2)
         end
     end
 end

@@ -182,6 +182,11 @@ function SWEP:DealDamage()
         tr.Entity:TakeDamageInfo(dmginfo)
         SuppressHostEvents(self.Owner)
 
+        local direction = self.Owner:GetAimVector() * 100
+        direction.z = 0
+
+        tr.Entity:SetVelocity(direction)
+
         hit = true
     end
 

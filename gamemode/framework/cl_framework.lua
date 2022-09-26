@@ -402,7 +402,10 @@ timer.Create("arb.DayChangeNotifications", 1, 0, function()
             local data = Arbitrage.IsDay() and "Наступило дневное время!" or "Наступило ночное время!"
 
             Arbitrage.notify.NotifyChat(data)
-            asterionlib.EmitSound("dingdong.wav")
+
+            if !Arbitrage.lawEnable then
+                asterionlib.EmitSound("dingdong.wav")
+            end
         end
     end)
 end)

@@ -30,7 +30,7 @@ local speed = 0.3
 function PANEL:Init()
     local sizeW, sizeH = ScrW(), ScrH()
 
-    self:SetZPos(9999)
+    self:SetZPos(20002)
     self:SetAlpha(0)
     self:AlphaTo(255, 0.2)
     self:SetPos(ScrW() / 2 - sizeW / 2, sizeH)

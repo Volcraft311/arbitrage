@@ -20,6 +20,7 @@ local disable = Material("danganronpa/law/table/disable.png")
 function PANEL:Init()
     self:SetPos(ScrW() - W(582) - 30, 30)
     self:SetSize(W(582), H(100))
+    self:SetZPos(20001)
 
     Arbitrage.gui.playertable = self
 

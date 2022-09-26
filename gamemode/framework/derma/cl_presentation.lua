@@ -15,6 +15,7 @@
 local PANEL = {}
 
 function PANEL:Init()
+    self:SetZPos(20001)
     self.t = {W(1000), H(200)}
     self.alpha = 0
 

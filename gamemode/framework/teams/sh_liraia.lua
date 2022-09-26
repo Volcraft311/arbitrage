@@ -12,13 +12,13 @@
 
 local TEAM = {emodjiList = {}}
 
-TEAM.name = "Моно"
-TEAM.description = "Директор Абсолютной Надежды"
+TEAM.name = "Лирайя Артриус"
+TEAM.description = "Абсолютная Ясновидящая"
 TEAM.admin = true
 TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/yourtoast4/danganronpa/monokuma.mdl"
-TEAM.path = "danganronpa/characters/mono"
-TEAM.uniqueID = "mono"
+TEAM.path = "danganronpa/characters/liraia"
+TEAM.uniqueID = "liraia"
 
 TEAM.color = Color(255, 0, 0)
 TEAM.evidenceVisibility = 1
@@ -30,8 +30,8 @@ TEAM.thirstSpeed = 10000
 TEAM.sleepSpeed = 10000
 TEAM.max = 10
 
-for i = 1, 6 do
+for i = 1, 16 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
 end
 
-TEAM_MONO = Arbitrage.teams.Create(TEAM)
+TEAM_LIRAIA = Arbitrage.teams.Create(TEAM)

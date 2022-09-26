@@ -12,13 +12,13 @@
 
 local TEAM = {emodjiList = {}}
 
-TEAM.name = "Кума"
-TEAM.description = "Директор Абсолютного Отчаяния"
+TEAM.name = "Сетсуко Фурукава"
+TEAM.description = "Абсолютный Менеджер"
 TEAM.admin = true
 TEAM.weapons = {"gmod_tool", "weapon_physgun"}
 TEAM.model = "models/player/yourtoast4/danganronpa/monokuma.mdl"
-TEAM.path = "danganronpa/characters/kuma"
-TEAM.uniqueID = "kuma"
+TEAM.path = "danganronpa/characters/setsuko"
+TEAM.uniqueID = "setsuko"
 
 TEAM.color = Color(255, 0, 0)
 TEAM.evidenceVisibility = 1
@@ -30,8 +30,8 @@ TEAM.thirstSpeed = 10000
 TEAM.sleepSpeed = 10000
 TEAM.max = 10
 
-for i = 1, 6 do
+for i = 1, 22 do
 	TEAM.emodjiList[#TEAM.emodjiList + 1] = TEAM.path .. "/emoji/" .. i .. ".png"
 end
 
-TEAM_KUMA = Arbitrage.teams.Create(TEAM)
+TEAM_SETSUKO = Arbitrage.teams.Create(TEAM)

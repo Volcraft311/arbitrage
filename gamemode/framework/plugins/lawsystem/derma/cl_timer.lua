@@ -22,6 +22,7 @@ function PANEL:Init()
 
     self:SetPos(ScrW() - sizeW - 20, ScrH() - sizeH - 50)
     self:SetSize(sizeW, sizeH)
+    self:SetZPos(20001)
 
     Arbitrage.gui.timer = self
 

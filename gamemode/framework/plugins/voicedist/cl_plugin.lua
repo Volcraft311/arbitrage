@@ -53,6 +53,8 @@ end
 
 function PLUGIN:PlayerEndVoice(client)
     self.players[client] = nil
+
+    hook.Run("ArbitrageVoiceEnd", client)
 end
 
 local sizeMat = 40

@@ -390,6 +390,19 @@ function Arbitrage:PreDrawViewModel(vm, client, weapon)
     end
 end
 
+local function DingDongBingBong()
+    timer.Simple(2, function() -- Исправление проблемы с текстом
+        local data = Arbitrage.IsDay() and "Наступило дневное время!" or "Наступило ночное время!"
+        Arbitrage.notify.NotifyChat(data)
+
+        if !Arbitrage.lawEnable then
+            asterionlib.EmitSound("dingdong.wav")
+        end
+    end)
+
+    Arbitrage.DingDongBingBongCD = CurTime() + 5
+end
+
 
 timer.Create("arb.DayChangeNotifications", 1, 0, function()
     if !Arbitrage.IsStartGame() then return end
@@ -399,12 +412,8 @@ timer.Create("arb.DayChangeNotifications", 1, 0, function()
 
     timer.Simple(1, function()
         if oldType != Arbitrage.IsDay() then
-            local data = Arbitrage.IsDay() and "Наступило дневное время!" or "Наступило ночное время!"
-
-            Arbitrage.notify.NotifyChat(data)
-
-            if !Arbitrage.lawEnable then
-                asterionlib.EmitSound("dingdong.wav")
+            if (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
+                DingDongBingBong()
             end
         end
     end)

@@ -283,13 +283,108 @@ function PANEL:ClosingAllPanels(panel)
     end)
 end
 
-function PANEL:End(data)
+local vote_emptyMat = Material("danganronpa/ui/vote_empty.png")
+local vote_markMat = Material("danganronpa/ui/vote_mark.png")
+function PANEL:ShowVotings(winning, votingData)
+    local data = {}
+    for k, v in pairs(self.data) do
+        local steamid = v[1]
+        local faction = v[2]
+
+        data[steamid] = {
+            faction,
+            0
+        }
+    end
+
+    for k, v in pairs(votingData) do
+        local find
+
+        for k2, v2 in pairs(self.data) do
+            if v2[1] == v then
+                find = v2
+                break
+            end
+        end
+
+        if find then
+            local steamid = find[1]
+
+            data[steamid][2] = data[steamid][2] + 1
+        end
+    end
+
+    local padding = W(10)
+
+    local panel = self:Add("DIconLayout")
+    panel:SetPos(W(250), H(160))
+    panel:SetSize(W(1000), ScrH())
+    panel:SetSpaceY(H(5))
+    panel:SetSpaceX(padding)
+
+    local count = #self.data
+
+    for steamid, stored in pairs(data) do
+        local faction = stored[1]
+        local votes = stored[2]
+
+        local factionData = Arbitrage.teams.Get(faction)
+        if !factionData then continue end
+
+        local name = factionData.name
+        local mat = Material(factionData.logo or "err.png")
+
+        local ListItem = panel:Add("DPanel")
+        ListItem:SetAlpha(0)
+        ListItem:AlphaTo(255, 1)
+        ListItem:SetSize(panel:GetWide() / 2 - padding * 2, H(50))
+        ListItem.Paint = function(_, w, h)
+            asterionlib.DrawBlur(self, 3)
+
+            surface.SetDrawColor(0, 0, 0, 90)
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(0, 0, 0, 100)
+            surface.DrawRect(0, 0, h, h)
+
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(mat)
+            surface.DrawTexturedRect(0, 0, h, h)
+
+            local sizeH = h * 0.55
+            local sizeW = sizeH * 0.3
+
+            for i = 0, count - 1 do
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(vote_emptyMat)
+                surface.DrawTexturedRect(h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH)
+            end
+
+            for i = 0, votes - 1 do
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(vote_markMat)
+                surface.DrawTexturedRect(h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH)
+            end
+
+            Arbitrage.DrawTextBlur(name, "arb.Font_FuturaPTBook_7", h + W(10), 0, Color(255, 238, 177), TEXT_ALIGN_LEFT)
+
+            surface.SetDrawColor(255, 61, 96, 40)
+            surface.DrawOutlinedRect(0, 0, w, h)
+        end
+    end
+
+    timer.Simple(5, function()
+        self:ShowWinning(winning)
+    end)
+end
+
+function PANEL:End(winning, votingData)
     self:RemovingPanels()
 
     timer.Simple(1, function()
         if !IsValid(self) then return end
 
-        self:ShowWinning(data)
+        self:ShowVotings(winning, votingData)
     end)
 end
 
@@ -335,7 +430,7 @@ function PANEL:Paint(w, h)
     surface.SetMaterial(material_bg_light)
     surface.DrawTexturedRect(0 - lerpX_l - sizeX, 0 - lerpY_l - sizeY, w + sizeX * 2, h + sizeY * 2)
 
-    asterionlib.DrawBlur(self, 5, passes, alpha)
+    asterionlib.DrawBlur(self, 5)
 end
 
 vgui.Register("arb.VoteScreen", PANEL, "EditablePanel")

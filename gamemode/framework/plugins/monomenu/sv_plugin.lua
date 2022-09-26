@@ -140,7 +140,7 @@ function PLUGIN:StartVoting()
             end
 
             for k, v in ipairs(player.GetAll()) do
-                asterionlib.netgui:Call(v, "arb.VoteScreen", "End", faction)
+                asterionlib.netgui:Call(v, "arb.VoteScreen", "End", faction, self.votingData)
 
                 if v:IsHost() then
                     netstream.Start(v, "arb.SendMessage", str)

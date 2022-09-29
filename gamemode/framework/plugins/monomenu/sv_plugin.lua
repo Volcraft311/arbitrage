@@ -241,6 +241,19 @@ local actionList = {
 
         for k, v in ipairs(ents.FindByClass("prop_ragdoll")) do
             if v.client == target then
+                local inventory = v:GetInventory()
+                if inventory then
+                    for x = 1, inventory.w do
+                        for y = 1, inventory.h do
+                            local item = inventory:GetItemAt(x, y)
+
+                            if item then
+                                item:Transfer(target:GetInventory():GetID(), x, y)
+                            end
+                        end
+                    end
+                end
+
                 v:Remove()
             end
         end

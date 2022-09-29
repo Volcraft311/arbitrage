@@ -14,11 +14,10 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:StartPointing()
-    self._angles = Vector(0, 0, 0)
+    self._angles = Angle(0, 0, 0)
 
     self._fov = 90
     self._entity = NULL
-    self.oldEntity = self._entity
     self.__camPos = Arbitrage.camPosEnd
     self.animID = 1
 
@@ -30,8 +29,16 @@ function PLUGIN:StartPointing()
         hook.Add("ArbitrageVoiceStart", "arb.LawStartVoice", function(client)
             if !Arbitrage.lawEnable then return end
 
-            if client == LocalPlayer() and self._entity != LocalPlayer() then
+            if client == LocalPlayer() then
                 netstream.Start("arb.StartVoice")
+            end
+        end)
+
+        hook.Add("ArbitrageVoiceEnd", "arb.LawEndVoice", function(client)
+            if !Arbitrage.lawEnable then return end
+
+            if client == LocalPlayer() then
+                netstream.Start("arb.EndVoice")
             end
         end)
 
@@ -44,11 +51,12 @@ function PLUGIN:StartPointing()
         if IsValid(self._entity) then
             Arbitrage:ReplaceVariables()
             self.__camPos, self._angles, self._fov, self._entity = self.CamAnimData[self.animID](
-                self,
                 self.__camPos,
                 self._angles,
                 self._fov,
-                self._entity
+                self._entity,
+                self.animID,
+                self.oldAnimID
             )
         else
             self._angles.y = CurTime() % 20 * 18
@@ -63,14 +71,10 @@ function PLUGIN:StartPointing()
             drawviewer = true
         }
 
-        self.oldEntity = self._entity -- Старый игрок который говорил
+        self.oldAnimID = self.animID
 
         return view
     end)
-end
-
-function PLUGIN:RednessScreen()
-    -- eh...
 end
 
 function PLUGIN:TransferCamPos()
@@ -198,10 +202,10 @@ function PLUGIN:Clear()
     hook.Remove("RenderScreenspaceEffects", "arb.LawBlackScreen")
     hook.Remove("RenderScreenspaceEffects", "arb.LawIntroText")
     hook.Remove("RenderScreenspaceEffects", "arb.LawStartText")
-    hook.Remove("RenderScreenspaceEffects", "arb.LawRednessScreen")
     hook.Remove("HUDPaint", "arb.LawCylinder")
     hook.Remove("RenderScreenspaceEffects", "arb.LawCylinder")
     hook.Remove("ArbitrageVoiceStart", "arb.LawStartVoice")
+    hook.Remove("ArbitrageVoiceEnd", "arb.LawEndVoice")
     hook.Remove("HUDPaint", "arb.VignitteFocus")
 end
 
@@ -215,6 +219,11 @@ function PLUGIN:Talking(client, anim)
 
     self.animID = anim
     self._entity = client
+
+    local RC = Arbitrage.gui.RebuttalShowdowns
+    if IsValid(RC) then
+        RC.players[client].animID = anim
+    end
 end
 
 PLUGIN.bulletList = {}
@@ -224,40 +233,55 @@ function PLUGIN:CreateBullet(data)
     return self.bulletList[#self.bulletList], #self.bulletList
 end
 
+local spriteSize = 1.26
+local spriteW = 45 * spriteSize
+local spriteH = 75 * spriteSize
+local spriteShift = 28
+local function drawing(client, mat)
+    do
+        local ang = Angle(0, client:EyeAngles()[2] + 90, 90)
+        local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * spriteShift
+
+        cam.Start3D2D(pos, ang, 1)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(mat)
+            surface.DrawTexturedRect(0, 0, spriteW, spriteH)
+        cam.End3D2D()
+    end
+
+    do
+        local ang = Angle(0, client:EyeAngles()[2] - 90, 90)
+        local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * -spriteShift
+
+        cam.Start3D2D(pos, ang, 1)
+            surface.SetDrawColor(0, 0, 0)
+            surface.SetMaterial(mat)
+            surface.DrawTexturedRectUV(0, 0, spriteW, spriteH, 1, 0, 0, 1)
+        cam.End3D2D()
+    end
+end
+
 function PLUGIN:PostDrawTranslucentRenderables()
     if !Arbitrage.lawEnable then return end
 
-    for k, v in pairs(player.GetAll()) do
+    local data = {}
+    for k, v in ipairs(player.GetAll()) do
+        local place = v:LawPlace()
+        if place >= 0 then
+            data[place] = v
+        end
+    end
+
+    for place, v in SortedPairs(data) do
         local charTeam = Arbitrage.teams.Get(v:Team())
         if !charTeam then continue end
 
         local emojiList = charTeam.emodjiList
-        if emojiList and #emojiList > 0 and v:LawPlace() >= 0 then
+        if emojiList and #emojiList > 0 then
             local mat = Material(v:GetNetVar("emoji", emojiList[1]))
 
-            local size = 1.26
-
-            local w = 45 * size
-            local h = 75 * size
-
-            local shift = 28
-
-            do
-                local ang = Angle(0, v:EyeAngles()[2] + 90, 90)
-                local pos = v:GetPos() + Vector(0, 0, h) + v:EyeAngles():Right() * shift
-
-                cam.Start3D2D(pos, ang, 1) surface.SetDrawColor(255, 255, 255) surface.SetMaterial(mat) surface.DrawTexturedRect(0, 0, w, h) cam.End3D2D()
-            end
-
-            do
-                local ang = Angle(0, v:EyeAngles()[2] - 90, 90)
-                local pos = v:GetPos() + Vector(0, 0, h) + v:EyeAngles():Right() * -shift
-
-                cam.Start3D2D(pos, ang, 1) surface.SetDrawColor(0, 0, 0) surface.SetMaterial(mat) surface.DrawTexturedRectUV(0, 0, w, h, 1, 0, 0, 1) cam.End3D2D()
-            end
+            drawing(v, mat)
         end
-
-        --::skip::
     end
 end
 
@@ -602,7 +626,6 @@ netstream.Hook("arb.StartLaw", function()
     PLUGIN:BlackScreen(4, 1)
     timer.Simple(4, function()
         Arbitrage.lawEnable = true
-        PLUGIN:RednessScreen()
         PLUGIN:CameraTwist()
 
         timer.Simple(1, function()
@@ -708,6 +731,10 @@ netstream.Hook("arb.EndLaw", function()
             Arbitrage.gui.timer:Remove()
         end)
     end
+
+    if IsValid(Arbitrage.gui.RebuttalShowdowns) then
+        Arbitrage.gui.RebuttalShowdowns:Remove()
+    end
 end)
 
 netstream.Hook("arb.ClearLaw", function()
@@ -733,6 +760,24 @@ netstream.Hook("arb.ClearLaw", function()
             Arbitrage.gui.timer:Remove()
         end)
     end
+
+    if IsValid(Arbitrage.gui.RebuttalShowdowns) then
+        Arbitrage.gui.RebuttalShowdowns:Remove()
+    end
+end)
+
+netstream.Hook("arb.StartRebuttalShowdowns", function(client1, client2)
+    vgui.Create("arb.Blackout"):Callback(function()
+        vgui.Create("arb.RebuttalShowdowns"):CreatePlayersPanel(client1, client2)
+    end)
+end)
+
+netstream.Hook("arb.EndRebuttalShowdowns", function()
+    vgui.Create("arb.Blackout"):Callback(function()
+        if IsValid(Arbitrage.gui.RebuttalShowdowns) then
+            Arbitrage.gui.RebuttalShowdowns:Remove()
+        end
+    end)
 end)
 
 
@@ -742,14 +787,26 @@ netstream.Hook("arb.DrawSprites", function()
     Arbitrage.drawSprites = true
 end)
 
-netstream.Hook("arb.LawInterruption", function(data)
+netstream.Hook("arb.LawInterruption", function(interrupter, speaker)
+    print(interrupter, speaker)
+
+    local data = interrupter:Team()
     PLUGIN:Interruption(data)
 
-    if IsValid(Arbitrage.gui.lawaction) then
-        Arbitrage.gui.lawaction.focusSizeMax = 10
-        Arbitrage.gui.lawaction.focusSize = RealTime() + 10
-        Arbitrage.gui.lawaction.interruptionSizeMax = 15
-        Arbitrage.gui.lawaction.interruptionSize = RealTime() + 15
+    local panel = Arbitrage.gui.lawaction
+    if IsValid(panel) then
+        panel.focusSizeMax = 10
+        panel.focusSize = RealTime() + 10
+        panel.interruptionSizeMax = 15
+        panel.interruptionSize = RealTime() + 15
+
+        if interrupter == LocalPlayer() and IsValid(speaker) then
+            panel.green = true
+
+            timer.Simple(2.5, function()
+                panel.green = false
+            end)
+        end
     end
 end)
 

@@ -334,6 +334,15 @@ local categoryData = {
     }
 }
 
+local function isActiveRS()
+    local rs_panel = Arbitrage.gui.RebuttalShowdowns
+    if IsValid(rs_panel) and rs_panel.players[LocalPlayer()] then
+        return true
+    end
+
+    return false
+end
+
 local PANEL = {}
 
 function PANEL:Init()
@@ -343,6 +352,7 @@ function PANEL:Init()
     self:SetSize(W(360), H(500))
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
+    self:SetZPos(30000)
     self:MakePopup()
     self.select = 0
 
@@ -381,15 +391,38 @@ function PANEL:Init()
         surface.DrawRect(0, 0, w, h)
 
         local t = (self.interruptionSize or 0) - RealTime()
-        surface.SetDrawColor(99, 17, 32, 255 / 2)
+        local c = Color(99, 17, 32)
+        local text = "Перебить"
+
+        if !self.green then
+            if isActiveRS() then
+                text = "Остановить Rebuttal Showdowns"
+
+                if LocalPlayer():GetNetVar("rs_stopvoting") then
+                    text = "Ожидаем второго участника"
+                    
+                    surface.SetDrawColor(ColorAlpha(Color(111, 191, 83), 255 / 2))
+                    surface.DrawRect(0, 0, w, h)
+                end
+            end
+        else
+            text = "Rebuttal Showdowns"
+            c = Color(111, 191, 83)
+        end
+
+        surface.SetDrawColor(ColorAlpha(c, 255 / 2))
         surface.DrawRect(0, 0, t * (w / self.interruptionSizeMax), h)
 
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.DrawText("Перебить", "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(text, "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
     end
     interruptionButton.DoClick = function()
+        if isActiveRS() then
+            return netstream.Start("arb.StopRebuttalShowdowns")
+        end
+
         netstream.Start("arb.LawInterruption")
     end
 

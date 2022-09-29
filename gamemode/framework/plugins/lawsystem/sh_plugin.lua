@@ -18,7 +18,7 @@ LawSystem = PLUGIN
 Arbitrage.law = PLUGIN
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
-local function getclientpos(client)
+function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
     if lawPos >= 0 and Arbitrage.camPosPlaces then
         local pos = Arbitrage.camPosPlaces[lawPos]
@@ -31,13 +31,29 @@ local function getclientpos(client)
     return Arbitrage.camPosEnd
 end
 
-PLUGIN.CamAnimData = {
-    [1] = function(plugin, camPos, camAngles, camFov, client)
-        local WPos = client:LocalToWorld(Vector(0, 0, 0))
-        Ang = WPos - camPos
-        Ang = Ang:Angle()
+function PLUGIN:GetClientAng(client, pos)
+    local WPos = client:LocalToWorld(Vector(0, 0, 0))
+    local Ang = WPos - pos
+    Ang = Ang:Angle()
 
-        for k, v in ipairs({"y", "z"}) do
+    return Ang
+end
+
+function IsFirstStart(new, old)
+    return new != old
+end
+
+local rotateRan = 0
+PLUGIN.CamAnimData = {
+    [1] = function(camPos, camAngles, camFov, client, newAnimID, oldAnimID)
+        local Ang = PLUGIN:GetClientAng(client, camPos)
+
+        if IsFirstStart(newAnimID, oldAnimID) then
+            camAngles.z = 0
+            rotateRan = math.random(-15, 15)
+        end
+
+        for k, v in ipairs({"y"}) do
             local speed = 5
             if camAngles.y >= Ang.y - 5 and camAngles.y <= Ang.y + 5 then
                 speed = 1
@@ -46,117 +62,118 @@ PLUGIN.CamAnimData = {
             camAngles[v] = Lerp(FrameTime() * speed, camAngles[v], Ang[v])
         end
 
-        camPos = Lerp(FrameTime() * 5, camPos, getclientpos(client))
+        camAngles.z = Lerp(FrameTime() * 0.3, camAngles.z, rotateRan)
+
+        camPos = Lerp(FrameTime() * 5, camPos, PLUGIN:GetClientPos(client))
         camFov = Lerp(FrameTime(), camFov, 90)
 
         return camPos, camAngles, camFov, client
     end,
-    [2] = function(plugin, camPos, camAngles, camFov, client)
-        if plugin.oldEntity != client then
-            camPos = getclientpos(client)
+    [2] = function(camPos, camAngles, camFov, client, newAnimID, oldAnimID)
+        local Ang = PLUGIN:GetClientAng(client, camPos)
 
+        if IsFirstStart(newAnimID, oldAnimID) then
+            camPos = PLUGIN:GetClientPos(client)
             camFov = 130
+
+            camAngles.z = 0
+            rotateRan = math.random(-15, 15)
         end
 
-        local WPos = client:LocalToWorld(Vector(0, 0, 0))
-        Ang = WPos - camPos
-        Ang = Ang:Angle()
-
-        for k, v in ipairs({"y", "z"}) do
-            camAngles[v] = Ang[v]
-        end
+        camAngles.y = Ang.y
+        camAngles.z = Lerp(FrameTime() * 0.3, camAngles.z, rotateRan)
 
         camFov = Lerp(FrameTime(), camFov, 80)
 
         return camPos, camAngles, camFov, client
     end,
-    [3] = function(plugin, camPos, camAngles, camFov, client)
-        if plugin.oldEntity != client then
-            camPos = getclientpos(client)
+    [3] = function(camPos, camAngles, camFov, client, newAnimID, oldAnimID)
+        local Ang = PLUGIN:GetClientAng(client, camPos)
+
+        if IsFirstStart(newAnimID, oldAnimID) then
+            camPos = PLUGIN:GetClientPos(client)
 
             camFov = 90
             camPos.z = camPos.z - 15
+
+            camAngles.z = 0
+            rotateRan = math.random(-15, 15)
         end
 
-        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, getclientpos(client).z)
+        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, PLUGIN:GetClientPos(client).z)
 
-        local WPos = client:LocalToWorld(Vector(0, 0, 0))
-        Ang = WPos - camPos
-        Ang = Ang:Angle()
-
-        for k, v in ipairs({"y", "z"}) do
-            camAngles[v] = Ang[v]
-        end
+        camAngles.y = Ang.y
+        camAngles.z = Lerp(FrameTime() * 0.3, camAngles.z, rotateRan)
 
         camFov = Lerp(FrameTime(), camFov, 80)
 
         return camPos, camAngles, camFov, client
     end,
-    [4] = function(plugin, camPos, camAngles, camFov, client)
-        local WPos = client:LocalToWorld(Vector(0, 0, 0))
-        Ang = WPos - camPos
-        Ang = Ang:Angle()
+    [4] = function(camPos, camAngles, camFov, client, newAnimID, oldAnimID)
+        local Ang = PLUGIN:GetClientAng(client, camPos)
 
-        for k, v in ipairs({"y", "z"}) do
-            camAngles[v] = Ang[v]
-        end
-
-        if plugin.oldEntity != client then
-            camPos = getclientpos(client)
+        if IsFirstStart(newAnimID, oldAnimID) then
+            camPos = PLUGIN:GetClientPos(client)
 
             camPos = camPos + Ang:Right() * 15
             camFov = 100
+
+            camAngles.z = 0
+            rotateRan = math.random(-15, 15)
         end
 
+        camAngles.y = Ang.y
+        camAngles.z = Lerp(FrameTime() * 0.3, camAngles.z, rotateRan)
+
         for k, v in ipairs({"x", "y", "z"}) do
-            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], getclientpos(client)[v])
+            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], PLUGIN:GetClientPos(client)[v])
         end
 
         camFov = Lerp(FrameTime() * 0.3, camFov, 75)
 
         return camPos, camAngles, camFov, client
     end,
-    [5] = function(plugin, camPos, camAngles, camFov, client)
-        local WPos = client:LocalToWorld(Vector(0, 0, 0))
-        Ang = WPos - camPos
-        Ang = Ang:Angle()
+    [5] = function(camPos, camAngles, camFov, client, newAnimID, oldAnimID)
+        local Ang = PLUGIN:GetClientAng(client, camPos)
 
-        for k, v in ipairs({"y", "z"}) do
-            camAngles[v] = Ang[v]
-        end
-
-        if plugin.oldEntity != client then
-            camPos = getclientpos(client)
+        if IsFirstStart(newAnimID, oldAnimID) then
+            camPos = PLUGIN:GetClientPos(client)
 
             camPos = camPos + Ang:Right() * -15
             camFov = 100
+
+            camAngles.z = 0
+            rotateRan = math.random(-15, 15)
         end
 
+        camAngles.y = Ang.y
+        camAngles.z = Lerp(FrameTime() * 0.3, camAngles.z, rotateRan)
+
         for k, v in ipairs({"x", "y", "z"}) do
-            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], getclientpos(client)[v])
+            camPos[v] = Lerp(FrameTime() * 0.5, camPos[v], PLUGIN:GetClientPos(client)[v])
         end
 
         camFov = Lerp(FrameTime() * 0.3, camFov, 75)
 
         return camPos, camAngles, camFov, client
     end,
-    [6] = function(plugin, camPos, camAngles, camFov, client)
-        if plugin.oldEntity != client then
-            camPos = getclientpos(client)
+    [6] = function(camPos, camAngles, camFov, client, newAnimID, oldAnimID)
+        if IsFirstStart(newAnimID, oldAnimID) then
+            camPos = PLUGIN:GetClientPos(client)
 
             camFov = 90
             camPos.z = camPos.z + 15
+
+            camAngles.z = 0
+            rotateRan = math.random(-15, 15)
         end
 
-        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, getclientpos(client).z)
+        camPos.z = Lerp(FrameTime() * 0.4, camPos.z, PLUGIN:GetClientPos(client).z)
 
-        local WPos = client:LocalToWorld(Vector(0, 0, 0))
-        Ang = WPos - camPos
-        Ang = Ang:Angle()
+        local Ang = PLUGIN:GetClientAng(client, camPos)
 
-        for k, v in ipairs({"y", "z"}) do
-            camAngles[v] = Ang[v]
-        end
+        camAngles.y = Ang.y
+        camAngles.z = Lerp(FrameTime() * 0.3, camAngles.z, rotateRan)
 
         camFov = Lerp(FrameTime(), camFov, 80)
 
@@ -192,6 +209,25 @@ function PLUGIN:StartCommand(client, ucmd)
         end
     end
 end
+
+concommand.Add("arb_stop_rebuttalshowdowns", function(client)
+    if SERVER then
+        if !Arbitrage.lawEnable then return end
+        if !PLUGIN.IsRebuttalShowdowns then return end
+
+        if !client:IsAdmin() then return end
+
+        if client:InGame() then
+            netstream.Start(nil, "arb.LawInterruption", client, client)
+
+            timer.Simple(1.5, function()
+                PLUGIN:EndRebuttalShowdowns()
+            end)
+        else
+            PLUGIN:EndRebuttalShowdowns()
+        end
+    end
+end)
 
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

@@ -8,6 +8,14 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
         if !talker:Alive() then return false end
         if !talker:InGame() then return false end
 
+        if LawSystem.IsRebuttalShowdowns then
+            if LawSystem.RS_players[talker] then
+                return true, false
+            else
+                return false
+            end
+        end
+
         return true, false
     end
 

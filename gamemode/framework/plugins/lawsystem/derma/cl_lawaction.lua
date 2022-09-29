@@ -392,7 +392,7 @@ function PANEL:Init()
 
         local t = (self.interruptionSize or 0) - RealTime()
         local c = Color(99, 17, 32)
-        local text = "Перебить"
+        local text = "Опровергнуть"
 
         if !self.green then
             if isActiveRS() then

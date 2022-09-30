@@ -788,8 +788,6 @@ netstream.Hook("arb.DrawSprites", function()
 end)
 
 netstream.Hook("arb.LawInterruption", function(interrupter, speaker)
-    print(interrupter, speaker)
-
     local data = interrupter:Team()
     PLUGIN:Interruption(data)
 

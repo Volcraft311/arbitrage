@@ -89,6 +89,22 @@ function PLUGIN:EndRebuttalShowdowns()
     timer.Remove("RebuttalShowdowns:Sync")
 end
 
+concommand.Add("arb_stop_rebuttalshowdowns", function(client)
+    if !Arbitrage.lawEnable then return end
+    if !PLUGIN.IsRebuttalShowdowns then return end
+    if !client:IsAdmin() then return end
+
+    if client:InGame() then
+        netstream.Start(nil, "arb.LawInterruption", client, client)
+
+        timer.Simple(1.5, function()
+            PLUGIN:EndRebuttalShowdowns()
+        end)
+    else
+        PLUGIN:EndRebuttalShowdowns()
+    end
+end)
+
 function Arbitrage:StartLaw()
     PLUGIN:EndRebuttalShowdowns()
 

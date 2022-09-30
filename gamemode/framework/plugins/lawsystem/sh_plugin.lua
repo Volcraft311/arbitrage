@@ -210,24 +210,5 @@ function PLUGIN:StartCommand(client, ucmd)
     end
 end
 
-concommand.Add("arb_stop_rebuttalshowdowns", function(client)
-    if SERVER then
-        if !Arbitrage.lawEnable then return end
-        if !PLUGIN.IsRebuttalShowdowns then return end
-
-        if !client:IsAdmin() then return end
-
-        if client:InGame() then
-            netstream.Start(nil, "arb.LawInterruption", client, client)
-
-            timer.Simple(1.5, function()
-                PLUGIN:EndRebuttalShowdowns()
-            end)
-        else
-            PLUGIN:EndRebuttalShowdowns()
-        end
-    end
-end)
-
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

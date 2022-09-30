@@ -467,6 +467,7 @@ function PANEL:Init()
 	PLUGIN.gui.chat = self
 	Arbitrage.gui.chat = self
 
+	self:SetZPos(32000)
 	self:SetSize(self:GetDefaultSize())
 	self:SetPos(self:GetDefaultPosition())
 

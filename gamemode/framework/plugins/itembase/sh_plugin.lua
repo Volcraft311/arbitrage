@@ -26,10 +26,13 @@ PLUGIN.data = PLUGIN.data or {}
 PLUGIN.defaultBaseID = "basic"
 
 function ItemBase.GetBase(base)
-    local meta = table.Copy(Arbitrage.meta.item)
+    local meta = table.Copy(FindMetaTable("Item"))
 
     meta:AddAction("Выбросить", {
         OnRun = function(item)
+            local client = item.player
+            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_DROP, true)
+
             item:Transfer(nil)
             return false
         end,
@@ -41,9 +44,9 @@ function ItemBase.GetBase(base)
     meta:AddAction("Взять", {
         OnRun = function(item)
             local client = item.player
+            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
 
             local notify = client:GetInventory():AddItem(item:GetID())
-
             if notify then
                 Arbitrage.commands.Notify(client, notify)
             end

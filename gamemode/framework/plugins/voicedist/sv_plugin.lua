@@ -19,7 +19,7 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
         return true, false
     end
 
-    if talker:GetNetVar("arbGlobalVoice") then
+    if talker:GetLocalVar("arbGlobalVoice") then
         return true, false
     end
 

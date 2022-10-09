@@ -101,7 +101,6 @@ timer.Create("fb:CheckTrace", 0.1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 
-	if Arbitrage.OffCorpseEffect() then return end
 	if !PLUGIN:AllowDetectCorpse(client) then return end
 
 	local trace = client:GetEyeTrace()
@@ -110,7 +109,8 @@ timer.Create("fb:CheckTrace", 0.1, 0, function()
 
 	local attackerID = entity:IsCorpse()
 	if !attackerID then return end
-	if attackerID == LocalPlayer():SteamID() then return end
+
+	if !Arbitrage.KillerDetectsCorpses() and attackerID == LocalPlayer():SteamID() then return end
 
 	local dist = client:GetPos():DistToSqr(entity:GetPos())
 	if dist >= 270000 then return end
@@ -118,6 +118,8 @@ timer.Create("fb:CheckTrace", 0.1, 0, function()
 	if !PLUGIN.bodyList[entity] then
 	    PLUGIN.bodyList[entity] = true
 
-	    PLUGIN:EnableEffect(entity)
+	    if !Arbitrage.OffCorpseEffect() then
+	    	PLUGIN:EnableEffect(entity)
+		end
 	end
 end)

@@ -175,27 +175,27 @@ function PANEL:SetData(title, teamAttacker, teamTarget)
 	self.title = title
 
 	do
-		local factionAttacker = Arbitrage.teams.Get(teamAttacker)
+		local factionAttacker = Character.team:GetByID(teamAttacker)
 
 		if factionAttacker then
 			self.attackerPos = 0
 			self.attackerMat = {
-				Material(factionAttacker.path .. "/run_1.png"),
-				Material(factionAttacker.path .. "/run_2.png")
+				Material(factionAttacker:GetAssets().path .. "/run_1.png"),
+				Material(factionAttacker:GetAssets().path .. "/run_2.png")
 			}
 		end
 	end
 
 	do
-		local factionTarget = Arbitrage.teams.Get(teamTarget)
+		local factionTarget = Character.team:GetByID(teamTarget)
 
 		if factionTarget then
 			self.targetPos = 0
 			self.targetMat = {
-				Material(factionTarget.path .. "/run_1.png"),
-				Material(factionTarget.path .. "/run_2.png")
+				Material(factionTarget:GetAssets().path .. "/run_1.png"),
+				Material(factionTarget:GetAssets().path .. "/run_2.png")
 			}
-			self.targetName = factionTarget.name
+			self.targetName = factionTarget:GetName()
 		end
 	end
 end

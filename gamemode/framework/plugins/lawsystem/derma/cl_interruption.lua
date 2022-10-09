@@ -94,10 +94,10 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:SetCharacter(data)
-    local faction = Arbitrage.teams.Get(data)
+    local faction = Character.team:GetByID(data)
     if !faction then return end
 
-    local argue = faction.argue
+    local argue = faction:GetAssets().argue
     if argue then
         self.character = Material(argue)
     end

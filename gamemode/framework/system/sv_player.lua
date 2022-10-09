@@ -17,42 +17,12 @@ function Arbitrage.player.SetStats(client, data, amount)
     Arbitrage.statistics.Set(client, data, amount)
 end
 
-function Arbitrage.player.SetTeam(client, data, bRespawn)
-    if !data then return end
-
-    local team = Arbitrage.teams.data[tonumber(data)]
-    if !team then return end
-
-    if bRespawn then
-        Arbitrage.player.Respawn(client)
-    end
-
-    client:SetTeam(tonumber(data))
-    client:SetModel(team.model or ARBITRAGE_STANDART_MODEL)
-    client:SetNoCollideWithTeammates(false)
-
-    if team.OnChange then
-        team.OnChange(client)
-    end
-
-    Arbitrage.player.SetupWeapons(client)
-
-    timer.Simple(2, function()
-        client:SetupHands()
-    end)
-
-    Arbitrage.player.SetupSpeed(client)
-    Arbitrage.player.SetupInventory(client)
-
-    hook.Run("SelectCharacter", client, data)
-end
-
 function Arbitrage.player.SetupSpeed(client)
-    local faction = Arbitrage.teams.Get(client:Team())
+    local faction = Character.team:GetByID(client:Team())
     if !faction then return end
 
-    local walkSpeed = faction.walkSpeed or 1
-    local runSpeed = faction.runSpeed or 1
+    local walkSpeed = faction:GetWalkSpeed() or 1
+    local runSpeed = faction:GetRunSpeed() or 1
 
     client:SetWalkSpeed(ARBITRAGE_WALK_SPEED * walkSpeed)
     client:SetRunSpeed(ARBITRAGE_RUN_SPEED * runSpeed)
@@ -76,11 +46,11 @@ function Arbitrage.player.SetupWeapons(client)
 
     client:SelectWeapon("academy_key")
 
-    local faction = Arbitrage.teams.Get(client:Team())
+    local faction = Character.team:GetByID(client:Team())
     if !faction then return end
 
     if !Arbitrage.OffGiveWeapons() then
-        for k, v in ipairs(faction.weapons or {}) do
+        for k, v in ipairs(faction:GetWeapons() or {}) do
             client:Give(v)
         end
     end
@@ -90,14 +60,34 @@ function Arbitrage.player.SetupInventory(client)
     local inventory = client:GetInventory() or InventoryBase.CreateInventory()
     inventory:SetOwner(client)
 
-    local faction = Arbitrage.teams.Get(client:Team())
+    local faction = Character.team:GetByID(client:Team())
     if !faction then return end
 
-    local w = faction.inventoryW or 4
-    local h = faction.inventoryH or 2
+    local w = faction.inventory.w or 4
+    local h = faction.inventory.h or 2
 
     inventory:SetSize(w, h)
     inventory:Sync()
+end
+
+local offset = Vector(0, 0, 64)
+local offsetDuck = Vector(0, 0, 28)
+function Arbitrage.player.SetupViewOffset(client)
+    timer.Simple(1, function()
+        local vec, vecDuck = offset, offsetDuck
+
+        local eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))
+        if eyeAtt then
+            local eyePosZ = eyeAtt.Pos.z
+            local getPosZ = client:GetPos().z
+
+            vec = Vector(0, 0, eyePosZ - getPosZ)
+            vecDuck = Vector(0, 0, vec.z - (offset.z - offsetDuck.z) / 2)
+        end
+
+        client:SetViewOffset(vec)
+        client:SetViewOffsetDucked(vecDuck)
+    end)
 end
 
 function Arbitrage.player.Respawn(client)
@@ -133,6 +123,7 @@ function Arbitrage.player.Respawn(client)
     client:GodDisable()
     client:SetNoTarget(false)
     client:SetCollisionGroup(COLLISION_GROUP_PLAYER)
+    client:CheckStuck(0.2)
 
     local vector, _ = Arbitrage.lobbyList and table.Random(Arbitrage.lobbyList) or Vector(0, 0, 0)
     client:SetPos(vector)

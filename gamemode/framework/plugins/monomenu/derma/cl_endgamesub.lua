@@ -94,10 +94,10 @@ function PANEL:Init()
         self.targetS = data
     end
 
-    for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
-        if v.pixel then
-            self.attackerBox:AddChoice(v.name, k)
-            self.targetBox:AddChoice(v.name, k)
+    for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
+        if v:GetAssets().pixel then
+            self.attackerBox:AddChoice(v:GetName(), k)
+            self.targetBox:AddChoice(v:GetName(), k)
         end
     end
 

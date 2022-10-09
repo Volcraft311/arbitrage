@@ -14,8 +14,8 @@
 local PLUGIN = PLUGIN
 
 local function dropEntity(client, entity)
-    if IsValid(entity) and client:GetNetVar("owner") != nil then
-        client:SetNetVar("owner", nil, client)
+    if IsValid(entity) and client:GetLocalVar("owner") != nil then
+        client:SetLocalVar("owner", nil)
     end
 
     if client.Drag then
@@ -97,7 +97,7 @@ function PLUGIN:ArcadeFistsSecondary(client)
                 Fraction = trace.Fraction,
             }
 
-            client:SetNetVar("owner", {client.Drag.OffPos, entity}, client)
+            client:SetLocalVar("owner", {client.Drag.OffPos, entity})
         end
     end
 end

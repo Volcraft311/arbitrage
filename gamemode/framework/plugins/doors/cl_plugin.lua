@@ -101,10 +101,10 @@ end
 local function gRequestAddDoorFaction()
 	local data = {}
 
-	for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
+	for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
 		data[#data + 1] = {
-			name = v.name,
-			icon = v.pixel,
+			name = v:GetName(),
+			icon = v:GetAssets().pixel,
 			data = function()
 				Derma_Query("Вы точно хотите дать этому персонажу доступ к данной двери?",  "[DoorSaver] Добавление доступа", "Да", function()
 					netstream.Start("arb.DoorAddOwner", k)
@@ -130,11 +130,11 @@ local function gAddIcon(entity)
 	local data = {}
 	local useImages = formatedImages(entity:GetNetVar("arb.image", {}))
 
-	for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
-		if v.pixel and !useImages[k] then
+	for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
+		if v:GetAssets().pixel and !useImages[k] then
 			data[#data + 1] = {
-				name = v.name,
-				icon = v.pixel,
+				name = v:GetName(),
+				icon = v:GetAssets().pixel,
 				data = function()
 					netstream.Start("arb.DoorAddIcon", entity, k)
 				end
@@ -149,12 +149,12 @@ local function gRemoveIcon(entity)
 	local data = {}
 
 	for k, v in ipairs(entity:GetNetVar("arb.image", {})) do
-		local faction = Arbitrage.teams.Get(v)
+		local faction = Character.team:GetByID(v)
 		if !faction then continue end
 
 		data[#data + 1] = {
-			name = faction.name,
-			icon = faction.pixel,
+			name = faction:GetName(),
+			icon = faction:GetAssets().pixel,
 			data = function()
 				netstream.Start("arb.DoorRemoveIcon", entity, k)
 			end
@@ -170,11 +170,11 @@ local function gRequestAddDoorPlayer()
 	for k, v in ipairs(player.GetAll()) do
 		local id = v:Team()
 
-		local faction = Arbitrage.teams.Get(id)
+		local faction = Character.team:GetByID(id)
 		local icon = nil
 
-		if faction and faction.pixel then
-			icon = faction.pixel
+		if faction and faction:GetAssets().pixel then
+			icon = faction:GetAssets().pixel
 		end
 
 		data[#data + 1] = {
@@ -197,11 +197,11 @@ local function gRequestRemoveDoorPlayer(doorData)
 	local data = {}
 
 	for k, v in pairs(doorData.list or {}) do
-		local faction = Arbitrage.teams.Get(k)
+		local faction = Character.team:GetByID(k)
 
 		data[#data + 1] = {
-			name = faction.name,
-			icon = faction.pixel,
+			name = faction:GetName(),
+			icon = faction:GetAssets().pixel,
 			data = function()
 				Derma_Query("Вы точно хотите удалить данного игрока из двери?",  "[DoorSaver] Удаление из базы", "Да", function()
 					netstream.Start("arb.DoorRemoveOwner", k)
@@ -461,11 +461,11 @@ timer.Create("Doors:UpdateDraw", 1, 0, function()
 
 		local info = {}
 		for k2, v2 in ipairs(data) do
-			local faction = Arbitrage.teams.Get(v2)
+			local faction = Character.team:GetByID(v2)
 			if !faction then continue end
-			if !faction.pixel then continue end
+			if !faction:GetAssets().pixel then continue end
 
-			info[#info + 1] = Material(faction.pixel)
+			info[#info + 1] = Material(faction:GetAssets().pixel)
 		end
 
 		doors[#doors + 1] = {v, info}

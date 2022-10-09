@@ -26,11 +26,13 @@ function ENT:Draw()
 	local data = self:GetCharacter()
 	if !data then return end
 
-	local faction = Arbitrage.teams.Get(data.faction)
+	local faction = Character.team:GetByID(data.faction)
 	if !faction then return end
-	if !faction.dead then return end
 
-	local mat = Material(faction.dead)
+	local path = faction:GetAssets().dead
+	if !path then return end
+
+	local mat = Material(path)
 
 	cam.Start3D2D(position + self:GetForward() * 0.91 + self:GetRight() * 7.7 + self:GetUp() * 77, angles, 0.1)
 		render.PushFilterMin(TEXFILTER.NONE)

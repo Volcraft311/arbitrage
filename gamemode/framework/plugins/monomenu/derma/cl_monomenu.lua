@@ -307,7 +307,7 @@ function PANEL:SetData(data)
 
     local num = 1
     for k, v in pairs(data.character) do
-        local factionData = Arbitrage.teams.Get(v.faction)
+        local factionData = Character.team:GetByID(v.faction)
         local nameColor = (IsValid(v.client) and v.client:IsAdmin()) and Color(86, 191, 223) or Color(255, 255, 255)
         local factionColor = IsPlaying(v.faction) and Color(255, 255, 255) or Color(255, 0, 0)
         local aliveColor = (v.alive and IsValid(v.client)) and Color(71, 235, 117) or Color(204, 99, 99)
@@ -334,7 +334,7 @@ function PANEL:SetData(data)
             draw.DrawText("Место на суде: " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + W(200), H(8), placeColor, TEXT_ALIGN_CENTER)
         end
 
-        local mat = (factionData and factionData.pixel) and Material(factionData.pixel) or nil
+        local mat = (factionData and factionData:GetAssets().pixel) and Material(factionData:GetAssets().pixel) or nil
 
         local modelPanel = panel:Add("Panel")
         modelPanel:SetWide(panel:GetTall())
@@ -355,7 +355,7 @@ function PANEL:SetData(data)
 
     num = 1
     for k, v in pairs(data.notcharacter) do
-        local factionData = Arbitrage.teams.Get(v.faction)
+        local factionData = Character.team:GetByID(v.faction)
         local nameColor = v.client:IsAdmin() and Color(86, 191, 223) or Color(255, 255, 255)
         local aliveColor = v.client:Alive() and Color(71, 235, 117) or Color(204, 99, 99)
 
@@ -379,7 +379,7 @@ function PANEL:SetData(data)
             draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, H(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
         end
 
-        local mat = (factionData and factionData.pixel) and Material(factionData.pixel) or nil
+        local mat = (factionData and factionData:GetAssets().pixel) and Material(factionData:GetAssets().pixel) or nil
 
         local modelPanel = panel:Add("Panel")
         modelPanel:SetWide(panel:GetTall())

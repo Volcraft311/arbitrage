@@ -21,7 +21,7 @@ function Arbitrage.statistics.Set(client, data, amount)
 
     if tableData then
         client[tableData.data] = amount
-        client:SetNetVar(index, client[tableData.data], client)
+        client:SetLocalVar(index, client[tableData.data])
     else
         Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found \"" .. data .. "\"")
     end
@@ -45,7 +45,7 @@ function Arbitrage.statistics.PlayerPostThink(client)
 
         if v.data and (!client[colddown] or CurTime() >= client[colddown]) then
             client[data] = client[data] - 1
-            client:SetNetVar(k, math.Clamp(client[data], 0, 100), client)
+            client:SetLocalVar(k, math.Clamp(client[data], 0, 100))
 
             if v.action then
                 v.action(client, v)

@@ -47,8 +47,8 @@ do
     Arbitrage.statistics.Add("hunger", {
         data = "Hunger",
         time = function(client)
-            local faction = Arbitrage.teams.Get(client:Team())
-            return faction and (faction.hungerSpeed and faction.hungerSpeed) or 25
+            local faction = Character.team:GetByID(client:Team())
+            return faction and faction:GetHunger() or 25
         end,
         action = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
@@ -71,8 +71,8 @@ do
     Arbitrage.statistics.Add("thirst", {
         data = "Thirst",
         time = function(client)
-            local faction = Arbitrage.teams.Get(client:Team())
-            return faction and (faction.thirstSpeed and faction.thirstSpeed) or 25
+            local faction = Character.team:GetByID(client:Team())
+            return faction and faction:GetThirst() or 25
         end,
         action = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
@@ -95,8 +95,8 @@ do
     Arbitrage.statistics.Add("sleep", {
         data = "Sleep",
         time = function(client)
-            local faction = Arbitrage.teams.Get(client:Team())
-            return faction and (faction.sleepSpeed and faction.sleepSpeed) or 33
+            local faction = Character.team:GetByID(client:Team())
+            return faction and faction:GetFatique() or 33
         end
     })
 end
@@ -337,6 +337,22 @@ function Arbitrage.OffGiveItems()
     return GetNetVar("arb.OffGiveItems", false)
 end
 
+function Arbitrage.OffSoundMassFindCorpse()
+    return GetNetVar("arb.OffSoundMassFindCorpse", false)
+end
+
+function Arbitrage.OffSoundNightAndDay()
+    return GetNetVar("arb.OffSoundNightAndDay", false)
+end
+
+function Arbitrage.OffRebuttalShowdown()
+    return GetNetVar("arb.OffRebuttalShowdown", false)
+end
+
+function Arbitrage.KillerDetectsCorpses()
+    return GetNetVar("arb.KillerDetectsCorpses", false)
+end
+
 function Arbitrage.GetChapter()
     return GetNetVar("arb.Chapter", "Эпизод отсутствует")
 end
@@ -351,7 +367,6 @@ local themes = {
     endgame = "Конец игры"
 }
 function Arbitrage.GetTheme()
-    local theme = "Свободное время"
     local sound_theme = ScriptMusic:GetTheme()
 
     local info = themes[sound_theme]
@@ -359,11 +374,11 @@ function Arbitrage.GetTheme()
         return info
     end
 
-    return theme
+    return "Свободное время"
 end
 
 function Arbitrage:StartCommand(client, ucmd)
-    local stamina = client:GetNetVar("stm", 100)
+    local stamina = client:GetLocalVar("stm", 100)
 
     if client:IsPlaying() and !client:IsNocliping() then
         local jump = ucmd:KeyDown(IN_JUMP)
@@ -399,7 +414,7 @@ do
         end
 
         local faction = self:Team()
-        local data = Arbitrage.teams.Get(faction)
+        local data = Character.team:GetByID(faction)
 
         if faction and self:IsPlaying() and data then
             return data.name or self:SteamName()

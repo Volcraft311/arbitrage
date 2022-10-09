@@ -37,7 +37,7 @@ function PLUGIN:PlayerEnterNoclip(client)
     client:GodEnable()
     client:SetNoTarget(true)
 
-    client:SetNetVar("observer", true, client)
+    client:SetLocalVar("observer", true)
 end
 
 function PLUGIN:PlayerExitNoclip(client)
@@ -49,5 +49,5 @@ function PLUGIN:PlayerExitNoclip(client)
     client:SetNoTarget(false)
 
     client.observer_data = nil
-    client:SetNetVar("observer", false, client)
+    client:SetLocalVar("observer", nil)
 end

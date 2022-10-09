@@ -54,8 +54,8 @@ function PLUGIN:PlayerSpawn(client)
 end
 
 function PLUGIN:SelectCharacter(client, data)
-    local factionData = Arbitrage.teams.Get(data)
-    local faction = factionData and factionData.name or "НЕИЗВЕСТНО"
+    local factionData = Character.team:GetByID(data)
+    local faction = factionData and factionData:GetName() or "НЕИЗВЕСТНО"
 
     self:SendNotify("joincharacter", client:FullName(), faction .. "(" .. data .. ")")
 end

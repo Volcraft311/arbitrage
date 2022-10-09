@@ -49,27 +49,18 @@ local function runAction(name, ...)
     netstream.Start("arb.MonoRunCommand", name, ...)
 end
 
-local categoryIcons = {
-    ["KILLING HARMONY"] = "icon16/bullet_red.png",
-    ["TRIGGER HAPPY HAVOC"] = "icon16/bullet_blue.png",
-    ["GOODBYE DESPAIR"] = "icon16/bullet_orange.png",
-    ["ULTRA DESPAIR GIRLS"] = "icon16/bullet_green.png",
-    ["Остальные"] = "icon16/bullet_wrench.png",
-    ["Ведущие"] = "icon16/bullet_star.png",
-    ["Уникальные"] = "icon16/bullet_key.png"
-}
-
 local function getCharacters(steamid)
     local data = {}
 
     local info = {}
-    for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
+    for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
         local category = v.category or "Остальные"
 
         info[category] = info[category] or {}
         info[category][#info[category] + 1] = {
-            name = v.name,
-            icon = v.pixel,
+            name = v:GetName(),
+            icon = v:GetAssets().pixel,
+            category = category,
             data = function()
                 runAction("setfaction", steamid, k, false)
             end
@@ -82,10 +73,18 @@ local function getCharacters(steamid)
             data = v
         }
 
-        if categoryIcons[k] then
-            data[#data].icon = categoryIcons[k]
+        local categoryData = Character.category:GetByName(k)
+        if categoryData then
+            data[#data].icon = categoryData.icon
         end
     end
+
+    table.sort(data, function(a, b)
+        local categoryA = Character.category:GetByName(a.name)
+        local categoryB = Character.category:GetByName(b.name)
+
+        return categoryA.id < categoryB.id
+    end)
 
     return data
 end
@@ -142,7 +141,7 @@ local function getActionList(clientinfo)
 
     local a_isvalid = IsValid(client)
 
-    local faction = Arbitrage.teams.Get(clientinfo.faction)
+    local faction = Character.team:GetByID(clientinfo.faction)
     local time = string.FormattedTime(curtime - (a_isvalid and client:GetNetVar("connectedTime", curtime) or curtime))
 
     local m_name = a_isvalid and client:Name() or clientinfo.steamname

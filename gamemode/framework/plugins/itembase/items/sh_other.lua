@@ -25,7 +25,7 @@ do
 
         local faction = self:GetData("faction")
         if faction then
-            local factionData = Arbitrage.teams.Get(faction)
+            local factionData = Character.team:GetByID(faction)
 
             data = factionData and factionData.name or data
         end
@@ -54,12 +54,12 @@ do
         netstream.Hook("ItemBase:OpenCreateKeyMenu", function(id)
             local parent = DermaMenu()
 
-            for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
+            for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
                 local panel = parent:AddOption(v.name, function()
                     netstream.Start("ItemBase:CreateKey", id, k)
                 end)
 
-                panel:SetIcon(v.pixel)
+                panel:SetIcon(v:GetAssets().pixel)
 
                 for k2, v2 in ipairs(panel:GetChildren()) do
                     if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then
@@ -82,7 +82,7 @@ do
             local data = item:GetData("faction")
             if data then return end
 
-            local factionData = Arbitrage.teams.Get(faction)
+            local factionData = Character.team:GetByID(faction)
             if !factionData then return end
 
             item:SetData("faction", faction)

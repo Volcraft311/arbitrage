@@ -40,7 +40,7 @@ SWEP.Secondary.Ammo = ""
 local soundList = {"knocking.wav", "loud_knocking.wav"}
 
 local function DoorAction(client, door, bClose)
-    netstream.Start(nil, "arb.PlayerSetAnim", client, GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+    client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
     Arbitrage.action.ActionRun(client, bClose and "Закрываем дверь" or "Открываем дверь", 2, function()
         if client:GetEyeTrace().Entity != door then return true end

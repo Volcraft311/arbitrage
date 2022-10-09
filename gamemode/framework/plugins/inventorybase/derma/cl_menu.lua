@@ -69,13 +69,13 @@ function PANEL:Paint()
 
     draw.SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
 
-    local faction = Arbitrage.teams.Get(client:Team())
+    local faction = Character.team:GetByID(client:Team())
 
     if faction then
-        local icon = faction.hud
+        local icon = faction:GetAssets().hud
         if !icon then return end
 
-        local mat = Material(Arbitrage.teams.Get(client:Team()).hud or "err.png")
+        local mat = Material(icon)
         local size = 0.6
         local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
 
@@ -89,7 +89,7 @@ function PANEL:Paint()
         surface.DrawRect(w + sizeW - sizeW / 2 - W(120) * 1.5, h + sizeH - sizeH * 0.25 + H(60), W(120) * 3, 2)
 
         draw.SimpleText(client:Name(), "arb.Font_OpenSansLight_15", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25 + H(80), Color( 255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(faction:GetTitle(), "arb.Font_OpenSansLight_8", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25 + H(80), Color( 255, 255, 255), TEXT_ALIGN_CENTER)
     end
 end
 

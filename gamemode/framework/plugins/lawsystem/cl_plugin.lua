@@ -20,6 +20,7 @@ function PLUGIN:StartPointing()
     self._entity = NULL
     self.__camPos = Arbitrage.camPosEnd
     self.animID = 1
+    self.oldAnimID = -1
 
     timer.Simple(0.5, function()
         self._movescene = true
@@ -261,9 +262,7 @@ local function drawing(client, mat)
     end
 end
 
-function PLUGIN:PostDrawTranslucentRenderables()
-    if !Arbitrage.lawEnable then return end
-
+local function sort()
     local data = {}
     for k, v in ipairs(player.GetAll()) do
         local place = v:LawPlace()
@@ -272,16 +271,31 @@ function PLUGIN:PostDrawTranslucentRenderables()
         end
     end
 
+    return data
+end
+
+function PLUGIN:PostDrawTranslucentRenderables()
+    if !Arbitrage.lawEnable then return end
+
+    local data = sort()
     for place, v in SortedPairs(data) do
-        local charTeam = Arbitrage.teams.Get(v:Team())
-        if !charTeam then continue end
+        local faction = Character.team:GetByID(v:Team())
+        if !faction then continue end
 
-        local emojiList = charTeam.emodjiList
-        if emojiList and #emojiList > 0 then
-            local mat = Material(v:GetNetVar("emoji", emojiList[1]))
+        local uniqueID = faction:GetUniqueID()
+        local emoji = Character.emoji:GetByUniqueID(uniqueID)
+        if !emoji then continue end
 
-            drawing(v, mat)
+        local var = v:GetNetVar("emoji", 1)
+        local big, _ = emoji:GetByIndex(var)
+
+        if !big then
+            big, _ = emoji:GetByIndex(1)
         end
+
+        local mat = Material(big)
+
+        drawing(v, mat)
     end
 end
 
@@ -296,7 +310,6 @@ local gradientDown = surface.GetTextureID("vgui/gradient-d")
 local bulletMat = Material("danganronpa/law/bullet.png")
 local bulletMatL = Material("danganronpa/law/bullet_l.png")
 
--- function PLUGIN:HUDPaint()
 hook.Add("HUDPaint", "arb.DrawBullets", function()
     if !Arbitrage.lawEnable then return end
 
@@ -778,6 +791,8 @@ netstream.Hook("arb.EndRebuttalShowdowns", function()
             Arbitrage.gui.RebuttalShowdowns:Remove()
         end
     end)
+
+    PLUGIN._entity = nil
 end)
 
 

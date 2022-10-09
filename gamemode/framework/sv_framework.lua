@@ -246,6 +246,21 @@ Arbitrage.commands.Add("editor", {
     end
 })
 
+Arbitrage.commands.Add("unstuck", {
+    arguments = {},
+    OnAction = function(client)
+        if client:IsSpectate() then return end
+
+        if client:IsStuck() then
+            client:UnStuck()
+
+            Arbitrage.commands.Notify(client, "Сервер телепортировал вас на ближайшую позицию!")
+        else
+            Arbitrage.commands.Notify(client, "Вы не застряли!")
+        end
+    end
+})
+
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
@@ -257,9 +272,9 @@ end
 
 function Arbitrage:KeyPress(client, key)
     if client:oldAlive() and client:IsPlaying() and key == IN_JUMP and !client:IsNocliping() then
-        local stamina = client:GetNetVar("stm", 100)
+        local stamina = client:GetLocalVar("stm", 100)
 
-        client:SetNetVar("stm", math.Clamp(stamina - (12.5 / 2), 0, 100), client)
+        client:SetLocalVar("stm", math.Clamp(stamina - (12.5 / 2), 0, 100))
         client.StaminaCD = CurTime() + 3
     end
 
@@ -334,26 +349,21 @@ timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
         if !v:oldAlive() then continue end
         if !v:IsPlaying() then continue end
 
-        local stamina = v:GetNetVar("stm", 100)
+        local stamina = v:GetLocalVar("stm", 100)
         local frametime = FrameTime()
-        local factionData = Arbitrage.teams.Get(v:Team())
-
-        local staminaSpending = 1
-        if factionData and factionData.staminaSpeed then
-            staminaSpending = factionData.staminaSpeed
-        end
-
+        local factionData = Character.team:GetByID(v:Team())
+        local staminaSpending = factionData and factionData:GetRunConsumption() or 1
         local length = v:GetVelocity():LengthSqr()
 
         if (v:KeyDown(IN_SPEED) and !v:IsNocliping()) and length >= 10000 then
-            v:SetNetVar("stm", math.Clamp(stamina - (frametime * 60 * staminaSpending), 0, 100), v)
+            v:SetLocalVar("stm", math.Clamp(stamina - (frametime * 60 * staminaSpending), 0, 100))
             v.StaminaCD = CurTime() + 1.5
         else
             local amount = Arbitrage.statistics.Get(v, "Thirst")
             local staminaColdDown = v.StaminaCD
 
             if (!staminaColdDown or CurTime() >= staminaColdDown) and amount >= 10 then
-                v:SetNetVar("stm", math.Clamp(stamina + (frametime * 220), 0, 100), v)
+                v:SetLocalVar("stm", math.Clamp(stamina + (frametime * 220), 0, 100))
             end
         end
 
@@ -380,7 +390,7 @@ function Arbitrage:PlayerDeath(client, inflictor, attacker)
     timer.Simple(1, function()
         if !IsValid(client) then return end
 
-        Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+        Character.team:Join(client, TEAM_NOTCHARACTER, true)
     end)
 end
 
@@ -395,7 +405,7 @@ function Arbitrage:PlayerInitialSpawn(client)
             client:GodDisable()
             client:SyncVars()
 
-            Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+            Character.team:Join(client, TEAM_NOTCHARACTER, true)
             client:SendLua([[RunConsoleCommand("stopsound")]])
 
             client:SetNetVar("connectedTime", CurTime())
@@ -536,14 +546,14 @@ function Arbitrage:StartGame()
                     end
                 end
 
-                if !Arbitrage.OffGiveItems() then
-                    -- выдаем всем персонажам ключи от своих дверей
-                    give("keys"):SetData("faction", faction)
+                -- выдаем всем персонажам ключи от своих дверей
+                give("keys"):SetData("faction", faction)
 
-                    local factionData = Arbitrage.teams.Get(faction)
+                if !Arbitrage.OffGiveItems() then
+                    local factionData = Character.team:GetByID(faction)
                     if factionData then
-                        for k, v in ipairs(factionData.items or {}) do
-                            give(v)
+                        for _, uniqueID in ipairs(factionData:GetItems() or {}) do
+                            give(uniqueID)
                         end
                     end
                 end
@@ -556,12 +566,14 @@ function Arbitrage:StartGame()
             Arbitrage.player.SetupSpeed(client)
             Arbitrage.player.SetupWeapons(client)
             Arbitrage.player.SetupStatistics(client)
+            Arbitrage.player.SetupViewOffset(client)
 
             client:SetNoDraw(false)
             client:SetNotSolid(false)
             client:DrawWorldModel(true)
             client:DrawShadow(true)
             client:SetNoTarget(false)
+            client:SetupHands()
 
             client:SetNoCollideWithTeammates(false)
 
@@ -576,6 +588,7 @@ function Arbitrage:StartGame()
                 client:Freeze(false)
                 client:GodDisable()
                 client:SetEyeAngles(Angle(0, 0, 0))
+                client:CheckStuck(1)
             end)
         end
     end
@@ -649,10 +662,10 @@ function Arbitrage.GM:PlayerSpawn(client, transiton)
     player_manager.OnPlayerSpawn(client, transiton)
     player_manager.RunClass(client, "Spawn")
 
-    local faction = Arbitrage.teams.Get(client:Team())
+    local faction = Character.team:GetByID(client:Team())
     if faction then
         timer.Simple(0, function()
-            Arbitrage.player.SetTeam(client, client:Team())
+            Character.team:Join(client, client:Team())
         end)
     end
 
@@ -686,7 +699,7 @@ concommand.Add( "gm_giveswep", CCGiveSWEP)
 
 concommand.Add("arb_join_notcharacter", function(client, command, arguments)
     if client:Team() != TEAM_NOTCHARACTER then
-        Arbitrage.player.SetTeam(client, TEAM_NOTCHARACTER, true)
+        Character.team:Join(client, TEAM_NOTCHARACTER, true)
     end
 end)
 
@@ -742,7 +755,7 @@ netstream.Hook("arb.SelectCharacter", function(client, data)
     if !data then return end
     if GetNetVar("arb.StartGame") and data != TEAM_SPECTATE then return end
 
-    local faction = Arbitrage.teams.Get(data)
+    local faction = Character.team:GetByID(data)
     if faction and istable(faction) and client:Team() != data then
         if faction.admin and !client:IsAdmin() then return end
 
@@ -755,9 +768,7 @@ netstream.Hook("arb.SelectCharacter", function(client, data)
             end
         end
 
-        if faction and faction.max and faction.max > 0 and count >= faction.max then return end
-
-        Arbitrage.player.SetTeam(client, data, true)
+        Character.team:Join(client, data, true)
 
         for k, v in pairs(Arbitrage.statistics.list) do
             Arbitrage.statistics.Set(client, v.data, 100)

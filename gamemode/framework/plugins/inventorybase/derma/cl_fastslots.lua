@@ -92,7 +92,7 @@ function PANEL:InitSlot(panel)
         end
 	end)
 
-	local data = LocalPlayer():GetNetVar("fast_slot_" .. panel.id)
+	local data = LocalPlayer():GetLocalVar("fast_slot_" .. panel.id)
 
 	if data then
 		local itemID = data[2] or -1
@@ -129,7 +129,7 @@ end
 
 function PANEL:Think()
 	for k, v in ipairs(self.slots) do
-		local data = LocalPlayer():GetNetVar("fast_slot_" .. v.id)
+		local data = LocalPlayer():GetLocalVar("fast_slot_" .. v.id)
 
 		if data and !v.item then
 			local itemID = data[2] or -1

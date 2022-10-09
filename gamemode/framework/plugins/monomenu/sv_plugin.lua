@@ -132,7 +132,7 @@ function PLUGIN:StartVoting()
                 local num = v[2]
 
                 local clientData = Arbitrage.players[steamid]
-                local factionData = Arbitrage.teams.Get(clientData.faction)
+                local factionData = Character.team:GetByID(clientData.faction)
 
                 local info = factionData.name .. " (" .. steamid .. ")"
 
@@ -180,7 +180,7 @@ end)
 
 local actionList = {
     ["setfaction"] = function(client, steamid, faction, bRespawn)
-        local factionData = Arbitrage.teams.Get(faction)
+        local factionData = Character.team:GetByID(faction)
         if !factionData then return end
 
         local data = Arbitrage.players[steamid]
@@ -192,7 +192,7 @@ local actionList = {
         local m_target = IsValid(target) and target:FullName() or steamid
 
         if IsValid(target) then
-            Arbitrage.player.SetTeam(target, faction, bRespawn)
+            Character.team:Join(target, faction, bRespawn)
         end
 
         Arbitrage.adminnotify:SendNotify("transfercharacter", client:FullName(), m_target, faction)
@@ -233,7 +233,7 @@ local actionList = {
         if !data then return end
 
         target:SetNetVar("arb.oldData", nil)
-        Arbitrage.player.SetTeam(target, data[1], true)
+        Character.team:Join(target, data[1], true)
         timer.Simple(0.1, function()
             target:SetPos(data[2])
             Arbitrage.player.SetupHealth(target)
@@ -292,7 +292,12 @@ local actionList = {
         if !IsValid(target) then return end
 
         target:SetModel(model)
-        target:SetupHands()
+
+        timer.Simple(2, function()
+            target:SetupHands()
+        end)
+
+        Arbitrage.player.SetupViewOffset(target)
 
         Arbitrage.adminnotify:SendNotify("setmodel", client:FullName(), target:FullName(), model)
     end,
@@ -565,10 +570,10 @@ end)
 netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID)
     if !client:IsAdmin() then return end
 
-    local factionAttacker = Arbitrage.teams.Get(attackerID)
+    local factionAttacker = Character.team:GetByID(attackerID)
     if !factionAttacker then return end
 
-    local factionTarget = Arbitrage.teams.Get(targetID)
+    local factionTarget = Character.team:GetByID(targetID)
     if !factionTarget then return end
 
     for k, v in ipairs(player.GetAll()) do

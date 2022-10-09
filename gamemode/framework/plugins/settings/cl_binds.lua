@@ -1,3 +1,17 @@
+--[[
+        © AsterionStaff 2022.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru (not work)
+            Discord - https://discord.gg/Np5evb5ZsR
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
 local allKeys = {
     [KEY_Q] = "Q", [KEY_W] = "W", [KEY_E] = "E", [KEY_R] = "R", [KEY_T] = "T", [KEY_Y] = "Y", [KEY_U] = "U", [KEY_I] = "I", [KEY_O] = "O", [KEY_P] = "P", [KEY_LBRACKET] = "[", [KEY_RBRACKET] = "]",
     [KEY_A] = "A", [KEY_S] = "S", [KEY_D] = "D", [KEY_F] = "F", [KEY_G] = "G", [KEY_H] = "H", [KEY_J] = "J", [KEY_K] = "K", [KEY_L] = "L", [KEY_SEMICOLON] = ";", [KEY_APOSTROPHE] = "'",

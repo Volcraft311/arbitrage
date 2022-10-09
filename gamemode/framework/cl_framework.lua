@@ -98,7 +98,7 @@ end
 do
     Arbitrage.hud.AddCircle("health", {
         value = function()
-            return LocalPlayer():Health()
+            return LocalPlayer():Health() or 100
         end,
         color = Color(255, 61, 96),
         image = Material("danganronpa/hud/health.png")
@@ -106,7 +106,7 @@ do
 
     Arbitrage.hud.AddCircle("hunger", {
         value = function()
-            return Arbitrage.statistics.Get(LocalPlayer(), "hunger")
+            return Arbitrage.statistics.Get(LocalPlayer(), "hunger") or 100
         end,
         color = Color(255, 220, 228),
         image = Material("danganronpa/hud/hunger.png")
@@ -114,7 +114,7 @@ do
 
     Arbitrage.hud.AddCircle("thirst", {
         value = function()
-            return Arbitrage.statistics.Get(LocalPlayer(), "thirst")
+            return Arbitrage.statistics.Get(LocalPlayer(), "thirst") or 100
         end,
         color = Color(255, 220, 228),
         image = Material("danganronpa/hud/thirst.png")
@@ -122,7 +122,7 @@ do
 
     Arbitrage.hud.AddCircle("sleep", {
         value = function()
-            return Arbitrage.statistics.Get(LocalPlayer(), "sleep")
+            return Arbitrage.statistics.Get(LocalPlayer(), "sleep") or 100
         end,
         color = Color(255, 220, 228),
         image = Material("danganronpa/hud/sleep.png")
@@ -151,16 +151,16 @@ do
     	rpc:Set("details", upperText)
         rpc:Set("state", lowerText)
 
-        local faction = Arbitrage.teams.Get(client:Team())
+        local faction = Character.team:GetByID(client:Team())
         if faction then
         	local username = client:Name()
         	local steamname = client:SteamName()
-        	local factionname = faction.name
+        	local factionname = faction:GetName()
 
         	local lImageText = "Играет за персонажа: " .. (username == steamname and (factionname and factionname or "Не выбран") or username)
         	rpc:Set("largeImageText", lImageText)
 
-        	local lImageKey = faction.uniqueID or "big"
+        	local lImageKey = faction:GetUniqueID() or "big"
         	rpc:Set("largeImageKey", lImageKey)
         end
     end)
@@ -407,6 +407,7 @@ end
 timer.Create("arb.DayChangeNotifications", 1, 0, function()
     if !Arbitrage.IsStartGame() then return end
     if LocalPlayer().IsPlaying and !LocalPlayer():IsPlaying() then return end
+    if Arbitrage.OffSoundNightAndDay() then return end
 
     local oldType = Arbitrage.IsDay()
 
@@ -456,10 +457,4 @@ netstream.Hook("arb.ReturnCurTime", function(data)
     if !data then return end
 
     Arbitrage.CurTime = tonumber(data)
-end)
-
-netstream.Hook("arb.PlayerSetAnim", function(client, slot, activity, autokill)
-    if !IsValid(client) then return end
-
-    client:AnimRestartGesture(slot, activity, autokill)
 end)

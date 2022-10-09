@@ -91,8 +91,8 @@ end
 function PANEL:SetInfo(faction, steamid)
     if !faction then return end
 
-    local data = Arbitrage.teams.Get(faction)
-    local splashscreen = Material(data.splash or "err.png")
+    local data = Character.team:GetByID(faction)
+    local splashscreen = Material(data:GetAssets().splash)
 
     if IsValid(self.infoPanel) then
         self.infoPanel:AlphaTo(0, 0.25, 0, function()
@@ -129,8 +129,8 @@ function PANEL:SetInfo(faction, steamid)
             surface.SetDrawColor(255, 220, 228, 10)
             surface.DrawRect(w * 0.2, h - H(179), w - (w * 0.2) * 2, 2)
 
-            draw.DrawText(data.name, "arb.Font_FuturaPTBook_14", w / 2, h - H(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
-            draw.DrawText(data.description, "arb.Font_FuturaPTBook_9", w / 2, h - H(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
+            draw.DrawText(data:GetName(), "arb.Font_FuturaPTBook_14", w / 2, h - H(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
+            draw.DrawText(data:GetTitle(), "arb.Font_FuturaPTBook_9", w / 2, h - H(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
 
             if self.voting == steamid then
                 parsed:draw(w / 2, h - H(136), TEXT_ALIGN_CENTER, TEXT_ALIGN_LEFT)
@@ -178,11 +178,11 @@ function PANEL:SetData(data, votingList)
         local faction = v[2]
         local alive = true --v[3]
 
-        local factionData = Arbitrage.teams.Get(faction)
+        local factionData = Character.team:GetByID(faction)
         if !factionData then continue end
 
-        local mat = Material(factionData.logo or "err.png")
-        local mat2 = Material(factionData.select or "err.png")
+        local mat = Material(factionData:GetAssets().logo)
+        local mat2 = Material(factionData:GetAssets().select)
 
         local character = self.charactersPanel:Add("DButton")
         character:SetAlpha(0)
@@ -245,10 +245,10 @@ end
 function PANEL:ShowWinning(data)
     if !data then return self:AlphaTo(0, 1, 0, function() self:Remove() end) end
 
-    local factionData = Arbitrage.teams.Get(data)
+    local factionData = Character.team:GetByID(data)
     if !factionData then return end
 
-    local mat = Material(factionData.splash or "err.png")
+    local mat = Material(factionData:GetAssets().splash)
 
     local size = self:GetTall() * 0.7
 
@@ -328,11 +328,11 @@ function PANEL:ShowVotings(winning, votingData)
         local faction = stored[1]
         local votes = stored[2]
 
-        local factionData = Arbitrage.teams.Get(faction)
+        local factionData = Character.team:GetByID(faction)
         if !factionData then continue end
 
         local name = factionData.name
-        local mat = Material(factionData.logo or "err.png")
+        local mat = Material(factionData:GetAssets().logo)
 
         local ListItem = panel:Add("DPanel")
         ListItem:SetAlpha(0)

@@ -117,7 +117,7 @@ netstream.Hook("arb.DoorAddOwner", function(client, faction)
 	if !client:IsAdmin() then return end
 	if !faction then return end
 
-	local factionData = Arbitrage.teams.Get(faction)
+	local factionData = Character.team:GetByID(faction)
 	if !factionData then return end
 
 	local trace = client:GetEyeTraceNoCursor()
@@ -146,7 +146,7 @@ netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
 	if !client:IsAdmin() then return end
 	if !faction then return end
 
-	local factionData = Arbitrage.teams.Get(faction)
+	local factionData = Character.team:GetByID(faction)
 	if !factionData then return end
 
 	local trace = client:GetEyeTraceNoCursor()
@@ -179,9 +179,9 @@ netstream.Hook("arb.DoorAddIcon", function(client, entity, id)
 	if !client:IsAdmin() then return end
 	if !id then return end
 
-	local faction = Arbitrage.teams.Get(id)
+	local faction = Character.team:GetByID(id)
 	if !faction then return end
-	if !faction.pixel then return end
+	if !faction:GetAssets().pixel then return end
 
 	if !IsValid(entity) then return end
 	if !entity:IsDoor() then return end

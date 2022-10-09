@@ -36,6 +36,7 @@ end
 function PLUGIN:StartRebuttalShowdowns(client1, client2)
     if !Arbitrage.lawEnable then return end
     if self.IsRebuttalShowdowns then return end
+    if Arbitrage.OffRebuttalShowdown() then return end
 
     self.RS_players = {
         [client1] = true,
@@ -52,7 +53,7 @@ function PLUGIN:StartRebuttalShowdowns(client1, client2)
             return self:EndRebuttalShowdowns()
         end
 
-        if client1:GetNetVar("rs_stopvoting") and client2:GetNetVar("rs_stopvoting") then
+        if client1:GetLocalVar("rs_stopvoting") and client2:GetLocalVar("rs_stopvoting") then
             return self:EndRebuttalShowdowns()
         end
 
@@ -73,15 +74,24 @@ function PLUGIN:StartRebuttalShowdowns(client1, client2)
 end
 
 function PLUGIN:EndRebuttalShowdowns()
+    if !self.IsRebuttalShowdowns then return end
+
     for client in pairs(self.RS_players or {}) do
         if IsValid(client) then
-            client:SetNetVar("rs_stopvoting", false, client)
+            client:SetLocalVar("rs_stopvoting", false)
         end
     end
 
     self.RS_players = {}
     self.IsRebuttalShowdowns = false
     self.RC_size = 0
+
+    self.RC_interruption = nil
+    self.talk_entity = nil
+    self.interruption = CurTime()
+    self.focusCD = CurTime()
+    self.interruptionCD = CurTime()
+    self.oldAnimID = -1
 
     netstream.Start(nil, "arb.EndRebuttalShowdowns")
 
@@ -130,8 +140,9 @@ function Arbitrage:StartLaw()
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then
-                local pos = Arbitrage.placesList[place] and Arbitrage.placesList[place][1]
-                local ang = Arbitrage.placesList[place] and Arbitrage.placesList[place][2]
+                local info = Arbitrage.placesList[place]
+                local pos = info and info[1]
+                local ang = info and info[2]
 
                 if pos and ang then
                     players_ignore[k] = true
@@ -139,6 +150,9 @@ function Arbitrage:StartLaw()
                     client:SetPos(pos)
                     client:SetEyeAngles(ang)
                     client:SetNetVar("arbLaw", place)
+
+                    client.oldScale = client:GetModelScale()
+                    client:SetModelScale(0.1)
                 end
             else
                 -- Типо игрока нету понял?
@@ -173,7 +187,9 @@ function Arbitrage:StartLaw()
 end
 
 function Arbitrage:EndLaw()
-    PLUGIN:EndRebuttalShowdowns()
+    if PLUGIN.IsRebuttalShowdowns then
+        PLUGIN:EndRebuttalShowdowns()
+    end
 
     Arbitrage.lawEnable = false
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)
@@ -190,6 +206,13 @@ function Arbitrage:EndLaw()
                 v:SetPos(v.arbOldPos)
                 v.arbOldPos = nil -- reset
             end
+
+            if v.oldScale then
+                v:SetModelScale(v.oldScale)
+                v.oldScale = nil -- reset
+            end
+
+            v:CheckStuck(0.2)
         end
     end)
 
@@ -199,17 +222,20 @@ function Arbitrage:EndLaw()
     hook.Remove("SetupPlayerVisibility", "LawCamera")
 end
 
-function PLUGIN:ChangeEmoji(client, data)
-    if !data then return end
+function PLUGIN:ChangeEmoji(client, index)
+    if !index then return end
 
-    local charTeam = Arbitrage.teams.Get(client:Team())
-    if !charTeam then return end
+    local faction = Character.team:GetByID(client:Team())
+    if !faction then return end
 
-    local emojiList = charTeam.emodjiList
-    if !emojiList then return end
-    if !emojiList[data] then return end
+    local emoji = Character.emoji:GetByUniqueID(faction:GetUniqueID())
+    if !emoji then return end
 
-    client:SetNetVar("emoji", emojiList[data])
+    local big, _ = emoji:GetByIndex(index)
+
+    if big then
+        client:SetNetVar("emoji", index)
+    end
 end
 
 function PLUGIN:StartVoice(client, anim)
@@ -244,7 +270,7 @@ function PLUGIN:Interruption(client, anim)
     if self.IsRebuttalShowdowns then return end
 
     if self.RC_interruption == client then
-        if IsValid(self.RC_lastClient) and self.RC_lastClient != client then
+        if IsValid(self.RC_lastClient) and self.RC_lastClient != client and !Arbitrage.OffRebuttalShowdown() then
             return PLUGIN:StartRebuttalShowdowns(self.RC_lastClient, client)
         end
     else
@@ -300,8 +326,9 @@ function PLUGIN:PlayerInitialSpawn(client)
                 local place = tonumber(Arbitrage.players[steamid].place)
                 if !place then return end
 
-                local pos = place == 0 and Arbitrage.monokumPlace[1] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][1] or nil)
-                local ang = place == 0 and Arbitrage.monokumPlace[2] or (Arbitrage.placesList[place] and Arbitrage.placesList[place][2] or nil)
+                local info = Arbitrage.placesList[place]
+                local pos = info and info[1]
+                local ang = info and info[2]
 
                 if pos and ang then
                     client:SetPos(pos)
@@ -318,6 +345,17 @@ function PLUGIN:PlayerInitialSpawn(client)
         timer.Simple(0.1, function()
             client:Freeze(true)
             PLUGIN:DrawSprites(client, true)
+
+
+            if PLUGIN.IsRebuttalShowdowns then
+                local data = {}
+
+                for k, v in pairs(self.RS_players) do
+                    data[#data + 1] = k
+                end
+
+                netstream.Start(client, "arb.StartRebuttalShowdowns", data[1], data[2])
+            end
         end)
     end)
 end
@@ -380,7 +418,7 @@ netstream.Hook("arb.StopRebuttalShowdowns", function(client)
     if !PLUGIN.IsRebuttalShowdowns then return end
 
     if PLUGIN.RS_players[client] then
-        client:SetNetVar("rs_stopvoting", true, client)
+        client:SetLocalVar("rs_stopvoting", true)
 
         for _client in pairs(PLUGIN.RS_players or {}) do
             if _client != client then

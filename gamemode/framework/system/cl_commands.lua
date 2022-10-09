@@ -65,6 +65,7 @@ RegisterCommand("settime", "Установить время на сервере.
 RegisterCommand("roll", "Крутить число от 0 до 100.")
 RegisterCommand("freezeprops", "Заморозить все физические пропы.")
 RegisterCommand("editor", "Зайти в режим редактирования.")
+RegisterCommand("unstuck", "Телепортироваться на ближайшую позицию.")
 
 
 netstream.Hook("arb.ChatNotify", function(data)

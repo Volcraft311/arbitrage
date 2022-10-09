@@ -127,7 +127,7 @@ function PLUGIN:PlayerInitial(client)
     client:SetPos(leaveEntity:GetPos() + Vector(0, 0, 10))
     client:SetEyeAngles(leaveEntity:GetAngles())
 
-    Arbitrage.player.SetTeam(client, data.faction)
+    Character.team:Join(client, data.faction)
 
     client:SetModel(leaveEntity:GetModel())
     client:SetHealth(data.health)

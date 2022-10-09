@@ -88,7 +88,7 @@ function PLUGIN:HUDPaint()
 	        local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
 	        local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, 150)
 
-	        local faction = Arbitrage.teams.Get(client:Team())
+	        local faction = Character.team:GetByID(client:Team())
 
 	        local ignore_list = {}
 	        ignore_list[#ignore_list + 1] = client
@@ -99,7 +99,7 @@ function PLUGIN:HUDPaint()
 	        v.evData = v.evData or 0
 
 	        if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
-	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - v.evData) * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(curalpha - alpha - v.evData, 0, 150))
+	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - v.evData) * (20 / 200) * (faction:GetEvidenceVisibility() or 1), 0, 200), math_Clamp(curalpha - alpha - v.evData, 0, 150))
 
 	            surface_SetDrawColor(ColorAlpha(color, math_Clamp(curalpha - alpha - v.evData - (255 * 0.5 - alphaA), 0, 150)))
 	            draw_NoTexture()

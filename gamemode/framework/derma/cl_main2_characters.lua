@@ -22,6 +22,14 @@ local stagesData = {
             panel.categoryPanel:Remove()
         end
 
+        if IsValid(panel.rightButton) then
+            panel.rightButton:Remove()
+        end
+
+        if IsValid(panel.leftButton) then
+            panel.leftButton:Remove()
+        end
+
         panel.categoryOpPanel = parent:RegisterCategory(panel, panel:GetWide() - W(150) - W(336), H(60), W(336), H(62))
         :AddButton("Претенденты", W(180), function()
             if IsValid(panel.charactersPanel) then panel.charactersPanel:Remove() end
@@ -32,16 +40,88 @@ local stagesData = {
             panel.titleAlpha = 0
 
             panel.categoryPanel = panel:Add("Panel")
-            panel.categoryPanel:SetPos(ScrW() / 2 - W(1480) / 2, H(270))
-            panel.categoryPanel:SetSize(W(1480), H(540))
+            panel.categoryPanel:SetPos(0, H(270))
+            panel.categoryPanel:SetSize(ScrW(), H(540))
+
+            local sizePanel = W(100)
+            local sizeMat = H(40)
+            local padding = 0
+
+            panel.rightButton = panel:Add("DButton")
+            panel.rightButton:SetText("")
+            panel.rightButton:SetPos(ScrW() - sizePanel, H(270))
+            panel.rightButton:SetSize(sizePanel, H(540))
+            panel.rightButton.alpha = 50
+            panel.rightButton.Paint = function(_, w, h)
+                _.alpha = Lerp(FrameTime() * 7, _.alpha, _:IsHovered() and 255 or 50)
+                Arbitrage.DrawGradient(GRADIENT_RIGHT, 0, 0, w, h, Color(0, 0, 0))
+
+                surface.SetDrawColor(255, 255, 255, _.alpha)
+                surface.SetMaterial(Material("danganronpa/ui/rightArrow.png"))
+                surface.DrawTexturedRect(w - sizeMat / 2 - W(47), h / 2 - sizeMat / 2, sizeMat / 2, sizeMat)
+            end
+            panel.rightButton.DoClick = function()
+                local a = W(340) * 4
+
+                if (padding - a - W(200)) <= -panel.categoryPanel:GetWide() then return end
+
+                padding = padding - a
+                panel.categoryPanel:MoveTo(padding, panel.categoryPanel:GetY(), 0.3)
+
+                if padding < 0 then
+                    panel.leftButton:AlphaTo(255, 0.3)
+                end
+
+                if (padding - a - W(200)) <= -panel.categoryPanel:GetWide() then
+                    panel.rightButton:AlphaTo(0, 0.3)
+                end
+            end
+
+            panel.leftButton = panel:Add("DButton")
+            panel.leftButton:SetAlpha(0)
+            panel.leftButton:SetText("")
+            panel.leftButton:SetPos(0, H(270))
+            panel.leftButton:SetSize(sizePanel, H(540))
+            panel.leftButton.alpha = 50
+            panel.leftButton.Paint = function(_, w, h)
+                _.alpha = Lerp(FrameTime() * 7, _.alpha, _:IsHovered() and 255 or 50)
+                Arbitrage.DrawGradient(GRADIENT_LEFT, 0, 0, w, h, Color(0, 0, 0))
+
+                surface.SetDrawColor(255, 255, 255, _.alpha)
+                surface.SetMaterial(Material("danganronpa/ui/leftArrow.png"))
+                surface.DrawTexturedRect(W(47), h / 2 - sizeMat / 2, sizeMat / 2, sizeMat)
+            end
+            panel.leftButton.DoClick = function()
+                if padding >= 0 then return end
+                local a = W(340) * 4
+
+                padding = padding + a
+                panel.categoryPanel:MoveTo(padding, panel.categoryPanel:GetY(), 0.3)
+
+                if padding >= 0 then
+                    panel.leftButton:AlphaTo(0, 0.3)
+                end
+
+                if (padding - a - W(200)) > -panel.categoryPanel:GetWide() then
+                    panel.rightButton:AlphaTo(255, 0.3)
+                end
+            end
 
             panel:InitCategory()
         end, true)
         :AddSlash()
         :AddButton("Ведущие", W(125), function()
+            if IsValid(panel.rightButton) then
+                panel.rightButton:Remove()
+            end
+
+            if IsValid(panel.leftButton) then
+                panel.leftButton:Remove()
+            end
+
             local data = {}
 
-            for k, v in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
+            for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
                 v.key = k
 
                 if v.category == "Ведущие" then
@@ -61,6 +141,8 @@ local stagesData = {
         panel.titleAlpha = 0
 
         panel.categoryPanel:Remove()
+        panel.rightButton:Remove()
+        panel.leftButton:Remove()
 
         panel.charactersPanel = panel:Add("DIconLayout")
         panel.charactersPanel:SetZPos(101)
@@ -89,21 +171,21 @@ local stagesData = {
 
                 draw.DrawText("Кликните по портрету для\nпросмотра персонажа", "arb.Font_FuturaPTBook_10", w / 2, h - H(100), Color(255, 234, 238, 5 * _.alpha), TEXT_ALIGN_CENTER)
             else
-                local faction = Arbitrage.teams.Get(panel.charactersPanel.character)
+                local faction = Character.team:GetByID(panel.charactersPanel.character)
                 if !faction then return end
 
-                local splash = Material(faction.splash or "err.png")
+                local splash = Material(faction:GetAssets().splash)
 
                 surface.SetDrawColor(255, 255, 255, 255 * _.alpha)
                 surface.SetMaterial(splash)
                 surface.DrawTexturedRect(0, 0, w, h)
 
-                draw.SimpleText(faction.name, "arb.Font_FuturaPTDemi_15", w / 2, H(400), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(faction:GetName(), "arb.Font_FuturaPTDemi_15", w / 2, H(400), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 
                 surface.SetDrawColor(255, 234, 238, 15 * _.alpha)
                 surface.DrawRect(W(155), H(467), W(350), H(2))
 
-                draw.SimpleText(faction.description, "arb.Font_FuturaPTBook_10", w / 2, H(485), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(faction:GetTitle(), "arb.Font_FuturaPTBook_10", w / 2, H(485), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 
                 local count = 0
                 for k, v in ipairs(player.GetAll()) do
@@ -136,7 +218,7 @@ local stagesData = {
             local id = panel.charactersPanel.character
             if id == -1 then return end
 
-            local faction = Arbitrage.teams.Get(id)
+            local faction = Character.team:GetByID(id)
             if !faction then return end
 
             if faction.admin and !LocalPlayer():IsAdmin() then return end
@@ -146,8 +228,8 @@ local stagesData = {
         end
 
         for k, v in ipairs(data) do
-            local mat = Material(v.logo or "err.png")
-            local mat2 = Material(v.select or "err.png")
+            local mat = Material(v:GetAssets().logo)
+            local mat2 = Material(v:GetAssets().select)
 
             local character = panel.charactersPanel:Add("DPanel")
             character:SetAlpha(0)
@@ -207,7 +289,7 @@ local stagesData = {
                     end
                 end
 
-                local faction = Arbitrage.teams.Get(v.key)
+                local faction = Character.team:GetByID(v.key)
                 if faction and faction.max and faction.max > 0 and count >= faction.max then
                     acceptButton:SetDisabled(true)
                 else
@@ -237,29 +319,16 @@ function PANEL:Init()
     self.optionPanel:Dock(BOTTOM)
     self.optionPanel:DockMargin(W(150), 0, W(150), H(80))
 
-    self:AddCategory({
-        name = "TRIGGER HAPPY HAVOC",
-        desc = "Играйте за одного из 16 оригинальных\nперсонажей из игры Danganronpa:\nTrigger Happy Havoc",
-        image = Material("danganronpa/ui/category/trigger_happy_havoc.png")
-    })
+    for k, v in ipairs(Character.category.instances) do
+        local background = v.background
+        if !background then continue end
 
-    self:AddCategory({
-        name = "GOODBYE DESPAIR",
-        desc = "Играйте за одного из 16 оригинальных\nперсонажей из игры Danganronpa:\nGoodbye Despair",
-        image = Material("danganronpa/ui/category/goodbye_dispair.png")
-    })
-
-    self:AddCategory({
-        name = "KILLING HARMONY",
-        desc = "Играйте за одного из 16 оригинальных\nперсонажей из игры Danganronpa:\nKilling Harmony",
-        image = Material("danganronpa/ui/category/killing_harmony.png")
-    })
-
-    self:AddCategory({
-        name = "ULTRA DESPAIR GIRLS",
-        desc = "Играйте за одного из 12 оригинальных\nперсонажей из игры Danganronpa:\nUltra Despair Girls",
-        image = Material("danganronpa/ui/category/ultra_despair_girls.png")
-    })
+        self:AddCategory({
+            name = v.name,
+            desc = v.description,
+            image = Material(background)
+        })
+    end
 
     parent:AddOption(self.optionPanel, "ESC", "Назад", W(50), W(100))
 
@@ -327,7 +396,7 @@ function PANEL:InitCategory()
         panel:SetText("")
         panel:SetAlpha(0)
         panel:AlphaTo(255, 1)
-        panel:SetPos(a * W(340) + a * b, 0)
+        panel:SetPos(a * W(340) + a * b + W(200), 0)
         panel:SetSize(W(340), H(540))
         panel.alpha = 0.2
         panel.Paint = function(_, w, h)
@@ -345,16 +414,16 @@ function PANEL:InitCategory()
             surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
             surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-            draw.DrawText(v.name, "arb.Font_FuturaPTDemi_12", w / 2, H(392), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
-            draw.DrawText(v.desc, "arb.Font_FuturaPTBook_8", w / 2, H(437), Color(255, 234, 238, 50 * panel.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText(v.name, "arb.Font_FuturaPTDemi_12", w / 2, H(422), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText(v.desc, "arb.Font_FuturaPTBook_8", w / 2, H(464), Color(255, 234, 238, 150 * panel.alpha), TEXT_ALIGN_CENTER)
         end
         panel.DoClick = function()
             local data = {}
 
-            for k2, v2 in SortedPairsByMemberValue(Arbitrage.teams.data, "name") do
+            for k2, v2 in SortedPairsByMemberValue(Character.team.instances, "name") do
                 v2.key = k2
 
-                if v2.category == v.name then
+                if v2:GetCategory() == v.name then
                     data[#data + 1] = v2
                 end
             end
@@ -362,6 +431,8 @@ function PANEL:InitCategory()
             self:OpenStages(true, "character", data)
         end
     end
+
+    self.categoryPanel:SetWide(#self.categorys * W(340) + W(200) + (#self.categorys - 1) * W(40))
 end
 
 function PANEL:Paint(w, h)

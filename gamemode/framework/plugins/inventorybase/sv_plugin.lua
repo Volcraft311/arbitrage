@@ -118,7 +118,7 @@ netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
 
     if !inventory:IsReceiver(client) then return end
 
-    local data = client:GetNetVar("fast_slot_" .. slotID)
+    local data = client:GetLocalVar("fast_slot_" .. slotID)
 
     if !item.UnEquip or !item.Equip then return Arbitrage.commands.Notify(client, "Этот предмет нельзя экипировать!") end
 

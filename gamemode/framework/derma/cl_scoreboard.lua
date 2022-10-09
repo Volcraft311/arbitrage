@@ -72,7 +72,7 @@ function PANEL:Init()
 
     for k, v in ipairs(player.GetAll()) do
         local faction = v:Team()
-        local factionData = Arbitrage.teams.Get(faction)
+        local factionData = Character.team:GetByID(faction)
         if !factionData then continue end
 
         local matPing = Format(path, "connect_1")

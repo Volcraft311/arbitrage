@@ -99,7 +99,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
     end
 
     local count = table.Count(entity.findClients)
-    if count == 3 then
+    if count == 3 and !Arbitrage.OffSoundMassFindCorpse() then
         for k, v in ipairs(player.GetAll()) do
             v:SendLua([[
                 sound.PlayFile("sound/discoveryannounce.wav", "", function(station)

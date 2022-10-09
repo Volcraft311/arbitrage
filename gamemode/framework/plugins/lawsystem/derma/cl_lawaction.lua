@@ -31,8 +31,30 @@ local function createCategory(panel, name)
 		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 	end
 
+    local button = title:Add("DButton")
+    button:SetText("")
+    button:Dock(FILL)
+    button.alpha = 0
+    button.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, category.isHide and 200 or 0)
+
+        surface.SetDrawColor(0, 0, 0, _.alpha)
+        surface.DrawRect(0, 0, w, h)
+    end
+    button.DoClick = function()
+        category.isHide = !category.isHide
+
+        category:SizeTo(category:GetWide(), category.isHide and H(20) or category.normalTall, 0.25, 0, -1)
+    end
+
 	category.PerformLayout = function(_, w, h)
-		category:SizeToChildren(false, true)
+        if !category.c then
+    		category:SizeToChildren(false, true)
+
+            category.normalTall = category:GetTall()
+
+            category.c = true
+        end
 	end
 
 	return category
@@ -190,47 +212,61 @@ local categoryData = {
         name = "Эмоции",
         icon = "icon16/emoticon_grin.png",
         data = function(client, panel)
-            local faction = client:Team()
-            local factionData = Arbitrage.teams.Get(faction)
-            if !factionData then return end
+            local faction = Character.team:GetByID(client:Team())
+            if !faction then return end
 
-            local emotes = factionData.emodjiListMin
-            if !emotes then return end
-
-            local List = panel:Add("DIconLayout")
-            List:Dock(FILL)
-            List:SetSpaceY(5)
-            List:SetSpaceX(5)
+            local emoji = Character.emoji:GetByUniqueID(faction:GetUniqueID())
+            if !emoji then return end
 
             client.selectedEmoji = client.selectedEmoji or 1
 
-            for k, v in pairs(emotes) do
-                local mat = Material(v)
+            for category, stored in pairs(emoji:GetData()) do
+                local c = createCategory(panel, category)
+                local List = c:Add("DIconLayout")
+                List:Dock(FILL)
+                List:SetSpaceY(W(5))
+                List:SetSpaceX(H(5))
 
-                local ListItem = List:Add("DButton")
-                ListItem:SetText("")
-                ListItem:SetSize(W(100), H(140))
-                ListItem.alpha = 0
-                ListItem.Paint = function(_, w, h)
-                    local isSelect = client.selectedEmoji == k and true or false
+                local index, count = 0, 1
+                for id, path in pairs(stored.min) do
+                    local mat = Material(path)
 
-                    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or isSelect) and 20 or 0)
+                    local ListItem = List:Add("DButton")
+                    ListItem:SetText("")
+                    ListItem:SetSize(W(100), H(140))
+                    ListItem.alpha = 0
+                    ListItem.Paint = function(_, w, h)
+                        local isSelect = client.selectedEmoji == id and true or false
 
-                    surface.SetDrawColor(255, 61, 96, _.alpha)
-                    surface.DrawRect(0, 0, w, h)
+                        _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or isSelect) and 20 or 0)
 
-                    surface.SetDrawColor(255, 255, 255)
-                    surface.SetMaterial(mat)
-                    surface.DrawTexturedRect(0, 0, w, h)
+                        surface.SetDrawColor(255, 61, 96, _.alpha)
+                        surface.DrawRect(0, 0, w, h)
 
-                    surface.SetDrawColor(255, 61, 96, 50)
-                    surface.DrawOutlinedRect(0, 0, w, h, 1)
+                        surface.SetDrawColor(255, 255, 255)
+                        surface.SetMaterial(mat)
+                        surface.DrawTexturedRect(0, 0, w, h)
+
+                        surface.SetDrawColor(255, 61, 96, 50)
+                        surface.DrawOutlinedRect(0, 0, w, h, 1)
+                    end
+
+                    ListItem.DoClick = function()
+                        client.selectedEmoji = id
+                        netstream.Start("arb.ChangeEmoji", id)
+                    end
+
+                    if index >= 3 then
+                        count = count + 1
+                        index = 1
+                    else
+                        index = index + 1
+                    end
                 end
 
-                ListItem.DoClick = function()
-                    client.selectedEmoji = k
-                    netstream.Start("arb.ChangeEmoji", k)
-                end
+                print(index, count)
+
+                c:SetTall(c:GetTall() + count * H(140) + count * H(5))
             end
         end
     },
@@ -394,20 +430,22 @@ function PANEL:Init()
         local c = Color(99, 17, 32)
         local text = "Опровергнуть"
 
-        if !self.green then
-            if isActiveRS() then
-                text = "Остановить Rebuttal Showdowns"
+        if !Arbitrage.OffRebuttalShowdown() then
+            if !self.green then
+                if isActiveRS() then
+                    text = "Остановить Rebuttal Showdowns"
 
-                if LocalPlayer():GetNetVar("rs_stopvoting") then
-                    text = "Ожидаем второго участника"
-                    
-                    surface.SetDrawColor(ColorAlpha(Color(111, 191, 83), 255 / 2))
-                    surface.DrawRect(0, 0, w, h)
+                    if LocalPlayer():GetLocalVar("rs_stopvoting") then
+                        text = "Ожидаем второго участника"
+
+                        surface.SetDrawColor(ColorAlpha(Color(111, 191, 83), 255 / 2))
+                        surface.DrawRect(0, 0, w, h)
+                    end
                 end
+            else
+                text = "Rebuttal Showdowns"
+                c = Color(111, 191, 83)
             end
-        else
-            text = "Rebuttal Showdowns"
-            c = Color(111, 191, 83)
         end
 
         surface.SetDrawColor(ColorAlpha(c, 255 / 2))
@@ -419,7 +457,7 @@ function PANEL:Init()
         draw.DrawText(text, "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
     end
     interruptionButton.DoClick = function()
-        if isActiveRS() then
+        if isActiveRS() and !Arbitrage.OffRebuttalShowdown() then
             return netstream.Start("arb.StopRebuttalShowdowns")
         end
 

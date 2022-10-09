@@ -29,7 +29,7 @@ function Arbitrage.statistics.Get(client, data)
     if !IsValid(client) then return end
 
     if Arbitrage.statistics.list[string.lower(data)] then
-        return client[string.lower(data)] and client[string.lower(data)] or client:GetNetVar(string.lower(data))
+        return client[string.lower(data)] and client[string.lower(data)] or client:GetLocalVar(string.lower(data))
     else
         Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found \"" .. data .. "\"")
     end

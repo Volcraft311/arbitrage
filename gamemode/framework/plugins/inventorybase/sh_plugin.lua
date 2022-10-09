@@ -25,26 +25,18 @@ function InventoryBase:New(id, w, h)
         return self.instances[id]
     end
 
-    local inventoryData = table.Copy(Arbitrage.meta.inventory)
+    local inventoryData = table.Copy(FindMetaTable("Inventory"))
+    local inventory = setmetatable({id = id}, inventoryData)
 
-    if inventoryData then
-        local inventory = setmetatable({id = id}, {
-            __index = inventoryData,
-            __eq = inventoryData.__eq,
-            __tostring = inventoryData.__tostring
-        })
+    inventory.w = w or 4
+    inventory.h = h or 2
 
-        inventory.w = w or 4
-        inventory.h = h or 2
-
-        for x = 1, inventory.w do
-            inventory.slots[x] = inventory.slots[x] or {}
-        end
-
-        self.instances[id] = inventory
-
-        return inventory
+    for x = 1, inventory.w do
+        inventory.slots[x] = inventory.slots[x] or {}
     end
+
+    self.instances[id] = inventory
+    return inventory
 end
 
 function InventoryBase.CreateInventory(w, h)
@@ -54,9 +46,8 @@ function InventoryBase.CreateInventory(w, h)
     return inventory
 end
 
-local meta = FindMetaTable("Entity")
-
-function meta:GetInventory()
+local metaEntity = FindMetaTable("Entity")
+function metaEntity:GetInventory()
     return self.Inventory
 end
 

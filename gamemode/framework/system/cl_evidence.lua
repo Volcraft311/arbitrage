@@ -82,12 +82,12 @@ function Arbitrage.evidence.CreateText(data)
             evData = Arbitrage.evidence.array[dataEvidence]
         end
 
-        local faction = Arbitrage.teams.Get(LocalPlayer():Team())
+        local faction = Character.team:GetByID(LocalPlayer():Team())
 
         evData.alpha = evData.alpha or 0
 
         local aM = curalpha - alpha - evData.alpha
-        local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp(aM * (20 / 200) * (faction.evidenceVisibility or 1), 0, 200), math_Clamp(aM, 0, 150))
+        local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp(aM * (20 / 200) * (faction:GetEvidenceVisibility() or 1), 0, 200), math_Clamp(aM, 0, 150))
         surface_SetDrawColor(ColorAlpha(color, math_Clamp(aM, 0, 150)))
         draw_NoTexture()
         surface_DrawPoly(circle)

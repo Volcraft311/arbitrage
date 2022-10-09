@@ -296,6 +296,23 @@ MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.p
     end
 })
 
+MonoMenu:AddGameFunction("Оповещение смены дня и ночи", "icon16/bell.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffSoundNightAndDay", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffSoundNightAndDay", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffSoundNightAndDay()
+    end
+})
+
 MonoMenu:AddGameFunction("Надпись ClassTrial", "icon16/chart_curve_add.png", {
     isCheckBox = true,
     onEnable = function(client)
@@ -313,7 +330,28 @@ MonoMenu:AddGameFunction("Надпись ClassTrial", "icon16/chart_curve_add.pn
     end
 })
 
-MonoMenu:AddGameFunction("OOC чат", "icon16/world_add.png", {
+MonoMenu:AddGameFunction("Разрешить RebuttalShowdown", "icon16/photos.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffRebuttalShowdown", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffRebuttalShowdown", true)
+
+        if LawSystem.IsRebuttalShowdowns then
+            LawSystem:EndRebuttalShowdowns()
+        end
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffRebuttalShowdown()
+    end
+})
+
+MonoMenu:AddGameFunction("OOC чат", "icon16/world.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -364,7 +402,7 @@ MonoMenu:AddGameFunction("Смерть из-за потребности", "icon1
     end
 })
 
-MonoMenu:AddGameFunction("Эффект обнаружения трупа", "icon16/camera.png", {
+MonoMenu:AddGameFunction("Эффект обнаружения трупа", "icon16/camera_delete.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -378,6 +416,40 @@ MonoMenu:AddGameFunction("Эффект обнаружения трупа", "icon
     end,
     OnCheck = function(client)
         return !Arbitrage.OffCorpseEffect()
+    end
+})
+
+MonoMenu:AddGameFunction("Убийца детектит труп", "icon16/camera_go.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.KillerDetectsCorpses", true)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.KillerDetectsCorpses", false)
+    end,
+    OnCheck = function(client)
+        return Arbitrage.KillerDetectsCorpses()
+    end
+})
+
+MonoMenu:AddGameFunction("Оповещение нахождения трупа", "icon16/camera_error.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffSoundMassFindCorpse", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffSoundMassFindCorpse", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffSoundMassFindCorpse()
     end
 })
 
@@ -398,7 +470,7 @@ MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/st
     end
 })
 
-MonoMenu:AddGameFunction("Выдача стандартных оружий", "icon16/gun.png", {
+MonoMenu:AddGameFunction("Выдача оружий персонажа", "icon16/gun.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -415,7 +487,7 @@ MonoMenu:AddGameFunction("Выдача стандартных оружий", "ic
     end
 })
 
-MonoMenu:AddGameFunction("Выдача стандартных предметов", "icon16/wand.png", {
+MonoMenu:AddGameFunction("Выдача предметов персонажа", "icon16/wand.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -439,7 +511,7 @@ MonoMenu:AddAdminFunction("Зайти за администратора", "icon1
     onRun = function(client)
         if CLIENT then return end
 
-        Arbitrage.player.SetTeam(client, TEAM_ADMIN, true)
+        Character.team:Join(client, TEAM_ADMIN, true)
     end,
     onCreate = function(client)
         return client:Team() != TEAM_ADMIN
@@ -470,15 +542,15 @@ MonoMenu:AddAdminFunction("Глобальный Voice", "icon16/sound_low.png", 
     onEnable = function(client)
         if CLIENT then return end
 
-        client:SetNetVar("arbGlobalVoice", true, client)
+        client:SetLocalVar("arbGlobalVoice", true)
     end,
     onDisable = function(client)
         if CLIENT then return end
 
-        client:SetNetVar("arbGlobalVoice", nil, client)
+        client:SetLocalVar("arbGlobalVoice", nil)
     end,
     OnCheck = function(client)
-        return client:GetNetVar("arbGlobalVoice")
+        return client:GetLocalVar("arbGlobalVoice")
     end
 })
 

@@ -61,7 +61,7 @@ local function HackDoor(client, entity, time)
         if client:GetPos():Distance(entity:GetPos()) >= 130 then return true end
 
         if !client.keyAnim or CurTime() >= client.keyAnim then
-            netstream.Start(nil, "arb.PlayerSetAnim", client, GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
             client.keyAnim = CurTime() + 2.1
         end

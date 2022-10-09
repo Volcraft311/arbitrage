@@ -187,13 +187,18 @@ function Arbitrage.hud.ALTMenuDraw()
 
 		Arbitrage.hud.moved = -180
 
-		local mat = Material(Arbitrage.teams.Get(client:Team()).hud)
-		local size = 0.5
-		local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
+		local faction = Character.team:GetByID(client:Team())
+		local icon = faction:GetAssets().hud
 
-		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
-		surface_SetMaterial(mat)
-		surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
+		if icon then
+			local mat = Material(icon)
+			local size = 0.5
+			local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
+
+			surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
+			surface_SetMaterial(mat)
+			surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
+		end
 
 		for k, v in SortedPairs(Arbitrage.hud.CircleData or {}) do
 			local name = v[1]
@@ -206,7 +211,7 @@ function Arbitrage.hud.ALTMenuDraw()
 		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)
 
 		draw_SimpleText(client:Name(), "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-		draw_SimpleText(Arbitrage.teams.Get(client:Team()).description, "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(faction:GetTitle(), "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 
 		draw_SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 	end
@@ -579,7 +584,7 @@ do
 		if !allow then return end
 
 		local client = LocalPlayer()
-		local Stamina = client:GetNetVar("stm", 100)
+		local Stamina = client:GetLocalVar("stm", 100)
 		local frametime = FrameTime()
 
 		stamina = Lerp(frametime * 10, stamina, Stamina)

@@ -77,10 +77,10 @@ function BASE:Equip(client, item, id)
 
 		client.carryWeapons[item.class] = weapon
 
-		client:SetNetVar("fast_slot_" .. id, {
+		client:SetLocalVar("fast_slot_" .. id, {
 			weapon,
 			item:GetID()
-		}, client)
+		})
 
 		-- некоторые паки оружия выдают патроны при эквипе, по этому сохраняет копию и после выдаем ее обратно
 		client:RemoveAmmo(weapon:Clip1(), ammoType)
@@ -106,7 +106,7 @@ function BASE:UnEquip(client, item)
 	if !id then return end
 
 	client.carryWeapons = client.carryWeapons or {}
-	local data = client:GetNetVar("fast_slot_" .. id)
+	local data = client:GetLocalVar("fast_slot_" .. id)
 	local weapon = data and data[1]
 
 	if !IsValid(weapon) then
@@ -119,7 +119,7 @@ function BASE:UnEquip(client, item)
 	end
 
 	client.carryWeapons[item.class] = nil
-	client:SetNetVar("fast_slot_" .. id, nil, client)
+	client:SetLocalVar("fast_slot_" .. id, nil)
 	item:SetData("equip", nil)
 	item.slotID = nil
 

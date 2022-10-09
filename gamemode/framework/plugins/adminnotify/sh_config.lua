@@ -53,7 +53,7 @@ PLUGIN:AddNewNotify("disconnect", function(client)
 end)
 
 PLUGIN:AddNewNotify("transfercharacter", function(client, target, faction)
-    local factionData = Arbitrage.teams.Get(faction)
+    local factionData = Character.team:GetByID(faction)
 
     return Color(63, 162, 184), client, Color(255, 255, 255), " перенес игрока ", Color(197, 181, 60), target, Color(255, 255, 255), " во фракцию ", Color(48, 218, 187), factionData.name .. " (" .. faction .. ")"
 end)

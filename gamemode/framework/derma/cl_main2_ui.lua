@@ -213,10 +213,6 @@ function PANEL:ClosePanel()
     self:SetKeyboardInputEnabled(false)
     self:AlphaTo(0, 0.5, 0, function()
         self:Remove()
-
-        timer.Simple(1, function()
-            Arbitrage.StartCaching()
-        end)
     end)
 end
 

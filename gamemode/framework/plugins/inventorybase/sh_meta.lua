@@ -12,7 +12,7 @@
 ]]--
 
 
-local INVENTORY = Arbitrage.meta.inventory or {}
+local INVENTORY = {}
 INVENTORY.__index = INVENTORY
 INVENTORY.slots = INVENTORY.slots or {}
 INVENTORY.w = INVENTORY.w or 4
@@ -179,4 +179,5 @@ if SERVER then
     end
 end
 
-Arbitrage.meta.inventory = INVENTORY
+
+debug.getregistry().Inventory = INVENTORY

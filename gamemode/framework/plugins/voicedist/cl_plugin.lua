@@ -177,10 +177,11 @@ local function drawPlayers()
 
         local fraction = v.arbTextAlpha
         if fraction <= 0.1 then continue end
+
         local distance = v:GetPos():DistToSqr(EyePos())
+        local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
 
         cam.Start3D2D(PLUGIN:GetTypingIndicatorPosition(v), Angle(0, angle.y, 90), 0.05)
-            local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
             draw.SimpleTextOutlined(PLUGIN.text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
         cam.End3D2D()
     end

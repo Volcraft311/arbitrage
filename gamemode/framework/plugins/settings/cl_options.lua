@@ -57,13 +57,6 @@ SETTINGS.options.Add("show_invisible", SETTINGS.type.bool, true, {
     end
 })
 
-SETTINGS.options.Add("enable_autocache", SETTINGS.type.bool, false, {
-    name = "Включить автокэширование ассетов",
-    title = "Включить автокэширование ассетов",
-    description = "Автокэширование позволяет избегать провисаний и падения кадров в секунду на этапах игры, в которых используются материалы-изображения и спрайты.",
-    image = "danganronpa/settings/enable_autocache.png",
-})
-
 SETTINGS.options.Add("show_admin_notify", SETTINGS.type.bool, true, {
     name = "Отображение админских уведомлений",
     title = "Информация о действиях на сервере",

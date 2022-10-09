@@ -12,7 +12,7 @@
 ]]--
 
 
-local ITEM = Arbitrage.meta.item or {}
+local ITEM = {}
 ITEM.__index = ITEM
 ITEM.name = "База предметов"
 ITEM.description = "Стандартная база для создания предметов."
@@ -237,4 +237,4 @@ if SERVER then
 end
 
 
-Arbitrage.meta.item = ITEM
+debug.getregistry().Item = ITEM

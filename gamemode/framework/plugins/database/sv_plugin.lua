@@ -62,6 +62,9 @@ function PLUGIN:PlayerDisconnected(client)
             weaponsList[#weaponsList + 1] = v:GetClass()
         end
 
+        local hullMin, hullMax = client:GetHull()
+        local hullduckMin, hullduckMax = client:GetHullDuck()
+
         entity.data = {
             health = client:Health(),
             armor = client:Armor(),
@@ -72,6 +75,9 @@ function PLUGIN:PlayerDisconnected(client)
             evidence = client:GetEvidences(),
             inventoryID = client:GetInventory():GetID(),
             ammo = client:GetAmmo(),
+            scale = client:GetModelScale(),
+            hullscale = {hullMin, hullMax},
+            hullduckscale = {hullduckMin, hullduckMax},
 
             saver = client._saver
         }
@@ -132,6 +138,10 @@ function PLUGIN:PlayerInitial(client)
     client:SetModel(leaveEntity:GetModel())
     client:SetHealth(data.health)
     client:SetArmor(data.armor)
+
+    client:SetModelScale(data.scale)
+    client:SetHull(data.hullscale[1], data.hullscale[2])
+    client:SetHullDuck(data.hullduckscale[1], data.hullduckscale[2])
 
     local saver = data.saver
     if saver then

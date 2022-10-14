@@ -103,7 +103,6 @@ function Character.team:Join(client, data, bRespawn)
     client:SetModel(info:GetModel())
     client:SetModelScale(info:GetScale())
     client:SetNoCollideWithTeammates(false)
-    client:ResetHull()
 
     do
         local min, max = client:GetHull()

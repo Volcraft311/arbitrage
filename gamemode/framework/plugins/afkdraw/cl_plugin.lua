@@ -31,6 +31,7 @@ timer.Create("AfkDraw:Update", 1, 0, function()
 	for k, v in ipairs(player.GetAll()) do
 		if v == client then continue end
 	    if v:IsNocliping() then continue end
+	    if v:IsSpectate() then continue end
 
 	    local distance = v:GetPos():DistToSqr(EyePos())
 	    if distance > d * 2 then continue end

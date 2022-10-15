@@ -853,3 +853,18 @@ Character.team:Create({
     hullscale = 1,
     hullduckscale = 1
 })
+
+Character.team:Create({
+    name = "Ирис Юма",
+    title = "Абсолютный помощник",
+    category = "unique",
+    model = "models/player/ciel/heihua/xier.mdl",
+    uniqueID = "iris",
+    evidence_visibility = 3,
+    stamina = {run_consumption = 1},
+    speed = {walk = 1, run = 1.6},
+    needs = {hunger = 10000, thirst = 10000, fatique = 10000},
+    sclale = 1,
+    hullscale = 1,
+    hullduckscale = 1
+})

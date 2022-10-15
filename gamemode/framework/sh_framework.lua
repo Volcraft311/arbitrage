@@ -478,7 +478,6 @@ do
         return self:GetNetVar("arbLaw", -1)
     end
 
-
     playerMeta.oldAlive = playerMeta.oldAlive or playerMeta.Alive
     function playerMeta:Alive()
         local faction = self:Team()

@@ -156,7 +156,7 @@ PLUGIN.type = {
             for k, v in pairs(panel.panelsKeys) do
                 if !IsValid(v) then continue end
 
-                v:DisabledEdit()
+                v.isEdit = false
             end
 
             PLUGIN.ClearTimers()
@@ -167,7 +167,7 @@ PLUGIN.type = {
 
                 if key then
                     PLUGIN.ClearTimers()
-                    buttonKey:DisabledEdit()
+                    buttonKey.isEdit = false
 
                     SETTINGS.binds.Set(data.id, key)
                 end
@@ -175,12 +175,8 @@ PLUGIN.type = {
 
             timer.Create("SETTINGS:ChangeKeyDelay", 50, 1, function()
                 PLUGIN.ClearTimers()
-                buttonKey:DisabledEdit()
+                buttonKey.isEdit = false
             end)
-        end
-
-        function buttonKey:DisabledEdit()
-            buttonKey.isEdit = false
         end
 
         panel.panelsKeys[#panel.panelsKeys + 1] = buttonKey

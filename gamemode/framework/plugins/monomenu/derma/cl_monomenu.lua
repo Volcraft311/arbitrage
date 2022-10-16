@@ -330,7 +330,11 @@ function PANEL:SetData(data)
             surface.DrawPoly(circle)
 
             draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor, TEXT_ALIGN_LEFT)
-            draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, H(8), factionColor, TEXT_ALIGN_CENTER)
+
+            if factionData then
+                draw.DrawText(factionData:GetName(), "arb.Font_FuturaPTBook_5", w / 2, H(8), factionColor, TEXT_ALIGN_CENTER)
+            end
+
             draw.DrawText("Место на суде: " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + W(200), H(8), placeColor, TEXT_ALIGN_CENTER)
         end
 
@@ -376,7 +380,10 @@ function PANEL:SetData(data)
             surface.DrawPoly(circle)
 
             draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor, TEXT_ALIGN_LEFT)
-            draw.DrawText(factionData.name, "arb.Font_FuturaPTBook_5", w / 2, H(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+
+            if factionData then
+                draw.DrawText(factionData:GetName(), "arb.Font_FuturaPTBook_5", w / 2, H(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+            end
         end
 
         local mat = (factionData and factionData:GetAssets().pixel) and Material(factionData:GetAssets().pixel) or nil

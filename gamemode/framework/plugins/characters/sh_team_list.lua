@@ -849,7 +849,7 @@ Character.team:Create({
     stamina = {run_consumption = 1},
     speed = {walk = 1.2, run = 1.6},
     needs = {hunger = 30, thirst = 35, fatique = 50},
-    sclale = 1,
+    scale = 1,
     hullscale = 1,
     hullduckscale = 1
 })
@@ -864,7 +864,22 @@ Character.team:Create({
     stamina = {run_consumption = 1},
     speed = {walk = 1, run = 1.6},
     needs = {hunger = 10000, thirst = 10000, fatique = 10000},
-    sclale = 1,
+    scale = 1,
     hullscale = 1,
     hullduckscale = 1
+})
+
+Character.team:Create({
+    name = "Нагито Комаэда",
+    title = "Абсолютный ???",
+    category = "unique",
+    model = "models/player/dewobedil/nagito_komaeda/default_p.mdl",
+    uniqueID = "nagitoo",
+    evidence_visibility = 3,
+    stamina = {run_consumption = 1},
+    speed = {walk = 1, run = 1.6},
+    needs = {hunger = 10000, thirst = 10000, fatique = 10000},
+    scale = 1.133,
+    hullscale = 0.872,
+    hullduckscale = 1.05
 })

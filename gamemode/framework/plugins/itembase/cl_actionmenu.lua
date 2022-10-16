@@ -78,7 +78,7 @@ function PLUGIN.actionMenu:Paint()
 
         if !IsValid(entity) then
             self.stored[k] = nil
-            return
+            continue
         end
 
         local pos = entity:LocalToWorld(entity:OBBCenter())
@@ -117,11 +117,11 @@ function PLUGIN.actionMenu:Paint()
                 if bSelected then isSelect = v2 end
             end
 
-            if client:KeyPressed(IN_USE) and isSelect and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then
+            if isSelect and client:KeyDown(IN_USE) and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then
                 netstream.Start("ItemBase:SendAction", entity:GetItemID(), isSelect)
 
                 self.stored[k] = nil
-                PLUGIN.actionMenu.cd = CurTime() + 0.2
+                PLUGIN.actionMenu.cd = CurTime() + 0.5
             end
         end
     end

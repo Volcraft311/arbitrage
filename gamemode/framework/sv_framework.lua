@@ -344,35 +344,41 @@ timer.Create("Arbitrage:StatisticsThink", 1, 0, function()
     end
 end)
 
+local regenScale = 220
 timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
-    for k, v in ipairs(player.GetAll()) do
-        if !v:oldAlive() then continue end
-        if !v:IsPlaying() then continue end
+    local frametime = FrameTime()
+    local curtime = CurTime()
 
-        local stamina = v:GetLocalVar("stm", 100)
-        local frametime = FrameTime()
-        local factionData = Character.team:GetByID(v:Team())
-        local staminaSpending = factionData and factionData:GetRunConsumption() or 1
-        local length = v:GetVelocity():LengthSqr()
+    for _, client in ipairs(player.GetAll()) do
+        if !client:oldAlive() then continue end
+        if !client:IsPlaying() then continue end
 
-        if (v:KeyDown(IN_SPEED) and !v:IsNocliping()) and length >= 10000 then
-            v:SetLocalVar("stm", math.Clamp(stamina - (frametime * 60 * staminaSpending), 0, 100))
-            v.StaminaCD = CurTime() + 1.5
+        local faction = Character.team:GetByID(client:Team())
+        local staminaSpending = faction and faction:GetRunConsumption() or 1
+        local length = client:GetVelocity():LengthSqr()
+        local stamina = client:GetLocalVar("stm", 100)
+
+        if client:KeyDown(IN_SPEED) and length > 0 and !client:IsNocliping() then
+            client:SetLocalVar("stm", math.Clamp(stamina - (frametime * 40 * staminaSpending), 0, 100))
+            client.StaminaCD = curtime + 1.5
         else
-            local amount = Arbitrage.statistics.Get(v, "Thirst")
-            local staminaColdDown = v.StaminaCD
+            local amount = Arbitrage.statistics.Get(client, "Thirst")
+            local staminaColdDown = client.StaminaCD
 
-            if (!staminaColdDown or CurTime() >= staminaColdDown) and amount >= 10 then
-                v:SetLocalVar("stm", math.Clamp(stamina + (frametime * 220), 0, 100))
+            if (!staminaColdDown or curtime >= staminaColdDown) and amount >= 10 then
+                local crouching = client:Crouching()
+                local regeneration = length == 0 and (crouching and regenScale * 2 or regenScale) or regenScale / 3
+
+                client:SetLocalVar("stm", math.Clamp(stamina + frametime * regeneration, 0, 100))
             end
         end
 
         if stamina >= 100 then continue end
         timer.Simple(0.2, function() -- Обработка после прыжка (если обрабатывать по тику, то после прыжка сила будет сразу же падать вниз из-за чего у нас прыжок сразу же уходит на несколько поинтов вниз)
-            if !IsValid(v) then return end
+            if !IsValid(client) then return end
 
             local jumppower = math.Clamp(stamina * 4, 50, ARBITRAGE_JUMP_POWER)
-            v:SetJumpPower(jumppower)
+            client:SetJumpPower(jumppower)
         end)
     end
 end)
@@ -474,8 +480,9 @@ function Arbitrage:PlayerSay(client, data)
     end
 
     if Arbitrage.commands then
-        if data:sub(1, 2) == "//" or data:sub(1, 2) == "[[" or data:sub(1, 2) == "./" then
-            local command = data:sub(1, 2)
+        local command = data:sub(1, 2)
+
+        if command == "//" or command == "[[" or command == "./" then
             local message = utf8.sub(data, 3, utf8.len(data))
             local extra = Arbitrage:ExtractArgs(message)
 

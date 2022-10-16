@@ -26,7 +26,7 @@ function TOOL:LeftClick()
     if !IsValid(entity) then return client:ChatPrint("Не валидное Entity!") end
 
     if !entity:IsCorpse() then
-        local convar = GetConVar(l .. "steamid"):GetString()
+        local convar = tostring(client:GetTool():GetClientInfo("steamid"))
 
         local steamid = true
         if convar and convar != "" then

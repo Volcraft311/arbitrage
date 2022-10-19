@@ -393,7 +393,7 @@ Character.emoji:Register("yasuhiro", {
 
 -- GOODBYE DESPAIR
 Character.emoji:Register("akane", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -420,11 +420,11 @@ Character.emoji:Register("akane", {
 		"24.png",
 		"25.png",
 		"26.png"
-    }
+	}
 })
 
 Character.emoji:Register("chiaki", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -446,11 +446,11 @@ Character.emoji:Register("chiaki", {
 		"19.png",
 		"20.png",
 		"21.png"
-    }
+	}
 })
 
 Character.emoji:Register("fuyuhiko", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -467,11 +467,11 @@ Character.emoji:Register("fuyuhiko", {
 		"14.png",
 		"15.png",
 		"16.png"
-    }
+	}
 })
 
 Character.emoji:Register("gundham", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -496,11 +496,11 @@ Character.emoji:Register("gundham", {
 		"22.png",
 		"23.png",
 		"24.png"
-    }
+	}
 })
 
 Character.emoji:Register("hajime", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -522,11 +522,11 @@ Character.emoji:Register("hajime", {
 		"19.png",
 		"20.png",
 		"21.png"
-    }
+	}
 })
 
 Character.emoji:Register("hiyoko", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -551,11 +551,11 @@ Character.emoji:Register("hiyoko", {
 		"22.png",
 		"23.png",
 		"24.png"
-    }
+	}
 })
 
 Character.emoji:Register("ibuki", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -572,11 +572,11 @@ Character.emoji:Register("ibuki", {
 		"14.png",
 		"15.png",
 		"16.png"
-    }
+	}
 })
 
 Character.emoji:Register("kazuichi", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -602,11 +602,11 @@ Character.emoji:Register("kazuichi", {
 		"23.png",
 		"24.png",
 		"25.png"
-    }
+	}
 })
 
 Character.emoji:Register("mahiru", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -628,11 +628,11 @@ Character.emoji:Register("mahiru", {
 		"19.png",
 		"20.png",
 		"21.png"
-    }
+	}
 })
 
 Character.emoji:Register("mikan", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -657,11 +657,11 @@ Character.emoji:Register("mikan", {
 		"22.png",
 		"23.png",
 		"24.png"
-    }
+	}
 })
 
 Character.emoji:Register("nagito", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -689,11 +689,11 @@ Character.emoji:Register("nagito", {
 		"25.png",
 		"26.png",
 		"27.png"
-    }
+	}
 })
 
 Character.emoji:Register("nekomaru", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -709,11 +709,11 @@ Character.emoji:Register("nekomaru", {
 		"13.png",
 		"14.png",
 		"15.png"
-    }
+	}
 })
 
 Character.emoji:Register("peko", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -732,11 +732,11 @@ Character.emoji:Register("peko", {
 		"16.png",
 		"17.png",
 		"18.png"
-    }
+	}
 })
 
 Character.emoji:Register("sonia", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -753,11 +753,11 @@ Character.emoji:Register("sonia", {
 		"14.png",
 		"15.png",
 		"16.png"
-    }
+	}
 })
 
 Character.emoji:Register("teruteru", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -780,11 +780,11 @@ Character.emoji:Register("teruteru", {
 		"20.png",
 		"21.png",
 		"22.png"
-    }
+	}
 })
 
 Character.emoji:Register("twogami", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -801,13 +801,13 @@ Character.emoji:Register("twogami", {
 		"14.png",
 		"15.png",
 		"16.png"
-    }
+	}
 })
 
 
 -- KILLING HARMONY
 Character.emoji:Register("angie", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -834,11 +834,11 @@ Character.emoji:Register("angie", {
 		"24.png",
 		"25.png",
 		"26.png"
-    }
+	}
 })
 
 Character.emoji:Register("gonta", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -871,11 +871,11 @@ Character.emoji:Register("gonta", {
 		"30.png",
 		"31.png",
 		"32.png"
-    }
+	}
 })
 
 Character.emoji:Register("himiko", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -912,11 +912,11 @@ Character.emoji:Register("himiko", {
 		"34.png",
 		"35.png",
 		"36.png"
-    }
+	}
 })
 
 Character.emoji:Register("k1b0", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -943,11 +943,11 @@ Character.emoji:Register("k1b0", {
 		"24.png",
 		"25.png",
 		"26.png"
-    }
+	}
 })
 
 Character.emoji:Register("kaede", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -995,11 +995,11 @@ Character.emoji:Register("kaede", {
 		"45.png",
 		"46.png",
 		"47.png"
-    }
+	}
 })
 
 Character.emoji:Register("kaito", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1045,11 +1045,11 @@ Character.emoji:Register("kaito", {
 		"43.png",
 		"44.png",
 		"45.png"
-    }
+	}
 })
 
 Character.emoji:Register("kirumi", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1082,11 +1082,11 @@ Character.emoji:Register("kirumi", {
 		"30.png",
 		"31.png",
 		"32.png"
-    }
+	}
 })
 
 Character.emoji:Register("kokichi", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1129,11 +1129,11 @@ Character.emoji:Register("kokichi", {
 		"40.png",
 		"41.png",
 		"42.png"
-    }
+	}
 })
 
 Character.emoji:Register("korekiyo", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1157,11 +1157,11 @@ Character.emoji:Register("korekiyo", {
 		"21.png",
 		"22.png",
 		"23.png"
-    }
+	}
 })
 
 Character.emoji:Register("maki", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1215,11 +1215,11 @@ Character.emoji:Register("maki", {
 		"51.png",
 		"52.png",
 		"53.png"
-    }
+	}
 })
 
 Character.emoji:Register("miu", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1252,11 +1252,11 @@ Character.emoji:Register("miu", {
 		"30.png",
 		"31.png",
 		"32.png"
-    }
+	}
 })
 
 Character.emoji:Register("rantaro", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1281,11 +1281,11 @@ Character.emoji:Register("rantaro", {
 		"22.png",
 		"23.png",
 		"24.png"
-    }
+	}
 })
 
 Character.emoji:Register("ryoma", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1305,11 +1305,11 @@ Character.emoji:Register("ryoma", {
 		"17.png",
 		"18.png",
 		"19.png"
-    }
+	}
 })
 
 Character.emoji:Register("shuichi", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1388,11 +1388,11 @@ Character.emoji:Register("shuichi", {
 		"76.png",
 		"77.png",
 		"78.png"
-    }
+	}
 })
 
 Character.emoji:Register("tenko", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1426,11 +1426,11 @@ Character.emoji:Register("tenko", {
 		"31.png",
 		"32.png",
 		"33.png"
-    }
+	}
 })
 
 Character.emoji:Register("tsumugi", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1460,13 +1460,13 @@ Character.emoji:Register("tsumugi", {
 		"27.png",
 		"28.png",
 		"29.png"
-    }
+	}
 })
 
 
 -- ULTRA DESPAIR GIRLS
 Character.emoji:Register("jataro", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1478,11 +1478,11 @@ Character.emoji:Register("jataro", {
 		"9.png",
 		"10.png",
 		"11.png"
-    }
+	}
 })
 
 Character.emoji:Register("komaru", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1515,21 +1515,21 @@ Character.emoji:Register("komaru", {
 		"30.png",
 		"31.png",
 		"32.png"
-    }
+	}
 })
 
 Character.emoji:Register("kotoko", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
 		"4.png",
 		"5.png"
-    }
+	}
 })
 
 Character.emoji:Register("masaru", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1541,11 +1541,11 @@ Character.emoji:Register("masaru", {
 		"9.png",
 		"10.png",
 		"11.png"
-    }
+	}
 })
 
 Character.emoji:Register("monaca", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1563,11 +1563,11 @@ Character.emoji:Register("monaca", {
 		"15.png",
 		"16.png",
 		"17.png"
-    }
+	}
 })
 
 Character.emoji:Register("nagisa", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1584,13 +1584,13 @@ Character.emoji:Register("nagisa", {
 		"14.png",
 		"15.png",
 		"16.png"
-    }
+	}
 })
 
 
 -- Ведущие
 Character.emoji:Register("monokuma", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1627,13 +1627,13 @@ Character.emoji:Register("monokuma", {
 		"34.png",
 		"35.png",
 		"36.png"
-    }
+	}
 })
 
 
 -- Уникальные
 Character.emoji:Register("michiru", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1652,11 +1652,11 @@ Character.emoji:Register("michiru", {
 		"16.png",
 		"17.png",
 		"18.png"
-    }
+	}
 })
 
 Character.emoji:Register("iris", {
-    ["Основные"] = {
+	["Основные"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1666,7 +1666,7 @@ Character.emoji:Register("iris", {
 		"7.png",
 		"8.png",
 		"9.png",
-    }
+	}
 })
 
 Character.emoji:Register("nagitoo", {
@@ -1698,91 +1698,5 @@ Character.emoji:Register("nagitoo", {
 		"25.png",
 		"26.png",
 		"27.png"
-    }
+	}
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- Character.emoji:Register("akane", {
--- 	["Основные"] = {
--- 		"1.png",
--- 		"2.png",
--- 		"3.png",
--- 		"4.png",
--- 		"5.png",
--- 		"6.png",
--- 		"7.png",
--- 		"8.png",
--- 		"9.png",
--- 		"10.png",
--- 		"11.png",
--- 		"12.png",
--- 		"13.png",
--- 		"14.png",
--- 		"15.png",
--- 		"16.png",
--- 		"17.png",
--- 		"18.png",
--- 		"19.png",
--- 		"20.png",
--- 		"21.png",
--- 		"22.png",
--- 		"23.png",
--- 		"24.png",
--- 		"25.png",
--- 		"26.png"
--- 	},
--- 	["Проверка"] = {
--- 		"1.png",
--- 		"2.png"
--- 	}
--- })
-
--- Character.emoji:Register("angie", {
--- 	["Основные"] = {
--- 		"1.png",
--- 		"2.png",
--- 		"3.png",
--- 		"4.png",
--- 		"5.png",
--- 		"6.png",
--- 		"7.png",
--- 		"8.png",
--- 		"9.png",
--- 		"10.png",
--- 		"11.png",
--- 		"12.png",
--- 		"13.png",
--- 		"14.png",
--- 		"15.png",
--- 		"16.png",
--- 		"17.png",
--- 		"18.png",
--- 		"19.png",
--- 		"20.png",
--- 		"21.png",
--- 		"22.png",
--- 		"23.png",
--- 		"24.png",
--- 		"25.png",
--- 		"26.png"
--- 	},
--- 	["Проверка"] = {
--- 		"1.png",
--- 		"2.png"
--- 	}
--- })

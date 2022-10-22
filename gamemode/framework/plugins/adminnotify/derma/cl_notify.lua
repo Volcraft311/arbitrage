@@ -98,7 +98,6 @@ function PANEL:Init()
     self:AlphaTo(255, 0.1)
 end
 
-local c = Color(0, 0, 0, 255)
 function PANEL:Paint(w, h)
     local t = (self.time or 0) - SysTime()
 
@@ -108,7 +107,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96)
     surface.DrawRect(0, h-2, t * (w / PLUGIN.guiTime), 2)
 
-    draw.SimpleText(self.text2 or "", "ixAdminNotifyFont", 4, 5, c, TEXT_ALIGN_LEFT)
+    draw.SimpleText(self.text2 or "", "ixAdminNotifyFont", 4, 5, color_black, TEXT_ALIGN_LEFT)
     self.parsed:Draw(4, 4, TEXT_ALIGN_LEFT)
 end
 

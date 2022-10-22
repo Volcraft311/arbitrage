@@ -417,7 +417,7 @@ function PLUGIN:PostDrawOpaqueRenderables()
 
             local text = "class trial"
             cam.Start3D2D(Pos, ang_t, 0.3)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
                 draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
             cam.End3D2D()
         end

@@ -219,6 +219,14 @@ MonoMenu:AddGameFunction("Открыть список предметов", "icon
     end
 })
 
+MonoMenu:AddGameFunction("Открыть список персонажей", "icon16/table_edit.png", {
+    onRun = function(client)
+        if SERVER then return end
+
+        vgui.Create("Character:CreationMenu")
+    end
+})
+
 MonoMenu:AddGameFunction("Изменить цветокоррекцию", "icon16/color_wheel.png", {
     onRun = function(client)
         if SERVER then return end

@@ -125,13 +125,13 @@ function Editor:HUDPaint()
         for k, v in pairs(Arbitrage.camPosPlaces or {}) do
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
 
-            self:DrawInfo("Позиция камеры у места " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
+            self:DrawInfo("Камера у места " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
         end
     end
 
     do
         for k, v in pairs(Arbitrage.spawnList or {}) do
-            self:DrawInfo("Место спавна: " .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
+            self:DrawInfo("Спавн у места " .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
         end
     end
 
@@ -142,7 +142,7 @@ function Editor:HUDPaint()
     end
 
     self:DrawInfo("Конечное место камеры", Arbitrage.camPosEnd, nil, Color(0, 255, 0), "camPosEnd", "models/editor/air_node_hint.mdl")
-    self:DrawInfo("Место начальной камеры", Arbitrage.camPos and Arbitrage.camPos[1], Arbitrage.camPos and Arbitrage.camPos[2], Color(0, 102, 255), "camPos", "models/editor/cone_helper.mdl", true)
+    self:DrawInfo("Место начальной камеры", Arbitrage.camPos and Arbitrage.camPos[1], Arbitrage.camPos and Arbitrage.camPos[2], Color(171, 57, 193), "camPos", "models/editor/cone_helper.mdl", true)
 end
 
 netstream.Hook("Editor:SetEditor", function(data)

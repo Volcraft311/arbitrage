@@ -588,8 +588,12 @@ function Arbitrage:StartGame()
                 if !IsValid(client) then return end
 
                 if Arbitrage.spawnList then
-                    local vector, _ = table.Random(Arbitrage.spawnList)
-                    client:SetPos(vector)
+                    local place = client:LawPlace()
+                    local point, _ = Arbitrage.spawnList[place] or table.Random(Arbitrage.spawnList)
+
+                    if point then
+                        client:SetPos(point)
+                    end
                 end
 
                 client:Freeze(false)

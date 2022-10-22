@@ -106,7 +106,7 @@ function PANEL:Paint(w, h)
     surface.SetMaterial(mat)
     surface.DrawTexturedRect(0, 0, w, h)
 
-    draw.DrawText(self.labelText, "arb.LawTableFont", w - W(30), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText(self.labelText, "arb.LawTableFont", w - W(30), H(3), color_white, TEXT_ALIGN_RIGHT)
 end
 
 vgui.Register("arb.LawPlayerTable", PANEL, "EditablePanel")

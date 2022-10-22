@@ -54,7 +54,7 @@ local categoryData = {
 
                     for i, _ in pairs(descriptionText) do
                         local y2 = descHeight * i - descHeight
-                        draw.DrawText(descriptionText[i], "arb.Font_FuturaPTBook_7", w / 2, w * 0.95 + y2, ColorAlpha(Color(255, 255, 255), 255), TEXT_ALIGN_CENTER)
+                        draw.DrawText(descriptionText[i], "arb.Font_FuturaPTBook_7", w / 2, w * 0.95 + y2, color_white, TEXT_ALIGN_CENTER)
                     end
                 end
 
@@ -82,7 +82,7 @@ local categoryData = {
             local List = panel:Add("Panel")
             List:Dock(FILL)
             List.Paint = function(_, w, h)
-                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
             end
         end,
     },
@@ -92,7 +92,7 @@ local categoryData = {
             local List = panel:Add("Panel")
             List:Dock(FILL)
             List.Paint = function(_, w, h)
-                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, Color(255, 255, 255), TEXT_ALIGN_CENTER)
+                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
             end
         end,
     }
@@ -241,7 +241,7 @@ function PANEL:Init()
     self.textPanel = self:Add("DTextEntry")
     self.textPanel:SetFont("arb.Font_FuturaPTBook_8")
     self.textPanel:SetMultiline(true)
-    self.textPanel:SetTextColor(Color(255, 255, 255))
+    self.textPanel:SetTextColor(color_white)
     self.textPanel:SetVerticalScrollbarEnabled(true)
     self.textPanel:SetDisabled(truewa)
     self.textPanel:Dock(FILL)
@@ -265,7 +265,7 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, 2, h)
     surface.DrawRect(w - 2, 0, 2, h)
 
-    draw.DrawText(self.data.name or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.DrawText(self.data.name or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), color_white, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.EvidenceMenuSub", PANEL, "DFrame")

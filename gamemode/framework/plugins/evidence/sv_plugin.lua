@@ -38,7 +38,7 @@ local function reg(data)
     return PLUGIN:RegisterNewEvidence({
         name = data.name or "Неизвестно",
         description = data.description or "Неизвестно",
-        color = data.color or Color(255, 255, 255),
+        color = data.color or color_white,
         alpha = data.alpha or 255,
         image = tonumber(data.image) and math.floor(data.image) or 1,
         ribbon = tonumber(data.image) and math.floor(data.ribbon) or 1

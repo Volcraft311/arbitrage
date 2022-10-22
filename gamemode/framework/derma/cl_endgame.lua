@@ -244,7 +244,7 @@ function PANEL:AddTitle()
 				local __w, _ = surface.GetTextSize(v)
 
 				local a = math.floor(RealTime() * 4 + index) % 2 == 0
-				local b = a and Color(255, 35, 57) or Color(255, 255, 255)
+				local b = a and Color(255, 35, 57) or color_white
 
 				draw.DrawText(v, font, _w, 0, b, TEXT_ALIGN_LEFT)
 				_w = _w + __w
@@ -329,7 +329,7 @@ function PANEL:DrawArrow(x, y)
 	local a = math.floor(RealTime() * 4) % 2 == 0
 	local b = a and 10 or 0
 
-	surface.SetDrawColor(a and Color(255, 255, 255) or Color(255, 35, 57))
+	surface.SetDrawColor(a and color_white or Color(255, 35, 57))
 
 	surface.DrawRect(x, y + b, 30, 5)
 	surface.DrawRect(x + 5, y + 5 + b, 20, 5)

@@ -51,7 +51,7 @@ end
 local function chatColor(name)
     if !name then return end
 
-    return Arbitrage.chat.List[name].Color or Color(255, 255, 255)
+    return Arbitrage.chat.List[name].Color or color_white
 end
 
 Arbitrage.chat.List = {
@@ -162,7 +162,7 @@ Arbitrage.chat.List = {
         end
     },
     ["it"] = {
-        Color = Color(255, 255, 255),
+        Color = color_white,
         OnCreate = function(client, sender, data)
             return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", data[1], Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
         end,

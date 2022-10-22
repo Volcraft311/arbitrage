@@ -81,7 +81,7 @@ function InventoryBase:CreateInfoPanel(panel, x, y, wide)
                 text = descriptionText[i]:gsub(" ", "", 1)
             end
 
-            draw.SimpleText(text, descFont, 0, y, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText(text, descFont, 0, y, color_white, TEXT_ALIGN_LEFT)
         end
     end
 

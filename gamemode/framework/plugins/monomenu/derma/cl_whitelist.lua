@@ -123,9 +123,9 @@ function PANEL:SetData(data)
                 surface.DrawRect(0, 0, w, h)
             end
 
-            draw.DrawText(steamid, "arb.Font_FuturaPTBook_7", W(15), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(name, "arb.Font_FuturaPTBook_7", W(390), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(steamid64, "arb.Font_FuturaPTBook_7", w - W(100), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.DrawText(steamid, "arb.Font_FuturaPTBook_7", W(15), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(name, "arb.Font_FuturaPTBook_7", W(390), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(steamid64, "arb.Font_FuturaPTBook_7", w - W(100), H(4), color_white, TEXT_ALIGN_RIGHT)
         end
 
         local bEdit = !PLUGIN.WhiteListStandart[steamid]
@@ -177,11 +177,11 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("WhiteList список", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("WhiteList список", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("SteamID", "arb.Font_FuturaPTBook_7", W(30), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Описание", "arb.Font_FuturaPTBook_7", W(405), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - W(115), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText("SteamID", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("Описание", "arb.Font_FuturaPTBook_7", W(405), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - W(115), H(45), color_white, TEXT_ALIGN_RIGHT)
 end
 
 vgui.Register("arb.MonoMenuWhiteList", PANEL, "DFrame")
@@ -221,12 +221,12 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Добавить нового участника", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Добавить нового участника", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите SteamID человека, которого вы хотите добавить в WhiteList", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите SteamID человека, которого вы хотите добавить в WhiteList", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: STEAM_0:1:127526733", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите описание, которое будет отображаться рядом со SteamID", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите описание, которое будет отображаться рядом со SteamID", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: Selenter", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 

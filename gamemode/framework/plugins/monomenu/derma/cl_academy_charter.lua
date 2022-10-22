@@ -106,7 +106,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Устав академии", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Устав академии", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MonoAcademyCharter", PANEL, "DFrame")

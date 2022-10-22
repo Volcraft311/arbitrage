@@ -483,7 +483,7 @@ function PANEL:Init()
 	say_panel:SetFont("arb.Font_FuturaPTBook_7")
 	say_panel:Dock(LEFT)
 	say_panel.Paint = function(_, w, h)
-		surface.SetDrawColor(Color(0, 0, 0))
+		surface.SetDrawColor(color_black)
 		surface.DrawRect(0, 0, w, h)
 	end
 	say_panel:SetWide(say_panel:GetWide() + 10)
@@ -500,7 +500,7 @@ function PANEL:Init()
 	self.entry.last_index = 0
 	self.entry.OnValueChange = PLUGIN.Bind(self, self.OnTextChanged)
 	self.entry.PaintOver = function(_, w, h)
-		surface.SetDrawColor(Color(0, 0, 0))
+		surface.SetDrawColor(color_black)
 		surface.DrawOutlinedRect(0, 0, w, h, 2)
 	end
 

@@ -44,15 +44,15 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Запустить заставку", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Запустить заставку", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите название главы", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите название главы", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: A Thin Line Devides Heaven and Hell", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите номер главы", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите номер главы", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: 2", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите конечный текст", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите конечный текст", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: Продолжение следует", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 

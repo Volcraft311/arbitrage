@@ -124,10 +124,10 @@ function PANEL:InitClue()
             surface.SetMaterial(mat)
             surface.DrawTexturedRect(2, 2, h - 4, h - 4)
 
-            draw.DrawText(name, "arb.Font_FuturaPTBook_7", W(40), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(id, "arb.Font_FuturaPTBook_7", W(390), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(creator, "arb.Font_FuturaPTBook_7", w - W(400), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
-            draw.DrawText(time, "arb.Font_FuturaPTBook_7", w - W(95), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+            draw.DrawText(name, "arb.Font_FuturaPTBook_7", W(40), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(id, "arb.Font_FuturaPTBook_7", W(390), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(creator, "arb.Font_FuturaPTBook_7", w - W(400), H(4), color_white, TEXT_ALIGN_RIGHT)
+            draw.DrawText(time, "arb.Font_FuturaPTBook_7", w - W(95), H(4), color_white, TEXT_ALIGN_RIGHT)
         end
 
         local button = panel:Add("DButton")
@@ -181,12 +181,12 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Меню улик", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Меню улик", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Название улики", "arb.Font_FuturaPTBook_7", W(55), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Уникальный ID", "arb.Font_FuturaPTBook_7", W(405), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Создал", "arb.Font_FuturaPTBook_7", w - W(415), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
-    draw.DrawText("Время создания", "arb.Font_FuturaPTBook_7", w - W(115), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText("Название улики", "arb.Font_FuturaPTBook_7", W(55), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("Уникальный ID", "arb.Font_FuturaPTBook_7", W(405), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("Создал", "arb.Font_FuturaPTBook_7", w - W(415), H(45), color_white, TEXT_ALIGN_RIGHT)
+    draw.DrawText("Время создания", "arb.Font_FuturaPTBook_7", w - W(115), H(45), color_white, TEXT_ALIGN_RIGHT)
 end
 
 vgui.Register("arb.MonoMenuClue", PANEL, "DFrame")
@@ -229,18 +229,18 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Зарегистрировать новую улику", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Зарегистрировать новую улику", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите название улики", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите название улики", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: Кровавый нож", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите Уникальный ID улики", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите Уникальный ID улики", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: knife", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите описание улики", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите описание улики", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: Описание", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберите материал улики", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 200), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Выберите материал улики", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 200), color_white, TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -405,9 +405,9 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Создать улику в мире", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Создать улику в мире", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберите нужную вам улику", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Выберите нужную вам улику", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")

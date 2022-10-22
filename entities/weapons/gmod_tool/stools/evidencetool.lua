@@ -183,7 +183,7 @@ function TOOL.BuildCPanel(CPanel)
 
     local lableDesc = vgui.Create("DLabel")
     lableDesc:SetText("Описание улики")
-    lableDesc:SetTextColor(Color(0, 0, 0))
+    lableDesc:SetTextColor(color_black)
     CPanel:AddPanel(lableDesc)
 
     local dtextentryDesc = vgui.Create("DTextEntry")

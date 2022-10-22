@@ -63,7 +63,7 @@ function PANEL:Paint(w, h)
 
     for i, _ in pairs(self.text) do
         local y2 = y + (descHeight * i)
-        draw.SimpleText(self.text[i], "ArcadeGenericFont", w - 10, y2, ColorAlpha(Color(255, 255, 255), self.alpha), TEXT_ALIGN_RIGHT)
+        draw.SimpleText(self.text[i], "ArcadeGenericFont", w - 10, y2, ColorAlpha(color_white, self.alpha), TEXT_ALIGN_RIGHT)
     end
 
     local time = 1000

@@ -105,7 +105,7 @@ function Arbitrage.action.Draw()
     surface_DrawPoly(circle)
 
     asterionlib.DrawRender(function()
-        asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, Color(255, 255, 255), -12.5, 0)
+        asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, color_white, -12.5, 0)
     end, function()
         surface_SetDrawColor(Color(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5))
         surface_DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)

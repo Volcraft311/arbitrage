@@ -67,7 +67,7 @@ function PANEL:Init()
     self.LeftButton:DockMargin(10, 0, 0, 0)
     self.LeftButton:SetText("")
     self.LeftButton:Dock(LEFT)
-    self.LeftButton.color = Color(255, 255, 255)
+    self.LeftButton.color = color_white
     self.LeftButton.Paint = function(_, w, h)
         local frametime = FrameTime() * 5
         if !_:IsEnabled() then
@@ -99,7 +99,7 @@ function PANEL:Init()
     self.RightButton:DockMargin(0, 0, 10, 0)
     self.RightButton:SetText("")
     self.RightButton:Dock(RIGHT)
-    self.RightButton.color = Color(255, 255, 255)
+    self.RightButton.color = color_white
     self.RightButton.Paint = function(_, w, h)
         local frametime = FrameTime() * 5
         if !_:IsEnabled() then

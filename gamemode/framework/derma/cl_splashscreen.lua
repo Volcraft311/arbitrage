@@ -241,8 +241,8 @@ function PANEL:ShowSurvival()
 
         self.survival.List[steamid] = {
             material = mat,
-            color = Color(0, 0, 0),
-            mcolor = Color(0, 0, 0),
+            color = color_black,
+            mcolor = color_black,
             alpha = 255,
             malpha = 255
         }
@@ -257,7 +257,7 @@ function PANEL:ShowSurvival()
 
             timer.Simple(k * 1, function()
                 if self.survival.List[v] then
-                    self.survival.List[v].mcolor = Color(255, 255, 255)
+                    self.survival.List[v].mcolor = color_white
 
                     timer.Simple(0.5, function()
                         self.survival.List[v].mcolor = Color(233, 74, 74)
@@ -277,7 +277,7 @@ function PANEL:ShowSurvival()
                 for k, v in pairs(self.survival.List) do
                     if !self.survival.List[k] then continue end
 
-                    self.survival.List[k].mcolor = Color(255, 255, 255)
+                    self.survival.List[k].mcolor = color_white
                 end
 
                 for k, v in pairs(self.data[2]) do
@@ -371,7 +371,7 @@ end
 
 function PANEL:TakeSurv()
     self.allSurv = self.allSurv - 1
-    self.allSurv_color = Color(255, 255, 255)
+    self.allSurv_color = color_white
 end
 
 function PANEL:SetData(data)

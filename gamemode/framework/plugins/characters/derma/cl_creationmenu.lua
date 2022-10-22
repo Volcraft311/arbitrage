@@ -198,7 +198,7 @@ function PANEL:CreateInfo(parent)
 	            surface.DrawOutlinedRect(0, 0, w, h)
 	        end
 
-	        draw.SimpleText(v.name, "arb.Font_FuturaPTBook_7", W(10), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+	        draw.SimpleText(v.name, "arb.Font_FuturaPTBook_7", W(10), H(4), color_white, TEXT_ALIGN_LEFT)
 		end
 
 		button.DoClick = function(_, w, h)
@@ -324,7 +324,7 @@ function PANEL:Paint(w, h)
 	surface.SetDrawColor(255, 61, 96, 20)
 	surface.DrawRect(0, 0, w, H(30))
 
-	draw.DrawText("Редактор персонажей", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+	draw.DrawText("Редактор персонажей", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("Character:CreationMenu", PANEL, "DFrame")
@@ -359,7 +359,7 @@ function PANEL:Init()
 	    surface.SetDrawColor(255, 61, 96, 20)
 	    surface.DrawRect(0, 0, w, h)
 
-	    draw.DrawText("Редактор команды", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+	    draw.DrawText("Редактор команды", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 	end
 
 	local close = title:Add("DButton")
@@ -531,7 +531,7 @@ function PANEL:Init()
 		local title = panel:Add("DLabel")
 		title:SetText(indent .. v.title)
 		title:SetFont("arb.Font_FuturaPTBook_7")
-		title:SetTextColor(Color(255, 255, 255))
+		title:SetTextColor(color_white)
 		title:Dock(TOP)
 		title:SizeToContents()
 
@@ -618,7 +618,7 @@ function PANEL:Init()
 	    surface.SetDrawColor(255, 61, 96, 20)
 	    surface.DrawRect(0, 0, w, h)
 
-	    draw.DrawText("Редактор спрайтов", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+	    draw.DrawText("Редактор спрайтов", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 	end
 
 	local close = title:Add("DButton")
@@ -741,7 +741,7 @@ function PANEL:CreateCategory(name, data)
 	    surface.SetDrawColor(255, 61, 96, 20)
 	    surface.DrawRect(0, 0, w, h)
 
-	    draw.DrawText(name, "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+	    draw.DrawText(name, "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 	end
 
 	local removeButton = title:Add("DButton")
@@ -749,7 +749,7 @@ function PANEL:CreateCategory(name, data)
 	removeButton:SetWide(W(30))
 	removeButton:Dock(RIGHT)
 	removeButton.Paint = function(panel, w, h)
-	    draw.DrawText("X", "arb.Font_FuturaPTBook_6", w / 2, H(3), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+	    draw.DrawText("X", "arb.Font_FuturaPTBook_6", w / 2, H(3), color_white, TEXT_ALIGN_CENTER)
 	end
 	removeButton.DoClick = function()
 		self.categorys[name] = nil
@@ -851,7 +851,7 @@ function PANEL:Init()
 	    surface.SetDrawColor(255, 61, 96, 20)
 	    surface.DrawRect(0, 0, w, h)
 
-	    draw.DrawText("Редактор команды", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+	    draw.DrawText("Редактор команды", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 	end
 
 	local close = title:Add("DButton")
@@ -955,7 +955,7 @@ function PANEL:Init()
 		local title = panel:Add("DLabel")
 		title:SetText(indent .. v.title)
 		title:SetFont("arb.Font_FuturaPTBook_7")
-		title:SetTextColor(Color(255, 255, 255))
+		title:SetTextColor(color_white)
 		title:Dock(TOP)
 		title:SizeToContents()
 

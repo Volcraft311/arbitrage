@@ -99,7 +99,7 @@ function PANEL:InitColorModify()
 
         local label = slider:GetChildren()[3]
         label:SetFont("arb.Font_FuturaPTBook_8")
-        label:SetTextColor(Color(255, 255, 255))
+        label:SetTextColor(color_white)
         label:DockMargin(W(25), 0, 0, 0)
     end
 
@@ -138,11 +138,10 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Цветокоррекция", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Цветокоррекция", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("Значение", "arb.Font_FuturaPTBook_7", W(550), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    -- draw.DrawText("SteamID64", "arb.Font_FuturaPTBook_7", w - W(115), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("Значение", "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("ColorModify:Menu", PANEL, "DFrame")

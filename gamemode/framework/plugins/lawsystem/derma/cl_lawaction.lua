@@ -28,7 +28,7 @@ local function createCategory(panel, name)
 		surface.SetDrawColor(255, 61, 96, 50)
 		surface.DrawRect(0, 0, w, h)
 
-		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", 5, 0, color_white, TEXT_ALIGN_LEFT)
 	end
 
     local button = title:Add("DButton")
@@ -82,7 +82,7 @@ local function createItemButton(panel, id, mat, name, data)
 		surface.SetMaterial(mat)
 		surface.DrawTexturedRect(0, 0, h, h)
 
-		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
 		draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
 	end
 	itemButton.DoClick = function()
@@ -169,7 +169,7 @@ local function createEvidenceButton(panel, id, evidenceMat, ribbonMat, name, dat
         surface.SetMaterial(ribbonMat)
         surface.DrawTexturedRect(0, 0, h, h)
 
-		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
 		draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
 	end
 	evidenceButton.DoClick = function()
@@ -356,7 +356,7 @@ local categoryData = {
             charterPanel:SetValue(GetNetVar("arb.Charter", Arbitrage.DefaultCharter))
             charterPanel:SetMultiline(true)
             charterPanel:SetFont("arb.Font_FuturaPTBook_6")
-            charterPanel:SetTextColor(Color(255, 255, 255))
+            charterPanel:SetTextColor(color_white)
             charterPanel:DockMargin(W(5), H(10), W(5), H(5))
             charterPanel:SetEnabled(false)
             charterPanel:SetVerticalScrollbarEnabled(true)
@@ -568,7 +568,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 165.75)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-    draw.DrawText("Меню классного суда", "arb.Font_FuturaPTBook_9", 10, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Меню классного суда", "arb.Font_FuturaPTBook_9", 10, 0, color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.LawAction", PANEL, "DFrame")

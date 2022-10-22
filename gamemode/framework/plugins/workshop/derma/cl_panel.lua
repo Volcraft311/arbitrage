@@ -113,8 +113,8 @@ local function panelInit(panel, id, author)
             surface.DrawTexturedRect(2, 2, h - 4, h - 4)
         end
 
-        local _w = draw.SimpleText(panel.title, "arb.Font_FuturaPTDemi_9", h + 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.SimpleText("(" .. id .. ")", "arb.Font_FuturaPTBook_7", _w + h + 15, H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        local _w = draw.SimpleText(panel.title, "arb.Font_FuturaPTDemi_9", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText("(" .. id .. ")", "arb.Font_FuturaPTBook_7", _w + h + 15, H(4), color_white, TEXT_ALIGN_LEFT)
 
         draw.SimpleText(panel.tags, "arb.Font_FuturaPTBook_6", h + 5, H(25), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
         draw.SimpleText("Добавил: " .. author, "arb.Font_FuturaPTBook_5", h + 5, H(43), Color(255, 255, 255, 100), TEXT_ALIGN_LEFT)
@@ -216,7 +216,7 @@ function PANEL:CreateCategory(name, callback)
         surface.SetDrawColor(255, 61, 96, 50)
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleText(name, "arb.Font_FuturaPTBook_7", 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.SimpleText(name, "arb.Font_FuturaPTBook_7", 5, 0, color_white, TEXT_ALIGN_LEFT)
     end
 
     if callback then
@@ -241,7 +241,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Авто добавление дополнений", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Авто добавление дополнений", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("WORKSHOP:Menu", PANEL, "DFrame")
@@ -280,9 +280,9 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Добавить новое дополнение", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Добавить новое дополнение", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите ID номер аддона", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите ID номер аддона", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: 2838097694", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 

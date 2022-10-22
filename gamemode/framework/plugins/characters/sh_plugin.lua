@@ -166,7 +166,7 @@ Character.category:Init(function()
     -- Персонаж наблюдателя
     TEAM_SPECTATE = Character.team:Create({
         name = "Наблюдатель",
-        color = Color(255, 255, 255),
+        color = color_white,
         OnChange = function(client)
             client:SetNoDraw(true)
             client:SetNotSolid(true)

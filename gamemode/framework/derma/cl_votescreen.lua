@@ -31,7 +31,7 @@ function PANEL:Init()
     titlePanel:SetTall(H(60))
     titlePanel:Dock(TOP)
     titlePanel.Paint = function(_, w, h)
-        draw.DrawText("ВРЕМЯ ГОЛОСОВАТЬ", "arb.Font_FuturaPTDemi_15", 0, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("ВРЕМЯ ГОЛОСОВАТЬ", "arb.Font_FuturaPTDemi_15", 0, 0, color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Выбираем того, кто является убийцей", "arb.Font_FuturaPTBook_10", W(380), H(10), Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
     end
 

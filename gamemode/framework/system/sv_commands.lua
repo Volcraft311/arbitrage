@@ -68,7 +68,7 @@ function Arbitrage.commands.RunCommand(client, command, data)
             if !state[1] then
                 commandData.OnAction(unpack(args))
             else
-                Arbitrage.commands.Notify(client, Arbitrage.commands.fault[state[3]], " ", Color(216, 61, 61), state[2], Color(255, 255, 255), "!")
+                Arbitrage.commands.Notify(client, Arbitrage.commands.fault[state[3]], " ", Color(216, 61, 61), state[2], color_white, "!")
             end
         end
     else

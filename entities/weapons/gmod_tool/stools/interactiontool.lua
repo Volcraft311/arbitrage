@@ -174,7 +174,7 @@ function TOOL.BuildCPanel(CPanel)
 
     local linksLabel = vgui.Create("DLabel")
     linksLabel:SetText("Информация")
-    linksLabel:SetTextColor(Color(0, 0, 0))
+    linksLabel:SetTextColor(color_black)
     CPanel:AddPanel(linksLabel)
 
     GeneratePanels(CPanel)

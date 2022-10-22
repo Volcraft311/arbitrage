@@ -127,7 +127,7 @@ function PLUGIN:SendIntroText()
         v.alpha = 255
         v.x = -size
         v.ToX = v.x
-        v.color = Color(0, 0, 0)
+        v.color = color_black
 
         timer.Simple(math.abs(k - 4) / 10, function()
             v.ToX = (ScrW() / 2 + v[2]) - 965 / 2 - (size / 2)
@@ -148,7 +148,7 @@ function PLUGIN:SendIntroText()
             surface.SetMaterial(v[1])
             surface.DrawTexturedRect(v.x + rightMove - 450, ScrH() / 2 - size / 2 + v[4], size, size)
 
-            surface.SetDrawColor(ColorAlpha(Color(255, 255, 255), v.alpha * 2))
+            surface.SetDrawColor(ColorAlpha(color_white, v.alpha * 2))
             surface.SetMaterial(v[5])
             surface.DrawTexturedRect(v.x + rightMove - 450, ScrH() / 2 - size / 2 + v[4], size, size)
 
@@ -549,7 +549,7 @@ function PLUGIN:StartCylinder()
                         surface.SetMaterial(bullet)
                         surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                        draw.SimpleText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, Color(0, 0, 0), TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
                     cam.PopModelMatrix()
                 end
             end)
@@ -613,7 +613,7 @@ function PLUGIN:StartCylinder()
                     surface.SetMaterial(bullet)
                     surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW, bulletSizeH)
 
-                    draw.SimpleText("Monokuma File " .. i, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), Color(0, 0, 0), TEXT_ALIGN_LEFT)
+                    draw.SimpleText("Monokuma File " .. i, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), color_black, TEXT_ALIGN_LEFT)
                 cam.PopModelMatrix()
             end
         end)

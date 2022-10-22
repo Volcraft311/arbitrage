@@ -115,7 +115,7 @@ function Arbitrage.evidence.CreateText(data)
 
         for i, _ in pairs(descriptionText) do
             local y2 = y + (descHeight * i) - (genericHeight / 2) + 5
-            draw_SimpleText(descriptionText[i], "arb.Font_FuturaPTBook_6", x, y2, ColorAlpha(Color(255, 255, 255), evData.alpha), TEXT_ALIGN_CENTER)
+            draw_SimpleText(descriptionText[i], "arb.Font_FuturaPTBook_6", x, y2, ColorAlpha(color_white, evData.alpha), TEXT_ALIGN_CENTER)
         end
     end
 end

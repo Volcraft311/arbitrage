@@ -84,7 +84,7 @@ function PANEL:SetContainerInv(inventory, name)
         namePanel:SetPos(inventoryPanel:GetX(), inventoryPanel:GetY() - size - H(20))
         namePanel:SetSize(inventoryPanel:GetWide(), size)
         namePanel.Paint = function(_, w, h)
-            draw.SimpleText(name, "arb.Font_FuturaPTBook_12", 0, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.SimpleText(name, "arb.Font_FuturaPTBook_12", 0, 0, color_white, TEXT_ALIGN_LEFT)
 
             surface.SetDrawColor(255, 255, 255, 100)
             surface.DrawRect(0, h - 2, w, 2)

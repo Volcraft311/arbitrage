@@ -167,8 +167,8 @@ function PANEL:SetData(data)
                 surface.DrawOutlinedRect(0, 0, w, h)
             end
 
-            draw.DrawText(v[1], "arb.Font_FuturaPTBook_7", W(10), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-            draw.DrawText(k, "arb.Font_FuturaPTBook_7", w - W(200), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(v[1], "arb.Font_FuturaPTBook_7", W(10), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(k, "arb.Font_FuturaPTBook_7", w - W(200), H(4), color_white, TEXT_ALIGN_LEFT)
         end
         panel.DoClick = function()
             self.data[1] = k
@@ -232,10 +232,10 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("ScriptMusic редактор", "arb.Font_FuturaPTDemi_8", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("ScriptMusic редактор", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-    draw.DrawText("ID", "arb.Font_FuturaPTBook_7", w - W(215), H(45), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("ID", "arb.Font_FuturaPTBook_7", w - W(215), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("ScriptMusic:Menu", PANEL, "DFrame")
@@ -280,13 +280,13 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Редактор плейлиста", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Редактор плейлиста", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Название плейлиста", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Название плейлиста", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: Тестовый плейлист", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Ивенты:", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
-        draw.DrawText("Действия:", "arb.Font_FuturaPTBook_7", W(320), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Ивенты:", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("Действия:", "arb.Font_FuturaPTBook_7", W(320), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
     end
 
     self.nameEntry = self.main:Add("DTextEntry")
@@ -552,7 +552,7 @@ function PANEL:SetData(id, data)
                 surface.DrawOutlinedRect(0, 0, w, h)
             end
 
-            draw.DrawText(v.name, "arb.Font_FuturaPTBook_7", W(10), H(4), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(v.name, "arb.Font_FuturaPTBook_7", W(10), H(4), color_white, TEXT_ALIGN_LEFT)
         end
         panel.DoClick = function()
             self.activemenu = k

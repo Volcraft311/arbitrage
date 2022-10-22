@@ -30,7 +30,7 @@ function Arbitrage.notify.NotifyChat(data)
         data = {data}
     end
 
-    chat.AddText(Color(255, 61, 96), "| ", Color(255, 255, 255), unpack(data))
+    chat.AddText(Color(255, 61, 96), "| ", color_white, unpack(data))
 end
 
 netstream.Hook("arb.Notify", function(data, warning)

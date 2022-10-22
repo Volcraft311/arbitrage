@@ -308,10 +308,10 @@ function PANEL:SetData(data)
     local num = 1
     for k, v in pairs(data.character) do
         local factionData = Character.team:GetByID(v.faction)
-        local nameColor = (IsValid(v.client) and v.client:IsAdmin()) and Color(86, 191, 223) or Color(255, 255, 255)
-        local factionColor = IsPlaying(v.faction) and Color(255, 255, 255) or Color(255, 0, 0)
+        local nameColor = (IsValid(v.client) and v.client:IsAdmin()) and Color(86, 191, 223) or color_white
+        local factionColor = IsPlaying(v.faction) and color_white or Color(255, 0, 0)
         local aliveColor = (v.alive and IsValid(v.client)) and Color(71, 235, 117) or Color(204, 99, 99)
-        local placeColor = v.place > 0 and Color(255, 255, 255) or (v.place == 0 and Color(86, 191, 223) or Color(242, 73, 73))
+        local placeColor = v.place > 0 and color_white or (v.place == 0 and Color(86, 191, 223) or Color(242, 73, 73))
 
         local panel = self.charactersPanel:Add("Panel")
         panel:SetTall(H(30))
@@ -360,7 +360,7 @@ function PANEL:SetData(data)
     num = 1
     for k, v in pairs(data.notcharacter) do
         local factionData = Character.team:GetByID(v.faction)
-        local nameColor = v.client:IsAdmin() and Color(86, 191, 223) or Color(255, 255, 255)
+        local nameColor = v.client:IsAdmin() and Color(86, 191, 223) or color_white
         local aliveColor = v.client:Alive() and Color(71, 235, 117) or Color(204, 99, 99)
 
         local panel = self.notcharactersPanel:Add("Panel")
@@ -382,7 +382,7 @@ function PANEL:SetData(data)
             draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor, TEXT_ALIGN_LEFT)
 
             if factionData then
-                draw.DrawText(factionData:GetName(), "arb.Font_FuturaPTBook_5", w / 2, H(8), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+                draw.DrawText(factionData:GetName(), "arb.Font_FuturaPTBook_5", w / 2, H(8), color_white, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -406,7 +406,6 @@ function PANEL:SetData(data)
     end
 end
 
-local c = Color(255, 255, 255, 255)
 function PANEL:Paint(w, h)
     surface.SetDrawColor(41, 22, 25)
     surface.DrawRect(0, 0, w, h)
@@ -420,11 +419,11 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Моно-Меню (Панель администрации)", "arb.Font_FuturaPTDemi_8", W(10), H(3), c, TEXT_ALIGN_LEFT)
+    draw.DrawText("Моно-Меню (Панель администрации)", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Игровое меню", "arb.Font_FuturaPTBook_7", W(130), H(45), c, TEXT_ALIGN_CENTER)
-    draw.DrawText("Админ-способности", "arb.Font_FuturaPTBook_7", W(390), H(45), c, TEXT_ALIGN_CENTER)
-    draw.DrawText("Взаимодействие с игроками", "arb.Font_FuturaPTBook_7", W(900), H(45), c, TEXT_ALIGN_CENTER)
+    draw.DrawText("Игровое меню", "arb.Font_FuturaPTBook_7", W(130), H(45), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText("Админ-способности", "arb.Font_FuturaPTBook_7", W(390), H(45), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText("Взаимодействие с игроками", "arb.Font_FuturaPTBook_7", W(900), H(45), color_white, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.MonoMenu", PANEL, "DFrame")

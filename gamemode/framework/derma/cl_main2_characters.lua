@@ -54,7 +54,7 @@ local stagesData = {
             panel.rightButton.alpha = 50
             panel.rightButton.Paint = function(_, w, h)
                 _.alpha = Lerp(FrameTime() * 7, _.alpha, _:IsHovered() and 255 or 50)
-                Arbitrage.DrawGradient(GRADIENT_RIGHT, 0, 0, w, h, Color(0, 0, 0))
+                Arbitrage.DrawGradient(GRADIENT_RIGHT, 0, 0, w, h, color_black)
 
                 surface.SetDrawColor(255, 255, 255, _.alpha)
                 surface.SetMaterial(Material("danganronpa/ui/rightArrow.png"))
@@ -85,7 +85,7 @@ local stagesData = {
             panel.leftButton.alpha = 50
             panel.leftButton.Paint = function(_, w, h)
                 _.alpha = Lerp(FrameTime() * 7, _.alpha, _:IsHovered() and 255 or 50)
-                Arbitrage.DrawGradient(GRADIENT_LEFT, 0, 0, w, h, Color(0, 0, 0))
+                Arbitrage.DrawGradient(GRADIENT_LEFT, 0, 0, w, h, color_black)
 
                 surface.SetDrawColor(255, 255, 255, _.alpha)
                 surface.SetMaterial(Material("danganronpa/ui/leftArrow.png"))

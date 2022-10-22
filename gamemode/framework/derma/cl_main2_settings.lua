@@ -195,7 +195,7 @@ local stagesData = {
         Title.Paint = function(this, w, h)
             if this.text == "" then return end
 
-            local width, height = draw.SimpleText(this.text, "arb.Font_FuturaPTBook_10", 0, 0, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+            local width, height = draw.SimpleText(this.text, "arb.Font_FuturaPTBook_10", 0, 0, color_white, TEXT_ALIGN_LEFT)
 
             draw.SimpleText(statusMat[this.status].text, "arb.Font_FuturaPTBook_10", width + 44, 0, statusMat[this.status].color, TEXT_ALIGN_LEFT)
 
@@ -207,7 +207,7 @@ local stagesData = {
 
         local Desc = panel.informationPanel:Add("DTextEntry")
         Desc:SetFont("arb.Font_FuturaPTBook_7")
-        Desc:SetTextColor(Color(255, 255, 255, 255))
+        Desc:SetTextColor(color_white)
         Desc:SetValue("")
         Desc:Dock(FILL)
         Desc:DockMargin(0, 5, 0, 0)

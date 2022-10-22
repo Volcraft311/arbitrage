@@ -292,7 +292,7 @@ do
 
 		local trace = getTrace(client)
 		local distance = EyePos():Distance(trace.HitPos)
-		local drawColor = Color(255, 255, 255)
+		local drawColor = color_white
 		local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
 
 		if isUseFirst and (client:KeyDown(IN_ATTACK) or client:KeyDown(IN_ATTACK2)) then
@@ -571,7 +571,7 @@ do
 
 	local stamina = 100
 	local alphastamina = 0
-	local color = Color(255, 255, 255)
+	local color = color_white
 	local allow = false
 	timer_Create("StaminaDraw:Update", 1, 0, function()
 		local client = LocalPlayer()
@@ -602,7 +602,7 @@ do
 		surface_DrawRect(ScrW() / 2 + staminaMax - 1, ScrH() - 30, 4, 4)
 
 		local isLow = stamina <= 30
-		color = LerpColor(frametime * 2, color, isLow and Color(255, 0, 0) or Color(255, 255, 255))
+		color = LerpColor(frametime * 2, color, isLow and Color(255, 0, 0) or color_white)
 
 		draw_SimpleText(math_floor(stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(color, alphastamina), TEXT_ALIGN_CENTER)
 	end

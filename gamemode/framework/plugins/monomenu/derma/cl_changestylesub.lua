@@ -44,12 +44,12 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Запустить заставку", "arb.Font_FuturaPTBook_5", W(10), H(3), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Запустить заставку", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите название статуса", "arb.Font_FuturaPTBook_7", W(10), H(28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Введите название статуса", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Пример: Свободная игра!", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберите нужный вам цвет", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Выберите нужный вам цвет", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -82,7 +82,7 @@ function PANEL:Init()
     color_label:SetPos(40, 160)
     color_label:SetSize(150, 20)
     color_label:SetHighlight(true)
-    color_label:SetColor(Color(0, 0, 0))
+    color_label:SetColor(color_black)
 
     local color_picker = BGPanel:Add("DRGBPicker")
     color_picker:SetPos(5, 5)

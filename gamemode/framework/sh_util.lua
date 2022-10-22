@@ -26,7 +26,7 @@ function Arbitrage.util.WriteMessage(...)
 	end
 
 	hook.Run("WriteMessage", ...)
-	MsgC(Color(0, 255, 0), "[GM-ARBITRAGE] ", Color(255, 255, 255), unpack(data))
+	MsgC(Color(0, 255, 0), "[GM-ARBITRAGE] ", color_white, unpack(data))
 end
 
 function Arbitrage.util.GetSide()

@@ -1,0 +1,240 @@
+function Character:PlayerInitialSpawn(client)
+	Character.CreationSync(client)
+end
+
+function Character:InitPostEntity()
+	Character.CreationSync()
+end
+
+function Character.CreationSync(client)
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+
+	for key, stored in pairs(characterslist) do
+		if client != nil then
+			netstream.Start(client, "Character:CreationSync", key, stored)
+		else
+			for uniqueID, info in pairs(stored) do
+				Character.CreationRegisterKeys(key, uniqueID, info)
+			end
+		end
+	end
+end
+
+
+local function getInfoTeam(data)
+	local info = {
+		name = tostring(data.name),
+	    title = tostring(data.title),
+	    category = tostring(data.category),
+	    model = tostring(data.model),
+	    uniqueID = tostring(data.uniqueID),
+	    evidence_visibility = tonumber(data.evidence_visibility),
+	    stamina = {
+	    	run_consumption = tonumber(data.run_consumption)
+	    },
+	    speed = {
+	    	walk = tonumber(data.speed_walk),
+	    	run = tonumber(data.speed_run)
+	    },
+	    needs = {
+	    	hunger = tonumber(data.needs_hunger),
+	    	thirst = tonumber(data.needs_thirst),
+	    	fatique = tonumber(data.needs_fatique)
+	    },
+	    scale = tonumber(data.scale)
+	}
+
+	return info.uniqueID, info
+end
+
+netstream.Hook("Character:CreationRegisterTeam", function(client, data)
+	if !client:IsAdmin() then return end
+
+	local uniqueID, info = getInfoTeam(data)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.team = characterslist.team or {}
+
+	if characterslist.team[uniqueID] or Character.team:GetByUniqueID(uniqueID) then
+		return Arbitrage.commands.Notify(client, "Команда с ID " .. uniqueID .. " уже существует!")
+	end
+
+	characterslist.team[uniqueID] = info
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRegisterKeys("team", uniqueID, info)
+
+	Arbitrage.commands.Notify(client, "Команда " .. uniqueID .. " успешно была создана!")
+end)
+
+netstream.Hook("Character:CreationEditTeam", function(client, data)
+	if !client:IsAdmin() then return end
+
+	local uniqueID, info = getInfoTeam(data)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.team = characterslist.team or {}
+
+	if !characterslist.team[uniqueID] then
+		return Arbitrage.commands.Notify(client, "Команда с ID " .. uniqueID .. " не существует!")
+	end
+
+	characterslist.team[uniqueID] = info
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationEditKeys("team", uniqueID, info)
+
+	Arbitrage.commands.Notify(client, "Команда " .. uniqueID .. " была успешно обновлена!")
+end)
+
+netstream.Hook("Character:CreationRemoveTeam", function(client, uniqueID)
+	if !client:IsAdmin() then return end
+
+	uniqueID = tostring(uniqueID)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.team = characterslist.team or {}
+
+	if !characterslist.team[uniqueID] then
+		return Arbitrage.commands.Notify(client, "Команда с ID " .. uniqueID .. " не существует!")
+	end
+
+	characterslist.team[uniqueID] = nil
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRemoveKeys("team", uniqueID)
+
+	Arbitrage.commands.Notify(client, "Команда " .. uniqueID .. " была успешно удалена!")
+end)
+
+
+netstream.Hook("Character:CreationRegisterEmoji", function(client, uniqueID, data)
+	if !client:IsAdmin() then return end
+
+	uniqueID = tostring(uniqueID)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.emoji = characterslist.emoji or {}
+
+	if characterslist.emoji[uniqueID] or Character.emoji:GetByUniqueID(uniqueID) then
+		return Arbitrage.commands.Notify(client, "Спрайты с ID " .. uniqueID .. " уже существуют!")
+	end
+
+	characterslist.emoji[uniqueID] = data
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRegisterKeys("emoji", uniqueID, data)
+
+	Arbitrage.commands.Notify(client, "Спрайты " .. uniqueID .. " успешно были созданы!")
+end)
+
+netstream.Hook("Character:CreationEditEmoji", function(client, uniqueID, data)
+	if !client:IsAdmin() then return end
+
+	uniqueID = tostring(uniqueID)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.emoji = characterslist.emoji or {}
+
+	if !characterslist.emoji[uniqueID] then
+		return Arbitrage.commands.Notify(client, "Спрайты с ID " .. uniqueID .. " не существуют!")
+	end
+
+	characterslist.emoji[uniqueID] = data
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRegisterKeys("emoji", uniqueID, data)
+
+	Arbitrage.commands.Notify(client, "Спрайты " .. uniqueID .. " успешно были созданы!")
+end)
+
+netstream.Hook("Character:CreationRemoveEmoji", function(client, uniqueID)
+	if !client:IsAdmin() then return end
+
+	uniqueID = tostring(uniqueID)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.emoji = characterslist.emoji or {}
+
+	if !characterslist.emoji[uniqueID] then
+		return Arbitrage.commands.Notify(client, "Спрайты с ID " .. uniqueID .. " не существуют!")
+	end
+
+	characterslist.emoji[uniqueID] = nil
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRemoveKeys("emoji", uniqueID)
+
+	Arbitrage.commands.Notify(client, "Спрайты " .. uniqueID .. " были успешно удалены!")
+end)
+
+
+local function getInfoCategory(data)
+	local info = {
+		name = tostring(data.name),
+	    icon = tostring(data.icon),
+	    uniqueID = tostring(data.uniqueID)
+	}
+
+	return info.uniqueID, info
+end
+
+netstream.Hook("Character:CreationRegisterCategory", function(client, data)
+	if !client:IsAdmin() then return end
+
+	local uniqueID, info = getInfoCategory(data)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.category = characterslist.category or {}
+
+	if characterslist.category[uniqueID] or Character.category:GetByUniqueID(uniqueID) then
+		return Arbitrage.commands.Notify(client, "Категория с ID " .. uniqueID .. " уже существует!")
+	end
+
+	characterslist.category[uniqueID] = info
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRegisterKeys("category", uniqueID, info)
+
+	Arbitrage.commands.Notify(client, "Категория " .. uniqueID .. " успешно была создана!")
+end)
+
+netstream.Hook("Character:CreationEditCategory", function(client, data)
+	if !client:IsAdmin() then return end
+
+	local uniqueID, info = getInfoCategory(data)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.category = characterslist.category or {}
+
+	if !characterslist.category[uniqueID] then
+		return Arbitrage.commands.Notify(client, "Категория с ID " .. uniqueID .. " не существует!")
+	end
+
+	characterslist.category[uniqueID] = info
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationEditKeys("category", uniqueID, info)
+
+	Arbitrage.commands.Notify(client, "Категория " .. uniqueID .. " была успешно обновлена!")
+end)
+
+netstream.Hook("Character:CreationRemoveCategory", function(client, uniqueID)
+	if !client:IsAdmin() then return end
+
+	uniqueID = tostring(uniqueID)
+
+	local characterslist = asterionlib.data:Get("characterslist", {}, true)
+	characterslist.category = characterslist.category or {}
+
+	if !characterslist.category[uniqueID] then
+		return Arbitrage.commands.Notify(client, "Категория с ID " .. uniqueID .. " не существует!")
+	end
+
+	characterslist.category[uniqueID] = nil
+
+	asterionlib.data:Set("characterslist", characterslist)
+	Character.CreationRemoveKeys("category", uniqueID)
+
+	Arbitrage.commands.Notify(client, "Категория " .. uniqueID .. " была успешно удалена!")
+end)

@@ -16,13 +16,137 @@ Character = PLUGIN
 Character.sendRequest = false -- запрашивать информацию с сайта
 Character.APIRequest = "https://api.asterion.games"
 
+Character.creation = Character.creation or {team = {}, emoji = {}, category = {}} -- хранилище net персонажей
+
 Arbitrage.base.Include("meta/sh_emoji.lua")
 Arbitrage.base.Include("meta/sh_category.lua")
 Arbitrage.base.Include("meta/sh_team.lua")
 
+local keyData = {
+    ["team"] = {
+        reg = function(uniqueID, info)
+            info.isCreation = true
+
+            Character.team:Create(info)
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationRegisterKeys", "team", uniqueID, info)
+            end
+        end,
+        edit = function(uniqueID, info)
+            info.isCreation = true
+
+            local faction = Character.team:GetByUniqueID(uniqueID)
+            if !faction then return end
+
+            for k, v in pairs(info) do
+                faction[k] = v
+            end
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationEditKeys", "team", uniqueID, info)
+            end
+        end,
+        remove = function(uniqueID)
+            for k, v in pairs(Character.team.instances) do
+                if v.isCreation and string.lower(v.uniqueID) == string.lower(uniqueID) then
+                    Character.team.instances[k] = nil
+                end
+            end
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationRemoveKeys", "team", uniqueID)
+            end
+        end
+    },
+    ["emoji"] = {
+        reg = function(uniqueID, info)
+            Character.emoji:Register(uniqueID, info)
+            Character.emoji.instances[uniqueID].isCreation = true
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationRegisterKeys", "emoji", uniqueID, info)
+            end
+        end,
+        edit = function(uniqueID, info)
+            Character.emoji.instances[uniqueID] = nil
+            Character.emoji.data[uniqueID] = nil
+
+            Character.emoji:Register(uniqueID, info)
+            Character.emoji.instances[uniqueID].isCreation = true
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationEditKeys", "emoji", uniqueID, info)
+            end
+        end,
+        remove = function(uniqueID)
+            Character.emoji.instances[uniqueID] = nil
+            Character.emoji.data[uniqueID] = nil
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationRemoveKeys", "emoji", uniqueID)
+            end
+        end
+    },
+    ["category"] = {
+        reg = function(uniqueID, info)
+            info.isCreation = true
+
+            Character.category:Register(uniqueID, info)
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationRegisterKeys", "category", uniqueID, info)
+            end
+        end,
+        edit = function(uniqueID, info)
+            info.isCreation = true
+
+            local category = Character.category:GetByUniqueID(uniqueID)
+            if !category then return end
+
+            for k, v in pairs(info) do
+                category[k] = v
+            end
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationEditKeys", "category", uniqueID, info)
+            end
+        end,
+        remove = function(uniqueID)
+            for k, v in pairs(Character.category.instances) do
+                if v.isCreation and string.lower(v.uniqueID) == string.lower(uniqueID) then
+                    Character.category.instances[k] = nil
+                end
+            end
+
+            if SERVER then
+                netstream.Start(nil, "Character:CreationRemoveKeys", "category", uniqueID)
+            end
+        end
+    },
+}
+
+function Character.CreationRegisterKeys(key, uniqueID, info)
+    keyData[key].reg(uniqueID, info)
+    Character.creation[key][uniqueID] = info
+end
+
+function Character.CreationEditKeys(key, uniqueID, info)
+    keyData[key].edit(uniqueID, info)
+    Character.creation[key][uniqueID] = info
+end
+
+function Character.CreationRemoveKeys(key, uniqueID)
+    keyData[key].remove(uniqueID)
+    Character.creation[key][uniqueID] = nil
+end
+
 Arbitrage.base.Include("sh_emoji.lua")
 Arbitrage.base.Include("sh_category.lua")
 Arbitrage.base.Include("sh_team.lua")
+
+Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("sv_plugin.lua")
 
 Character.category:Init(function()
     -- Персонаж администратора

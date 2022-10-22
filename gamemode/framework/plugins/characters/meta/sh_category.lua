@@ -13,6 +13,7 @@
 
 local CATEGORY = {}
 CATEGORY.__index = CATEGORY
+CATEGORY.id = 0
 CATEGORY.uniqueID = 0
 
 CATEGORY.name = "Название категории"
@@ -26,6 +27,10 @@ end
 
 function CATEGORY:__eq(other)
 	return self:GetUniqueID() == other:GetUniqueID()
+end
+
+function CATEGORY:GetID()
+	return self.id
 end
 
 function CATEGORY:GetUniqueID()

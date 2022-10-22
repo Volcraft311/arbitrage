@@ -13,6 +13,7 @@
 
 Character.emoji = Character.emoji or {}
 Character.emoji.instances = {}
+Character.emoji.data = {}
 
 function Character.emoji:New(uniqueID)
 	if self.instances[uniqueID] then
@@ -27,6 +28,8 @@ function Character.emoji:New(uniqueID)
 end
 
 function Character.emoji:Register(uniqueID, array)
+	self.data[uniqueID] = array
+
 	local data = {}
 
 	local index = 1
@@ -57,3 +60,7 @@ function Character.emoji:GetByUniqueID(uniqueID)
 end
 
 Arbitrage.base.Include("sh_emoji_list.lua")
+
+for uniqueID, info in pairs(Character.creation.emoji) do
+	Character.CreationRegisterKeys("emoji", uniqueID, info)
+end

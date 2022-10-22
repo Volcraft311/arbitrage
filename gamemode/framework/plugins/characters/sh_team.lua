@@ -75,16 +75,23 @@ end
 
 local cache_uniqueid = {}
 function Character.team:GetByUniqueID(uniqueID)
-    if cache_uniqueid[uniqueID] then
-        return cache_uniqueid[uniqueID]
+    local storedID = cache_uniqueid[uniqueID]
+    if storedID then
+        local value = self:GetByID(storedID)
+
+        if value then
+            return value
+        else
+            cache_uniqueid[uniqueID] = nil
+        end
     end
 
-    for k, v in ipairs(self.instances) do
+    for k, v in pairs(self.instances) do
         local id = v:GetUniqueID()
         if !id then continue end
 
         if string.lower(id) == string.lower(uniqueID) then
-            cache_uniqueid[uniqueID] = v
+            cache_uniqueid[uniqueID] = v:GetID()
 
             return v
         end
@@ -153,6 +160,10 @@ end
 
 function Character.team:Init(callback)
     local function c()
+        for uniqueID, info in pairs(Character.creation.team) do
+            Character.CreationRegisterKeys("team", uniqueID, info)
+        end
+
         if callback then
             callback()
         end

@@ -31,9 +31,13 @@ function PLUGIN:OneSecond()
             if !IsValid(entity) then
             	if !Arbitrage.placesList[place] then continue end
 
+                local stored = Arbitrage.placesList[place]
+                local pos = stored[1] - lifting
+                local ang = stored[2]
+
                 entity = ents.Create("arb_dead")
-                entity:SetPos(Arbitrage.placesList[place][1] - lifting)
-                entity:SetAngles(Arbitrage.placesList[place][2])
+                entity:SetPos(pos)
+                entity:SetAngles(Angle(0, ang.y, ang.r))
                 entity:Spawn()
 
                 entity:SetCharacter({

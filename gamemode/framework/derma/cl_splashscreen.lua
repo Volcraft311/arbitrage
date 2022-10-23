@@ -371,7 +371,7 @@ end
 
 function PANEL:TakeSurv()
     self.allSurv = self.allSurv - 1
-    self.allSurv_color = color(255, 255, 255)
+    self.allSurv_color = Color(255, 255, 255)
 end
 
 function PANEL:SetData(data)

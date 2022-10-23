@@ -14,7 +14,5 @@
 local PLUGIN = PLUGIN;
 
 PLUGIN.name = "FirstPerson"
-PLUGIN.author = ""
-PLUGIN.description = ""
 
 Arbitrage.base.Include("cl_hooks.lua")

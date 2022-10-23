@@ -52,6 +52,7 @@ function Container:PlayerUse(client, entity)
         client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
         Arbitrage.action.ActionRun(client, "Обыскиваем", 1, function()
+            if client:GetEyeTrace().Entity != entity then return true end
             if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 
             return false

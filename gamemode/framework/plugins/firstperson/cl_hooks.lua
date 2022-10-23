@@ -175,8 +175,8 @@ end
 function PLUGIN:CreateMove(ucmd)
 	if !self.isAllow then return end
 
-	local m = LocalPlayer():Team() == TEAM_HIFUMI and 55 or 75
-	local s = LocalPlayer():Team() == TEAM_MONDO and 32 or 90
+	local m = 75 -- LocalPlayer():Team() == TEAM_HIFUMI and 55 or 75
+	local s = 90 -- LocalPlayer():Team() == TEAM_MONDO and 32 or 90
 
 	local eyeAng = ucmd:GetViewAngles()
 	ucmd:SetViewAngles(Angle(math_Clamp(eyeAng.p, -s, m), eyeAng.y, eyeAng.r))

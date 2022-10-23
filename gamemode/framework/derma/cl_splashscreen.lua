@@ -241,8 +241,8 @@ function PANEL:ShowSurvival()
 
         self.survival.List[steamid] = {
             material = mat,
-            color = color_black,
-            mcolor = color_black,
+            color = Color(0, 0, 0),
+            mcolor = Color(0, 0, 0),
             alpha = 255,
             malpha = 255
         }
@@ -371,7 +371,7 @@ end
 
 function PANEL:TakeSurv()
     self.allSurv = self.allSurv - 1
-    self.allSurv_color = color_white
+    self.allSurv_color = color(255, 255, 255)
 end
 
 function PANEL:SetData(data)

@@ -41,7 +41,6 @@ function Arbitrage.plugin.Load(uniqueID, path, isSingleFile, variable)
 	end
 
 	PLUGIN.name = PLUGIN.name or "Unknown"
-	PLUGIN.description = PLUGIN.description or "No description available."
 
 	for k, v in pairs(PLUGIN) do
 		if (isfunction(v)) then

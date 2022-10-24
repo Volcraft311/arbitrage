@@ -47,7 +47,7 @@ function PANEL:Init()
         draw.DrawText("Запустить заставку", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
         draw.DrawText("Введите название статуса", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Свободная игра!", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: Свободное время!", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
         draw.DrawText("Выберите нужный вам цвет", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
     end
@@ -68,10 +68,10 @@ function PANEL:Init()
     end
 
     self.title = self.main:Add("DTextEntry")
-    self.title:SetValue("Свободная игра!")
+    self.title:SetValue("Свободное время!")
     self.title:SetPos(W(5), H(75))
     self.title:SetSize(self.main:GetWide() - W(10), H(25))
-    self.title:SetPlaceholderText("Свободная игра!")
+    self.title:SetPlaceholderText("Свободное время!")
     self.title:SetFont("arb.Font_FuturaPTBook_8")
 
     local BGPanel = self.main:Add("DPanel")

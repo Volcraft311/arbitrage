@@ -625,6 +625,18 @@ function Arbitrage:StopGame()
             v:SetPos(vector)
         end
     end)
+
+    for k, v in ipairs(player.GetAll()) do
+        local inventory = v:GetInventory()
+
+        if inventory then
+            local items = inventory:GetItems()
+
+            for k2, v2 in ipairs(items) do
+                v2:Remove()
+            end
+        end
+    end
 end
 
 function Arbitrage:PlayerOneSecond(client)

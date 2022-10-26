@@ -77,10 +77,6 @@ function InventoryBase:CreateInfoPanel(panel, x, y, wide)
             local text = descriptionText[i]
             local y = (i - 1) * descHeight
 
-            if descriptionText[i]:sub(1, 1) == " " then
-                text = descriptionText[i]:gsub(" ", "", 1)
-            end
-
             draw.SimpleText(text, descFont, 0, y, color_white, TEXT_ALIGN_LEFT)
         end
     end

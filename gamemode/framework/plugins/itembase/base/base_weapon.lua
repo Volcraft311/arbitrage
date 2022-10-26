@@ -98,6 +98,8 @@ function BASE:Equip(client, item, id)
 
 		item:SetData("equip", true)
 		item.slotID = id
+
+		item:HookRun("equip", client)
 	end
 end
 

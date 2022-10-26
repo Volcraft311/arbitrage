@@ -39,6 +39,10 @@ function ITEM:GetID()
     return self.id
 end
 
+function ITEM:GetUniqueID()
+    return self.uniqueID
+end
+
 function ITEM:GetName()
     return self.name
 end

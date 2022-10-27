@@ -42,9 +42,11 @@ function PANEL:Init()
             surface.SetDrawColor(255, 61, 96, 20)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(self.mat)
-            surface.DrawTexturedRect(10, 10, w - 20, w - 20)
+            if self.mat then
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(self.mat)
+                surface.DrawTexturedRect(10, 10, w - 20, w - 20)
+            end
 
             surface.SetDrawColor(255, 61, 96, 50)
             surface.DrawOutlinedRect(0, 0, w, h, 1)

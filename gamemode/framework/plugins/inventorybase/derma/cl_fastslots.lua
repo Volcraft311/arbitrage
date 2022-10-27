@@ -54,6 +54,10 @@ function PANEL:InitSlots()
 	end
 end
 
+local function isURL(url)
+	return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
+end
+
 function PANEL:InitSlot(panel)
 	panel.alpha = 14
 	panel.Paint = function(this, w, h)
@@ -67,10 +71,6 @@ function PANEL:InitSlot(panel)
 	        surface.SetDrawColor(255, 255, 255, 12.75)
 	        surface.SetMaterial(crossMat)
 	        surface.DrawTexturedRect(0, 0, w, h)
-	    else
-	        if panel.item.Paint then
-	            panel.item:Paint(panel.item, w, h)
-	        end
         end
 
 		surface.SetDrawColor(99, 17, 32, this.alpha)
@@ -99,16 +99,30 @@ function PANEL:InitSlot(panel)
 		local item = ItemBase.instances[itemID]
 		if !item then return end
 
-		local icon = Material(item:GetIcon())
+		local path = item:GetIcon()
+	    local icon = nil
+	    if isURL(path) then
+	        asterionlib.DownloadImage(path, function(mat)
+	            icon = mat
+	        end)
+	    else
+	        icon = Material(path)
+	    end
 
 		local itemPanel = panel:Add("DButton")
 	    itemPanel:SetText("")
 	    itemPanel:Dock(FILL)
 	    itemPanel:Droppable("transferItem")
 	    itemPanel.Paint = function(this, w, h)
-	        surface.SetDrawColor(255, 255, 255)
-	        surface.SetMaterial(icon)
-	        surface.DrawTexturedRect(0, 0, w, h)
+	    	if icon then
+		        surface.SetDrawColor(255, 255, 255)
+		        surface.SetMaterial(icon)
+		        surface.DrawTexturedRect(0, 0, w, h)
+	    	end
+
+	    	if panel.item.Paint then
+	            panel.item:Paint(panel.item, w, h)
+	        end
 	    end
 
 		local oldOnMousePressed = itemPanel.OnMousePressed

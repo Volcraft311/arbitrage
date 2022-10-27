@@ -32,6 +32,10 @@ local icons = {
     ["Уникальные"] = "bug"
 }
 
+local function isURL(url)
+    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
+end
+
 spawnmenu.AddContentType("Item", function(container, item)
     local name = item:GetName()
     if !name then return end
@@ -43,6 +47,21 @@ spawnmenu.AddContentType("Item", function(container, item)
     icon:SetContentType("Item")
     icon:SetSpawnName(uniqueID)
     icon:SetMaterial(item.icon)
+
+
+    local path = item.icon
+    local mat = nil
+    if isURL(path) then
+        asterionlib.DownloadImage(path, function(_, imagePath)
+            mat = imagePath
+        end)
+    else
+        mat = path
+    end
+
+    if mat then
+        icon:SetMaterial(mat)
+    end
 
 
     icon.DoClick = function()

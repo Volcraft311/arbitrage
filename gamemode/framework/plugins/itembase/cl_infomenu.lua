@@ -20,10 +20,11 @@ function PLUGIN.infoMenu:Paint(entity, name, desc, category, icon, alphaMenu)
 		surface.SetDrawColor(0, 0, 0, alpha * 0.8)
 		surface.DrawRect(x, y, sizeW, sizeH)
 
-		local mat = Material(icon)
-		surface.SetDrawColor(255, 255, 255, alpha * 1.2)
-		surface.SetMaterial(mat)
-		surface.DrawTexturedRect(x, y, sizeH, sizeH)
+		if icon then
+			surface.SetDrawColor(255, 255, 255, alpha * 1.2)
+			surface.SetMaterial(icon)
+			surface.DrawTexturedRect(x, y, sizeH, sizeH)
+		end
 
 		local font, h, _x = "", 0, sizeH + x
 

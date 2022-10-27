@@ -890,9 +890,21 @@ netstream.Hook("arb.ShowEvidence", function(client, data, indx)
     end)
 end)
 
-netstream.Hook("arb.ShowItem", function(client, data, indx)
+local function isURL(url)
+    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
+end
+
+netstream.Hook("arb.ShowItem", function(client, path, indx)
     local name = client:Name()
-    local icon = Material(data)
+
+    local icon = nil
+    if isURL(path) then
+        asterionlib.DownloadImage(path, function(image)
+            icon = image
+        end)
+    else
+        icon = Material(path)
+    end
 
     local prestation = vgui.Create("arb.Prestation")
     prestation:AddMaterial(icon, name)

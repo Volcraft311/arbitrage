@@ -60,7 +60,20 @@ local function createCategory(panel, name)
 	return category
 end
 
-local function createItemButton(panel, id, mat, name, data)
+local function isURL(url)
+    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
+end
+
+local function createItemButton(panel, id, path, name, data)
+    local icon = nil
+    if isURL(path) then
+        asterionlib.DownloadImage(path, function(mat)
+            icon = mat
+        end)
+    else
+        icon = Material(path)
+    end
+
 	local showText = Arbitrage.gui.lawaction.items[id] and "Предъвил: " .. Arbitrage.gui.lawaction.items[id] or "Вы не показывали этот предмет!"
 
 	local itemButton = panel:Add("DButton")
@@ -78,9 +91,11 @@ local function createItemButton(panel, id, mat, name, data)
 		surface.SetDrawColor(255, 61, 96, 50)
 		surface.DrawOutlinedRect(0, 0, w, h, 1)
 
-		surface.SetDrawColor(255, 255, 255)
-		surface.SetMaterial(mat)
-		surface.DrawTexturedRect(0, 0, h, h)
+        if icon then
+    		surface.SetDrawColor(255, 255, 255)
+    		surface.SetMaterial(icon)
+    		surface.DrawTexturedRect(0, 0, h, h)
+        end
 
 		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
 		draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
@@ -330,7 +345,7 @@ local categoryData = {
                 if !item then continue end
 
                 local name = item:GetName()
-                local icon = Material(item:GetIcon())
+                local icon = item:GetIcon()
                 local data = {
                     name = name,
                     description = item:GetDescription()

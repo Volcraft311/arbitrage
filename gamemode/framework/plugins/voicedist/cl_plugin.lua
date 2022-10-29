@@ -57,7 +57,7 @@ function PLUGIN:PlayerEndVoice(client)
     hook.Run("ArbitrageVoiceEnd", client)
 end
 
-local sizeMat = 40
+local sizeMat = H(40)
 function PLUGIN:HUDPaint()
     local client = LocalPlayer()
     local size = ScrW() * 0.05

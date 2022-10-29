@@ -293,9 +293,11 @@ function PLUGIN:PostDrawTranslucentRenderables()
             big, _ = emoji:GetByIndex(1)
         end
 
-        local mat = Material(big)
+        if big then
+            local mat = Material(big)
 
-        drawing(v, mat)
+            drawing(v, mat)
+        end
     end
 end
 

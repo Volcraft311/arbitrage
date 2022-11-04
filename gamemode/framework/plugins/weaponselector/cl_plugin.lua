@@ -200,6 +200,16 @@ function PLUGIN:PlayerBindPress(client, bind, bPress)
         end
     end
 
+    if bind == "invnext" or bind == "invprev" then
+        hook.Run("PlayerBindScroll", LocalPlayer(), bPress, bind == "invnext" and true or false)
+    end
+
+    if class == "academy_monopad" then
+        if bind == "invnext" or bind == "invprev" then
+            return true
+        end
+    end
+
     local panel = self.panel
 
     if self.binds[bind] and bPress then

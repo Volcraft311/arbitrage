@@ -649,7 +649,7 @@ function Arbitrage:StopGame()
             -- Анэквипаем все предметы
             for k2, v2 in pairs(items) do
                 if v2:GetData("equip") then
-                    v2:UnEquip(client, v2)
+                    v2:UnEquip(v, v2)
                 end
             end
 

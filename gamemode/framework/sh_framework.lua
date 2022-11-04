@@ -261,10 +261,6 @@ function Arbitrage:ReplaceVariables()
 end
 Arbitrage:ReplaceVariables()
 
-function Arbitrage.ReturnTime()
-    return Arbitrage.CurTime or 0 -- * 17
-end
-
 function Arbitrage.FormatTime(time)
     local hours = math.floor(math.fmod(time, 86400) / 3600)
     local minutes = math.floor(math.fmod(time, 3600) / 60)
@@ -309,6 +305,10 @@ function Arbitrage.IsDay()
     end
 
     return false
+end
+
+function Arbitrage.ReturnTime()
+    return GetNetVar("arb.Time", 0)
 end
 
 -- 22:00 - 08:00 - ночная

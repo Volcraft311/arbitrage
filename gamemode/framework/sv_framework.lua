@@ -200,7 +200,7 @@ Arbitrage.commands.Add("settime", {
 
         local value = asterionlib.IsoDurationToSeconds(time)
 
-        Arbitrage.CurTime = value
+        SetNetVar("arb.Time", value)
         Arbitrage.commands.Notify(client, "Вы успешно изменили время на: " .. time)
     end
 })
@@ -769,10 +769,8 @@ concommand.Add("arb_returnnormalflashlight", function(client, command, arguments
 end)
 
 timer.Create("arb.CurTime", 1, 0, function()
-    Arbitrage.CurTime = Arbitrage.CurTime or 0
-    Arbitrage.CurTime = Arbitrage.CurTime + 17
-
-    netstream.Start(nil, "arb.ReturnCurTime", Arbitrage.CurTime)
+    local data = Arbitrage.ReturnTime()
+    SetNetVar("arb.Time", data + 17)
 end)
 
 timer.Create("arb.UpdateTheme", 10, 0, function()

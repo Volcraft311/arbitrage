@@ -77,12 +77,16 @@ function SWEP:Deploy()
         local isEnabled = client.MonoPadEnable
 
         timer.Create("TabletTimer_" .. client:EntIndex(), 0.8, 1, function()
+            if !self then return end
+
             if !isEnabled then
                 vm:SendViewModelMatchingSequence(vm:LookupSequence("upgrade_drone"))
                 vm:SetPlaybackRate(0.7)
             end
 
             timer.Create("TabletTimer_" .. client:EntIndex(), isEnabled and 0 or 4, 1, function()
+                if !self then return end
+
                 vm:SendViewModelMatchingSequence(vm:LookupSequence("idle"))
                 self:EnableTablet(isEnabled)
 

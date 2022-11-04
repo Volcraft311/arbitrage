@@ -1,0 +1,131 @@
+local MONOPAD = {}
+MONOPAD.__index = MONOPAD
+MONOPAD.id = 0
+MONOPAD.owner = nil
+MONOPAD.team = nil
+MONOPAD.receivers = {}
+
+MONOPAD.countNotes = 0
+MONOPAD.notes = {}
+MONOPAD.messages = {}
+MONOPAD.evidences = {}
+
+MONOPAD.rulesNotify = {}
+
+function MONOPAD:__tostring()
+	return "monopad[" .. self.id .. "]"
+end
+
+function MONOPAD:__eq(other)
+	return self:GetID() == other:GetID()
+end
+
+function MONOPAD:GetID()
+	return self.id
+end
+
+function MONOPAD:GetTeam()
+	return self.team
+end
+
+function MONOPAD:SetOwner(client)
+	self.owner = client:SteamID()
+
+	local faction = Character.team:GetByID(client:Team())
+	if faction then
+		self.team = faction:GetID()
+	end
+end
+
+function MONOPAD:GetReceivers()
+	local data = {}
+
+	for _, client in ipairs(player.GetAll()) do
+		local inventory = client:GetInventory()
+		if !inventory then continue end
+
+		local items = inventory:GetItems()
+		for _, item in ipairs(items) do
+			local id = item:GetID()
+
+			if id == self.id then -- and item:GetData("equip") then
+				data[#data + 1] = client
+			end
+		end
+	end
+
+	return data
+end
+
+
+function MONOPAD:CreateNotes(title)
+	self.countNotes = self.countNotes + 1
+	local id = self.countNotes
+
+	self.notes[id] = {
+		title = title,
+		description = ""
+	}
+end
+
+function MONOPAD:EditNotes(id, title, description)
+	self.notes[id] = {
+		title = title,
+		description = description
+	}
+end
+
+function MONOPAD:RemoveNotes(id)
+	self.notes[id] = nil
+end
+
+
+function MONOPAD:AddMessage(id, data)
+	self.messages[id] = self.messages[id] or {}
+
+	table.insert(self.messages[id], data)
+end
+
+function MONOPAD:AddEvidence(idx)
+	if self.evidences[idx] then return end
+
+	self.evidences[idx] = Arbitrage.ReturnTime()
+end
+
+function MONOPAD:RemoveEvidence(idx)
+	self.evidences[idx] = nil
+end
+
+
+function MONOPAD:IsReceiver(entity)
+	for id, receiver in ipairs(self:GetReceivers()) do
+	    if receiver == entity then
+	        return true
+	    end
+	end
+
+	return false
+end
+
+if SERVER then
+	function MONOPAD:Sync(client)
+		MonoPad.instances[self.id] = self
+
+		local function sync(pl)
+		    -- netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.notes, self.messages, self.evidences)
+		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences)
+		end
+
+		if IsValid(client) then
+		    sync(client)
+		end
+
+		for id, receiver in ipairs(self:GetReceivers()) do
+		    if IsValid(receiver) and receiver:IsPlayer() and client != receiver then
+		        sync(receiver)
+		    end
+		end
+	end
+end
+
+debug.getregistry().Monopad = MONOPAD

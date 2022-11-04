@@ -160,3 +160,39 @@ do
 
     ItemBase:RegisterItem("toko_shocker", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = "Монопад"
+    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/8818/8818724.png"
+    ITEM.description = "Самый обычный планшет."
+    ITEM.model = "models/props_junk/cardboard_box004a.mdl"
+    ITEM.class = "academy_monopad"
+
+    ITEM:HookAdd("equip", function(item, client)
+        if !item.stored then
+            local monopad = MonoPad:New(item:GetID())
+            monopad:SetOwner(client)
+
+            client:ChatPrint("[MonoPad] Данный монопад еще никто не запускал! Вы были установлены как его владелец.")
+            item.stored = monopad
+        end
+
+        local object = item.stored
+        object:Sync()
+    end)
+
+    function ITEM:GetName()
+        local object = self.stored
+        if object then
+            local faction = Character.team:GetByID(object:GetTeam())
+
+            return self.name .. " " .. faction:GetName()
+        end
+
+        return self.name
+    end
+
+    ItemBase:RegisterItem("monopad", ITEM)
+end

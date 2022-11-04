@@ -524,12 +524,90 @@ netstream.Hook("arb.MonoSetSettings", function(client, bData)
     Arbitrage.adminnotify:SendNotify("settingswhitelist", client:FullName(), bData)
 end)
 
-netstream.Hook("arb.MonoSetCharter", function(client, data)
+netstream.Hook("arb.MonoAddRules", function(client, title, description, image)
     if !client:IsAdmin() then return end
 
-    SetNetVar("arb.Charter", data)
+    local data = Arbitrage.GetAcademyRules()
+    table.insert(data, {image, title, description})
+
+    SetNetVar("arb.Rules", data)
+    netstream.Start(nil, "MonoPad:EditRulesNotify", #data)
+    MonoPad:SendNotify(nil)
 
     Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+end)
+
+netstream.Hook("arb.MonoEditRules", function(client, title, description, image, id)
+    if !client:IsAdmin() then return end
+
+    local data = Arbitrage.GetAcademyRules()
+    if !data[id] then return end
+
+    data[id] = {image, title, description}
+
+    SetNetVar("arb.Rules", data)
+    netstream.Start(nil, "MonoPad:EditRulesNotify", id)
+    MonoPad:SendNotify(nil)
+
+    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+end)
+
+netstream.Hook("arb.MonoRemoveRules", function(client, id)
+    if !client:IsAdmin() then return end
+
+    local data = Arbitrage.GetAcademyRules()
+    table.remove(data, id)
+
+    SetNetVar("arb.Rules", data)
+
+    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+end)
+
+netstream.Hook("arb.MonoDefaultRules", function(client)
+    if !client:IsAdmin() then return end
+
+    SetNetVar("arb.Rules", nil)
+    netstream.Start(nil, "MonoPad:EditRulesNotify", nil)
+    MonoPad:SendNotify(nil)
+
+    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+end)
+
+netstream.Hook("arb.MonoAddGameLog", function(client, array)
+    if !client:IsAdmin() then return end
+
+    local a, b, c, d, e = array[1], array[2], array[3], array[4], array[5]
+    e = e or Arbitrage.ReturnTime()
+
+    local data = Arbitrage.GetGameLogs()
+    table.insert(data, {a, b, c, d, e})
+
+    SetNetVar("arb.GameLogs", data)
+    netstream.Start(nil, "MonoPad:EditGameLogNotify")
+    MonoPad:SendNotify(nil)
+end)
+
+netstream.Hook("arb.MonoEditGameLog", function(client, array)
+    if !client:IsAdmin() then return end
+
+    local a, b, c, d, e, f = array[1], array[2], array[3], array[4], array[5], array[6]
+    e = e or Arbitrage.ReturnTime()
+
+    local data = Arbitrage.GetGameLogs()
+    if !data[f] then return end
+
+    data[f] = {a, b, c, d, e}
+    SetNetVar("arb.GameLogs", data)
+    netstream.Start(nil, "MonoPad:EditGameLogNotify")
+end)
+
+netstream.Hook("arb.MonoRemoveGameLog", function(client, id)
+    if !client:IsAdmin() then return end
+
+    local data = Arbitrage.GetGameLogs()
+    table.remove(data, id)
+
+    SetNetVar("arb.GameLogs", data)
 end)
 
 netstream.Hook("arb.MonoSplashScreen", function(client, data)

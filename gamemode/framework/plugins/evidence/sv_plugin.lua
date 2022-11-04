@@ -77,31 +77,29 @@ function PLUGIN:Reload(data)
     if !IsValid(data.entity) then return end
 
     local idx = data.entity:GetEvidence()
+    if !idx then return end
 
-    if idx then
-        local name = tostring(data.entity)
+    local name = tostring(data.entity)
 
-        data.entity:SetEvidence(nil)
+    data.entity:SetEvidence(nil)
 
-        if data.entity:GetClass() == "arb_evidence" then
-            data.entity:Remove()
-        end
-
-        for k, v in ipairs(player.GetAll()) do
-            if !v:HasEvidence(idx) then continue end
-
-            v:DeleteEvidence(idx)
-        end
-
-        self:DeleteEvidence(idx)
-
-        return "Вы успешно удалили улику №" .. idx .. " с " .. name .. "."
+    if data.entity:GetClass() == "arb_evidence" then
+        data.entity:Remove()
     end
+
+    self:DeleteEvidence(idx)
+
+    return "Вы успешно удалили улику №" .. idx .. " с " .. name .. "."
 end
 
 function PLUGIN:DeleteEvidence(idx)
     self.list[idx] = nil
     netstream.Start(nil, "evidence.Register", idx, nil)
+
+    for k, v in pairs(MonoPad.instances) do
+        v:RemoveEvidence(idx)
+        v:Sync()
+    end
 end
 
 
@@ -119,27 +117,23 @@ local PLAYER = FindMetaTable("Player")
 function PLAYER:AddEvidence(idx)
     if !PLUGIN:GetEvidence(idx) then return "Ошибка при выдаче улики игроку!" end
 
-    local data = self:GetNetVar("ev_list", {})
+    local monopad = MonoPad:FindMonoPad(self)
+    if !monopad then return "У игрока нету монопада!" end
 
-    data[idx] = true
+    local object = monopad.stored
+    if !object then return "У монопада отсутствует его объект!" end
 
-    self:SetNetVar("ev_list", data)
+    object:AddEvidence(idx)
+    object:Sync()
+
+    if !Arbitrage.lawEnable then
+        netstream.Start(self, "arb.Notify", "Журнал улик монопада обновлён.", false)
+    end
+
+    netstream.Start(self, "MonoPad:EditSpecialNotify")
 
     return "Улика с ID №" .. tostring(idx) .. " была успешно выдана игроку " .. tostring(self) .. "."
 end
-
-function PLAYER:DeleteEvidence(idx)
-    local data = self:GetNetVar("ev_list", {})
-
-    data[idx] = nil
-
-    self:SetNetVar("ev_list", data)
-
-    return "Улика с ID №" .. tostring(idx) .. " была успешно удалена у игрока " .. tostring(self) .. "."
-end
-
-
-
 
 
 function PLUGIN:EntityRemoved(entity)
@@ -148,13 +142,26 @@ function PLUGIN:EntityRemoved(entity)
     if idx then
         entity:SetEvidence(nil)
         self:DeleteEvidence(idx)
-
-        for k, v in ipairs(player.GetAll()) do
-            if !v:HasEvidence(idx) then continue end
-
-            v:DeleteEvidence(idx)
-        end
     end
+end
+
+local function conclusion(client, idx)
+    local evidence = PLUGIN:GetEvidence(idx)
+
+    client:ChatPrint(evidence.name .. ". " .. evidence.description)
+end
+
+local function collect(client, entity, idx)
+    Arbitrage.action.ActionRun(client, "Собираем улику", 1, function()
+        if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
+
+        return false
+    end, function()
+        client:AddEvidence(idx)
+        conclusion(client, idx)
+
+        netstream.Start(client, "Evidence:Draw", entity, PLUGIN:GetEvidence(idx))
+    end)
 end
 
 function PLUGIN:PlayerUse(client, entity)
@@ -164,24 +171,13 @@ function PLUGIN:PlayerUse(client, entity)
     if entity:IsPlayer() then return end
 
     if !client.evidenceCD or CurTime() >= client.evidenceCD then
-        if !client:HasEvidence(idx) then
-            Arbitrage.action.ActionRun(client, "Собираем улику", 1, function()
-                if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
-
-                return false
-            end, function(activator)
-                netstream.Start(client, "arb.Notify", "Ваш журнал улик обновлён.", false)
-
-                local evidence = self:GetEvidence(idx)
-                netstream.Start(client, "Evidence:Draw", entity, evidence)
-
-                client:AddEvidence(idx)
-            end)
-        else
-            netstream.Start(client, "arb.Notify", "Вы уже нашли эту улику!", true)
-        end
-
         client.evidenceCD = CurTime() + 2
+
+        local monopad = MonoPad:FindMonoPad(client)
+        if !monopad then return collect(client, entity, idx) end
+        if !client:HasEvidence(idx) then return collect(client, entity, idx) end
+
+        netstream.Start(client, "arb.Notify", "В монопаде уже есть данная улика!", true)
     end
 end
 

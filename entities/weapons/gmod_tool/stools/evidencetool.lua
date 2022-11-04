@@ -273,7 +273,7 @@ function TOOL.BuildCPanel(CPanel)
     ListRibbons:SetSpaceX(5)
 
     for k, v in ipairs(Evidence.ribbons) do
-        local mat = Material(v)
+        local mat = Material(v[1])
 
         local ListItem = ListRibbons:Add("DButton")
         ListItem:SetText("")

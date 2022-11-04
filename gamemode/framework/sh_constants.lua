@@ -47,12 +47,6 @@ ARBITRAGE_CONTEXT_DATA = {
 
 			netstream.Start("arb.HideState", a)
 		end},
-		["Найденные материалы"] = {"danganronpa/hud/action/material.png", function(client)
-			asterionlib.netgui:Create("arb.EvidenceMenu")
-		end},
-		["Устав академии"] = {"danganronpa/hud/action/charter.png", function(client)
-			asterionlib.netgui:Create("arb.AcademyCharter")
-		end},
 		["Открыть инвентарь"] = {"danganronpa/hud/action/charter.png", function(client)
 			local panel = Arbitrage.gui.inventory
 

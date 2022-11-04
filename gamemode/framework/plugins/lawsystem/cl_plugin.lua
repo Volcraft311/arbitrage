@@ -879,10 +879,6 @@ netstream.Hook("arb.ShowEvidence", function(client, data, indx)
     local panel = Arbitrage.gui.lawaction
     if !IsValid(panel) then return end
 
-    if !panel.evidences[indx] then
-        panel.evidences[indx] = name
-    end
-
     timer.Simple(1, function()
         if panel.select == 2 then
             for i = 1, 2 do -- upd

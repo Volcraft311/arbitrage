@@ -158,14 +158,41 @@ local function createItemButton(panel, id, path, name, data)
 	end
 end
 
-local function createEvidenceButton(panel, id, evidenceMat, ribbonMat, name, data)
-	local showText = Arbitrage.gui.lawaction.evidences[id] and "Предъвил: " .. Arbitrage.gui.lawaction.evidences[id] or "Никто не показывал эту улику!"
+local function getEvidence(id)
+    local data = Evidence:GetEvidence(id)
+    if !data then return end
+
+    local dEvidence = Evidence.icons
+    local evidenceMat = Material(dEvidence[data.image])
+
+    local dRibbon = Evidence.ribbons
+    local ribbonMat = Material(dRibbon[data.ribbon][1])
+
+    local description = data.name
+    if utf8.len(description) > 30 then
+        description = description:utf8sub(1, 27) .. "..."
+    end
+
+    return evidenceMat, ribbonMat, description, data
+end
+
+local function createEvidenceButton(panel, id, time)
+    if !Evidence:GetEvidence(id) then return end
+    local evidenceMat, ribbonMat, name, data = getEvidence(id)
+
+    local showText = "Никто не показывал эту улику!"
+    local timeText = "Найдено в " .. Arbitrage.FormatTime(time)
+
+    local evidencesList = Arbitrage.GetShowEvidences()
+    if evidencesList[id] then
+        showText = "Предъявил: " .. evidencesList[id][2]
+    end
 
 	local evidenceButton = panel:Add("DButton")
 	evidenceButton:SetText("")
 	evidenceButton:Dock(TOP)
 	evidenceButton:DockMargin(W(3), 0, W(3), H(3))
-	evidenceButton:SetTall(H(40))
+	evidenceButton:SetTall(H(58))
 	evidenceButton.alpha = 0
 	evidenceButton.Paint = function(_, w, h)
 		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
@@ -185,7 +212,8 @@ local function createEvidenceButton(panel, id, evidenceMat, ribbonMat, name, dat
         surface.DrawTexturedRect(0, 0, h, h)
 
 		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
-		draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
+		draw.SimpleText(timeText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
+        draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(36), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
 	end
 	evidenceButton.DoClick = function()
 	    local x = 0
@@ -201,7 +229,7 @@ local function createEvidenceButton(panel, id, evidenceMat, ribbonMat, name, dat
 	local present = evidenceButton:Add("DButton")
 	present:SetText("")
 	present:Dock(RIGHT)
-	present:DockMargin(0, H(10), W(5), H(10))
+	present:DockMargin(0, H(19), W(5), H(19))
 	present:SetWide(H(20))
 	present.alpha = 30
 	present.size = 0.8
@@ -279,8 +307,6 @@ local categoryData = {
                     end
                 end
 
-                print(index, count)
-
                 c:SetTall(c:GetTall() + count * H(140) + count * H(5))
             end
         end
@@ -292,29 +318,14 @@ local categoryData = {
             local showEvidencePanel = createCategory(panel, "Показанные улики")
             local yourEvidencePanel = createCategory(panel, "Ваши улики")
 
-            for k, v in pairs(client:GetEvidences()) do
-            	local data = Evidence:GetEvidence(k)
-            	if !data then continue end
-
-            	local dEvidence = Evidence.icons
-            	local evidenceMat = Material(dEvidence[data.image] and dEvidence[data.image] or dEvidence[1])
-
-                local dRibbon = Evidence.ribbons
-                local ribbonMat = Material(dRibbon[data.ribbon] and dRibbon[data.ribbon] or dRibbon[1])
-
-            	local description = data.name
-                if utf8.len(description) > 30 then
-                    description = description:utf8sub(1, 27) .. "..."
+            for id, stored in pairs(Arbitrage.GetShowEvidences()) do
+                if Evidence:GetEvidence(id) then
+                    createEvidenceButton(showEvidencePanel, id, stored[1])
                 end
+            end
 
-                local l_evidence = Arbitrage.gui.lawaction.evidences[k]
-                if l_evidence then
-                	createEvidenceButton(showEvidencePanel, k, evidenceMat, ribbonMat, description, data)
-                end
-
-                if !l_evidence or l_evidence == LocalPlayer():Name() then
-                    createEvidenceButton(yourEvidencePanel, k, evidenceMat, ribbonMat, description, data)
-                end
+            for id, time in pairs(client:GetEvidences()) do
+                createEvidenceButton(yourEvidencePanel, id, time)
             end
         end
     },
@@ -359,27 +370,6 @@ local categoryData = {
                 if inventory and inventory:HasItem(id) then
                     createItemButton(yourItemsPanel, id, icon, name, data)
                 end
-            end
-        end
-    },
-    {
-        name = "Устав",
-        icon = "icon16/database_table.png",
-        data = function(client, panel)
-            local charterPanel = panel:Add("DTextEntry")
-            charterPanel:SetPos(0, 0)
-            charterPanel:SetValue(GetNetVar("arb.Charter", Arbitrage.DefaultCharter))
-            charterPanel:SetMultiline(true)
-            charterPanel:SetFont("arb.Font_FuturaPTBook_6")
-            charterPanel:SetTextColor(color_white)
-            charterPanel:DockMargin(W(5), H(10), W(5), H(5))
-            charterPanel:SetEnabled(false)
-            charterPanel:SetVerticalScrollbarEnabled(true)
-            charterPanel:SetDrawBackground(false)
-
-
-            panel.PerformLayout = function(_, w, h)
-                charterPanel:SetSize(w, h)
             end
         end
     }
@@ -509,7 +499,6 @@ function PANEL:Init()
         self:InitCategory()
     end
 
-    self.evidences = {}
     self.items = {}
 end
 

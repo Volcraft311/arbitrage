@@ -265,6 +265,25 @@ function Arbitrage.ReturnTime()
     return Arbitrage.CurTime or 0 -- * 17
 end
 
+function Arbitrage.FormatTime(time)
+    local hours = math.floor(math.fmod(time, 86400) / 3600)
+    local minutes = math.floor(math.fmod(time, 3600) / 60)
+
+    local _h = string.format("%d", hours)
+    local _m = string.format("%d", minutes)
+
+    if tonumber(_h) < 10 then _h = "0" .. _h end
+    if tonumber(_m) < 10 then _m = "0" .. _m end
+
+    return Format("%s:%s", _h, _m)
+end
+
+function Arbitrage.GetTime()
+    local thisTime = Arbitrage.ReturnTime()
+
+    return Arbitrage.FormatTime(thisTime)
+end
+
 -- 08:00 - 22:00 - дневная
 -- 8:00 — 104400
 -- 22:00 — 154800
@@ -355,6 +374,35 @@ end
 
 function Arbitrage.GetChapter()
     return GetNetVar("arb.Chapter", "Эпизод отсутствует")
+end
+
+Arbitrage.DefaultRules = {
+    {"https://i.imgur.com/WqrdPdz.png", "Перспективы прибывания", "Ученики должны жить в Абсолютной Академии остаток всего своего предпологаемого будущего."},
+    {"https://i.imgur.com/5BEGz5S.png", "Требования для классного суда", "Когда происходит убийство, все выжившие ученики должны участвовать в классном суде."},
+    {"https://i.imgur.com/jGNR57p.png", "Голосование на классном суде", "Если запятнанного обнаружат во время классного суда, только он будет казнен. Если запятнанный не будет обнаружен, все остальные ученики будут казнены."},
+    {"https://i.imgur.com/N3y5t4N.png", "Полное прохождение Академии", "Если запятнанный переживет классный суд, он выпустится и вернётся во внешний мир."},
+    {"https://i.imgur.com/5E0liqc.png", "Продолжение убийственной игры", "Убийственная игра и классный суды будут продолжаться, пока не останется только два выживших ученика."},
+    {"https://i.imgur.com/8Ar23ne.png", "Время тихого часа", "\"Ночное Время\" длится с 10 вечера до 8 утра."},
+    {"https://i.imgur.com/i6deVka.png", "Хорошие манеры поведения", "Насилие в отношении Монокумы - директора Абсолютной Академии, строго запрещено."},
+    {"https://i.imgur.com/U4P1cUg.png", "Непричастность Директора", "Сам Монокума никогда не совершит убийство."},
+    {"https://i.imgur.com/t89V6Gg.png", "Бережное отношение с имуществом Академии", "Ваши Монопады - очень важные предметы. Пожалуйста, берегите их."},
+    {"https://i.imgur.com/Eg5uJSu.png", "Начало расследования", "\"Объявление о Нахождении Тела\" заиграет, когда три или более ученика найдут тело"},
+    {"https://i.imgur.com/hpqh3Cp.png", "Правила передвижения по Академии", "Вы можете исследовать школу с минимальными ограничениями."},
+    {"https://i.imgur.com/cMA8o7c.png", "Наказание за нарушение правил", "Ученики, которые нарушат эти правила, будут незамедлительно уничтожены."},
+    {"https://i.imgur.com/DB3K2Nt.png", "Правило первой жертвы", "Если разными людьми одновременно будут совершены несколько убийств, запятнанным считаться будет тот, чью жертву нашли первой."},
+    {"https://i.imgur.com/KQ300mf.png", "Принципы изменения устава Академии", "В дальнейшем, по прихоти директора, могут быть добавлены новые правила."}
+}
+
+function Arbitrage.GetAcademyRules()
+    return GetNetVar("arb.Rules", table.Copy(Arbitrage.DefaultRules))
+end
+
+function Arbitrage.GetGameLogs()
+    return GetNetVar("arb.GameLogs", {})
+end
+
+function Arbitrage.GetShowEvidences()
+    return GetNetVar("arb.ShowEvidences", {})
 end
 
 local themes = {

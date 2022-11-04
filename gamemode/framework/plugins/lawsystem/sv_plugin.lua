@@ -437,11 +437,27 @@ netstream.Hook("arb.ShowEvidence", function(client, data)
         local evidence = Evidence:GetEvidence(data)
         if !evidence then return end
 
+        local time = client:HasEvidence(data)
+        if !time then return end
+
         local mat = evidence.image
         netstream.Start(nil, "arb.ShowEvidence", client, mat, data)
 
         for k, v in ipairs(player.GetAll()) do
             v:AddEvidence(data)
+        end
+
+        local evidencesList = Arbitrage.GetShowEvidences()
+        if !evidencesList[data] then
+            evidencesList[data] = {time, client:Name()}
+            SetNetVar("arb.ShowEvidences", evidencesList)
+        else
+            local oldTime = evidencesList[data][1]
+
+            if time < oldTime then
+                evidencesList[data] = {time, client:Name()}
+                SetNetVar("arb.ShowEvidences", evidencesList)
+            end
         end
 
         PLUGIN.ShowEvidenceCD = CurTime() + 10

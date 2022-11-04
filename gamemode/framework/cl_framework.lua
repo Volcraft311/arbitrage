@@ -74,21 +74,6 @@ function Arbitrage.DrawOutlinedRectBlur(x, y, w, h, color, thickness, size, cb)
     surface.DrawOutlinedRect(x, y, w, h, thickness)
 end
 
-function Arbitrage.GetTime()
-    local thisTime = Arbitrage.ReturnTime()
-
-    local hours = math.floor(math.fmod(thisTime, 86400) / 3600)
-    local minutes = math.floor(math.fmod(thisTime, 3600) / 60)
-
-    local _h = string.format("%d", hours)
-    local _m = string.format("%d", minutes)
-
-    if tonumber(_h) < 10 then _h = "0" .. _h end
-    if tonumber(_m) < 10 then _m = "0" .. _m end
-
-    return Format("%s:%s", _h, _m)
-end
-
 function Arbitrage.AddDisableElement(data)
     if !data then return end
 
@@ -290,15 +275,68 @@ local ActionPressIDList = {
         netstream.Start("arb.OpenMonoMenu")
     end,
     ["open_material_ui"] = function(client, id, bIsVisibleGUI)
-        if IsValid(Arbitrage.gui.logmenu) then
-            Arbitrage.gui.logmenu:AlphaTo(0, 0.3, 0, function()
-                Arbitrage.gui.logmenu:Remove()
+        local function findClass(class)
+            for k, v in ipairs(LocalPlayer():GetWeapons()) do
+                if v:GetClass() == class then
+                    return v
+                end
+            end
+        end
+
+        if IsValid(MonoPad:GetUI()) then
+            MonoPad:GetUI():AlphaTo(0, 0.3, 0, function()
+                MonoPad:GetUI():Remove()
             end)
+
+            local class = LocalPlayer():GetActiveWeaponClass()
+            if class == "academy_monopad" then
+                local key = findClass("academy_key")
+
+                if key then
+                    input.SelectWeapon(key)
+                end
+            end
 
             return
         end
 
-        Arbitrage.gui.logmenu = vgui.Create("arb.EvidenceMenu")
+        local monopad = nil
+        local inventory = LocalPlayer():GetInventory()
+        if inventory then
+            local items = inventory:GetItems()
+
+            for _, item in ipairs(items) do
+                if item.uniqueID == "monopad" and item:GetData("equip") then
+                    monopad = item.stored
+                    break
+                end
+            end
+        end
+
+        if !monopad then
+            return chat.AddText("У вас нету монопада!")
+        end
+
+
+        local weapon = findClass("academy_monopad")
+        if weapon and !Arbitrage.lawEnable then
+            input.SelectWeapon(weapon)
+        else
+            local panel = MonoPad:CreateTablet()
+            panel:SetObject(monopad)
+            panel:MakePopup()
+            panel.noWeapon = true
+
+            panel:SetAlpha(0)
+            panel:AlphaTo(255, 0.2)
+
+            local w, h = panel:GetSize()
+            panel:SetPos(ScrW() / 2 - w / 2, ScrH() / 2 - h / 2)
+
+            timer.Simple(0.5, function()
+                MonoPad:EnableTablet(nil, true, panel)
+            end)
+        end
     end,
     ["open_interface"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.inventory) then

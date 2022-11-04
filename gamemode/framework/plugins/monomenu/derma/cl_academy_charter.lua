@@ -11,8 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
-
 local PANEL = {}
 
 function PANEL:Init()
@@ -34,61 +32,131 @@ function PANEL:Init()
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
         draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
-
     close.DoClick = function()
         self:AlphaTo(0, 0.2, 0, function()
             self:Remove()
         end)
     end
 
-    Arbitrage.gui.academycharter = self
+    self:SetData()
+end
 
-    self.charterPanel = self:Add("DTextEntry")
-    self.charterPanel:SetValue(GetNetVar("arb.Charter", ""))
-    self.charterPanel:SetMultiline(true)
-    self.charterPanel:SetFont("arb.Font_FuturaPTBook_8")
-    self.charterPanel:Dock(FILL)
-    self.charterPanel:DockMargin(W(5), H(10), W(5), H(5))
-    self.charterPanel:SetDisabled(true)
+local deleteMat = Material("danganronpa/ui/delete.png")
+local editMat = Material("danganronpa/ui/settings.png")
+function PANEL:SetData()
+    if IsValid(self.mainPanel) then self.mainPanel:Remove() end
+    if IsValid(self.addButton) then self.addButton:Remove() end
+    if IsValid(self.defaultButton) then self.defaultButton:Remove() end
 
-    local saveButton = self:Add("DButton")
-    saveButton:DockMargin(0, H(5), 0, H(5))
-    saveButton:SetText("")
-    saveButton:SetTall(H(25))
-    saveButton:SetDisabled(true)
-    saveButton:Dock(BOTTOM)
-    saveButton.alpha = 0
-    saveButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and !_:GetDisabled()) and 255 or 30)
-        draw.DrawText("Сохранить изменения", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+    self.mainPanel = self:Add("Panel")
+    self.mainPanel:SetWide(W(250))
+    self.mainPanel:Dock(FILL)
+    self.mainPanel:DockMargin(W(5), H(45), W(5), H(5))
+    self.mainPanel.Paint = function(_, w, h)
+        surface.SetDrawColor(27, 10, 13, 150)
+        surface.DrawRect(0, 0, w, h)
+    end
+
+    self.defaultButton = self:Add("DButton")
+    self.defaultButton:DockMargin(0, H(5), 0, H(5))
+    self.defaultButton:SetText("")
+    self.defaultButton:SetTall(H(25))
+    self.defaultButton:Dock(BOTTOM)
+    self.defaultButton.alpha = 0
+    self.defaultButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText("Вернуть стандартные правила", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
     end
-    saveButton.DoClick = function()
-        self:AlphaTo(0, 0.3, 0, function()
-            self:Remove()
+    self.defaultButton.DoClick = function()
+        netstream.Start("arb.MonoDefaultRules")
+
+        timer.Simple(0.5, function()
+            self:SetData()
         end)
-
-        netstream.Start("arb.MonoSetCharter", self.charterPanel:GetValue())
     end
 
-    local editButton = self:Add("DButton")
-    editButton:DockMargin(0, H(5), 0, H(5))
-    editButton:SetText("")
-    editButton:SetTall(H(25))
-    editButton:Dock(BOTTOM)
-    editButton.alpha = 0
-    editButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and self.charterPanel:GetDisabled()) and 255 or 30)
-        draw.DrawText("Внести изменить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+    self.addButton = self:Add("DButton")
+    self.addButton:DockMargin(0, H(5), 0, H(5))
+    self.addButton:SetText("")
+    self.addButton:SetTall(H(25))
+    self.addButton:Dock(BOTTOM)
+    self.addButton.alpha = 0
+    self.addButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText("Добавить новое правило", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
     end
-    editButton.DoClick = function()
-        self.charterPanel:SetDisabled(false)
-        saveButton:SetDisabled(false)
+    self.addButton.DoClick = function()
+        local subMenu = vgui.Create("arb.MonoAcademyCharterSub")
+        subMenu:SetData(nil, nil, nil, function()
+            self:SetData()
+        end)
+    end
+
+    self.rulesPanel = self.mainPanel:Add("DScrollPanel")
+    self.rulesPanel:Dock(FILL)
+    self.rulesPanel:DockMargin(W(5), H(5), W(5), H(5))
+
+    for k, v in ipairs(Arbitrage.GetAcademyRules()) do
+        local panel = self.rulesPanel:Add("DPanel")
+        panel:SetTall(H(30))
+        panel:Dock(TOP)
+        panel:DockMargin(0, 0, 0, 0)
+        panel.Paint = function(_, w, h)
+            if k % 2 == 0 then
+                surface.SetDrawColor(255, 61, 96, 1)
+                surface.DrawRect(0, 0, w, h)
+            end
+
+            draw.DrawText(k, "arb.Font_FuturaPTBook_7", W(15), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(v[2], "arb.Font_FuturaPTBook_7", W(187), H(4), color_white, TEXT_ALIGN_LEFT)
+        end
+
+        local remove = panel:Add("DButton")
+        remove:SetText("")
+        remove:Dock(RIGHT)
+        remove:DockMargin(0, 0, W(10), 0)
+        remove:SetWide(panel:GetTall())
+        remove.alpha = 0
+        remove.Paint = function(_, w, h)
+            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+
+            surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+            surface.SetMaterial(deleteMat)
+            surface.DrawTexturedRect(6, 6, w - 12, h - 12)
+        end
+        remove.DoClick = function()
+            netstream.Start("arb.MonoRemoveRules", k)
+
+            timer.Simple(0.5, function()
+                self:SetData()
+            end)
+        end
+
+        local edit = panel:Add("DButton")
+        edit:SetText("")
+        edit:Dock(RIGHT)
+        edit:DockMargin(0, 0, W(10), 0)
+        edit:SetWide(panel:GetTall())
+        edit.alpha = 0
+        edit.Paint = function(_, w, h)
+            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+
+            surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+            surface.SetMaterial(editMat)
+            surface.DrawTexturedRect(6, 6, w - 12, h - 12)
+        end
+        edit.DoClick = function()
+            local subMenu = vgui.Create("arb.MonoAcademyCharterSub")
+            subMenu:SetData(v[2], v[3], v[1], function()
+                self:SetData()
+            end, k)
+        end
     end
 end
 
@@ -106,7 +174,143 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Устав академии", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("Редактор устава академии", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+
+    draw.DrawText("Номер", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("Заголовок", "arb.Font_FuturaPTBook_7", W(200), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MonoAcademyCharter", PANEL, "DFrame")
+
+
+local PANEL = {}
+
+function PANEL:Init()
+    self:SetPos(0, 0)
+    self:SetSize(ScrW(), ScrH())
+    self:MakePopup()
+    self:SetAlpha(0)
+    self:AlphaTo(255, 0.3)
+    self.startTime = SysTime()
+
+    local t = H(330)
+    self.main = self:Add("Panel")
+    self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
+    self.main:SetSize(W(600), 0)
+
+    self.main.Think = function(panel)
+        panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
+    end
+
+    self.main.Paint = function(panel, w, h)
+        surface.SetDrawColor(41, 22, 25)
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(255, 61, 96, 165.75)
+        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+        surface.SetDrawColor(255, 61, 96, 165.75)
+        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+
+        surface.SetDrawColor(255, 61, 96, 20)
+        surface.DrawRect(0, 0, w, H(23))
+
+        draw.DrawText("Добавить новое правило", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+
+        draw.DrawText("Введите заголовок", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: Проверка", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+
+        draw.DrawText("Введите описание", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: Новое правило", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+
+        draw.DrawText("Введите URL картинки", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("Пример: Новое правило", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+    end
+
+    local close = self.main:Add("DButton")
+    close:SetPos(self.main:GetWide() - H(70 / 2), 0)
+    close:SetSize(H(70 / 2), H(23))
+    close:SetText("")
+    close.alpha = 40
+    close.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
+        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+    end
+    close.DoClick = function()
+        self:AlphaTo(0, 0.2, 0, function()
+            self:Remove()
+        end)
+    end
+
+    self.titleEntry = self.main:Add("DTextEntry")
+    self.titleEntry:SetPos(W(5), H(75))
+    self.titleEntry:SetSize(self.main:GetWide() - W(10), H(25))
+    self.titleEntry:SetPlaceholderText("Заголовок")
+    self.titleEntry:SetFont("arb.Font_FuturaPTBook_8")
+
+    self.descriptionEntry = self.main:Add("DTextEntry")
+    self.descriptionEntry:SetPos(W(5), H(155))
+    self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(25))
+    self.descriptionEntry:SetPlaceholderText("Описание")
+    self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
+
+    self.imageEntry = self.main:Add("DTextEntry")
+    self.imageEntry:SetPos(W(5), H(235))
+    self.imageEntry:SetSize(self.main:GetWide() - W(10), H(25))
+    self.imageEntry:SetPlaceholderText("URL картинки")
+    self.imageEntry:SetFont("arb.Font_FuturaPTBook_8")
+
+    local submitButton = self.main:Add("DButton")
+    submitButton:DockMargin(0, H(5), 0, H(5))
+    submitButton:SetText("")
+    submitButton:SetTall(H(25))
+    submitButton:Dock(BOTTOM)
+    submitButton.alpha = 0
+    submitButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText(self.id and "Изменить" or "Добавить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+
+        surface.SetDrawColor(255, 61, 96, 30)
+        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+    end
+
+    submitButton.DoClick = function()
+        local a, b, c, d = self.titleEntry:GetValue(), self.descriptionEntry:GetValue(), self.imageEntry:GetValue(), self.id
+
+        netstream.Start(d and "arb.MonoEditRules" or "arb.MonoAddRules", a, b, c, d)
+
+        local cb = self.callback
+        timer.Simple(0.5, function()
+            if cb then
+                cb()
+            end
+        end)
+
+        self:AlphaTo(0, 0.3, 0, function()
+            self:Remove()
+        end)
+    end
+end
+
+function PANEL:SetData(title, description, image, callback, id)
+    if title then
+        self.titleEntry:SetValue(title)
+    end
+
+    if description then
+        self.descriptionEntry:SetValue(description)
+    end
+
+    if image then
+        self.imageEntry:SetValue(image)
+    end
+
+    self.callback = callback
+    self.id = id
+end
+
+function PANEL:Paint(w, h)
+    Derma_DrawBackgroundBlur(self, self.startTime)
+end
+
+vgui.Register("arb.MonoAcademyCharterSub", PANEL, "EditablePanel")

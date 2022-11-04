@@ -23,8 +23,8 @@ function PLUGIN:AddIcon(file)
     self.icons[#self.icons + 1] = "danganronpa/evidence/" .. file
 end
 
-function PLUGIN:AddRibbon(file)
-    self.ribbons[#self.ribbons + 1] = "danganronpa/ribbon/" .. file
+function PLUGIN:AddRibbon(file, name, color)
+    self.ribbons[#self.ribbons + 1] = {"danganronpa/ribbon/" .. file, name, color}
 end
 
 function PLUGIN:GetEvidence(idx)
@@ -84,13 +84,20 @@ end
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:GetEvidences()
-    local data = self:GetNetVar("ev_list", {})
+    local monopad = MonoPad:FindMonoPad(self)
+    if monopad then
+        local object = monopad.stored
 
-    return data
+        if object then
+            return object.evidences
+        end
+    end
+
+    return {}
 end
 
 function PLAYER:HasEvidence(idx)
-    local data = self:GetNetVar("ev_list", {})
+    local data = self:GetEvidences()
 
     return data[idx]
 end
@@ -109,12 +116,13 @@ do
 end
 
 do
-    PLUGIN:AddRibbon("blue.png")
-    PLUGIN:AddRibbon("green.png")
-    PLUGIN:AddRibbon("orange.png")
-    PLUGIN:AddRibbon("red.png")
-    PLUGIN:AddRibbon("violet.png")
-    PLUGIN:AddRibbon("white.png")
+    PLUGIN:AddRibbon("blue.png", "Информационные носители", Color(89, 118, 224))
+    PLUGIN:AddRibbon("green.png", "Медицина", Color(106, 224, 89))
+    PLUGIN:AddRibbon("orange.png", "Физические носители", Color(220, 124, 61))
+    PLUGIN:AddRibbon("red.png", "Орудия убийства", Color(221, 61, 61))
+    PLUGIN:AddRibbon("violet.png", "Химические материалы", Color(141, 61, 220))
+    PLUGIN:AddRibbon("white.png", "Ключевые материалы", Color(197, 206, 247))
+    PLUGIN:AddRibbon("pink.png", "Мед. экспертиза", Color(253, 177, 255))
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

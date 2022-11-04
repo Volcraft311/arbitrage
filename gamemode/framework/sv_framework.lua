@@ -532,6 +532,9 @@ function Arbitrage:StartGame()
             client:SendLua([[RunConsoleCommand("stopsound")]])
             client:SendLua([[RunConsoleCommand("r_cleardecals")]])
 
+            client:StripAmmo()
+            client:StripWeapons()
+
             local inventory = client:GetInventory()
             if inventory then
                 -- Анэквипаем все предметы
@@ -556,6 +559,20 @@ function Arbitrage:StartGame()
                 -- выдаем всем персонажам ключи от своих дверей
                 give("keys"):SetData("faction", faction)
 
+                -- выдаем всем персонажам монопады
+                do
+                    local item = give("monopad")
+                    local monopad = MonoPad:New(item:GetID())
+                    monopad:SetOwner(client)
+
+                    item.stored = monopad
+
+                    local object = item.stored
+                    object:Sync()
+
+                    item:Equip(client, item, 1)
+                end
+
                 if !Arbitrage.OffGiveItems() then
                     local factionData = Character.team:GetByID(faction)
                     if factionData then
@@ -565,9 +582,6 @@ function Arbitrage:StartGame()
                     end
                 end
             end
-
-            client:StripAmmo()
-            client:StripWeapons()
 
             Arbitrage.player.SetupHealth(client)
             Arbitrage.player.SetupSpeed(client)
@@ -631,6 +645,13 @@ function Arbitrage:StopGame()
 
         if inventory then
             local items = inventory:GetItems()
+
+            -- Анэквипаем все предметы
+            for k2, v2 in pairs(items) do
+                if v2:GetData("equip") then
+                    v2:UnEquip(client, v2)
+                end
+            end
 
             for k2, v2 in ipairs(items) do
                 v2:Remove()

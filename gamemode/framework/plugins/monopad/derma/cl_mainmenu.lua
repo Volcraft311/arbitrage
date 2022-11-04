@@ -6,6 +6,9 @@ function PANEL:Init()
     self:Welcome()
     MonoPad:StartRegisterMeta(self)
 
+    local monopad = MonoPad:GetObject()
+    if !monopad then return end
+
     local validMap = MonoPad.miniMapList[game.GetMap()]
     self:CreateButton("navigation", "Навигация", "Удобная карта с активным трекингом", 50, 158, "danganronpa/monopad/category/navigation.png", function()
         if !validMap then return end
@@ -36,9 +39,6 @@ function PANEL:Init()
             end
         end)
     end, function()
-        local monopad = MonoPad:GetObject()
-        if !monopad then return end
-
         return table.Count(monopad.rulesNotify or {}) > 0
     end)
 
@@ -55,16 +55,7 @@ function PANEL:Init()
             end
         end)
     end, function()
-        -- local monopad = MonoPad:GetObject()
-        -- if !monopad then return end
-
-        -- for k, v in pairs(monopad.messages) do
-        --     for k2, v2 in ipairs(v) do
-        --         if v2.notify and monopad.team != v2.faction then
-        --             return true
-        --         end
-        --     end
-        -- end
+        return monopad.messagesNotify > 0
     end)
 
     self:CreateButton("gamelog", "Журнал игры", "История расследования в Академии", 50, 343, "danganronpa/monopad/category/gamelog.png", function()
@@ -80,9 +71,6 @@ function PANEL:Init()
             end
         end)
     end, function()
-        local monopad = MonoPad:GetObject()
-        if !monopad then return end
-
         return monopad.gamelogNotify
     end)
 
@@ -113,9 +101,6 @@ function PANEL:Init()
             end
         end)
     end, function()
-        local monopad = MonoPad:GetObject()
-        if !monopad then return end
-
         return monopad.specialNotify
     end)
 end

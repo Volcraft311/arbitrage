@@ -217,8 +217,7 @@ netstream.Hook("MonoPad:DisableTablet", function(entity)
     MonoPad:DisableTablet(entity)
 end)
 
--- netstream.Hook("MonoPad:SyncObject", function(id, faction, notes, messages, evidences)
-netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences)
+netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNotify)
     local item = ItemBase.instances[id]
     if !item then return end
 
@@ -232,9 +231,8 @@ netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences)
     local object = item.stored
     object.id = id
     object.team = faction
-    -- object.notes = notes
-    -- object.messages = messages
     object.evidences = evidences
+    object.messagesNotify = messagesNotify
 
     hook.Run("SyncMonoPad", object)
     MonoPad.instances[id] = object

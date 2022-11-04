@@ -5,7 +5,9 @@ MONOPAD.owner = nil
 MONOPAD.team = nil
 MONOPAD.receivers = {}
 
+MONOPAD.messagesNotify = 0
 MONOPAD.countNotes = 0
+
 MONOPAD.notes = {}
 MONOPAD.messages = {}
 MONOPAD.evidences = {}
@@ -111,9 +113,17 @@ if SERVER then
 	function MONOPAD:Sync(client)
 		MonoPad.instances[self.id] = self
 
+		local messagesNotify = 0
+		for k, v in pairs(self.messages) do
+			for k2, v2 in ipairs(v) do
+				if v2.notify and self.team != v2.faction then
+					messagesNotify = messagesNotify + 1
+				end
+			end
+		end
+
 		local function sync(pl)
-		    -- netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.notes, self.messages, self.evidences)
-		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences)
+		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify)
 		end
 
 		if IsValid(client) then

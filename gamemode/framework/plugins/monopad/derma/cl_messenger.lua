@@ -336,6 +336,7 @@ function PANEL:InitMessages(id)
 	self:ReadingMessages(id)
 
 	local monopad = MonoPad:GetObject()
+	monopad.messagesNotify = 0
 
 	netstream.Request("MonoPad:GetMessage", id, function(data)
 		self.messagesScroll:Clear()

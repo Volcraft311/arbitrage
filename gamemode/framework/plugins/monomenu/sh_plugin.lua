@@ -132,6 +132,14 @@ MonoMenu:AddGameFunction("Изменить устав академии", "icon16
     end
 })
 
+MonoMenu:AddGameFunction("Изменить журнал игры", "icon16/calendar_edit.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        vgui.Create("arb.MonoGameLog")
+    end
+})
+
 MonoMenu:AddGameFunction("Распределить двери", "icon16/chart_organisation.png", {
     onRun = function(client)
         if CLIENT then return end
@@ -219,7 +227,7 @@ MonoMenu:AddGameFunction("Открыть список предметов", "icon
     end
 })
 
-MonoMenu:AddGameFunction("Открыть список персонажей", "icon16/table_edit.png", {
+MonoMenu:AddGameFunction("Открыть список персонажей", "icon16/group_edit.png", {
     onRun = function(client)
         if SERVER then return end
 

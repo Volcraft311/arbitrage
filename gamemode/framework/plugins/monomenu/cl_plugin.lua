@@ -151,6 +151,12 @@ local function getActionList(clientinfo)
     local m_status = clientinfo.alive and "Жив" or "Мертв"
     local m_character = faction and faction.name or client.faction
 
+    local s_health = client:Health()
+    local s_armor = client:Armor()
+    local s_hunger = Arbitrage.statistics.Get(client, "Hunger") or 100
+    local s_thirst = Arbitrage.statistics.Get(client, "Thirst") or 100
+    local s_sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
+
     return {
         {
             {
@@ -193,6 +199,41 @@ local function getActionList(clientinfo)
                 icon = "icon16/user.png",
                 data = function()
                     SetClipboardText(m_character)
+                end
+            },
+            {
+                name = "Здоровье: " .. s_health,
+                icon = "icon16/heart.png",
+                data = function()
+                    SetClipboardText(s_health)
+                end
+            },
+            {
+                name = "Броня: " .. s_armor,
+                icon = "icon16/shape_square.png",
+                data = function()
+                    SetClipboardText(s_armor)
+                end
+            },
+            {
+                name = "Голод: " .. s_hunger,
+                icon = "icon16/cake.png",
+                data = function()
+                    SetClipboardText(s_hunger)
+                end
+            },
+            {
+                name = "Жажда: " .. s_thirst,
+                icon = "icon16/cup.png",
+                data = function()
+                    SetClipboardText(s_thirst)
+                end
+            },
+            {
+                name = "Сон: " .. s_sleep,
+                icon = "icon16/contrast_high.png",
+                data = function()
+                    SetClipboardText(s_sleep)
                 end
             }
         },
@@ -441,6 +482,23 @@ local function getActionList(clientinfo)
                     }
                 }
             },
+            {
+                name = "Включить подсветку",
+                icon = "icon16/arrow_in.png",
+                data = function()
+                    for k, v in ipairs(PLUGIN.entityList) do
+                        if v == m_steamid then
+                            PLUGIN.entityList[k] = nil
+                            return
+                        end
+                    end
+
+                    PLUGIN.entityList[#PLUGIN.entityList + 1] = m_steamid
+                end,
+                check = function()
+                    return a_isvalid
+                end
+            },
         },
         {
             {
@@ -633,6 +691,41 @@ function PLUGIN:ArbitrageContextMenu(data)
         data:AddAction("Открыть Моно-Меню", function(client)
             netstream.Start("arb.OpenMonoMenu")
         end, Material("danganronpa/hud/action/mono.png"))
+    end
+end
+
+local cur_time1 = 6
+local cur_time2 = 60
+local cur_time3 = 1
+local speed = 0.3
+PLUGIN.entityList = PLUGIN.entityList or {}
+function PLUGIN:HUDPaint()
+    if #self.entityList <= 0 then return end
+
+    local r = HSVToColor(RealTime() * speed % cur_time1 * cur_time2, cur_time3, cur_time3)
+    local color = Color(r.r, r.g, r.b)
+
+    local entities = {}
+    for k, v in ipairs(self.entityList) do
+        local client = player.GetBySteamID(v)
+
+        if IsValid(client) then
+            entities[#entities + 1] = client
+        else
+            self.entityList[k] = nil
+        end
+    end
+
+    outline.Add(entities, color, 0)
+
+    local x, y = ScrW() / 2 , ScrH()
+    for k, v in ipairs(entities) do
+        local point = v:GetPos() + v:OBBCenter()
+        local data2D = point:ToScreen()
+        if !data2D.visible then continue end
+
+        surface.SetDrawColor(color)
+        surface.DrawLine(x, y, data2D.x, data2D.y)
     end
 end
 

@@ -217,11 +217,12 @@ function PANEL:ShowSurvival()
                 v.color[v2] = Lerp(FrameTime() * 3, v.color[v2], v.mcolor[v2])
             end
 
-            local shift = (size * num) - (30 * num)
+            local sizeW, sizeH = size, size * 1.7
+            local shift = sizeW * 0.8
 
             surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
             surface.SetMaterial(v.material)
-            surface.DrawTexturedRect(ScrW() / 2 + shift - ((table.Count(surv) * size) / 2), ScrH() - self.Block2 - size * 1.7 + 10, size, size * 1.7)
+            surface.DrawTexturedRect((ScrW() / 2 - sizeW / 2 + shift * num) - (table.Count(_.List) * shift / 2) + shift / 2, ScrH() - self.Block2 - sizeH + 10, sizeW, sizeH)
             num = num + 1
         end
 

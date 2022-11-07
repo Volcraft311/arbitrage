@@ -107,6 +107,14 @@ SETTINGS.options.Add("camera_smoothnessNEW", SETTINGS.type.number, 7, {
     max = 25
 })
 
+SETTINGS.options.Add("monopad_smoothness", SETTINGS.type.number, 3, {
+    name = "Инерция курсора Монопада",
+    title = "Регулятор инерции курсона Монопада",
+    description = "Отвечает за плавность и скорость курсора вашего Монопада.",
+    min = 1,
+    max = 10
+})
+
 SETTINGS.options.Add("music_volume", SETTINGS.type.number, 50, {
     name = "Громкость музыки",
     title = "Громкость проигрываемой музыки",

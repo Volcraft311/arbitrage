@@ -145,7 +145,101 @@ netstream.Hook("MonoPad:ReadMessages", function(client, targetID)
 	end
 end)
 
+netstream.Hook("MonoPad:AddCaseEvidence", function(client, caseID, evidenceID)
+	local monopad = MonoPad:GetObject(client)
+	if !monopad then return end
 
+	local log = Arbitrage.GetGameLogs()[caseID]
+	if !log then return end
+
+	local state = log[3]
+	if state == 1 then return end
+
+	if !Evidence:GetEvidence(evidenceID) then return end
+	if !client:HasEvidence(evidenceID) then return end
+
+	local caseStored = monopad.caseStored
+	caseStored[caseID] = caseStored[caseID] or {}
+
+	local case = monopad.caseStored[caseID]
+	case[6] = case[6] or {}
+
+	if case[6][evidenceID] then
+		case[6][evidenceID] = nil
+	else
+		for k, v in pairs(caseStored) do
+			for k2 in pairs(v[6] or {}) do
+				if k2 == evidenceID then
+					caseStored[k][6][k2] = nil
+				end
+			end
+		end
+
+		case[6][evidenceID] = true
+	end
+
+	monopad:Sync()
+end)
+
+netstream.Hook("MonoPad:ClearCaseEvidence", function(client, caseID)
+	local monopad = MonoPad:GetObject(client)
+	if !monopad then return end
+
+	local log = Arbitrage.GetGameLogs()[caseID]
+	if !log then return end
+
+	local state = log[3]
+	if state == 1 then return end
+
+	local caseStored = monopad.caseStored
+	caseStored[caseID] = caseStored[caseID] or {}
+
+	local case = monopad.caseStored[caseID]
+	case[6] = {}
+
+	monopad:Sync()
+end)
+
+netstream.Hook("MonoPad:EditCase", function(client, caseID, data)
+	local monopad = MonoPad:GetObject(client)
+	if !monopad then return end
+
+	local log = Arbitrage.GetGameLogs()[caseID]
+	if !log then return end
+
+	local state = log[3]
+	if state == 1 then return end
+
+	local m_inflictor = data[1] or nil
+	local m_time = data[2] or "Не указано"
+	local m_reason = data[3] or "Не указано"
+	local m_place = data[4] or "Не указано"
+	local m_found = data[5] or "Не указано"
+
+	local caseStored = monopad.caseStored
+	caseStored[caseID] = caseStored[caseID] or {}
+
+	local case = monopad.caseStored[caseID]
+
+	if !log[1] then
+		if m_inflictor then
+			local inflictorFaction = Character.team:GetByID(m_inflictor)
+
+			if inflictorFaction then
+				case[1] = m_inflictor
+			end
+		else
+			case[1] = nil
+		end
+	end
+
+	case[2] = m_time
+	case[3] = m_reason
+	case[4] = m_place
+	case[5] = m_found
+
+	monopad:Sync()
+end)
 
 
 

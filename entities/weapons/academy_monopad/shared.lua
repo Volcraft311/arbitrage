@@ -218,8 +218,8 @@ if CLIENT then
     end
 
     function SWEP:PostDrawViewModel()
-        local panel = self.panel
-        if !IsValid(panel) then return end
+        local ui = MonoPad:GetUI()
+        if !IsValid(ui) then return end
 
         local client = self:GetOwner()
         if !client:IsValid() then return end
@@ -246,8 +246,8 @@ if CLIENT then
         pos = pos + ang:Up() * 0.30 + ang:Forward() * -0.9 + ang:Right() * -0.2
 
         cam.Start3D2D(pos, ang, 0.01)
-            MonoPad.clip:Scissor2D(panel:GetWide(), panel:GetTall())
-                panel:PaintManual()
+            MonoPad.clip:Scissor2D(ui:GetWide(), ui:GetTall())
+                ui:PaintManual()
             MonoPad.clip()
         cam.End3D2D()
     end

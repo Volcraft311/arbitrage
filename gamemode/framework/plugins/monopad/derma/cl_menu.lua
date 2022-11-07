@@ -22,9 +22,8 @@ local cursor = Material("icon16/cursor.png")
 local PANEL = {}
 
 function PANEL:Init()
-	if IsValid(MonoPad:GetUI()) then
-		MonoPad:GetUI():Remove()
-	end
+	local ui = MonoPad:GetUI()
+	if IsValid(ui) then ui:Remove() end
 
 	Arbitrage.gui.tabletUI = self
 
@@ -110,7 +109,9 @@ function PANEL:CreateHooks()
 
 		if !self.editing then return end
 
-		local speed = 0.2
+		local monopad_smoothness = SETTINGS.options.Get("monopad_smoothness")
+		local speed = monopad_smoothness * 0.033
+
 		local x, y = cmd:GetMouseX() * speed, cmd:GetMouseY() * speed
 
 		self.cursorX = math.Clamp(self.cursorX + x, 0, self:GetWide())
@@ -570,8 +571,17 @@ function PANEL:Menu()
 end
 
 function PANEL:Think()
-	if !self.noWeapon and !MonoPad:IsActive(LocalPlayer()) then
+	if self.noWeapon then return end
+
+	if !MonoPad:IsActive(LocalPlayer()) then
 		self:Remove()
+
+		local ui = MonoPad:GetUI()
+		if IsValid(ui) then
+			ui:Remove()
+		end
+
+		Arbitrage.gui.tabletUI = nil
 	end
 end
 

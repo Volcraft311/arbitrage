@@ -14,6 +14,8 @@ MONOPAD.evidences = {}
 
 MONOPAD.rulesNotify = {}
 
+MONOPAD.caseStored = {}
+
 function MONOPAD:__tostring()
 	return "monopad[" .. self.id .. "]"
 end
@@ -123,7 +125,7 @@ if SERVER then
 		end
 
 		local function sync(pl)
-		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify)
+		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify, self.caseStored)
 		end
 
 		if IsValid(client) then

@@ -301,11 +301,11 @@ function PANEL:InitInput()
 			self.attachmentPanel:AlphaTo(0, 0.3, 0, function()
 				self.attachmentPanel:Remove()
 			end)
-
-			return
+		else
+			self:CreateAttachments()
 		end
 
-		self:CreateAttachments()
+		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	local inputButton = self.inputPanel:Add("DButton")
@@ -321,13 +321,37 @@ function PANEL:InitInput()
 		if self.isOpen then return end
 		if !self.selectID then return end
 
-		Derma_StringRequest("Отправить сообщение", "Введите текст который вы хотите отправить", "", function(text)
+		DermaStringRequest = Derma_StringRequest("Отправить сообщение", "Введите текст который вы хотите отправить", "", function(text)
 			if text == "" or text == " " or text == "  " then return end
 
 			self.isSent = true
 			netstream.Start("MonoPad:SendMessage", self.selectID, text)
 			LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 		end, nil, "Отправить", "Отменить")
+		DermaStringRequest.startTime = SysTime()
+		DermaStringRequest:SetAlpha(0)
+		DermaStringRequest:AlphaTo(255, 0.3)
+
+	    DermaStringRequest.Paint = function(_, w, h)
+	        Derma_DrawBackgroundBlur(_, _.startTime)
+
+	        surface.SetDrawColor(41, 22, 25)
+	        surface.DrawRect(0, 0, w, h)
+
+	        surface.SetDrawColor(255, 61, 96, 165.75)
+	        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+	        surface.SetDrawColor(255, 61, 96, 165.75)
+	        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+
+	        surface.SetDrawColor(255, 61, 96, 20)
+	        surface.DrawRect(0, 0, w, H(23))
+	    end
+
+	    DermaStringRequest:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
+	    DermaStringRequest:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
+
+	    LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 	end
 end
 
@@ -338,9 +362,10 @@ function PANEL:InitMessages(id)
 	local monopad = MonoPad:GetObject()
 	monopad.messagesNotify = 0
 
-	netstream.Request("MonoPad:GetMessage", id, function(data)
-		self.messagesScroll:Clear()
+	self.messagesScroll:Clear()
+	self.messagesScroll:SetAlpha(0)
 
+	netstream.Request("MonoPad:GetMessage", id, function(data)
 		local initTime = RealTime()
 		local function allowScroll()
 			return (RealTime() - initTime) < 1
@@ -348,8 +373,6 @@ function PANEL:InitMessages(id)
 
 		local oldUser = nil
 		local oldTime = nil
-
-		self.messagesScroll:SetAlpha(0)
 
 		for k, v in ipairs(data) do
 			oldUser = oldUser or v.faction
@@ -642,9 +665,8 @@ function PANEL:Init()
 	self.image = nil
 	self.description = nil
 
-
 	local imagePanel = self:Add("Panel")
-	imagePanel:SetPos(205, 68)
+	imagePanel:SetPos(205, 28)
 	imagePanel:SetSize(520, 300)
 	imagePanel.Paint = function(_, w, h)
 		if self.image then
@@ -677,12 +699,15 @@ function PANEL:SetEvidence(id)
 	self.id = id
 
 	local evidence = Evidence:GetEvidence(id)
-	self.time = "Найдено в " .. Arbitrage.FormatTime(LocalPlayer():HasEvidence(id))
+	local time = LocalPlayer():HasEvidence(id)
+	if !time then return end
+
+	self.time = "Найдено в " .. Arbitrage.FormatTime(time)
 
 	local description = "Улика №" .. id .. ". " .. evidence.description
 
 	self.title = evidence.name
-	self.data = asterionlib.WrapText(description, 520, self.font)
+	self.data = asterionlib.WrapText(description, 520, self.font, true)
 
 	local dEvidence = Evidence.icons
 	local evidenceMat = Material(dEvidence[evidence.image])
@@ -703,34 +728,40 @@ function PANEL:SetData(id, onClose)
 	self:SetEvidence(id)
 end
 
-function PANEL:Paint()
+function PANEL:Paint(w, h)
 	surface.SetDrawColor(255, 255, 255, 10)
-	surface.DrawRect(205, 395, 520, 1)
+	surface.DrawRect(205, 355, 520, 1)
 
-	local y = 0
-	if self.title then
-		local font = MonoPad:GetFont("rules_title")
+	asterionlib.DrawRender(function()
+	    surface.SetDrawColor(255, 255, 255)
+	    surface.DrawRect(0, 0, w, h)
+	end, function()
+	    local y = 0
 
-		local w1, _ = draw.SimpleText(self.title, font, 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
-		local w2, _ = draw.SimpleText(self.typeText, MonoPad:GetFont("rules_description"), 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
-		local size = w1 + w2 + 30
+		if self.title then
+			local font = MonoPad:GetFont("rules_title")
 
-		local _w, _h = draw.SimpleText(self.title, MonoPad:GetFont("rules_title"), 205 + 520 / 2 - size / 2, 420, color_white, TEXT_ALIGN_LEFT)
-		surface.SetDrawColor(255, 255, 255, 5)
-		surface.DrawRect(205 + 520 / 2 - size / 2 + _w + 15, 420, 1, _h)
+			local w1, _ = draw.SimpleText(self.title, font, 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
+			local w2, _ = draw.SimpleText(self.typeText, MonoPad:GetFont("rules_description"), 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
+			local size = w1 + w2 + 30
 
-		MonoPad:DrawTextBlur(self.typeText, MonoPad:GetFont("rules_description"), 205 + 520 / 2 + _w + 30 - size / 2, 420 + 6, self.typeColor, TEXT_ALIGN_LEFT, ColorAlpha(self.typeColor, self.typeColor.a * 0.4))
+			local _w, _h = draw.SimpleText(self.title, MonoPad:GetFont("rules_title"), 205 + 520 / 2 - size / 2, 380, color_white, TEXT_ALIGN_LEFT)
+			surface.SetDrawColor(255, 255, 255, 5)
+			surface.DrawRect(205 + 520 / 2 - size / 2 + _w + 15, 380, 1, _h)
 
-		y = _h * 1.5
-	end
+			MonoPad:DrawTextBlur(self.typeText, MonoPad:GetFont("rules_description"), 205 + 520 / 2 + _w + 30 - size / 2, 380 + 6, self.typeColor, TEXT_ALIGN_LEFT, ColorAlpha(self.typeColor, self.typeColor.a * 0.4))
 
-	for k, v in ipairs(self.data or {}) do
-		draw.SimpleText(v, self.font, 205 + 520 / 2, 420 + y, color_white, TEXT_ALIGN_CENTER)
+			y = _h * 1.5
+		end
 
-		y = y + self.fontHeight
-	end
+		for k, v in ipairs(self.data or {}) do
+			draw.SimpleText(v, self.font, 205 + 520 / 2, 380 + y, color_white, TEXT_ALIGN_CENTER)
 
-	draw.SimpleText(self.time, self.font, 205 + 520 / 2, 420 + y + 15, Color(255, 255, 255, 30), TEXT_ALIGN_CENTER)
+			y = y + self.fontHeight
+		end
+
+		draw.SimpleText(self.time, self.font, 205 + 520 / 2, 380 + y + 15, Color(255, 255, 255, 30), TEXT_ALIGN_CENTER)
+	end)
 end
 
 vgui.Register("MonoPad:EvidenceSub", PANEL, "Panel")

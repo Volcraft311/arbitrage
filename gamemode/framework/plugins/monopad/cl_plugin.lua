@@ -84,13 +84,9 @@ MonoPad:CreateFont("special_description_blur", "Futura PT Book", 20, {blursize =
 
 function MonoPad:CreateTablet(entity)
     local panel = vgui.Create("MonoPad:Menu")
-    panel:ParentToHUD()
 
     if entity then
-        entity.panel = panel
         panel:SetPaintedManually(true)
-    else
-        panel:SetKeyboardInputEnabled(false)
     end
 
     local monopad = panel:FindMonoPad()
@@ -102,7 +98,7 @@ function MonoPad:CreateTablet(entity)
 end
 
 function MonoPad:EnableTablet(entity, bEnable, panel)
-    panel = panel or entity.panel
+    panel = panel or MonoPad:GetUI() --entity.panel
     if !IsValid(panel) then return end
 
     panel.isEnable = true
@@ -115,7 +111,7 @@ function MonoPad:EnableTablet(entity, bEnable, panel)
 end
 
 function MonoPad:DisableTablet(entity)
-    local panel = entity.panel
+    local panel = MonoPad:GetUI() -- entity.panel
 
     if IsValid(panel) then
         panel:Remove()
@@ -126,14 +122,6 @@ function MonoPad:GetUI()
     return Arbitrage.gui.tabletUI
 end
 
--- function MonoPad:GetObject()
---     local panel = self:GetUI()
-
---     if IsValid(panel) then
---         return panel.monopad
---     end
--- end
-
 function MonoPad:StartRegisterMeta(panel)
     local oldAdd = panel.Add
 
@@ -143,6 +131,7 @@ function MonoPad:StartRegisterMeta(panel)
         function b:InitPanel()
             function b:IsHovered()
                 local d = MonoPad:GetUI()
+                if !IsValid(d) then return end
 
                 local cursorX, cursorY = d:GetChildPosition(d.cursor)
 
@@ -217,7 +206,7 @@ netstream.Hook("MonoPad:DisableTablet", function(entity)
     MonoPad:DisableTablet(entity)
 end)
 
-netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNotify)
+netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNotify, caseStored)
     local item = ItemBase.instances[id]
     if !item then return end
 
@@ -233,6 +222,7 @@ netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNo
     object.team = faction
     object.evidences = evidences
     object.messagesNotify = messagesNotify
+    object.caseStored = caseStored
 
     hook.Run("SyncMonoPad", object)
     MonoPad.instances[id] = object

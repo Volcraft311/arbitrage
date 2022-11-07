@@ -37,8 +37,8 @@ function PANEL:Init()
 
 		draw.SimpleText("Создать новую заметку", MonoPad:GetFont("notes_title"), 52, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
 	end
-	addButton.DoClick = function(_, w, h)
-		Derma_StringRequest("Создать заметку", "Введите название вашей заметки", "", function(text)
+	addButton.DoClick = function()
+		DermaStringRequest = Derma_StringRequest("Создать заметку", "Введите название вашей заметки", "", function(text)
 			netstream.Start("MonoPad:CreateNotes", text)
 
 			timer.Simple(0.5, function()
@@ -47,6 +47,30 @@ function PANEL:Init()
 
 			LocalPlayer():ChatPrint("Вы успешно добавили новую заметку!")
 		end, nil, "Создать", "Отменить")
+		DermaStringRequest.startTime = SysTime()
+		DermaStringRequest:SetAlpha(0)
+		DermaStringRequest:AlphaTo(255, 0.3)
+
+	    DermaStringRequest.Paint = function(_, w, h)
+	        Derma_DrawBackgroundBlur(_, _.startTime)
+
+	        surface.SetDrawColor(41, 22, 25)
+	        surface.DrawRect(0, 0, w, h)
+
+	        surface.SetDrawColor(255, 61, 96, 165.75)
+	        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+	        surface.SetDrawColor(255, 61, 96, 165.75)
+	        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+
+	        surface.SetDrawColor(255, 61, 96, 20)
+	        surface.DrawRect(0, 0, w, H(23))
+	    end
+
+	    DermaStringRequest:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
+	    DermaStringRequest:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
+
+	    LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	self.scrollPanel = leftPanel:Add("DScrollPanel")
@@ -124,10 +148,12 @@ function PANEL:Init()
 			self.title.text = title
 			self.description.text = description
 			self.description.scroll = 0
-			self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"))
+			self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"), true)
 
 			self:Rebuild()
 		end)
+
+		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	local removeButton = self.title:Add("DButton")
@@ -154,6 +180,7 @@ function PANEL:Init()
 			self:Rebuild()
 		end)
 
+		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 		LocalPlayer():ChatPrint("Вы успешно удалили заметку!")
 	end
 
@@ -170,7 +197,7 @@ function PANEL:Init()
 		return this.scroll
 	end
 	self.description.SetScroll = function(this, value)
-		local data = asterionlib.WrapText(this.text or "", this:GetWide(), font)
+		local data = asterionlib.WrapText(this.text or "", this:GetWide(), font, true)
 		local size = 0
 		for k, v in ipairs(data) do
 			size = size + fontHeight
@@ -255,7 +282,7 @@ function PANEL:AddNotes(id, title)
 
 		netstream.Request("MonoPad:GetNoteDescription", id, function(description)
 			self.description.text = description
-			self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"))
+			self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"), true)
 		end)
 
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)

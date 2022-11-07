@@ -275,6 +275,8 @@ local ActionPressIDList = {
         netstream.Start("arb.OpenMonoMenu")
     end,
     ["open_material_ui"] = function(client, id, bIsVisibleGUI)
+        if bIsVisibleGUI then return end
+
         local function findClass(class)
             for k, v in ipairs(LocalPlayer():GetWeapons()) do
                 if v:GetClass() == class then
@@ -323,7 +325,6 @@ local ActionPressIDList = {
             input.SelectWeapon(weapon)
         else
             local panel = MonoPad:CreateTablet()
-            panel:SetObject(monopad)
             panel:MakePopup()
             panel.noWeapon = true
 

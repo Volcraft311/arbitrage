@@ -158,9 +158,7 @@ end
 
 local function IsVisibleGUI()
     -- Консоль и ESC
-    if gui.IsConsoleVisible() or gui.IsGameUIVisible() then
-        return true
-    end
+    if gui.IsConsoleVisible() or gui.IsGameUIVisible() then return true end
 
     -- Контекстное меню
     if IsValid(Arbitrage.gui.context) then return true end
@@ -185,6 +183,9 @@ local function IsVisibleGUI()
 
     -- Открыт чат
     if Arbitrage.gui.chat:GetActive() then return true end
+
+    -- DermaStringRequest
+    if IsValid(DermaStringRequest) then return true end
 
     return false
 end

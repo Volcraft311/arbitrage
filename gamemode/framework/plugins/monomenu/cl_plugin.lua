@@ -151,11 +151,11 @@ local function getActionList(clientinfo)
     local m_status = clientinfo.alive and "Жив" or "Мертв"
     local m_character = faction and faction.name or client.faction
 
-    local s_health = client:Health()
-    local s_armor = client:Armor()
-    local s_hunger = Arbitrage.statistics.Get(client, "Hunger") or 100
-    local s_thirst = Arbitrage.statistics.Get(client, "Thirst") or 100
-    local s_sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
+    local s_health = a_isvalid and client:Health() or "Неизвестно"
+    local s_armor = a_isvalid and client:Armor() or "Неизвестно"
+    local s_hunger = a_isvalid and (Arbitrage.statistics.Get(client, "Hunger") or 100) or "Неизвестно"
+    local s_thirst = a_isvalid and (Arbitrage.statistics.Get(client, "Thirst") or 100) or "Неизвестно"
+    local s_sleep = a_isvalid and (Arbitrage.statistics.Get(client, "Sleep") or 100) or "Неизвестно"
 
     return {
         {

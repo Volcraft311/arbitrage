@@ -366,6 +366,12 @@ function PANEL:InitMessages(id)
 	self.messagesScroll:SetAlpha(0)
 
 	netstream.Request("MonoPad:GetMessage", id, function(data)
+		if !self then return end
+		if !self.messagesScroll then return end
+
+		self.messagesScroll:Clear()
+		self.messagesScroll:SetAlpha(0)
+
 		local initTime = RealTime()
 		local function allowScroll()
 			return (RealTime() - initTime) < 1
@@ -514,6 +520,8 @@ function PANEL:Rebuild()
 	self.notify = {}
 
 	netstream.Request("MonoPad:GetMessages", nil, function(data)
+		if !self then return end
+
 		local stored = {}
 
 		for id, notify in pairs(data or {}) do

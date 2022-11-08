@@ -14,7 +14,7 @@ SWEP.Contact = ""
 SWEP.Purpose = ""
 
 SWEP.WorldModel = "models/props_junk/shovel01a.mdl"
-SWEP.ViewModel = Model( "models/weapons/v_tablet.mdl" )
+SWEP.ViewModel = Model( "models/asterion/v_monopad.mdl" )
 
 SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false
@@ -243,7 +243,7 @@ if CLIENT then
         ang:RotateAroundAxis(ang:Forward(), 90)
         ang:RotateAroundAxis(ang:Right(), 0)
 
-        pos = pos + ang:Up() * 0.30 + ang:Forward() * -0.9 + ang:Right() * -0.2
+        pos = pos + ang:Up() * 0.42 + ang:Forward() * -0.9 + ang:Right() * -0.2
 
         cam.Start3D2D(pos, ang, 0.01)
             MonoPad.clip:Scissor2D(ui:GetWide(), ui:GetTall())

@@ -68,7 +68,27 @@ function PANEL:Init()
     fillPanel:Dock(FILL)
     fillPanel:DockMargin(0, H(60), W(30), 0)
 
-    self.charactersPanel = fillPanel:Add("DIconLayout")
+    local Scroll = fillPanel:Add("DScrollPanel")
+    Scroll:Dock(FILL)
+
+    do
+        local bar = Scroll:GetVBar()
+        bar:SetWide(3)
+        bar:DockMargin(0, 0, 0, 0)
+
+        bar.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255, 3)
+            surface.DrawRect(0, 0, w, h)
+        end
+        bar.btnUp.Paint = function(_, w, h) end
+        bar.btnDown.Paint = function(_, w, h) end
+        bar.btnGrip.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.DrawRect(0, 0, w, h)
+        end
+    end
+
+    self.charactersPanel = Scroll:Add("DIconLayout")
     self.charactersPanel:SetWide(W(635))
     self.charactersPanel:SetSpaceY(H(50))
     self.charactersPanel:SetSpaceX(W(25))

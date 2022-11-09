@@ -134,6 +134,25 @@ if CLIENT then
         return self.WModel
     end
 
+    function SWEP:UpdateLight(point)
+        point = point + Vector(0, 0, 10)
+        local light = DynamicLight(self:EntIndex())
+
+        if light then
+            light.pos = point
+            light.outerangle = 0
+            light.innerangle = 2
+            light.r = 180
+            light.g = 187
+            light.b = 190
+            light.size = 40
+            light.brightness = 2
+            light.style = 0
+            light.dietime = CurTime() + 1
+            light.decay = 40
+        end
+    end
+
     function SWEP:DrawWorldModel()
         local owner = self:GetOwner()
 
@@ -152,10 +171,16 @@ if CLIENT then
                 wm:SetRenderAngles(ang)
                 wm:DrawModel()
                 wm:SetModelScale(0.8, 0)
+
+                self:UpdateLight(owner:GetPos())
             end
         else
             self:DrawModel()
         end
+    end
+
+    function SWEP:Think()
+        self:UpdateLight(LocalPlayer():GetPos())
     end
 
     function SWEP:GetViewModelPosition(pos, ang)

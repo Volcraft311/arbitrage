@@ -76,7 +76,10 @@ function SWEP:Deploy()
 
         local isEnabled = client.MonoPadEnable
 
-        timer.Create("TabletTimer_" .. client:EntIndex(), 0.8, 1, function()
+        local id = "TabletTimer_" .. client:EntIndex()
+
+        timer.Remove(id)
+        timer.Create(id, 0.8, 1, function()
             if !self then return end
 
             if !isEnabled then
@@ -84,7 +87,8 @@ function SWEP:Deploy()
                 vm:SetPlaybackRate(0.7)
             end
 
-            timer.Create("TabletTimer_" .. client:EntIndex(), isEnabled and 0 or 4, 1, function()
+            timer.Remove(id)
+            timer.Create(id, isEnabled and 0 or 4, 1, function()
                 if !self then return end
 
                 vm:SendViewModelMatchingSequence(vm:LookupSequence("idle"))
@@ -104,7 +108,10 @@ function SWEP:Holster()
     self.Edit = false
 
     if SERVER then
-        timer.Remove("TabletTimer_" .. self:GetOwner():EntIndex())
+        local client = self:GetOwner()
+
+        local id = "TabletTimer_" .. client:EntIndex()
+        timer.Remove(id)
 
         self:DisableTablet()
     end
@@ -152,7 +159,7 @@ if CLIENT then
     end
 
     function SWEP:GetViewModelPosition(pos, ang)
-        local time = FrameTime() * 2
+        local time = FrameTime() * 1.5
 
         local bApproximately = self.Edit
 

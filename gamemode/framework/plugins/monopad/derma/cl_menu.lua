@@ -570,21 +570,6 @@ function PANEL:Menu()
 	self:Rebuild()
 end
 
-function PANEL:Think()
-	if self.noWeapon then return end
-
-	if !MonoPad:IsActive(LocalPlayer()) then
-		self:Remove()
-
-		local ui = MonoPad:GetUI()
-		if IsValid(ui) then
-			ui:Remove()
-		end
-
-		Arbitrage.gui.tabletUI = nil
-	end
-end
-
 function PANEL:Paint(w, h)
 	draw.RoundedBox(10, 0, 0, w, h, color_black)
 end

@@ -83,6 +83,7 @@ MonoPad:CreateFont("special_description", "Futura PT Book", 20)
 MonoPad:CreateFont("special_description_blur", "Futura PT Book", 20, {blursize = 3})
 
 function MonoPad:CreateTablet(entity)
+    self:DisableTablet()
     local panel = vgui.Create("MonoPad:Menu")
 
     if entity then
@@ -101,8 +102,6 @@ function MonoPad:EnableTablet(entity, bEnable, panel)
     panel = panel or MonoPad:GetUI() --entity.panel
     if !IsValid(panel) then return end
 
-    panel.isEnable = true
-
     if bEnable then
         panel:Menu()
     else
@@ -110,12 +109,13 @@ function MonoPad:EnableTablet(entity, bEnable, panel)
     end
 end
 
-function MonoPad:DisableTablet(entity)
-    local panel = MonoPad:GetUI() -- entity.panel
-
-    if IsValid(panel) then
-        panel:Remove()
+function MonoPad:DisableTablet()
+    local ui = MonoPad:GetUI()
+    if IsValid(ui) then
+        ui:Remove()
     end
+
+    Arbitrage.gui.tabletUI = nil
 end
 
 function MonoPad:GetUI()

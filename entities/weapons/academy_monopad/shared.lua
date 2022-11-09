@@ -180,6 +180,8 @@ if CLIENT then
     end
 
     function SWEP:Think()
+        if CLIENT and self.Owner != LocalPlayer() then return end
+
         self:UpdateLight(LocalPlayer():GetPos())
     end
 

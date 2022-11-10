@@ -21,7 +21,7 @@ SWEP.ViewModelFlip = false
 
 SWEP.UseHands = true
 
-SWEP.Spawnable = true
+SWEP.Spawnable = false
 SWEP.AdminOnly = true
 SWEP.Category = "Asterion: Arbitrage"
 

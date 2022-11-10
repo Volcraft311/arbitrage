@@ -15,3 +15,5 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "Photos"
+
+Arbitrage.base.Include("sv_plugin.lua")

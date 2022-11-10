@@ -40,10 +40,6 @@ do
 end
 
 do
-    Arbitrage.evidence.AddMaterial("test")
-end
-
-do
     Arbitrage.statistics.Add("hunger", {
         data = "Hunger",
         time = function(client)

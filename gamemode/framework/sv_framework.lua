@@ -587,7 +587,6 @@ function Arbitrage:StartGame()
             Arbitrage.player.SetupSpeed(client)
             Arbitrage.player.SetupWeapons(client)
             Arbitrage.player.SetupStatistics(client)
-            Arbitrage.player.SetupViewOffset(client)
 
             client:SetNoDraw(false)
             client:SetNotSolid(false)

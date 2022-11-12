@@ -135,7 +135,7 @@ if CLIENT then
     end
 
     function SWEP:UpdateLight(point)
-        point = point + Vector(0, 0, 10)
+        point = point + Vector(0, 0, 5)
         local light = DynamicLight(self:EntIndex())
 
         if light then

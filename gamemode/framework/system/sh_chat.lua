@@ -15,7 +15,8 @@ Arbitrage.chat = Arbitrage.library.Add("chat")
 Arbitrage.chat.Colors = {
     ["player"] = Color(240, 201, 73),
     ["other"] = Color(238, 220, 194),
-    ["looc"] = Color(216, 62, 62)
+    ["looc"] = Color(190, 62, 62),
+    ["ooc"] = Color(236, 62, 62)
 }
 
 function Arbitrage.chat:GetIcon(client)
@@ -98,7 +99,7 @@ Arbitrage.chat.List = {
     },
     ["looc"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.looc, "[LOOC] ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.looc, "[Локальный НонРП чат] ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -111,7 +112,7 @@ Arbitrage.chat.List = {
     },
     ["ooc"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.looc, "[OOC] ", Arbitrage.chat.Colors.player, sender:SteamName(), Arbitrage.chat.Colors.other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.ooc, "[Глобальный НонРП чат] ", Arbitrage.chat.Colors.player, sender:SteamName(), Arbitrage.chat.Colors.other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end

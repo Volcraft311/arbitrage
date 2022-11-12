@@ -79,7 +79,7 @@ function Character.category:GetByName(name)
         if value then
             return value
         else
-            cache_uniqueid[uniqueID] = nil
+            cache_uniqueid[name] = nil
         end
     end
 

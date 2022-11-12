@@ -175,7 +175,7 @@ do
             local monopad = MonoPad:New(item:GetID())
             monopad:SetOwner(client)
 
-            client:ChatPrint("[MonoPad] Данный монопад еще никто не запускал! Вы были установлены как его владелец.")
+            client:ChatNotify("Данный монопад еще никто не запускал! Вы были установлены как его владелец.")
             item.stored = monopad
         end
 

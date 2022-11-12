@@ -45,7 +45,7 @@ function PANEL:Init()
 				self:Rebuild()
 			end)
 
-			LocalPlayer():ChatPrint("Вы успешно добавили новую заметку!")
+			Arbitrage.notify.NotifyChat("Вы успешно добавили новую заметку!")
 		end, nil, "Создать", "Отменить")
 		DermaStringRequest.startTime = SysTime()
 		DermaStringRequest:SetAlpha(0)
@@ -181,7 +181,7 @@ function PANEL:Init()
 		end)
 
 		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
-		LocalPlayer():ChatPrint("Вы успешно удалили заметку!")
+		Arbitrage.notify.NotifyChat("Вы успешно удалили заметку!")
 	end
 
 	local font = MonoPad:GetFont("notes_description")
@@ -393,7 +393,7 @@ function PANEL:Init()
 	        end
     	end)
 
-        LocalPlayer():ChatPrint("Вы успешно изменили данные в заметке!")
+        Arbitrage.notify.NotifyChat("Вы успешно изменили данные в заметке!")
     end
 end
 

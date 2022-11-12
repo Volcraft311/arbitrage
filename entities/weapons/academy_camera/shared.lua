@@ -65,7 +65,7 @@ function SWEP:PrimaryAttack()
 
 	local cmd = client:GetCurrentCommand()
 	if cmd:KeyDown(IN_USE) then
-		client:ChatPrint("Вы " .. (self.isFlash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
+		Arbitrage.notify.NotifyChat("Вы " .. (self.isFlash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
 		self.isFlash = !self.isFlash
 	else
 		netstream.Start("Photos:Request", !self.isFlash)

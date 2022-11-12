@@ -37,6 +37,6 @@ netstream.Hook("Photos:Request", function(client, isFlash)
 
 		client.cdPhoto = CurTime() + 10
 	else
-		client:ChatPrint("Подождите " .. math.floor(client.cdPhoto - CurTime()) .. " секунд, прежде чем повторить это еще раз!")
+		client:ChatNotify("Подождите " .. math.floor(client.cdPhoto - CurTime()) .. " секунд, прежде чем повторить это еще раз!")
 	end
 end)

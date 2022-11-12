@@ -23,7 +23,7 @@ function TOOL:LeftClick()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatPrint("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
 
     if !entity:IsCorpse() then
         local convar = tostring(client:GetTool():GetClientInfo("steamid"))
@@ -34,9 +34,9 @@ function TOOL:LeftClick()
         end
 
         entity:SetCorpse(steamid)
-        client:ChatPrint("Вы успешно сделали из " .. tostring(entity) .. " труп.")
+        client:ChatNotify("Вы успешно сделали из " .. tostring(entity) .. " труп.")
     else
-        client:ChatPrint(tostring(entity) .. " уже является трупом!")
+        client:ChatNotify(tostring(entity) .. " уже является трупом!")
     end
 end
 
@@ -46,13 +46,13 @@ function TOOL:RightClick()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatPrint("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
 
     if entity:IsCorpse() then
         entity:SetCorpse(nil)
-        client:ChatPrint("Вы успешно убрали из " .. tostring(entity) .. " труп.")
+        client:ChatNotify("Вы успешно убрали из " .. tostring(entity) .. " труп.")
     else
-        client:ChatPrint(tostring(entity) .. " не является трупом!")
+        client:ChatNotify(tostring(entity) .. " не является трупом!")
     end
 end
 

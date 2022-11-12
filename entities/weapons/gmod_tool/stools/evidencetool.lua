@@ -38,7 +38,7 @@ function TOOL:LeftClick()
     local message = Evidence:LeftClick(data)
 
     if message then
-        client:ChatPrint(message)
+        client:ChatNotify(message)
     end
 end
 
@@ -53,7 +53,7 @@ function TOOL:RightClick()
     local message = Evidence:RightClick(data)
 
     if message then
-        client:ChatPrint(message)
+        client:ChatNotify(message)
     end
 end
 
@@ -68,7 +68,7 @@ function TOOL:Reload()
     local message = Evidence:Reload(data)
 
     if message then
-        client:ChatPrint(message)
+        client:ChatNotify(message)
     end
 end
 

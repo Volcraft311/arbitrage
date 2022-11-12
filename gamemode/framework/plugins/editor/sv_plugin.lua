@@ -103,5 +103,5 @@ netstream.Hook("Editor:LoadConfig", function(client, data)
 	Arbitrage:ReplaceVariables()
 	netstream.Start(nil, "Editor:SetVariables", data)
 
-	client:ChatPrint("Ваш конфиг успешно был загружен!")
+	client:ChatNotify("Ваш конфиг успешно был загружен!")
 end)

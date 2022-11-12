@@ -422,7 +422,7 @@ netstream.Hook("arb.StopRebuttalShowdowns", function(client)
 
         for _client in pairs(PLUGIN.RS_players or {}) do
             if _client != client then
-                _client:ChatPrint("Второй игрок проголосовал за остановку дебатов!")
+                _client:ChatNotify("Второй игрок проголосовал за остановку дебатов!")
             end
         end
     end

@@ -115,3 +115,9 @@ function Arbitrage.commands.Add(name, data)
 
     Arbitrage.commands.data[string.lower(name)] = data
 end
+
+
+local meta = FindMetaTable("Player")
+function meta:ChatNotify(...)
+    Arbitrage.commands.Notify(self, ...)
+end

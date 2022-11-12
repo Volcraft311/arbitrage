@@ -369,7 +369,24 @@ function PANEL:AddLine(elements, bShouldScroll)
 			local texture = v:GetName()
 
 			if (texture) then
-				buffer[#buffer + 1] = string.format("<img=%s,%dx%d> ", texture, v:Width(), v:Height())
+				local a2 = v:Width()
+	            local b2 = v:Height()
+
+	            if string.find(texture, "danganronpa/evidence/") then
+					local height = draw.GetFontHeight("arb.Font_FuturaPTBook_8")
+					local maxW = height * 1.3
+		            local maxH = height * 1.3
+
+		            local _w = v:Width()
+		            local _h = v:Height()
+
+		            local a = _h < _w and maxW / _w or maxH / _h
+
+		            a2 = _w * a
+		            b2 = _h * a
+	        	end
+
+				buffer[#buffer + 1] = string.format("<img=%s,%dx%d> ", texture, a2, b2)
 			end
 		elseif (istable(v) and v.r and v.g and v.b) then
 			buffer[#buffer + 1] = string.format("<color=%d,%d,%d>", v.r, v.g, v.b)

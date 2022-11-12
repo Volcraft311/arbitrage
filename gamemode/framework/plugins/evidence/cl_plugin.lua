@@ -171,3 +171,10 @@ netstream.Hook("Evidence:Draw", function(entity, data)
 
 	PLUGIN:StartAnimation(entity, mat)
 end)
+
+netstream.Hook("Evidence:ChatNotify", function(title, description, image)
+	local dEvidence = Evidence.icons
+	local evidenceMat = Material(dEvidence[image])
+
+	chat.AddText(unpack({evidenceMat, title, ". ", description}))
+end)

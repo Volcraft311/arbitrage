@@ -148,7 +148,7 @@ end
 local function conclusion(client, idx)
     local evidence = PLUGIN:GetEvidence(idx)
 
-    client:ChatPrint(evidence.name .. ". " .. evidence.description)
+    netstream.Start(client, "Evidence:ChatNotify", evidence.name, evidence.description, evidence.image)
 end
 
 local function collect(client, entity, idx)

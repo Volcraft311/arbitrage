@@ -18,11 +18,13 @@ local active = Material("danganronpa/law/table/active.png")
 local disable = Material("danganronpa/law/table/disable.png")
 
 function PANEL:Init()
+    if IsValid(Arbitrage.gui.playertable) then Arbitrage.gui.playertable:Remove() end
+
+    Arbitrage.gui.playertable = self
+
     self:SetPos(ScrW() - W(582) - 30, 30)
     self:SetSize(W(582), H(100))
     self:SetZPos(20001)
-
-    Arbitrage.gui.playertable = self
 
     self.selectClient = ""
     self.labelText = ""

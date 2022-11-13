@@ -3,9 +3,7 @@ local PLUGIN = PLUGIN
 local PANEL = {}
 
 function PANEL:Init()
-	if IsValid(Arbitrage.gui.RebuttalShowdowns) then
-		Arbitrage.gui.RebuttalShowdowns:Remove()
-	end
+	if IsValid(Arbitrage.gui.RebuttalShowdowns) then Arbitrage.gui.RebuttalShowdowns:Remove() end
 
 	Arbitrage.gui.RebuttalShowdowns = self
 

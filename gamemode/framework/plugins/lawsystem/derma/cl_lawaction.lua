@@ -387,6 +387,10 @@ end
 local PANEL = {}
 
 function PANEL:Init()
+    if IsValid(Arbitrage.gui.lawaction) then Arbitrage.gui.lawaction:Remove() end
+
+    Arbitrage.gui.lawaction = self
+
     self:SetTitle("")
     self:ShowCloseButton(false)
     self:SetPos(5, 5)
@@ -401,8 +405,6 @@ function PANEL:Init()
     self.focusSize = RealTime()
     self.interruptionSizeMax = 0
     self.interruptionSize = RealTime()
-
-    Arbitrage.gui.lawaction = self
 
     self:SetKeyboardInputEnabled(false)
 

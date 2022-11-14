@@ -338,12 +338,6 @@ function Arbitrage:KeyPress(client, key)
     end
 end
 
-timer.Create("Arbitrage:StatisticsThink", 1, 0, function()
-    for k, v in ipairs(player.GetAll()) do
-        Arbitrage.statistics.PlayerPostThink(v)
-    end
-end)
-
 local regenScale = 220
 timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
     local frametime = FrameTime()
@@ -400,23 +394,43 @@ function Arbitrage:PlayerDeath(client, inflictor, attacker)
     end)
 end
 
+local function initPlayer(client)
+    client:StripWeapons()
+    client:StripAmmo()
+    client:Freeze(false)
+    client:GodDisable()
+    client:SyncVars()
+
+    Character.team:Join(client, TEAM_NOTCHARACTER, true)
+    client:SendLua([[RunConsoleCommand("stopsound")]])
+    client:SetNetVar("connectedTime", CurTime())
+
+    hook.Run("PlayerInitial", client)
+
+    local id = "Arbitrage:StatisticsThink_" .. client:EntIndex()
+    timer.Create(id, 5, 0, function()
+        if !IsValid(client) then return timer.Remove(id) end
+
+        if !client:Alive() then return end
+        if !client:IsPlaying() then return end
+
+        if !Arbitrage.IsStartGame() then return end
+        if Arbitrage.lawEnable then return end
+        if Arbitrage.OffFallStatictic() then return end
+
+        Arbitrage.statistics.PlayerPostThink(client)
+    end)
+end
+
 function Arbitrage:PlayerInitialSpawn(client)
-    timer.Create("initClient_" .. client:EntIndex(), FrameTime(), 0, function()
+    local indx = client:EntIndex()
+
+    local id = "initClient_" .. indx
+    timer.Create(id, FrameTime(), 0, function()
         if IsValid(client) then
-            timer.Remove("initClient_" .. client:EntIndex())
+            timer.Remove(id)
 
-            client:StripWeapons()
-            client:StripAmmo()
-            client:Freeze(false)
-            client:GodDisable()
-            client:SyncVars()
-
-            Character.team:Join(client, TEAM_NOTCHARACTER, true)
-            client:SendLua([[RunConsoleCommand("stopsound")]])
-
-            client:SetNetVar("connectedTime", CurTime())
-
-            hook.Run("PlayerInitial", client)
+            initPlayer(client)
         end
     end)
 end

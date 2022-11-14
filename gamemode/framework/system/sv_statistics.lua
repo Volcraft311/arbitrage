@@ -40,30 +40,23 @@ function Arbitrage.statistics.Set(client, data, amount)
 end
 
 function Arbitrage.statistics.PlayerPostThink(client)
-    if !IsValid(client) then return end
-    if !client:Alive() then return end
-    if !client:IsPlaying() then return end
-
-    if !Arbitrage.IsStartGame() then return end
-    if Arbitrage.lawEnable then return end
-    if Arbitrage.OffFallStatictic() then return end
-
     for k, v in pairs(Arbitrage.statistics.list or {}) do
-        local data = v.data
-        local colddown = v.data .. "CD"
+        local data = tostring(v.data)
+        local colddown = tostring(v.data) .. "CD"
 
-        client[data] = client[data] or 100
-        client[colddown] = client[colddown] or 0
+        client[data] = tonumber(client[data]) or 100
+        client[colddown] = tonumber(client[colddown]) or 0
 
-        if v.data and (!client[colddown] or CurTime() >= client[colddown]) then
-            client[data] = client[data] - 1
-            client:SetNetVar(k, math.Clamp(client[data], 0, 100), getAdmins())
+        if data and (!client[colddown] or CurTime() >= client[colddown]) then
+            client[data] = math.Clamp(tonumber(client[data] - 1), 0, 100)
+            client:SetNetVar(k, client[data], getAdmins())
 
-            if v.action then
+            if isfunction(v.action) then
                 v.action(client, v)
             end
 
-            local time = isfunction(v.time) and v.time(client) or v.time
+            local vtime = v.time
+            local time = isfunction(vtime) and (tonumber(vtime(client)) or 40) or vtime
             client[colddown] = CurTime() + time
         end
     end

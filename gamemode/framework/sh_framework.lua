@@ -44,7 +44,7 @@ do
         data = "Hunger",
         time = function(client)
             local faction = Character.team:GetByID(client:Team())
-            return faction and faction:GetHunger() or 25
+            return faction and tonumber(faction:GetHunger()) or 25
         end,
         action = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
@@ -68,7 +68,7 @@ do
         data = "Thirst",
         time = function(client)
             local faction = Character.team:GetByID(client:Team())
-            return faction and faction:GetThirst() or 25
+            return faction and tonumber(faction:GetThirst()) or 25
         end,
         action = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
@@ -92,7 +92,7 @@ do
         data = "Sleep",
         time = function(client)
             local faction = Character.team:GetByID(client:Team())
-            return faction and faction:GetFatique() or 33
+            return faction and tonumber(faction:GetFatique()) or 33
         end
     })
 end

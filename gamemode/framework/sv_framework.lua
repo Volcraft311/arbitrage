@@ -394,6 +394,10 @@ function Arbitrage:PlayerDeath(client, inflictor, attacker)
     end)
 end
 
+function Arbitrage:GetFallDamage(client, speed)
+    return (speed - 580) * (100 / 444)
+end
+
 local function initPlayer(client)
     client:StripWeapons()
     client:StripAmmo()

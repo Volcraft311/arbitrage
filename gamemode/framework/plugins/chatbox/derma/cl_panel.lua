@@ -177,7 +177,7 @@ PANEL = {}
 function PANEL:Init()
 	self.buttons = self:Add("Panel")
 	self.buttons:Dock(TOP)
-	self.buttons:SetTall(H(48))
+	self.buttons:SetTall(H(35))
 	self.buttons:DockPadding(1, 1, 0, 0)
 	self.buttons.OnMousePressed = PLUGIN.Bind(PLUGIN.gui.chat, PLUGIN.gui.chat.OnMousePressed)
 	self.buttons.OnMouseReleased = PLUGIN.Bind(PLUGIN.gui.chat, PLUGIN.gui.chat.OnMouseReleased)
@@ -201,16 +201,29 @@ function PANEL:AddTab(id, filter)
 	button:SetActive(false)
 	button:SetMouseInputEnabled(true)
 
-	local x = W(110)
-	surface.SetFont("arb.Font_FuturaPTBook_12")
+	local font = "arb.Font_FuturaPTBook_9"
+	local x = W(50)
+	surface.SetFont(font)
 	local width = surface.GetTextSize(id)
 
 	button:SetWide(width + x)
+	button.alpha = 0.1
+	button.alpha2 = 0
 	button.Paint = function(_, w, h)
 		if Arbitrage.gui.chat:GetAlpha() <= 1 then return end
 
-		Arbitrage.DrawTextBlur(id, "arb.Font_FuturaPTBook_12", w / 2 - x * 0.125, H(3), Color(255, 238, 177, 255), TEXT_ALIGN_CENTER)
-		draw.DrawText("/", "arb.Font_FuturaPTBook_12", w - x * 0.25, H(3), Color(255, 255, 255, 10), TEXT_ALIGN_CENTER)
+		local selected = self.activeTab == id
+
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or _.unread) and 1 or 0.1)
+	    _.alpha2 = Lerp(FrameTime() * 10, _.alpha2, selected and 1 or -0.1)
+
+	    Arbitrage.DrawTextBlur(id, font, w / 2 - x * 0.17, H(3), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
+
+	    if !selected then
+	        draw.DrawText(id, font, w / 2 - x * 0.17, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+	    end
+
+		draw.DrawText("/", font, w - x * 0.25, H(3), Color(255, 255, 255, 10), TEXT_ALIGN_CENTER)
 	end
 
 	button.DoClick = function(this)
@@ -228,40 +241,6 @@ function PANEL:AddTab(id, filter)
 	return panel
 end
 
-function PANEL:RemoveTab(id)
-	local tab = self.tabs[id]
-
-	if (!tab) then
-		return
-	end
-
-	tab:GetButton():Remove()
-	tab:Remove()
-
-	self.tabs[id] = nil
-
-	if (table.IsEmpty(self.tabs)) then
-		self:AddTab("Общий чат", {})
-		self:SetActiveTab("Общий чат")
-	elseif (id == self:GetActiveTabID()) then
-		self:SetActiveTab(next(self.tabs))
-	end
-end
-
-function PANEL:RenameTab(id, newID)
-	local tab = self.tabs[id]
-
-	if (!tab) then
-		return
-	end
-
-	tab:GetButton():SetText(newID)
-	tab:GetButton():SizeToContents()
-
-	self.tabs[id] = nil
-	self.tabs[newID] = tab
-end
-
 function PANEL:SetActiveTab(id)
 	local tab = self.tabs[id]
 
@@ -275,7 +254,7 @@ function PANEL:SetActiveTab(id)
 		v:SetVisible(v:GetID() == id)
 	end
 
-	tab:GetButton():SetUnread(false)
+	tab:GetButton().unread = false
 
 	self.activeTab = id
 	self:OnTabChanged(tab)
@@ -592,14 +571,14 @@ function PANEL:Init()
 	close_button:SetText("")
 	close_button:SetContentAlignment(5)
 	close_button:Dock(RIGHT)
-	close_button:SetWide(W(32))
+	close_button:SetWide(self.tabs.buttons:GetTall())
 	close_button.alpha = 50
 	close_button.DoClick = function()
 		PLUGIN.gui.chat:SetActive(false)
 	end
 	close_button.Paint = function(_, w, h)
 		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)
-		draw.DrawText("x", "arb.Font_FuturaPTBook_10", w / 2 - W(10), H(3), Color( 255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+		draw.DrawText("x", "arb.Font_FuturaPTBook_10", w / 2 - W(10), 0, Color( 255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
 	end
 end
 
@@ -628,7 +607,7 @@ function PANEL:SizingInBounds()
 	local screenX, screenY = self:LocalToScreen(0, 0)
 	local mouseX, mouseY = gui.MousePos()
 
-	return mouseX > screenX + self:GetWide() - sizingBorder and mouseY > screenY + self:GetTall() - sizingBorder
+	return (mouseX > screenX + self:GetWide() - sizingBorder and mouseY > screenY + self:GetTall() - sizingBorder) and (mouseX < screenX + self:GetWide() + sizingBorder and mouseY < screenY + self:GetTall() + sizingBorder)
 end
 
 function PANEL:DraggingInBounds()
@@ -677,6 +656,9 @@ end
 function PANEL:SetupTabs(tabs)
 	self.tabs:AddTab("Общий чат", {})
 	self.tabs:SetActiveTab("Общий чат")
+
+	self.tabs:AddTab("RP чат", {})
+	self.tabs:AddTab("NonRP чат", {})
 end
 
 function PANEL:SetupPosition(info)
@@ -717,6 +699,7 @@ function PANEL:OnMouseReleased()
 		self.DragOffset = nil
 
 		self:InvalidateChildren(true)
+		self.commandsPanel:SetSize(self:GetWide(), self:GetTall() - H(30))
 
 		local x, y = self:GetPos()
 		local width, height = self:GetSize()
@@ -740,20 +723,27 @@ function PANEL:Think()
 	local mouseX = math.Clamp(gui.MouseX(), 0, ScrW())
 	local mouseY = math.Clamp(gui.MouseY(), 0, ScrH())
 
-	if (self.bSizing) then
-		local x, y = self:GetPos()
-		local width = math.Clamp(mouseX - x, chatBorder, ScrW() - chatBorder * 2)
-		local height = math.Clamp(mouseY - y, chatBorder, ScrH() - chatBorder * 2)
+	self:MouseCapture(false)
 
-		self:SetSize(width, height)
-		self:SetCursor("sizenwse")
-	elseif (self.DragOffset) then
+	if (self.DragOffset) then
 		local x = math.Clamp(mouseX - self.DragOffset[1], 0, ScrW() - self:GetWide())
 		local y = math.Clamp(mouseY - self.DragOffset[2], 0, ScrH() - self:GetTall())
 
 		self:SetPos(x, y)
-	elseif (self:SizingInBounds()) then
+	elseif (self:SizingInBounds() or self.bSizing) then
 		self:SetCursor("sizenwse")
+		self:MouseCapture(true)
+
+		local press = input.IsMouseDown(MOUSE_LEFT)
+		if press then
+			local x, y = self:GetPos()
+			local width = math.Clamp(mouseX - x, chatBorder, ScrW() - chatBorder * 2)
+			local height = math.Clamp(mouseY - y, chatBorder, ScrH() - chatBorder * 2)
+
+			self:SetSize(width, height)
+			self:SetCursor("sizenwse")
+			self.bSizing = true
+		end
 	elseif (self:DraggingInBounds()) then
 		self.tabs.buttons:SetCursor("sizeall")
 	else
@@ -971,33 +961,47 @@ function PANEL:OnTabUpdated(id, filter, newID)
 	self.tabs:RenameTab(id, newID)
 end
 
+local loocSyntax = "[Локальный НонРП чат]"
+local oocSyntax = "[Глобальный НонРП чат]"
+local listAction = {
+	["Общий чат"] = function(data)
+		return true
+	end,
+	["RP чат"] = function(data)
+		local chatType = data[3]
+
+		if chatType != loocSyntax .. " " and chatType != oocSyntax .. " " then
+			return true
+		end
+	end,
+	["NonRP чат"] = function(data)
+		local chatType = data[3]
+
+		if chatType == loocSyntax .. " " or chatType == oocSyntax .. " " then
+			return true
+		end
+	end
+}
+
 function PANEL:AddMessage(...)
-	local class = CHAT_CLASS and CHAT_CLASS.uniqueID or "notice"
 	local activeTab = self.tabs:GetActiveTab()
 
-	local bShown = false
-
-	if (activeTab and !activeTab:GetFilter()[class]) then
-		activeTab:AddLine({...}, true)
-		bShown = true
-	end
-
 	for _, v in pairs(self.tabs:GetTabs()) do
-		if (v:GetID() == activeTab:GetID()) then
-			continue
-		end
+		local id = v:GetID()
+		local info = {...}
 
-		if (!v:GetFilter()[class]) then
-			v:AddLine({...}, true)
+		local action = listAction[id]
+		if action then
+			local allow = action(info)
+			if !allow then continue end
 
-			if (!bShown) then
-				v:GetButton():SetUnread(true)
+			v:AddLine(info)
+
+			if activeTab and id != activeTab:GetID() then
+				local button = v:GetButton()
+				button.unread = true
 			end
 		end
-	end
-
-	if (bShown) then
-		chat.PlaySound()
 	end
 end
 

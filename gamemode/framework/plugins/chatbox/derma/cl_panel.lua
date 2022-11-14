@@ -1008,6 +1008,8 @@ local listAction = {
 function PANEL:AddMessage(...)
 	local activeTab = self.tabs:GetActiveTab()
 
+	local bShown = false
+
 	for _, v in pairs(self.tabs:GetTabs()) do
 		local id = v:GetID()
 		local info = {...}
@@ -1022,8 +1024,14 @@ function PANEL:AddMessage(...)
 			if activeTab and id != activeTab:GetID() then
 				local button = v:GetButton()
 				button.unread = true
+			else
+				bShown = true
 			end
 		end
+	end
+
+	if bShown then
+		chat.PlaySound()
 	end
 end
 

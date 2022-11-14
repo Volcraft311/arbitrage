@@ -486,6 +486,23 @@ MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/st
     end
 })
 
+MonoMenu:AddGameFunction("Выдача монопадов", "icon16/application_xp_terminal.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffGiveMonopads", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffGiveMonopads", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffGiveMonopads()
+    end
+})
+
 MonoMenu:AddGameFunction("Выдача оружий персонажа", "icon16/gun.png", {
     isCheckBox = true,
     onEnable = function(client)

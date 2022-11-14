@@ -574,7 +574,7 @@ function Arbitrage:StartGame()
                 give("keys"):SetData("faction", faction)
 
                 -- выдаем всем персонажам монопады
-                do
+                if !Arbitrage.OffGiveMonopads() then
                     local item = give("monopad")
                     local monopad = MonoPad:New(item:GetID())
                     monopad:SetOwner(client)

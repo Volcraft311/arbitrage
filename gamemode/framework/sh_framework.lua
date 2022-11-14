@@ -364,6 +364,10 @@ function Arbitrage.OffRebuttalShowdown()
     return GetNetVar("arb.OffRebuttalShowdown", false)
 end
 
+function Arbitrage.OffGiveMonopads()
+    return GetNetVar("arb.OffGiveMonopads", false)
+end
+
 function Arbitrage.KillerDetectsCorpses()
     return GetNetVar("arb.KillerDetectsCorpses", false)
 end

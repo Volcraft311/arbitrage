@@ -91,7 +91,7 @@ function TEAM:GetCategory()
 end
 
 function TEAM:GetModel()
-    return self.model
+    return tostring(self.model) or "models/player/skeleton.mdl"
 end
 
 function TEAM:GetColor()
@@ -99,19 +99,19 @@ function TEAM:GetColor()
 end
 
 function TEAM:GetEvidenceVisibility()
-    return self.evidence_visibility
+    return tonumber(self.evidence_visibility) or 1
 end
 
 function TEAM:GetScale()
-    return self.scale
+    return tonumber(self.scale) or 1
 end
 
 function TEAM:GetHullScale()
-    return self.hullscale
+    return tonumber(self.hullscale) or 1
 end
 
 function TEAM:GetHullDuckScale()
-    return self.hullduckscale
+    return tonumber(self.hullduckscale) or 1
 end
 
 function TEAM:GetAssets()
@@ -119,27 +119,27 @@ function TEAM:GetAssets()
 end
 
 function TEAM:GetRunSpeed()
-    return self.speed.run
+    return tonumber(self.speed.run) or 1
 end
 
 function TEAM:GetWalkSpeed()
-    return self.speed.walk
+    return tonumber(self.speed.walk) or 1
 end
 
 function TEAM:GetRunConsumption()
-    return self.stamina.run_consumption
+    return tonumber(self.stamina.run_consumption) or 1
 end
 
 function TEAM:GetHunger()
-    return self.needs.hunger
+    return tonumber(self.needs.hunger) or 40
 end
 
 function TEAM:GetThirst()
-    return self.needs.thirst
+    return tonumber(self.needs.thirst) or 40
 end
 
 function TEAM:GetFatique()
-    return self.needs.fatique
+    return tonumber(self.needs.fatique) or 40
 end
 
 function TEAM:GetWeapons()

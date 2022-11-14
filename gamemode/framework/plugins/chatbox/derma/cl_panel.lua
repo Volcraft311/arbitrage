@@ -657,8 +657,13 @@ function PANEL:SetupTabs(tabs)
 	self.tabs:AddTab("Общий чат", {})
 	self.tabs:SetActiveTab("Общий чат")
 
-	self.tabs:AddTab("RP чат", {})
-	self.tabs:AddTab("NonRP чат", {})
+	self.tabs:AddTab("РП чат", {})
+	self.tabs:AddTab("НонРП чат", {})
+	self.tabs:AddTab("Личные", {})
+
+	if LocalPlayer():IsAdmin() then
+		self.tabs:AddTab("Админский", {})
+	end
 end
 
 function PANEL:SetupPosition(info)
@@ -963,21 +968,38 @@ end
 
 local loocSyntax = "[Локальный НонРП чат]"
 local oocSyntax = "[Глобальный НонРП чат]"
+local pmSyntax = "[PM]"
+local helpSyntax = "[HELP]"
+local adminsSyntex = "[Admins]"
 local listAction = {
 	["Общий чат"] = function(data)
 		return true
 	end,
-	["RP чат"] = function(data)
+	["РП чат"] = function(data)
 		local chatType = data[3]
 
-		if chatType != loocSyntax .. " " and chatType != oocSyntax .. " " then
+		if chatType != loocSyntax .. " " and chatType != oocSyntax .. " " and data[2] != pmSyntax .. " " and data[2] != helpSyntax .. " " and data[2] != adminsSyntex .. " " then
 			return true
 		end
 	end,
-	["NonRP чат"] = function(data)
+	["НонРП чат"] = function(data)
 		local chatType = data[3]
 
 		if chatType == loocSyntax .. " " or chatType == oocSyntax .. " " then
+			return true
+		end
+	end,
+	["Личные"] = function(data)
+		local chatType = data[2]
+
+		if chatType == pmSyntax .. " " then
+			return true
+		end
+	end,
+	["Админский"] = function(data)
+		local chatType = data[2]
+
+		if chatType == helpSyntax .. " " or chatType == adminsSyntex .. " " then
 			return true
 		end
 	end

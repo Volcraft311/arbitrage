@@ -16,9 +16,11 @@ local sliderMat = Material("danganronpa/ui/slider.png")
 local PANEL = {}
 
 function PANEL:Init()
-    local sizeX, sizeY, sizeT = W(1200), H(800), H(46)
+    if IsValid(Arbitrage.gui.wardrobe) then Arbitrage.gui.wardrobe:Remove() end
 
     Arbitrage.gui.wardrobe = self
+
+    local sizeX, sizeY, sizeT = W(1200), H(800), H(46)
 
     self:SetPos(ScrW() / 2 - sizeX / 2, ScrH() / 2 - sizeY / 2)
     self:SetSize(0, sizeT)

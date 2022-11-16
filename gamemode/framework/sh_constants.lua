@@ -55,8 +55,12 @@ ARBITRAGE_CONTEXT_DATA = {
 			end
 
 			asterionlib.netgui:Create("InventoryBase:Menu")
+		end},
+		["Изменить внешний вид"] = {"danganronpa/hud/action/material.png", function(client)
+			local panel = vgui.Create("arb.OpenWardrobe")
+			panel:SetData(LocalPlayer():GetModel())
 		end}
-	}
+	},
 }
 
 -- Отключенные типы сообщений в чате

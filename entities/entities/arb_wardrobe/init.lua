@@ -33,28 +33,17 @@ function ENT:Initialize()
 end
 
 function ENT:Use(client, caller)
-	asterionlib.netgui:Close(client, "arb.OpenWardrobe")
 	asterionlib.netgui:Create(client, "arb.OpenWardrobe", nil, "SetData", client:GetModel())
 end
 
 
 netstream.Hook("arb.WardrobeChange", function(client, bg, skin)
-	local bAllow = false
-	for k, v in ipairs(ents.FindInSphere(client:GetPos(), 300)) do
-		if v:GetClass() == "arb_wardrobe" then
-			bAllow = true
-			break
-		end
+	for name, value in pairs(bg) do
+		local id = client:FindBodygroupByName(name)
+
+		client:SetBodygroup(id, value)
 	end
 
-	if bAllow then
-		for name, value in pairs(bg) do
-			local id = client:FindBodygroupByName(name)
-
-			client:SetBodygroup(id, value)
-		end
-
-		client:SetSkin(skin)
-		netstream.Start(client, "arb.Notify", "Вы успешно изменили одежду!")
-	end
+	client:SetSkin(skin)
+	netstream.Start(client, "arb.Notify", "Вы успешно изменили одежду!")
 end)

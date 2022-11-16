@@ -368,6 +368,10 @@ function Arbitrage.OffGiveMonopads()
     return GetNetVar("arb.OffGiveMonopads", false)
 end
 
+function Arbitrage.OffShowFactions()
+    return GetNetVar("arb.OffShowFactions", false)
+end
+
 function Arbitrage.KillerDetectsCorpses()
     return GetNetVar("arb.KillerDetectsCorpses", false)
 end

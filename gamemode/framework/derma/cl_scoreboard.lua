@@ -43,6 +43,8 @@ local pingData = {
 function PANEL:Init()
     Arbitrage.gui.scoreboard = self
 
+    self.isShow = !Arbitrage.OffShowFactions()
+
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()
@@ -70,6 +72,7 @@ function PANEL:Init()
         surface.DrawRect(7, 10, w, h - 20)
     end
 
+    if !self.isShow then return end
     for k, v in ipairs(player.GetAll()) do
         local faction = v:Team()
         local factionData = Character.team:GetByID(faction)
@@ -140,6 +143,10 @@ function PANEL:Paint(w, h)
     asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, 255)
 
     draw.DrawText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, 255), TEXT_ALIGN_CENTER)
+
+    if !self.isShow then
+        draw.DrawText("Администрация скрыла список игроков.", "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 - 50, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+    end
 end
 
 vgui.Register("arb.ScoreBoard", PANEL, "EditablePanel")

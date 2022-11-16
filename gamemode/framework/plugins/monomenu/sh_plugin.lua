@@ -312,6 +312,23 @@ MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.p
     end
 })
 
+MonoMenu:AddGameFunction("Отображение списка игроков", "icon16/information.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffShowFactions", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffShowFactions", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffShowFactions()
+    end
+})
+
 MonoMenu:AddGameFunction("Оповещение смены дня и ночи", "icon16/bell.png", {
     isCheckBox = true,
     onEnable = function(client)

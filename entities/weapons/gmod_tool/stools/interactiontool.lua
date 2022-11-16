@@ -67,7 +67,7 @@ function TOOL:LeftClick()
 
         local toolInfo = Interaction:GetToolData(client)
         local entity = toolInfo.entity
-        if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+        if !IsValid(entity) then return Arbitrage.notify.NotifyChat("Не валидное Entity!") end
 
         netstream.Start("Interaction:LeftClick", newdata, entity)
     end

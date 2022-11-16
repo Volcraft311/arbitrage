@@ -790,16 +790,24 @@ timer.Create("arb.CurTime", 1, 0, function()
     SetNetVar("arb.Time", data + 17)
 end)
 
+local dayTheme = "freetime_day"
+local nightTheme = "freetime_night"
 timer.Create("arb.UpdateTheme", 10, 0, function()
+    if !Arbitrage.IsStartGame() then return end
+
     local theme = ScriptMusic:GetTheme()
-    if theme != "none" and theme != "freetime_day" and theme != "freetime_night" then return end
+    if theme == "none" or theme == dayTheme or theme == nightTheme then
+        local isDay = Arbitrage.IsDay()
 
-    local isDay = Arbitrage.IsDay()
-
-    if isDay and theme != "freetime_day" then
-        ScriptMusic:ChangeTheme("freetime_day", true)
-    elseif !isDay and theme != "freetime_night" then
-        ScriptMusic:ChangeTheme("freetime_night", true)
+        if isDay then
+            if theme != dayTheme then
+                ScriptMusic:ChangeTheme(dayTheme, true)
+            end
+        else
+            if theme != nightTheme then
+                ScriptMusic:ChangeTheme(nightTheme, true)
+            end
+        end
     end
 end)
 

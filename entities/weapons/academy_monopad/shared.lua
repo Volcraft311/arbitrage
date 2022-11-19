@@ -159,15 +159,15 @@ if CLIENT then
         if IsValid(owner) then
             local wm = self:CreateWorldModel()
             local bone = owner:LookupBone("ValveBiped.Bip01_R_Hand")
-            local bone_f = owner:LookupBone("ValveBiped.Bip01_R_Hand")
-            local _, ang = owner:GetBonePosition(bone)
 
             if bone then
+                local vec, ang = owner:GetBonePosition(bone)
+
                 ang:RotateAroundAxis(ang:Right(), self.Ang.p)
                 ang:RotateAroundAxis(ang:Forward(), self.Ang.y + 60 - 180 + 30)
                 ang:RotateAroundAxis(ang:Up(), self.Ang.r)
 
-                wm:SetRenderOrigin(owner:GetBonePosition(bone_f) + ang:Right() * self.Pos.x * 0.8 + ang:Forward() * self.Pos.y * -0.3 + ang:Up() * self.Pos.z * .3)
+                wm:SetRenderOrigin(vec + ang:Right() * self.Pos.x * 0.8 + ang:Forward() * self.Pos.y * -0.3 + ang:Up() * self.Pos.z * .3)
                 wm:SetRenderAngles(ang)
                 wm:DrawModel()
                 wm:SetModelScale(0.8, 0)

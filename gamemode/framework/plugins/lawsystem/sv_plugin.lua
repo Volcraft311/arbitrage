@@ -444,7 +444,7 @@ netstream.Hook("arb.ShowEvidence", function(client, data)
         netstream.Start(nil, "arb.ShowEvidence", client, mat, data)
 
         for k, v in ipairs(player.GetAll()) do
-            v:AddEvidence(data)
+            v:AddEvidence(data, time)
         end
 
         local evidencesList = Arbitrage.GetShowEvidences()

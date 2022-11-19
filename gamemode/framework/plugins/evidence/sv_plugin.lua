@@ -114,7 +114,7 @@ end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:AddEvidence(idx)
+function PLAYER:AddEvidence(idx, time)
     if !PLUGIN:GetEvidence(idx) then return "Ошибка при выдаче улики игроку!" end
 
     local monopad = MonoPad:FindMonoPad(self)
@@ -123,7 +123,7 @@ function PLAYER:AddEvidence(idx)
     local object = monopad.stored
     if !object then return "У монопада отсутствует его объект!" end
 
-    object:AddEvidence(idx)
+    object:AddEvidence(idx, time)
     object:Sync()
 
     if !Arbitrage.lawEnable then

@@ -316,15 +316,50 @@ local categoryData = {
         icon = "icon16/image.png",
         data = function(client, panel)
             local showEvidencePanel = createCategory(panel, "Показанные улики")
-            local yourEvidencePanel = createCategory(panel, "Ваши улики")
-
             for id, stored in pairs(Arbitrage.GetShowEvidences()) do
                 if Evidence:GetEvidence(id) then
                     createEvidenceButton(showEvidencePanel, id, stored[1])
                 end
             end
 
+            local monopad = MonoPad:GetObject()
+            for k, v in ipairs(Arbitrage.GetGameLogs()) do
+                if v[3] == 1 then continue end
+
+                local inflictorID = v[1]
+                if monopad then
+                    local caseStored = monopad.caseStored[k] or {}
+
+                    local m_inflictor = caseStored[1] or nil
+                    if !inflictorID then
+                        inflictorID = m_inflictor
+                    end
+
+                    local inflictorFaction = Character.team:GetByID(inflictorID)
+                    local name = inflictorFaction and inflictorFaction:GetName() or "Неизвестно"
+
+                    local categoryPanel = createCategory(panel, "Дело №" .. k .. ", " .. name)
+                    for id in pairs(caseStored[6] or {}) do
+                        local time = LocalPlayer():HasEvidence(id)
+                        if !time then continue end
+
+                        createEvidenceButton(categoryPanel, id, time)
+                    end
+                end
+            end
+
+            local yourEvidencePanel = createCategory(panel, "Ваши улики")
             for id, time in pairs(client:GetEvidences()) do
+                local evidencesList = Arbitrage.GetShowEvidences()
+                local ev = evidencesList[id]
+                if ev then
+                    local showTime, showName = ev[1], ev[2]
+
+                    if showName != LocalPlayer():Name() and showTime == time then
+                        continue
+                    end
+                end
+
                 createEvidenceButton(yourEvidencePanel, id, time)
             end
         end
@@ -583,5 +618,13 @@ vgui.Register("arb.LawAction", PANEL, "DFrame")
 concommand.Add("arb_close_lawaction", function(client, cmd, args)
     if IsValid(Arbitrage.gui.lawaction) then
         Arbitrage.gui.lawaction:Remove()
+    end
+
+    if IsValid(Arbitrage.gui.timer) then
+        Arbitrage.gui.timer:Remove()
+    end
+
+    if IsValid(Arbitrage.gui.playertable) then
+        Arbitrage.gui.playertable:Remove()
     end
 end)

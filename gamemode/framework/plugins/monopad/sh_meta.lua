@@ -90,10 +90,11 @@ function MONOPAD:AddMessage(id, data)
 	table.insert(self.messages[id], data)
 end
 
-function MONOPAD:AddEvidence(idx)
+function MONOPAD:AddEvidence(idx, time)
 	if self.evidences[idx] then return end
 
-	self.evidences[idx] = Arbitrage.ReturnTime()
+	time = tonumber(time) or Arbitrage.ReturnTime()
+	self.evidences[idx] = time
 end
 
 function MONOPAD:RemoveEvidence(idx)

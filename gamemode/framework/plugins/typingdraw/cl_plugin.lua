@@ -57,6 +57,8 @@ timer.Create("TypingDraw:Update", 1, 0, function()
 
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
+	if !SETTINGS.options.Get("show_typingdraw") then return end
+	if Arbitrage.lawEnable then return end
 
 	for k, v in ipairs(player.GetAll()) do
 		if v == client then continue end
@@ -73,7 +75,8 @@ timer.Create("TypingDraw:Update", 1, 0, function()
 end)
 
 function PLUGIN:HUDPaint()
-	if !SETTINGS.options.Get("show_typingdraw") then return end
+	local realtime = RealTime()
+	local time = FrameTime() * 10
 
 	for k, v in ipairs(self.infoList) do
 		local client = v.client
@@ -82,9 +85,9 @@ function PLUGIN:HUDPaint()
 		local data = self:GetTypingText(client)
 		if !data then continue end
 
-		local bShow = RealTime() <= self:GetTypingTime(client)
+		local bShow = realtime <= self:GetTypingTime(client)
 		client.tDrawAlpha = client.tDrawAlpha or 0
-		client.tDrawAlpha = Lerp(FrameTime() * 10, client.tDrawAlpha, bShow and 255 or 0)
+		client.tDrawAlpha = Lerp(time, client.tDrawAlpha, bShow and 255 or 0)
 
 		local alpha = self:GetTypingAlpha(client)
 		if alpha <= 2 then continue end
@@ -97,15 +100,16 @@ end
 
 function PLUGIN:DrawText(client, text, color, alpha)
 	local size = ScrW() * 0.2
+	local eyepos = EyePos()
 	local pos = self:GetTypingIndicatorPosition(client)
-	local distance = EyePos():Distance(pos)
+	local distance = eyepos:Distance(pos)
 
 	alpha = alpha - distance
 
 	local data2D = pos:ToScreen()
 	if !data2D.visible then return end
 
-	local bNotVisible = Arbitrage.hud.VectorObstructed(EyePos(), pos, player.GetAll())
+	local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, player.GetAll())
 	if bNotVisible then return end
 
 	local a = ColorAlpha(color, alpha)

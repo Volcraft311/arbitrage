@@ -134,7 +134,7 @@ timer.Create("Legs:Update", 3, 0, function()
 		local legsModel = legs:GetModel()
 
 		if clientModel != legsModel then
-			legs:SetModel(clientModel)
+			PLUGIN:SpawnLegs(client)
 		end
 	end
 end)

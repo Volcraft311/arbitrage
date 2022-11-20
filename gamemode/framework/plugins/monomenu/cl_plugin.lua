@@ -710,9 +710,9 @@ function PLUGIN:HUDPaint()
         local client = player.GetBySteamID(v)
 
         if IsValid(client) then
-            entities[#entities + 1] = client
+            table.insert(entities, client)
         else
-            self.entityList[k] = nil
+            table.remove(entities, k)
         end
     end
 

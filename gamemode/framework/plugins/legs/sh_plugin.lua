@@ -79,6 +79,8 @@ function PLUGIN:RenderScreenspaceEffects()
 		legs:SetPoseParameter("move_yaw", 360 * client:GetPoseParameter("move_yaw") - 180)
 		legs:SetPoseParameter("move_x", client:GetPoseParameter("move_x") * 2 - 1)
 		legs:SetPoseParameter("move_y", client:GetPoseParameter("move_y") * 2 - 1)
+		legs:SetPoseParameter("body_yaw", (client:GetPoseParameter("body_yaw") * 180) - 90)
+		legs:SetPoseParameter("spine_yaw", (client:GetPoseParameter("spine_yaw") * 180) - 90)
 
 		legs:SetRenderMode(client:GetRenderMode())
 		legs:SetMaterial(client:GetMaterial())

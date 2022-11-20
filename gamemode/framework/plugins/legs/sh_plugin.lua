@@ -1,290 +1,138 @@
--- By Valkyrie & blackops7799 (https://github.com/NebulousCloud/helix-plugins/blob/master/legs.lua)
-
 local PLUGIN = PLUGIN
 
-PLUGIN.name = "Legs"
+if !CLIENT then return end
 
-if (CLIENT) then
-	local Legs = {}
-	Legs.LegEnt = nil
+local hiddenBones = {
+	"ValveBiped.Bip01_Head1",
+	"ValveBiped.Bip01_Neck1",
+	"ValveBiped.Bip01_Spine4",
+	"ValveBiped.Bip01_L_Clavicle",
+	"ValveBiped.Bip01_L_Hand",
+	"ValveBiped.Bip01_L_Forearm",
+	"ValveBiped.Bip01_L_Upperarm",
+	"ValveBiped.Bip01_L_Finger0",
+	"ValveBiped.Bip01_L_Finger01",
+	"ValveBiped.Bip01_L_Finger02",
+	"ValveBiped.Bip01_L_Finger1",
+	"ValveBiped.Bip01_L_Finger11",
+	"ValveBiped.Bip01_L_Finger12",
+	"ValveBiped.Bip01_L_Finger2",
+	"ValveBiped.Bip01_L_Finger21",
+	"ValveBiped.Bip01_L_Finger22",
+	"ValveBiped.Bip01_L_Finger3",
+	"ValveBiped.Bip01_L_Finger31",
+	"ValveBiped.Bip01_L_Finger32",
+	"ValveBiped.Bip01_L_Finger4",
+	"ValveBiped.Bip01_L_Finger41",
+	"ValveBiped.Bip01_L_Finger42",
+	"ValveBiped.Bip01_R_Clavicle",
+	"ValveBiped.Bip01_R_Hand",
+	"ValveBiped.Bip01_R_Forearm",
+	"ValveBiped.Bip01_R_Upperarm",
+	"ValveBiped.Bip01_R_Finger0",
+	"ValveBiped.Bip01_R_Finger01",
+	"ValveBiped.Bip01_R_Finger02",
+	"ValveBiped.Bip01_R_Finger1",
+	"ValveBiped.Bip01_R_Finger11",
+	"ValveBiped.Bip01_R_Finger12",
+	"ValveBiped.Bip01_R_Finger2",
+	"ValveBiped.Bip01_R_Finger21",
+	"ValveBiped.Bip01_R_Finger22",
+	"ValveBiped.Bip01_R_Finger3",
+	"ValveBiped.Bip01_R_Finger31",
+	"ValveBiped.Bip01_R_Finger32",
+	"ValveBiped.Bip01_R_Finger4",
+	"ValveBiped.Bip01_R_Finger41",
+	"ValveBiped.Bip01_R_Finger42"
+}
 
-	function Legs:CheckDrawVehicle()
-		if (LocalPlayer():InVehicle()) then
-			return false
+if IsValid(LocalPlayer()) and LocalPlayer().legs then
+	LocalPlayer().legs:Remove()
+end
+
+function PLUGIN:RenderScreenspaceEffects()
+	local client = LocalPlayer()
+
+	if !IsValid(client) or client:GetLocalVar("observer") or client:ShouldDrawLocalPlayer() or !client:oldAlive() then return end
+
+	local angs = client:EyeAngles()
+	if angs.p < 0 then return end
+
+	cam.Start3D(EyePos(), EyeAngles())
+		if !IsValid(client.legs) then
+			self:SpawnLegs(client)
 		end
+
+		local real_time = RealTime()
+		local legs = client.legs
+
+		angs.p = 0
+		angs.r = 0
+
+		local radAngle = math.rad(angs.y)
+		local offset = -20
+		local origin = client:GetPos()
+
+		origin.x = origin.x + math.cos(radAngle) * offset
+		origin.y = origin.y + math.sin(radAngle) * offset
+
+		legs:SetPoseParameter("move_yaw", 360 * client:GetPoseParameter("move_yaw") - 180)
+		legs:SetPoseParameter("move_x", client:GetPoseParameter("move_x") * 2 - 1)
+		legs:SetPoseParameter("move_y", client:GetPoseParameter("move_y") * 2 - 1)
+
+		legs:SetRenderMode(client:GetRenderMode())
+		legs:SetMaterial(client:GetMaterial())
+		legs:SetSequence(client:GetSequence())
+		legs:SetColor(client:GetColor())
+		legs:FrameAdvance(real_time - (legs.last_draw or real_time))
+		legs:SetPlaybackRate(client:GetPlaybackRate())
+		legs:SetRenderOrigin(origin)
+		legs:SetRenderAngles(angs)
+		legs:DrawModel()
+
+		legs.last_draw = real_time
+	cam.End3D()
+end
+
+local offset = Vector(0, -100, 0)
+local scale = Vector(1, 1, 1)
+function PLUGIN:SpawnLegs(client)
+	if IsValid(client.legs) then
+		client.legs:Remove()
 	end
 
-	local function ShouldDrawLegs()
-		if (hook.Run("ShouldDisableLegs") == true) then
-			return false
-		end
+	client.legs = ClientsideModel(client:GetModel(), RENDERGROUP_VIEWMODEL)
 
-        local client = LocalPlayer()
-        return  IsValid(Legs.LegEnt) and
-                (client:oldAlive() or (client.IsGhosted and client:IsGhosted())) and
-                !Legs:CheckDrawVehicle() and GetViewEntity() == client and
-                !client:ShouldDrawLocalPlayer() and !IsValid(client:GetObserverTarget()) and
-                !client:GetNoDraw() and !client.ShouldDisableLegs and !client:GetNetVar("inbed")
-	end
+	local legs = client.legs
 
-	function Legs:Setup(model)
-		model = model or LocalPlayer():GetModel()
+	if IsValid(legs) then
+		for k, v in pairs(hiddenBones) do
+			local bone = legs:LookupBone(v)
 
-		if (!IsValid(self.LegEnt)) then
-			self.LegEnt = ClientsideModel(model, RENDER_GROUP_OPAQUE_ENTITY)
-		else
-			self.LegEnt:SetModel(model)
-		end
-
-		self.LegEnt:SetNoDraw(true)
-
-		for _, v in pairs(LocalPlayer():GetBodyGroups()) do
-			local current = LocalPlayer():GetBodygroup(v.id)
-			self.LegEnt:SetBodygroup(v.id,  current)
-		end
-
-		for k, _ in ipairs(LocalPlayer():GetMaterials()) do
-			self.LegEnt:SetSubMaterial(k - 1, LocalPlayer():GetSubMaterial(k - 1))
-		end
-
-		self.LegEnt:SetSkin(LocalPlayer():GetSkin())
-		self.LegEnt:SetMaterial(LocalPlayer():GetMaterial())
-		self.LegEnt:SetColor(LocalPlayer():GetColor())
-		self.LegEnt.GetPlayerColor = function()
-			return LocalPlayer():GetPlayerColor()
-		end
-
-		self.LegEnt.Anim = nil
-		self.PlaybackRate = 1
-		self.Sequence = nil
-		self.Velocity = 0
-		self.BonesToRemove = {}
-		self.LegEnt.LastTick = 0
-
-		self:Update(0)
-	end
-
-	Legs.PlaybackRate = 1
-	Legs.Sequence = nil
-	Legs.Velocity = 0
-	Legs.BonesToRemove = {}
-	Legs.BreathScale = 0.5
-	Legs.NextBreath = 0
-
-	function Legs:Think(maxSeqGroundSpeed)
-		if (!LocalPlayer():oldAlive()) then
-			Legs:Setup()
-			return
-		end
-
-		self:Update(maxSeqGroundSpeed)
-	end
-
-	function Legs:Update(maxSeqGroundSpeed)
-		if (IsValid(self.LegEnt)) then
-			self.Velocity = LocalPlayer():GetVelocity():Length2D()
-
-			self.PlaybackRate = 1
-
-			if (self.Velocity > 0.5) then
-				if (maxSeqGroundSpeed < 0.001) then
-					self.PlaybackRate = 0.01
-				else
-					self.PlaybackRate = self.Velocity / maxSeqGroundSpeed
-					self.PlaybackRate = math.Clamp(self.PlaybackRate, 0.01, 10)
-				end
-			end
-
-			self.LegEnt:SetPlaybackRate(self.PlaybackRate)
-
-			self.Sequence = LocalPlayer():GetSequence()
-
-			if (self.LegEnt.Anim != self.Sequence) then
-				self.LegEnt.Anim = self.Sequence
-				self.LegEnt:ResetSequence(self.Sequence)
-			end
-
-			self.LegEnt:FrameAdvance(CurTime() - self.LegEnt.LastTick)
-			self.LegEnt.LastTick = CurTime()
-
-			Legs.BreathScale = sharpeye and sharpeye.GetStamina and math.Clamp(math.floor(sharpeye.GetStamina() * 5 * 10) / 10, 0.5, 5) or 0.5
-
-			if (Legs.NextBreath <= CurTime()) then
-				Legs.NextBreath = CurTime() + 1.95 / Legs.BreathScale
-				self.LegEnt:SetPoseParameter("breathing", Legs.BreathScale)
-			end
-
-			self.LegEnt:SetPoseParameter("move_x", (LocalPlayer():GetPoseParameter("move_x") * 2) - 1)
-			self.LegEnt:SetPoseParameter("move_y", (LocalPlayer():GetPoseParameter("move_y") * 2) - 1)
-			self.LegEnt:SetPoseParameter("move_yaw", (LocalPlayer():GetPoseParameter("move_yaw") * 360) - 180)
-			self.LegEnt:SetPoseParameter("body_yaw", (LocalPlayer():GetPoseParameter("body_yaw") * 180) - 90)
-			self.LegEnt:SetPoseParameter("spine_yaw",(LocalPlayer():GetPoseParameter("spine_yaw") * 180) - 90)
-
-			if (LocalPlayer():InVehicle()) then
-				self.LegEnt:SetPoseParameter("vehicle_steer", (LocalPlayer():GetVehicle():GetPoseParameter("vehicle_steer") * 2) - 1)
+			if bone then
+				legs:ManipulateBonePosition(bone, offset)
+				legs:ManipulateBoneAngles(bone, angle_zero)
+				legs:ManipulateBoneScale(bone, scale)
 			end
 		end
-	end
 
-	Legs.RenderAngle = nil
-	Legs.BiaisAngle = nil
-	Legs.RadAngle = nil
-	Legs.RenderPos = nil
-	Legs.RenderColor = {}
-	Legs.ClipVector = vector_up * -1
-	Legs.ForwardOffset = -24
-
-	function Legs:DoFinalRender()
-	   cam.Start3D(EyePos(), EyeAngles())
-			if (ShouldDrawLegs()) then
-				self.RenderPos = LocalPlayer():GetPos()
-
-				if (LocalPlayer():InVehicle()) then
-					self.RenderAngle = LocalPlayer():GetVehicle():GetAngles()
-					self.RenderAngle:RotateAroundAxis(self.RenderAngle:Up(), 90)
-				else
-					self.BiaisAngles = sharpeye_focus and sharpeye_focus.GetBiaisViewAngles and sharpeye_focus:GetBiaisViewAngles() or LocalPlayer():EyeAngles()
-					self.RenderAngle = Angle(0, self.BiaisAngles.y, 0)
-					self.RadAngle = math.rad(self.BiaisAngles.y)
-					self.ForwardOffset = -22
-					self.RenderPos.x = self.RenderPos.x + math.cos(self.RadAngle) * self.ForwardOffset
-					self.RenderPos.y = self.RenderPos.y + math.sin(self.RadAngle) * self.ForwardOffset
-
-					if (LocalPlayer():GetGroundEntity() == NULL) then
-						self.RenderPos.z = self.RenderPos.z + 8
-
-						if (LocalPlayer():KeyDown(IN_DUCK)) then
-							self.RenderPos.z = self.RenderPos.z - 28
-						end
-					end
-				end
-
-				self.RenderColor = LocalPlayer():GetColor()
-
-				local bEnabled = render.EnableClipping(true)
-					render.PushCustomClipPlane(self.ClipVector, self.ClipVector:Dot(EyePos()))
-						render.SetColorModulation(self.RenderColor.r / 255, self.RenderColor.g / 255, self.RenderColor.b / 255)
-							render.SetBlend(self.RenderColor.a / 255)
-									self.LegEnt:SetRenderOrigin(self.RenderPos)
-									self.LegEnt:SetRenderAngles(self.RenderAngle)
-									self.LegEnt:SetupBones()
-									self.LegEnt:DrawModel()
-									self.LegEnt:SetRenderOrigin()
-									self.LegEnt:SetRenderAngles()
-							render.SetBlend(1)
-						render.SetColorModulation(1, 1, 1)
-					render.PopCustomClipPlane()
-				render.EnableClipping(bEnabled)
-			end
-		cam.End3D()
-	end
-
-	function Legs:FixBones()
-		for i = 0, self.LegEnt:GetBoneCount() do
-			self.LegEnt:ManipulateBoneScale(i, Vector(1, 1, 1))
-			self.LegEnt:ManipulateBonePosition(i, vector_origin)
-		end
-
-		self.BonesToRemove =
-		{
-			"ValveBiped.Bip01_Head1",
-			"ValveBiped.Bip01_L_Hand",
-			"ValveBiped.Bip01_L_Forearm",
-			"ValveBiped.Bip01_L_Upperarm",
-			"ValveBiped.Bip01_L_Clavicle",
-			"ValveBiped.Bip01_R_Hand",
-			"ValveBiped.Bip01_R_Forearm",
-			"ValveBiped.Bip01_R_Upperarm",
-			"ValveBiped.Bip01_R_Clavicle",
-			"ValveBiped.Bip01_L_Finger4",
-			"ValveBiped.Bip01_L_Finger41",
-			"ValveBiped.Bip01_L_Finger42",
-			"ValveBiped.Bip01_L_Finger3",
-			"ValveBiped.Bip01_L_Finger31",
-			"ValveBiped.Bip01_L_Finger32",
-			"ValveBiped.Bip01_L_Finger2",
-			"ValveBiped.Bip01_L_Finger21",
-			"ValveBiped.Bip01_L_Finger22",
-			"ValveBiped.Bip01_L_Finger1",
-			"ValveBiped.Bip01_L_Finger11",
-			"ValveBiped.Bip01_L_Finger12",
-			"ValveBiped.Bip01_L_Finger0",
-			"ValveBiped.Bip01_L_Finger01",
-			"ValveBiped.Bip01_L_Finger02",
-			"ValveBiped.Bip01_R_Finger4",
-			"ValveBiped.Bip01_R_Finger41",
-			"ValveBiped.Bip01_R_Finger42",
-			"ValveBiped.Bip01_R_Finger3",
-			"ValveBiped.Bip01_R_Finger31",
-			"ValveBiped.Bip01_R_Finger32",
-			"ValveBiped.Bip01_R_Finger2",
-			"ValveBiped.Bip01_R_Finger21",
-			"ValveBiped.Bip01_R_Finger22",
-			"ValveBiped.Bip01_R_Finger1",
-			"ValveBiped.Bip01_R_Finger11",
-			"ValveBiped.Bip01_R_Finger12",
-			"ValveBiped.Bip01_R_Finger0",
-			"ValveBiped.Bip01_R_Finger01",
-			"ValveBiped.Bip01_R_Finger02",
-			"ValveBiped.Bip01_Spine4",
-			"ValveBiped.Bip01_Spine2",
-		}
-
-		if (LocalPlayer():InVehicle()) then
-			self.BonesToRemove =
-			{
-				"ValveBiped.Bip01_Head1",
-			}
-		end
-
-		for _, v in pairs(self.BonesToRemove) do
-			local bone = self.LegEnt:LookupBone(v)
-			if (bone) then
-				self.LegEnt:ManipulateBoneScale(bone, vector_origin)
-				if (!LocalPlayer():InVehicle()) then
-					self.LegEnt:ManipulateBonePosition(bone, Vector(0, -100, 0))
-					self.LegEnt:ManipulateBoneAngles(bone, angle_zero)
-				end
-			end
-		end
-	end
-
-	function PLUGIN:UpdateAnimation(client, velocity, maxSeqGroundSpeed)
-		if (client == LocalPlayer()) then
-			if (IsValid(Legs.LegEnt)) then
-				Legs:Think(maxSeqGroundSpeed)
-			else
-				Legs:Setup()
-			end
-		end
-	end
-
-	function PLUGIN:PostDrawTranslucentRenderables()
-		local client = LocalPlayer()
-
-		 if client.GetSitting and client:GetSitting() then return end
-		 if client:IsPlayingTaunt() then return end
-
-		 if (client and !client:InVehicle()) then
-			Legs:DoFinalRender()
-
-            if (!self.update or CurTime() >= self.update) then
-                Legs:Setup(client:GetModel())
-                Legs:FixBones()
-
-                self.update = CurTime() + 3
-            end
-		end
-	end
-
-	function PLUGIN:RenderScreenspaceEffects()
-		local client = LocalPlayer()
-
-		if client.GetSitting and client:GetSitting() then return end
-		if client:IsPlayingTaunt() then return end
-
-		 if (client:InVehicle()) then
-			Legs:DoFinalRender()
-		end
+		legs:SetNoDraw(true)
+		legs:SetIK(true)
 	end
 end
+
+timer.Create("Legs:Update", 3, 0, function()
+	local client = LocalPlayer()
+	if !IsValid(client) then return end
+
+	local legs = client.legs
+
+	if IsValid(legs) then
+		local clientModel = client:GetModel()
+		local legsModel = legs:GetModel()
+
+		if clientModel != legsModel then
+			legs:SetModel(clientModel)
+		end
+	end
+end)

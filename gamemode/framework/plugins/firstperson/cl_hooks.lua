@@ -115,15 +115,13 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 	ViewOffsetLeftRight = math_Approach(ViewOffsetLeftRight, 0, 0.5)
 
-	local m = LocalPlayer():Team() == TEAM_MONDO and 5 or 0
-
 	local view = {}
 	if client:WaterLevel() >= 3 then
 		ViewOffsetUp = math_Approach(ViewOffsetUp, 0, 0.5)
 		ViewOffsetForward = math_Approach(ViewOffsetForward, 8, 0.5)
 		RollDependency = Lerp(FT * 15, RollDependency, 0.5)
 	else
-		ViewOffsetUp = math_Approach(ViewOffsetUp, math_Clamp(eyeAngles.p * -0.1 - m, 0 - m, 10), 0.5)
+		ViewOffsetUp = math_Approach(ViewOffsetUp, math_Clamp(eyeAngles.p * -0.1, 0, 10), 0.5)
 		ViewOffsetForward = math_Approach(ViewOffsetForward, 5 + math_Clamp(eyeAngles.p * 0.1, 0, 5), 0.5)
 		RollDependency = Lerp(FT * 15, RollDependency, 0.05)
 	end

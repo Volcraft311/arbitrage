@@ -438,6 +438,7 @@ do
 	local blur = 0
 	local hunger = 0
 	local thirst = 0
+	local sleep = 0
 	local allow = false
 	timer_Create("VignetteDraw:Update", 1, 0, function()
 		blur, hunger, thirst = 0, 0, 0
@@ -455,17 +456,29 @@ do
 	function Arbitrage.hud.VignetteDraw()
 		if !allow then return end
 
+		local x, y, w, h = -1, -1, ScrW() + 2, ScrH() + 2
+
 		if blur > 1 then
 			asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
+
+			surface.SetDrawColor(0, 0, 0, blur * 2.5)
+			surface.DrawRect(x, y, w, h)
+
+			if blur >= 25 then
+				sleep = math.sin(RealTime()) * 255
+			end
+
+			surface.SetDrawColor(0, 0, 0, sleep - 30)
+			surface.DrawRect(x, y, w, h)
 		end
 
 		surface_SetTexture(vignitte)
 		surface_SetDrawColor(255, 255, 255, vignitte_a)
-		surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		surface_DrawTexturedRect(x, y, w, h)
 
 		for k, v in ipairs({hunger, thirst}) do
 			surface_SetDrawColor(255, 255, 255, v / 2)
-			surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+			surface_DrawTexturedRect(x, y, w, h)
 		end
 	end
 end

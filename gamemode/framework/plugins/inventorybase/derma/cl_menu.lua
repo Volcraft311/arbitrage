@@ -41,7 +41,7 @@ function PANEL:Init()
     inventoryPanel:SetInventory(self.inventory)
 
     local w, h, sizeH = inventoryPanel:GetWide(), inventoryPanel:GetTall(), H(90)
-    inventoryPanel:SetPos(ScrW() - w - W(278), ScrH() / 2 - h + sizeH / 2)
+    inventoryPanel:SetPos(ScrW() - w - W(278), ScrH() / 2 - h / 2)
     inventoryPanel.HoveredItem = function(_, item)
         if self.item == item then return end
 

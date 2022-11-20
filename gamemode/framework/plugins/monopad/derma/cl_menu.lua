@@ -456,7 +456,7 @@ function PANEL:TaskBar()
 		surface.SetDrawColor(0, 0, 0, 255)
 		surface.DrawRect(0, 0, w, h)
 
-		draw.SimpleText("Глава 2, " .. Arbitrage.GetTime(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
+		draw.SimpleText(Arbitrage.GetChapter() .. ", " .. Arbitrage.GetTime(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
 	end
 
 	self:AddButton("home", "", "danganronpa/monopad/icons/home.png", function()

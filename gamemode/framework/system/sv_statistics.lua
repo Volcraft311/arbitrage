@@ -13,7 +13,7 @@
 
 Arbitrage.statistics = Arbitrage.library.Add("statistics")
 
-local function getAdmins()
+local function getPlayers(client)
     local data = {}
 
     for k, v in ipairs(player.GetAll()) do
@@ -21,6 +21,8 @@ local function getAdmins()
             data[#data + 1] = v
         end
     end
+
+    data[#data + 1] = client
 
     return data
 end
@@ -33,7 +35,7 @@ function Arbitrage.statistics.Set(client, data, amount)
 
     if tableData then
         client[tableData.data] = amount
-        client:SetNetVar(index, client[tableData.data], getAdmins())
+        client:SetNetVar(index, client[tableData.data], getPlayers(client))
     else
         Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found \"" .. data .. "\"")
     end
@@ -49,7 +51,7 @@ function Arbitrage.statistics.PlayerPostThink(client)
 
         if data and (!client[colddown] or CurTime() >= client[colddown]) then
             client[data] = math.Clamp(tonumber(client[data] - 1), 0, 100)
-            client:SetNetVar(k, client[data], getAdmins())
+            client:SetNetVar(k, client[data], getPlayers(client))
 
             if isfunction(v.action) then
                 v.action(client, v)

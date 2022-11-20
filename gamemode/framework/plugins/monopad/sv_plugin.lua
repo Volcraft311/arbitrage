@@ -272,17 +272,8 @@ netstream.Listen("MonoPad:GetMessages", function(client)
 	if !monopad then return end
 
 	local data = {}
-	for k, v in ipairs(player.GetAll()) do
-		local id = v:Team()
-		local faction = Character.team:GetByID(id)
-		if !faction then continue end
-
-		if id != monopad.team then
-			data[id] = true
-		end
-	end
-
-	for id in pairs(monopad.messages) do
+	for k, v in pairs(Arbitrage.players) do
+		local id = v.faction
 		local faction = Character.team:GetByID(id)
 		if !faction then continue end
 

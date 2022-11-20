@@ -56,16 +56,27 @@ function Arbitrage.player.SetupWeapons(client)
 end
 
 function Arbitrage.player.SetupInventory(client)
-    local inventory = client:GetInventory() or InventoryBase.CreateInventory()
-    inventory:SetOwner(client)
+    local w, h = 4, 2
+
+    local items = {}
+    local inventory = client:GetInventory()
+    if inventory then
+        items = inventory:GetItems()
+    end
 
     local faction = Character.team:GetByID(client:Team())
-    if !faction then return end
+    if faction then
+        w = faction.inventory.w or 4
+        h = faction.inventory.h or 2
+    end
 
-    local w = faction.inventory.w or 4
-    local h = faction.inventory.h or 2
+    inventory = InventoryBase.CreateInventory(w, h)
+    inventory:SetOwner(client)
 
-    inventory:SetSize(w, h)
+    for _, item in ipairs(items) do
+        item:Transfer(inventory:GetID())
+    end
+
     inventory:Sync()
 end
 

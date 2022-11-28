@@ -20,12 +20,13 @@ Character.team:Create({
     model = "models/custom/aoi_asahina.mdl",
     uniqueID = "aoi",
     evidence_visibility = 0.4,
-    stamina = {run_consumption = 0.8},
+    stamina = {run_consumption = 0.5},
     speed = {walk = 1.02, run = 1.2},
-    needs = {hunger = 22, thirst = 30, fatique = 33},
+    needs = {hunger = 27, thirst = 30, fatique = 46},
     scale = 0.879,
     hullscale = 0.995,
-    hullduckscale = 1.26
+    hullduckscale = 1.26,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -34,13 +35,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/custom/byakuya_togami.mdl",
     uniqueID = "byakuya",
-    evidence_visibility = 0.7,
+    evidence_visibility = 0.82,
     stamina = {run_consumption = 0.9},
-    speed = {walk = 1, run = 1.1},
-    needs = {hunger = 40, thirst = 37, fatique = 37},
+    speed = {walk = 1.05, run = 1.05},
+    needs = {hunger = 36, thirst = 30, fatique = 44},
     scale = 1.001,
     hullscale = 1.019,
-    hullduckscale = 1.321
+    hullduckscale = 1.321,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -49,13 +51,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/celestia_ludenberg/default_p.mdl",
     uniqueID = "celestia",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 1.2},
+    evidence_visibility = 0.71,
+    stamina = {run_consumption = 1.4},
     speed = {walk = 0.8, run = 0.8},
-    needs = {hunger = 36, thirst = 30, fatique = 33},
+    needs = {hunger = 33, thirst = 33, fatique = 46},
     scale = 1,
     hullscale = 0.9,
-    hullduckscale = 1.123
+    hullduckscale = 1.123,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -64,13 +67,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/chihiro/default_p.mdl",
     uniqueID = "chihiro",
-    evidence_visibility = 1.1,
-    stamina = {run_consumption = 1.5},
-    speed = {walk = 0.7, run = 0.8},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.65,
+    stamina = {run_consumption = 1.4},
+    speed = {walk = 0.75, run = 0.75},
+    needs = {hunger = 39, thirst = 36, fatique = 46},
     scale = 0.97,
     hullscale = 0.825,
-    hullduckscale = 0.994
+    hullduckscale = 0.994,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -79,13 +83,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/hifumi_yamada.mdl",
     uniqueID = "hifumi",
-    evidence_visibility = 0.4,
+    evidence_visibility = 0.32,
     stamina = {run_consumption = 4},
-    speed = {walk = 0.8, run = 0.8},
-    needs = {hunger = 50, thirst = 46, fatique = 30},
+    speed = {walk = 0.8, run = 0.9},
+    needs = {hunger = 26, thirst = 26, fatique = 46},
     scale = 1.02,
     hullscale = 0.914,
-    hullduckscale = 1.099
+    hullduckscale = 1.099,
+    inventory = {w = 4, h = 3}
 })
 
 Character.team:Create({
@@ -94,13 +99,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl",
     uniqueID = "junko",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 0.9},
-    speed = {walk = 1, run = 1.1},
-    needs = {hunger = 33, thirst = 30, fatique = 37},
+    evidence_visibility = 1,
+    stamina = {run_consumption = 0.95},
+    speed = {walk = 0.9, run = 1},
+    needs = {hunger = 33, thirst = 33, fatique = 46},
     scale = 1.09,
     hullscale = 0.851,
-    hullduckscale = 1.062
+    hullduckscale = 1.062,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -109,13 +115,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/default_p.mdl",
     uniqueID = "kiyotaka",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 0.9},
-    speed = {walk = 1, run = 1.2},
-    needs = {hunger = 33, thirst = 30, fatique = 45},
+    evidence_visibility = 0.57,
+    stamina = {run_consumption = 0.85},
+    speed = {walk = 0.9, run = 1.2},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 1.002,
     hullscale = 0.961,
-    hullduckscale = 1.21
+    hullduckscale = 1.21,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -124,13 +131,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/kyoko_kirigiri_yoru/danganronpa/rstar/kyoko_kirigiri_yoru/kyoko_kirigiri_yoru.mdl",
     uniqueID = "kyoko",
-    evidence_visibility = 1,
-    stamina = {run_consumption = 0.98},
-    speed = {walk = 0.95, run = 0.95},
-    needs = {hunger = 37, thirst = 34, fatique = 50},
+    evidence_visibility = 1.26,
+    stamina = {run_consumption = 0.7},
+    speed = {walk = 0.85, run = 1},
+    needs = {hunger = 36, thirst = 36, fatique = 58},
     scale = 0.968,
     hullscale = 0.95,
-    hullduckscale = 1.225
+    hullduckscale = 1.225,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -139,13 +147,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/leon_kuwata.mdl",
     uniqueID = "leon",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 0.9},
-    speed = {walk = 1, run = 1.1},
-    needs = {hunger = 33, thirst = 26, fatique = 30},
+    evidence_visibility = 0.5,
+    stamina = {run_consumption = 0.6},
+    speed = {walk = 0.9, run = 1.15},
+    needs = {hunger = 30, thirst = 27, fatique = 46},
     scale = 0.979,
     hullscale = 0.967,
-    hullduckscale = 1.244
+    hullduckscale = 1.244,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -157,10 +166,11 @@ Character.team:Create({
     evidence_visibility = 0.6,
     stamina = {run_consumption = 1},
     speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 30, fatique = 33},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 0.984,
     hullscale = 0.89,
-    hullduckscale = 1.097
+    hullduckscale = 1.097,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -170,12 +180,13 @@ Character.team:Create({
     model = "models/player/dewobedil/danganronpa/mondo_owada/default_p.mdl",
     uniqueID = "mondo",
     evidence_visibility = 0.4,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 30, fatique = 33},
+    stamina = {run_consumption = 0.8},
+    speed = {walk = 1, run = 1.25},
+    needs = {hunger = 27, thirst = 27, fatique = 53},
     scale = 1.008,
     hullscale = 1,
-    hullduckscale = 1.292
+    hullduckscale = 1.292,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -184,13 +195,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/sakura_ogami.mdl",
     uniqueID = "sakura",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 0.9},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 42, thirst = 38, fatique = 20},
+    evidence_visibility = 0.6,
+    stamina = {run_consumption = 0.7},
+    speed = {walk = 0.9, run = 1.3},
+    needs = {hunger = 39, thirst = 39, fatique = 48},
     scale = 0.983,
     hullscale = 1.065,
-    hullduckscale = 1.451
+    hullduckscale = 1.451,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -199,13 +211,14 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/sayaka_yoru/danganronpa/rstar/sayaka_yoru/sayaka_yoru.mdl",
     uniqueID = "sayaka",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 1.2},
-    speed = {walk = 0.9, run = 0.8},
-    needs = {hunger = 33, thirst = 30, fatique = 36},
+    evidence_visibility = 0.7,
+    stamina = {run_consumption = 0.85},
+    speed = {walk = 0.9, run = 0.9},
+    needs = {hunger = 39, thirst = 30, fatique = 46},
     scale = 0.961,
     hullscale = 0.929,
-    hullduckscale = 1.186
+    hullduckscale = 1.186,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -214,14 +227,15 @@ Character.team:Create({
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl",
     uniqueID = "toko",
-    evidence_visibility = 0.5,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 30, fatique = 33},
+    evidence_visibility = 0.53,
+    stamina = {run_consumption = 1.4},
+    speed = {walk = 0.85, run = 0.95},
+    needs = {hunger = 36, thirst = 36, fatique = 52},
     items = {"toko_shocker"},
     scale = 1.007,
     hullscale = 0.887,
-    hullduckscale = 1.226
+    hullduckscale = 1.226,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -231,12 +245,13 @@ Character.team:Create({
     model = "models/player/dewobedil/danganronpa/yasuhiro_hagakure/default_p.mdl",
     uniqueID = "yasuhiro",
     evidence_visibility = 0.3,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 30, fatique = 33},
+    stamina = {run_consumption = 0.8},
+    speed = {walk = 0.85, run = 1.2},
+    needs = {hunger = 28, thirst = 28, fatique = 44},
     scale = 0.994,
     hullscale = 0.991,
-    hullduckscale = 1.3
+    hullduckscale = 1.3,
+    inventory = {w = 4, h = 2}
 })
 
 
@@ -247,13 +262,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/yourtoast4/danganronpa/akane_owari.mdl",
     uniqueID = "akane",
-    evidence_visibility = 0.3,
-    stamina = {run_consumption = 1.2},
+    evidence_visibility = 0.53,
+    stamina = {run_consumption = 0.65},
     speed = {walk = 1, run = 1.2},
-    needs = {hunger = 25, thirst = 36, fatique = 38},
+    needs = {hunger = 26, thirst = 33, fatique = 51},
     scale = 1,
     hullscale = 0.957,
-    hullduckscale = 1.23
+    hullduckscale = 1.23,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -262,13 +278,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/chiaki_nanami/default_p.mdl",
     uniqueID = "chiaki",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 0.8, run = 0.8},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
-    scale = 0.974,
+    evidence_visibility = 0.78,
+    stamina = {run_consumption = 1.6},
+    speed = {walk = 0.85, run = 0.8},
+    needs = {hunger = 30, thirst = 30, fatique = 33},
+    scale = 1, -- 0.974,
     hullscale = 0.895,
-    hullduckscale = 1.142
+    hullduckscale = 1.142,
+    inventory = {w = 4, h = 3}
 })
 
 Character.team:Create({
@@ -277,13 +294,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl",
     uniqueID = "fuyuhiko",
-    evidence_visibility = 0.6,
+    evidence_visibility = 0.65,
     stamina = {run_consumption = 1},
     speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    needs = {hunger = 33, thirst = 33, fatique = 36},
     scale = 0.969,
     hullscale = 0.875,
-    hullduckscale = 1.052
+    hullduckscale = 1.052,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -292,13 +310,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/gundam_tanaka/default_p.mdl",
     uniqueID = "gundham",
-    evidence_visibility = 0.4,
+    evidence_visibility = 0.6,
     stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    speed = {walk = 0.9, run = 1.1},
+    needs = {hunger = 36, thirst = 36, fatique = 51},
     scale = 1.144,
     hullscale = 0.868,
-    hullduckscale = 1.035
+    hullduckscale = 1.035,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -307,13 +326,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hajime_hinata/default_p.mdl",
     uniqueID = "hajime",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
+    evidence_visibility = 0.85,
+    stamina = {run_consumption = 0.95},
     speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 0.976,
     hullscale = 0.995,
-    hullduckscale = 1.274
+    hullduckscale = 1.274,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -322,13 +342,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl",
     uniqueID = "hiyoko",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.4,
+    stamina = {run_consumption = 1.2},
+    speed = {walk = 0.85, run = 0.85},
+    needs = {hunger = 36, thirst = 30, fatique = 46},
     scale = 0.996,
     hullscale = 0.714,
-    hullduckscale = 0.789
+    hullduckscale = 0.789,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -337,13 +358,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl",
     uniqueID = "ibuki",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.45,
+    stamina = {run_consumption = 0.7},
+    speed = {walk = 1, run = 1.05},
+    needs = {hunger = 33, thirst = 33, fatique = 51},
     scale = 0.975,
     hullscale = 0.918,
-    hullduckscale = 1.174
+    hullduckscale = 1.174,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -352,13 +374,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/danganronpa/kazuichi_soda.mdl",
     uniqueID = "kazuichi",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.55,
+    stamina = {run_consumption = 0.95},
+    speed = {walk = 0.9, run = 1.05},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 0.988,
     hullscale = 0.942,
-    hullduckscale = 1.154
+    hullduckscale = 1.154,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -367,14 +390,15 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/mahiru_koizumi/default_p.mdl",
     uniqueID = "mahiru",
-    evidence_visibility = 0.6,
+    evidence_visibility = 0.63,
     stamina = {run_consumption = 1},
     speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     items = {"camera"},
     scale = 0.993,
     hullscale = 0.91,
-    hullduckscale = 1.184
+    hullduckscale = 1.184,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -383,14 +407,15 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/mikan_tsumiki/default_p.mdl",
     uniqueID = "mikan",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.73,
+    stamina = {run_consumption = 1.3},
+    speed = {walk = 0.9, run = 1.15},
+    needs = {hunger = 36, thirst = 36, fatique = 55},
     weapons = {"weapon_medkit"},
     scale = 0.993,
     hullscale = 0.897,
-    hullduckscale = 1.134
+    hullduckscale = 1.134,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -399,28 +424,30 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/nagito_komaeda/default_p.mdl",
     uniqueID = "nagito",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.85,
+    stamina = {run_consumption = 1.15},
+    speed = {walk = 0.8, run = 1},
+    needs = {hunger = 30, thirst = 30, fatique = 51},
     scale = 1.133,
     hullscale = 0.872,
-    hullduckscale = 1.05
+    hullduckscale = 1.05,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
     name = "Нэкомару Нидай",
     title = "Абсолютный Тренер",
     category = "goodbye_despair",
-    model = "models/player/yourtoast4/danganronpa/akane_owari.mdl",
+    model = "models/nekomaru/nekomaruniidai.mdl",
     uniqueID = "nekomaru",
-    evidence_visibility = 0.3,
-    stamina = {run_consumption = 1.4},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 36, fatique = 38},
+    evidence_visibility = 0.45,
+    stamina = {run_consumption = 0.65},
+    speed = {walk = 1, run = 1.2},
+    needs = {hunger = 27, thirst = 27, fatique = 46},
     scale = 1,
     hullscale = 1,
-    hullduckscale = 1
+    hullduckscale = 1,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -429,13 +456,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/peko_pekoyama/default_p.mdl",
     uniqueID = "peko",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.67,
+    stamina = {run_consumption = 0.85},
+    speed = {walk = 1, run = 1.2},
+    needs = {hunger = 36, thirst = 36, fatique = 55},
     scale = 1.082,
     hullscale = 0.868,
-    hullduckscale = 1.08
+    hullduckscale = 1.08,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -445,12 +473,13 @@ Character.team:Create({
     model = "models/player/dewobedil/danganronpa/sonia_nevermind/default_p.mdl",
     uniqueID = "sonia",
     evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    stamina = {run_consumption = 0.9},
+    speed = {walk = 0.95, run = 1.15},
+    needs = {hunger = 33, thirst = 30, fatique = 46},
     scale = 1.014,
     hullscale = 0.935,
-    hullduckscale = 1.21
+    hullduckscale = 1.21,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -459,13 +488,14 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl",
     uniqueID = "teruteru",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.5,
+    stamina = {run_consumption = 1.1},
+    speed = {walk = 1, run = 1.05},
+    needs = {hunger = 33, thirst = 33, fatique = 46},
     scale = 0.962,
     hullscale = 0.745,
-    hullduckscale = 0.793
+    hullduckscale = 0.793,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -474,14 +504,15 @@ Character.team:Create({
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa2/byakuya_togami/default_p.mdl",
     uniqueID = "twogami",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.82,
+    stamina = {run_consumption = 0.83},
+    speed = {walk = 1, run = 1.5},
+    needs = {hunger = 24, thirst = 30, fatique = 46},
     weapons = {"nightvision"},
     scale = 0.975,
     hullscale = 1.04,
-    hullduckscale = 1.352
+    hullduckscale = 1.352,
+    inventory = {w = 4, h = 2}
 })
 
 
@@ -492,13 +523,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl",
     uniqueID = "angie",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 1},
+    evidence_visibility = 0.64,
+    stamina = {run_consumption = 0.85},
     speed = {walk = 0.9, run = 0.9},
-    needs = {hunger = 38, thirst = 35, fatique = 37},
+    needs = {hunger = 36, thirst = 36, fatique = 55},
     scale = 0.992,
     hullscale = 0.855,
-    hullduckscale = 1.058
+    hullduckscale = 1.058,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -507,13 +539,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/gonta/default_p.mdl",
     uniqueID = "gonta",
-    evidence_visibility = 0.2,
+    evidence_visibility = 0.8,
     stamina = {run_consumption = 0.8},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 27, thirst = 30, fatique = 33},
+    speed = {walk = 1, run = 1.2},
+    needs = {hunger = 27, thirst = 27, fatique = 46},
     scale = 1.108,
     hullscale = 0.965,
-    hullduckscale = 1.22
+    hullduckscale = 1.22,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -522,13 +555,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/himiko_yumeno/default_p.mdl",
     uniqueID = "himiko",
-    evidence_visibility = 0.3,
+    evidence_visibility = 0.45,
     stamina = {run_consumption = 1.2},
     speed = {walk = 0.85, run = 0.85},
-    needs = {hunger = 30, thirst = 27, fatique = 30},
+    needs = {hunger = 33, thirst = 33, fatique = 44},
     scale = 1,
     hullscale = 0.811,
-    hullduckscale = 0.963
+    hullduckscale = 0.963,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -537,14 +571,15 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player_kiibo.mdl",
     uniqueID = "k1b0",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 0.5},
+    evidence_visibility = 0.7,
+    stamina = {run_consumption = 0.1},
     speed = {walk = 1, run = 1},
-    needs = {hunger = 10000, thirst = 10000, fatique = 30},
+    needs = {hunger = 10000, thirst = 10000, fatique = 351},
     weapons = {"nightvision"},
     scale = 0.935,
     hullscale = 0.933,
-    hullduckscale = 1.139
+    hullduckscale = 1.139,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -553,13 +588,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kaede_akamatsu/default_p.mdl",
     uniqueID = "kaede",
-    evidence_visibility = 1,
-    stamina = {run_consumption = 1},
-    speed = {walk = nil, run = nil},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.65,
+    stamina = {run_consumption = 1.1},
+    speed = {walk = 0.9, run = 1},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 0.985,
     hullscale = 0.926,
-    hullduckscale = 1.183
+    hullduckscale = 1.183,
+    inventory = {w = 4, h = 3}
 })
 
 Character.team:Create({
@@ -568,13 +604,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kaito_momota/default_p.mdl",
     uniqueID = "kaito",
-    evidence_visibility = 0.3,
-    stamina = {run_consumption = 1.3},
+    evidence_visibility = 0.46,
+    stamina = {run_consumption = 1.2},
     speed = {walk = 1, run = 1.1},
-    needs = {hunger = 33, thirst = 36, fatique = 38},
+    needs = {hunger = 33, thirst = 33, fatique = 43},
     scale = 0.978,
     hullscale = 1.026,
-    hullduckscale = 1.327
+    hullduckscale = 1.327,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -583,13 +620,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kirumi_tojo/default_p.mdl",
     uniqueID = "kirumi",
-    evidence_visibility = 0.5,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 40, thirst = 37, fatique = 37},
+    evidence_visibility = 0.77,
+    stamina = {run_consumption = 0.8},
+    speed = {walk = 0.95, run = 1.1},
+    needs = {hunger = 36, thirst = 36, fatique = 51},
     scale = 0.998,
     hullscale = 0.956,
-    hullduckscale = 1.28
+    hullduckscale = 1.28,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -598,14 +636,15 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player_kokichioumaultimate.mdl",
     uniqueID = "kokichi",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 0.9},
-    speed = {walk = 1, run = 1.1},
-    needs = {hunger = 40, thirst = 37, fatique = 37},
+    evidence_visibility = 0.9,
+    stamina = {run_consumption = 0.7},
+    speed = {walk = 1, run = 1.175},
+    needs = {hunger = 33, thirst = 33, fatique = 51},
     items = {"picklock"},
     scale = 0.954,
     hullscale = 0.892,
-    hullduckscale = 1.075
+    hullduckscale = 1.075,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -614,13 +653,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/korekiyo_shinguji/default_p.mdl",
     uniqueID = "korekiyo",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 30, fatique = 39},
+    evidence_visibility = 0.8,
+    stamina = {run_consumption = 1.1},
+    speed = {walk = 0.9, run = 0.95},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 1.01,
     hullscale = 1.014,
-    hullduckscale = 1.407
+    hullduckscale = 1.407,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -629,13 +669,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/maki_harukawa/default_p.mdl",
     uniqueID = "maki",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.9,
+    stamina = {run_consumption = 0.5},
+    speed = {walk = 0.95, run = 1.3},
+    needs = {hunger = 42, thirst = 42, fatique = 56},
     scale = 0.989,
     hullscale = 0.884,
-    hullduckscale = 1.14
+    hullduckscale = 1.14,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -644,13 +685,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/miu_iruma/default_p.mdl",
     uniqueID = "miu",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.63,
+    stamina = {run_consumption = 1.314},
+    speed = {walk = 0.9, run = 0.9},
+    needs = {hunger = 30, thirst = 30, fatique = 51},
     scale = 0.96,
     hullscale = 0.985,
-    hullduckscale = 1.31
+    hullduckscale = 1.31,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -659,13 +701,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/rantaro_amami/default_p.mdl",
     uniqueID = "rantaro",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 40, thirst = 37, fatique = 37},
+    evidence_visibility = 0.75,
+    stamina = {run_consumption = 0.85},
+    speed = {walk = 0.9, run = 1.15},
+    needs = {hunger = 36, thirst = 36, fatique = 51},
     scale = 0.977,
     hullscale = 0.991,
-    hullduckscale = 1.267
+    hullduckscale = 1.267,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -674,13 +717,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/ryoma_hoshi/default_p.mdl",
     uniqueID = "ryoma",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 0.65,
+    stamina = {run_consumption = 0.6},
+    speed = {walk = 0.9, run = 1},
+    needs = {hunger = 36, thirst = 36, fatique = 46},
     scale = 1.08,
     hullscale = 0.53,
-    hullduckscale = 0.38
+    hullduckscale = 0.38,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -689,13 +733,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/shuichi_saihara/default_p.mdl",
     uniqueID = "shuichi",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 33, thirst = 33, fatique = 33},
+    evidence_visibility = 1.06,
+    stamina = {run_consumption = 1.1},
+    speed = {walk = 0.9, run = 1},
+    needs = {hunger = 30, thirst = 30, fatique = 48},
     scale = 0.991,
     hullscale = 0.945,
-    hullduckscale = 1.18
+    hullduckscale = 1.18,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -704,13 +749,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/tenko_chabashira/default_p.mdl",
     uniqueID = "tenko",
-    evidence_visibility = 0.3,
-    stamina = {run_consumption = 0.8},
-    speed = {walk = 1, run = 1.1},
-    needs = {hunger = 40, thirst = 37, fatique = 33},
+    evidence_visibility = 0.53,
+    stamina = {run_consumption = 0.7},
+    speed = {walk = 0.95, run = 1.2},
+    needs = {hunger = 36, thirst = 36, fatique = 46},
     scale = 0.998,
     hullscale = 0.894,
-    hullduckscale = 1.13
+    hullduckscale = 1.13,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -719,13 +765,14 @@ Character.team:Create({
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl",
     uniqueID = "tsumugi",
-    evidence_visibility = 0.4,
-    stamina = {run_consumption = 1.2},
-    speed = {walk = 0.9, run = 0.8},
-    needs = {hunger = 33, thirst = 30, fatique = 36},
+    evidence_visibility = 0.8,
+    stamina = {run_consumption = 1.3},
+    speed = {walk = 0.85, run = 0.85},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 0.99,
     hullscale = 0.96,
-    hullduckscale = 1.23
+    hullduckscale = 1.23,
+    inventory = {w = 4, h = 2}
 })
 
 
@@ -736,13 +783,14 @@ Character.team:Create({
     category = "ultra_despair_girls",
     model = "models/player/jataro.mdl",
     uniqueID = "jataro",
-    evidence_visibility = 0.6,
+    evidence_visibility = 0.7,
     stamina = {run_consumption = 1.1},
-    speed = {walk = 0.9, run = 1},
-    needs = {hunger = 32, thirst = 36, fatique = 42},
+    speed = {walk = 0.8, run = 0.9},
+    needs = {hunger = 36, thirst = 36, fatique = 42},
     scale = 1.11,
     hullscale = 0.63,
-    hullduckscale = 0.56
+    hullduckscale = 0.56,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -751,13 +799,14 @@ Character.team:Create({
     category = "ultra_despair_girls",
     model = "models/player/someguy/komaru_p.mdl",
     uniqueID = "komaru",
-    evidence_visibility = 0.4,
+    evidence_visibility = 0.5,
     stamina = {run_consumption = 1},
-    speed = {walk = 1, run = 1},
-    needs = {hunger = 36, thirst = 36, fatique = 36},
+    speed = {walk = 0.9, run = 0.9},
+    needs = {hunger = 30, thirst = 30, fatique = 46},
     scale = 1.006,
     hullscale = 0.877,
-    hullduckscale = 1.10
+    hullduckscale = 1.10,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -766,13 +815,14 @@ Character.team:Create({
     category = "ultra_despair_girls",
     model = "models/player/kotoko/kotoko_p.mdl",
     uniqueID = "kotoko",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1.1},
-    speed = {walk = 0.9, run = 1},
-    needs = {hunger = 32, thirst = 36, fatique = 42},
+    evidence_visibility = 0.4,
+    stamina = {run_consumption = 1.4},
+    speed = {walk = 0.8, run = 0.8},
+    needs = {hunger = 36, thirst = 36, fatique = 42},
     scale = 1.138,
     hullscale = 0.638,
-    hullduckscale = 0.634
+    hullduckscale = 0.634,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -781,13 +831,14 @@ Character.team:Create({
     category = "ultra_despair_girls",
     model = "models/player/masaru_p.mdl",
     uniqueID = "masaru",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1.1},
+    evidence_visibility = 0.35,
+    stamina = {run_consumption = 0.3},
     speed = {walk = 0.9, run = 1},
-    needs = {hunger = 32, thirst = 36, fatique = 42},
+    needs = {hunger = 36, thirst = 36, fatique = 42},
     scale = 1.118,
     hullscale = 0.638,
-    hullduckscale = 0.575
+    hullduckscale = 0.575,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -796,13 +847,14 @@ Character.team:Create({
     category = "ultra_despair_girls",
     model = "models/player/someguy/monaca_p.mdl",
     uniqueID = "monaca",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 1.1},
-    speed = {walk = 0.9, run = 1},
-    needs = {hunger = 32, thirst = 36, fatique = 42},
+    evidence_visibility = 0.9,
+    stamina = {run_consumption = 1.4},
+    speed = {walk = 0.8, run = 0.9},
+    needs = {hunger = 36, thirst = 36, fatique = 46},
     scale = 1.153,
     hullscale = 0.627,
-    hullduckscale = 0.607
+    hullduckscale = 0.607,
+    inventory = {w = 4, h = 2}
 })
 
 Character.team:Create({
@@ -811,13 +863,14 @@ Character.team:Create({
     category = "ultra_despair_girls",
     model = "models/player/nagisa/nagisa_p.mdl",
     uniqueID = "nagisa",
-    evidence_visibility = 0.6,
-    stamina = {run_consumption = 0.8},
-    speed = {walk = 0.9, run = 1},
-    needs = {hunger = 32, thirst = 36, fatique = 42},
+    evidence_visibility = 0.85,
+    stamina = {run_consumption = 0.7},
+    speed = {walk = 0.8, run = 0.9},
+    needs = {hunger = 39, thirst = 39, fatique = 55},
     scale = 1.171,
     hullscale = 0.64,
-    hullduckscale = 0.6
+    hullduckscale = 0.6,
+    inventory = {w = 4, h = 2}
 })
 
 
@@ -834,8 +887,6 @@ Character.team:Create({
     needs = {hunger = 10000, thirst = 10000, fatique = 10000},
     scale = 0.628,
     hullscale = 0.643,
-    hullduckscale = 0.564
+    hullduckscale = 0.564,
+    inventory = {w = 4, h = 5}
 })
-
-
--- Уникальные

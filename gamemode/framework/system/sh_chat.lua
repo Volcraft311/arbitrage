@@ -27,6 +27,8 @@ function Arbitrage.chat:GetIcon(client)
             return mat("icon16/application_osx_terminal.png")
         elseif client:GetUserGroup() == "founder" then
             return mat("icon16/key.png")
+        elseif client:GetUserGroup() == "superadmin" then
+            return mat("icon16/award_star_gold_1.png")
         elseif client:GetUserGroup() == "gamemaster" then
             return mat("icon16/cog.png")
         elseif client:GetUserGroup() == "tester" then

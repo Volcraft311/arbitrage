@@ -484,7 +484,7 @@ function Arbitrage:PlayerSay(client, data)
         local extra = Arbitrage:ExtractArgs(message)
 
         if data:sub(1, 1) == "@" then
-            table.insert(extra, 1, "help")
+            table.insert(extra, 1, client:IsAdmin() and "a" or "help")
         end
 
         local command = "sg"

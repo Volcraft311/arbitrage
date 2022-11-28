@@ -70,6 +70,12 @@ end)
 function PLUGIN:HUDPaint()
     local client = LocalPlayer()
 
+    local faction = Character.team:GetByID(client:Team())
+
+    local ignore_list = {}
+    ignore_list[#ignore_list + 1] = client
+    for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
+
     for k, v in pairs(evidences) do
     	if IsValid(v) then
 	        local idx = v:GetEvidence()
@@ -86,33 +92,26 @@ function PLUGIN:HUDPaint()
 
 	        local max_alpha = 150
 	        local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
-	        local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, 150)
-
-	        local faction = Character.team:GetByID(client:Team())
-
-	        local ignore_list = {}
-	        ignore_list[#ignore_list + 1] = client
-	        ignore_list[#ignore_list + 1] = v
-
-	        for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
-
-	        v.evData = v.evData or 0
+	        local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
 
 	        if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
-	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha - v.evData) * (20 / 200) * (faction:GetEvidenceVisibility() or 1), 0, 200), math_Clamp(curalpha - alpha - v.evData, 0, 150))
+	        	local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
+	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255) * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
+	            local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
+	            a = a - (255 - Arbitrage.statistics.Get(client, "Sleep") * 2.55)
+				a = math.Clamp(a, 0, 255)
 
-	            surface_SetDrawColor(ColorAlpha(color, math_Clamp(curalpha - alpha - v.evData - (255 * 0.5 - alphaA), 0, 150)))
+	            surface_SetDrawColor(ColorAlpha(color, a))
 	            draw_NoTexture()
 	            surface_DrawPoly(circle)
 	        end
 
-	        if client:IsNocliping() then
-	            if !client:IsAdmin() then return end
-	            if client.GetSitting and client:GetSitting() then return end
-	            if !SETTINGS.options.Get("show_admin_esp") then return end
+			if !client:IsNocliping() then continue end
+			if !client:IsAdmin() then continue end
+			if client.GetSitting and client:GetSitting() then continue end
+			if !SETTINGS.options.Get("show_admin_esp") then continue end
 
-	            draw_DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
-	        end
+			draw_DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
     	end
     end
 end

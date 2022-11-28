@@ -112,23 +112,25 @@ function Character.team:Join(client, data, bRespawn)
     client:SetNoCollideWithTeammates(false)
     client:ResetHull()
 
-    do
-        local min, max = client:GetHull()
-        local size = Vector(max.x, max.y, max.z * info:GetHullScale())
+    timer.Simple(1, function()
+        do
+            local min, max = client:GetHull()
+            local size = Vector(max.x, max.y, max.z * info:GetHullScale())
 
-        client:SetHull(min, size)
+            client:SetHull(min, size)
 
-        hullMin, hullMax = min, size
-    end
+            hullMin, hullMax = min, size
+        end
 
-    do
-        local min, max = client:GetHullDuck()
-        local size = Vector(max.x, max.y, max.z * info:GetHullDuckScale())
+        do
+            local min, max = client:GetHullDuck()
+            local size = Vector(max.x, max.y, max.z * info:GetHullDuckScale())
 
-        client:SetHullDuck(min, size)
+            client:SetHullDuck(min, size)
 
-        hullduckMin, hullduckMax = min, size
-    end
+            hullduckMin, hullduckMax = min, size
+        end
+    end)
 
     if info.OnChange then
         info.OnChange(client)

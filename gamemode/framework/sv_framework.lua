@@ -687,8 +687,6 @@ timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
             v:SetPos(spectate:GetPos())
         end
 
-        print(v:GetPos())
-
         v:SetNoDraw(true)
         v:SetNotSolid(true)
         v:DrawWorldModel(false)

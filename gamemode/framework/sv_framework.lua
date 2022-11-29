@@ -677,24 +677,29 @@ function Arbitrage:StopGame()
     end
 end
 
-function Arbitrage:PlayerOneSecond(client)
-    if !client:IsSpectate() then return end
-    local spectate = client.spectateent
+timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
+    for k, v in ipairs(player.GetAll()) do
+        if !v:IsSpectate() then return end
 
-    if IsValid(spectate) then
-        client:SetPos(spectate:GetPos())
+        local spectate = v.spectateent
+
+        if IsValid(spectate) then
+            v:SetPos(spectate:GetPos())
+        end
+
+        print(v:GetPos())
+
+        v:SetNoDraw(true)
+        v:SetNotSolid(true)
+        v:DrawWorldModel(false)
+        v:DrawShadow(false)
+        v:GodEnable()
+        v:SetNoTarget(true)
+        v:StripWeapons()
+        v:StripAmmo()
+        v:Spectate(OBS_MODE_CHASE)
     end
-
-    client:SetNoDraw(true)
-    client:SetNotSolid(true)
-    client:DrawWorldModel(false)
-    client:DrawShadow(false)
-    client:GodEnable()
-    client:SetNoTarget(true)
-    client:StripWeapons()
-    client:StripAmmo()
-    client:Spectate(OBS_MODE_CHASE)
-end
+end)
 
 function Arbitrage:PlayerCanPickupWeapon(client, entity)
     if client:IsSpectate() then return false end

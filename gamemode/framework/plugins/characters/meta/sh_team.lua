@@ -19,7 +19,7 @@ TEAM.uniqueID = nil
 TEAM.name = "Название команды"
 TEAM.title = "Описание таланта"
 TEAM.category = "Остальные"
-TEAM.model = "models/player/skeleton.mdl"
+TEAM.model = ARBITRAGE_STANDART_MODEL
 TEAM.color = Color(240, 201, 73)
 TEAM.evidence_visibility = 1
 TEAM.scale = 1
@@ -91,7 +91,7 @@ function TEAM:GetCategory()
 end
 
 function TEAM:GetModel()
-    return tostring(self.model) or "models/player/skeleton.mdl"
+    return tostring(self.model) or ARBITRAGE_STANDART_MODEL
 end
 
 function TEAM:GetColor()

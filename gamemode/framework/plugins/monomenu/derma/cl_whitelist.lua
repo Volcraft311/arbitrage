@@ -198,12 +198,11 @@ function PANEL:Init()
     self:AlphaTo(255, 0.3)
     self.startTime = SysTime()
 
-
+    local t = H(250)
     self.main = self:Add("Panel")
-    self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (H(250) / 2))
+    self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
     self.main:SetSize(W(600), 0)
 
-    local t = H(250)
     self.main.Think = function(panel)
         panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
     end

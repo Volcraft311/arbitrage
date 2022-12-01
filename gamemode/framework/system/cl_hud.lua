@@ -12,6 +12,13 @@
 ]]--
 
 -- Localize Global Calls
+local ScrW = ScrW
+local ScrH = ScrH
+local Material = Material
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawRect = surface.DrawRect
+local math_sin = math.sin
+local RealTime = RealTime
 local asterionlib = asterionlib
 local timer_Create = timer.Create
 local table_Count = table.Count
@@ -20,9 +27,7 @@ local util_TraceLine = util.TraceLine
 local ents_FindInSphere = ents.FindInSphere
 local EyePos = EyePos
 local math_cos = math.cos
-local math_sin = math.sin
 local math_floor = math.floor
-local surface_SetDrawColor = surface.SetDrawColor
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local Format = Format
@@ -31,11 +36,9 @@ local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
 local Lerp = Lerp
 local FrameTime = FrameTime
-local draw = draw
 local ColorAlpha = ColorAlpha
 local draw_SimpleText = draw.SimpleText
 local tostring = tostring
-local surface_DrawRect = surface.DrawRect
 local IsValid = IsValid
 local Color = Color
 local SortedPairs = SortedPairs
@@ -441,7 +444,7 @@ do
 	local sleep = 0
 	local allow = false
 	timer_Create("VignetteDraw:Update", 1, 0, function()
-		blur, hunger, thirst = 0, 0, 0
+		blur, hunger, thirst, sleep = 0, 0, 0, 0
 
 		local client = LocalPlayer()
 		allow = isAllow(client)
@@ -461,15 +464,17 @@ do
 		if blur > 1 then
 			asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, blur)
 
-			surface.SetDrawColor(0, 0, 0, blur * 2.5)
-			surface.DrawRect(x, y, w, h)
+			surface_SetDrawColor(0, 0, 0, blur * 2.5)
+			surface_DrawRect(x, y, w, h)
 
-			if blur >= 25 then
-				sleep = math.sin(RealTime()) * 255
+			if blur >= 35 then
+				sleep = math_sin(RealTime()) * 255
 			end
 
-			surface.SetDrawColor(0, 0, 0, sleep - 30)
-			surface.DrawRect(x, y, w, h)
+			if sleep > 0 then
+				surface_SetDrawColor(0, 0, 0, sleep - 30)
+				surface_DrawRect(x, y, w, h)
+			end
 		end
 
 		surface_SetTexture(vignitte)

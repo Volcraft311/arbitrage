@@ -821,6 +821,17 @@ netstream.Hook("arb.HideState", function(client, state)
     Arbitrage.commands.Notify(client, "Вы " .. (bHide and "скрыли" or "раскрыли") .. " свое состояние!")
 end)
 
+netstream.Hook("arb.EditDescription", function(client, data)
+    data = tostring(data)
+    if !data then return end
+
+    if data == "" or data == " " or data == "  " then
+        data = nil
+    end
+
+    client:SetNetVar("description", data)
+end)
+
 netstream.Hook("arb.SelectCharacter", function(client, data)
     if !data then return end
     if GetNetVar("arb.StartGame") and data != TEAM_SPECTATE then return end

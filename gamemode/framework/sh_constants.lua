@@ -59,8 +59,11 @@ ARBITRAGE_CONTEXT_DATA = {
 		["Изменить внешний вид"] = {"danganronpa/hud/action/material.png", function(client)
 			local panel = vgui.Create("arb.OpenWardrobe")
 			panel:SetData(LocalPlayer():GetModel())
+		end},
+		["Изменить РП описание"] = {"danganronpa/hud/action/material.png", function(client)
+			vgui.Create("arb.OpenEditorDescription")
 		end}
-	},
+	}
 }
 
 -- Отключенные типы сообщений в чате

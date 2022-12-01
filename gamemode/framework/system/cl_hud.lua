@@ -169,6 +169,8 @@ do
 	end
 end
 
+local descriptionFont = "arb.Font_FuturaPTBook_8"
+local descriptionHeight = draw_GetFontHeight(descriptionFont)
 function Arbitrage.hud.ALTMenuDraw()
 	if Arbitrage.lawEnable then return end
 
@@ -213,8 +215,19 @@ function Arbitrage.hud.ALTMenuDraw()
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
 		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)
 
-		draw_SimpleText(client:Name(), "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-		draw_SimpleText(faction:GetTitle(), "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(client:Name(), "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color(255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(faction:GetTitle(), "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color(255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+
+		local description = client:GetNetVar("description")
+		if description then
+			local data = asterionlib.WrapText(description, ScrW() * 0.3, descriptionFont, true)
+
+			for k, v in ipairs(data) do
+				local padding = #data * descriptionHeight
+
+				draw_SimpleText(v, descriptionFont, ScrW() / 2, ScrH() - 200 - 80 - padding + (k - 1) * descriptionHeight, Color(255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
+			end
+		end
 
 		draw_SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
 	end
@@ -627,39 +640,52 @@ do
 end
 
 do
-	local genericHeight = draw_GetFontHeight("arb.Font_FuturaPTBook_8")
-	local function createTextPlayer(client)
+	local genericFont = "arb.Font_FuturaPTBook_8"
+	local genericHeight = draw_GetFontHeight(genericFont)
+
+	local statusFont = "arb.Font_FuturaPTBook_5"
+	local statusHeight = draw_GetFontHeight(statusFont)
+	local function createTextPlayer(client, textAlpha)
 		local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
 
 		local data2D = position:ToScreen()
 		if !data2D.visible then return end
-
 		local x, y = data2D.x, data2D.y
-		local alpha = client.textalpha
 
-		draw_SimpleText(client:Name(), "arb.Font_FuturaPTBook_8", x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(client:Name(), genericFont, x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), textAlpha), TEXT_ALIGN_CENTER)
 
-		surface_SetFont( "arb.Font_FuturaPTBook_8" )
-		local width = surface_GetTextSize(client:Name()) * alpha / 255
+		surface_SetFont(genericFont)
+		local width = surface_GetTextSize(client:Name()) * textAlpha / 255
 
-		surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), alpha))
+		surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), textAlpha))
 		surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
 
-		if client:GetNetVar("hideStatus") then return end
+		local newY = y + 4
+		if !client:GetNetVar("hideStatus") then
+			local color = Color(61, 210, 101)
+			local stText = "На вид в порядке"
+			local health = client:Health()
 
-		local color = Color(61, 210, 101)
-		local stText = "На вид в порядке"
-		local health = client:Health()
+			if health <= 40 then
+				color = Color(218, 52, 52)
+				stText = "Выглядит неважно"
+			elseif health <= 80 then
+				color = Color(218, 162, 52)
+				stText = "Слегка потрепанный"
+			end
 
-		if health <= 40 then
-			color = Color(218, 52, 52)
-			stText = "Выглядит неважно"
-		elseif health <= 80 then
-			color = Color(218, 162, 52)
-			stText = "Слегка потрепанный"
+			draw_SimpleText(stText, statusFont, x, newY, ColorAlpha(color, textAlpha), TEXT_ALIGN_CENTER)
+			newY = newY + statusHeight
 		end
 
-		draw_SimpleText(stText, "arb.Font_FuturaPTBook_5", x, y + 4, ColorAlpha(color, alpha), TEXT_ALIGN_CENTER)
+		local description = client:GetNetVar("description")
+		if description then
+			local data = asterionlib.WrapText(description, ScrW() * 0.15, statusFont, true)
+
+			for k, v in ipairs(data) do
+				draw_SimpleText(v, statusFont, x, newY + (k - 1) * statusHeight, ColorAlpha(color_white, textAlpha), TEXT_ALIGN_CENTER)
+			end
+		end
 	end
 
 	local function getTrace(client)
@@ -709,7 +735,7 @@ do
 
 			v.textalpha = Lerp(FrameTime() * 5, v.textalpha, ent == v and 256 or 0)
 
-			createTextPlayer(v)
+			createTextPlayer(v, v.textalpha)
 		end
 	end
 end

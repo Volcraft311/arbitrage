@@ -149,13 +149,16 @@ local function getActionList(clientinfo)
     local m_steamid = clientinfo.steamid
     local m_time = string.format("%s:%s:%s", time.h, time.m, time.s)
     local m_status = clientinfo.alive and "Жив" or "Мертв"
-    local m_character = faction and faction.name or client.faction
+    local m_character = faction and faction.name or clientinfo.faction
 
     local s_health = a_isvalid and client:Health() or "Неизвестно"
     local s_armor = a_isvalid and client:Armor() or "Неизвестно"
     local s_hunger = a_isvalid and (Arbitrage.statistics.Get(client, "Hunger") or 100) or "Неизвестно"
     local s_thirst = a_isvalid and (Arbitrage.statistics.Get(client, "Thirst") or 100) or "Неизвестно"
     local s_sleep = a_isvalid and (Arbitrage.statistics.Get(client, "Sleep") or 100) or "Неизвестно"
+
+    -- Люблю гмод, чтобы на всякий не было ошибок (которые появляются у одного игрока в 9999 лет)
+    m_name, m_steamname, m_steamid, m_time, m_status, m_character, s_health, s_armor, s_hunger, s_thirst, s_sleep = tostring(m_name), tostring(m_steamname), tostring(m_steamid), tostring(m_time), tostring(m_status), tostring(m_character), tostring(s_health), tostring(s_armor), tostring(s_hunger), tostring(s_thirst), tostring(s_sleep)
 
     return {
         {

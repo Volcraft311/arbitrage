@@ -833,8 +833,8 @@ netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
     end
 
     if IsValid(Arbitrage.gui.lawaction) and isFocus then
-        Arbitrage.gui.lawaction.focusSizeMax = 30
-        Arbitrage.gui.lawaction.focusSize = RealTime() + 30
+        Arbitrage.gui.lawaction.focusSizeMax = 10
+        Arbitrage.gui.lawaction.focusSize = RealTime() + 10
 
         local vignitte_a = 0
         local vignitte = surface.GetTextureID("vgui/vignette")
@@ -849,7 +849,7 @@ netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
             end
         end)
 
-        timer.Simple(20, function()
+        timer.Simple(6, function()
             hook.Add("HUDPaint", "arb.VignitteFocus", function()
                 vignitte_a = Lerp(FrameTime() * 2, vignitte_a, 0)
 

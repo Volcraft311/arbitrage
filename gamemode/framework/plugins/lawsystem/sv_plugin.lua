@@ -259,8 +259,8 @@ function PLUGIN:Focus(client, anim)
         netstream.Start(nil, "arb.LawTalking", client, anim, true)
 
         self.talk_entity = client
-        self.interruption = CurTime() + 20
-        self.focusCD = CurTime() + 30
+        self.interruption = CurTime() + 6
+        self.focusCD = CurTime() + 10
 
         self.oldAnimID = anim
     end

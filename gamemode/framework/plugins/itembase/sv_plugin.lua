@@ -16,8 +16,10 @@ local PLUGIN = PLUGIN
 
 function ItemBase.CreateItemInWorld(uniqueID, pos, ang)
     local item = ItemBase.CreateItem(uniqueID)
-    item:Spawn(pos, ang)
+    local entity = item:Spawn(pos, ang)
     item:Sync()
+
+    return item, entity
 end
 
 function ItemBase:PlayerInitialSpawn(client)

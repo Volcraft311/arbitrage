@@ -108,6 +108,8 @@ do
         workshop:Add("2780751458") -- Danganronpa - Models Content #2
         workshop:Add("2723789180") -- Danganronpa - Models Content #3
         workshop:Add("2849953494") -- Danganronpa - Models Content #4
+        workshop:Add("2791583716") -- Asterion Academy - Additional Content
+        workshop:Add("2860471023") -- Asterion Academy — Prop Content #1
 
         -- OTHER
         workshop:Add("246756300") -- Stream Radio
@@ -119,6 +121,7 @@ do
         workshop:Add("1161268544") -- Pink Blood
         workshop:Add("160250458") -- Wiremod
         workshop:Add("2840295308") -- Primitive
+        workshop:Add("2891008181") -- Asterion Academy - UDG Materials Fix
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload
@@ -140,6 +143,7 @@ do
         workshop:Add("213181442") -- Mobile Computing Pack
         workshop:Add("104477476") -- Misc Props Pack
         workshop:Add("2546157752") -- Stockplus - More Construct Props
+        workshop:Add("1805856532") -- [DR] Nidai Nekomaru
     end)
 end
 

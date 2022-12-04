@@ -78,6 +78,8 @@ function PLUGIN:HUDPaint()
 
     for k, v in pairs(evidences) do
     	if IsValid(v) then
+    		ignore_list[#ignore_list + 1] = v
+
 	        local idx = v:GetEvidence()
 	        local data = self:GetEvidence(idx)
 	        if !data then continue end

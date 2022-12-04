@@ -53,7 +53,7 @@ end
 function PLUGIN:RenderScreenspaceEffects()
 	local client = LocalPlayer()
 
-	if !IsValid(client) or client:GetLocalVar("observer") or client:ShouldDrawLocalPlayer() or !client:oldAlive() or client:IsPlayingTaunt() or (client.GetSitting and client:GetSitting()) or client:IsSpectate() then return end
+	if !IsValid(client) or client:GetLocalVar("observer") or client:ShouldDrawLocalPlayer() or !client:oldAlive() or client:IsPlayingTaunt() or (client.GetSitting and client:GetSitting()) or client:IsSpectate() or client:GetNetVar("inbed") then return end
 
 	local angs = client:EyeAngles()
 	if angs.p < 0 then return end

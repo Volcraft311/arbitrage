@@ -645,6 +645,9 @@ do
 
 	local statusFont = "arb.Font_FuturaPTBook_5"
 	local statusHeight = draw_GetFontHeight(statusFont)
+
+	local descriptionFont = "arb.Font_FuturaPTBook_6"
+	local descriptionHeight = draw_GetFontHeight(descriptionFont)
 	local function createTextPlayer(client, textAlpha)
 		local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
 
@@ -680,10 +683,10 @@ do
 
 		local description = client:GetNetVar("description")
 		if description then
-			local data = asterionlib.WrapText(description, ScrW() * 0.15, statusFont, true)
+			local data = asterionlib.WrapText(description, ScrW() * 0.15, descriptionFont, true)
 
 			for k, v in ipairs(data) do
-				draw_SimpleText(v, statusFont, x, newY + (k - 1) * statusHeight, ColorAlpha(color_white, textAlpha), TEXT_ALIGN_CENTER)
+				draw_SimpleText(v, descriptionFont, x, newY + (k - 1) * descriptionHeight, ColorAlpha(color_white, textAlpha), TEXT_ALIGN_CENTER)
 			end
 		end
 	end

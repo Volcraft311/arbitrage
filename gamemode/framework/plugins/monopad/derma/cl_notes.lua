@@ -153,6 +153,8 @@ function PANEL:Init()
 			self:Rebuild()
 		end)
 
+		DermaStringRequest = panel
+
 		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
 	end
 

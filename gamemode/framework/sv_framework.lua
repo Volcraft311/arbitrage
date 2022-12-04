@@ -827,6 +827,10 @@ netstream.Hook("arb.EditDescription", function(client, data)
 
     if data == "" or data == " " or data == "  " then
         data = nil
+    else
+        if utf8.len(data) > 200 then
+            data = data:utf8sub(1, 197) .. "..."
+        end
     end
 
     client:SetNetVar("description", data)

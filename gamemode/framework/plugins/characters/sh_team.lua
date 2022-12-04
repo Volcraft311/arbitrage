@@ -106,7 +106,8 @@ function Character.team:Join(client, data, bRespawn)
         Arbitrage.player.Respawn(client)
     end
 
-    client:SetTeam(info:GetID())
+    local id = info:GetID()
+    client:SetTeam(id)
     client:SetModel(info:GetModel())
     client:SetModelScale(info:GetScale())
     client:SetNoCollideWithTeammates(false)
@@ -145,7 +146,7 @@ function Character.team:Join(client, data, bRespawn)
     Arbitrage.player.SetupInventory(client)
     Arbitrage.player.SetupViewOffset(client)
 
-    hook.Run("SelectCharacter", client, data)
+    hook.Run("SelectCharacter", client, id)
 end
 
 function Character.team:Fetch(callback)

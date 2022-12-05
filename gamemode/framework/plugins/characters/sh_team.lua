@@ -106,30 +106,38 @@ function Character.team:Join(client, data, bRespawn)
         Arbitrage.player.Respawn(client)
     end
 
+    local hullMin, hullMax, hullduckMin, hullduckMax = Vector(-16, -16, 0), Vector(16, 16, 72), Vector(-16, -16, 0), Vector(16, 16, 36)
+
     local id = info:GetID()
     client:SetTeam(id)
     client:SetModel(info:GetModel())
-    client:SetModelScale(info:GetScale())
     client:SetNoCollideWithTeammates(false)
-    client:ResetHull()
+
+    client:SetModelScale(1)
+    client:SetHull(hullMin, hullMax)
+    client:SetHullDuck(hullduckMin, hullduckMax)
 
     timer.Simple(1, function()
         do
-            local min, max = client:GetHull()
-            local size = Vector(max.x, max.y, max.z * info:GetHullScale())
+            local scale = info:GetScale()
 
-            client:SetHull(min, size)
-
-            hullMin, hullMax = min, size
+            client:SetModelScale(scale)
         end
 
         do
-            local min, max = client:GetHullDuck()
-            local size = Vector(max.x, max.y, max.z * info:GetHullDuckScale())
+            local scale = info:GetHullScale()
+            local min, max = hullMin, hullMax
+            local size = Vector(max.x, max.y, max.z * scale)
 
-            client:SetHullDuck(min, size)
+            client:SetHull(min, size, true)
+        end
 
-            hullduckMin, hullduckMax = min, size
+        do
+            local scale = info:GetHullDuckScale()
+            local min, max = hullduckMin, hullduckMax
+            local size = Vector(max.x, max.y, max.z * scale)
+
+            client:SetHullDuck(min, size, true)
         end
     end)
 

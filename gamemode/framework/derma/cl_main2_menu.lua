@@ -81,6 +81,8 @@ function PANEL:Init()
     self.closeButton = self:AddButton("Закрыть меню", nil, ScrW() / 2 - W(276) / 2, H(709), W(276), H(52), function()
         parent:ClosePanel()
     end)
+
+    netstream.Start("asterionlib.syncHullAll")
 end
 
 function PANEL:AddButton(text, icon, x, y, w, h, func)

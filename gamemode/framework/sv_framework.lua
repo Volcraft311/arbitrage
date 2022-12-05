@@ -56,6 +56,18 @@ Arbitrage.commands.Add("try", {
         if client:IsSpectate() then return end
         local rand = math.random(0, 100) >= 50 and true or false
 
+        local character = Character.team:GetByID(client:Team())
+        if character then
+            if character:GetUniqueID() == "nagito" then
+                rand = client.nagitoRandom
+                client.nagitoRandom = !client.nagitoRandom
+            elseif character:GetUniqueID() == "makoto" and !rand then
+                if math.random(1, 5) == 5 then -- 20% на то, что повезет
+                    rand = true
+                end
+            end
+        end
+
         Arbitrage.chat.SendCommand("try", client, text, rand)
     end
 })
@@ -209,8 +221,21 @@ Arbitrage.commands.Add("roll", {
     arguments = {},
     OnAction = function(client)
         if client:IsSpectate() then return end
+        local rand = math.random(1, 100)
 
-        Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. math.random(1, 100) .. " из 100.")
+        local character = Character.team:GetByID(client:Team())
+        if character then
+            if character:GetUniqueID() == "nagito" then
+                rand = client.nagitoRandom and 100 or 0
+                client.nagitoRandom = !client.nagitoRandom
+            elseif character:GetUniqueID() == "makoto" and rand < 50 then
+                if math.random(1, 5) == 5 then -- 20% на то, что повезет
+                    rand = 100
+                end
+            end
+        end
+
+        Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из 100.")
     end
 })
 
@@ -268,6 +293,20 @@ function Arbitrage:PlayerShouldTaunt(client, act)
     if client.GetSitting and client:GetSitting() then return false end
 
     return true
+end
+
+function Arbitrage:ScalePlayerDamage(client, hitgroup, dmginfo)
+    if !IsValid(client) then return end
+
+    local character = Character.team:GetByID(client:Team())
+    if !character then return end
+
+    local uniqueID = character:GetUniqueID()
+    if uniqueID == "makoto" then
+        if math.random(1, 5) == 5 then -- 20% на то, что повезет
+            dmginfo:ScaleDamage(0)
+        end
+    end
 end
 
 function Arbitrage:KeyPress(client, key)

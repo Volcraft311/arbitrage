@@ -144,8 +144,8 @@ function PLUGIN:PlayerInitial(client)
     client:SetArmor(data.armor)
 
     client:SetModelScale(data.scale)
-    client:SetHull(data.hullscale[1], data.hullscale[2])
-    client:SetHullDuck(data.hullduckscale[1], data.hullduckscale[2])
+    client:SetHull(data.hullscale[1], data.hullscale[2], true)
+    client:SetHullDuck(data.hullduckscale[1], data.hullduckscale[2], true)
 
     local saver = data.saver
     if saver then

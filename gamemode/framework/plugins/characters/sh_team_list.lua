@@ -234,7 +234,7 @@ Character.team:Create({
     items = {"toko_shocker"},
     scale = 1.007,
     hullscale = 0.887,
-    hullduckscale = 1.226,
+    hullduckscale = 1.1,
     inventory = {w = 4, h = 2}
 })
 

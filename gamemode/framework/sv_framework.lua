@@ -295,6 +295,13 @@ function Arbitrage:PlayerShouldTaunt(client, act)
     return true
 end
 
+local emoteList = {
+    "споткнулся",
+    "сильно чихнул, отклонив голову вперёд",
+    "заметил на полу монетку и, наклонившись, подбирает",
+    "заметил развязанные шнурки и, наклонившись, завязывает",
+    "заметил паука на полу и, испугавшись, отпрыгнул в сторону"
+}
 function Arbitrage:ScalePlayerDamage(client, hitgroup, dmginfo)
     if !IsValid(client) then return end
 
@@ -305,6 +312,7 @@ function Arbitrage:ScalePlayerDamage(client, hitgroup, dmginfo)
     if uniqueID == "makoto" then
         if math.random(1, 5) == 5 then -- 20% на то, что повезет
             dmginfo:ScaleDamage(0)
+            Arbitrage.chat.SendCommand("me", client, emoteList[math.random(1, #emoteList)])
         end
     end
 end

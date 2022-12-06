@@ -144,6 +144,8 @@ do
         workshop:Add("104477476") -- Misc Props Pack
         workshop:Add("2546157752") -- Stockplus - More Construct Props
         workshop:Add("1805856532") -- [DR] Nidai Nekomaru
+        workshop:Add("2892089039") -- UNION Content Pack#1 [props]
+        workshop:Add("2892095571") -- UNION Content Pack#6 [furniture]
     end)
 end
 

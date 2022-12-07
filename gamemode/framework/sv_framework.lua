@@ -939,3 +939,68 @@ netstream.Hook("arb.TokoSneezing", function(client)
 
     Arbitrage.commands.Notify(client, "Вы включили автоматическую смену личности.")
 end)
+
+netstream.Hook("arb.Sleeping", function(client)
+    local character = Character.team:GetByID(client:Team())
+    if !character then return end
+
+    local uniqueID = character:GetUniqueID()
+    if uniqueID == "chiaki" or uniqueID == "himiko" then
+        local isSleeping = client:GetLocalVar("sleeping", false)
+
+        client:SetLocalVar("sleeping", !isSleeping)
+        client:ChatNotify(isSleeping and "Вы начали просыпаться!" or "Вы уснули!")
+
+        local hookID = "arb.Sleeping_" .. client:SteamID()
+        local function clear()
+            hook.Remove("StartCommand", hookID)
+            hook.Remove("PostPlayerDeath", hookID)
+
+            if IsValid(client) then
+                client:SetLocalVar("sleeping", false)
+            end
+        end
+
+        local function create()
+            local eyeAng = client:GetAngles()
+
+            hook.Add("StartCommand", hookID, function(target, ucmd)
+                if target != client then return end
+                if !IsValid(client) then return clear() end
+
+                ucmd:RemoveKey(IN_JUMP)
+                ucmd:RemoveKey(IN_DUCK)
+                ucmd:RemoveKey(IN_ATTACK)
+                ucmd:RemoveKey(IN_USE)
+
+                ucmd:RemoveKey(IN_LEFT)
+                ucmd:RemoveKey(IN_RIGHT)
+
+                ucmd:ClearMovement()
+
+                ucmd:SetForwardMove(0)
+                ucmd:SetUpMove(0)
+                ucmd:SetSideMove(0)
+
+                ucmd:SetMouseX(0)
+                ucmd:SetMouseY(0)
+                ucmd:SetMouseWheel(0)
+
+                client:SetEyeAngles(eyeAng)
+            end)
+
+            hook.Add("PostPlayerDeath", hookID, function(target)
+                if target != client then return end
+                if !IsValid(client) then return clear() end
+
+                clear()
+            end)
+        end
+
+        if !isSleeping then
+            create()
+        else
+            clear()
+        end
+    end
+end)

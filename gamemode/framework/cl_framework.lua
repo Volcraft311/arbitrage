@@ -233,6 +233,16 @@ function Arbitrage:ArbitrageContextMenu(data)
             netstream.Start("arb.TokoSneezing")
         end)
     end
+
+    local character = Character.team:GetByID(LocalPlayer():Team())
+    if !character then return end
+
+    local uniqueID = character:GetUniqueID()
+    if uniqueID == "chiaki" or uniqueID == "himiko" then
+        data:AddAction("Уснуть/Проснуться", function(client)
+            netstream.Start("arb.Sleeping")
+        end)
+    end
 end
 
 local ActionPressIDList = {

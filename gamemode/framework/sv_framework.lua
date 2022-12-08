@@ -403,7 +403,7 @@ timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
             client:SetLocalVar("stm", math.Clamp(stamina - (frametime * 40 * staminaSpending), 0, 100))
             client.StaminaCD = curtime + 1.5
         else
-            local amount = Arbitrage.statistics.Get(client, "Thirst")
+            local amount = Arbitrage.statistics.Get(client, "Thirst") or 100
             local staminaColdDown = client.StaminaCD
 
             if (!staminaColdDown or curtime >= staminaColdDown) and amount >= 10 then

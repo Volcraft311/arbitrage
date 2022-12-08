@@ -62,7 +62,7 @@ function PLUGIN:PlayerPostThink(client)
     if !client:oldAlive() then return end
 
     if (client:GetNetVar("inbed") or client:GetLocalVar("sleeping")) and (!client.BedRegen or CurTime() >= client.BedRegen) then
-        local amount = Arbitrage.statistics.Get(client, "Sleep")
+        local amount = Arbitrage.statistics.Get(client, "Sleep") or 100
         Arbitrage.statistics.Set(client, "Sleep", math.Clamp(amount + 1, 0, 100))
 
         client.BedRegen = CurTime() + 2

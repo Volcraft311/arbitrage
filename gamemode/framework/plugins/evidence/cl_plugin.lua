@@ -100,7 +100,7 @@ function PLUGIN:HUDPaint()
 	        	local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
 	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255) * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
 	            local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
-	            a = a - (255 - Arbitrage.statistics.Get(client, "Sleep") * 2.55)
+	            a = a - (255 - (Arbitrage.statistics.Get(client, "Sleep") or 100) * 2.55)
 				a = math.Clamp(a, 0, 255)
 
 	            surface_SetDrawColor(ColorAlpha(color, a))

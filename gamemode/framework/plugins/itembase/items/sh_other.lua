@@ -127,7 +127,36 @@ do
         end
     })
 
+    ITEM:AddAction("Изменить картинку", {
+        OnRun = function(item)
+            local client = item.player
+
+            netstream.Start(client, "ItemBase:OpenCreateImageMenu", item:GetID(), item.image)
+            return false
+        end,
+        OnCanRun = function(item)
+            return item.player:IsAdmin()
+        end
+    })
+
     ItemBase:RegisterItem("camera_image", ITEM)
+
+    if CLIENT then
+        netstream.Hook("ItemBase:OpenCreateImageMenu", function(itemID, oldURL)
+            Derma_StringRequest("Установить изображение", "Введите URL картинки которую хотите прикрепить к фотографии", oldURL or "", function(text)
+                netstream.Start("ItemBase:CreateImage", itemID, text)
+            end, nil, "Установить", "Отменить")
+        end)
+    else
+        netstream.Hook("ItemBase:CreateImage", function(client, itemID, url)
+            if !client:IsAdmin() then return end
+
+            local item = ItemBase.instances[itemID]
+            if !item then return end
+
+            item.image = url
+        end)
+    end
 end
 
 do

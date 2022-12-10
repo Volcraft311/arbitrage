@@ -105,18 +105,37 @@ function PANEL:DrawScanLine()
 	end
 end
 
+local function removeHooks()
+	hook.Remove("SetupMove", "MonoPad:SetupMove")
+	hook.Remove("InputMouseApply", "MonoPad:InputMouseApply")
+	hook.Remove("PlayerBindScroll", "MonoPad:PlayerBindScroll")
+	hook.Remove("PreDrawPlayerHands", "MonoPad:PreDrawPlayerHands")
+	hook.Remove("PlayerBindPress", "MonoPad:PlayerBindPress")
+	hook.Remove("Think", "MonoPad:Think")
+	hook.Remove("PlayerButtonDown", "MonoPad:PlayerButtonDown")
+
+	timer.Remove("MonoPad:Update")
+
+	local ui = MonoPad:GetUI()
+	if IsValid(ui) then
+		ui:Remove()
+
+		Arbitrage.gui.tabletUI = nil
+	end
+end
+
 function PANEL:CreateHooks()
 	timer.Create("MonoPad:Update", 0.5, 0, function()
 		local class = LocalPlayer():GetActiveWeaponClass()
 
-		if class != "academy_monopad" or !IsValid(self) then
-			self:RemoveHooks()
+		if (!self.noWeapon and class != "academy_monopad") or !IsValid(self) then
+			removeHooks()
 		end
 	end)
 
 	hook.Add("SetupMove", "MonoPad:SetupMove", function(client, mv, cmd)
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		if !self.editing then return end
@@ -132,7 +151,7 @@ function PANEL:CreateHooks()
 
 	hook.Add("InputMouseApply", "MonoPad:InputMouseApply", function(cmd, x, y, angle)
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		if !self.editing then return end
@@ -180,7 +199,7 @@ function PANEL:CreateHooks()
 
 	hook.Add("PlayerBindPress", "MonoPad:PlayerBindPress", function(client, bind, pressed, code)
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		if !pressed then return end
@@ -202,7 +221,7 @@ function PANEL:CreateHooks()
 		if !pressed then return end
 
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		scroll(inNext)
@@ -210,7 +229,7 @@ function PANEL:CreateHooks()
 
 	hook.Add("PreDrawPlayerHands", "MonoPad:PreDrawPlayerHands", function(hands, vm, client, weapon)
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		return self.hidehands
@@ -221,7 +240,7 @@ function PANEL:CreateHooks()
 	local isDown = false
 	hook.Add("Think", "MonoPad:Think", function()
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		local isPress = input.IsMouseDown(MOUSE_LEFT)
@@ -239,7 +258,7 @@ function PANEL:CreateHooks()
 
 	hook.Add("PlayerButtonDown", "MonoPad:PlayerButtonDown", function(client, button)
 		if !IsValid(self) then
-			return self:RemoveHooks()
+			return removeHooks()
 		end
 
 		local isScroll = button == 112 or button == 113
@@ -249,22 +268,12 @@ function PANEL:CreateHooks()
 	end)
 end
 
-function PANEL:RemoveHooks()
-	hook.Remove("SetupMove", "MonoPad:SetupMove")
-	hook.Remove("InputMouseApply", "MonoPad:InputMouseApply")
-	hook.Remove("PlayerBindScroll", "MonoPad:PlayerBindScroll")
-	hook.Remove("PreDrawPlayerHands", "MonoPad:PreDrawPlayerHands")
-	hook.Remove("PlayerBindPress", "MonoPad:PlayerBindPress")
-	hook.Remove("Think", "MonoPad:Think")
-	hook.Remove("PlayerButtonDown", "MonoPad:PlayerButtonDown")
-
-	timer.Remove("MonoPad:Update")
-
-	self:Remove()
-end
-
 function PANEL:OnRemove()
-	self:RemoveHooks()
+	removeHooks()
+
+	if IsValid(self) then
+		self:Remove()
+	end
 end
 
 function PANEL:Intro()

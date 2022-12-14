@@ -16,6 +16,7 @@
 Character.team:Create({
     name = "Аой Асахина",
     title = "Абсолютный Пловец",
+    color = Color(234, 185, 9),
     category = "trigger_happy_havoc",
     model = "models/custom/aoi_asahina.mdl",
     uniqueID = "aoi",
@@ -32,6 +33,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Бьякуя Тогами",
     title = "Абсолютный Наследник",
+    color = Color(7, 164, 225),
     category = "trigger_happy_havoc",
     model = "models/custom/byakuya_togami.mdl",
     uniqueID = "byakuya",
@@ -48,6 +50,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Селестия Люденберг",
     title = "Абсолютный Азартный Игрок",
+    color = Color(248, 27, 65),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/celestia_ludenberg/default_p.mdl",
     uniqueID = "celestia",
@@ -64,6 +67,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Чихиро Фуджисаки",
     title = "Абсолютный Программист",
+    color = Color(182, 220, 10),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/chihiro/default_p.mdl",
     uniqueID = "chihiro",
@@ -80,6 +84,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Хифуми Ямада",
     title = "Абсолютный Автор Фанфиков",
+    color = Color(210, 31, 107),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/hifumi_yamada.mdl",
     uniqueID = "hifumi",
@@ -96,6 +101,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Джунко Эношима",
     title = "Абсолютная Модница",
+    color = Color(168, 8, 10),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl",
     uniqueID = "junko",
@@ -112,6 +118,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Киётака Ишимару",
     title = "Абсолютный Дежурный",
+    color = Color(1, 94, 181),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/default_p.mdl",
     uniqueID = "kiyotaka",
@@ -128,6 +135,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Кёко Киригири",
     title = "Абсолютный Детектив",
+    color = Color(200, 57, 234),
     category = "trigger_happy_havoc",
     model = "models/kyoko_kirigiri_yoru/danganronpa/rstar/kyoko_kirigiri_yoru/kyoko_kirigiri_yoru.mdl",
     uniqueID = "kyoko",
@@ -144,6 +152,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Леон Кувата",
     title = "Абсолютный Бейсболист",
+    color = Color(248, 171, 8),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/leon_kuwata.mdl",
     uniqueID = "leon",
@@ -160,6 +169,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Макото Наэги",
     title = "Абсолютный Счастливчик",
+    color = Color(90, 136, 89),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/makoto_naegi.mdl",
     uniqueID = "makoto",
@@ -176,6 +186,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Мондо Овада",
     title = "Абсолютный Лидер Банды Байкеров",
+    color = Color(226, 28, 9),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/mondo_owada/default_p.mdl",
     uniqueID = "mondo",
@@ -192,6 +203,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Сакура Огами",
     title = "Абсолютный Мастер Боевых Искусств",
+    color = Color(142, 68, 36),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/sakura_ogami.mdl",
     uniqueID = "sakura",
@@ -208,6 +220,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Саяка Майзоно",
     title = "Абсолютная Поп-Звезда",
+    color = Color(242, 111, 188),
     category = "trigger_happy_havoc",
     model = "models/sayaka_yoru/danganronpa/rstar/sayaka_yoru/sayaka_yoru.mdl",
     uniqueID = "sayaka",
@@ -224,6 +237,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Токо Фукава",
     title = "Абсолютная Писательница",
+    color = Color(148, 21, 131),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl",
     uniqueID = "toko",
@@ -241,6 +255,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Ясухиро Хагакурэ",
     title = "Абсолютный Предсказатель",
+    color = Color(114, 189, 36),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/yasuhiro_hagakure/default_p.mdl",
     uniqueID = "yasuhiro",
@@ -259,6 +274,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Аканэ Овари",
     title = "Абсолютная Гимнастка",
+    color = Color(243, 201, 199),
     category = "goodbye_despair",
     model = "models/player/yourtoast4/danganronpa/akane_owari.mdl",
     uniqueID = "akane",
@@ -275,6 +291,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Чиаки Нанами",
     title = "Абсолютный Геймер",
+    color = Color(215, 186, 225),
     category = "goodbye_despair",
     model = "models/player/dewobedil/chiaki_nanami/default_p.mdl",
     uniqueID = "chiaki",
@@ -291,6 +308,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Фуюхико Кузурю",
     title = "Абсолютный Якудза",
+    color = Color(213, 210, 212),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl",
     uniqueID = "fuyuhiko",
@@ -307,6 +325,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Гандам Танака",
     title = "Абсолютный Животновод",
+    color = Color(226, 198, 239),
     category = "goodbye_despair",
     model = "models/player/dewobedil/gundam_tanaka/default_p.mdl",
     uniqueID = "gundham",
@@ -323,6 +342,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Хаджимэ Хината",
     title = "Абсолютный ???",
+    color = Color(43, 167, 95),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hajime_hinata/default_p.mdl",
     uniqueID = "hajime",
@@ -339,6 +359,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Хиёко Сайонджии",
     title = "Абсолютный Традиционный Танцор",
+    color = Color(206, 184, 172),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl",
     uniqueID = "hiyoko",
@@ -355,6 +376,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Ибуки Миода",
     title = "Абсолютный Музыкант",
+    color = Color(188, 204, 247),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl",
     uniqueID = "ibuki",
@@ -371,6 +393,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Казуичи Сода",
     title = "Абсолютный Механик",
+    color = Color(238, 219, 195),
     category = "goodbye_despair",
     model = "models/player/danganronpa/kazuichi_soda.mdl",
     uniqueID = "kazuichi",
@@ -387,6 +410,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Махиру Коизуми",
     title = "Абсолютный Фотограф",
+    color = Color(243, 199, 199),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/mahiru_koizumi/default_p.mdl",
     uniqueID = "mahiru",
@@ -404,6 +428,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Микан Цумики",
     title = "Абсолютная Медсестра",
+    color = Color(252, 195, 229),
     category = "goodbye_despair",
     model = "models/player/dewobedil/mikan_tsumiki/default_p.mdl",
     uniqueID = "mikan",
@@ -421,6 +446,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Нагито Комаэда",
     title = "Абсолютный Везунчик",
+    color = Color(193, 201, 242),
     category = "goodbye_despair",
     model = "models/player/dewobedil/nagito_komaeda/default_p.mdl",
     uniqueID = "nagito",
@@ -437,6 +463,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Нэкомару Нидай",
     title = "Абсолютный Тренер",
+    color = Color(182, 175, 217),
     category = "goodbye_despair",
     model = "models/nekomaru/nekomaruniidai.mdl",
     uniqueID = "nekomaru",
@@ -453,6 +480,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Пеко Пекояма",
     title = "Абсолютная Мечница",
+    color = Color(191, 189, 191),
     category = "goodbye_despair",
     model = "models/player/dewobedil/peko_pekoyama/default_p.mdl",
     uniqueID = "peko",
@@ -469,6 +497,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Сония Невермайнд",
     title = "Абсолютная Принцесса",
+    color = Color(202, 204, 223),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/sonia_nevermind/default_p.mdl",
     uniqueID = "sonia",
@@ -485,6 +514,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Тэрутэру Ханамура",
     title = "Абсолютный Повар",
+    color = Color(237, 191, 192),
     category = "goodbye_despair",
     model = "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl",
     uniqueID = "teruteru",
@@ -501,6 +531,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Бьякуя Тогами",
     title = "Абсолютный Самозванец",
+    color = Color(193, 230, 238),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa2/byakuya_togami/default_p.mdl",
     uniqueID = "twogami",
@@ -520,6 +551,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Анджи Ёнага",
     title = "Абсолютная Художница",
+    color = Color(214, 177, 14),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl",
     uniqueID = "angie",
@@ -536,6 +568,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Гонта Гокухара",
     title = "Абсолютный Энтомолог",
+    color = Color(139, 74, 33),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/gonta/default_p.mdl",
     uniqueID = "gonta",
@@ -552,6 +585,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Химико Юмено",
     title = "Абсолютная Фокусница",
+    color = Color(181, 20, 49),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/himiko_yumeno/default_p.mdl",
     uniqueID = "himiko",
@@ -568,6 +602,7 @@ Character.team:Create({
 Character.team:Create({
     name = "K1-B0",
     title = "Абсолютный Робот",
+    color = Color(73, 226, 99),
     category = "killing_harmony",
     model = "models/player_kiibo.mdl",
     uniqueID = "k1b0",
@@ -585,6 +620,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Каэде Акамацу",
     title = "Абсолютная Пианистка",
+    color = Color(253, 123, 255),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kaede_akamatsu/default_p.mdl",
     uniqueID = "kaede",
@@ -601,6 +637,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Кайто Момота",
     title = "Абсолютный Астронавт",
+    color = Color(159, 92, 208),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kaito_momota/default_p.mdl",
     uniqueID = "kaito",
@@ -617,6 +654,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Кируми Тоджо",
     title = "Абсолютная Горничная",
+    color = Color(82, 48, 183),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kirumi_tojo/default_p.mdl",
     uniqueID = "kirumi",
@@ -633,6 +671,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Кокичи Ома",
     title = "Абсолютный Верховный Лидер",
+    color = Color(64, 4, 201),
     category = "killing_harmony",
     model = "models/player_kokichioumaultimate.mdl",
     uniqueID = "kokichi",
@@ -650,6 +689,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Корекиё Шингуджи",
     title = "Абсолютный Антрополог",
+    color = Color(196, 133, 39),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/korekiyo_shinguji/default_p.mdl",
     uniqueID = "korekiyo",
@@ -666,6 +706,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Маки Харукава",
     title = "Абсолютная Воспитательница",
+    color = Color(240, 53, 42),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/maki_harukawa/default_p.mdl",
     uniqueID = "maki",
@@ -682,6 +723,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Миу Ирума",
     title = "Абсолютный Изобретатель",
+    color = Color(238, 78, 195),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/miu_iruma/default_p.mdl",
     uniqueID = "miu",
@@ -698,6 +740,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Рантаро Амами",
     title = "Абсолютный Авантюрист",
+    color = Color(168, 199, 35),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/rantaro_amami/default_p.mdl",
     uniqueID = "rantaro",
@@ -714,6 +757,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Рёма Хоши",
     title = "Абсолютный Теннисист",
+    color = Color(26, 40, 184),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/ryoma_hoshi/default_p.mdl",
     uniqueID = "ryoma",
@@ -730,6 +774,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Шуичи Сайхара",
     title = "Абсолютный Детектив",
+    color = Color(32, 91, 150),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/shuichi_saihara/default_p.mdl",
     uniqueID = "shuichi",
@@ -746,6 +791,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Тенко Чабашира",
     title = "Абсолютный Мастер Айкидо",
+    color = Color(0, 211, 189),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/tenko_chabashira/default_p.mdl",
     uniqueID = "tenko",
@@ -762,6 +808,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Цумуги Широганэ",
     title = "Абсолютный Косплеер",
+    color = Color(23, 57, 177),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl",
     uniqueID = "tsumugi",
@@ -780,6 +827,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Джатаро Кемури",
     title = "Юный Абсолютный Художник",
+    color = Color(157, 137, 128),
     category = "ultra_despair_girls",
     model = "models/player/jataro.mdl",
     uniqueID = "jataro",
@@ -796,6 +844,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Комару Наэги",
     title = "Абсолютная Младшая Сестра Надежды",
+    color = Color(158, 61, 113),
     category = "ultra_despair_girls",
     model = "models/player/someguy/komaru_p.mdl",
     uniqueID = "komaru",
@@ -812,6 +861,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Котоко Уцуги",
     title = "Юная Абсолютная Актриса",
+    color = Color(251, 197, 255),
     category = "ultra_despair_girls",
     model = "models/player/kotoko/kotoko_p.mdl",
     uniqueID = "kotoko",
@@ -828,6 +878,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Масару Даймон",
     title = "Юный Абсолютный Спортсмен",
+    color = Color(175, 68, 60),
     category = "ultra_despair_girls",
     model = "models/player/masaru_p.mdl",
     uniqueID = "masaru",
@@ -844,6 +895,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Монака Това",
     title = "Юная Абсолютная Староста",
+    color = Color(200, 185, 102),
     category = "ultra_despair_girls",
     model = "models/player/someguy/monaca_p.mdl",
     uniqueID = "monaca",
@@ -860,6 +912,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Нагиса Шингецу",
     title = "Юный Абсолютный Обществовед",
+    color = Color(118, 189, 210),
     category = "ultra_despair_girls",
     model = "models/player/nagisa/nagisa_p.mdl",
     uniqueID = "nagisa",
@@ -878,6 +931,7 @@ Character.team:Create({
 Character.team:Create({
     name = "Монокума",
     title = "Директор Абсолютного Отчаяния",
+    color = Color(253, 182, 186),
     category = "leading",
     model = "models/player/yourtoast4/danganronpa/monokuma.mdl",
     uniqueID = "monokuma",

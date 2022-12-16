@@ -132,6 +132,7 @@ do
 	local function isAllow(client)
 		if !IsValid(client) then return false end
 		if !client:IsSpectate() then return false end
+		if Arbitrage.lawEnable then return false end
 
 		return true
 	end

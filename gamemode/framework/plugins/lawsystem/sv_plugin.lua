@@ -209,6 +209,11 @@ function Arbitrage:EndLaw()
             if v.arbOldPos then
                 v:SetPos(v.arbOldPos)
                 v.arbOldPos = nil -- reset
+            else
+                if !v:IsPlaying() then
+                    local vector, _ = Arbitrage.lobbyList and table.Random(Arbitrage.lobbyList) or Vector(0, 0, 0)
+                    v:SetPos(vector)
+                end
             end
 
             if v.oldScale then

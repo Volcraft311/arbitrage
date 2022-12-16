@@ -735,8 +735,17 @@ player_manager.AddValidModel( "Komaru Naegi (UDG)", "models/player/someguy/komar
 player_manager.AddValidHands( "Komaru Naegi (UDG)", "models/player/someguy/komaru_arms.mdl", 0, "00000000")
 
 -- отключаем звук при инициализации игрока
-sound.Add( {
+sound.Add({
     name = "Player.DrownStart",
+    channel = CHAN_STATIC,
+    volume = 0,
+    level = 0,
+    pitch = 0,
+    sound = ""
+})
+
+sound.Add({
+    name = "SprayCan.Paint",
     channel = CHAN_STATIC,
     volume = 0,
     level = 0,

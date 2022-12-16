@@ -586,12 +586,15 @@ function Arbitrage:StartGame()
         local storedInfo = Arbitrage.players[client:SteamID()]
 
         if IsValid(client) and client:Alive() and client:IsPlaying() and storedInfo then
+            netstream.Start(client, "arb.TailentScreen")
             local faction = client:Team()
 
             if !IsPlaying(storedInfo.faction) then
                 storedInfo.faction = faction
             end
 
+            client:ExitVehicle()
+            client:SetNWBool("SitGroundSitting", false)
             client:Freeze(true)
 
             client:SendLua([[RunConsoleCommand("stopsound")]])
@@ -652,6 +655,7 @@ function Arbitrage:StartGame()
             Arbitrage.player.SetupSpeed(client)
             Arbitrage.player.SetupWeapons(client)
             Arbitrage.player.SetupStatistics(client)
+            Arbitrage.player.SetupViewOffset(client)
 
             client:SetNoDraw(false)
             client:SetNotSolid(false)

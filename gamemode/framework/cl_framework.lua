@@ -507,3 +507,20 @@ netstream.Hook("arb.ReturnCurTime", function(data)
 
     Arbitrage.CurTime = tonumber(data)
 end)
+
+netstream.Hook("arb.TailentScreen", function()
+    local character = Character.team:GetByID(LocalPlayer():Team())
+    if !character then return end
+
+    local assets = character:GetAssets()
+    if !assets then return end
+
+    local hud = assets.hud
+    if !hud then return end
+
+    Material(hud) -- cache
+
+    timer.Simple(7, function()
+        vgui.Create("arb.TailentScreen")
+    end)
+end)

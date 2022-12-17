@@ -131,7 +131,6 @@ function Arbitrage:StartLaw()
 
         v:ExitVehicle()
         v:SetNWBool("SitGroundSitting", false)
-        v:Freeze(true)
     end
 
     timer.Simple(2, function()

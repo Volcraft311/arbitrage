@@ -414,11 +414,7 @@ end
 
 local FishEyeTexture = Material("models/props_c17/fisheyelens")
 function Arbitrage.hud.GrayCorrect()
-	local GrayColorModify = {}
-	local colour = 0.65
-
 	if LocalPlayer():WaterLevel() > 2 then
-	    colour = 0.4
 	    render_UpdateScreenEffectTexture()
 	        FishEyeTexture:SetFloat("$envmap", 0)
 	        FishEyeTexture:SetFloat("$envmaptint", 0)
@@ -427,18 +423,6 @@ function Arbitrage.hud.GrayCorrect()
 	    render_SetMaterial(FishEyeTexture)
 	    render_DrawScreenQuad()
 	end
-
-	GrayColorModify["$pp_colour_brightness"] = 0
-	GrayColorModify["$pp_colour_contrast"] = 1
-	GrayColorModify["$pp_colour_colour"] = colour
-	GrayColorModify["$pp_colour_addr"] = 0 * 0.025
-	GrayColorModify["$pp_colour_addg"] = 0 * 0.025
-	GrayColorModify["$pp_colour_addb"] = 0 * 0.025
-	GrayColorModify["$pp_colour_mulr"] = 0 * 0.1
-	GrayColorModify["$pp_colour_mulg"] = 0 * 0.1
-	GrayColorModify["$pp_colour_mulb"] = 0 * 0.1
-
-	DrawColorModify(GrayColorModify)
 end
 
 do

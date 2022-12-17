@@ -74,6 +74,9 @@ local function allow()
 		end
 	end
 
+	local bThirdPerson = select(3, client:GetAction())
+	if bThirdPerson then return false end
+
 	if d_weapon[class] then return false end
 
 	return weaponData[class]

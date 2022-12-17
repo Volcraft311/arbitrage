@@ -262,6 +262,7 @@ do
 		if disableCrossHair then return false end
 		if client:IsSpectate() then return false end
 		if client.GetSitting and client:GetSitting() then return false end
+		if select(3, client:GetAction()) then return false end
 
 		return true
 	end

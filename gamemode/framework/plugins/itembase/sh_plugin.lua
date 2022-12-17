@@ -44,7 +44,19 @@ function ItemBase.GetBase(base)
     meta:AddAction("Взять", {
         OnRun = function(item)
             local client = item.player
-            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
+            local entity = item.entity
+
+            local eyePosZ = Arbitrage.player.GetEyesPos(client).z
+            eyePosZ = eyePosZ + client:GetPos().z
+
+            local itemPosZ = entity:GetPos().z
+
+            local dist = eyePosZ - itemPosZ
+            if dist > 30 then
+                client:SetAction("Pickup")
+            else
+                client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
+            end
 
             local notify = client:GetInventory():AddItem(item:GetID())
             if notify then

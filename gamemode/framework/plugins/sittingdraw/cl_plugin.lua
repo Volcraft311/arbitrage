@@ -116,6 +116,21 @@ function PLUGIN:StartSit(trace)
 		self.csEnt:SetPos(trace.HitPos)
 		self.csEnt:SetAngles(angles)
 		self.csEnt:SetColor(goodSit and color_green or color_red)
+		local seq = self:GetSitSequence(client)
+		self.csEnt:SetSequence(seq)
+
+		local sitID = client:GetNetVar("sitting")
+		if sitID then
+			local info = Emotes.SittingList[sitID]
+			local origin = info[2] or Vector(0, 0, 0)
+
+			local x, y, z = origin.x, origin.y, origin.z
+			local pos, ang = self.csEnt:GetPos(), self.csEnt:GetAngles()
+
+			pos = pos + ang:Forward() * x + ang:Right() * y + ang:Up() * z
+
+			self.csEnt:SetPos(pos)
+		end
 
 		if trace.HitPos:Distance(EyePos()) >= 100 then
 			self.csEnt:SetColor(color_blue)
@@ -206,6 +221,19 @@ function PLUGIN:CreateCSEnt()
 	entity:SetIK(false)
 	entity:DrawShadow(false)
 
+	local sitID = client:GetNetVar("sitting")
+	if sitID then
+		local info = Emotes.SittingList[sitID]
+		local origin = info[2] or Vector(0, 0, 0)
+
+		local x, y, z = origin.x, origin.y, origin.z
+		local pos, ang = entity:GetPos(), entity:GetAngles()
+
+		pos = pos + ang:Forward() * x + ang:Right() * y + ang:Up() * z
+
+		entity:SetPos(pos)
+	end
+
 	local physObj = entity:GetPhysicsObject()
 	if IsValid(physObj) then
 		physObj:EnableMotion(false)
@@ -227,7 +255,35 @@ function PLUGIN:RemoveCSEnt()
 end
 
 function PLUGIN:GetSitSequence(client)
-	local seq = client:LookupSequence("sit")
+	local seq = client:GetSittingSequence()
+	local id = client:LookupSequence(seq)
 
-	return seq
+	return id
+end
+
+function PLUGIN:PlayerBindPress(client, bind, bPress)
+	if !IsValid(self.csEnt) then return end
+	if !bPress then return end
+
+	if bind == "+attack" then
+		local id = client:GetNetVar("sitting", 0)
+		id = id + 1
+
+		if id > #Emotes.SittingList then
+			id = 0
+		end
+
+		RunConsoleCommand("say", "/sitting " .. id)
+		return true
+	elseif bind == "+attack2" then
+		local id = client:GetNetVar("sitting", 0)
+		id = id - 1
+
+		if id < 0 then
+			id = #Emotes.SittingList
+		end
+
+		RunConsoleCommand("say", "/sitting " .. id)
+		return true
+	end
 end

@@ -286,6 +286,112 @@ Arbitrage.commands.Add("unstuck", {
     end
 })
 
+Arbitrage.commands.Add("exitaction", {
+    arguments = {},
+    OnAction = function(client)
+        local bThirdPerson = select(3, client:GetAction())
+        if !bThirdPerson then return Arbitrage.commands.Notify(client, "Вы не находитесь в анимации!") end
+
+        client:ExitAction(true)
+    end
+})
+
+Arbitrage.commands.Add("action", {
+    arguments = {
+        [1] = {
+            name = "ID Анимации",
+            type = "string",
+            important = true
+        }
+    },
+    OnAction = function(client, uniqueID)
+        local bThirdPerson = select(3, client:GetAction())
+        if bThirdPerson then return Arbitrage.commands.Notify(client, "Вы уже находитесь в анимации!") end
+
+        local bOnGround = client:OnGround()
+        if !bOnGround then return Arbitrage.commands.Notify(client, "Вы должны находиться на земле, чтобы активировать анимацию!") end
+
+        local bLawEnable = Arbitrage.lawEnable
+        if bLawEnable then return Arbitrage.commands.Notify(client, "Нельзя запустить анимацию во время суда") end
+
+        client:StartAction(uniqueID)
+    end
+})
+
+Arbitrage.commands.Add("sitting", {
+    arguments = {
+        [1] = {
+            name = "ID Анимации",
+            type = "string",
+            important = true
+        }
+    },
+    OnAction = function(client, id)
+        local bSitting = client.GetSitting and client:GetSitting()
+        if bSitting then return Arbitrage.commands.Notify(client, "Встаньте, чтобы изменить себе анимацию сидения!") end
+
+        id = tonumber(id)
+
+        if id then
+            if id <= 0 then
+                client:SetNetVar("sitting", nil)
+            else
+                if Emotes.SittingList[id] then
+                    client:SetNetVar("sitting", id)
+                end
+            end
+        end
+    end
+})
+
+Arbitrage.commands.Add("mood", {
+    arguments = {
+        [1] = {
+            name = "ID Анимации",
+            type = "string",
+            important = true
+        }
+    },
+    OnAction = function(client, id)
+        id = tonumber(id)
+
+        if id then
+            local name = "Стандартная"
+
+            if id <= 0 then
+                client:SetNetVar("mood", nil)
+            else
+                local data = Emotes.MoodList[id]
+                if data then
+                    client:SetNetVar("mood", id)
+
+                    name = data.name
+                end
+            end
+
+            Arbitrage.commands.Notify(client, "Вы успешно изменили себе настроение на: " .. name .. "(" .. id .. ")!")
+        end
+    end
+})
+
+Arbitrage.commands.Add("lookaround", {
+    arguments = {},
+    OnAction = function(client)
+        local bThirdPerson = select(3, client:GetAction())
+        if bThirdPerson then return Arbitrage.commands.Notify(client, "Вы находитесь в анимации!") end
+
+        local bSitting = client.GetSitting and client:GetSitting()
+        if bSitting then return Arbitrage.commands.Notify(client, "Встаньте чтобы осмотреть себя!") end
+
+        client:SetNetVar("action", {
+            -1,
+            -1,
+            true,
+            client:GetAngles()
+        })
+    end
+})
+
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
@@ -593,6 +699,7 @@ function Arbitrage:StartGame()
                 storedInfo.faction = faction
             end
 
+            client:ExitAction()
             client:ExitVehicle()
             client:SetNWBool("SitGroundSitting", false)
             client:Freeze(true)

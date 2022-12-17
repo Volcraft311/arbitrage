@@ -36,6 +36,11 @@ RegisterCommand("roll", "Крутить число от 0 до 100.")
 RegisterCommand("freezeprops", "Заморозить все физические пропы.")
 RegisterCommand("editor", "Зайти в режим редактирования.")
 RegisterCommand("unstuck", "Телепортироваться на ближайшую позицию.")
+RegisterCommand("exitaction", "Выйти из анимации.")
+RegisterCommand("action", "Войти в определенную анимацию.", {"text"})
+RegisterCommand("sitting", "Изменить анимацию при сидении.", {"number"})
+RegisterCommand("mood", "Изменить настроение.", {"number"})
+RegisterCommand("lookaround", "Осмотреться.")
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

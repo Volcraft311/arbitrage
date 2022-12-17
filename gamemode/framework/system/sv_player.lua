@@ -80,20 +80,28 @@ function Arbitrage.player.SetupInventory(client)
     inventory:Sync()
 end
 
+
 local offset = Vector(0, 0, 64)
 local offsetDuck = Vector(0, 0, 28)
+function Arbitrage.player.GetEyesPos(client)
+    local vec, vecDuck = Vector(0, 0, offset.z), Vector(0, 0, offsetDuck.z)
+
+    local eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))
+    if eyeAtt then
+        local eyePosZ = eyeAtt.Pos.z
+        local getPosZ = client:GetPos().z
+
+        vec = Vector(0, 0, eyePosZ - getPosZ)
+        vecDuck = Vector(0, 0, vec.z - (offset.z - offsetDuck.z) / 2)
+    end
+
+    return vec, vecDuck
+end
+
+
 function Arbitrage.player.SetupViewOffset(client)
     timer.Simple(1, function()
-        local vec, vecDuck = offset, offsetDuck
-
-        local eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))
-        if eyeAtt then
-            local eyePosZ = eyeAtt.Pos.z
-            local getPosZ = client:GetPos().z
-
-            vec = Vector(0, 0, eyePosZ - getPosZ)
-            vecDuck = Vector(0, 0, vec.z - (offset.z - offsetDuck.z) / 2)
-        end
+        local vec, vecDuck = Arbitrage.player.GetEyesPos(client)
 
         client:SetViewOffset(vec)
         client:SetViewOffsetDucked(vecDuck)

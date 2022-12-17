@@ -24,6 +24,7 @@ function PANEL:Init()
 
     self:SetKeyboardInputEnabled(false)
 
+    --[[
     local leftPanel = self:Add("Panel")
     leftPanel:SetWide(W(276))
     leftPanel:Dock(LEFT)
@@ -87,6 +88,7 @@ function PANEL:Init()
     end
 
     hook.Run("ArbitrageContextMenu", self)
+    ]]--
 end
 
 function PANEL:AddDance(name, command, icon)

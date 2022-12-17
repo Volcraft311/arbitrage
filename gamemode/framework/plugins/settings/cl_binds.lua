@@ -81,3 +81,9 @@ SETTINGS.binds.Add("sitting", KEY_N, {
     title = "Сесть на пол",
     description = "Кнопка при помощи которой вы можете сесть на землю"
 })
+
+SETTINGS.binds.Add("radialmenu", KEY_H, {
+    name = "Кнопка меню действий",
+    title = "Меню действий",
+    description = "Кнопка которая открываем интерфейс с разными взаимодействиями"
+})

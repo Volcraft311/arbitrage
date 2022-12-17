@@ -123,6 +123,7 @@ end)
 for i = 1, 9 do
     PLUGIN:AddBind("slot" .. i, function(panel)
         if IsValid(Arbitrage.gui.fastSlots) then return true end
+        if IsValid(Arbitrage.gui.radialmenu) then return true end
 
         panel.timeFocus = RealTime() + 5
 

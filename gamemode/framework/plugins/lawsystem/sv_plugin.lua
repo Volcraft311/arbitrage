@@ -129,6 +129,7 @@ function Arbitrage:StartLaw()
         v:SetMoveType(MOVETYPE_WALK)
         v:SelectWeapon("academy_key")
 
+        v:ExitAction()
         v:ExitVehicle()
         v:SetNWBool("SitGroundSitting", false)
     end

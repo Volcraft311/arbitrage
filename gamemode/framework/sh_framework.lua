@@ -122,6 +122,7 @@ do
         workshop:Add("160250458") -- Wiremod
         workshop:Add("2840295308") -- Primitive
         workshop:Add("2891008181") -- Asterion Academy - UDG Materials Fix
+        workshop:Add("2706680455") -- Playermodel NPC Animations
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload

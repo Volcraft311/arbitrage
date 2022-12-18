@@ -669,129 +669,187 @@ function Arbitrage:PlayerSay(client, data)
     -- eh...
 end
 
-function Arbitrage:StartGame()
-    ScriptMusic:ChangeTheme("startgame", true)
 
-    timer.Remove("arb.StartGameThemeClear")
-    timer.Create("arb.StartGameThemeClear", 120, 1, function()
-        timer.Remove("arb.StartGameThemeClear")
 
-        ScriptMusic:ChangeTheme("none", true)
-    end)
 
+local function syncvars()
     Arbitrage.startgame = true
     SetNetVar("arb.StartGame", Arbitrage.startgame)
     for k, v in pairs(player.GetAll()) do
         v:SyncVars()
     end
+end
 
-    netstream.Start(nil, "arb.Intro", 8)
+local function changetheme()
+    ScriptMusic:ChangeTheme("startgame", true)
+
+    local uniqueID = "arb.StartGameThemeClear"
+    timer.Remove(uniqueID)
+    timer.Create(uniqueID, 120, 1, function()
+        timer.Remove(uniqueID)
+
+        ScriptMusic:ChangeTheme("none", true)
+    end)
+end
+
+local function getclients()
+    local data = {}
 
     for k, v in pairs(Arbitrage.players) do
-        local client = v.client
+        local client = v.client or NULL
         local storedInfo = Arbitrage.players[client:SteamID()]
 
         if IsValid(client) and client:Alive() and client:IsPlaying() and storedInfo then
-            netstream.Start(client, "arb.TailentScreen")
-            local faction = client:Team()
-
-            if !IsPlaying(storedInfo.faction) then
-                storedInfo.faction = faction
-            end
-
-            client:ExitAction()
-            client:ExitVehicle()
-            client:SetNWBool("SitGroundSitting", false)
-            client:Freeze(true)
-
-            client:SendLua([[RunConsoleCommand("stopsound")]])
-            client:SendLua([[RunConsoleCommand("r_cleardecals")]])
-
-            client:StripAmmo()
-            client:StripWeapons()
-
-            local inventory = client:GetInventory()
-            if inventory then
-                -- Анэквипаем все предметы
-                local items = inventory:GetItems()
-
-                for k2, v2 in pairs(items) do
-                    if v2:GetData("equip") then
-                        v2:UnEquip(client, v2)
-                    end
-                end
-
-                local function give(uniqueID)
-                    local item = ItemBase.CreateItem(uniqueID)
-
-                    if item then
-                        item:Transfer(inventory:GetID())
-
-                        return item
-                    end
-                end
-
-                -- выдаем всем персонажам ключи от своих дверей
-                give("keys"):SetData("faction", faction)
-
-                -- выдаем всем персонажам монопады
-                if !Arbitrage.OffGiveMonopads() then
-                    local item = give("monopad")
-                    local monopad = MonoPad:New(item:GetID())
-                    monopad:SetOwner(client)
-
-                    item.stored = monopad
-
-                    local object = item.stored
-                    object:Sync()
-
-                    item:Equip(client, item, 1)
-                end
-
-                if !Arbitrage.OffGiveItems() then
-                    local factionData = Character.team:GetByID(faction)
-                    if factionData then
-                        for _, uniqueID in ipairs(factionData:GetItems() or {}) do
-                            give(uniqueID)
-                        end
-                    end
-                end
-            end
-
-            Arbitrage.player.SetupHealth(client)
-            Arbitrage.player.SetupSpeed(client)
-            Arbitrage.player.SetupWeapons(client)
-            Arbitrage.player.SetupStatistics(client)
-            Arbitrage.player.SetupViewOffset(client)
-
-            client:SetNoDraw(false)
-            client:SetNotSolid(false)
-            client:DrawWorldModel(true)
-            client:DrawShadow(true)
-            client:SetNoTarget(false)
-            client:SetupHands()
-
-            client:SetNoCollideWithTeammates(false)
-
-            timer.Simple(5, function()
-                if !IsValid(client) then return end
-
-                if Arbitrage.spawnList then
-                    local place = client:LawPlace()
-                    local point, _ = Arbitrage.spawnList[place] or table.Random(Arbitrage.spawnList)
-
-                    if point then
-                        client:SetPos(point)
-                    end
-                end
-
-                client:Freeze(false)
-                client:GodDisable()
-                client:SetEyeAngles(Angle(0, 0, 0))
-                client:CheckStuck(1)
-            end)
+            data[#data + 1] = v
         end
     end
+
+    return data
+end
+
+local function showtailent()
+    for k, v in ipairs(getclients()) do
+        local client = v.client
+
+        netstream.Start(client, "arb.TailentScreen")
+    end
+end
+
+local function fixfaction()
+    for k, v in ipairs(getclients()) do
+        local client = v.client
+        local storedInfo = Arbitrage.players[client:SteamID()]
+
+        if !IsPlaying(storedInfo.faction) then
+            local faction = client:Team()
+
+            storedInfo.faction = faction
+        end
+    end
+end
+
+local function setstats()
+    for k, v in ipairs(getclients()) do
+        local client = v.client
+
+        client:ExitAction()
+        client:ExitVehicle()
+        client:SetNWBool("SitGroundSitting", false)
+        client:Freeze(true)
+
+        client:SendLua([[RunConsoleCommand("stopsound")]])
+        client:SendLua([[RunConsoleCommand("r_cleardecals")]])
+
+        client:StripAmmo()
+        client:StripWeapons()
+
+        Arbitrage.player.SetupHealth(client)
+        Arbitrage.player.SetupSpeed(client)
+        Arbitrage.player.SetupWeapons(client)
+        Arbitrage.player.SetupStatistics(client)
+        Arbitrage.player.SetupViewOffset(client)
+
+        client:SetNoDraw(false)
+        client:SetNotSolid(false)
+        client:DrawWorldModel(true)
+        client:DrawShadow(true)
+        client:SetNoTarget(false)
+        client:SetupHands()
+
+        client:SetNoCollideWithTeammates(false)
+    end
+end
+
+local function setinventory()
+    for k, v in ipairs(getclients()) do
+        local client = v.client
+
+        local inventory = client:GetInventory()
+        if !inventory then continue end
+
+        local items = inventory:GetItems()
+        for k2, v2 in pairs(items) do
+            if v2:GetData("equip") then
+                v2:UnEquip(client, v2)
+            end
+        end
+
+        local function give(uniqueID)
+            local item = ItemBase.CreateItem(uniqueID)
+
+            if item then
+                item:Transfer(inventory:GetID())
+
+                return item
+            end
+        end
+
+        -- выдаем всем персонажам ключи от своих дверей
+        give("keys"):SetData("faction", faction)
+
+        -- выдаем всем персонажам монопады
+        if !Arbitrage.OffGiveMonopads() then
+            local item = give("monopad")
+            local monopad = MonoPad:New(item:GetID())
+            monopad:SetOwner(client)
+
+            item.stored = monopad
+
+            local object = item.stored
+            object:Sync()
+
+            item:Equip(client, item, 1)
+        end
+
+        if !Arbitrage.OffGiveItems() then
+            local factionData = Character.team:GetByID(faction)
+            if !factionData then continue end
+
+            for _, uniqueID in ipairs(factionData:GetItems() or {}) do
+                give(uniqueID)
+            end
+        end
+    end
+end
+
+local function teleport()
+    for k, v in ipairs(getclients()) do
+        local client = v.client
+
+        if Arbitrage.spawnList then
+            local place = client:LawPlace()
+            local point, _ = Arbitrage.spawnList and Arbitrage.spawnList[place] or table.Random(Arbitrage.spawnList)
+
+            if point then
+                client:SetPos(point)
+            end
+        end
+
+        client:Freeze(false)
+        client:GodDisable()
+        client:SetEyeAngles(Angle(0, 0, 0))
+        client:CheckStuck(1, function()
+            client:CheckStuck(0.2, function()
+                client:CheckStuck(0.2)
+            end)
+        end)
+    end
+end
+
+function Arbitrage:StartGame()
+    syncvars()
+    changetheme()
+
+    netstream.Start(nil, "arb.Intro", 8)
+
+    showtailent()
+    fixfaction()
+    setstats()
+    setinventory()
+
+    timer.Simple(5, function()
+        teleport()
+    end)
 end
 
 function Arbitrage:StopGame()

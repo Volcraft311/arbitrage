@@ -274,29 +274,92 @@ local function sort()
     return data
 end
 
+local sizeW, sizeH = 150, 150
+local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawTranslucentRenderables()
-    if !Arbitrage.lawEnable then return end
+    if Arbitrage.placesList and !Arbitrage.lawEnable then
+        local client = LocalPlayer()
+        local var = client:LawPlace()
+        local place = Arbitrage.placesList[var]
 
-    local data = sort()
-    for place, v in SortedPairs(data) do
-        local faction = Character.team:GetByID(v:Team())
-        if !faction then continue end
+        if var >= 0 and place then
+            local anim = math.sin(CurTime() * 1.5) * 5
+            local vec = place[1] - Vector(0, 0, 10 + anim)
 
-        local uniqueID = faction:GetUniqueID()
-        local emoji = Character.emoji:GetByUniqueID(uniqueID)
-        if !emoji then continue end
+            local ang = Angle(0, EyeAngles().y, EyeAngles().z)
+            ang:RotateAroundAxis(ang:Forward(), 90)
+            ang:RotateAroundAxis(ang:Right(), 90)
 
-        local var = v:GetNetVar("emoji", 1)
-        local big, _ = emoji:GetByIndex(var)
-
-        if !big then
-            big, _ = emoji:GetByIndex(1)
+            cam.Start3D2D(vec, ang, 0.03)
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(matArrow)
+                surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
+            cam.End3D2D()
         end
+    end
 
-        if big then
-            local mat = Material(big)
+    -- Если это удалить от сюда, то не будет отрисовывать текст CLASS TRIAL. Я правда не знаю с чем это связано и по какой причине, если рендерить текстуру рандомную, то текст вернется (нужно имеено редредить, цвет и установка материала не помогает)
+        surface.SetDrawColor(255, 255, 255)
+        surface.SetMaterial(matArrow)
+        surface.DrawTexturedRect(0, 0, 0, 0)
 
-            drawing(v, mat)
+    local pos = Arbitrage.camPosEnd
+    if pos and !Arbitrage.OffShowClassTrial() then
+        local angle = Angle(90, 0, 0)
+        local radius = 250
+        local seg = 360
+
+        for d = 1, 4 do
+            local i = d * 90 + CurTime() * 10 % 360
+            local ang = (math.pi * 2) / (seg - 1) * i
+
+            local x = math.sin(ang)
+            local y = math.cos(ang)
+
+            local right = angle:Right() * x * radius
+            local forward = angle:Up() * y * radius
+
+            local Pos = pos + right + forward
+            Pos = Pos + Vector(0, 0, 6)
+
+            local WPos = Pos
+            local Ang = WPos - pos
+            Ang = Ang:Angle()
+
+            local ang_t = Angle(0, Ang.y, Ang.z)
+            ang_t:RotateAroundAxis(ang_t:Forward(), 90)
+            ang_t:RotateAroundAxis(ang_t:Right(), 90)
+
+            local text = "class trial"
+            cam.Start3D2D(Pos, ang_t, 0.3)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
+            cam.End3D2D()
+        end
+    end
+
+    if Arbitrage.lawEnable then
+        local data = sort()
+        for place, v in SortedPairs(data) do
+            local faction = Character.team:GetByID(v:Team())
+            if !faction then continue end
+
+            local uniqueID = faction:GetUniqueID()
+            local emoji = Character.emoji:GetByUniqueID(uniqueID)
+            if !emoji then continue end
+
+            local var = v:GetNetVar("emoji", 1)
+            local big, _ = emoji:GetByIndex(var)
+
+            if !big then
+                big, _ = emoji:GetByIndex(1)
+            end
+
+            if big then
+                local mat = Material(big)
+
+                drawing(v, mat)
+            end
         end
     end
 end
@@ -360,83 +423,70 @@ function PLUGIN:RenderScreenspaceEffects()
     DrawColorModify(tab)
 end
 
-local matArrow = Material("danganronpa/ui/arrow.png")
-function PLUGIN:PostDrawOpaqueRenderables()
-    if Arbitrage.placesList and !Arbitrage.lawEnable then
-        local client = LocalPlayer()
-        local var = client:LawPlace()
-        local place = Arbitrage.placesList[var]
+-- function PLUGIN:PostDrawOpaqueRenderables()
+--     if Arbitrage.placesList and !Arbitrage.lawEnable then
+--         local client = LocalPlayer()
+--         local var = client:LawPlace()
+--         local place = Arbitrage.placesList[var]
 
-        if var >= 0 and place then
-            local anim = math.sin(CurTime() * 1.5) * 5
-            local vec = place[1] - Vector(0, 0, 10 + anim)
+--         if var >= 0 and place then
+--             local anim = math.sin(CurTime() * 1.5) * 5
+--             local vec = place[1] - Vector(0, 0, 10 + anim)
 
-            local ang = Angle(0, EyeAngles().y, EyeAngles().z)
-            ang:RotateAroundAxis(ang:Forward(), 90)
-            ang:RotateAroundAxis(ang:Right(), 90)
+--             local ang = Angle(0, EyeAngles().y, EyeAngles().z)
+--             ang:RotateAroundAxis(ang:Forward(), 90)
+--             ang:RotateAroundAxis(ang:Right(), 90)
 
-            local sizeW, sizeH = 150, 150
+--             local sizeW, sizeH = 150, 150
 
-            cam.Start3D2D(vec, ang, 0.03)
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(matArrow)
-                surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
-            cam.End3D2D()
-        end
-    end
+--             cam.Start3D2D(vec, ang, 0.03)
+--                 surface.SetDrawColor(255, 255, 255)
+--                 surface.SetMaterial(matArrow)
+--                 surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
+--             cam.End3D2D()
+--         end
+--     end
 
-    if !Arbitrage.lawEnable then return end
-    if Arbitrage.OffShowClassTrial() then return end
+--     if !Arbitrage.lawEnable then return end
+--     if Arbitrage.OffShowClassTrial() then return end
 
-    local pos = Arbitrage.camPosEnd
-    if !pos then return end
+--     local pos = Arbitrage.camPosEnd
+--     if !pos then return end
 
-    local angle = Angle(90, 0, 0)
-    local radius = 250
-    local seg = 360
+--     local angle = Angle(90, 0, 0)
+--     local radius = 250
+--     local seg = 360
 
-    do
-        for d = 1, 4 do
-            local i = d * 90 + CurTime() * 10 % 360
-            local ang = (math.pi * 2) / (seg - 1) * i
+--     do
+--         for d = 1, 4 do
+--             local i = d * 90 + CurTime() * 10 % 360
+--             local ang = (math.pi * 2) / (seg - 1) * i
 
-            local x = math.sin(ang)
-            local y = math.cos(ang)
+--             local x = math.sin(ang)
+--             local y = math.cos(ang)
 
-            local right = angle:Right() * x * radius
-            local forward = angle:Up() * y * radius
+--             local right = angle:Right() * x * radius
+--             local forward = angle:Up() * y * radius
 
-            local Pos = pos + right + forward
-            Pos = Pos + Vector(0, 0, 6)
+--             local Pos = pos + right + forward
+--             Pos = Pos + Vector(0, 0, 6)
 
-            local WPos = Pos
-            local Ang = WPos - pos
-            Ang = Ang:Angle()
+--             local WPos = Pos
+--             local Ang = WPos - pos
+--             Ang = Ang:Angle()
 
-            local ang_t = Angle(0, Ang.y, Ang.z)
-            ang_t:RotateAroundAxis(ang_t:Forward(), 90)
-            ang_t:RotateAroundAxis(ang_t:Right(), 90)
+--             local ang_t = Angle(0, Ang.y, Ang.z)
+--             ang_t:RotateAroundAxis(ang_t:Forward(), 90)
+--             ang_t:RotateAroundAxis(ang_t:Right(), 90)
 
-            local text = "class trial"
-            cam.Start3D2D(Pos, ang_t, 0.3)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
-            cam.End3D2D()
-        end
-    end
-end
-
-function PLUGIN:DrawPhysgunBeam(client, physgun, enabled, target, bone, hitPos)
-    if Arbitrage.lawEnable then
-        return false
-    end
-end
-
-function PLUGIN:PrePlayerDraw(client)
-    if Arbitrage.lawEnable then
-        return true
-    end
-end
+--             local text = "class trial"
+--             cam.Start3D2D(Pos, ang_t, 0.3)
+--                 draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
+--                 draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
+--             cam.End3D2D()
+--         end
+--     end
+-- end
 
 function PLUGIN:BlackScreen(data, speed)
     local alpha = 0

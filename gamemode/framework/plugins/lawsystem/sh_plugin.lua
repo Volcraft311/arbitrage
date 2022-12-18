@@ -15,7 +15,6 @@ local PLUGIN = PLUGIN
 PLUGIN.name = "LawSystem"
 LawSystem = PLUGIN
 
-Arbitrage.law = PLUGIN
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
 function PLUGIN:GetClientPos(client)
@@ -202,7 +201,7 @@ function PLUGIN:StartCommand(client, ucmd)
         ucmd:SetMouseWheel(0)
 
         local var = client:LawPlace()
-        local place = Arbitrage.placesList[var]
+        local place = Arbitrage.placesList and Arbitrage.placesList[var]
 
         if place then
             client:SetEyeAngles(place[2])

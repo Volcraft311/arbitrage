@@ -57,11 +57,11 @@ function Emotes:CalcView(client, origin)
 
 		local data = {}
 		data.start = client:GetPos() + PLAYER_OFFSET
-		data.endpos = data.start - ang:Forward() * 72
+		data.endpos = data.start - ang:Forward() * 80
 		data.filter = client
 
 		local view = {}
-		view.origin = util.TraceLine(data).HitPos + GROUND_PADDING
+		view.origin = util.TraceLine(data).HitPos + GROUND_PADDING + ang:Forward() * 4
 		view.angles = ang
 		view.filter = client
 

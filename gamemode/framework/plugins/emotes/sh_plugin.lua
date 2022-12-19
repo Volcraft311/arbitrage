@@ -260,11 +260,13 @@ function Emotes:CalcMainActivity(client, velocity)
 		if mood then
 			local weapon = client:GetActiveWeapon()
 			local holdType = "normal"
+			local class = nil
 			if IsValid(weapon) then
 				holdType = weapon.HoldType or weapon:GetHoldType()
+				class = weapon:GetClass()
 			end
 
-			if !client:InVehicle() and holdType == "normal" and !client:Crouching() and client:OnGround() then
+			if !client:InVehicle() and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:Crouching() and client:OnGround() then
 				local sequence = nil
 				local data = mood.sequences or {}
 				local len2D = velocity:Length2D()

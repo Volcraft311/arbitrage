@@ -114,15 +114,12 @@ do
         -- OTHER
         workshop:Add("246756300") -- Stream Radio
         workshop:Add("2840031720") -- TFA Base
-        workshop:Add("2463165156") -- [OPTIMIZED] vFire - Dynamic Fire
         workshop:Add("108024198") -- Food and Household items
         workshop:Add("1920810365") -- Facial Emote Mod
         workshop:Add("1784911999") -- LED screens
         workshop:Add("1161268544") -- Pink Blood
         workshop:Add("160250458") -- Wiremod
         workshop:Add("2840295308") -- Primitive
-        workshop:Add("2891008181") -- Asterion Academy - UDG Materials Fix
-        workshop:Add("2706680455") -- Playermodel NPC Animations
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload
@@ -138,7 +135,7 @@ do
 
         -- MODELS
         workshop:Add("1246554779") -- Roleplay Props Extended
-        workshop:Add("958532452") -- Interior Props Pack.
+        workshop:Add("958532452") -- Interior Props Pack
         workshop:Add("263266938") -- Developer Style Props!
         workshop:Add("1990021079") -- Some school props
         workshop:Add("213181442") -- Mobile Computing Pack

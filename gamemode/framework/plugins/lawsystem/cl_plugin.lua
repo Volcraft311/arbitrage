@@ -286,15 +286,18 @@ function PLUGIN:PostDrawTranslucentRenderables()
             local anim = math.sin(CurTime() * 1.5) * 5
             local vec = place[1] - Vector(0, 0, 10 + anim)
 
-            local ang = Angle(0, EyeAngles().y, EyeAngles().z)
-            ang:RotateAroundAxis(ang:Forward(), 90)
-            ang:RotateAroundAxis(ang:Right(), 90)
+            local dist = client:GetPos():DistToSqr(vec)
+            if dist <= 500000 then
+                local ang = Angle(0, EyeAngles().y, EyeAngles().z)
+                ang:RotateAroundAxis(ang:Forward(), 90)
+                ang:RotateAroundAxis(ang:Right(), 90)
 
-            cam.Start3D2D(vec, ang, 0.03)
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(matArrow)
-                surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
-            cam.End3D2D()
+                cam.Start3D2D(vec, ang, 0.03)
+                    surface.SetDrawColor(255, 255, 255)
+                    surface.SetMaterial(matArrow)
+                    surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
+                cam.End3D2D()
+            end
         end
     end
 

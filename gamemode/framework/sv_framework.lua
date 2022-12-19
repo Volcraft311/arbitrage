@@ -785,7 +785,7 @@ local function setinventory()
         end
 
         -- выдаем всем персонажам ключи от своих дверей
-        give("keys"):SetData("faction", faction)
+        give("keys"):SetData("faction", client:Team())
 
         -- выдаем всем персонажам монопады
         if !Arbitrage.OffGiveMonopads() then

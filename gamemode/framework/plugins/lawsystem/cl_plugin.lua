@@ -298,47 +298,47 @@ function PLUGIN:PostDrawTranslucentRenderables()
         end
     end
 
-    -- Если это удалить от сюда, то не будет отрисовывать текст CLASS TRIAL. Я правда не знаю с чем это связано и по какой причине, если рендерить текстуру рандомную, то текст вернется (нужно имеено редредить, цвет и установка материала не помогает)
-        surface.SetDrawColor(255, 255, 255)
-        surface.SetMaterial(matArrow)
-        surface.DrawTexturedRect(0, 0, 0, 0)
-
-    local pos = Arbitrage.camPosEnd
-    if pos and !Arbitrage.OffShowClassTrial() then
-        local angle = Angle(90, 0, 0)
-        local radius = 250
-        local seg = 360
-
-        for d = 1, 4 do
-            local i = d * 90 + CurTime() * 10 % 360
-            local ang = (math.pi * 2) / (seg - 1) * i
-
-            local x = math.sin(ang)
-            local y = math.cos(ang)
-
-            local right = angle:Right() * x * radius
-            local forward = angle:Up() * y * radius
-
-            local Pos = pos + right + forward
-            Pos = Pos + Vector(0, 0, 6)
-
-            local WPos = Pos
-            local Ang = WPos - pos
-            Ang = Ang:Angle()
-
-            local ang_t = Angle(0, Ang.y, Ang.z)
-            ang_t:RotateAroundAxis(ang_t:Forward(), 90)
-            ang_t:RotateAroundAxis(ang_t:Right(), 90)
-
-            local text = "class trial"
-            cam.Start3D2D(Pos, ang_t, 0.3)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
-            cam.End3D2D()
-        end
-    end
-
     if Arbitrage.lawEnable then
+        -- Если это удалить от сюда, то не будет отрисовывать текст CLASS TRIAL. Я правда не знаю с чем это связано и по какой причине. Если рендерить текстуру рандомную, то текст вернется (нужно имеено рендерить, цвет и установка материала не помогает)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(matArrow)
+            surface.DrawTexturedRect(0, 0, 0, 0)
+
+        local pos = Arbitrage.camPosEnd
+        if pos and !Arbitrage.OffShowClassTrial() then
+            local angle = Angle(90, 0, 0)
+            local radius = 250
+            local seg = 360
+
+            for d = 1, 4 do
+                local i = d * 90 + CurTime() * 10 % 360
+                local ang = (math.pi * 2) / (seg - 1) * i
+
+                local x = math.sin(ang)
+                local y = math.cos(ang)
+
+                local right = angle:Right() * x * radius
+                local forward = angle:Up() * y * radius
+
+                local Pos = pos + right + forward
+                Pos = Pos + Vector(0, 0, 6)
+
+                local WPos = Pos
+                local Ang = WPos - pos
+                Ang = Ang:Angle()
+
+                local ang_t = Angle(0, Ang.y, Ang.z)
+                ang_t:RotateAroundAxis(ang_t:Forward(), 90)
+                ang_t:RotateAroundAxis(ang_t:Right(), 90)
+
+                local text = "class trial"
+                cam.Start3D2D(Pos, ang_t, 0.3)
+                    draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
+                    draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
+                cam.End3D2D()
+            end
+        end
+
         local data = sort()
         for place, v in SortedPairs(data) do
             local faction = Character.team:GetByID(v:Team())

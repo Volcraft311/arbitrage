@@ -69,6 +69,15 @@ function Emotes:CalcView(client, origin)
 	end
 
 	if client.GetSitting and client:GetSitting() then
+		if client:GetPos():DistToSqr(Vector(0, 0, 0)) <= 150 then
+			RunConsoleCommand("+use")
+			timer.Simple(0.2, function()
+				RunConsoleCommand("-use")
+			end)
+
+			return
+		end
+
 		local x, y, z = 0, 0, 0
 
 		local bKeyPress = client:KeyDown(IN_DUCK)

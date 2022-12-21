@@ -178,6 +178,36 @@ netstream.Hook("arb.OpenMonoMenu", function(client)
     PLUGIN:OpenMonoMenu(client)
 end)
 
+function PLUGIN:ChatAddText(client, message)
+    for k, v in ipairs(player.GetAll()) do
+        if !v:IsAdmin() then continue end
+
+        local data = v:GetLocalVar("spectatescommand", {})
+
+        if data[client:SteamID()] then
+            netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Слежка] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "\"", message, "\"")
+        end
+    end
+end
+
+netstream.Hook("arb.StartSpectateCommand", function(client, steamid)
+    if !client:IsAdmin() then return end
+
+    local target = player.GetBySteamID(steamid)
+    if !IsValid(target) then return end
+
+    local data = client:GetLocalVar("spectatescommand", {})
+    if !data[steamid] then
+        data[steamid] = true
+        client:ChatNotify("Вы начали слежку за командами игрока: " .. target:FullName())
+    else
+        data[steamid] = nil
+        client:ChatNotify("Вы перестали следить за командами игрока: " .. target:FullName())
+    end
+
+    client:SetLocalVar("spectatescommand", data)
+end)
+
 local actionList = {
     ["setfaction"] = function(client, steamid, faction, bRespawn)
         local factionData = Character.team:GetByID(faction)

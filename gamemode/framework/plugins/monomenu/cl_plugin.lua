@@ -502,6 +502,16 @@ local function getActionList(clientinfo)
                     return a_isvalid
                 end
             },
+            {
+                name = "Включить слежку за чатом",
+                icon = "icon16/arrow_inout.png",
+                data = function()
+                    netstream.Start("arb.StartSpectateCommand", m_steamid)
+                end,
+                check = function()
+                    return a_isvalid
+                end
+            }
         },
         {
             {

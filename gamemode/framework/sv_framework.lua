@@ -632,6 +632,8 @@ function Arbitrage:ExtractArgs(text)
 end
 
 function Arbitrage:PlayerSay(client, data)
+    hook.Run("ChatAddText", client, data)
+
     if data:sub(1, 1) == "!" or data:sub(1, 1) == "~" or data:sub(1, 1) == "@" then
         local message = utf8.sub(data, 2, utf8.len(data))
         local extra = Arbitrage:ExtractArgs(message)

@@ -589,15 +589,11 @@ do
     function playerMeta:Alive()
         local faction = self:Team()
 
-        if self:IsSpectate() then return false end
-        if faction == TEAM_ADMIN then return false end
-        if faction == TEAM_NOTCHARACTER then return false end
-
         if IsPlaying(faction) then
             return self:GetNetVar("arbAlive", true)
         end
 
-        return self:oldAlive()
+        return false
     end
 
 

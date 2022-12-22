@@ -42,23 +42,23 @@ function PLUGIN:LoadData()
 end
 
 local initData = {
-	["drp_hopespeak"] = {
-		[3460] = true,
-		[2750] = true,
-		[2748] = true,
-		[2746] = true,
-		[2744] = true,
-		[2725] = true,
-		[2727] = true,
-		[2728] = true,
-		[2730] = true,
-		[2733] = true,
-		[2732] = true,
-		[2735] = true,
-		[2736] = true,
-		[2738] = true,
-		[2740] = true,
-		[2742] = true
+	asterion_hopespeak_prerelease = {
+		[1278] = true,
+		[2511] = true,
+		[2663] = true,
+		[2684] = true,
+		[2370] = true,
+		[2513] = true,
+		[2609] = true,
+		[2324] = true,
+		[2184] = true,
+		[2652] = true,
+		[2181] = true,
+		[2047] = true,
+		[2283] = true,
+		[2273] = true,
+		[2276] = true,
+		[2393] = true
 	}
 }
 

@@ -78,35 +78,59 @@ function PLUGIN:HUDPaint()
 
     for k, v in pairs(evidences) do
     	if IsValid(v) then
-    		ignore_list[#ignore_list + 1] = v
+			ignore_list[#ignore_list + 1] = v
 
-	        local idx = v:GetEvidence()
-	        local data = self:GetEvidence(idx)
-	        if !data then continue end
+			local idx = v:GetEvidence()
+			local data = self:GetEvidence(idx)
+			if !data then continue end
 
-	        local pos = v:GetPos()
-	        local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
+			local allow = false
+			local bUnique = false
+			if data.factiondata then
+				local bAllow = data.factiondata[client:Team()]
 
-	        local data2D = pos:ToScreen()
-	        if !data2D.visible then continue end
+				if bAllow then
+					allow = true
+					bUnique = true
+				end
+			else
+				allow = true
+			end
 
-	        local x, y = data2D.x, data2D.y
+			local pos = v:GetPos()
+			local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
 
-	        local max_alpha = 150
-	        local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
-	        local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
+			local data2D = pos:ToScreen()
+			if !data2D.visible then continue end
 
-	        if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
-	        	local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
-	            local circle = Arbitrage.hud.GeneratePoly(x, y, math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255) * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
-	            local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
-	            a = a - (255 - (Arbitrage.statistics.Get(client, "Sleep") or 100) * 2.55)
+			local x, y = data2D.x, data2D.y
+
+			local max_alpha = 150
+			local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
+			local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
+
+			if allow and !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
+				local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
+				local b = math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255)
+			    local circle = Arbitrage.hud.GeneratePoly(x, y, b * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
+			    local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
+			    a = a - (255 - (Arbitrage.statistics.Get(client, "Sleep") or 100) * 2.55)
 				a = math.Clamp(a, 0, 255)
 
-	            surface_SetDrawColor(ColorAlpha(color, a))
-	            draw_NoTexture()
-	            surface_DrawPoly(circle)
-	        end
+			    surface_SetDrawColor(ColorAlpha(color, a))
+
+			    if bUnique then
+			    	local size = b * 0.7
+
+			    	surface_SetDrawColor(255, 255, 255, a)
+			    	surface.SetMaterial(Material("icon16/star.png"))
+			    	surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+			    else
+			    	surface_SetDrawColor(ColorAlpha(color, a))
+			    	draw_NoTexture()
+			    	surface_DrawPoly(circle)
+				end
+			end
 
 			if !client:IsNocliping() then continue end
 			if !client:IsAdmin() then continue end

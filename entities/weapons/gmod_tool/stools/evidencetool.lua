@@ -12,6 +12,7 @@ TOOL.Information = {
 
 TOOL.ClientConVar.name = "Название улики"
 EvidenceDescription = EvidenceDescription or "Описание улики"
+EvidenceFactionData = EvidenceFactionData or {}
 TOOL.ClientConVar.r = 255
 TOOL.ClientConVar.g = 255
 TOOL.ClientConVar.b = 255
@@ -300,6 +301,58 @@ function TOOL.BuildCPanel(CPanel)
             RunConsoleCommand(l .. "ribbon", k)
         end
     end
+
+    local factionScrollPanel = vgui.Create("DScrollPanel")
+    factionScrollPanel:DockMargin(W(5), H(5), W(5), H(5))
+    factionScrollPanel:SetTall(130)
+    factionScrollPanel.list = {}
+    factionScrollPanel.Paint = function(_, w, h)
+        surface.SetDrawColor(0, 0, 0)
+        surface.DrawOutlinedRect(0, 0, w, h)
+    end
+    CPanel:AddPanel(factionScrollPanel)
+
+    local function createButton()
+        factionScrollPanel.list = {}
+        EvidenceFactionData = {}
+        factionScrollPanel:Clear()
+
+        netstream.Start("Evidence:SetFactionData", {})
+
+        for k, v in ipairs(player.GetAll()) do
+            local id = v:Team()
+            local faction = Character.team:GetByID(id)
+
+            if faction and !factionScrollPanel.list[id] then
+                local checkbox = factionScrollPanel:Add("DCheckBoxLabel")
+                checkbox:SetTextColor(Color(0, 0, 0))
+                checkbox:Dock(TOP)
+                checkbox:SetText(faction:GetName())
+                checkbox:SetValue(false)
+                checkbox:SizeToContents()
+                checkbox.OnChange = function(_, val)
+                    if val then
+                        EvidenceFactionData[id] = true
+                    else
+                        EvidenceFactionData[id] = nil
+                    end
+
+                    netstream.Start("Evidence:SetFactionData", EvidenceFactionData)
+                end
+
+                factionScrollPanel.list[id] = checkbox
+            end
+        end
+
+        local factionInfoReloadButton = factionScrollPanel:Add("DButton")
+        factionInfoReloadButton:SetText("Обновить список персонажей")
+        factionInfoReloadButton:Dock(TOP)
+        factionInfoReloadButton.DoClick = function()
+            createButton()
+        end
+    end
+
+    createButton()
 
     local ResetButton = vgui.Create("DButton")
     ResetButton:SetText("Сбросить настройки")

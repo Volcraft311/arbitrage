@@ -41,7 +41,8 @@ local function reg(data)
         color = data.color or color_white,
         alpha = data.alpha or 255,
         image = tonumber(data.image) and math.floor(data.image) or 1,
-        ribbon = tonumber(data.image) and math.floor(data.ribbon) or 1
+        ribbon = tonumber(data.image) and math.floor(data.ribbon) or 1,
+        factiondata = table.Count(data.factiondata or {}) > 0 and data.factiondata or nil
     })
 end
 
@@ -170,6 +171,17 @@ function PLUGIN:PlayerUse(client, entity)
 
     if entity:IsPlayer() then return end
 
+    local allow = false
+
+    local data = self:GetEvidence(idx)
+    if data.factiondata then
+        allow = data.factiondata[client:Team()]
+    else
+        allow = true
+    end
+
+    if !allow then return end
+
     if !client.evidenceCD or CurTime() >= client.evidenceCD then
         client.evidenceCD = CurTime() + 2
 
@@ -190,4 +202,8 @@ end
 
 netstream.Hook("Evidence:SetDescription", function(client, data)
     client.EvidenceDescription = data or "Описание улики"
+end)
+
+netstream.Hook("Evidence:SetFactionData", function(client, data)
+    client.EvidenceFactionData = data
 end)

@@ -51,6 +51,7 @@ function PLUGIN:GetToolData(client)
     local evidenceAlpha = tool:GetClientInfo("alpha")
     local evidenceIcon = tool:GetClientInfo("icon")
     local evidenceRibbon = tool:GetClientInfo("ribbon")
+    local evidenceFactionData = (SERVER and client.EvidenceFactionData or EvidenceFactionData) or {}
 
     if IsValid(entity) and !entity:IsPlayer() and !entity:IsWorld() then
         -- eh...
@@ -67,6 +68,7 @@ function PLUGIN:GetToolData(client)
         position = position + angles:Up() * 0.5,
         image = evidenceIcon,
         ribbon = evidenceRibbon,
+        factiondata = evidenceFactionData,
         angles = angles,
     }
 

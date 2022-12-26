@@ -134,3 +134,11 @@ SETTINGS.options.Add("show_hints", SETTINGS.type.bool, true, {
     title = "Отображение подсказок на экране",
     description = "Включить отображение подсказок в левом верхнем углу экрана."
 })
+
+SETTINGS.options.Add("chatbox_size", SETTINGS.type.number, 8, {
+    name = "Размер текста чата",
+    title = "Изменить размер букв в чате",
+    description = "Отвечает за размер символов отображаемых в чате.",
+    min = 3,
+    max = 20
+})

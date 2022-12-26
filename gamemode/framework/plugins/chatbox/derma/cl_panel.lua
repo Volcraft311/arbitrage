@@ -1,3 +1,8 @@
+local function getFontSize()
+	return SETTINGS.options.Get("chatbox_size")
+end
+
+
 local PLUGIN = PLUGIN
 
 local PANEL = {}
@@ -340,7 +345,7 @@ end
 
 function PANEL:AddLine(elements, bShouldScroll)
 	local buffer = {
-		"<font=arb.Font_FuturaPTBook_8>"
+		"<font=arb.Font_FuturaPTBook_" .. getFontSize() .. ">"
 	}
 
 	for _, v in ipairs(elements) do
@@ -352,7 +357,7 @@ function PANEL:AddLine(elements, bShouldScroll)
 	            local b2 = v:Height()
 
 	            if string.find(texture, "danganronpa/evidence/") then
-					local height = draw.GetFontHeight("arb.Font_FuturaPTBook_8")
+					local height = draw.GetFontHeight("arb.Font_FuturaPTBook_" .. getFontSize())
 					local maxW = height * 1.3
 		            local maxH = height * 1.3
 
@@ -379,7 +384,7 @@ function PANEL:AddLine(elements, bShouldScroll)
 				local inner = utf8.sub(value, 2, -2)
 
 				if (inner:find("%S")) then
-					return "<font=arb.Font_FuturaPTBookItalic_8>" .. utf8.sub(value, 2, -2) .. "</font>"
+					return "<font=arb.Font_FuturaPTBookItalic_" .. getFontSize() .. ">" .. utf8.sub(value, 2, -2) .. "</font>"
 				end
 			end)
 		end
@@ -408,7 +413,7 @@ PANEL = {}
 DEFINE_BASECLASS("DTextEntry")
 
 function PANEL:Init()
-	self:SetFont("arb.Font_FuturaPTBook_8")
+	self:SetFont("arb.Font_FuturaPTBook_" .. getFontSize())
 	self:SetUpdateOnType(true)
 	self:SetHistoryEnabled(true)
 

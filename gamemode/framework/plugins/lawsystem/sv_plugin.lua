@@ -12,6 +12,7 @@
 ]]--
 
 local PLUGIN = PLUGIN
+PLUGIN.InterruptionCD = 5
 
 local function randomID(old)
     local new = math.random(1, #PLUGIN.CamAnimData)
@@ -113,6 +114,16 @@ concommand.Add("arb_stop_rebuttalshowdowns", function(client)
     else
         PLUGIN:EndRebuttalShowdowns()
     end
+end)
+
+concommand.Add("arb_interruption_cd", function(client, cmd, args)
+    if !client:IsAdmin() then return end
+
+    local time = tonumber(args[1])
+    if !time then return end
+
+    PLUGIN.InterruptionCD = time
+    client:ChatNotify("Вы изменили время прерывания камеры на суде на " .. time .. " секунд!")
 end)
 
 function Arbitrage:StartLaw()
@@ -254,7 +265,7 @@ function PLUGIN:StartVoice(client, anim)
         netstream.Start(nil, "arb.LawTalking", client, anim)
 
         self.talk_entity = client
-        self.interruption = CurTime() + 5
+        self.interruption = CurTime() + self.InterruptionCD
 
         self.oldAnimID = anim
     end

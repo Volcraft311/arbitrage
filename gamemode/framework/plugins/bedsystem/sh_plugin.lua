@@ -14,7 +14,7 @@
 local PLUGIN = PLUGIN
 PLUGIN.name = "BedSystem"
 
-PLUGIN.animation = "zombie_slump_idle_01"
+PLUGIN.animation = "d1_town05_Wounded_Idle_1"
 PLUGIN.allowBed = {
     ["models/props_downtown/bed_motel01.mdl"] = {
         pos = Vector(0, 0, 30),
@@ -99,12 +99,9 @@ PLUGIN.allowBed = {
 }
 
 function PLUGIN:CalcMainActivity(client, vector)
-    if !client:GetNetVar("inbed") then return end
-
-    client.CalcIdeal = ACT_MP_STAND_IDLE
-    client.CalcSeqOverride = client:LookupSequence(self.animation)
-
-    return client.CalcIdeal, client.CalcSeqOverride
+    if client:GetNetVar("inbed") then
+        return -1, client:LookupSequence(self.animation)
+    end
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

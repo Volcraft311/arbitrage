@@ -20,10 +20,11 @@ function PLUGIN:LayDownBed(client, entity)
     local ang = self.allowBed[entity:GetModel()].ang or Angle(0, 0, 0)
 
     client:SetMoveType(MOVETYPE_OBSERVER)
+    client:SetEyeAngles(entity:GetAngles() + ang)
 
-    timer.Simple(0.1, function()
-        client:SetPos(entity:GetPos() + pos)
-        client:SetEyeAngles(entity:GetAngles() + ang)
+    timer.Simple(0.2, function()
+        client:SetPos(entity:GetPos() + pos - Vector(0, 0, 3))
+        client:SetEyeAngles(entity:GetAngles() + ang + Angle(0, 180, 0))
         client:Freeze(true)
     end)
 
@@ -39,6 +40,7 @@ function PLUGIN:GetUpBed(client, entity)
     client:SetMoveType(MOVETYPE_WALK)
     client:SetNetVar("inbed", nil)
     client:SetPos(client:GetPos() + Vector(0, 0, 10))
+    client:SetEyeAngles(Angle(0, 0, 0))
 end
 
 function PLUGIN:PlayerUse(client, entity)

@@ -418,20 +418,54 @@ MonoMenu:AddGameFunction("OOC чат", "icon16/world.png", {
     end
 })
 
-MonoMenu:AddGameFunction("Падение потребности", "icon16/cup.png", {
+MonoMenu:AddGameFunction("Падение Голода", "icon16/cup.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
 
-        SetNetVar("arb.OffFallStatictic", false)
+        SetNetVar("arb.OffFallHunger", false)
     end,
     onDisable = function(client)
         if CLIENT then return end
 
-        SetNetVar("arb.OffFallStatictic", true)
+        SetNetVar("arb.OffFallHunger", true)
     end,
     OnCheck = function(client)
-        return !Arbitrage.OffFallStatictic()
+        return !Arbitrage.OffFallHunger()
+    end
+})
+
+MonoMenu:AddGameFunction("Падение Жажды", "icon16/cup.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffFallThirst", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffFallThirst", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffFallThirst()
+    end
+})
+
+MonoMenu:AddGameFunction("Падение Сна", "icon16/cup.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffFallSleep", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffFallSleep", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffFallSleep()
     end
 })
 

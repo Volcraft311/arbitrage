@@ -46,7 +46,7 @@ do
             local faction = Character.team:GetByID(client:Team())
             return faction and tonumber(faction:GetHunger()) or 25
         end,
-        action = function(client, info)
+        OnRun = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
             if !amount then return end
 
@@ -62,6 +62,9 @@ do
                 end
             end
         end,
+        OnCanRun = function(client, info)
+            return !Arbitrage.OffFallHunger()
+        end
     })
 
     Arbitrage.statistics.Add("thirst", {
@@ -70,7 +73,7 @@ do
             local faction = Character.team:GetByID(client:Team())
             return faction and tonumber(faction:GetThirst()) or 25
         end,
-        action = function(client, info)
+        OnRun = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
             if !amount then return end
 
@@ -86,6 +89,9 @@ do
                 end
             end
         end,
+        OnCanRun = function(client, info)
+            return !Arbitrage.OffFallThirst()
+        end,
     })
 
     Arbitrage.statistics.Add("sleep", {
@@ -93,6 +99,9 @@ do
         time = function(client)
             local faction = Character.team:GetByID(client:Team())
             return faction and tonumber(faction:GetFatique()) or 33
+        end,
+        OnCanRun = function(client, info)
+            return !Arbitrage.OffFallSleep()
         end
     })
 end
@@ -374,8 +383,16 @@ function Arbitrage.OffOOC()
     return GetNetVar("arb.OffOOC", false)
 end
 
-function Arbitrage.OffFallStatictic()
-    return GetNetVar("arb.OffFallStatictic", false)
+function Arbitrage.OffFallHunger()
+    return GetNetVar("arb.OffFallHunger", false)
+end
+
+function Arbitrage.OffFallThirst()
+    return GetNetVar("arb.OffFallThirst", false)
+end
+
+function Arbitrage.OffFallSleep()
+    return GetNetVar("arb.OffFallSleep", false)
 end
 
 function Arbitrage.OnDeadLowStatictic()

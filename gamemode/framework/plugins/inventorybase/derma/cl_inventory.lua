@@ -165,14 +165,28 @@ function PANEL:InitSlot(panel)
             end
         end
 
-        itemPanel.DoClick = function()
-        	if self.item == item then return end
+        itemPanel.DoDoubleClick = function(this)
+            local container = Arbitrage.gui.inventory
+            if !IsValid(container) then return end
 
-        	self.item = item
+            local localInvID = container.invIDClient
+            if !localInvID then return end
 
-            if self.SelectItem then
-            	self:SelectItem(item)
+            local containerInvID = container.invIDContainer
+            if !containerInvID then return end
+
+            local transferInvID = localInvID
+
+            local inv = LocalPlayer():GetInventory()
+            local items = inv:GetItems()
+            for k, v in ipairs(items) do
+                if v:GetID() == item:GetID() then
+                    transferInvID = containerInvID
+                    break
+                end
             end
+
+            netstream.Start("InventoryBase:TransferItem", item:GetID(), transferInvID)
         end
 
         local oldOnMouseReleased = itemPanel.OnMouseReleased

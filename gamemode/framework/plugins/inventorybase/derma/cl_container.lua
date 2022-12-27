@@ -35,6 +35,7 @@ function PANEL:Init()
 
     local inventoryPanel = self:Add("InventoryBase:Inventory")
     inventoryPanel:SetInventory(self.inventory)
+    self.invIDClient = self.inventory:GetID()
 
     local w, h, sizeH = inventoryPanel:GetWide(), inventoryPanel:GetTall(), H(90)
     inventoryPanel:SetPos(ScrW() - w - W(278), ScrH() / 2 - h + sizeH / 2)
@@ -59,6 +60,7 @@ function PANEL:SetContainerInv(inventory, name)
 
     local inventoryPanel = self:Add("InventoryBase:Inventory")
     inventoryPanel:SetInventory(inventory)
+    self.invIDContainer = inventory:GetID()
 
     local w, h = inventoryPanel:GetWide(), inventoryPanel:GetTall()
     inventoryPanel:SetPos(W(278), ScrH() / 2 - h / 2)

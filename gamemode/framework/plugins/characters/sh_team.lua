@@ -117,7 +117,7 @@ function Character.team:Join(client, data, bRespawn)
     client:SetHull(hullMin, hullMax)
     client:SetHullDuck(hullduckMin, hullduckMax)
 
-    timer.Simple(1, function()
+    timer.Simple(0.3, function()
         do
             local scale = info:GetScale()
 
@@ -139,6 +139,8 @@ function Character.team:Join(client, data, bRespawn)
 
             client:SetHullDuck(min, size, true)
         end
+
+        Arbitrage.player.SetupViewOffset(client)
     end)
 
     if info.OnChange then
@@ -152,7 +154,6 @@ function Character.team:Join(client, data, bRespawn)
     Arbitrage.player.SetupWeapons(client)
     Arbitrage.player.SetupSpeed(client)
     Arbitrage.player.SetupInventory(client)
-    Arbitrage.player.SetupViewOffset(client)
 
     hook.Run("SelectCharacter", client, id)
 end

@@ -97,15 +97,12 @@ end
 
 function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 	Arbitrage.hud.HUDElement[index] = Arbitrage.hud.HUDElement[index] or {
-		x = x,
-		color = color,
-		png = png,
 		progress = 0
 	}
 
 	local element = Arbitrage.hud.HUDElement[index]
 
-	local position = ScrW() / 2 + element.x
+	local position = ScrW() / 2 + x
 	local circle = Arbitrage.hud.GeneratePoly(position, ScrH() - 70, 36, 36)
 
 	surface_SetDrawColor( 22, 22, 22, Arbitrage.hud.alpha )
@@ -121,8 +118,6 @@ function Arbitrage.hud.CreateCircle(index, x, status, color, png)
 	surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
 	surface_SetMaterial(png)
 	surface_DrawTexturedRect(position - size / 2, ScrH() - 70 - size / 2, size, size )
-
-	Arbitrage.hud.moved = Arbitrage.hud.moved + 120
 end
 
 do
@@ -191,7 +186,7 @@ function Arbitrage.hud.ALTMenuDraw()
 
 		asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, Arbitrage.hud.alpha)
 
-		Arbitrage.hud.moved = -180
+		-- Arbitrage.hud.moved = 0
 
 		local faction = Character.team:GetByID(client:Team())
 		local icon = faction:GetAssets().hud
@@ -206,12 +201,42 @@ function Arbitrage.hud.ALTMenuDraw()
 			surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
 		end
 
-		for k, v in SortedPairs(Arbitrage.hud.CircleData or {}) do
+		local info = {}
+		for k, v in ipairs(Arbitrage.hud.CircleData or {}) do
 			local name = v[1]
 			local dataTable = v[2]
 
-			Arbitrage.hud.CreateCircle(name, Arbitrage.hud.moved, math_Clamp(dataTable.value() * 3.6, 0, 360), dataTable.color, dataTable.image)
+			local statistics = Arbitrage.statistics.list[name]
+			if statistics then
+				if statistics.OnCanRun then
+					local allow = statistics.OnCanRun(client, statistics)
+					if allow == false then
+						continue
+					end
+				end
+
+				local vtime = statistics.time
+				local time = isfunction(vtime) and (tonumber(vtime(client)) or 40) or tonumber(vtime)
+	            if time <= -1 then
+	               continue
+	            end
+			end
+
+			info[#info + 1] = {
+				name,
+				math_Clamp(dataTable.value() * 3.6, 0, 360),
+				dataTable.color,
+				dataTable.image
+			}
 		end
+
+		Arbitrage.hud.moved = (-#info * 120 + 120) / 2
+
+		for k, v in ipairs(info) do
+			Arbitrage.hud.CreateCircle(v[1], Arbitrage.hud.moved, v[2], v[3], v[4])
+			Arbitrage.hud.moved = Arbitrage.hud.moved + 120
+		end
+
 
 		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
 		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)

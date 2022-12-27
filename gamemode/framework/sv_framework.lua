@@ -565,7 +565,7 @@ local function initPlayer(client)
     hook.Run("PlayerInitial", client)
 
     local id = "Arbitrage:StatisticsThink_" .. client:EntIndex()
-    timer.Create(id, 5, 0, function()
+    timer.Create(id, 2, 0, function()
         if !IsValid(client) then return timer.Remove(id) end
 
         if !client:Alive() then return end
@@ -573,7 +573,6 @@ local function initPlayer(client)
 
         if !Arbitrage.IsStartGame() then return end
         if Arbitrage.lawEnable then return end
-        if Arbitrage.OffFallStatictic() then return end
 
         Arbitrage.statistics.PlayerPostThink(client)
     end)

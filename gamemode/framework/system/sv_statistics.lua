@@ -43,6 +43,7 @@ end
 
 function Arbitrage.statistics.PlayerPostThink(client)
     for k, v in pairs(Arbitrage.statistics.list or {}) do
+        local vtime = v.time
         local data = tostring(v.data)
         local colddown = tostring(v.data) .. "CD"
 
@@ -50,15 +51,25 @@ function Arbitrage.statistics.PlayerPostThink(client)
         client[colddown] = tonumber(client[colddown]) or 0
 
         if data and (!client[colddown] or CurTime() >= client[colddown]) then
+            if v.OnCanRun then
+                local allow = v.OnCanRun(client, v)
+                if allow == false then
+                    continue
+                end
+            end
+
+            local time = isfunction(vtime) and (tonumber(vtime(client)) or 40) or tonumber(vtime)
+            if time <= -1 then
+                continue
+            end
+
             client[data] = math.Clamp(tonumber(client[data] - 1), 0, 100)
             client:SetNetVar(k, client[data], getPlayers(client))
 
-            if isfunction(v.action) then
-                v.action(client, v)
+            if v.OnRun then
+                v.OnRun(client, v)
             end
 
-            local vtime = v.time
-            local time = isfunction(vtime) and (tonumber(vtime(client)) or 40) or vtime
             client[colddown] = CurTime() + time
         end
     end

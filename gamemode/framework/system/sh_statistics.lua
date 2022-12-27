@@ -26,8 +26,6 @@ function Arbitrage.statistics.Remove(name)
 end
 
 function Arbitrage.statistics.Get(client, data)
-    if !IsValid(client) then return end
-
     if Arbitrage.statistics.list[string.lower(data)] then
         return client[string.lower(data)] and client[string.lower(data)] or client:GetNetVar(string.lower(data))
     else

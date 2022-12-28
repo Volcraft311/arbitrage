@@ -23,7 +23,7 @@ end)
 function PLUGIN:KeyPressID(client, id)
 	if id != "radialmenu" then return end
 
-	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui.CursorVisible() or Arbitrage.lawEnable) then
+	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui.CursorVisible() or (Arbitrage.lawEnable and !Arbitrage.gui.chat:GetActive())) then
 		self.clampingTime = RealTime() + 0.5
 		return vgui.Create("Radial:Menu")
 	end

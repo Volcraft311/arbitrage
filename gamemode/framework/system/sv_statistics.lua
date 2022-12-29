@@ -14,14 +14,7 @@
 Arbitrage.statistics = Arbitrage.library.Add("statistics")
 
 local function getPlayers(client)
-    local data = {}
-
-    for k, v in ipairs(player.GetAll()) do
-        if v:IsAdmin() then
-            data[#data + 1] = v
-        end
-    end
-
+    local data = player.GetAdmins()
     data[#data + 1] = client
 
     return data

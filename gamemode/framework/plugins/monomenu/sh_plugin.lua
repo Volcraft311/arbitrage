@@ -169,8 +169,7 @@ MonoMenu:AddGameFunction("Заморозить всех игроков", "icon16
     onRun = function(client)
         if CLIENT then return end
 
-        for k, v in pairs(player.GetAll()) do
-            if v:IsAdmin() then continue end
+        for k, v in pairs(player.GetNoAdmins()) do
             if v:IsSpectate() then continue end
 
             v:Freeze(true)
@@ -182,9 +181,7 @@ MonoMenu:AddGameFunction("Разморозить всех игроков", "icon
     onRun = function(client)
         if CLIENT then return end
 
-        for k, v in pairs(player.GetAll()) do
-            if v:IsAdmin() then continue end
-
+        for k, v in pairs(player.GetNoAdmins()) do
             v:Freeze(false)
         end
     end

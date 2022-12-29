@@ -179,9 +179,7 @@ netstream.Hook("arb.OpenMonoMenu", function(client)
 end)
 
 function PLUGIN:ChatAddText(client, message)
-    for k, v in ipairs(player.GetAll()) do
-        if !v:IsAdmin() then continue end
-
+    for k, v in ipairs(player.GetAdmins()) do
         local data = v:GetLocalVar("spectatescommand", {})
 
         if data[client:SteamID()] then

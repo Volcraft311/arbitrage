@@ -52,316 +52,7 @@ function PANEL:Init()
 	self.filled = circles.New(CIRCLE_FILLED, 150, self.m_x, self.m_y)
 	self.filled:SetColor(Color(60, 60, 60, 120))
 
-	self.options = self:MainOption()
-end
-
-function PANEL:FacialEmotesOption()
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		}
-	}
-
-	if facialEmote and facialEmote.face.data[LocalPlayer():GetModel()] then
-		for k, v in pairs(facialEmote.face.data[LocalPlayer():GetModel()]) do
-			local name = v.name
-			local firstSymbol = string.utf8upper(utf8.sub(name, 1, 1))
-			name = firstSymbol .. utf8.sub(name, 2, utf8.len(name))
-
-			data[#data + 1] = {
-				name = name,
-				icon = facialEmote.interface.emojis[v.image],
-				description = "Изменить анимацию лица персонажа на: \"" .. name .. "\"",
-				action = function()
-					facialEmote.network.sendCommand("applyEmotion", k)
-				end
-			}
-		end
-	end
-
-	return data, self.MainOption
-end
-
-function PANEL:SittingOption()
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		}
-	}
-
-	for k, v in pairs(Emotes.SittingList) do
-		data[#data + 1] = {
-			name = v[1],
-			description = "Изменить анимацию при сидении на: \"" .. v[1] .. "\"",
-			action = function()
-				RunConsoleCommand("say", "/sitting " .. k)
-			end
-		}
-	end
-
-	return data, self.MainOption
-end
-
-function PANEL:MoodsOption()
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		}
-	}
-
-	for k, v in pairs(Emotes.MoodList) do
-		data[#data + 1] = {
-			name = v.name,
-			description = "Изменить настроение персонажа на: \"" .. v.name .. "\"",
-			action = function()
-				RunConsoleCommand("say", "/mood " .. k)
-			end
-		}
-	end
-
-	return data, self.MainOption
-end
-
-function PANEL:ActionsOption()
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		},
-		{
-			name = "Изменить внешний вид",
-			description = "Открыть редактор внешнего вида вашего персонажа",
-			icon = Material("danganronpa/radialmenu/fashion.png"),
-			action = function()
-				local panel = vgui.Create("arb.OpenWardrobe")
-				panel:SetData(LocalPlayer():GetModel())
-			end
-		},
-		{
-			name = "Скрыть свое состояние",
-			description = "Скрыть состояние здоровья вашего персонажа от других игроков",
-			icon = Material("danganronpa/radialmenu/hide.png"),
-			action = function()
-				local a = !LocalPlayer():GetNetVar("hideStatus", false)
-				netstream.Start("arb.HideState", a)
-			end
-		},
-		{
-			name = "Изменить РП описание",
-			description = "Изменить РП описание вашего персонажа",
-			icon = Material("danganronpa/radialmenu/loupe.png"),
-			action = function()
-				vgui.Create("arb.OpenEditorDescription")
-			end
-		},
-		-- {
-		-- 	name = "Открыть инвентарь",
-		-- 	description = "Посмотреть содержимое вашего инвентаря",
-		-- 	icon = Material("danganronpa/radialmenu/box.png"),
-		-- 	action = function()
-		-- 		local panel = Arbitrage.gui.inventory
-
-		-- 		if IsValid(panel) then
-		-- 			panel:Remove()
-		-- 		end
-
-		-- 		asterionlib.netgui:Create("InventoryBase:Menu")
-		-- 	end
-		-- },
-		{
-			name = "Осмотреться",
-			description = "Осмотреть своего персонажа от 3-го лица",
-			icon = Material("danganronpa/radialmenu/focus.png"),
-			action = function()
-				RunConsoleCommand("say", "/lookaround")
-			end
-		},
-		{
-			name = "Кинуть ролл",
-			description = "Испытать удачу вашего персонажа",
-			icon = Material("danganronpa/radialmenu/dice.png"),
-			action = function()
-				RunConsoleCommand("say", "/roll")
-			end
-		}
-	}
-
-	if LocalPlayer():IsToko() then
-		data[#data + 1] = {
-			name = "Вкл случайные чихания",
-			description = "Включить автоматическую смену личности за вашего персонажа",
-			icon = Material("danganronpa/radialmenu/sneeze.png"),
-			action = function()
-				netstream.Start("arb.TokoSneezing")
-			end
-		}
-	end
-
-	local character = Character.team:GetByID(LocalPlayer():Team())
-	if character then
-		local uniqueID = character:GetUniqueID()
-
-		if uniqueID == "chiaki" or uniqueID == "himiko" then
-			data[#data + 1] = {
-				name = "Уснуть",
-				description = "Погрузить вашего персонажа в глубокий сон",
-				icon = Material("danganronpa/radialmenu/sleep.png"),
-				action = function()
-					netstream.Start("arb.Sleeping")
-				end
-			}
-		end
-	end
-
-	if LocalPlayer():IsAdmin() then
-		data[#data + 1] = {
-			name = "Открыть Моно-Меню",
-			description = "Открыть панель администратора",
-			icon = Material("danganronpa/hud/action/mono.png"),
-			action = function()
-				netstream.Start("arb.OpenMonoMenu")
-			end
-		}
-	end
-
-	return data, self.MainOption
-end
-
-function PANEL:StaticAnimationsOption()
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		}
-	}
-
-	for k, v in ipairs(Emotes.ActionList) do
-		local function stored()
-			local info = {
-				{
-					name = "Вернуться назад",
-					description = "Вернуть в предыдущую категорию",
-					icon = Material("danganronpa/radialmenu/back.png"),
-					action = self.StaticAnimationsOption
-				}
-			}
-
-			for k2, v2 in ipairs(v.data) do
-				local sequnce = v2.info
-				if istable(sequnce) then
-					sequnce = sequnce.sequence[1]
-
-					local seqID = LocalPlayer():LookupSequence(sequnce)
-					if seqID <= -1 then continue end
-				else
-					local seqID = LocalPlayer():LookupSequence(sequnce)
-					if seqID <= -1 then continue end
-				end
-
-				info[#info + 1] = {
-					name = v2.name,
-					description = "Установить анимацию персонажа на: \"" .. v2.name .. "\"",
-					action = function()
-						RunConsoleCommand("say", "/action " .. sequnce)
-					end
-				}
-			end
-
-			return info, self.StaticAnimationsOption
-		end
-
-		data[#data + 1] = {
-			name = v.name,
-			description = "Выбрать анимацию из категории: \"" .. v.name .. "\"",
-			action = stored
-		}
-	end
-
-	return data, self.MainOption
-end
-
-function PANEL:DynamicAnimationsOption()
-	local info = {
-		robot = "Робот",			muscle = "Стриптиз",		laugh = "Смех",				bow = "Поклон",
-		cheer = "Приветствие",		wave = "Помахать рукой",	becon = "Иди ко мне",		agree = "Палец вверх",
-		disagree = "Не согласен",	forward = "Вперед",			group = "Сгруппироваться",	zombie = "Зомби",
-		dance = "Танец",			pers = "Поза льва",			halt = "Стоять",			salute = "Отдать честь"
-	}
-
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		}
-	}
-
-	for k, v in pairs(info) do
-		data[#data + 1] = {
-			name = v,
-			description = "Проиграть анимацию \"" .. v .. "\"",
-			action = function()
-				RunConsoleCommand("act", k)
-			end
-		}
-	end
-
-	return data, self.MainOption
-end
-
-function PANEL:MainOption()
-	return {
-		{
-			name = "Эмоции",
-			description = "Выбрать интересующую эмоцию лица для вашего персонажа",
-			icon = Material("danganronpa/radialmenu/emoticons.png"),
-			action = self.FacialEmotesOption
-		},
-		{
-			name = "Статические анимации",
-			description = "Выбрать стойку для вашего персонажа",
-			icon = Material("danganronpa/radialmenu/s_animation.png"),
-			action = self.StaticAnimationsOption
-		},
-		{
-			name = "Динамические анимации",
-			description = "Выбрать динамическую анимацию стойку для вашего персонажа",
-			icon = Material("danganronpa/radialmenu/d_animation.png"),
-			action = self.DynamicAnimationsOption
-		},
-		{
-			name = "Настроение",
-			description = "Выбрать стиль хождения для вашего персонажа",
-			icon = Material("danganronpa/radialmenu/mood.png"),
-			action = self.MoodsOption
-		},
-		-- {
-		-- 	name = "Анимация сидения",
-		-- 	description = "Выбрать нужную вам анимацию когда вы будете сидеть",
-		-- 	icon = Material("danganronpa/radialmenu/sit.png"),
-		-- 	action = self.SittingOption
-		-- },
-		{
-			name = "Действия",
-			description = "Выполнить какое либо действие",
-			icon = Material("danganronpa/radialmenu/settings.png"),
-			action = self.ActionsOption
-		}
-	}
+	self.options = PLUGIN:MainOption()
 end
 
 function PANEL:FindSelected(segment_size)
@@ -396,31 +87,31 @@ end
 
 function PANEL:SelectOption(id)
 	local option = self.options[id]
-	if option then
-		local segment_size = 360 / #self.options
-		local a = math.rad(segment_size * (id - 1) + segment_size / 2)
-		local x = self.m_x + math.cos(a) * self.m_r
-		local y = self.m_y + math.sin(a) * self.m_r
+	if !option then return end
 
-		local action = option.action
-		if isfunction(action) then
-			LocalPlayer():EmitSound("academy/radialmenu/press.wav")
-			local info, backFunc = action(self)
+	local segment_size = 360 / #self.options
+	local a = math.rad(segment_size * (id - 1) + segment_size / 2)
+	local x = self.m_x + math.cos(a) * self.m_r
+	local y = self.m_y + math.sin(a) * self.m_r
 
-			if istable(info) then
-				self.options = info
-				self.m_r = self.m_r + 50
-				self.selSize = self.selSize + 20
-				self.textAlpha = 0
+	local action = option.action
+	if isfunction(action) then
+		LocalPlayer():EmitSound("academy/radialmenu/press.wav")
+		local info, backFunc = action(PLUGIN, self)
 
-				self.backFunc = backFunc
-			else
-				self:NewClose()
-			end
+		if istable(info) then
+			self.options = info
+			self.m_r = self.m_r + 50
+			self.selSize = self.selSize + 20
+			self.textAlpha = 0
+
+			self.backFunc = backFunc
+		else
+			self:NewClose()
 		end
-
-		return x, y
 	end
+
+	return x, y
 end
 
 function PANEL:OnLeftClick()
@@ -433,8 +124,8 @@ end
 function PANEL:OnRightClick()
 	if self.bClose then return end
 
-	if isfunction(self.backFunc) then
-		local info, backFunc = self.backFunc(self)
+	if self.backFunc and isfunction(self.backFunc) then
+		local info, backFunc = self.backFunc(PLUGIN, self)
 
 		if istable(info) then
 			self.options = info
@@ -445,7 +136,34 @@ function PANEL:OnRightClick()
 			self.backFunc = backFunc
 			LocalPlayer():EmitSound("academy/radialmenu/press.wav")
 		end
+	else
+		self:NewClose()
 	end
+end
+
+function PANEL:OnMiddleClick()
+	local option = self.options[self.selected + 1]
+	if !option then return end
+
+	local id = option.id
+	if !id then return end
+
+	local data = asterionlib.data:Get("radialmenu_favorites", {})
+
+	local find = nil
+	for k, v in ipairs(data) do
+		if id == v then
+			find = k
+		end
+	end
+
+	if find then
+		table.remove(data, find)
+	else
+		table.insert(data, id)
+	end
+
+	asterionlib.data:Set("radialmenu_favorites", data)
 end
 
 function PANEL:OnRotate()
@@ -479,6 +197,16 @@ function PANEL:Think()
 		self.bRightClick = nil
 	end
 
+	local onMiddleClick = input.IsMouseDown(MOUSE_MIDDLE)
+	if onMiddleClick then
+		if !self.bMiddleClick then
+			self:OnMiddleClick()
+		end
+
+		self.bMiddleClick = true
+	else
+		self.bMiddleClick = nil
+	end
 
 	for i = 1, 9 do
 		local onDown = input.IsKeyDown(i + 1)
@@ -504,6 +232,7 @@ end
 
 local lmbMat = Material("gui/lmb.png")
 local rmbMat = Material("gui/rmb.png")
+local starMat = Material("icon16/star.png")
 
 function PANEL:Paint(w, h)
 	local ft = FrameTime()
@@ -547,6 +276,8 @@ function PANEL:Paint(w, h)
 
 	self.filled()
 
+	local data = asterionlib.data:Get("radialmenu_favorites", {})
+
 	for i = 0, #self.options - 1 do
 		local option = self.options[i + 1]
 
@@ -555,6 +286,19 @@ function PANEL:Paint(w, h)
 		local y = self.m_y + math.sin(a) * self.m_r
 
 		local color = self.selected == i and Color(255, 41, 76) or color_white
+
+		if option.id then
+			for k, v in ipairs(data) do
+				if v == option.id then
+					local size = self:GetTall() * 0.035
+
+					surface.SetDrawColor(255, 255, 255)
+					surface.SetMaterial(starMat)
+					surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+					break
+				end
+			end
+		end
 
 		if option.icon then
 			local size = self:GetTall() * 0.03
@@ -598,6 +342,14 @@ function PANEL:Paint(w, h)
 	end
 
 	local size = H(30)
+	if option and option.id then
+		local tall = H(105)
+		local width, height = draw.SimpleText("Добавить в избранное", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
+		surface.SetDrawColor(255, 255, 255)
+		surface.SetMaterial(Material("err.png"))
+		surface.DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
+	end
+
 	do
 		local tall = H(70)
 		local width, height = draw.SimpleText("Выбрать опцию", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)

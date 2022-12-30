@@ -12,6 +12,8 @@
 ]]--
 
 local PLUGIN = PLUGIN
+RadialMenu = PLUGIN
+
 PLUGIN.name = "RadialMenu"
 
 Arbitrage.base.Include("cl_plugin.lua")

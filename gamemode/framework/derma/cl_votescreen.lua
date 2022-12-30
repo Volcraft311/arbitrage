@@ -270,7 +270,7 @@ function PANEL:ShowWinning(data)
 
     local mat = Material(factionData:GetAssets().splash)
 
-    local size = self:GetTall() * 0.7
+    local size = math.Round(self:GetTall() * 0.61111111111)
 
     local panel = self:Add("Panel")
     panel:SetAlpha(0)

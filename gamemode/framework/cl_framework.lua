@@ -360,7 +360,7 @@ local ActionPressIDList = {
             return
         end
 
-        if !vgui.CursorVisible() then
+        if !vgui.CursorVisible() or Arbitrage.lawEnable then
             vgui.Create("InventoryBase:Menu")
         end
     end

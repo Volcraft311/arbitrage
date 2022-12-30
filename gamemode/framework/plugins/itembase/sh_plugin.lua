@@ -30,6 +30,8 @@ function ItemBase.GetBase(base)
 
     meta:AddAction("Выбросить", {
         OnRun = function(item)
+            if Arbitrage.lawEnable then return false end
+
             local client = item.player
             client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_DROP, true)
 

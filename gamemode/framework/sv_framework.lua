@@ -392,6 +392,24 @@ Arbitrage.commands.Add("lookaround", {
     end
 })
 
+Arbitrage.commands.Add("settimespeed", {
+    arguments = {
+        [1] = {
+            name = "Скорость времени",
+            type = "string",
+            important = true
+        }
+    },
+    OnAction = function(client, speed)
+        if !client:IsAdmin() then return end
+
+        speed = tonumber(speed)
+        Arbitrage.TickTime = speed
+
+        Arbitrage.commands.Notify(client, "Вы изменили скорость времени на: " .. speed)
+    end
+})
+
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
@@ -1007,9 +1025,10 @@ concommand.Add("arb_returnnormalflashlight", function(client, command, arguments
     end
 end)
 
+Arbitrage.TickTime = 17
 timer.Create("arb.CurTime", 1, 0, function()
     local data = Arbitrage.ReturnTime()
-    SetNetVar("arb.Time", data + 17)
+    SetNetVar("arb.Time", data + Arbitrage.TickTime)
 end)
 
 local dayTheme = "freetime_day"

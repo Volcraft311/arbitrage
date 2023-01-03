@@ -41,6 +41,7 @@ RegisterCommand("action", "Войти в определенную анимаци
 RegisterCommand("sitting", "Изменить анимацию при сидении.", {"number"})
 RegisterCommand("mood", "Изменить настроение.", {"number"})
 RegisterCommand("lookaround", "Осмотреться.")
+RegisterCommand("settimespeed", "Изменить скорость времени.", {"number"})
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

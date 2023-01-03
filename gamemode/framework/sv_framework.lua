@@ -838,6 +838,8 @@ local function teleport()
 end
 
 function Arbitrage:StartGame()
+    SetNetVar("arb.Time", 28800)
+
     syncvars()
     changetheme()
 

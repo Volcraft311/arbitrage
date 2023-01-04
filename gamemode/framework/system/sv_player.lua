@@ -80,31 +80,34 @@ function Arbitrage.player.SetupInventory(client)
     inventory:Sync()
 end
 
-
-local offset = Vector(0, 0, 64)
-local offsetDuck = Vector(0, 0, 28)
 function Arbitrage.player.GetEyesPos(client)
-    local vec, vecDuck = Vector(0, 0, offset.z), Vector(0, 0, offsetDuck.z)
+    local eyePosZ = 64
 
-    local eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))
-    if eyeAtt then
-        local eyePosZ = eyeAtt.Pos.z
-        local getPosZ = client:GetPos().z
+    local entity = ents.Create("base_anim")
+    entity:SetModelScale(client:GetModelScale())
+    entity:SetModel(client:GetModel())
+    entity:ResetSequence(entity:LookupSequence("idle_all_01"))
 
-        vec = Vector(0, 0, eyePosZ - getPosZ)
-        vecDuck = Vector(0, 0, vec.z - (offset.z - offsetDuck.z) / 2)
+    local bone = entity:LookupBone("ValveBiped.Bip01_Neck1")
+    if bone then
+        local pos = entity:GetBonePosition(bone)
+
+        if pos then
+            eyePosZ = pos.z + 5
+        end
     end
 
-    return vec, vecDuck
-end
+    entity:Remove()
 
+    local eyePosDuckZ = eyePosZ - (64 - 28) * 0.6
+    return eyePosZ, eyePosDuckZ
+end
 
 function Arbitrage.player.SetupViewOffset(client)
     timer.Simple(1, function()
-        local vec, vecDuck = Arbitrage.player.GetEyesPos(client)
-
-        client:SetViewOffset(vec)
-        client:SetViewOffsetDucked(vecDuck)
+        local eyePosZ, eyePosDuckZ = Arbitrage.player.GetEyesPos(client)
+        client:SetViewOffset(Vector(0, 0, eyePosZ))
+        client:SetViewOffsetDucked(Vector(0, 0, eyePosDuckZ))
     end)
 end
 

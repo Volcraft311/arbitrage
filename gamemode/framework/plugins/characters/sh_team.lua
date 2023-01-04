@@ -102,13 +102,15 @@ function Character.team:Join(client, data, bRespawn)
     local info = self:GetByID(tonumber(data)) or self:GetByUniqueID(tostring(data))
     if !info then return ErrorNoHalt("[characters] Error when trying to find team with argument: \"" .. data .. "\"\n") end
 
+    local id = info:GetID()
+
     if bRespawn then
+        client:SetTeam(id)
         return Arbitrage.player.Respawn(client)
     end
 
     local hullMin, hullMax, hullduckMin, hullduckMax = Vector(-16, -16, 0), Vector(16, 16, 72), Vector(-16, -16, 0), Vector(16, 16, 36)
 
-    local id = info:GetID()
     client:SetTeam(id)
     client:SetModel(info:GetModel())
     client:SetNoCollideWithTeammates(false)

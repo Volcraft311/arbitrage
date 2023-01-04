@@ -103,7 +103,7 @@ function Character.team:Join(client, data, bRespawn)
     if !info then return ErrorNoHalt("[characters] Error when trying to find team with argument: \"" .. data .. "\"\n") end
 
     if bRespawn then
-        Arbitrage.player.Respawn(client)
+        return Arbitrage.player.Respawn(client)
     end
 
     local hullMin, hullMax, hullduckMin, hullduckMax = Vector(-16, -16, 0), Vector(16, 16, 72), Vector(-16, -16, 0), Vector(16, 16, 36)

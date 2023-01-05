@@ -48,7 +48,7 @@ function ItemBase.GetBase(base)
             local client = item.player
             local entity = item.entity
 
-            local eyePosZ = Arbitrage.player.GetEyesPos(client).z
+            local eyePosZ = Arbitrage.player.GetEyesPos(client)
             eyePosZ = eyePosZ + client:GetPos().z
 
             local itemPosZ = entity:GetPos().z

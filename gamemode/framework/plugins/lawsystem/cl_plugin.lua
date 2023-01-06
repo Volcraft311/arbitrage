@@ -858,6 +858,8 @@ netstream.Hook("arb.DrawSprites", function()
 end)
 
 netstream.Hook("arb.LawInterruption", function(interrupter, speaker)
+    if !IsValid(interrupter) then return end
+
     local data = interrupter:Team()
     PLUGIN:Interruption(data)
 

@@ -154,6 +154,8 @@ do
         workshop:Add("1805856532") -- [DR] Nidai Nekomaru
         workshop:Add("2892089039") -- UNION Content Pack#1 [props]
         workshop:Add("2892095571") -- UNION Content Pack#6 [furniture]
+
+        workshop:Add("2911771211") -- Players NPC Animations
     end)
 end
 

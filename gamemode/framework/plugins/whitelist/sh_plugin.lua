@@ -1,0 +1,24 @@
+--[[
+        © AsterionStaff 2023.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterionproject.ru (not work)
+            Discord - https://discord.gg/Np5evb5ZsR
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+local PLUGIN = PLUGIN
+
+Whitelist = PLUGIN
+
+PLUGIN.name = "Whitelist"
+
+function PLUGIN:IsPublic()
+	return GetNetVar("Whitelist:Public", false)
+end
+
+Arbitrage.base.Include("sv_plugin.lua")

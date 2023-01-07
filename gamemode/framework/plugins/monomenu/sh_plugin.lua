@@ -221,7 +221,7 @@ MonoMenu:AddGameFunction("Открыть WhiteList список", "icon16/applic
     onRun = function(client)
         if CLIENT then return end
 
-        PLUGIN:OpenMonoWhiteList(client)
+        Whitelist:OpenMenu(client)
     end
 })
 

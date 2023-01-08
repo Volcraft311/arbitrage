@@ -166,13 +166,13 @@ function PLUGIN:ChatAddText(client, message)
     end
 end
 
-function PLUGIN:SetupPlayerVisibility(client, viewEntity)
-    if client:IsAdmin() and client:IsNocliping() then
-        for k, v in ipairs(player.GetAll()) do
-            AddOriginToPVS(v:GetPos())
-        end
-    end
-end
+-- function PLUGIN:SetupPlayerVisibility(client, viewEntity)
+--     if client:IsAdmin() and client:IsNocliping() then
+--         for k, v in ipairs(player.GetAll()) do
+--             AddOriginToPVS(v:GetPos())
+--         end
+--     end
+-- end
 
 netstream.Hook("arb.StartSpectateCommand", function(client, steamid)
     if !client:IsAdmin() then return end

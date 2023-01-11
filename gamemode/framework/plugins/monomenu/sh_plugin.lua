@@ -18,16 +18,6 @@ MonoMenu = PLUGIN
 
 PLUGIN.ClickSound = "garrysmod/content_downloaded.wav"
 
--- надо бы эту таблицу на sv перенести, но мне лень)
-PLUGIN.WhiteListStandart = {
-    ["STEAM_0:1:127526733"] = "Selenter",
-    ["STEAM_0:0:560521676"] = "Kalkamiya",
-    ["STEAM_0:1:45558340"] = "Nitorogi",
-    ["STEAM_0:0:453627339"] = "Shoujou_bun",
-    ["STEAM_0:0:210940539"] = "Redzhi",
-    ["STEAM_0:1:109093755"] = "SeekerForDreams"
-}
-
 PLUGIN.GameData = {}
 PLUGIN.AdminData = {}
 

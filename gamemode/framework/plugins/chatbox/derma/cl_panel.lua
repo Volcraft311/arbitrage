@@ -386,6 +386,17 @@ function PANEL:AddLine(elements, bShouldScroll)
 				if (inner:find("%S")) then
 					return "<font=arb.Font_FuturaPTBookItalic_" .. getFontSize() .. ">" .. utf8.sub(value, 2, -2) .. "</font>"
 				end
+			end):gsub("%b//", function(value)
+				local inner = utf8.sub(value, 2, -2)
+				local str = ""
+
+				for i = 1, utf8.len(inner) do
+					local color = HSVToColor(i * 5 % 360, 1, 1 )
+
+					str = str .. "<color=%" .. color.r .. ",%" .. color.g .. ",%" .. color.b .. ">" .. utf8.sub(inner, i, i) .. "</color>"
+				end
+
+				return str
 			end)
 		end
 	end

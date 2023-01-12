@@ -782,6 +782,7 @@ end
 local function setinventory()
     for k, v in ipairs(getclients()) do
         local client = v.client
+        local faction = client:Team()
 
         local inventory = client:GetInventory()
         if !inventory then continue end
@@ -804,7 +805,7 @@ local function setinventory()
         end
 
         -- выдаем всем персонажам ключи от своих дверей
-        give("keys"):SetData("faction", client:Team())
+        give("keys"):SetData("faction", faction)
 
         -- выдаем всем персонажам монопады
         if !Arbitrage.OffGiveMonopads() then
@@ -880,11 +881,8 @@ function Arbitrage:StopGame()
     Arbitrage.lawEnable = false
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)
 
-    for k, v in pairs(player.GetAll()) do
-        v:Freeze(false)
-    end
-
     netstream.Start(nil, "arb.Intro", 3)
+
     timer.Simple(2, function()
         netstream.Start(nil, "arb.ClearLaw")
 
@@ -895,6 +893,8 @@ function Arbitrage:StopGame()
     end)
 
     for k, v in ipairs(player.GetAll()) do
+        v:Freeze(false)
+
         local inventory = v:GetInventory()
 
         if inventory then

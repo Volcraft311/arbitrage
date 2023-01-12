@@ -128,6 +128,15 @@ function PLUGIN:ActionsOption()
 			end
 		},
 		{
+			name = "Скрыть свое имя",
+			id = "hidename",
+			description = "Скрыть имя вашего персонажа от других игроков",
+			icon = Material("danganronpa/radialmenu/hidden.png"),
+			action = function()
+				netstream.Start("arb.HideName")
+			end
+		},
+		{
 			name = "Изменить РП описание",
 			id = "description",
 			description = "Изменить РП описание вашего персонажа",

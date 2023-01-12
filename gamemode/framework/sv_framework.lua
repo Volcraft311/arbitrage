@@ -1059,6 +1059,14 @@ netstream.Hook("arb.HideState", function(client, state)
     Arbitrage.commands.Notify(client, "Вы " .. (bHide and "скрыли" or "раскрыли") .. " свое состояние!")
 end)
 
+netstream.Hook("arb.HideName", function(client)
+    local state = client:GetNetVar("hideName", false)
+    local bHide = !state
+
+    client:SetNetVar("hideName", bHide)
+    Arbitrage.commands.Notify(client, "Вы " .. (bHide and "скрыли" or "раскрыли") .. " свое имя!")
+end)
+
 netstream.Hook("arb.EditDescription", function(client, data)
     data = tostring(data)
     if !data then return end

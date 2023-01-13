@@ -77,6 +77,7 @@ function Stamina:SpeedHandler(client, info)
 		if math.Round(info.runSpeed, 2) != math.Round(runSpeed, 2) then
 			client:SetRunSpeed(runSpeed)
 			client:SetWalkSpeed(runSpeed)
+			client:SetSlowWalkSpeed(runSpeed)
 		end
 	end
 end
@@ -153,8 +154,9 @@ function Stamina:ReturnSpeed(client)
 	local runSpeed = self:GetMaxRunSpeed(client)
 
 	if walkSpeed != client:GetWalkSpeed() or runSpeed != client:GetRunSpeed() then
-		client:SetWalkSpeed(walkSpeed)
 		client:SetRunSpeed(runSpeed)
+		client:SetWalkSpeed(walkSpeed)
+		client:SetSlowWalkSpeed(walkSpeed)
 	end
 end
 

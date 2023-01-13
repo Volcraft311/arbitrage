@@ -498,25 +498,6 @@ function Arbitrage.GetTheme()
     return "Свободное время"
 end
 
-function Arbitrage:StartCommand(client, ucmd)
-    if client:IsPlaying() and !client:IsNocliping() then
-        local stamina = client:GetLocalVar("stm", 100)
-        local sleep = Arbitrage.statistics.Get(client, "Sleep")
-
-        local jump = ucmd:KeyDown(IN_JUMP)
-        local speed = ucmd:KeyDown(IN_SPEED)
-
-        if (jump or speed) and stamina <= 10 then
-            ucmd:RemoveKey(IN_JUMP)
-            ucmd:RemoveKey(IN_SPEED)
-        end
-
-        if speed and sleep <= 10 then
-            ucmd:RemoveKey(IN_SPEED)
-        end
-    end
-end
-
 do
     local playerMeta = FindMetaTable("Player")
 

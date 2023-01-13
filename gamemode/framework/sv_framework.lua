@@ -442,13 +442,6 @@ function Arbitrage:ScalePlayerDamage(client, hitgroup, dmginfo)
 end
 
 function Arbitrage:KeyPress(client, key)
-    if client:oldAlive() and client:IsPlaying() and key == IN_JUMP and !client:IsNocliping() then
-        local stamina = client:GetLocalVar("stm", 100)
-
-        client:SetLocalVar("stm", math.Clamp(stamina - (12.5 / 2), 0, 100))
-        client.StaminaCD = CurTime() + 3
-    end
-
     client.spectateplayer = client.spectateplayer or 0
     if client:IsSpectate() and (key == IN_ATTACK or key == IN_ATTACK2) then
         local first_player = 0
@@ -508,45 +501,6 @@ function Arbitrage:KeyPress(client, key)
         end
     end
 end
-
-local regenScale = 220
-timer.Create("Arbitrage:StaminaThink", 0.3, 0, function()
-    local frametime = FrameTime()
-    local curtime = CurTime()
-
-    for _, client in ipairs(player.GetAll()) do
-        if !client:oldAlive() then continue end
-        if !client:IsPlaying() then continue end
-
-        local faction = Character.team:GetByID(client:Team())
-        local staminaSpending = faction and faction:GetRunConsumption() or 1
-        local length = client:GetVelocity():LengthSqr()
-        local stamina = client:GetLocalVar("stm", 100)
-
-        if client:KeyDown(IN_SPEED) and length > 0 and !client:IsNocliping() then
-            client:SetLocalVar("stm", math.Clamp(stamina - (frametime * 40 * staminaSpending), 0, 100))
-            client.StaminaCD = curtime + 1.5
-        else
-            local amount = Arbitrage.statistics.Get(client, "Thirst") or 100
-            local staminaColdDown = client.StaminaCD
-
-            if (!staminaColdDown or curtime >= staminaColdDown) and amount >= 10 then
-                local crouching = client:Crouching()
-                local regeneration = length == 0 and (crouching and regenScale * 2 or regenScale) or regenScale / 3
-
-                client:SetLocalVar("stm", math.Clamp(stamina + frametime * regeneration, 0, 100))
-            end
-        end
-
-        if stamina >= 100 then continue end
-        timer.Simple(0.2, function() -- Обработка после прыжка (если обрабатывать по тику, то после прыжка сила будет сразу же падать вниз из-за чего у нас прыжок сразу же уходит на несколько поинтов вниз)
-            if !IsValid(client) then return end
-
-            local jumppower = math.Clamp(stamina * 4, 50, ARBITRAGE_JUMP_POWER)
-            client:SetJumpPower(jumppower)
-        end)
-    end
-end)
 
 function Arbitrage:PlayerDeath(client, inflictor, attacker)
     asterionlib.netgui:Create(client, "arb.DeathMenu")
@@ -768,6 +722,8 @@ local function setstats()
         Arbitrage.player.SetupStatistics(client)
         Arbitrage.player.SetupViewOffset(client)
 
+        client:SetLocalVar("stamina", 100)
+
         client:SetNoDraw(false)
         client:SetNotSolid(false)
         client:DrawWorldModel(true)
@@ -894,6 +850,7 @@ function Arbitrage:StopGame()
 
     for k, v in ipairs(player.GetAll()) do
         v:Freeze(false)
+        v:SetLocalVar("stamina", 100)
 
         local inventory = v:GetInventory()
 

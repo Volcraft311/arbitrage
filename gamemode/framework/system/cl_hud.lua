@@ -601,57 +601,6 @@ function Arbitrage.hud.SeeVector(a, b, _debug)
 end
 
 do
-	local function isAllow(client)
-		if !IsValid(client) then return false end
-
-		if Arbitrage.lawEnable then return false end
-		if !SETTINGS.options.Get("show_stamina") then return false end
-		if !client:IsPlaying() then return false end
-		if !client:Alive() then return false end
-
-		return true
-	end
-
-	local stamina = 100
-	local alphastamina = 0
-	local color = color_white
-	local allow = false
-	timer_Create("StaminaDraw:Update", 1, 0, function()
-		local client = LocalPlayer()
-		allow = isAllow(client)
-	end)
-
-	local size = ScrW() * 0.001
-	local staminaMax = 100 * size
-	function Arbitrage.hud.StaminaDraw()
-		if !allow then return end
-
-		local client = LocalPlayer()
-		local Stamina = client:GetLocalVar("stm", 100)
-		local frametime = FrameTime()
-
-		stamina = Lerp(frametime * 10, stamina, Stamina)
-
-		alphastamina = Lerp(frametime * 10, alphastamina, stamina < 98 and 255 or 0)
-		if alphastamina <= 0.1 then return end
-
-		surface_SetDrawColor(ColorAlpha(color, alphastamina * (10 / 255)))
-		surface_DrawRect(ScrW() / 2 - staminaMax, ScrH() - 30, staminaMax * 2, 4)
-
-		surface_SetDrawColor(ColorAlpha(color, alphastamina))
-		surface_DrawRect(ScrW() / 2 - stamina * size, ScrH() - 30, stamina * size * 2, 4)
-
-		surface_DrawRect(ScrW() / 2 - staminaMax - 4, ScrH() - 30, 4, 4)
-		surface_DrawRect(ScrW() / 2 + staminaMax - 1, ScrH() - 30, 4, 4)
-
-		local isLow = stamina <= 30
-		color = LerpColor(frametime * 2, color, isLow and Color(255, 0, 0) or color_white)
-
-		draw_SimpleText(math_floor(stamina) .. "/100", "arb.Font_FuturaPTBook_4", ScrW() / 2, ScrH() - 45, ColorAlpha(color, alphastamina), TEXT_ALIGN_CENTER)
-	end
-end
-
-do
 	local genericFont = "arb.Font_FuturaPTBook_8"
 	local genericHeight = draw_GetFontHeight(genericFont)
 

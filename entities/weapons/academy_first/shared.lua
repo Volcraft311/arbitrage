@@ -66,12 +66,13 @@ function SWEP:PrimaryAttack()
     if self:GetAttack() then
         local client = self:GetOwner()
 
-        local stamina = client:GetLocalVar("stm", 100)
+        local stamina = Stamina:GetStamina(client)
         if stamina <= 4 then return end
 
         if SERVER then
-            client:SetLocalVar("stm", math.Clamp(stamina - 4, 0, 100))
-            client.StaminaCD = CurTime() + 2
+            local value = math.max(0, stamina - 4)
+            Stamina:SetStamina(client, value)
+            Stamina:SetStaminaCD(client, value <= 1 and 10 or 2)
         end
 
         self.Owner:SetAnimation(PLAYER_ATTACK1)

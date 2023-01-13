@@ -115,6 +115,8 @@ function Character.team:Join(client, data, bRespawn)
     client:SetModel(info:GetModel())
     client:SetNoCollideWithTeammates(false)
 
+    client:SetLocalVar("stamina", 100)
+
     client:SetModelScale(1)
     client:SetHull(hullMin, hullMax)
     client:SetHullDuck(hullduckMin, hullduckMax)

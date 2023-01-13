@@ -189,6 +189,8 @@ end
 
 
 function Stamina:KeyPress(client, key)
+	if !client:IsPlaying() or !client:oldAlive() then return end
+
 	if key == IN_JUMP and client:OnGround() then
 		local stamina = self:GetStamina(client)
 

@@ -670,10 +670,13 @@ local function getclients()
 
     for k, v in pairs(Arbitrage.players) do
         local client = v.client or NULL
-        local storedInfo = Arbitrage.players[client:SteamID()]
 
-        if IsValid(client) and client:Alive() and client:IsPlaying() and storedInfo then
-            data[#data + 1] = v
+        if IsValid(client) and client:Alive() and client:IsPlaying() then
+            local storedInfo = Arbitrage.players[client:SteamID()]
+
+            if storedInfo then
+                data[#data + 1] = v
+            end
         end
     end
 

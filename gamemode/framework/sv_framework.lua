@@ -851,6 +851,8 @@ function Arbitrage:StopGame()
     for k, v in ipairs(player.GetAll()) do
         v:Freeze(false)
         v:SetLocalVar("stamina", 100)
+        v:SetHealth(999999999)
+        Arbitrage.player.SetupStatistics(v)
 
         local inventory = v:GetInventory()
 

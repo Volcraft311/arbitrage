@@ -56,7 +56,6 @@ netstream.Hook("MonoPad:SyncHistory", function(client, id, history, lastHistory)
 
 		object.history = history
 		object.lastHistory = lastHistory
-		print("SERVER SYNC HISTORY")
 	end
 end)
 

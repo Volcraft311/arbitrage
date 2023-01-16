@@ -338,7 +338,6 @@ netstream.Hook("MonoPad:SyncObjectHistory", function(id, history, lastHistory)
     object.lastHistory = lastHistory
 
     MonoPad.instances[id] = object
-    print("CLIENT SYNC HISTORY")
 end)
 
 netstream.Hook("MonoPad:EditRulesNotify", function(id)

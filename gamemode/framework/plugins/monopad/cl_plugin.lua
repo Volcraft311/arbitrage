@@ -1,17 +1,108 @@
 MonoPad.miniMapList = {
-    ["drp_hopespeak"] = {
-        x = -495,
-        y = -255,
-        stored = {
-            [1] = {"Этаж №1", "aboba5.png"},
-            [2] = {"Этаж №2", "aboba4.png"},
-            [3] = {"Этаж №3", "aboba10.png"},
-            [4] = {"Этаж №4", "aboba10.png"},
-            [5] = {"Этаж №5", "aboba10.png"},
-            [6] = {"Зал суда", "aboba10.png"},
-            [7] = {"Коллектор", "aboba10.png"}
-        }
-    }
+    -- ["asterion_hopespeak_prerelease"] = {
+    --     x = -495,
+    --     y = -255,
+    --     stored = {
+    --         [1] = {"Этаж №1", "aboba5.png"},
+    --         [2] = {"Этаж №2", "aboba4.png"},
+    --         [3] = {"Этаж №3", "aboba10.png"},
+    --         [4] = {"Этаж №4", "aboba10.png"},
+    --         [5] = {"Этаж №5", "aboba10.png"},
+    --         [6] = {"Зал суда", "aboba10.png"},
+    --         [7] = {"Коллектор", "aboba10.png"}
+    --     }
+    -- }
+}
+
+MonoPad.icons = {
+    navigation = "danganronpa/monopad/icons/map.png",
+    rules = "danganronpa/monopad/icons/map.png",
+    messenger = "danganronpa/monopad/icons/message.png",
+    gamelog = "danganronpa/monopad/icons/map.png",
+    notes = "danganronpa/monopad/icons/pin.png",
+    special = "danganronpa/monopad/icons/evidence.png",
+}
+
+MonoPad.categoryActions = {
+    navigation = function(mapID)
+        local ui = MonoPad:GetUI()
+        local panel = ui.menu:Add("MonoPad:MiniMap")
+        panel:Dock(FILL)
+
+        if mapID then
+            panel.selectCategory = mapID
+        end
+
+        return panel
+    end,
+    rules = function(rulesID)
+        local ui = MonoPad:GetUI()
+        local panel = ui.menu:Add("MonoPad:Rules")
+        panel:Dock(FILL)
+
+        if rulesID then
+            panel.scrollPanel:SetAlpha(0)
+            panel.closeButton:SetAlpha(0)
+
+            timer.Simple(0.1, function()
+                local subMenu = panel:Add("MonoPad:RulesSub")
+                subMenu:SetPos(0, 0)
+                subMenu:SetSize(panel:GetSize())
+                subMenu:SetData(rulesID)
+            end)
+
+            panel.isOpen = true
+        end
+
+        return panel
+    end,
+    messenger = function(chatID)
+        local ui = MonoPad:GetUI()
+        local panel = ui.menu:Add("MonoPad:Messenger")
+        panel:Dock(FILL)
+
+        if chatID then
+            panel:InitMessages(chatID)
+        end
+
+        return panel
+    end,
+    gamelog = function()
+        local ui = MonoPad:GetUI()
+        local panel = ui.menu:Add("MonoPad:GameLog")
+        panel:Dock(FILL)
+
+        return panel
+    end,
+    notes = function(noteID, noteTitle)
+        local ui = MonoPad:GetUI()
+        local panel = ui.menu:Add("MonoPad:Notes")
+        panel:Dock(FILL)
+
+        if noteID then
+            panel:OpenNote(noteID, noteTitle)
+        end
+
+        return panel
+    end,
+    special = function(categoryID)
+        local ui = MonoPad:GetUI()
+        local panel = ui.menu:Add("MonoPad:Special")
+        panel:Dock(FILL)
+
+        if categoryID == 1 then
+            panel.evidencePanel:AlphaTo(0, 0.3, 0, function()
+                local evidence = panel:Add("MonoPad:Evidence")
+                evidence:Dock(FILL)
+            end)
+
+            panel.closeButton:AlphaTo(0, 0.3)
+            panel.secretsPanel:AlphaTo(0, 0.3)
+            panel.isOpen = true
+        end
+
+        return panel
+    end
 }
 
 function MonoPad:CreateFont(id, name, size, info)
@@ -122,6 +213,10 @@ function MonoPad:GetUI()
     return Arbitrage.gui.tabletUI
 end
 
+function MonoPad:SyncHistory(object)
+    netstream.Start("MonoPad:SyncHistory", object.id, object.history, object.lastHistory)
+end
+
 function MonoPad:StartRegisterMeta(panel)
     local oldAdd = panel.Add
 
@@ -206,10 +301,7 @@ netstream.Hook("MonoPad:DisableTablet", function(entity)
     MonoPad:DisableTablet(entity)
 end)
 
-netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNotify, caseStored)
-    local item = ItemBase.instances[id]
-    if !item then return end
-
+local function create_monopad(item, id)
     if !item.stored then
         local meta = table.Copy(FindMetaTable("Monopad"))
         local monopad = setmetatable({id = id}, meta)
@@ -217,15 +309,36 @@ netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNo
         item.stored = monopad
     end
 
-    local object = item.stored
+    return item.stored
+end
+
+netstream.Hook("MonoPad:SyncObject", function(id, faction, evidences, messagesNotify, caseStored, mutedChats)
+    local item = ItemBase.instances[id]
+    if !item then return end
+
+    local object = create_monopad(item, id)
     object.id = id
     object.team = faction
     object.evidences = evidences
     object.messagesNotify = messagesNotify
     object.caseStored = caseStored
+    object.mutedChats = mutedChats
 
     hook.Run("SyncMonoPad", object)
     MonoPad.instances[id] = object
+end)
+
+netstream.Hook("MonoPad:SyncObjectHistory", function(id, history, lastHistory)
+    local item = ItemBase.instances[id]
+    if !item then return end
+
+    local object = create_monopad(item, id)
+    object.id = id
+    object.history = history
+    object.lastHistory = lastHistory
+
+    MonoPad.instances[id] = object
+    print("CLIENT SYNC HISTORY")
 end)
 
 netstream.Hook("MonoPad:EditRulesNotify", function(id)

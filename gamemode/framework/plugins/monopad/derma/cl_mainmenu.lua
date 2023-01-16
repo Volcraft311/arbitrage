@@ -10,9 +10,7 @@ function PANEL:Init()
     if !monopad then return end
 
     local validMap = MonoPad.miniMapList[game.GetMap()]
-    self:CreateButton("navigation", "Навигация", "Удобная карта с активным трекингом", 50, 158, "danganronpa/monopad/category/navigation.png", function()
-        if !validMap then return end
-
+    local panel = self:CreateButton("navigation", "Навигация", "Удобная карта с активным трекингом", 50, 158, "danganronpa/monopad/category/navigation.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -24,7 +22,9 @@ function PANEL:Init()
                 parent:GetParent().selectPanel = map
             end
         end)
-    end):SetAlpha(validMap and 255 or 15)
+    end)
+    panel:SetAlpha(validMap and 255 or 15)
+    panel:SetDisabled(true)
 
     self:CreateButton("rules", "Устав Академии", "Свод основным правил поведения", 335, 158, "danganronpa/monopad/category/charter.png", function()
         parent:DrawLoading(function()
@@ -212,8 +212,51 @@ function PANEL:CreateButton(uniqueID, text, desc, x, y, image, callback, isNotif
         button.DoClick = function()
             parent.selectcategory = uniqueID
 
+            local icon = MonoPad.icons[uniqueID] or "danganronpa/monopad/icons/home.png"
+
+            local monopad = MonoPad:GetObject()
+            table.insert(monopad.history, {uniqueID, text, icon, {}})
+            parent.historyID = #monopad.history
+
+            local panel = parent:AddButton(uniqueID, text, icon, function()
+                if IsValid(parent.mainmenu) then
+                    parent.mainmenu:Remove()
+                end
+
+                local action = MonoPad.categoryActions[uniqueID]
+                if action then
+                    local ui = action(unpack(monopad.history[parent:GetActiveHistoryID()][4]))
+                    ui:SetAlpha(0)
+                    ui:AlphaTo(255, 0.3)
+
+                    MonoPad:GetUI().selectPanel = ui
+                end
+
+                MonoPad:SyncHistory(monopad)
+            end, parent.historyID)
+            panel:SetWide(110)
+
+            parent.historyPanels[#parent.historyPanels + 1] = panel
+
+            if #monopad.history > 4 then
+                table.remove(monopad.history, 1)
+
+                for k, v in ipairs(parent.historyPanels or {}) do
+                    if !IsValid(v) then continue end
+
+                    if v.historyID == 1 then
+                        v:Remove()
+                    else
+                        v.historyID = v.historyID - 1
+                    end
+                end
+
+                parent.historyID = parent.historyID - 1
+            end
+
             callback(button)
             LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+            MonoPad:SyncHistory(monopad)
         end
     end
 

@@ -210,6 +210,7 @@ do
 
         local object = item.stored
         object:Sync()
+        object:SyncHistory()
     end)
 
     function ITEM:GetName()

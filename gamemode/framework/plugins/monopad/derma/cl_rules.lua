@@ -10,6 +10,12 @@ function PANEL:Init()
 	self.closeButton = ui:BackButton(self, function()
 		if self.isOpen then return end
 
+		local historyID = ui:GetActiveHistoryID()
+		if historyID then
+			local monopad = MonoPad:GetObject()
+			table.remove(monopad.history, historyID)
+		end
+
 		ui:Rebuild()
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)
@@ -141,6 +147,14 @@ function PANEL:AddRules(id, title, description, url)
 	button.DoClick = function(_, w, h)
 		if self.isOpen then return end
 
+		local ui = MonoPad:GetUI()
+		ui:EditHistory(ui:GetActiveHistoryID(), {
+			"rules",
+			"Правило №" .. id,
+			MonoPad.icons.rules,
+			{id}
+		})
+
 		self.scrollPanel:AlphaTo(0, 0.5)
 		self.closeButton:AlphaTo(0, 0.5, 0, function()
 			local subMenu = self:Add("MonoPad:RulesSub")
@@ -180,6 +194,13 @@ function PANEL:Init()
 
 			self:Remove()
 		end)
+
+		ui:EditHistory(ui:GetActiveHistoryID(), {
+			"rules",
+			"Устав Академии",
+			MonoPad.icons.rules,
+			{}
+		})
 
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)
@@ -240,10 +261,16 @@ function PANEL:Init()
 			local id = self.id - 1
 
 			if id <= 0 then
-				self:SetPage(#rulesList)
-			else
-				self:SetPage(id)
+				id = #rulesList
 			end
+
+			self:SetPage(id)
+			ui:EditHistory(ui:GetActiveHistoryID(), {
+				"rules",
+				"Правило №" .. id,
+				MonoPad.icons.rules,
+				{id}
+			})
 
 			LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 		end
@@ -271,10 +298,17 @@ function PANEL:Init()
 			local id = self.id + 1
 
 			if id > #rulesList then
-				self:SetPage(1)
-			else
-				self:SetPage(id)
+				id = 1
 			end
+
+			self:SetPage(id)
+
+			ui:EditHistory(ui:GetActiveHistoryID(), {
+				"rules",
+				"Правило №" .. id,
+				MonoPad.icons.rules,
+				{id}
+			})
 
 			LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 		end

@@ -15,6 +15,8 @@ MONOPAD.evidences = {}
 MONOPAD.rulesNotify = {}
 
 MONOPAD.caseStored = {}
+MONOPAD.mutedChats = {}
+MONOPAD.history = {}
 
 function MONOPAD:__tostring()
 	return "monopad[" .. self.id .. "]"
@@ -85,9 +87,14 @@ end
 
 
 function MONOPAD:AddMessage(id, data)
-	self.messages[id] = self.messages[id] or {}
+	local info = self.messages[id] or {}
+	table.insert(info, data)
 
-	table.insert(self.messages[id], data)
+	if #info > 50 then
+		table.remove(info, 1)
+	end
+
+	self.messages[id] = info
 end
 
 function MONOPAD:AddEvidence(idx, time)
@@ -126,7 +133,23 @@ if SERVER then
 		end
 
 		local function sync(pl)
-		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify, self.caseStored)
+		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify, self.caseStored, self.mutedChats)
+		end
+
+		if IsValid(client) then
+		    sync(client)
+		end
+
+		for id, receiver in ipairs(self:GetReceivers()) do
+		    if IsValid(receiver) and receiver:IsPlayer() and client != receiver then
+		        sync(receiver)
+		    end
+		end
+	end
+
+	function MONOPAD:SyncHistory(client)
+		local function sync(pl)
+			netstream.Start(pl, "MonoPad:SyncObjectHistory", self.id, self.history, self.lastHistory)
 		end
 
 		if IsValid(client) then

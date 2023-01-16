@@ -12,6 +12,12 @@ function PANEL:Init()
 	if !IsValid(ui) then return self:Remove() end
 
 	ui:BackButton(self, function()
+		local historyID = ui:GetActiveHistoryID()
+		if historyID then
+			local monopad = MonoPad:GetObject()
+			table.remove(monopad.history, historyID)
+		end
+
 		ui:Rebuild()
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)
@@ -52,6 +58,14 @@ function PANEL:Init()
 			button.DoClick = function()
 				self.selectCategory = k
 
+				local selectCategory = self.selectCategory or 1
+				ui:EditHistory(ui:GetActiveHistoryID(), {
+					"navigation",
+					self.data.stored[selectCategory][1],
+					MonoPad.icons.navigation,
+					{selectCategory}
+				})
+
 				LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 			end
 
@@ -71,6 +85,22 @@ function PANEL:Init()
 				surface.DrawRect(w - 2, 11, 2, 20)
 			end
 		end
+	end
+end
+
+function PANEL:PerformLayout(w, h)
+	if !self.init then
+		local selectCategory = self.selectCategory or 1
+
+		local ui = MonoPad:GetUI()
+		ui:EditHistory(ui:GetActiveHistoryID(), {
+			"navigation",
+			self.data.stored[selectCategory][1],
+			MonoPad.icons.navigation,
+			{selectCategory}
+		})
+
+		self.init = true
 	end
 end
 

@@ -11,6 +11,12 @@ function PANEL:Init()
 	if !IsValid(ui) then return self:Remove() end
 
 	ui:BackButton(self, function()
+		local historyID = ui:GetActiveHistoryID()
+		if historyID then
+			local monopad = MonoPad:GetObject()
+			table.remove(monopad.history, historyID)
+		end
+
 		ui:Rebuild()
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)
@@ -150,6 +156,13 @@ function PANEL:Init()
 			self.description.scroll = 0
 			self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"), true)
 
+			ui:EditHistory(ui:GetActiveHistoryID(), {
+				"notes",
+				title,
+				MonoPad.icons.notes,
+				{self.selectID, title}
+			})
+
 			self:Rebuild()
 		end)
 
@@ -236,6 +249,26 @@ function PANEL:Rebuild()
 	end)
 end
 
+function PANEL:OpenNote(id, title)
+	self.description.text = ""
+	self.description.data = {}
+
+	self.selectID = id
+
+	self.title:SetAlpha(0)
+	self.title:AlphaTo(255, 0.2)
+	self.title.text = title
+
+	self.description:SetAlpha(0)
+	self.description:AlphaTo(255, 0.2)
+	self.description.scroll = 0
+
+	netstream.Request("MonoPad:GetNoteDescription", id, function(description)
+		self.description.text = description
+		self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"), true)
+	end)
+end
+
 function PANEL:AddNotes(id, title)
 	local button = self.scrollPanel:Add("DButton")
 	button.id = self.count
@@ -269,23 +302,15 @@ function PANEL:AddNotes(id, title)
 		local _, y = self.scrollPanel:GetChildPosition(this)
 		if y < -this:GetTall() or y > self.scrollPanel:GetTall() then return end
 
-		self.description.text = ""
-		self.description.data = {}
+		self:OpenNote(id, title)
 
-		self.selectID = id
-
-		self.title:SetAlpha(0)
-		self.title:AlphaTo(255, 0.2)
-		self.title.text = title
-
-		self.description:SetAlpha(0)
-		self.description:AlphaTo(255, 0.2)
-		self.description.scroll = 0
-
-		netstream.Request("MonoPad:GetNoteDescription", id, function(description)
-			self.description.text = description
-			self.description.data = asterionlib.WrapText(description, self.description:GetWide(), MonoPad:GetFont("notes_description"), true)
-		end)
+		local ui = MonoPad:GetUI()
+		ui:EditHistory(ui:GetActiveHistoryID(), {
+			"notes",
+			title,
+			MonoPad.icons.notes,
+			{id, title}
+		})
 
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end

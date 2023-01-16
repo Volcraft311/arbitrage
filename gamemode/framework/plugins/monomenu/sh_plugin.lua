@@ -558,6 +558,23 @@ MonoMenu:AddGameFunction("Выдача монопадов", "icon16/application_
     end
 })
 
+MonoMenu:AddGameFunction("Общий чат монопадов", "icon16/world_add.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffMonopadGlobalChat", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffMonopadGlobalChat", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffMonopadGlobalChat()
+    end
+})
+
 MonoMenu:AddGameFunction("Выдача оружий персонажа", "icon16/gun.png", {
     isCheckBox = true,
     onEnable = function(client)

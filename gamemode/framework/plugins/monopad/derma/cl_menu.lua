@@ -34,6 +34,7 @@ function PANEL:Init()
 	self.cursorY = self:GetTall() / 2
 	self.editing = false
 	self.selectcategory = nil
+	self.historyPanels = {}
 
 	LocalPlayer().metaPanels = {}
 end
@@ -174,7 +175,7 @@ function PANEL:CreateHooks()
 		local panels = findpanels()
 
 		for k, v in ipairs(panels) do
-			if v.DoClick then
+			if v.DoClick and !v:GetDisabled() then
 				v:DoClick()
 			end
 		end
@@ -270,6 +271,12 @@ end
 
 function PANEL:OnRemove()
 	removeHooks()
+
+	local monopad = self.monopad
+	if monopad then
+		monopad.lastHistory = self:GetActiveHistoryID()
+		MonoPad:SyncHistory(monopad)
+	end
 
 	if IsValid(self) then
 		self:Remove()
@@ -426,33 +433,48 @@ function PANEL:DrawCursor()
 end
 
 local size_mat = 16
-function PANEL:AddButton(uniqueID, name, image, func)
-	local mat = Material(image)
+function PANEL:AddButton(uniqueID, name, image, func, historyID)
+	-- local mat = Material(image)
 	local button = self.taskbar:Add("DButton")
+	button.name = name
+	button.mat = image
 	button:SetText("")
 	button:Dock(LEFT)
 	button:SetWide(130)
 	button:DockMargin(22, 0, 10, 0)
+	button.historyID = historyID
 	button.alpha = 0.1
 	button.Paint = function(_, w, h)
+		local ui = MonoPad:GetUI()
+
 		local isSelect = false
-		if !self.selectcategory and uniqueID == "home" or self.selectcategory == uniqueID then
+		if !self.selectcategory and uniqueID == "home" or _.historyID == ui.historyID then
 			isSelect = true
 		end
 
 		_.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or isSelect) and 1 or 0.1)
 
-		surface.SetDrawColor(255, 255, 255, 255 * _.alpha)
-		surface.SetMaterial(mat)
-		surface.DrawTexturedRect(0, h / 2 - size_mat / 2, size_mat, size_mat)
+		asterionlib.DrawRender(function()
+	        surface.SetDrawColor(255, 255, 255)
+	        surface.DrawRect(0, 0, w, h)
+	    end, function()
+	    	surface.SetDrawColor(255, 255, 255, 255 * _.alpha)
+			surface.SetMaterial(Material(_.mat))
+			surface.DrawTexturedRect(0, h / 2 - size_mat / 2, size_mat, size_mat)
 
-		draw.SimpleText(name, MonoPad:GetFont("task"), size_mat + 7, h / 2 - 10, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+			draw.SimpleText(_.name, MonoPad:GetFont("task"), size_mat + 7, h / 2 - 10, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+
+			Arbitrage.DrawGradient(GRADIENT_RIGHT, w * 0.5, 0, w * 0.5, h, Color(0, 0, 0))
+	    end)
 	end
-	button.DoClick = function()
+	button.DoClick = function(_)
 		if self.isLoading then return end
 
 		if func then
+			if self.historyID == _.historyID then return end
+
 			self.selectcategory = uniqueID
+			self.historyID = _.historyID
 
 			if IsValid(self.selectPanel) then
 				self.selectPanel:Remove()
@@ -471,10 +493,20 @@ function PANEL:AddButton(uniqueID, name, image, func)
 		surface.DrawRect(0, 0, w, h)
 	end
 
+	button.line = line
+
+	button.OnRemove = function(this)
+		if IsValid(this.line) then
+			this.line:Remove()
+		end
+	end
+
 	return button
 end
 
 function PANEL:TaskBar()
+	self.historyPanels = {}
+
 	self.taskbar = self.menu:Add("DPanel")
 	MonoPad:StartRegisterMeta(self.taskbar)
 
@@ -488,9 +520,64 @@ function PANEL:TaskBar()
 		draw.SimpleText(Arbitrage.GetChapter() .. ", " .. Arbitrage.GetTime(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
 	end
 
+	local monopad = MonoPad:GetObject()
+
 	self:AddButton("home", "", "danganronpa/monopad/icons/home.png", function()
 		self:Rebuild()
+
+		monopad.lastHistory = nil
 	end):SetWide(30)
+
+	for k, v in ipairs(monopad.history) do
+		local panel = self:AddButton(v[1], v[2], v[3], function()
+			if IsValid(self.mainmenu) then
+				self.mainmenu:Remove()
+			end
+
+			local action = MonoPad.categoryActions[self.selectcategory]
+			if action then
+				local ui = action(unpack(monopad.history[self:GetActiveHistoryID()][4]))
+				ui:SetAlpha(0)
+				ui:AlphaTo(255, 0.3)
+
+				MonoPad:GetUI().selectPanel = ui
+			end
+
+			MonoPad:SyncHistory(monopad)
+		end, k)
+		panel:SetWide(110)
+
+		timer.Simple(0.3, function()
+			if monopad.lastHistory and monopad.lastHistory == k then
+				panel:DoClick()
+				monopad.lastHistory = nil
+			end
+		end)
+
+		self.historyPanels[#self.historyPanels + 1] = panel
+	end
+
+	MonoPad:SyncHistory(monopad)
+end
+
+function PANEL:EditHistory(id, data)
+	local monopad = MonoPad:GetObject()
+	if !monopad then return end
+
+	monopad.history[id] = data
+
+	for k, v in ipairs(self.historyPanels or {}) do
+		if !IsValid(v) then continue end
+
+		if v.historyID == id then
+			v.name = monopad.history[id][2]
+			v.mat = monopad.history[id][3]
+		end
+	end
+end
+
+function PANEL:GetActiveHistoryID()
+	return self.historyID
 end
 
 function PANEL:MainMenu()
@@ -585,10 +672,17 @@ end
 
 function PANEL:Rebuild()
 	self.selectcategory = nil
+	self.historyID = nil
 
 	self:InitMenu()
 	self:TaskBar()
-	self:MainMenu()
+
+	local monopad = MonoPad:GetObject()
+	if !monopad then return end
+
+	if !monopad.lastHistory then
+		self:MainMenu()
+	end
 end
 
 function PANEL:Menu()

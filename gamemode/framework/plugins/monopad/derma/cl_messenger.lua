@@ -11,6 +11,12 @@ function PANEL:Init()
 	self.closeButton = ui:BackButton(self, function()
 		if self.isOpen then return end
 
+		local historyID = ui:GetActiveHistoryID()
+		if historyID then
+			local monopad = MonoPad:GetObject()
+			table.remove(monopad.history, historyID)
+		end
+
 		ui:Rebuild()
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)
@@ -65,16 +71,49 @@ function PANEL:Init()
 
 		if _.text then
 			local size = 42
-			surface.SetDrawColor(255, 255, 255)
-			surface.SetMaterial(_.icon)
-			surface.DrawTexturedRect(16, h / 2 - size / 2, size, size)
+			if _.icon then
+				surface.SetDrawColor(255, 255, 255)
+				surface.SetMaterial(_.icon)
+				surface.DrawTexturedRect(16, h / 2 - size / 2, size, size)
 
-			surface.SetDrawColor(255, 255, 255)
-			surface.SetMaterial(_.icon2)
-			surface.DrawTexturedRect(16 + size, h / 2 - size / 2, size, size)
+				if _.icon2 then
+					surface.SetDrawColor(255, 255, 255)
+					surface.SetMaterial(_.icon2)
+					surface.DrawTexturedRect(16 + size, h / 2 - size / 2, size, size)
+				end
+			end
 
 			draw.SimpleText(_.text, MonoPad:GetFont("notes_title2"), w / 2, 11, color_white, TEXT_ALIGN_CENTER)
 		end
+	end
+	MonoPad:StartRegisterMeta(self.title)
+
+	local monopad = MonoPad:GetObject(client)
+
+	self.title.notice = self.title:Add("DButton")
+	self.title.notice:SetText("")
+	self.title.notice:SetPos(550, 17)
+	self.title.notice:SetSize(24, 24)
+	self.title.notice.alpha = 0.1
+	self.title.notice.Paint = function(this, w, h)
+		local data = monopad and monopad.mutedChats or {}
+		this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or 0.1)
+
+		local alpha = 255 * this.alpha
+		local color = data[self.selectID] and Color(200, 35, 57, alpha) or Color(255, 255, 255, alpha)
+
+		local size = h * 1
+		surface.SetDrawColor(color)
+		surface.SetMaterial(Material("danganronpa/monopad/notice.png"))
+		surface.DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2, size, size)
+	end
+	self.title.notice.DoClick = function()
+		if !self.selectID then return end
+
+		self.noRebuild = true
+		self.isSent = true
+		netstream.Start("MonoPad:MuteChat", self.selectID)
+		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end
 
 	self.messagesScroll = self.messagerPanel:Add("DScrollPanel")
@@ -121,6 +160,7 @@ function PANEL:Init()
 
 		if !self.isSent then
 			LocalPlayer():EmitSound(MonoPad.sounds.message_came)
+		else
 			self.isSent = nil
 		end
 	end)
@@ -225,8 +265,6 @@ function PANEL:CreateAttachments()
 				self.attachmentPanel:Remove()
 			end)
 
-			local monopad = MonoPad:GetObject()
-
 			self.isSent = true
 			netstream.Start("MonoPad:SendEvidence", self.selectID, id)
 			LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
@@ -313,9 +351,19 @@ function PANEL:InitInput()
 	inputButton:Dock(FILL)
 	inputButton.alpha = 0.05
 	inputButton.Paint = function(_, w, h)
-		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 1 or 0.05)
+		local text = nil
+		if IsValid(DermaStringRequest) then
+			text = DermaStringRequest:GetChildren()[5]:GetChildren()[2]:GetValue()
+		end
 
-		draw.SimpleText("Напишите сообщение...", MonoPad:GetFont("notes_title"), 15, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or text) and 1 or 0.05)
+
+		asterionlib.DrawRender(function()
+	        surface.SetDrawColor(255, 255, 255)
+	        surface.DrawRect(0, 0, w, h)
+	    end, function()
+	    	draw.SimpleText(text or "Напишите сообщение...", MonoPad:GetFont("notes_title"), 15, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+		end)
 	end
 	inputButton.DoClick = function()
 		if self.isOpen then return end
@@ -356,14 +404,62 @@ function PANEL:InitInput()
 end
 
 function PANEL:InitMessages(id)
+	local monopad = MonoPad:GetObject()
+	local localFaction = Character.team:GetByID(monopad.team)
+	if !localFaction then return end
+
+	local localAssets = localFaction:GetAssets()
+	local localPixel = localAssets.pixel
+	local localPixelMat = Material(localPixel)
+
+	local name = "Общий чат"
+	local pixelMat = nil
+
+	if id > 0 then
+		local faction = Character.team:GetByID(id)
+		if !faction then return end
+
+		name = faction:GetName()
+
+		local assets = faction:GetAssets()
+		local pixel = assets.pixel
+		if !pixel then return end
+
+		pixelMat = Material(pixel)
+	end
+
+	self.selectID = id
+
+	self.title:SetAlpha(0)
+	self.title:AlphaTo(255, 0.2)
+	self.title.icon = pixelMat
+	self.title.icon2 = localPixelMat
+	self.title.text = id > 0 and "Диалог с " .. name or "Общий чат"
+
 	self:InitInput(id)
 	self:ReadingMessages(id)
 
-	local monopad = MonoPad:GetObject()
 	monopad.messagesNotify = 0
 
 	self.messagesScroll:Clear()
 	self.messagesScroll:SetAlpha(0)
+
+	local info = {
+		"messenger",
+		"Общий чат",
+		MonoPad.icons.messenger,
+		{-1}
+	}
+
+	local character = Character.team:GetByID(id)
+	if character then
+		info[2] = character:GetName()
+		info[3] = MonoPad.icons.messenger
+		info[4][1] = id
+	end
+
+	local ui = MonoPad:GetUI()
+	ui:EditHistory(ui:GetActiveHistoryID(), info)
 
 	netstream.Request("MonoPad:GetMessage", id, function(data)
 		if !self then return end
@@ -452,8 +548,10 @@ function PANEL:InitMessages(id)
 
 					if allowScroll() then
 						timer.Simple(0.2, function()
-							self.messagesScroll:ScrollBottom()
-							self.messagesScroll:AlphaTo(255, 0.3)
+							if IsValid(self.messagesScroll) then
+								self.messagesScroll:ScrollBottom()
+								self.messagesScroll:AlphaTo(255, 0.3)
+							end
 						end)
 					end
 				end
@@ -507,7 +605,7 @@ function PANEL:InitMessages(id)
 		end
 
 		timer.Simple(0.1, function()
-			if allowScroll() then
+			if allowScroll() and IsValid(self) then
 				self.messagesScroll:ScrollBottom()
 			end
 		end)
@@ -518,6 +616,10 @@ function PANEL:Rebuild()
 	self.scrollPanel:Clear()
 
 	self.notify = {}
+
+	if !Arbitrage.OffMonopadGlobalChat() then
+		self:AddPlayerButton(-1) -- Общий чат
+	end
 
 	netstream.Request("MonoPad:GetMessages", nil, function(data)
 		if !self then return end
@@ -533,7 +635,7 @@ function PANEL:Rebuild()
 		end
 
 		for id, info in SortedPairsByMemberValue(stored, "name") do
-			self:AddPlayerButton(info)
+			self:AddPlayerButton(id)
 		end
 	end)
 end
@@ -546,30 +648,36 @@ function PANEL:ReadingMessages(id)
 end
 
 local crossMat = Material("danganronpa/monopad/cross.png")
-function PANEL:AddPlayerButton(faction)
+function PANEL:AddPlayerButton(id)
 	local monopad = MonoPad:GetObject()
 	local localFaction = Character.team:GetByID(monopad.team)
 	if !localFaction then return end
 
 	local localAssets = localFaction:GetAssets()
 	local localPixel = localAssets.pixel
-	if !localPixel then return end
-
-	local name = faction:GetName()
-	local id = faction:GetID()
-	local assets = faction:GetAssets()
-
-	local pixel = assets.pixel
-	if !pixel then return end
-
-	local pixelMat = Material(pixel)
 	local localPixelMat = Material(localPixel)
 
+	local name = "Общий чат"
+	local pixelMat = nil
 	local isDead = false
-	for k, v in ipairs(Arbitrage.GetGameLogs()) do
-		if v[1] == id or v[4] == id then
-			isDead = true
-			break
+
+	if id > 0 then
+		local faction = Character.team:GetByID(id)
+		if !faction then return end
+
+		name = faction:GetName()
+
+		local assets = faction:GetAssets()
+		local pixel = assets.pixel
+		if !pixel then return end
+
+		pixelMat = Material(pixel)
+
+		for k, v in ipairs(Arbitrage.GetGameLogs()) do
+			if v[1] == id or v[4] == id then
+				isDead = true
+				break
+			end
 		end
 	end
 
@@ -598,9 +706,11 @@ function PANEL:AddPlayerButton(faction)
 			surface.DrawRect(14, h - 1, w - 28, 1)
 
 			local size = h * 0.8
-			surface.SetDrawColor(255, 255, 255, 255 * math.max(this.alpha2, this.alpha))
-			surface.SetMaterial(pixelMat)
-			surface.DrawTexturedRect(15, h / 2 - size / 2, size, size)
+			if pixelMat then
+				surface.SetDrawColor(255, 255, 255, 255 * math.max(this.alpha2, this.alpha))
+				surface.SetMaterial(pixelMat)
+				surface.DrawTexturedRect(15, h / 2 - size / 2, size, size)
+			end
 
 			if isDead then
 				local size2 = h * 0.4
@@ -628,15 +738,15 @@ function PANEL:AddPlayerButton(faction)
 		local _, y = self.scrollPanel:GetChildPosition(this)
 		if y < -this:GetTall() or y > self.scrollPanel:GetTall() then return end
 
-		self.selectID = id
+		-- self.selectID = id
 
-		self.title:SetAlpha(0)
-		self.title:AlphaTo(255, 0.2)
-		self.title.icon = pixelMat
-		self.title.icon2 = localPixelMat
-		self.title.text = "Диалог с " .. faction:GetName()
+		-- self.title:SetAlpha(0)
+		-- self.title:AlphaTo(255, 0.2)
+		-- self.title.icon = pixelMat
+		-- self.title.icon2 = localPixelMat
+		-- self.title.text = id > 0 and "Диалог с " .. name or "Общий чат"
 
-		self:InitMessages(self.selectID)
+		self:InitMessages(id)
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end
 end

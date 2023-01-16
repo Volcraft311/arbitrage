@@ -1,14 +1,33 @@
-function MonoPad:SendNotify(client)
+local classData = {
+	["chats"] = function(client, chatID)
+		local monopad = MonoPad:GetObject(client)
+		if !monopad then return end
+
+		local data = monopad.mutedChats
+
+		if data[chatID] then
+			return false
+		end
+	end
+}
+
+function MonoPad:SendNotify(client, class, ...)
 	if client == nil then
 		for k, v in ipairs(player.GetAll()) do
-			MonoPad:SendNotify(v)
+			MonoPad:SendNotify(v, class, ...)
 		end
 	else
+		local allow = true
+
+		if classData[class] then
+			allow = classData[class](client, ...)
+		end
+
 		timer.Simple(math.random() * 3, function()
 			if !IsValid(client) then return end
 
 			if self:FindMonoPad(client) then
-				if !client:IsNocliping() then
+				if !client:IsNocliping() and allow != false then
 					client:EmitSound(MonoPad.sounds.notification)
 				end
 
@@ -18,12 +37,34 @@ function MonoPad:SendNotify(client)
 	end
 end
 
+netstream.Hook("MonoPad:SyncHistory", function(client, id, history, lastHistory)
+	local find = false
+
+	local inventory = client:GetInventory()
+	if !inventory then return end
+
+	local items = inventory:GetItems()
+	for _, item in ipairs(items) do
+		if item:GetID() == id then
+			find = true
+		end
+	end
+
+	if find then
+		local object = MonoPad.instances[id]
+		if !object then return end
+
+		object.history = history
+		object.lastHistory = lastHistory
+		print("SERVER SYNC HISTORY")
+	end
+end)
+
 netstream.Hook("MonoPad:CreateNotes", function(client, title)
 	local monopad = MonoPad:GetObject(client)
 	if !monopad then return end
 
 	monopad:CreateNotes(title)
-	-- monopad:Sync()
 end)
 
 netstream.Hook("MonoPad:EditNotes", function(client, notesID, title, description)
@@ -31,7 +72,6 @@ netstream.Hook("MonoPad:EditNotes", function(client, notesID, title, description
 	if !monopad then return end
 
 	monopad:EditNotes(notesID, title, description)
-	-- monopad:Sync()
 end)
 
 netstream.Hook("MonoPad:RemoveNotes", function(client, notesID)
@@ -40,27 +80,55 @@ netstream.Hook("MonoPad:RemoveNotes", function(client, notesID)
 	if !monopad:IsReceiver(client) then return end
 
 	monopad:RemoveNotes(notesID)
-	-- monopad:Sync()
 end)
 
 
 local function messageSync(senderID, senderData, targetID, targetData)
-	for k, v in pairs(MonoPad.instances) do
-		-- Синк игроку который отправил
-		if v.team == senderID then
-			v:AddMessage(targetID, senderData)
-			v:Sync()
+	if targetID > 0 then
+		local targetFaction = Character.team:GetByID(targetID)
+		if !targetFaction then return end
+
+		for k, v in pairs(MonoPad.instances) do
+			-- Синк игроку который отправил
+			if v.team == senderID then
+				v:AddMessage(targetID, senderData)
+				v:Sync()
+			end
+
+			-- Синк игроку которому отправили
+			if v.team == targetID then
+				v:AddMessage(senderID, targetData)
+				v:Sync()
+
+				local receivers = v:GetReceivers()
+				for k2, v2 in ipairs(receivers) do
+					if IsValid(v2) and v2:IsPlayer() then
+						MonoPad:SendNotify(v2, "chats", senderID)
+					end
+				end
+			end
+		end
+	else
+		if Arbitrage.OffMonopadGlobalChat() then return end
+
+		local info = GetNetVar("MonoPad:PublicChat", {})
+		table.insert(info, senderData)
+
+		if #info > 50 then
+			table.remove(info, 1)
 		end
 
-		-- Синк игроку которому отправили
-		if v.team == targetID then
-			v:AddMessage(senderID, targetData)
+		SetNetVar("MonoPad:PublicChat", info)
+
+		for k, v in pairs(MonoPad.instances) do
 			v:Sync()
 
-			local receivers = v:GetReceivers()
-			for k2, v2 in ipairs(receivers) do
-				if IsValid(v2) and v2:IsPlayer() then
-					MonoPad:SendNotify(v2)
+			if v.team != senderID then
+				local receivers = v:GetReceivers()
+				for k2, v2 in ipairs(receivers) do
+					if IsValid(v2) and v2:IsPlayer() then
+						MonoPad:SendNotify(v2, "chats", -1)
+					end
 				end
 			end
 		end
@@ -70,9 +138,6 @@ end
 netstream.Hook("MonoPad:SendMessage", function(client, targetID, message)
 	local monopad = MonoPad:GetObject(client)
 	if !monopad then return end
-
-	local targetFaction = Character.team:GetByID(targetID)
-	if !targetFaction then return end
 
 	local senderID = monopad.team
 
@@ -93,9 +158,6 @@ end)
 netstream.Hook("MonoPad:SendEvidence", function(client, targetID, id)
 	local monopad = MonoPad:GetObject(client)
 	if !monopad then return end
-
-	local targetFaction = Character.team:GetByID(targetID)
-	if !targetFaction then return end
 
 	local senderID = monopad.team
 
@@ -121,11 +183,16 @@ netstream.Hook("MonoPad:ReadMessageEvidence", function(client, targetID, message
 	local monopad = MonoPad:GetObject(client)
 	if !monopad then return end
 
-	local targetFaction = Character.team:GetByID(targetID)
-	if !targetFaction then return end
+	local message = nil
+	if targetID > 0 then
+		local targetFaction = Character.team:GetByID(targetID)
+		if !targetFaction then return end
 
-	monopad.messages[targetID] = monopad.messages[targetID] or {}
-	local message = monopad.messages[targetID][messageID]
+		monopad.messages[targetID] = monopad.messages[targetID] or {}
+		message = monopad.messages[targetID][messageID]
+	else
+		message = GetNetVar("MonoPad:PublicChat", {})[messageID]
+	end
 
 	if message and message.type == 2 then
 		monopad:AddEvidence(message.data)
@@ -241,6 +308,21 @@ netstream.Hook("MonoPad:EditCase", function(client, caseID, data)
 	monopad:Sync()
 end)
 
+netstream.Hook("MonoPad:MuteChat", function(client, chatID)
+	local monopad = MonoPad:GetObject(client)
+	if !monopad then return end
+
+	local data = monopad.mutedChats
+	if data[chatID] then
+		data[chatID] = nil
+	else
+		data[chatID] = true
+	end
+
+	monopad.mutedChats = data
+	monopad:Sync(nil, true)
+end)
+
 
 
 
@@ -301,8 +383,13 @@ netstream.Listen("MonoPad:GetMessage", function(client, id)
 	local monopad = MonoPad:GetObject(client)
 	if !monopad then return end
 
-	local message = monopad.messages[id]
-	if !message then return end
+	local message = {}
+	if id > 0 then
+		message = monopad.messages[id]
+		if !message then return end
+	else
+		message = GetNetVar("MonoPad:PublicChat", {})
+	end
 
 	return true, message
 end)

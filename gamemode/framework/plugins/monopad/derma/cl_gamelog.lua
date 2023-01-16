@@ -9,6 +9,12 @@ function PANEL:Init()
 	self.closeButton = ui:BackButton(self, function()
 		if self.isOpen then return end
 
+		local historyID = ui:GetActiveHistoryID()
+		if historyID then
+			local monopad = MonoPad:GetObject()
+			table.remove(monopad.history, historyID)
+		end
+
 		ui:Rebuild()
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)

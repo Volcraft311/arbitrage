@@ -9,6 +9,12 @@ function PANEL:Init()
 	self.closeButton = ui:BackButton(self, function()
 		if self.isOpen then return end
 
+		local historyID = ui:GetActiveHistoryID()
+		if historyID then
+			local monopad = MonoPad:GetObject()
+			table.remove(monopad.history, historyID)
+		end
+
 		ui:Rebuild()
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end)
@@ -26,6 +32,13 @@ function PANEL:Init()
 		self.closeButton:AlphaTo(0, 0.3)
 		self.secretsPanel:AlphaTo(0, 0.3)
 		self.isOpen = true
+
+		ui:EditHistory(ui:GetActiveHistoryID(), {
+			"special",
+			"Список улик",
+			MonoPad.icons.special,
+			{1}
+		})
 
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
 	end
@@ -89,6 +102,13 @@ function PANEL:Init()
 			parent.evidencePanel:AlphaTo(255, 0.3)
 			parent.secretsPanel:AlphaTo(30, 0.3)
 			parent.isOpen = nil
+
+			ui:EditHistory(ui:GetActiveHistoryID(), {
+				"special",
+				"Спец. материалы",
+				MonoPad.icons.special,
+				{}
+			})
 
 			self:Remove()
 		end)

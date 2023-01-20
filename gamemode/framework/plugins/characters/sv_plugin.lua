@@ -13,7 +13,7 @@ function Character.CreationSync(client)
 		if client != nil then
 			netstream.Start(client, "Character:CreationSync", key, stored)
 		else
-			for uniqueID, info in pairs(stored) do
+			for uniqueID, info in SortedPairs(stored) do
 				Character.CreationRegisterKeys(key, uniqueID, info)
 			end
 		end

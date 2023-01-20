@@ -184,7 +184,7 @@ end
 
 function Character.team:Init(callback)
     local function c()
-        for uniqueID, info in pairs(Character.creation.team) do
+        for uniqueID, info in SortedPairs(Character.creation.team) do
             Character.CreationRegisterKeys("team", uniqueID, info)
         end
 

@@ -11,7 +11,7 @@ netstream.Hook("Character:CreationRemoveKeys", function(key, uniqueID)
 end)
 
 netstream.Hook("Character:CreationSync", function(key, stored)
-	for uniqueID, info in pairs(stored) do
+	for uniqueID, info in SortedPairs(stored) do
 		Character.CreationRegisterKeys(key, uniqueID, info)
 	end
 end)

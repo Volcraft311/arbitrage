@@ -22,11 +22,6 @@ function Stamina:GetMaxWalkSpeed(client)
 		speed = speed - value
 	end
 
-	local stamina = self:GetStamina(client)
-	if stamina <= 5 then
-		speed = speed * 0.5
-	end
-
 	return speed
 end
 
@@ -68,8 +63,10 @@ function Stamina:SpeedHandler(client, info)
 	local maxWalkSpeed = info.maxWalkSpeed
 	local maxRunSpeed = info.maxRunSpeed
 	local stamina = info.stamina
+	local isWalking = info.isWalking
+	local isShifting = (isWalking and client:KeyDown(IN_SPEED))
 
-	if (!isRunning and runSpeed > maxWalkSpeed + 0.05) or (stamina < 100 or stamina > 100) or (runSpeed < maxWalkSpeed) then
+	if (!isRunning and runSpeed > maxWalkSpeed + 0.1) or (stamina < 100 or stamina > 100) or (runSpeed < maxWalkSpeed) or (runSpeed > maxRunSpeed) or isShifting then
 		local ftSpeed = info.ft * 12
 		runSpeed = Lerp(ftSpeed, runSpeed, (isRunning and stamina > 5) and maxRunSpeed or maxWalkSpeed + 0.03)
 		runSpeed = math.max(maxWalkSpeed, runSpeed)
@@ -87,12 +84,16 @@ function Stamina:CalcRegeneration(client, info)
 	local regeneration = 1
 
 	if isRunning then
+		regeneration = regeneration * 0.5
+
 		local faction = Character.team:GetByID(client:Team())
 		local staminaSpending = faction and faction:GetRunConsumption() or 1
 
 		regeneration = regeneration * staminaSpending
 	else
 		if self:GetStaminaCD(client) > CurTime() then return 0 end
+
+		regeneration = regeneration * 3 -- восстанавливаем стамину быстрее, чем тратим
 
 		local thirst = Arbitrage.statistics.Get(client, "Thirst") or 100
 		if thirst < 10 then return 0 end
@@ -122,9 +123,7 @@ function Stamina:StaminaHandler(client, info)
 		local ftSpeed = info.ft * 20
 		local value = math.Approach(stamina, isShifting and 0 or 100, ftSpeed * regeneration)
 
-		if value <= 1 and isShifting then
-			self:SetStaminaCD(client, 10)
-		elseif isRunning then
+		if isRunning then
 			self:SetStaminaCD(client, 1.5)
 		end
 
@@ -165,11 +164,11 @@ function Stamina:CreateTimer(client)
 	timer.Create(id, 0.1, 0, function()
 		if !IsValid(client) then return timer.Remove(id) end
 
-        if !client:IsPlaying() or !client:oldAlive() then
-        	return self:ReturnSpeed(client)
-        end
+	    if !client:IsPlaying() or !client:oldAlive() then
+	    	return self:ReturnSpeed(client)
+	    end
 
-        if client:IsNocliping() then return end
+	    if client:IsNocliping() then return end
 
 		local info = {}
 		info.runSpeed = client:GetRunSpeed()

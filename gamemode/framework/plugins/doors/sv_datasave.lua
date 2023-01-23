@@ -43,22 +43,22 @@ end
 
 local initData = {
 	asterion_hopespeak_prerelease = {
-		[1278] = true,
-		[2511] = true,
-		[2663] = true,
-		[2684] = true,
-		[2370] = true,
-		[2513] = true,
-		[2609] = true,
-		[2324] = true,
-		[2184] = true,
-		[2652] = true,
-		[2181] = true,
-		[2047] = true,
-		[2283] = true,
-		[2273] = true,
-		[2276] = true,
-		[2393] = true
+		[1373] = true,
+		[1608] = true,
+		[2749] = true,
+		[2770] = true,
+		[2288] = true,
+		[2496] = true,
+		[2696] = true,
+		[2386] = true,
+		[2078] = true,
+		[2739] = true,
+		[2081] = true,
+		[2116] = true,
+		[1260] = true,
+		[2315] = true,
+		[2057] = true,
+		[2374] = true
 	}
 }
 

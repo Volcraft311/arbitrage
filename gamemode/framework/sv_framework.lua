@@ -448,8 +448,8 @@ function Arbitrage:KeyPress(client, key)
         local last_player = 0
         local alive_players = {}
 
-        for k, v in SortedPairs(player.GetAll()) do
-            if v:oldAlive() and !v:IsSpectate() and !v:IsHost() and v:Team() != TEAM_ADMIN then -- v:Team() == TEAM_PLAYERS
+        for k, v in ipairs(player.GetAll()) do
+            if Arbitrage.players[v:SteamID()] and v:Alive() and !v:IsHost() then
                 alive_players[#alive_players + 1] = v
             end
         end

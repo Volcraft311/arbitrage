@@ -180,11 +180,21 @@ Character.category:Init(function()
             client:Freeze(false)
 
             client:Spectate(OBS_MODE_CHASE)
-            for k, v in SortedPairs(player.GetAll()) do
-                if v:Alive() and v:IsPlaying() and v != client then
-                    client:SpectateEntity(v)
-                    break
+
+            local first_player = 1
+            local alive_players = {}
+
+            for k, v in ipairs(player.GetAll()) do
+                if Arbitrage.players[v:SteamID()] and v:Alive() and !v:IsHost() then
+                    alive_players[#alive_players + 1] = v
                 end
+            end
+
+            if IsValid(alive_players[first_player]) then
+                client.spectateplayer = first_player
+                client:SpectateEntity(alive_players[first_player])
+                client.spectateent = alive_players[first_player]
+                client:SetNetVar("spectate", alive_players[first_player])
             end
         end
     })

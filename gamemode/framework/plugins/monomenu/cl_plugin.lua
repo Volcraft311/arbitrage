@@ -490,10 +490,10 @@ local function getActionList(clientinfo)
                 icon = "icon16/arrow_switch.png",
                 data = {
                     {
-                        name = "Скорость хотьбы",
+                        name = "Скорость ходьбы",
                         icon = "icon16/bullet_go.png",
                         data = function()
-                            Derma_StringRequest("Изменить скорость хотьбы", "Введите значение на которое вы хотите изменить скорость хотьбы.\n1 - стандартная скорость", 1, function(text)
+                            Derma_StringRequest("Изменить скорость ходьбы", "Введите значение на которое вы хотите изменить скорость ходьбы.\n1 - стандартная скорость", 1, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setspeed", client, "walk", tonumber(text))

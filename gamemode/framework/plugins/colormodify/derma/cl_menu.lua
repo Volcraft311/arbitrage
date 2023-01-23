@@ -47,13 +47,14 @@ end
 function PANEL:InitColorModify()
     self.mainPanel = self:Add("Panel")
     self.mainPanel:SetWide(W(250))
-    self.mainPanel:Dock(FILL)
+    self.mainPanel:Dock(TOP)
     self.mainPanel:DockMargin(W(5), H(45), W(5), H(5))
     self.mainPanel.Paint = function(_, w, h)
         surface.SetDrawColor(27, 10, 13, 150)
         surface.DrawRect(0, 0, w, h)
     end
 
+    local size = H(30) + H(3) + H(20)
     local data = PLUGIN:Get()
 
     local enableButton = self.mainPanel:Add("DCheckBoxLabel")
@@ -101,7 +102,11 @@ function PANEL:InitColorModify()
         label:SetFont("arb.Font_FuturaPTBook_8")
         label:SetTextColor(color_white)
         label:DockMargin(W(25), 0, 0, 0)
+
+        size = size + H(30) + H(3)
     end
+
+    self.mainPanel:SetTall(size)
 
     local returnButton = self:Add("DButton")
     returnButton:SetText("")
@@ -123,6 +128,10 @@ function PANEL:InitColorModify()
             vgui.Create("ColorModify:Menu")
         end)
     end
+
+    local playersPanel = self:Add("DPanel")
+    playersPanel:SetTall(200)
+    playersPanel:Dock(FILL)
 end
 
 function PANEL:Paint(w, h)

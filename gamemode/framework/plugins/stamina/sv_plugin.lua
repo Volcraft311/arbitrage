@@ -190,7 +190,7 @@ end
 function Stamina:KeyPress(client, key)
 	if !client:IsPlaying() or !client:oldAlive() then return end
 
-	if key == IN_JUMP and client:OnGround() then
+	if key == IN_JUMP and client:OnGround() and !client:InVehicle() then
 		local stamina = self:GetStamina(client)
 
 		self:SetStamina(client, math.max(0, stamina - 10))

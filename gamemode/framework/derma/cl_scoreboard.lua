@@ -74,6 +74,7 @@ function PANEL:Init()
 
     if !self.isShow then return end
     for k, v in ipairs(player.GetAll()) do
+        local steamid = v:SteamID()
         local faction = v:Team()
         local factionData = Character.team:GetByID(faction)
         if !factionData then continue end
@@ -128,8 +129,24 @@ function PANEL:Init()
         imageButton.Paint = nil
         imageButton.DoClick = function()
             local menu = DermaMenu(false, self)
-            menu:AddOption("Скопировать SteamID", function() SetClipboardText(v:SteamID()) end)
-            menu:AddOption("Перейти на профиль", function() gui.OpenURL(Format("https://steamcommunity.com/profiles/%s", util.SteamIDTo64(v:SteamID()))) end)
+            menu:AddOption("Скопировать SteamID", function() SetClipboardText(steamid) end)
+            menu:AddOption("Перейти на профиль", function() gui.OpenURL(Format("https://steamcommunity.com/profiles/%s", util.SteamIDTo64(steamid))) end)
+            menu:AddOption("Написать личное сообщение", function()
+                local chatbox = Arbitrage.gui.chat
+                if !IsValid(chatbox) then return end
+
+                self:Remove()
+                chatbox.entry:SetValue("")
+
+                timer.Simple(0.3, function()
+                    local text = ("/pm %s "):format(steamid)
+
+                    chatbox:SetActive(true)
+                    chatbox.entry:SetValue(text)
+                    chatbox.entry:RequestFocus()
+                    chatbox.entry:SetCaretPos(utf8.len(text))
+                end)
+            end)
 
             menu:SetPos(gui.MouseX(), gui.MouseY())
         end

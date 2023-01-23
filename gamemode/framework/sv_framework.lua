@@ -876,6 +876,17 @@ function Arbitrage:StopGame()
     end
 end
 
+timer.Create("Arbitrage:RegenerationHealth", 60, 0, function()
+    for k, v in ipairs(player.GetAll()) do
+        if !v:IsPlaying() then continue end
+
+        local health = v:Health()
+        if health >= 100 or health <= 0 then continue end
+
+        v:SetHealth(math.Clamp(health + 1, 0, 100))
+    end
+end)
+
 timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
     for k, v in ipairs(player.GetAll()) do
         if !v:IsSpectate() then return end

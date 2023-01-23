@@ -1,3 +1,11 @@
+function Stamina:IsRunning(client)
+	return client:GetVelocity():Length() > self:GetMaxWalkSpeed(client) and client:KeyDown(IN_SPEED)
+end
+
+function Stamina:IsWalking(client)
+	return client:GetVelocity():Length() > 10
+end
+
 function Stamina:SetStamina(client, value)
 	if self:GetStamina(client) != value then
 		client:SetLocalVar("stamina", value)
@@ -15,6 +23,11 @@ end
 function Stamina:GetMaxWalkSpeed(client)
 	local speed = ARBITRAGE_WALK_SPEED + 1
 
+	local arbWalkSpeed = client.arb_walkSpeed
+	if arbWalkSpeed then
+		speed = speed * arbWalkSpeed
+	end
+
 	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
 	if sleep <= 40 then
 		local value = math.abs(sleep - 40)
@@ -27,6 +40,11 @@ end
 
 function Stamina:GetMaxRunSpeed(client)
 	local speed = ARBITRAGE_RUN_SPEED + 1
+
+	local arbRunSpeed = client.arb_runSpeed
+	if arbRunSpeed then
+		speed = speed * arbRunSpeed
+	end
 
 	local faction = Character.team:GetByID(client:Team())
 	if faction then

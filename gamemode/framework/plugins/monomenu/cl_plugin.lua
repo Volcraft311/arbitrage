@@ -486,6 +486,40 @@ local function getActionList(clientinfo)
                 }
             },
             {
+                name = "Изменить скорость",
+                icon = "icon16/arrow_switch.png",
+                data = {
+                    {
+                        name = "Скорость хотьбы",
+                        icon = "icon16/bullet_go.png",
+                        data = function()
+                            Derma_StringRequest("Изменить скорость хотьбы", "Введите значение на которое вы хотите изменить скорость хотьбы.\n1 - стандартная скорость", 1, function(text)
+                                if !tonumber(text) then return end
+
+                                runAction("setspeed", client, "walk", tonumber(text))
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Скорость бега",
+                        icon = "icon16/arrow_right.png",
+                        data = function()
+                            Derma_StringRequest("Изменить скорость бега", "Введите значение на которое вы хотите изменить скорость бега.\n1 - стандартная скорость", 1, function(text)
+                                if !tonumber(text) then return end
+
+                                runAction("setspeed", client, "run", tonumber(text))
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    }
+                }
+            },
+            {
                 name = "Включить подсветку",
                 icon = "icon16/arrow_in.png",
                 data = function()

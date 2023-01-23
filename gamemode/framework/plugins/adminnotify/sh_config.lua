@@ -70,6 +70,10 @@ PLUGIN:AddNewNotify("setstats", function(client, data, target, amount)
     return Color(63, 162, 184), client, color_white, " установил ", Color(48, 218, 187), data, color_white, " игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), amount
 end)
 
+PLUGIN:AddNewNotify("setspeed", function(client, data, target, speed)
+    return Color(63, 162, 184), client, color_white, " изменил скорость ", Color(48, 218, 187), data, color_white, " игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), speed or 1
+end)
+
 PLUGIN:AddNewNotify("setplace", function(client, data, target)
     return Color(63, 162, 184), client, color_white, " установил место в суде игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), data
 end)

@@ -82,6 +82,7 @@ function PLUGIN:PlayerDisconnected(client)
             scale = client:GetModelScale(),
             hullscale = {hullMin, hullMax},
             hullduckscale = {hullduckMin, hullduckMax},
+            speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
 
             saver = client._saver
         }
@@ -146,6 +147,9 @@ function PLUGIN:PlayerInitial(client)
     client:SetModelScale(data.scale)
     client:SetHull(data.hullscale[1], data.hullscale[2], true)
     client:SetHullDuck(data.hullduckscale[1], data.hullduckscale[2], true)
+
+    client.arb_walkSpeed = data.speed[1]
+    client.arb_runSpeed = data.speed[2]
 
     local saver = data.saver
     if saver then

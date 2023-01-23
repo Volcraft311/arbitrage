@@ -348,6 +348,24 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("setstats", client:FullName(), data, target:FullName(), amount)
     end,
+    ["setspeed"] = function(client, target, data, speed)
+        if !IsValid(target) then return end
+
+        speed = tonumber(speed)
+        if !speed then return end
+
+        if speed == 1 then
+            speed = nil
+        end
+
+        if data == "walk" then
+            target.arb_walkSpeed = speed
+        elseif data == "run" then
+            target.arb_runSpeed = speed
+        end
+
+        Arbitrage.adminnotify:SendNotify("setspeed", client:FullName(), data, target:FullName(), speed)
+    end,
     ["claerinventory"] = function(client, target)
         if !IsValid(target) then return end
 

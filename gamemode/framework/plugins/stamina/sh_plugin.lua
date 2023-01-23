@@ -7,14 +7,6 @@ function Stamina:GetStamina(client)
 	return client:GetLocalVar("stamina", 100)
 end
 
-function Stamina:IsRunning(client)
-	return client:GetVelocity():Length() > self:GetMaxWalkSpeed(client) and client:KeyDown(IN_SPEED)
-end
-
-function Stamina:IsWalking(client)
-	return client:GetVelocity():Length() > 10
-end
-
 function Stamina:StartCommand(client, ucmd)
 	if !client:IsPlaying() or client:IsNocliping() then return end
 

@@ -77,24 +77,22 @@ function PLUGIN:InitPlayersDoor()
 
 	local db = Arbitrage.plugin.list.doors.DoorsData or {}
 	local num = 1
-	for k, v in ipairs(player.GetAll()) do
-		if v:IsPlaying() and num <= table.Count(initData[map]) and !v:IsHost() then
+	for k, v in pairs(Arbitrage.players) do
+		local client = v.client
+
+		if IsValid(client) and client:IsPlaying() and num <= table.Count(initData[map]) and !client:IsHost() then
 			local entity = doorsEntity[num]
 			if !IsValid(entity) then continue end
 
 			local id = entity:MapCreationID()
-			local faction = v:Team()
+			local faction = client:Team()
 
 			db[id] = db[id] or {}
 			db[id].list = db[id].list or {}
 			db[id].list[faction] = true
 			db[id].idx = entity:EntIndex()
 
-			local data = {}
-			table.insert(data, v:Team())
-
-			entity:SetNetVar("arb.image", data)
-
+			entity:SetNetVar("arb.image", {faction})
 			entity:Fire("close")
 			entity:Fire("lock")
 			entity:SetNWBool("Locked", true)

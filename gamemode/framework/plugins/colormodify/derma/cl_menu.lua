@@ -129,9 +129,112 @@ function PANEL:InitColorModify()
         end)
     end
 
+    local saveButton = self:Add("DButton")
+    saveButton:SetText("")
+    saveButton:SetTall(H(25))
+    saveButton:Dock(BOTTOM)
+    saveButton.alpha = 0
+    saveButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText("Конфигурации", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+
+        surface.SetDrawColor(255, 61, 96, 30)
+        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+    end
+    saveButton.DoClick = function()
+        local Menu = DermaMenu()
+        Menu:AddOption("Сохранить цветокор", function()
+            Derma_StringRequest("Сохранить цветокор", "Введите название документа в который вы хотите сохранить цветокор", "", function(text)
+                local data = PLUGIN:Get()
+
+                local array = {}
+                array.brightness = data.brightness
+                array.contrast = data.contrast
+                array.color = data.color
+                array.mulr = data.mulr
+                array.mulg = data.mulg
+                array.mulb = data.mulb
+                array.addr = data.addr
+                array.addg = data.addg
+                array.addb = data.addb
+
+                file.Write("academy_colormodify_configs/" .. text .. ".txt", util.TableToJSON(array))
+            end, nil, "Сохранить", "Отменить")
+        end):SetIcon("icon16/add.png")
+
+        local Child, Parent = Menu:AddSubMenu("Загрузить цветокор")
+        Parent:SetIcon("icon16/arrow_down.png")
+
+        local files = file.Find("academy_colormodify_configs/*", "DATA")
+        for k, v in ipairs(files) do
+            Child:AddOption(v, function()
+                local data = util.JSONToTable(file.Read("academy_colormodify_configs/" .. v, "DATA"))
+
+                netstream.Start("ColorModify:LoadConfig", data)
+
+                timer.Simple(0.5, function()
+                    self:Remove()
+                    vgui.Create("ColorModify:Menu")
+                end)
+            end)
+        end
+
+        Menu:Open()
+    end
+
     local playersPanel = self:Add("DPanel")
     playersPanel:SetTall(200)
     playersPanel:Dock(FILL)
+    playersPanel:DockMargin(W(5), H(5), W(5), H(5))
+    playersPanel.Paint = function(_, w, h)
+        surface.SetDrawColor(27, 10, 13, 150)
+        surface.DrawRect(0, 0, w, h)
+    end
+
+    local enablePlayersButton = playersPanel:Add("DCheckBoxLabel")
+    enablePlayersButton:SetTall(H(30))
+    enablePlayersButton:Dock(TOP)
+    enablePlayersButton:DockMargin(W(25), H(3), 0, H(20))
+    enablePlayersButton:SetText("Включить для определенных игроков")
+    enablePlayersButton:SetFont("arb.Font_FuturaPTBook_8")
+    enablePlayersButton:SetValue(data.players)
+    enablePlayersButton.OnChange = function(_, value)
+        netstream.Start("ColorModify:Set", "players", tobool(value))
+    end
+
+    local scrollPanel = playersPanel:Add("DScrollPanel")
+    scrollPanel:Dock(FILL)
+
+    do
+        local bar = scrollPanel:GetVBar()
+        bar:SetWide(3)
+        bar:DockMargin(0, 0, 0, 0)
+
+        bar.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255, 3)
+            surface.DrawRect(0, 0, w, h)
+        end
+        bar.btnUp.Paint = function(_, w, h) end
+        bar.btnDown.Paint = function(_, w, h) end
+        bar.btnGrip.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.DrawRect(0, 0, w, h)
+        end
+    end
+
+    for k, v in ipairs(player.GetAll()) do
+        local steamid = v:SteamID()
+
+        local checkbox = scrollPanel:Add("DCheckBoxLabel")
+        checkbox:Dock(TOP)
+        checkbox:DockMargin(W(25), 0, 0, 0)
+        checkbox:SetText(v:Name() .. " (" .. v:SteamName() .. ")")
+        checkbox:SetValue(data.playersList[steamid])
+        checkbox:SizeToContents()
+        checkbox.OnChange = function(_)
+            netstream.Start("ColorModify:AddPlayer", steamid)
+        end
+    end
 end
 
 function PANEL:Paint(w, h)

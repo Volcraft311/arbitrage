@@ -11,12 +11,17 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+file.CreateDir("academy_colormodify_configs")
 
 local PLUGIN = PLUGIN
 
 function PLUGIN:RenderScreenspaceEffects()
     local data = self:Get()
     if !data.enabled then return end
+
+    if data.players and !data.playersList[LocalPlayer():SteamID()] then
+        return
+    end
 
     local ColorModify = {}
     ColorModify["$pp_colour_brightness"] = data.brightness

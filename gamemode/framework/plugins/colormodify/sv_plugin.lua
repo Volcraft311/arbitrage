@@ -30,6 +30,29 @@ netstream.Hook("ColorModify:Set", function(client, key, value)
     Arbitrage.adminnotify:SendNotify("changecolormodify", client:FullName(), key, tostring(value))
 end)
 
+netstream.Hook("ColorModify:AddPlayer", function(client, steamid)
+    if !client:IsAdmin() then return end
+
+    local data = PLUGIN:Get()
+    if data.playersList[steamid] then
+        data.playersList[steamid] = nil
+    else
+        data.playersList[steamid] = true
+    end
+
+    SetNetVar("colormodify", data)
+end)
+
+netstream.Hook("ColorModify:LoadConfig", function(client, array)
+    local data = PLUGIN:Get()
+
+    for k, v in pairs(array) do
+        data[k] = v
+    end
+
+    SetNetVar("colormodify", data)
+end)
+
 netstream.Hook("ColorModify:Standart", function(client)
     if !client:IsAdmin() then return end
 

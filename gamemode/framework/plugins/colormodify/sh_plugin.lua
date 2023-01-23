@@ -25,6 +25,8 @@ PLUGIN.colorMod = {
     addr = 0,
     addg = 0,
     addb = 0,
+    players = false,
+    playersList = {}
 }
 
 function PLUGIN:Default()

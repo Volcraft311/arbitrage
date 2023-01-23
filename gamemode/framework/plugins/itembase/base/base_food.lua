@@ -76,6 +76,13 @@ local function RecoveryFunc(item, bAll)
         Arbitrage.statistics.Set(client, v, math.Clamp(info + (amount * (bAll and left or 1)), 0, 100))
     end
 
+    local health = client:Health()
+    if health > 0 and health < 100 then
+        local addHealth = 2 * (bAll and left or 1)
+
+        client:SetHealth(math.Clamp(health + addHealth, 0, 100))
+    end
+
     local song = item.sound
     if song and song != "" and song != " " then
         client:EmitSound(song)

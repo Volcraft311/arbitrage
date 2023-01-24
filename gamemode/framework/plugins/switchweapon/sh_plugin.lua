@@ -18,7 +18,8 @@ local weaponData = {
     ["weapon_physgun"] = true,
     ["gmod_tool"] = true,
     ["academy_key"] = true,
-    ["academy_first"] = true
+    ["academy_first"] = true,
+    ["drgbase_possession"] = true
 }
 
 function PLUGIN:PlayerSwitchWeapon(client, old, new)

@@ -600,8 +600,10 @@ function PANEL:SetData(id)
         self.description = info.description
         self.tags = info.tags
 
-        if info.children and #info.children > 0 then
+        if info.fileid and info.children and #info.children > 0 then
             self.collectionChildren = info.children
+
+            table.insert(self.collectionChildren, self.id)
         end
 
         asterionlib.DownloadImage(info.previewurl, function(matPath, path)

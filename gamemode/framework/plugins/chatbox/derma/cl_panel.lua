@@ -735,7 +735,7 @@ function PANEL:Think()
 	end
 
 	if (gui.IsGameUIVisible()) then
-		self:SetActive(false)
+		self:SetActive(input.IsKeyDown(KEY_BACKQUOTE))
 		gui.HideGameUI()
 
 		return

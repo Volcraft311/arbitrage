@@ -208,7 +208,11 @@ function PANEL:Think()
 		self.bMiddleClick = nil
 	end
 
-	for i = 1, 9 do
+	local data = {}
+	for i = 1, 9 do data[#data + 1] = i end
+	for i = 37, 46 do data[#data + 1] = i end
+
+	for k, i in ipairs(data) do
 		local onDown = input.IsKeyDown(i + 1)
 
 		if onDown then
@@ -216,7 +220,8 @@ function PANEL:Think()
 				if self.bClose then return end
 				if !self.selected then return end
 
-				local x, y = self:SelectOption(i)
+				local info = k < 10 and i or i - 36
+				local x, y = self:SelectOption(info)
 
 				if x and y then
 					input.SetCursorPos(x, y)

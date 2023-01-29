@@ -30,7 +30,7 @@ function PLUGIN:HUDPaint()
 		local pos = entity:LocalToWorld(entity:OBBCenter())
 
 		local data2D = pos:ToScreen()
-		if !data2D.visible then return end
+		if !data2D.visible then continue end
 
 		local bNotVisible = Arbitrage.hud.VectorObstructed(eyePos, pos, {client, entity})
 		if bNotVisible then continue end

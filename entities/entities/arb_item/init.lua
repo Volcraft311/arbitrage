@@ -118,6 +118,21 @@ function ENT:OnRemove()
 	end
 end
 
+function ENT:OnDuplicated(entTable)
+	local uniqueID = entTable.DT and entTable.DT.UniqueID
+	local itemID = entTable.DT and entTable.DT.ItemID
+	local pos, ang = self:GetPos(), self:GetAngles()
+	self:Remove()
+
+	if !uniqueID then return end
+
+	local item = ItemBase.CreateItemInWorld(uniqueID, pos, ang)
+	local data = ItemBase.data[itemID] or {}
+	for k, v in pairs(data) do
+		item:SetData(k, v)
+	end
+end
+
 function ENT:UpdateTransmitState()
 	return TRANSMIT_PVS
 end

@@ -120,6 +120,7 @@ do
         workshop:Add("2849953494") -- Danganronpa - Models Content #4
         workshop:Add("2791583716") -- Asterion Academy - Additional Content
         workshop:Add("2860471023") -- Asterion Academy — Prop Content #1
+        workshop:Add("2903072502") -- Asterion Academy - RadialMenu Assets (beta)
 
         -- OTHER
         workshop:Add("246756300") -- Stream Radio

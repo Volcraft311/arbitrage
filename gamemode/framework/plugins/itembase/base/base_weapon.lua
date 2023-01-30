@@ -46,6 +46,16 @@ if CLIENT then
 	end
 end
 
+function BASE:GetDescription()
+	local amount = tonumber(self:GetData("ammoClip", 0))
+
+	if amount > 0 then
+		return self.description .. " Количество патрон: " .. amount .. "."
+	end
+
+	return self.description
+end
+
 function BASE:Equip(client, item, id)
 	if id < 1 or id > 4 then return end
 
@@ -161,6 +171,53 @@ BASE:AddAction("Снять", {
 	end,
 	OnCanRun = function(item)
 	    return !IsValid(item.entity) and item:GetData("equip")
+	end
+})
+
+BASE:AddAction("Разоружить", {
+	OnRun = function(item)
+		local client = item.player
+
+		local weapon = nil
+		for k, v in ipairs(weapons.GetList()) do
+			if v.ClassName == item.class then
+				weapon = v
+				break
+			end
+		end
+		if !weapon then return false end
+
+		local name = weapon.Primary and weapon.Primary.Ammo
+		if !name then return false end
+
+		local amount = item:GetData("ammoClip", 0)
+		if amount <= 0 then return false end
+
+		local itemsAmmo = {}
+	    for k, v in pairs(ItemBase.list) do
+	        if v.base == "base_ammo" then
+	            itemsAmmo[string.lower(v.ammoClass)] = k
+	        end
+	    end
+
+	    local uniqueID = itemsAmmo[string.lower(name)]
+	    if !uniqueID then return false end
+
+	    local item2 = ItemBase.CreateItem(uniqueID)
+	    item2:SetData("amount", amount)
+
+	    local notify = item2:Transfer(client:GetInventory():GetID())
+	    if notify then
+	        item2:Spawn(client:GetPos() + Vector(0, 0, 20))
+	    end
+
+	    item:SetData("ammoClip", 0)
+	    client:ChatNotify("Вы успешно вытащили патроны из " .. item:GetName() .. "!")
+
+	    return false
+	end,
+	OnCanRun = function(item)
+	    return !IsValid(item.entity) and !item:GetData("equip") and item:GetData("ammoClip", 0) > 0
 	end
 })
 

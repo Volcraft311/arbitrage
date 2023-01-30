@@ -35,7 +35,6 @@ function InventoryBase:PlayerDeath(client)
     if !inventory then return end
 
     local items = inventory:GetItems()
-
     for k, v in pairs(items) do
         if v:GetData("equip") then
             v:UnEquip(client, v)
@@ -46,6 +45,26 @@ function InventoryBase:PlayerDeath(client)
                 entity:SetPos(client:GetShootPos())
             end
         end
+    end
+
+
+    local itemsAmmo = {}
+    for k, v in pairs(ItemBase.list) do
+        if v.base == "base_ammo" then
+            itemsAmmo[string.lower(v.ammoClass)] = k
+        end
+    end
+
+    local ammo = client:GetAmmo()
+    for id, count in pairs(ammo) do
+        local name = game.GetAmmoName(id)
+        if !name then continue end
+
+        local uniqueID = itemsAmmo[string.lower(name)]
+        if !uniqueID then continue end
+
+        local item = ItemBase.CreateItemInWorld(uniqueID, client:GetShootPos(), Angle(0, 0, 0))
+        item:SetData("amount", count)
     end
 end
 
@@ -136,4 +155,41 @@ netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
     if !data or data[2] != itemID then
         item:Equip(client, item, slotID)
     end
+end)
+
+netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
+    if client:IsSpectate() then return end
+
+    local inventory = client:GetInventory()
+    if !inventory then return end
+
+    local ammoCount = client:GetAmmo()[id]
+    if !ammoCount then return end
+
+    amount = math.Clamp(amount, 0, ammoCount)
+    if amount <= 0 then return end
+
+    local itemsAmmo = {}
+    for k, v in pairs(ItemBase.list) do
+        if v.base == "base_ammo" then
+            itemsAmmo[string.lower(v.ammoClass)] = k
+        end
+    end
+
+    local name = game.GetAmmoName(id)
+    if !name then return end
+
+    local uniqueID = itemsAmmo[string.lower(name)]
+    if !uniqueID then return end
+
+    local item = ItemBase.CreateItem(uniqueID)
+    item:SetData("amount", amount)
+
+    local notify = item:Transfer(inventory:GetID())
+    if notify then
+        item:Spawn(client:GetPos() + Vector(0, 0, 20))
+    end
+
+    client:RemoveAmmo(amount, name)
+    client:ChatNotify("Вы успешно вытащили " .. amount .. " патрон из запаса для " .. name .. "!")
 end)

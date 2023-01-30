@@ -166,7 +166,7 @@ do
     ITEM.description = "Уникальный тазер Токо Фукавы, которым она приручила свою вторую личность «Геноцид Сё». В экстренных случаях он может быть использован для намеренной смены личности."
     ITEM.model = "models/weapons/w_alyx_gun.mdl"
     ITEM.category = "Уникальные"
-    ITEM.image = nil
+    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/7991/7991337.png"
 
     ITEM:AddAction("Использовать", {
         OnRun = function(item)

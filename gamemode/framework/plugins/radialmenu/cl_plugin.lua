@@ -191,6 +191,71 @@ function PLUGIN:ActionsOption()
 		}
 	end
 
+	local ammo = LocalPlayer():GetAmmo()
+	if table.Count(ammo) > 0 then
+		local function stored()
+			local info = {
+				{
+					name = "Вернуться назад",
+					description = "Вернуть в предыдущую категорию",
+					icon = Material("danganronpa/radialmenu/back.png"),
+					action = self.ActionsOption
+				}
+			}
+
+		    for id, count in pairs(ammo) do
+				local name = game.GetAmmoName(id)
+				if !name then continue end
+
+				info[#info + 1] = {
+					name = name .. " (" .. count .. ")",
+					id = "unequip_ammo_" .. string.lower(name),
+					description = "Вытащить патроны из запаса для " .. name,
+					action = function()
+						DermaStringRequest = Derma_StringRequest("Разоружить оружие", "Введите количество патрон, которое вы хотите вытащить", count, function(text)
+							text = tonumber(text)
+							if !text then return end
+
+							netstream.Start("Inventory:UnequipAmmo", id, text)
+						end, nil, "Вытащить", "Отменить")
+						DermaStringRequest.startTime = SysTime()
+						DermaStringRequest:SetAlpha(0)
+						DermaStringRequest:AlphaTo(255, 0.3)
+
+					    DermaStringRequest.Paint = function(_, w, h)
+					        Derma_DrawBackgroundBlur(_, _.startTime)
+
+					        surface.SetDrawColor(41, 22, 25)
+					        surface.DrawRect(0, 0, w, h)
+
+					        surface.SetDrawColor(255, 61, 96, 165.75)
+					        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+					        surface.SetDrawColor(255, 61, 96, 165.75)
+					        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+
+					        surface.SetDrawColor(255, 61, 96, 20)
+					        surface.DrawRect(0, 0, w, H(23))
+					    end
+
+					    DermaStringRequest:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
+					    DermaStringRequest:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
+					end
+				}
+			end
+
+			return info, self.ActionsOption
+		end
+
+		data[#data + 1] = {
+			name = "Вытащить патроны из запаса",
+			description = "Вытащить патроны из запаса для определенного оружия",
+			icon = Material("danganronpa/radialmenu/ammo.png"),
+			iscategory = true,
+			action = stored,
+		}
+	end
+
 	local character = Character.team:GetByID(LocalPlayer():Team())
 	if character then
 		local uniqueID = character:GetUniqueID()

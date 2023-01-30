@@ -27,9 +27,15 @@ local icons = {
     ["Библиотека"] = "report",
     ["Хранилище"] = "briefcase",
     ["Инструменты"] = "wrench_orange",
-    ["Оружие"] = "gun",
     ["Отмычки"] = "connect",
-    ["Уникальные"] = "bug"
+    ["Уникальные"] = "bug",
+    ["Оружие"] = "gun",
+    ["Оружие - Ближнее"] = "gun",
+    ["Оружие - Пистолеты"] = "gun",
+    ["Оружие - ПП/Автоматы"] = "gun",
+    ["Оружие - Остальное"] = "gun",
+    ["Оружие - CSS"] = "gun",
+    ["Оружие - CSS Alt"] = "gun"
 }
 
 local function isURL(url)
@@ -109,7 +115,7 @@ spawnmenu.AddCreationTab("Предметы", function()
     local tree = base.ContentNavBar.Tree
     local categories = {}
 
-    for k, v in pairs(ItemBase.list) do
+    for k, v in SortedPairsByMemberValue(ItemBase.list, "category") do
         if categories[v:GetCategory()] then continue end
 
         local node = tree:AddNode(v:GetCategory(), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")

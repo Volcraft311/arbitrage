@@ -39,34 +39,18 @@ BASE.creationExample = {
 }
 
 function BASE:GetDescription()
-    local amount = tonumber(self.ammoAmount)
+    local amount = tonumber(self:GetData("amount", self.ammoAmount))
 
-    return self.description .. ". Количество: " .. amount .. "."
+    return self.description .. " Количество патрон: " .. amount .. "."
 end
 
 BASE:AddAction("Использовать", {
     OnRun = function(item)
     	local client = item.player
         local ammoClass = item.ammoClass
-        local ammoAmount = tonumber(item.ammoAmount)
+        local ammoAmount = tonumber(item:GetData("amount", item.ammoAmount))
 
-        for k, v in ipairs(client:GetWeapons()) do
-        	local ammoType = v:GetPrimaryAmmoType()
-        	if !ammoType then continue end
-
-        	local ammoName = game.GetAmmoName(ammoType)
-        	if !ammoName then continue end
-
-        	if ammoName:lower() == ammoClass:lower() then
-        		client:GiveAmmo(ammoAmount, ammoClass)
-
-        		return
-        	end
-        end
-
-        Arbitrage.commands.Notify(client, "У вас нету оружия к которому подходят данные патроны!")
-
-        return false
+        client:GiveAmmo(ammoAmount, ammoClass)
     end,
     OnCanRun = function(item)
         return true

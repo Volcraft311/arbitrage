@@ -127,6 +127,8 @@ function ENT:OnDuplicated(entTable)
 	if !uniqueID then return end
 
 	local item = ItemBase.CreateItemInWorld(uniqueID, pos, ang)
+	if !item then return end
+
 	local data = ItemBase.data[itemID] or {}
 	for k, v in pairs(data) do
 		item:SetData(k, v)

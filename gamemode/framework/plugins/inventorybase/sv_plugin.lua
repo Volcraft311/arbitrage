@@ -64,6 +64,8 @@ function InventoryBase:PlayerDeath(client)
         if !uniqueID then continue end
 
         local item = ItemBase.CreateItemInWorld(uniqueID, client:GetShootPos(), Angle(0, 0, 0))
+        if !item then continue end
+
         item:SetData("amount", count)
     end
 end

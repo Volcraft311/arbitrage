@@ -72,6 +72,21 @@ function ItemBase.GetBase(base)
         end
     })
 
+    meta:AddAction("* Изменить свойства", {
+        OnRun = function(item)
+            local client = item.player
+
+            client:SendLua("ItemBase:EditProperties(" .. item:GetID() .. ")")
+            return false
+        end,
+        OnCanRun = function(item)
+            local client = item.player
+            local entity = item.entity
+
+            return client:IsAdmin() and !IsValid(entity)
+        end
+    })
+
     if base then
         local baseInfo = table.Copy(ItemBase.base[base])
         if baseInfo then
@@ -120,6 +135,67 @@ function ItemBase:New(uniqueID, id)
 
         return item
     end
+end
+
+ItemBase.converterBase = {
+    basic = {"Без базы", "converter_basic"},
+    base_medical = {"База медицины", "converter_medical"},
+    base_food = {"База продуктов", "converter_food"},
+    base_ammo = {"База патронов", "converter_ammo"},
+    base_note = {"База блокнотов", "converter_note"},
+    base_picklock = {"База отмычек", "converter_picklock"},
+    base_weapon = {"База оружий", "converter_weapon"},
+}
+
+-- a - item
+-- b - entity
+-- c - args
+function ItemBase:GetItemProperties(item)
+    local info = {
+        {"name", "Название", function(a)
+            return a:GetName()
+        end},
+        {"description", "Описание", function(a)
+            return a:GetDescription()
+        end},
+        {"category", "Категория", function(a)
+            return a:GetCategory()
+        end},
+        {"icon", "Иконка", function(a)
+            return a:GetIcon()
+        end},
+        {"model", "Модель", function(a)
+            return a:GetModel()
+        end, function(a, b, c)
+            if !IsValid(b) then return end
+
+            b:SetModel(c)
+            b:PhysicsInit(SOLID_VPHYSICS)
+            b:SetSolid(SOLID_VPHYSICS)
+
+            local physObj = b:GetPhysicsObject()
+            if !IsValid(physObj) then
+                b:PhysicsInitBox(invalidBoundsMin, invalidBoundsMax)
+                b:SetCollisionBounds(invalidBoundsMin, invalidBoundsMax)
+            else
+                physObj:EnableMotion(true)
+                physObj:Wake()
+            end
+        end}
+    }
+
+    local base = item.base
+    if base and base != "" and base != " " and base != "basic" then
+        local itemBase = self.base[base]
+
+        if itemBase then
+            local properties = itemBase.propertiesInfo or {}
+
+            table.Add(info, properties)
+        end
+    end
+
+    return info
 end
 
 function ItemBase.CreateItem(uniqueID)
@@ -226,6 +302,20 @@ function ItemBase.CreationProtectItem(uniqueID, protect)
         netstream.Start(nil, "ItemBase:CreationProtectItem", uniqueID, protect)
     end
 end
+
+properties.Add("item_properties", {
+    MenuLabel = "Изменить свойства",
+    Order = 90002,
+    MenuIcon = "icon16/layout_content.png",
+    Filter = function(self, entity, ply)
+        if !IsValid(entity) then return false end
+
+        return entity:GetClass() == "arb_item"
+    end,
+    Action = function(self, entity)
+        ItemBase:EditProperties(entity:GetItemID())
+    end
+})
 
 Arbitrage.base.Include("cl_infomenu.lua")
 Arbitrage.base.Include("cl_actionmenu.lua")

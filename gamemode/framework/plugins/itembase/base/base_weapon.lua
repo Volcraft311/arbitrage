@@ -34,6 +34,26 @@ BASE.creationExample = {
 	}
 }
 
+BASE.propertiesInfo = {
+	{"class", "Класс оружия", function(a)
+	    return a:GetClass()
+	end},
+	{"ammoClip", "Патрон в магазине", function(a)
+	    return a:GetAmmoClip()
+	end, function(a, b, c)
+	    a:SetData("ammoClip", tonumber(c))
+	    a:SetData("m_ammoClip", nil)
+	end},
+}
+
+function BASE:GetClass()
+	return self:GetData("m_class", self.class)
+end
+
+function BASE:GetAmmoClip()
+	return self:GetData("ammoClip", 0)
+end
+
 if CLIENT then
 	local ribbon = Material("danganronpa/ribbon/orange.png")
 
@@ -42,6 +62,12 @@ if CLIENT then
 			surface.SetDrawColor(255, 255, 255)
 			surface.SetMaterial(ribbon)
 			surface.DrawTexturedRect(0, 0, w, h)
+		else
+			local amount = item:GetAmmoClip()
+
+			if amount > 0 then
+	        	draw.SimpleTextOutlined(amount, "DermaDefault", w - 5, h - 15, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, color_black)
+	    	end
 		end
 	end
 end
@@ -62,19 +88,18 @@ function BASE:Equip(client, item, id)
 	client.carryWeapons = client.carryWeapons or {}
 
 	local items = client:GetInventory():GetItems()
+	local class = item:GetClass()
 
 	for _, v in pairs(items) do
 		if v.id != item.id then
 			local itemTable = ItemBase.instances[v.id]
 
-			if itemTable and itemTable.isWeapon and client.carryWeapons[item.class] and itemTable:GetData("equip") then
+			if itemTable and itemTable.isWeapon and client.carryWeapons[class] and itemTable:GetData("equip") then
 				return Arbitrage.commands.Notify(client, "У вас уже экипированно оружие данного типа!")
 			end
 		end
 	end
 
-
-	local class = item.class
 	if client:HasWeapon(class) then
 		client:StripWeapon(class)
 	end
@@ -85,7 +110,7 @@ function BASE:Equip(client, item, id)
 	if IsValid(weapon) then
 		local ammoType = weapon:GetPrimaryAmmoType()
 
-		client.carryWeapons[item.class] = weapon
+		client.carryWeapons[class] = weapon
 
 		client:SetLocalVar("fast_slot_" .. id, {
 			weapon,
@@ -120,17 +145,18 @@ function BASE:UnEquip(client, item)
 	client.carryWeapons = client.carryWeapons or {}
 	local data = client:GetLocalVar("fast_slot_" .. id)
 	local weapon = data and data[1]
+	local class = item:GetClass()
 
 	if !IsValid(weapon) then
-		weapon = client:GetWeapon(item.class)
+		weapon = client:GetWeapon(class)
 	end
 
 	if IsValid(weapon) then
-		client:StripWeapon(item.class)
+		client:StripWeapon(class)
 		item:SetData("ammoClip", weapon:Clip1())
 	end
 
-	client.carryWeapons[item.class] = nil
+	client.carryWeapons[class] = nil
 	client:SetLocalVar("fast_slot_" .. id, nil)
 	item:SetData("equip", nil)
 	item.slotID = nil
@@ -180,7 +206,7 @@ BASE:AddAction("Разоружить", {
 
 		local weapon = nil
 		for k, v in ipairs(weapons.GetList()) do
-			if v.ClassName == item.class then
+			if v.ClassName == item:GetClass() then
 				weapon = v
 				break
 			end

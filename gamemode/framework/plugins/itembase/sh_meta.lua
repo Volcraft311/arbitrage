@@ -44,19 +44,19 @@ function ITEM:GetUniqueID()
 end
 
 function ITEM:GetName()
-    return self.name
+    return self:GetData("m_name", self.name)
 end
 
 function ITEM:GetIcon()
-    return self.icon
+    return self:GetData("m_icon", self.icon)
 end
 
 function ITEM:GetDescription()
-    return self.description
+    return self:GetData("m_description", self.description)
 end
 
 function ITEM:GetModel()
-    return self.model
+    return self:GetData("m_model", self.model)
 end
 
 function ITEM:GetSkin()
@@ -64,7 +64,7 @@ function ITEM:GetSkin()
 end
 
 function ITEM:GetCategory()
-    return self.category
+    return self:GetData("m_category", self.category)
 end
 
 function ITEM:AddAction(name, data)
@@ -189,6 +189,11 @@ if SERVER then
 
         ItemBase.data[self:GetID()] = ItemBase.data[self:GetID()] or {}
         ItemBase.data[self:GetID()][key] = value
+
+        local entity = self:GetEntity()
+        if IsValid(entity) then
+            entity.BoneMods.saveData[key] = value
+        end
 
         netstream.Start(receivers, "ItemBase:SetData", self:GetID(), key, value)
     end

@@ -38,17 +38,51 @@ BASE.creationExample = {
     }
 }
 
-function BASE:GetDescription()
-    local amount = tonumber(self:GetData("amount", self.ammoAmount))
+BASE.propertiesInfo = {
+    {"ammoClass", "Класс патронов", function(a)
+        return a:GetAmmoClass()
+    end},
+    {"amount", "Находится патронов", function(a)
+        return a:GetAmount()
+    end, function(a, b, c)
+        a:SetData("amount", tonumber(c))
+        a:SetData("m_amount", nil)
+    end}
+}
 
-    return self.description .. " Количество патрон: " .. amount .. "."
+if CLIENT then
+    function BASE:Paint(item, w, h)
+        if !item:GetData("equip") then
+            local amount = item:GetAmount()
+
+            draw.SimpleTextOutlined(amount, "DermaDefault", w - 5, h - 15, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, color_black)
+        end
+    end
+end
+
+function BASE:GetAmmoClass()
+    return self:GetData("m_ammoClass", self.ammoClass)
+end
+
+function BASE:GetAmmoAmount()
+    return self:GetData("m_ammoAmount", self.ammoAmount)
+end
+
+function BASE:GetAmount()
+    return self:GetData("amount", tonumber(self:GetAmmoAmount()))
+end
+
+function BASE:GetDescription()
+    local amount = self:GetAmount()
+
+    return self:GetData("m_description", self.description) .. " Количество патрон: " .. amount .. "."
 end
 
 BASE:AddAction("Использовать", {
     OnRun = function(item)
     	local client = item.player
-        local ammoClass = item.ammoClass
-        local ammoAmount = tonumber(item:GetData("amount", item.ammoAmount))
+        local ammoClass = item:GetAmmoClass()
+        local ammoAmount = tonumber(item:GetAmount())
 
         client:GiveAmmo(ammoAmount, ammoClass)
     end,

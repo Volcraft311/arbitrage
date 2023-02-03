@@ -37,10 +37,37 @@ BASE.creationExample = {
     }
 }
 
-function BASE:GetDescription()
-    local left = self:GetData("left", tonumber(self.maxuse))
+BASE.propertiesInfo = {
+    {"maxuse", "Максимум использований", function(a)
+        return a:GetMaxUse()
+    end},
+    {"left", "Осталось использований", function(a)
+        return a:GetLeft()
+    end, function(a, b, c)
+        a:SetData("left", tonumber(c))
+        a:SetData("m_left", nil)
+    end},
+    {"hacktime", "Время для взлома", function(a)
+        return a:GetHackTime()
+    end}
+}
 
-    return self.description .. ". Осталось: " .. left .. "/" .. self.maxuse .. ""
+function BASE:GetMaxUse()
+    return self:GetData("m_maxuse", self.maxuse)
+end
+
+function BASE:GetLeft()
+    return self:GetData("left", tonumber(self:GetMaxUse()))
+end
+
+function BASE:GetHackTime()
+    return self:GetData("m_hacktime", self.hacktime)
+end
+
+function BASE:GetDescription()
+    local left = self:GetLeft()
+
+    return self:GetData("m_description", self.description) .. " Осталось: " .. left .. "/" .. self:GetMaxUse() .. ""
 end
 
 local function FindDoor(client)
@@ -85,10 +112,10 @@ BASE:AddAction("Взломать дверь", {
             return false
         end
 
-        local left = item:GetData("left", tonumber(item.maxuse))
+        local left = item:GetLeft()
         item:SetData("left", left - 1)
 
-        HackDoor(client, entity, tonumber(item.hacktime))
+        HackDoor(client, entity, tonumber(item:GetHackTime()))
 
         if left > 1 then
             return false

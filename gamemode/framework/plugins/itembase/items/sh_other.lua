@@ -33,7 +33,7 @@ do
         return Format(self.description, data)
     end
 
-    ITEM:AddAction("Присвоить ключу фракцию", {
+    ITEM:AddAction("* Присвоить ключу фракцию", {
         OnRun = function(item)
             local client = item.player
 
@@ -225,4 +225,77 @@ do
     end
 
     ItemBase:RegisterItem("monopad", ITEM)
+end
+
+
+
+
+do
+    local ITEM = ItemBase.GetBase()
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_basic", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_medical")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_medical", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_food")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_food", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_ammo")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_ammo", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_note")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_note", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_picklock")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_picklock", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase("base_weapon")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_weapon", ITEM)
 end

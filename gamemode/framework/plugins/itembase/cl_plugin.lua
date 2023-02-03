@@ -85,6 +85,50 @@ function PLUGIN:HUDPaint()
 	end
 end
 
+function PLUGIN:EditProperties(itemID)
+	local save = {}
+
+	local item = self.instances[itemID]
+	local info = self:GetItemProperties(item)
+
+	local f = vgui.Create("DFrame")
+	f:SetTitle("Изменение свойств предмета")
+	f:SetSize(800, 250)
+	f:Center()
+	f:MakePopup()
+
+	local Properties = f:Add("DProperties")
+	Properties:Dock(FILL)
+
+	for k, v in ipairs(info) do
+		local row = Properties:CreateRow("Свойства", v[2])
+		row:Setup("Generic")
+		row.value = ""
+		row:SetValue(row.value)
+		row.DataChanged = function(this, data)
+			this.value = data
+			save[v[1]] = data
+		end
+
+		if item then
+			local name = v[3](item)
+			row.value = name
+			row:SetValue(name)
+
+			save[v[1]] = name
+		end
+	end
+
+	local Save = f:Add("DButton")
+	Save:SetText("Сохранить")
+	Save:Dock(BOTTOM)
+	Save.DoClick = function()
+		f:Remove()
+
+		netstream.Start("ItemBase:EditItemProperties", itemID, save)
+	end
+end
+
 netstream.Hook("ItemBase:SyncItem", function(uniqueID, itemID, data)
     ItemBase:New(uniqueID, itemID)
     ItemBase.data[itemID] = data

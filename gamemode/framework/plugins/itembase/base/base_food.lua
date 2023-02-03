@@ -56,20 +56,68 @@ BASE.creationExample = {
     }
 }
 
-function BASE:GetDescription()
-    local left = self:GetData("left", tonumber(self.maxuse))
+BASE.propertiesInfo = {
+    {"maxuse", "Максимум использований", function(a)
+        return a:GetMaxUse()
+    end},
+    {"left", "Осталось использований", function(a)
+        return a:GetLeft()
+    end, function(a, b, c)
+        a:SetData("left", tonumber(c))
+        a:SetData("m_left", nil)
+    end},
+    {"hunger", "Восстанавление голода", function(a)
+        return a:GetHunger()
+    end},
+    {"thirst", "Восстанавление жажды", function(a)
+        return a:GetThirst()
+    end},
+    {"sleep", "Восстанавление сна", function(a)
+        return a:GetSleep()
+    end},
+    {"sound", "Звук при использовании", function(a)
+        return a:GetSound()
+    end}
+}
 
-    return self.description .. ". Осталось: " .. left .. "/" .. self.maxuse .. ""
+function BASE:GetMaxUse()
+    return self:GetData("m_maxuse", self.maxuse)
+end
+
+function BASE:GetLeft()
+    return self:GetData("left", tonumber(self:GetMaxUse()))
+end
+
+function BASE:GetHunger()
+    return self:GetData("m_hunger", self.hunger)
+end
+
+function BASE:GetThirst()
+    return self:GetData("m_thirst", self.thirst)
+end
+
+function BASE:GetSleep()
+    return self:GetData("m_sleep", self.sleep)
+end
+
+function BASE:GetSound()
+    return self:GetData("m_sound", self.sound)
+end
+
+function BASE:GetDescription()
+    local left = self:GetLeft()
+
+    return self:GetData("m_description", self.description) .. " Осталось: " .. left .. "/" .. self:GetMaxUse() .. ""
 end
 
 local function RecoveryFunc(item, bAll)
     local client = item.player
-    local left = item:GetData("left", tonumber(item.maxuse))
+    local left = item:GetData("left", tonumber(item:GetMaxUse()))
 
     local data = {"Thirst", "Hunger", "Sleep"}
     for k, v in ipairs(data) do
         local info = Arbitrage.statistics.Get(client, v)
-        local amount = tonumber(item[string.lower(v)])
+        local amount = tonumber(item["Get" .. v](item))
         if !amount then continue end
         if amount == 0 then continue end
 
@@ -93,7 +141,7 @@ BASE:AddAction("Использовать", {
     OnRun = function(item)
         RecoveryFunc(item)
 
-        local left = item:GetData("left", tonumber(item.maxuse))
+        local left = item:GetData("left", tonumber(item:GetMaxUse()))
         item:SetData("left", left - 1)
         if (left - 1) <= 0 then return end
 
@@ -109,7 +157,7 @@ BASE:AddAction("Использовать все", {
         RecoveryFunc(item, true)
     end,
     OnCanRun = function(item)
-        local left = item:GetData("left", tonumber(item.maxuse))
+        local left = item:GetData("left", tonumber(item:GetMaxUse()))
 
         return left > 1
     end

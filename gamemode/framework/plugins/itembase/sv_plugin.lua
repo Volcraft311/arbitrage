@@ -147,6 +147,41 @@ netstream.Hook("ItemBase:GiveItem", function(client, target, uniqueID)
     end
 end)
 
+netstream.Hook("ItemBase:EditItemProperties", function(client, itemID, data)
+    if !client:IsAdmin() then return end
+
+    local item = ItemBase.instances[itemID]
+    if !item then return end
+
+    local entity = item:GetEntity()
+    local info = ItemBase:GetItemProperties(item)
+
+    for key, value in pairs(data) do
+        local func = nil
+        local isChange = false
+
+        for k2, v2 in ipairs(info) do
+            if v2[1] == key then
+                func = v2[4]
+                local oldValue = v2[3](item)
+
+                if oldValue != value then
+                    isChange = true
+                end
+
+                break
+            end
+        end
+
+        if !isChange then continue end
+
+        item:SetData("m_" .. key, value)
+        if func then
+            func(item, entity, value)
+        end
+    end
+end)
+
 local function getInfo(data)
     local info = {
         name = data.name or "Не указано",

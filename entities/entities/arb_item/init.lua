@@ -26,6 +26,8 @@ function ENT:Initialize()
 	self:SetUseType(SIMPLE_USE)
 	self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 	self.health = 50
+	self.BoneMods = self.BoneMods or {}
+	self.BoneMods.saveData = self.BoneMods.saveData or {}
 
 	local physObj = self:GetPhysicsObject()
 
@@ -59,6 +61,24 @@ function ENT:Use(activator, caller)
 	item.entity = nil
 end
 
+local function setItemProperties(item, entity, data)
+	local info = ItemBase:GetItemProperties(item)
+
+	for key, value in pairs(data) do
+		local prefix = string.Left(key, 2)
+
+		if prefix == "m_" then
+			key = key:gsub("m_", "")
+
+			for k2, v2 in ipairs(info) do
+				if v2[1] == key and v2[4] then
+					v2[4](item, entity, value)
+				end
+			end
+		end
+	end
+end
+
 function ENT:SetItem(itemID)
 	if !itemID then return end
 
@@ -85,6 +105,13 @@ function ENT:SetItem(itemID)
 		physObj:EnableMotion(true)
 		physObj:Wake()
 	end
+
+	local data = ItemBase.data[itemID] or {}
+	for k, v in pairs(data) do
+		self.BoneMods.saveData[k] = v
+	end
+
+	setItemProperties(item, self, data)
 end
 
 function ENT:OnTakeDamage(damageInfo)
@@ -120,19 +147,20 @@ end
 
 function ENT:OnDuplicated(entTable)
 	local uniqueID = entTable.DT and entTable.DT.UniqueID
-	local itemID = entTable.DT and entTable.DT.ItemID
 	local pos, ang = self:GetPos(), self:GetAngles()
+	local data = self.BoneMods and self.BoneMods.saveData
 	self:Remove()
 
 	if !uniqueID then return end
 
-	local item = ItemBase.CreateItemInWorld(uniqueID, pos, ang)
+	local item, entity = ItemBase.CreateItemInWorld(uniqueID, pos, ang)
 	if !item then return end
 
-	local data = ItemBase.data[itemID] or {}
-	for k, v in pairs(data) do
-		item:SetData(k, v)
+	for key, value in pairs(data or {}) do
+		item:SetData(key, value)
 	end
+
+	setItemProperties(item, entity, data)
 end
 
 function ENT:UpdateTransmitState()

@@ -17,7 +17,7 @@ local BASE = ItemBase.GetBase()
 BASE.name = "База Медикаметров"
 BASE.description = ""
 BASE.category = "Медикаменты"
-BASE.health = 50
+BASE.sethealth = 50
 BASE.maxuse = 1
 BASE.sound = "items/medshot4.wav"
 
@@ -28,7 +28,7 @@ BASE.creationExample = {
         default = "Медикаменты"
     },
     {
-        variable = "health",
+        variable = "sethealth",
         title = "Количество восстанавливающего здоровья",
         default = 50
     },
@@ -44,27 +44,61 @@ BASE.creationExample = {
     }
 }
 
-function BASE:GetDescription()
-    local left = self:GetData("left", tonumber(self.maxuse))
+BASE.propertiesInfo = {
+    {"sethealth", "Восстанавливает здоровье", function(a)
+        return a:GetSetHealth()
+    end},
+    {"maxuse", "Максимум использований", function(a)
+        return a:GetMaxUse()
+    end},
+    {"left", "Осталось использований", function(a)
+        return a:GetLeft()
+    end, function(a, b, c)
+        a:SetData("left", tonumber(c))
+        a:SetData("m_left", nil)
+    end},
+    {"sound", "Звук при использовании", function(a)
+        return a:GetSound()
+    end}
+}
 
-    return self.description .. ". Осталось: " .. left .. "/" .. self.maxuse .. ""
+function BASE:GetSetHealth()
+    return self:GetData("m_sethealth", self.sethealth)
+end
+
+function BASE:GetMaxUse()
+    return self:GetData("m_maxuse", self.maxuse)
+end
+
+function BASE:GetLeft()
+    return self:GetData("left", tonumber(self:GetMaxUse()))
+end
+
+function BASE:GetSound()
+    return self:GetData("m_sound", self.sound)
+end
+
+function BASE:GetDescription()
+    local left = self:GetLeft()
+
+    return self:GetData("m_description", self.description) .. " Осталось: " .. left .. "/" .. self:GetMaxUse() .. ""
 end
 
 local function RecoveryFunc(item, target)
     if !IsValid(target) or !target:IsPlayer() then return false, "Не валидный игрок!" end
 
-    local song = item.sound
+    local song = item:GetSound()
     if song and song != "" and song != " " then
         target:EmitSound(song)
     end
 
-    target:SetHealth(math.min(target:Health() + tonumber(item.health), target:GetMaxHealth()))
+    target:SetHealth(math.min(target:Health() + tonumber(item:GetSetHealth()), target:GetMaxHealth()))
 
     if target:Health() <= 0 then
         target:Kill()
     end
 
-    local left = item:GetData("left", tonumber(item.maxuse))
+    local left = item:GetLeft()
     item:SetData("left", left - 1)
     if (left - 1) <= 0 then return true end
 end

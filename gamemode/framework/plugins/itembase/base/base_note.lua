@@ -31,6 +31,8 @@ BASE.creationExample = {
     },
 }
 
+BASE.propertiesInfo = {}
+
 local function HasAccess(arr, data)
     if !arr then return false end
 

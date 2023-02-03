@@ -116,6 +116,7 @@ spawnmenu.AddCreationTab("Предметы", function()
     local categories = {}
 
     for k, v in SortedPairsByMemberValue(ItemBase.list, "category") do
+        if v:GetCategory() == "Converter" then continue end
         if categories[v:GetCategory()] then continue end
 
         local node = tree:AddNode(v:GetCategory(), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")

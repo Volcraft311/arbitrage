@@ -55,7 +55,7 @@ function ItemBase.CreationSync(client)
     for baseID, stored in pairs(itemslist) do
         if baseID == "basic" or ItemBase.base[baseID] then
             if client != nil then
-                netstream.Start(client, "ItemBase:CreationSync", baseID, stored)
+                netstream.Heavy(client, "ItemBase:CreationSync", baseID, stored)
             else
                 for uniqueID, info in pairs(stored) do
                     ItemBase.CreationRegisterItem(baseID, uniqueID, info)

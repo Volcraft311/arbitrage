@@ -73,13 +73,14 @@ if CLIENT then
 end
 
 function BASE:GetDescription()
+	local description = self:GetData("m_description", self.description)
 	local amount = tonumber(self:GetData("ammoClip", 0))
 
 	if amount > 0 then
-		return self.description .. " Количество патрон: " .. amount .. "."
+		return description .. " Количество патрон: " .. amount .. "."
 	end
 
-	return self.description
+	return description
 end
 
 function BASE:Equip(client, item, id)

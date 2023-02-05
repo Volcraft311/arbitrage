@@ -1,3 +1,17 @@
+--[[
+        © AsterionStaff 2023.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://discord.gg/Np5evb5ZsR
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
 function Stamina:IsRunning(client)
 	return client:GetVelocity():Length() > self:GetMaxWalkSpeed(client) and client:KeyDown(IN_SPEED)
 end

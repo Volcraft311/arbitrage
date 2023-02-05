@@ -93,7 +93,7 @@ netstream.Hook("InventoryBase:GetActions", function(client, itemID)
 
     item.player = client
     for k, v in pairs(item:GetValidActions()) do
-        data[#data + 1] = k
+        data[#data + 1] = {k, v.icon}
     end
     item.player = nil
 

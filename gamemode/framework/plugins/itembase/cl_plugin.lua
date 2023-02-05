@@ -68,12 +68,9 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 end)
 
 function PLUGIN:HUDPaint()
-	self.actionMenu:Paint()
-
 	for k, v in ipairs(entities) do
 		local entity = v[1]
 		if !IsValid(entity) then continue end
-		if self.actionMenu.stored[entity] then continue end
 
 		local name, desc, category, icon = v[2], v[3], v[4], v[5]
 
@@ -83,6 +80,8 @@ function PLUGIN:HUDPaint()
 
 		self.infoMenu:Paint(entity, name, desc, category, icon, entity.panelAlpha)
 	end
+
+	self.actionMenu:Paint()
 end
 
 function PLUGIN:EditProperties(itemID)
@@ -141,11 +140,11 @@ end)
 
 netstream.Hook("ItemBase:OpenActions", function(uniqueID, data, entity)
 	local sendOptions = {}
-	for _, name in SortedPairsByValue(data) do
-	    local action = ItemBase.list[uniqueID].functions[name]
+	for _, name in SortedPairsByMemberValue(data, 1) do
+	    local action = ItemBase.list[uniqueID].functions[name[1]]
 	    if !action then continue end
 
-	    sendOptions[#sendOptions + 1] = name
+	    sendOptions[#sendOptions + 1] = {name[1], name[2]}
 	end
 
 	local info = {

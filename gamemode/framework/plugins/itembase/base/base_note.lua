@@ -98,6 +98,7 @@ local function EditNote(item, client, page, bClose)
 end
 
 BASE:AddAction("Прочитать", {
+    icon = "icon16/page.png",
     OnRun = function(item)
         local client = item.player
 
@@ -111,6 +112,7 @@ BASE:AddAction("Прочитать", {
 })
 
 BASE:AddAction("Изменить", {
+    icon = "icon16/page_gear.png",
     OnRun = function(item)
         local client = item.player
 
@@ -120,7 +122,9 @@ BASE:AddAction("Изменить", {
         return false
     end,
     OnCanRun = function(item)
-        return true
+        local client = item.player
+
+        return table.Count(item.data.editors) > 0 and HasAccess(item.data.editors, client) or true
     end
 })
 

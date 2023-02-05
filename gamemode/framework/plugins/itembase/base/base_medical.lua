@@ -103,7 +103,8 @@ local function RecoveryFunc(item, target)
     if (left - 1) <= 0 then return true end
 end
 
-BASE:AddAction("Использовать на себе", {
+BASE:AddAction("Использовать", {
+    icon = "icon16/heart.png",
     OnRun = function(item)
         local client = item.player
 
@@ -121,6 +122,7 @@ BASE:AddAction("Использовать на себе", {
 })
 
 BASE:AddAction("Использовать на другом игроке", {
+    icon = "icon16/feed.png",
     OnRun = function(item)
         local client = item.player
 

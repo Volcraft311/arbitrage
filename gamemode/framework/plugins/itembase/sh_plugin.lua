@@ -29,6 +29,7 @@ function ItemBase.GetBase(base)
     local meta = table.Copy(FindMetaTable("Item"))
 
     meta:AddAction("Выбросить", {
+        icon = "icon16/brick_delete.png",
         OnRun = function(item)
             if Arbitrage.lawEnable then return false end
 
@@ -44,6 +45,7 @@ function ItemBase.GetBase(base)
     })
 
     meta:AddAction("Взять", {
+        icon = "icon16/brick_add.png",
         OnRun = function(item)
             local client = item.player
             local entity = item.entity
@@ -73,6 +75,7 @@ function ItemBase.GetBase(base)
     })
 
     meta:AddAction("* Изменить свойства", {
+        icon = "icon16/script_gear.png",
         OnRun = function(item)
             local client = item.player
 
@@ -306,7 +309,7 @@ end
 properties.Add("item_properties", {
     MenuLabel = "Изменить свойства",
     Order = 90002,
-    MenuIcon = "icon16/layout_content.png",
+    MenuIcon = "icon16/script_gear.png",
     Filter = function(self, entity, ply)
         if !IsValid(entity) then return false end
 

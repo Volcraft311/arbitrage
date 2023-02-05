@@ -79,6 +79,7 @@ function BASE:GetDescription()
 end
 
 BASE:AddAction("Использовать", {
+    icon = "icon16/tick.png",
     OnRun = function(item)
     	local client = item.player
         local ammoClass = item:GetAmmoClass()

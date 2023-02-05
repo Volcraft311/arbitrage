@@ -34,6 +34,7 @@ do
     end
 
     ITEM:AddAction("* Присвоить ключу фракцию", {
+        icon = "icon16/cog.png",
         OnRun = function(item)
             local client = item.player
 
@@ -114,6 +115,7 @@ do
     ITEM.icon = "danganronpa/inventory/items/special_photo.png"
 
     ITEM:AddAction("Посмотреть", {
+        icon = "icon16/page.png",
         OnRun = function(item)
             local client = item.player
             local url = item.image
@@ -128,6 +130,7 @@ do
     })
 
     ITEM:AddAction("Изменить картинку", {
+        icon = "icon16/page_gear.png",
         OnRun = function(item)
             local client = item.player
 
@@ -169,6 +172,7 @@ do
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/7991/7991337.png"
 
     ITEM:AddAction("Использовать", {
+        icon = "icon16/tick.png",
         OnRun = function(item)
             local client = item.player
 

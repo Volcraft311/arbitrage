@@ -104,6 +104,7 @@ local function HackDoor(client, entity, time)
 end
 
 BASE:AddAction("Взломать дверь", {
+    icon = "icon16/attach.png",
     OnRun = function(item)
         local client = item.player
         local entity = FindDoor(client)

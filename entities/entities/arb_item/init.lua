@@ -50,7 +50,7 @@ function ENT:Use(activator, caller)
 	local data = {}
 	local actionList = item:GetValidActions()
 	for k, v in pairs(actionList) do
-		data[#data + 1] = k
+		data[#data + 1] = {k, v.icon}
 	end
 
 	if #data >= 1 then

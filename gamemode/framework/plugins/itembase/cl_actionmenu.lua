@@ -39,7 +39,7 @@ function PLUGIN.actionMenu:GetMaxWidth(id)
 
     local data = {}
     for k, text in ipairs(self.stored[id].options) do
-        local width, _ = surface.GetTextSize(text)
+        local width, _ = surface.GetTextSize(text[1])
 
         data[#data + 1] = width
     end
@@ -67,6 +67,7 @@ function PLUGIN.actionMenu:IsSelected(x, y, w, h)
     return false
 end
 
+local cornerRadius = 5
 function PLUGIN.actionMenu:Paint()
     local client = LocalPlayer()
 
@@ -95,26 +96,55 @@ function PLUGIN.actionMenu:Paint()
 
         local isSelect
         if data2D.visible and alpha > 0 then
+            local maxWidth, maxHeight = self:GetMaxWidth(k), 0
+            local fontHeight = 0
+
             for k2, v2 in ipairs(v.options) do
-                local _, height = surface.GetTextSize(v2)
+                local _, height = surface.GetTextSize(v2[1])
+
+                maxHeight = maxHeight + height
+                fontHeight = height
+            end
+
+            local _x = x - maxWidth / 2 - size
+            local _w = maxWidth + size * 2 + fontHeight + W(20)
+
+            draw.RoundedBox(cornerRadius, _x, y, _w, maxHeight, Color(212, 59, 85, alpha))
+            draw.RoundedBox(cornerRadius, _x + 2, y + 2, _w - 4, maxHeight - 4, Color(41, 22, 25, alpha))
+
+            local isFindSelect = false
+            for k2, v2 in ipairs(v.options) do
+                local _, height = surface.GetTextSize(v2[1])
                 local tall = y + ((k2 - 1) * height)
 
-                local maxWidth = self:GetMaxWidth(k)
-                local _x, _y, _w, _h = x - maxWidth / 2 - size, tall, maxWidth + size * 2, height + 2
+                local _y, _h = tall, height + 2
+                local bSelected = false
+                if !isFindSelect and self:IsSelected(_x, _y, _w, _h) then
+                    bSelected = true
+                    isFindSelect = true
+                end
 
-                local bSelected = self:IsSelected(_x, _y, _w, _h)
-                local buttonAlpha = bSelected and alpha or alpha * 0.8
-                local textAlpha = bSelected and alpha or alpha * 0.3
+                local alphanew = alpha * 0.5
+                if bSelected then
+                    surface.SetDrawColor(27, 10, 13, 200)
+                    surface.DrawRect(_x + 2, _y + 2, _w - 4, _h - 4)
 
-                surface.SetDrawColor(15, 5, 6, buttonAlpha * 0.9)
-                surface.DrawRect(_x, _y, _w, _h)
+                    alphanew = alphanew * 2
+                end
 
-                surface.SetDrawColor(95, 28, 39, buttonAlpha)
-                surface.DrawOutlinedRect(_x, _y, _w, _h, 2)
+                alphanew = math.Clamp(alphanew, 0, 255)
 
-                draw.SimpleText(v2, self.font, x, tall, Color(255, 255, 255, textAlpha), TEXT_ALIGN_CENTER)
+                if v2[2] then
+                    local a = fontHeight * 0.67
 
-                if bSelected then isSelect = v2 end
+                    surface.SetDrawColor(255, 255, 255, alpha)
+                    surface.SetMaterial(Material(v2[2]))
+                    surface.DrawTexturedRect(_x + (fontHeight / 2 - a / 2), _y + (fontHeight / 2 - a / 2), a, a)
+                end
+
+                draw.SimpleText(v2[1], self.font, _x + fontHeight + W(10), tall, Color(240, 240, 240, alphanew), TEXT_ALIGN_LEFT)
+
+                if bSelected then isSelect = v2[1] end
             end
 
             if isSelect and client:KeyDown(IN_USE) and (!PLUGIN.actionMenu.cd or CurTime() >= PLUGIN.actionMenu.cd) then

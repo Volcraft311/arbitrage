@@ -150,31 +150,74 @@ netstream.Hook("InventoryBase:OpenInventory", function(id, name)
     end)
 end)
 
+
+local cornerRadius = 5
+local function paintMenu(panel)
+    panel.Paint = function(_, w, h)
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
+    end
+end
+
+local function paintOption(panel)
+    panel:SetFont("arb.Font_FuturaPTBook_6")
+    panel.Paint = function(_, w, h)
+        local alpha = 130
+
+        if _:IsHovered() and _:IsEnabled() then
+            surface.SetDrawColor(27, 10, 13, 200)
+            surface.DrawRect(2, 2, w - 4, h - 4)
+
+            alpha = 255
+        end
+
+        if !_:IsEnabled() then
+            surface.SetDrawColor(255, 0, 0, 20)
+            surface.DrawRect(2, 0, w - 4, h)
+
+            alpha = 255
+        end
+
+        panel:SetTextColor(Color(240, 240, 240, alpha))
+    end
+end
+
+local barMargin = 23
+local function paintBar(panel)
+    local children = panel:GetChildren()
+    local bar = children[2]
+    if !IsValid(bar) then return end
+
+    bar:SetWide(30)
+    bar:DockMargin(0, 0, 0, 0)
+
+    bar.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 255, 255, 3)
+        surface.DrawRect(barMargin, 30, w - barMargin - 4, h - 60)
+    end
+    bar.btnUp.Paint = function(_, w, h) end
+    bar.btnDown.Paint = function(_, w, h) end
+    bar.btnGrip.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 255, 255)
+        surface.DrawRect(barMargin, 0, w - barMargin - 4, h)
+    end
+end
+
 netstream.Hook("InventoryBase:OpenActions", function(itemID, data)
     local Menu = DermaMenu()
+    paintMenu(Menu)
 
-    for k, v in ipairs(data) do
-        local option = Menu:AddOption(v, function()
-            netstream.Start("ItemBase:SendAction", itemID, v)
+    for k, v in SortedPairsByMemberValue(data, 1) do
+        local panel = Menu:AddOption(v[1], function()
+            netstream.Start("ItemBase:SendAction", itemID, v[1])
         end)
 
-        option.alpha = 0.15
-        option:SetFont("arb.Font_FuturaPTBook_12")
-        option:SetTextColor(Color(0, 0, 0, 0))
-        option.Paint = function(_, w, h)
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 1 or 0.15)
+        paintOption(panel)
 
-            surface.SetDrawColor(15, 5, 6, 255)
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(95, 28, 39, 255 * _.alpha)
-            surface.DrawOutlinedRect(0, 0, w, h, 2)
-
-            draw.SimpleText(v, "arb.Font_FuturaPTBook_9", w / 2, -H(3), Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_CENTER)
+        if v[2] then
+            panel:SetImage(v[2])
         end
     end
-
-    Menu.Paint = zero
 
     Menu:Open()
 

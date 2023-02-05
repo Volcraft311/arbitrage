@@ -192,6 +192,7 @@ BASE:HookAdd("transferOtherInventory", function(item, old, new)
 end)
 
 BASE:AddAction("Снять", {
+	icon = "icon16/wand.png",
 	OnRun = function(item)
 		item:UnEquip(item.player, item, 1)
 	    return false
@@ -202,6 +203,7 @@ BASE:AddAction("Снять", {
 })
 
 BASE:AddAction("Разоружить", {
+	icon = "icon16/chart_organisation.png",
 	OnRun = function(item)
 		local client = item.player
 

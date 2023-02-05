@@ -215,35 +215,6 @@ function Arbitrage:ContextMenuOpen()
     return LocalPlayer():IsHoldingSBoxTool()
 end
 
-function Arbitrage:ArbitrageContextMenu(data)
-    for k, v in pairs(ARBITRAGE_CONTEXT_DATA.dance) do
-        data:AddDance(v, k)
-    end
-
-    for k, v in pairs(ARBITRAGE_CONTEXT_DATA.action) do
-        local mat = v[1] and Material(v[1])
-        local func = v[2]
-
-        data:AddAction(k, func, mat)
-    end
-
-    if LocalPlayer():IsToko() then
-        data:AddAction("Вкл/Откл случайные чихания", function(client)
-            netstream.Start("arb.TokoSneezing")
-        end)
-    end
-
-    local character = Character.team:GetByID(LocalPlayer():Team())
-    if !character then return end
-
-    local uniqueID = character:GetUniqueID()
-    if uniqueID == "chiaki" or uniqueID == "himiko" then
-        data:AddAction("Уснуть/Проснуться", function(client)
-            netstream.Start("arb.Sleeping")
-        end)
-    end
-end
-
 local ActionPressIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
         if bIsVisibleGUI then return end

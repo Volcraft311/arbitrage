@@ -733,14 +733,6 @@ hook.Add("GUIMousePressed", "MonoMenu:Properties", function(code, vector)
     end
 end)
 
-function PLUGIN:ArbitrageContextMenu(data)
-    if LocalPlayer():IsAdmin() then
-        data:AddAction("Открыть Моно-Меню", function(client)
-            netstream.Start("arb.OpenMonoMenu")
-        end, Material("danganronpa/hud/action/mono.png"))
-    end
-end
-
 local cur_time1 = 6
 local cur_time2 = 60
 local cur_time3 = 1

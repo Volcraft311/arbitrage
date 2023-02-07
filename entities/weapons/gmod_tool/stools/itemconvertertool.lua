@@ -40,6 +40,7 @@ function TOOL:LeftClick()
     if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
 
     if entity:GetClass() == "arb_item" then return client:ChatNotify("Данный объект уже является предметом!") end
+    if entity:IsPlayer() then return client:ChatNotify("Игрока нельзя превратить в предмет!") end
 
     local base = "basic"
     local convar = tostring(client:GetTool():GetClientInfo("base"))

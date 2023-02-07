@@ -121,13 +121,26 @@ BASE:AddAction("Использовать", {
     end
 })
 
+local function findTarget(client)
+    local data = {}
+    data.start = client:GetShootPos()
+    data.endpos = data.start + client:GetAimVector() * 84
+    data.filter = {client}
+
+    local trace = util.TraceLine(data)
+    local entity = trace.Entity
+
+    if IsValid(entity) and entity:IsPlayer() then
+        return entity
+    end
+end
+
 BASE:AddAction("Использовать на другом игроке", {
     icon = "icon16/feed.png",
     OnRun = function(item)
         local client = item.player
 
-        local target = client:GetEyeTrace().Entity
-
+        local target = findTarget(client)
         local st, msg = RecoveryFunc(item, target)
         if st == true then return
         elseif st == false and msg then

@@ -126,6 +126,7 @@ netstream.Hook("InventoryBase:StopReceiving", function(client, invID)
     if !inventory then return end
 
     inventory.receivers[client] = nil
+    hook.Run("InventoryBase:StopReceiving", client, invID)
 end)
 
 netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)

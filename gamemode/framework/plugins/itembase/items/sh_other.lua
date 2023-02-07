@@ -231,6 +231,103 @@ do
     ItemBase:RegisterItem("monopad", ITEM)
 end
 
+local function findTarget(client)
+    local data = {}
+    data.start = client:GetShootPos()
+    data.endpos = data.start + client:GetAimVector() * 84
+    data.filter = {client}
+
+    local trace = util.TraceLine(data)
+    local entity = trace.Entity
+
+    if IsValid(entity) and entity:IsPlayer() then
+        return entity
+    end
+end
+
+local cuffTime = 5
+local function cuff(item, ropeLength)
+    local client = item.player
+
+    local target = findTarget(client)
+    if !IsValid(target) then Arbitrage.commands.Notify(client, "Не валидный игрок") return false end
+
+    Arbitrage.action.ActionRun(target, "Вас связывают", cuffTime, function()
+        if findTarget(client) != target then return true end
+
+        return false
+    end, function()
+    end)
+
+    Arbitrage.action.ActionRun(client, "Связываем", cuffTime, function()
+        if findTarget(client) != target then return true end
+
+        if (!client.CuffindCD or CurTime() >= client.CuffindCD) then
+            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+            client.CuffindCD = CurTime() + 1.5
+        end
+
+        return false
+    end, function(activator)
+        local wep = target:Give("weapon_handcuffed")
+        wep:SetCuffStrength(1.0)
+        wep:SetCuffRegen(1.6)
+
+        wep:SetCuffMaterial("models/props_pipes/GutterMetal01a")
+        wep:SetRopeMaterial("cable/red")
+
+        wep:SetKidnapper(client)
+        wep:SetRopeLength(ropeLength)
+
+        wep:SetCanBlind(false)
+        wep:SetCanGag(false)
+        wep:SetIsUnbreakable(true)
+
+        item:Remove()
+    end)
+end
+
+do
+    local ITEM = ItemBase.GetBase()
+
+    ITEM.name = "Наручники"
+    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/4338/4338726.png"
+    ITEM.description = "Ими можно попробовать кого-то связать."
+    ITEM.model = "models/props_lab/box01a.mdl"
+    ITEM.category = "Наручники"
+
+    ITEM:AddAction("Связать", {
+        icon = "icon16/tick.png",
+        OnRun = function(item)
+            cuff(item, 0)
+
+            return false
+        end
+    })
+
+    ItemBase:RegisterItem("cuff", ITEM)
+end
+
+do
+    local ITEM = ItemBase.GetBase()
+
+    ITEM.name = "Наручники с веревкой"
+    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/4338/4338726.png"
+    ITEM.description = "Ими можно попробовать кого-то связать."
+    ITEM.model = "models/props_lab/box01a.mdl"
+    ITEM.category = "Наручники"
+
+    ITEM:AddAction("Связать", {
+        icon = "icon16/tick.png",
+        OnRun = function(item)
+            cuff(item, 100)
+
+            return false
+        end
+    })
+
+    ItemBase:RegisterItem("cuff_rope", ITEM)
+end
 
 
 

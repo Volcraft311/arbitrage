@@ -16,4 +16,21 @@ RadialMenu = PLUGIN
 
 PLUGIN.name = "RadialMenu"
 
+function PLUGIN:ReturnTracePlayer(client)
+    client = client or LocalPlayer()
+
+    local data = {}
+    data.start = client:GetShootPos()
+    data.endpos = data.start + client:GetAimVector() * 84
+    data.filter = {client}
+
+    local trace = util.TraceLine(data)
+    local entity = trace.Entity
+
+    if IsValid(entity) and entity:IsPlayer() then
+        return entity
+    end
+end
+
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("sv_plugin.lua")

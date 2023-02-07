@@ -422,6 +422,114 @@ function PLUGIN:MainOption()
 	}
 end
 
+function PLUGIN:PlayerOption()
+	local data = {
+		{
+			name = "Обыскать",
+			id = "search",
+			description = "Посмотреть содержимое инвентаря данного игрока",
+			-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+			action = function()
+				netstream.Start("RadialMenu:SearchAction")
+			end
+		},
+		{
+			name = "Предложить обмен",
+			id = "exchange",
+			description = "Предложить обмен предметами с данным игроком",
+			-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+			action = function()
+				netstream.Start("RadialMenu:ExchangeAction")
+			end
+		},
+		{
+			name = "Толкнуть",
+			id = "push",
+			description = "Толкнуть данного игрока",
+			-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+			action = function()
+				netstream.Start("RadialMenu:PushAction")
+			end
+		},
+	}
+
+	local inventory = LocalPlayer():GetInventory()
+	if inventory then
+		local items = inventory:GetItems()
+
+		for _, item in ipairs(items) do
+			if item.base == "base_medical" then
+				data[#data + 1] = {
+					name = "Вылечить",
+					id = "cure",
+					description = "Вылечить данного игрока при помощи ваших медикаментов",
+					-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+					action = function()
+						netstream.Start("ItemBase:SendAction", item:GetID(), "Использовать на другом игроке")
+					end
+				}
+				break
+			end
+		end
+
+		for _, item in ipairs(items) do
+			if item.uniqueID == "cuff" or item.uniqueID == "cuff_rope" then
+				data[#data + 1] = {
+					name = "Связать",
+					id = "cuff",
+					description = "Связать данного игрока при помощи ваших наручников",
+					-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+					action = function()
+						netstream.Start("ItemBase:SendAction", item:GetID(), "Связать")
+					end
+				}
+				break
+			end
+		end
+	end
+
+	local target = self:ReturnTracePlayer(LocalPlayer())
+	if IsValid(target) and target:IsHandcuffed() then
+		data[#data + 1] = {
+			name = "Развязать",
+			id = "uncuff",
+			description = "Развязать данного игрока при помощи ваших наручников",
+			action = function()
+				net.Start("Cuffs_FreePlayer")
+					net.WriteEntity(target)
+				net.SendToServer()
+			end
+		}
+	end
+
+	return data
+end
+
+function PLUGIN:OpenRadialMenu()
+	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui.CursorVisible() or (Arbitrage.lawEnable and !Arbitrage.gui.chat:GetActive())) then
+		self.clampingTime = RealTime() + 0.5
+		return vgui.Create("Radial:Menu")
+	end
+
+	local panel = Arbitrage.gui.radialmenu
+	if IsValid(panel) and !panel.bClose then
+		panel:NewClose()
+	end
+
+	self.isClose = false
+end
+
+function PLUGIN:CloseRadialMenu()
+	if RealTime() > self.clampingTime then
+		local panel = Arbitrage.gui.radialmenu
+		if IsValid(panel) and !panel.bClose then
+			panel:NewClose()
+		end
+
+		self.isClose = false
+	end
+end
+
 local function add(old, new)
 	for k, v in ipairs(new or {}) do
 		if v.id then
@@ -439,6 +547,7 @@ end
 function PLUGIN:GetActionsList()
 	local data = {}
 	data = add(data, self:MainOption())
+	data = add(data, self:PlayerOption())
 
 	return data
 end
@@ -460,28 +569,39 @@ end)
 function PLUGIN:KeyPressID(client, id)
 	if id != "radialmenu" then return end
 
-	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui.CursorVisible() or (Arbitrage.lawEnable and !Arbitrage.gui.chat:GetActive())) then
-		self.clampingTime = RealTime() + 0.5
-		return vgui.Create("Radial:Menu")
+	local radial = self:OpenRadialMenu()
+	if IsValid(radial) and #radial.options <= 0 then
+		radial.options = self:MainOption()
 	end
-
-	local panel = Arbitrage.gui.radialmenu
-	if IsValid(panel) and !panel.bClose then
-		panel:NewClose()
-	end
-
-	self.isClose = false
 end
 
 function PLUGIN:KeyReleaseID(client, id)
 	if id != "radialmenu" then return end
 
-	if RealTime() > self.clampingTime then
-		local panel = Arbitrage.gui.radialmenu
-		if IsValid(panel) and !panel.bClose then
-			panel:NewClose()
-		end
+	self:CloseRadialMenu()
+end
 
-		self.isClose = false
+function PLUGIN:KeyPress(client, key)
+	if key != IN_USE then return end
+	if !IsFirstTimePredicted() then return end
+
+	local entity = self:ReturnTracePlayer()
+	if !IsValid(entity) then return end
+
+	local radial = self:OpenRadialMenu()
+	if IsValid(radial) and #radial.options <= 0 then
+		radial.options = self:PlayerOption()
+		radial.isPlayerOptions = true
 	end
+end
+
+function PLUGIN:KeyRelease(client, key)
+	if key != IN_USE then return end
+	if !IsFirstTimePredicted() then return end
+
+	local panel = Arbitrage.gui.radialmenu
+	if !IsValid(panel) then return end
+	if !panel.isPlayerOptions then return end
+
+	self:CloseRadialMenu()
 end

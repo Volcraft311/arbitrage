@@ -51,8 +51,6 @@ function PANEL:Init()
 
 	self.filled = circles.New(CIRCLE_FILLED, 150, self.m_x, self.m_y)
 	self.filled:SetColor(Color(60, 60, 60, 120))
-
-	self.options = PLUGIN:MainOption()
 end
 
 function PANEL:FindSelected(segment_size)

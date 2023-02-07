@@ -428,7 +428,7 @@ function PLUGIN:PlayerOption()
 			name = "Обыскать",
 			id = "search",
 			description = "Посмотреть содержимое инвентаря данного игрока",
-			-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+			icon = Material("danganronpa/radialmenu/search.png"),
 			action = function()
 				netstream.Start("RadialMenu:SearchAction")
 			end
@@ -437,7 +437,7 @@ function PLUGIN:PlayerOption()
 			name = "Предложить обмен",
 			id = "exchange",
 			description = "Предложить обмен предметами с данным игроком",
-			-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+			icon = Material("danganronpa/radialmenu/exchange.png"),
 			action = function()
 				netstream.Start("RadialMenu:ExchangeAction")
 			end
@@ -446,7 +446,7 @@ function PLUGIN:PlayerOption()
 			name = "Толкнуть",
 			id = "push",
 			description = "Толкнуть данного игрока",
-			-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+			icon = Material("danganronpa/radialmenu/push.png"),
 			action = function()
 				netstream.Start("RadialMenu:PushAction")
 			end
@@ -463,7 +463,7 @@ function PLUGIN:PlayerOption()
 					name = "Вылечить",
 					id = "cure",
 					description = "Вылечить данного игрока при помощи ваших медикаментов",
-					-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+					icon = Material("danganronpa/radialmenu/cure.png"),
 					action = function()
 						netstream.Start("ItemBase:SendAction", item:GetID(), "Использовать на другом игроке")
 					end
@@ -478,7 +478,7 @@ function PLUGIN:PlayerOption()
 					name = "Связать",
 					id = "cuff",
 					description = "Связать данного игрока при помощи ваших наручников",
-					-- icon = Material("danganronpa/radialmenu/emoticons.png"),
+					icon = Material("danganronpa/radialmenu/cuff.png"),
 					action = function()
 						netstream.Start("ItemBase:SendAction", item:GetID(), "Связать")
 					end

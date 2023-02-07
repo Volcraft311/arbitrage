@@ -19,7 +19,8 @@ local weaponData = {
     ["gmod_tool"] = true,
     ["academy_key"] = true,
     ["academy_first"] = true,
-    ["drgbase_possession"] = true
+    ["drgbase_possession"] = true,
+    ["weapon_handcuffed"] = true
 }
 
 function PLUGIN:PlayerSwitchWeapon(client, old, new)

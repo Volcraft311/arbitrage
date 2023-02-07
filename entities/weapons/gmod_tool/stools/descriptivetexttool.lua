@@ -65,6 +65,10 @@ function TOOL:RightClick()
         entity:SetNetVar("DescriptiveText", data)
 
         client:ChatNotify("Вы успешно прикрепили свой текст к объекту " .. tostring(entity) .. ".")
+
+        if entity:IsPlayer() then
+            entity:ChatNotify("Администратор прикрепил к вам текст: \"" .. data .. "\"!")
+        end
     end
 end
 
@@ -80,6 +84,10 @@ function TOOL:Reload()
 
         if entity:GetModel() == "models/hunter/blocks/cube025x025x025.mdl" then
             entity:Remove()
+        end
+
+        if entity:IsPlayer() then
+            entity:ChatNotify("Администратор убрал с вас текст!")
         end
     end
 end

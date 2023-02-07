@@ -53,6 +53,7 @@ SWEP.Secondary.Ammo = ""
 
 SWEP.DrawAmmo = false
 SWEP.HitDistance = 48
+SWEP.KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 
 local SwingSound = Sound( "WeaponFrag.Throw" )
 local HitSound = Sound( "Flesh.ImpactHard" )
@@ -89,6 +90,7 @@ function SWEP:PrimaryAttack()
             Stamina:SetStaminaCD(client, value <= 1 and 10 or 2)
         end
 
+        self.Owner:ViewPunch(self.KnockViewPunchAngle)
         self.Owner:SetAnimation(PLAYER_ATTACK1)
 
         local anim = "fists_left"
@@ -201,6 +203,10 @@ function SWEP:DealDamage()
         direction.z = 0
 
         tr.Entity:SetVelocity(direction)
+
+        if tr.Entity:IsPlayer() then
+            tr.Entity:ViewPunch(self.KnockViewPunchAngle)
+        end
 
         hit = true
     end

@@ -360,7 +360,6 @@ function TOOL.BuildCPanel(CPanel)
         Menu:Open()
     end
     CPanel:AddPanel(AppList2)
-    updateAppList()
 
     local AppList1Label = vgui.Create("DLabel")
     AppList1Label:SetText("Список выбранных дверей:")
@@ -386,6 +385,7 @@ function TOOL.BuildCPanel(CPanel)
         Menu:Open()
     end
     CPanel:AddPanel(AppList1)
+    updateAppList()
 
     local UpdateButton = vgui.Create("DButton")
     UpdateButton:SetText("Обновить список (если не обновился)")

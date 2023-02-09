@@ -61,9 +61,7 @@ if CLIENT then
         updateAppList()
     end)
 else
-    netstream.Hook("MapEntityRemover:Get", function(client)
-        if !client:IsAdmin() then return end
-
+    local function get(client)
         local data = {}
         for k, v in ipairs(ents.GetAll()) do
             local id = v:MapCreationID()
@@ -74,6 +72,12 @@ else
         end
 
         netstream.Heavy(client, "MapEntityRemover:Receive", data)
+    end
+
+    netstream.Hook("MapEntityRemover:Get", function(client)
+        if !client:IsAdmin() then return end
+
+        get(client)
     end)
 
     netstream.Hook("MapEntityRemover:Remove", function(client, data)
@@ -100,6 +104,14 @@ else
         if id == -1 then return end
 
         netstream.Start(client, "MapEntityRemover:Add", idx, id)
+    end)
+
+    hook.Add("PlayerInitialSpawnForRealz", "MapEntityRemover:Hook", function(client)
+        get(client)
+    end)
+
+    hook.Add("PostCleanupMap", "MapEntityRemover:Hook", function()
+        get(nil)
     end)
 end
 

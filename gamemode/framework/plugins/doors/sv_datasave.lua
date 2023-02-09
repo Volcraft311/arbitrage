@@ -17,100 +17,6 @@ function PLUGIN:SendDoorData(client, data)
 	netstream.Start(client, "arb.DoorGetData", data)
 end
 
-function PLUGIN:LoadData()
-	local data = {} -- self:GetData()
-
-	if !data then return end
-
-	for k, v in pairs(data) do
-		local entity = ents.GetMapCreatedEntity(k)
-
-		if IsValid(entity) and entity:IsDoor() then
-			for k2, v2 in pairs(v) do
-				entity[k2] = v2
-
-				data[k].idx = entity:EntIndex()
-			end
-		end
-	end
-
-	self.DoorsData = data
-
-	for k, v in pairs(player.GetAll()) do
-		self:SendDoorData(v, data)
-	end
-end
-
-local initData = {
-	asterion_hopespeak_prerelease = {
-		[1373] = true,
-		[1608] = true,
-		[2749] = true,
-		[2770] = true,
-		[2288] = true,
-		[2496] = true,
-		[2696] = true,
-		[2386] = true,
-		[2078] = true,
-		[2739] = true,
-		[2081] = true,
-		[2116] = true,
-		[1260] = true,
-		[2315] = true,
-		[2057] = true,
-		[2374] = true
-	}
-}
-
-function PLUGIN:InitPlayersDoor()
-	if !Arbitrage.plugin.list then return end
-	if !Arbitrage.plugin.list.doors then return end
-
-	local map = game.GetMap()
-
-	local doorsEntity = {}
-	for _, v in ipairs(ents.GetAll()) do
-		if v:IsDoor() and initData[map][v:MapCreationID()] then
-			doorsEntity[#doorsEntity + 1] = v
-		end
-	end
-
-	local db = Arbitrage.plugin.list.doors.DoorsData or {}
-	local num = 1
-	for k, v in pairs(Arbitrage.players) do
-		local client = v.client
-
-		if IsValid(client) and client:IsPlaying() and num <= table.Count(initData[map]) and !client:IsHost() then
-			local entity = doorsEntity[num]
-			if !IsValid(entity) then continue end
-
-			local id = entity:MapCreationID()
-			local faction = client:Team()
-
-			db[id] = db[id] or {}
-			db[id].list = db[id].list or {}
-			db[id].list[faction] = true
-			db[id].idx = entity:EntIndex()
-
-			entity:SetNetVar("arb.image", {faction})
-			entity:Fire("close")
-			entity:Fire("lock")
-			entity:SetNWBool("Locked", true)
-			entity:SetNWBool("disableHack", true)
-
-			num = num + 1
-		end
-	end
-
-	for k, v in pairs(player.GetAll()) do
-		self:SendDoorData(v, self.DoorsData)
-	end
-end
-
-function Arbitrage:InitDoors()
-	PLUGIN:InitPlayersDoor()
-end
-
 netstream.Hook("arb.DoorAddOwner", function(client, faction)
 	if !client:IsAdmin() then return end
 	if !faction then return end
@@ -134,10 +40,7 @@ netstream.Hook("arb.DoorAddOwner", function(client, faction)
 	db[id].idx = entity:EntIndex()
 
 	Arbitrage.commands.Notify(client, "Вы успешно дали " .. factionData.name .. " доступ к двери!")
-
-	for k, v in pairs(player.GetAll()) do
-		PLUGIN:SendDoorData(v, PLUGIN.DoorsData)
-	end
+	PLUGIN:SendDoorData(nil, PLUGIN.DoorsData)
 end)
 
 netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
@@ -163,10 +66,7 @@ netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
 	db[id].idx = entity:EntIndex()
 
 	Arbitrage.commands.Notify(client, "Вы успешно убрали у " .. factionData.name .. " доступ к двери!")
-
-	for k, v in pairs(player.GetAll()) do
-		PLUGIN:SendDoorData(v, PLUGIN.DoorsData)
-	end
+	PLUGIN:SendDoorData(nil, PLUGIN.DoorsData)
 end)
 
 netstream.Hook("arb.DoorGetData", function(client)

@@ -147,14 +147,6 @@ MonoMenu:AddGameFunction("Изменить журнал игры", "icon16/calen
     end
 })
 
-MonoMenu:AddGameFunction("Распределить двери", "icon16/chart_organisation.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        Arbitrage:InitDoors()
-    end
-})
-
 MonoMenu:AddGameFunction("Заморозить всех игроков", "icon16/shading.png", {
     onRun = function(client)
         if CLIENT then return end

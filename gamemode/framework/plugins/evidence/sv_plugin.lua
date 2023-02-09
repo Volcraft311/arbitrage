@@ -169,6 +169,7 @@ function PLUGIN:PlayerUse(client, entity)
     local idx = entity:GetEvidence()
     if !idx then return end
 
+    if Arbitrage.OffPickingEvidence() then return end
     if entity:IsPlayer() then return end
 
     local allow = false

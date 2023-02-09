@@ -68,16 +68,17 @@ timer.Create("Evidence:UpdateDraw", 1, 0, function()
 end)
 
 function PLUGIN:HUDPaint()
-    local client = LocalPlayer()
+	local offPickEvidence = Arbitrage.OffPickingEvidence()
+	local client = LocalPlayer()
 
-    local faction = Character.team:GetByID(client:Team())
+	local faction = Character.team:GetByID(client:Team())
 
-    local ignore_list = {}
-    ignore_list[#ignore_list + 1] = client
-    for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
+	local ignore_list = {}
+	ignore_list[#ignore_list + 1] = client
+	for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
 
-    for k, v in pairs(evidences) do
-    	if IsValid(v) then
+	for k, v in pairs(evidences) do
+		if IsValid(v) then
 			ignore_list[#ignore_list + 1] = v
 
 			local idx = v:GetEvidence()
@@ -104,12 +105,11 @@ function PLUGIN:HUDPaint()
 			if !data2D.visible then continue end
 
 			local x, y = data2D.x, data2D.y
+			if allow and !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) and !offPickEvidence then
+				local max_alpha = 150
+				local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
+				local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
 
-			local max_alpha = 150
-			local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
-			local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
-
-			if allow and !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
 				local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
 				local b = math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255)
 			    local circle = Arbitrage.hud.GeneratePoly(x, y, b * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
@@ -138,8 +138,8 @@ function PLUGIN:HUDPaint()
 			if !SETTINGS.options.Get("show_admin_esp") then continue end
 
 			draw_DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
-    	end
-    end
+		end
+	end
 end
 
 function PLUGIN:StartAnimation(entity, mat)

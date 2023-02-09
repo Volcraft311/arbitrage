@@ -541,6 +541,23 @@ MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/st
     end
 })
 
+MonoMenu:AddGameFunction("Возможность собирать улики", "icon16/folder_magnify.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffPickingEvidence", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffPickingEvidence", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffPickingEvidence()
+    end
+})
+
 MonoMenu:AddGameFunction("Выдача монопадов", "icon16/application_xp_terminal.png", {
     isCheckBox = true,
     onEnable = function(client)

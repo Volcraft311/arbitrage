@@ -32,6 +32,8 @@ local MapCreationStored = {}
 local SelectedStored = {}
 
 local function updateAppList()
+    if !IsValid(AppList) then return end
+
     AppList:Clear()
 
     for k, v in pairs(SelectedStored) do
@@ -139,7 +141,12 @@ function TOOL.BuildCPanel(CPanel)
         local Menu = DermaMenu()
         Menu:AddOption("Сохранить список", function()
             Derma_StringRequest("Сохранить цветокор", "Введите название документа в который вы хотите сохранить цветокор", "", function(text)
-                file.Write("academy_mapentityremover_configs/" .. game.GetMap() .. "/" .. text .. ".txt", util.TableToJSON(SelectedStored))
+                local data = {}
+                for k, v in pairs(SelectedStored) do
+                    data[#data + 1] = v
+                end
+
+                file.Write("academy_mapentityremover_configs/" .. game.GetMap() .. "/" .. text .. ".txt", util.TableToJSON(data))
             end, nil, "Сохранить", "Отменить")
         end):SetIcon("icon16/add.png")
 
@@ -149,10 +156,29 @@ function TOOL.BuildCPanel(CPanel)
         local files = file.Find("academy_mapentityremover_configs/" .. game.GetMap() .. "/*", "DATA")
         for k, v in ipairs(files) do
             Child:AddOption(v, function()
-                local data = util.JSONToTable(file.Read("academy_mapentityremover_configs/" .. game.GetMap() .. "/" .. v, "DATA"))
-
-                SelectedStored = data
+                SelectedStored = {}
                 updateAppList()
+
+                MapCreationStored = {}
+                netstream.Start("MapEntityRemover:Get")
+
+                timer.Simple(0.5, function()
+                    local info = {}
+                    for k2, v2 in pairs(MapCreationStored) do
+                        info[v2] = k2
+                    end
+
+                    local data = {}
+                    for _, v2 in ipairs(util.JSONToTable(file.Read("academy_mapentityremover_configs/" .. game.GetMap() .. "/" .. v, "DATA"))) do
+                        local idx = info[v2]
+                        if !idx then continue end
+
+                        data[idx] = v2
+                    end
+
+                    SelectedStored = data
+                    updateAppList()
+                end)
             end)
         end
 

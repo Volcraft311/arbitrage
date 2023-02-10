@@ -264,6 +264,7 @@ local function cuff(item, ropeLength)
 
         if (!client.CuffindCD or CurTime() >= client.CuffindCD) then
             client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+            client:EmitSound("physics/cardboard/cardboard_box_impact_soft" .. math.random(1, 6) .. ".wav")
             client.CuffindCD = CurTime() + 1.5
         end
 
@@ -290,8 +291,8 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Наручники"
-    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/4338/4338726.png"
+    ITEM.name = "Стяжки"
+    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/3365/3365759.png"
     ITEM.description = "Ими можно попробовать кого-то связать."
     ITEM.model = "models/props_lab/box01a.mdl"
     ITEM.category = "Наручники"
@@ -311,8 +312,8 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Наручники с веревкой"
-    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/4338/4338726.png"
+    ITEM.name = "Стяжки с веревкой"
+    ITEM.icon = "https://cdn-icons-png.flaticon.com/512/4664/4664962.png"
     ITEM.description = "Ими можно попробовать кого-то связать."
     ITEM.model = "models/props_lab/box01a.mdl"
     ITEM.category = "Наручники"

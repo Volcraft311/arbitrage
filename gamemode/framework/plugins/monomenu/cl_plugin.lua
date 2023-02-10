@@ -553,6 +553,36 @@ local function getActionList(clientinfo)
                 icon = "icon16/plugin.png",
                 data = {
                     {
+                        name = "Убить",
+                        icon = "icon16/cross.png",
+                        data = function()
+                            serverguard.command.Run("slay", false, m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Телепортироваться",
+                        icon = "icon16/control_play_blue.png",
+                        data = function()
+                            serverguard.command.Run("goto", false, m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Телепортировать",
+                        icon = "icon16/control_repeat_blue.png",
+                        data = function()
+                            serverguard.command.Run("bring", false, m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
                         name = "Кикнуть",
                         icon = "icon16/stop.png",
                         data = function()

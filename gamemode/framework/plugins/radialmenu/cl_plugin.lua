@@ -494,6 +494,7 @@ function PLUGIN:PlayerOption()
 			name = "Развязать",
 			id = "uncuff",
 			description = "Развязать данного игрока при помощи ваших наручников",
+			icon = Material("danganronpa/radialmenu/uncuff.png"),
 			action = function()
 				net.Start("Cuffs_FreePlayer")
 					net.WriteEntity(target)

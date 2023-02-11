@@ -525,12 +525,12 @@ local function getActionList(clientinfo)
                 data = function()
                     for k, v in ipairs(PLUGIN.entityList) do
                         if v == m_steamid then
-                            PLUGIN.entityList[k] = nil
+                            table.remove(PLUGIN.entityList, k)
                             return
                         end
                     end
 
-                    PLUGIN.entityList[#PLUGIN.entityList + 1] = m_steamid
+                    table.insert(PLUGIN.entityList, m_steamid)
                 end,
                 check = function()
                     return a_isvalid
@@ -770,6 +770,7 @@ local speed = 0.3
 PLUGIN.entityList = PLUGIN.entityList or {}
 function PLUGIN:HUDPaint()
     if #self.entityList <= 0 then return end
+    if !LocalPlayer():IsAdmin() then return end
 
     local r = HSVToColor(RealTime() * speed % cur_time1 * cur_time2, cur_time3, cur_time3)
     local color = Color(r.r, r.g, r.b)
@@ -780,8 +781,6 @@ function PLUGIN:HUDPaint()
 
         if IsValid(client) then
             table.insert(entities, client)
-        else
-            table.remove(entities, k)
         end
     end
 

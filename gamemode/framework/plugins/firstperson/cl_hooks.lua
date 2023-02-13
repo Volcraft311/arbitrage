@@ -53,6 +53,7 @@ local weaponData = {
 local function allow()
 	local client = LocalPlayer()
 
+	if Arbitrage.IsThirdPerson() then return false end
 	if Arbitrage.lawEnable then return false end
 	if client:IsNocliping() then return false end
 	if client:GetNetVar("inbed") then return false end

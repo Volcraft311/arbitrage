@@ -285,6 +285,18 @@ function PLUGIN:ActionsOption()
 		}
 	end
 
+	if Arbitrage.OnThirdPerson() then
+		data[#data + 1] = {
+			name = "3-е лицо",
+			id = "thirdperson",
+			description = "Включить вид от 3-го лица",
+			icon = Material("danganronpa/radialmenu/thirdperson.png"),
+			action = function()
+				Arbitrage.ThirdPerson = !Arbitrage.ThirdPerson
+			end
+		}
+	end
+
 	return data, self.MainOption
 end
 

@@ -458,6 +458,10 @@ function Arbitrage.OffPickingEvidence()
     return GetNetVar("arb.OffPickingEvidence", false)
 end
 
+function Arbitrage.OnThirdPerson()
+    return GetNetVar("arb.OnThirdPerson", false)
+end
+
 Arbitrage.DefaultRules = {
     {"https://i.imgur.com/WqrdPdz.png", "Перспективы прибывания", "Ученики должны жить в Абсолютной Академии остаток всего своего предпологаемого будущего."},
     {"https://i.imgur.com/5BEGz5S.png", "Требования для классного суда", "Когда происходит убийство, все выжившие ученики должны участвовать в классном суде."},

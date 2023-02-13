@@ -584,6 +584,23 @@ MonoMenu:AddGameFunction("Общий чат монопадов", "icon16/world_a
     end
 })
 
+MonoMenu:AddGameFunction("Разрешить 3-е лицо", "icon16/magnifier_zoom_in.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnThirdPerson", true)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnThirdPerson", false)
+    end,
+    OnCheck = function(client)
+        return Arbitrage.OnThirdPerson()
+    end
+})
+
 MonoMenu:AddGameFunction("Выдача оружий персонажа", "icon16/gun.png", {
     isCheckBox = true,
     onEnable = function(client)

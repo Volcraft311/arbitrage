@@ -327,25 +327,13 @@ Arbitrage.base.Include("cl_itemlist.lua")
 Arbitrage.base.Include("sh_meta.lua")
 Arbitrage.base.Include("sv_plugin.lua")
 
-local function script_path()
-    local str = debug.getinfo(2, "S").source:sub(2)
-    str = str:match("(.*/)")
 
-    str = str:gsub("gamemodes/", "")
+Arbitrage.base.Include("base/base_ammo.lua")
+Arbitrage.base.Include("base/base_food.lua")
+Arbitrage.base.Include("base/base_medical.lua")
+Arbitrage.base.Include("base/base_note.lua")
+Arbitrage.base.Include("base/base_picklock.lua")
+Arbitrage.base.Include("base/base_weapon.lua")
 
-    return str
-end
-
-do
-    local f, _ = file.Find(script_path() .. "/base/*", "LUA")
-    for k, v in ipairs(f) do
-        Arbitrage.base.Include("base/" .. v, "shared")
-    end
-end
-
-do
-    local f, _ = file.Find(script_path() .. "/items/*", "LUA")
-    for k, v in ipairs(f) do
-        Arbitrage.base.Include("items/" .. v)
-    end
-end
+Arbitrage.base.Include("items/sh_list.lua")
+Arbitrage.base.Include("items/sh_other.lua")

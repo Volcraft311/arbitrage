@@ -1,4 +1,5 @@
 local PLUGIN = PLUGIN
+PLUGIN.name = "Legs"
 
 if !CLIENT then return end
 

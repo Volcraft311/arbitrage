@@ -16,6 +16,8 @@ local PLUGIN = PLUGIN
 local KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 
 netstream.Hook("RadialMenu:PushAction", function(client)
+    if client:IsSpectate() then return end
+
     local target = PLUGIN:ReturnTracePlayer(client)
     if !IsValid(target) then return end
 
@@ -30,6 +32,8 @@ netstream.Hook("RadialMenu:PushAction", function(client)
 end)
 
 netstream.Hook("RadialMenu:SearchAction", function(client)
+    if client:IsSpectate() then return end
+
     local target = PLUGIN:ReturnTracePlayer(client)
     if !IsValid(target) then return end
 
@@ -49,6 +53,8 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
 end)
 
 netstream.Hook("RadialMenu:ExchangeAction", function(client)
+    if client:IsSpectate() then return end
+
     local target = PLUGIN:ReturnTracePlayer(client)
     if !IsValid(target) then return end
 

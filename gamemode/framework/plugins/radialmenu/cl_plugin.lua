@@ -582,6 +582,8 @@ end)
 function PLUGIN:KeyPressID(client, id)
 	if id != "radialmenu" then return end
 
+	if client:IsSpectate() then return end
+
 	local radial = self:OpenRadialMenu()
 	if IsValid(radial) and #radial.options <= 0 then
 		radial.options = self:MainOption()
@@ -600,6 +602,8 @@ function PLUGIN:KeyPress(client, key)
 
 	local entity = self:ReturnTracePlayer()
 	if !IsValid(entity) then return end
+
+	if client:IsSpectate() then return end
 
 	local radial = self:OpenRadialMenu()
 	if IsValid(radial) and #radial.options <= 0 then

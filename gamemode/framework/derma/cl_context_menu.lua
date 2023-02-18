@@ -48,40 +48,42 @@ function PANEL:Init()
         draw.SimpleText("Избранное", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
-    local data = asterionlib.data:Get("radialmenu_favorites", {})
+    if !LocalPlayer():IsSpectate() then
+        local data = asterionlib.data:Get("radialmenu_favorites", {})
 
-    local actions = RadialMenu:GetActionsList()
-    for k, v in ipairs(data) do
-        local action = actions[v]
-        if !action then continue end
+        local actions = RadialMenu:GetActionsList()
+        for k, v in ipairs(data) do
+            local action = actions[v]
+            if !action then continue end
 
-        local panel = self.favoritesPanel:Add("DButton")
-        panel:SetText("")
-        panel:Dock(TOP)
-        panel:SetTall(H(45))
-        panel.color = Color(255, 234, 238)
-        panel.Paint = function(_, w, h)
-            local color = Color(_.color.r, _.color.g, _.color.b)
-            draw.SimpleText(action.name, "arb.Font_FuturaPTBook_8", W(66), H(10), color, TEXT_ALIGN_LEFT)
+            local panel = self.favoritesPanel:Add("DButton")
+            panel:SetText("")
+            panel:Dock(TOP)
+            panel:SetTall(H(45))
+            panel.color = Color(255, 234, 238)
+            panel.Paint = function(_, w, h)
+                local color = Color(_.color.r, _.color.g, _.color.b)
+                draw.SimpleText(action.name, "arb.Font_FuturaPTBook_8", W(66), H(10), color, TEXT_ALIGN_LEFT)
 
-            local ishover = _:IsHovered()
-            local frame = FrameTime() * 10
+                local ishover = _:IsHovered()
+                local frame = FrameTime() * 10
 
-            _.color.r = Lerp(frame, _.color.r, ishover and 255 or 255)
-            _.color.g = Lerp(frame, _.color.g, ishover and 61 or 234)
-            _.color.b = Lerp(frame, _.color.b, ishover and 96 or 238)
+                _.color.r = Lerp(frame, _.color.r, ishover and 255 or 255)
+                _.color.g = Lerp(frame, _.color.g, ishover and 61 or 234)
+                _.color.b = Lerp(frame, _.color.b, ishover and 96 or 238)
 
-            if action.icon then
-                surface.SetDrawColor(color)
-                surface.SetMaterial(action.icon)
-                surface.DrawTexturedRect(W(66) - W(10) - W(30), h / 2 - H(30) / 2, H(30), H(30))
+                if action.icon then
+                    surface.SetDrawColor(color)
+                    surface.SetMaterial(action.icon)
+                    surface.DrawTexturedRect(W(66) - W(10) - W(30), h / 2 - H(30) / 2, H(30), H(30))
+                end
             end
-        end
-        panel.DoClick = function()
-            RunConsoleCommand("arb_radialmenu_action", v)
-        end
+            panel.DoClick = function()
+                RunConsoleCommand("arb_radialmenu_action", v)
+            end
 
-        self.favoritesPanel:SetTall(self.favoritesPanel:GetTall() + H(45))
+            self.favoritesPanel:SetTall(self.favoritesPanel:GetTall() + H(45))
+        end
     end
 
 

@@ -39,6 +39,30 @@ function PLUGIN:CreateRagdoll(client)
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
     entity:Activate()
 
+    entity:SetRenderMode(client:GetRenderMode())
+    entity:SetColor(client:GetColor())
+    entity:SetMaterial(client:GetMaterial())
+
+    local sm = client:GetMaterials()
+    if sm then
+        for k, v in ipairs(sm) do
+            local mat = client:GetSubMaterial(k)
+
+            if mat and mat != "" then
+                entity:SetSubMaterial(k, mat)
+            end
+        end
+    end
+
+    local bg = client:GetBodyGroups()
+    if bg then
+        for k, v in ipairs(bg) do
+            if client:GetBodygroup(v.id) > 0 then
+                entity:SetBodygroup(v.id, client:GetBodygroup(v.id))
+            end
+        end
+    end
+
     return entity
 end
 

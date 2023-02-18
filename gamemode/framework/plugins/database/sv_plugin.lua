@@ -91,6 +91,22 @@ function PLUGIN:PlayerDisconnected(client)
             entity.data.statistic[v] = Arbitrage.statistics.Get(client, v)
         end
 
+        local saver = entity.data.saver
+        if saver then
+            entity:SetSkin(saver.Skin)
+            entity:SetMaterial(saver.Material)
+            entity:SetRenderMode(saver.RenderMode)
+            entity:SetColor(saver.Color)
+
+            for k, v in pairs(saver.BodyG) do
+                entity:SetBodygroup(k, v)
+            end
+
+            for k, v in pairs(saver.SubMat) do
+                entity:SetSubMaterial(k, v)
+            end
+        end
+
         self.disconnectPlayers[client:SteamID()] = entity
     end
 end

@@ -16,6 +16,7 @@ include("shared.lua");
 AddCSLuaFile("cl_init.lua");
 AddCSLuaFile("shared.lua");
 
+local BoundsVector = 16
 function ENT:Initialize()
 	self:SetSolid(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -26,4 +27,6 @@ function ENT:Initialize()
 			self:SetAnim(self.animation)
 		end
 	end)
+
+	self:PhysicsInitBox(Vector(-BoundsVector, -BoundsVector, 0), Vector(BoundsVector, BoundsVector, BoundsVector))
 end

@@ -328,12 +328,12 @@ Arbitrage.base.Include("sh_meta.lua")
 Arbitrage.base.Include("sv_plugin.lua")
 
 
-Arbitrage.base.Include("base/base_ammo.lua")
-Arbitrage.base.Include("base/base_food.lua")
-Arbitrage.base.Include("base/base_medical.lua")
-Arbitrage.base.Include("base/base_note.lua")
-Arbitrage.base.Include("base/base_picklock.lua")
-Arbitrage.base.Include("base/base_weapon.lua")
+Arbitrage.base.Include("base/base_ammo.lua", "shared")
+Arbitrage.base.Include("base/base_food.lua", "shared")
+Arbitrage.base.Include("base/base_medical.lua", "shared")
+Arbitrage.base.Include("base/base_note.lua", "shared")
+Arbitrage.base.Include("base/base_picklock.lua", "shared")
+Arbitrage.base.Include("base/base_weapon.lua", "shared")
 
 Arbitrage.base.Include("items/sh_list.lua")
 Arbitrage.base.Include("items/sh_other.lua")

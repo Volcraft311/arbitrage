@@ -291,6 +291,7 @@ function TOOL.BuildCPanel(CPanel)
         local mat = Material(v[1])
 
         local ListItem = ListRibbons:Add("DButton")
+        ListItem:SetTooltip(v[2])
         ListItem:SetText("")
         ListItem:SetSize(W(60), H(60))
         ListItem.alpha = 0

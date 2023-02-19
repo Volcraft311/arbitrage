@@ -40,5 +40,5 @@ netstream.Hook("VOICEDIST:ChangeVoiceVolume", function(client, data)
     local amount = GetVoiceScale + (data and 0.1 or -0.1)
     amount = math.Clamp(amount, 0.1, 1)
 
-    client:SetNetVar("arb.voicescale", amount, client)
+    client:SetNetVar("arb.voicescale", amount)
 end)

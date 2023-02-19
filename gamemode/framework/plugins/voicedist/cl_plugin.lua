@@ -168,10 +168,20 @@ local function drawPlayers()
     angle:RotateAroundAxis(angle:Right(), 90)
 
     surface.SetFont("arb.Font_FuturaPTBook_30")
-    local _, textHeight = surface.GetTextSize(PLUGIN.text)
 
     for k, v in ipairs(showPlayerList) do
         if !IsValid(v) then continue end
+
+        local voiceDist = v:GetNetVar("arb.voicescale", 0.5) * 100
+
+        local text = "Говорит"
+        if voiceDist >= 70 then
+            text = "Кричит"
+        elseif voiceDist <= 30 then
+            text = "Шепчет"
+        end
+
+        local _, textHeight = surface.GetTextSize(text)
 
         v.arbTextAlpha = Lerp(FrameTime() * 8, v.arbTextAlpha, PLUGIN.players[v] and 1 or 0)
 
@@ -182,7 +192,7 @@ local function drawPlayers()
         local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
 
         cam.Start3D2D(PLUGIN:GetTypingIndicatorPosition(v), Angle(0, angle.y, 90), 0.05)
-            draw.SimpleTextOutlined(PLUGIN.text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
+            draw.SimpleTextOutlined(text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
         cam.End3D2D()
     end
 end

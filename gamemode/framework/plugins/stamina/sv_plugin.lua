@@ -241,6 +241,14 @@ function Stamina:EntityTakeDamage(target, dmginfo)
 
 	if stamina < 300 then
 		local damage = dmginfo:GetDamage()
+
+		local attacker = dmginfo:GetAttacker()
+		if IsValid(attacker) and attacker:IsPlayer() then
+			local class = attacker:GetActiveWeaponClass()
+
+			if class == "academy_first" then return end
+		end
+
 		self:SetStamina(target, self:GetStamina(target) + damage * 2)
 		target.StaminaDamageTime = CurTime() + 10
 	end

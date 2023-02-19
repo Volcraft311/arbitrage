@@ -72,7 +72,7 @@ end
 
 function SWEP:UpdateNextIdle()
     local vm = self.Owner:GetViewModel()
-    self:SetNextIdle( CurTime() + vm:SequenceDuration() / vm:GetPlaybackRate() )
+    self:SetNextIdle(CurTime() + vm:SequenceDuration() / vm:GetPlaybackRate())
 end
 
 function SWEP:PrimaryAttack()
@@ -94,10 +94,8 @@ function SWEP:PrimaryAttack()
         self.Owner:SetAnimation(PLAYER_ATTACK1)
 
         local anim = "fists_left"
-        if ( right ) then anim = "fists_right" end
-        if ( self:GetCombo() >= 2 ) then
-            anim = "fists_uppercut"
-        end
+        if right then anim = "fists_right" end
+        if self:GetCombo() >= 2 then anim = "fists_uppercut" end
 
         local vm = self.Owner:GetViewModel()
         vm:SendViewModelMatchingSequence(vm:LookupSequence(anim))
@@ -144,60 +142,48 @@ function SWEP:SecondaryAttack()
     hook.Run("ArcadeFistsSecondary", self:GetOwner())
 end
 
-local phys_pushscale = GetConVar( "phys_pushscale" )
+local phys_pushscale = GetConVar("phys_pushscale")
 
 function SWEP:DealDamage()
     local anim = self:GetSequenceName(self.Owner:GetViewModel():GetSequence())
 
     self.Owner:LagCompensation(true)
 
-    local tr = util.TraceLine( {
+    local tr = util.TraceLine({
         start = self.Owner:GetShootPos(),
         endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * self.HitDistance,
         filter = self.Owner,
         mask = MASK_SHOT_HULL
-    } )
+    })
 
-    if ( !IsValid( tr.Entity ) ) then
-        tr = util.TraceHull( {
+    if !IsValid(tr.Entity) then
+        tr = util.TraceHull({
             start = self.Owner:GetShootPos(),
             endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * self.HitDistance,
             filter = self.Owner,
             mins = Vector( -10, -10, -8 ),
             maxs = Vector( 10, 10, 8 ),
             mask = MASK_SHOT_HULL
-        } )
+        })
     end
 
-    if ( tr.Hit && !( game.SinglePlayer() && CLIENT ) ) then
-        self:EmitSound( HitSound )
+    if tr.Hit and !(game.SinglePlayer() and CLIENT) then
+        self:EmitSound(HitSound)
     end
 
     local hit = false
     local scale = phys_pushscale:GetFloat()
 
-    if ( SERVER && IsValid( tr.Entity ) && ( tr.Entity:IsNPC() || tr.Entity:IsPlayer() || tr.Entity:Health() > 0 ) ) then
-        local dmginfo = DamageInfo()
-
+    if SERVER and IsValid(tr.Entity) and (tr.Entity:IsNPC() or tr.Entity:IsPlayer() or tr.Entity:Health() > 0) then
         local attacker = self.Owner
-        if ( !IsValid( attacker ) ) then attacker = self end
-        dmginfo:SetAttacker( attacker )
+        if !IsValid(attacker) then attacker = self end
 
-        dmginfo:SetInflictor( self )
-        dmginfo:SetDamage( math.random( 8, 12 ) )
+        local dmginfo = DamageInfo()
+        dmginfo:SetAttacker(attacker)
+        dmginfo:SetInflictor(self)
+        dmginfo:SetDamage(1)
 
-        if ( anim == "fists_left" ) then
-            dmginfo:SetDamageForce( self.Owner:GetRight() * 4912 * scale + self.Owner:GetForward() * 9998 * scale )
-        elseif ( anim == "fists_right" ) then
-            dmginfo:SetDamageForce( self.Owner:GetRight() * -4912 * scale + self.Owner:GetForward() * 9989 * scale )
-        elseif ( anim == "fists_uppercut" ) then
-            dmginfo:SetDamageForce( self.Owner:GetUp() * 5158 * scale + self.Owner:GetForward() * 10012 * scale )
-            dmginfo:SetDamage( math.random( 12, 24 ) )
-        end
-
-        SuppressHostEvents(NULL)
         tr.Entity:TakeDamageInfo(dmginfo)
-        SuppressHostEvents(self.Owner)
 
         local direction = self.Owner:GetAimVector() * 100
         direction.z = 0
@@ -211,22 +197,23 @@ function SWEP:DealDamage()
         hit = true
     end
 
-    if ( IsValid( tr.Entity ) ) then
+    if IsValid(tr.Entity) then
         local phys = tr.Entity:GetPhysicsObject()
-        if ( IsValid( phys ) ) then
-            phys:ApplyForceOffset( self.Owner:GetAimVector() * 80 * phys:GetMass() * scale, tr.HitPos )
+
+        if IsValid(phys) then
+            phys:ApplyForceOffset(self.Owner:GetAimVector() * 80 * phys:GetMass() * scale, tr.HitPos)
         end
     end
 
-    if ( SERVER ) then
-        if ( hit && anim != "fists_uppercut" ) then
-            self:SetCombo( self:GetCombo() + 1 )
+    if SERVER then
+        if (hit and anim != "fists_uppercut") then
+            self:SetCombo(self:GetCombo() + 1)
         else
-            self:SetCombo( 0 )
+            self:SetCombo(0)
         end
     end
 
-    self.Owner:LagCompensation( false )
+    self.Owner:LagCompensation(false)
 end
 
 function SWEP:OnDrop()
@@ -237,14 +224,14 @@ function SWEP:Deploy()
     local speed = 4
 
     local vm = self.Owner:GetViewModel()
-    vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )
-    vm:SetPlaybackRate( speed )
+    vm:SendViewModelMatchingSequence(vm:LookupSequence("fists_draw"))
+    vm:SetPlaybackRate(speed)
 
-    self:SetNextPrimaryFire( CurTime() + vm:SequenceDuration() / speed )
-    self:SetNextSecondaryFire( CurTime() + vm:SequenceDuration() / speed )
+    self:SetNextPrimaryFire(CurTime() + vm:SequenceDuration() / speed)
+    self:SetNextSecondaryFire(CurTime() + vm:SequenceDuration() / speed)
     self:UpdateNextIdle()
 
-    if ( SERVER ) then
+    if SERVER then
         self:SetCombo( 0 )
     end
 
@@ -260,29 +247,28 @@ function SWEP:Holster()
 end
 
 function SWEP:Think()
-    local vm = self.Owner:GetViewModel()
     local idletime = self:GetNextIdle()
+    if idletime > 0 and CurTime() > idletime then
+        local vm = self.Owner:GetViewModel()
 
-    if ( idletime > 0 && CurTime() > idletime ) then
-        vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_idle_0" .. math.random( 1, 2 ) ) )
+        vm:SendViewModelMatchingSequence(vm:LookupSequence( "fists_idle_0" .. math.random(1, 2)))
         self:UpdateNextIdle()
     end
 
     local meleetime = self:GetNextMeleeAttack()
-
-    if ( meleetime > 0 && CurTime() > meleetime ) then
+    if meleetime > 0 and CurTime() > meleetime then
         self:DealDamage()
         self:SetNextMeleeAttack(0)
     end
 
-    if ( SERVER && CurTime() > self:GetNextPrimaryFire() + 0.1 ) then
+    if SERVER and CurTime() > self:GetNextPrimaryFire() + 0.1 then
         self:SetCombo(0)
     end
 end
 
 if CLIENT then
     function SWEP:DrawHUD()
-        if IsValid( self:GetOwner():GetVehicle() ) then return end
+        if IsValid(self:GetOwner():GetVehicle()) then return end
 
         local client = self:GetOwner()
 

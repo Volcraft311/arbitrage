@@ -44,6 +44,7 @@ function PLUGIN:StartRebuttalShowdowns(client1, client2)
         [client2] = true
     }
 
+    self.RebuttalShowdownsMuted = CurTime() + 6.5
     self.IsRebuttalShowdowns = true
     self.RC_size = 0
 
@@ -393,6 +394,10 @@ netstream.Hook("arb.StartVoice", function(client)
         PLUGIN:StartVoice(client, randomID(PLUGIN.oldAnimID))
 
         if PLUGIN.IsRebuttalShowdowns and PLUGIN.RS_players[client] then
+            if CurTime() < (LawSystem.RebuttalShowdownsMuted or 0) then
+                return
+            end
+
             client.RC_speak = true
 
             if !client.RC_ChangeAnim or CurTime() >= client.RC_ChangeAnim then

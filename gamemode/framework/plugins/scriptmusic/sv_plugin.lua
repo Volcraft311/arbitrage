@@ -32,7 +32,7 @@ function PLUGIN:OpenMenu(client)
         v[2] = nil
     end
 
-    netstream.Start(client, "ScriptMusic:OpenMenu", data)
+    netstream.Heavy(client, "ScriptMusic:OpenMenu", data)
 end
 
 function PLUGIN:OpenMenuSub(client, playlist)
@@ -43,7 +43,7 @@ function PLUGIN:OpenMenuSub(client, playlist)
     local category = data[2][playlist]
     if !category then return end
 
-    netstream.Start(client, "ScriptMusic:OpenMenuSub", playlist, category)
+    netstream.Heavy(client, "ScriptMusic:OpenMenuSub", playlist, category)
 end
 
 function PLUGIN:GetTracks(event)

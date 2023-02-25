@@ -408,6 +408,9 @@ MonoMenu:AddGameFunction("Падение Голода", "icon16/cup.png", {
         if CLIENT then return end
 
         SetNetVar("arb.OffFallHunger", true)
+        for k, v in ipairs(player.GetAll()) do
+            Arbitrage.statistics.Set(v, "Hunger", 100)
+        end
     end,
     OnCheck = function(client)
         return !Arbitrage.OffFallHunger()
@@ -425,6 +428,9 @@ MonoMenu:AddGameFunction("Падение Жажды", "icon16/cup.png", {
         if CLIENT then return end
 
         SetNetVar("arb.OffFallThirst", true)
+        for k, v in ipairs(player.GetAll()) do
+            Arbitrage.statistics.Set(v, "Thirst", 100)
+        end
     end,
     OnCheck = function(client)
         return !Arbitrage.OffFallThirst()
@@ -442,6 +448,9 @@ MonoMenu:AddGameFunction("Падение Сна", "icon16/cup.png", {
         if CLIENT then return end
 
         SetNetVar("arb.OffFallSleep", true)
+        for k, v in ipairs(player.GetAll()) do
+            Arbitrage.statistics.Set(v, "Sleep", 100)
+        end
     end,
     OnCheck = function(client)
         return !Arbitrage.OffFallSleep()

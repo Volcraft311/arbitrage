@@ -139,7 +139,12 @@ local data = {
 			description = "Лучший помощник, дабы ориентироваться в темноте.",
 			model = "models/weapons/w_flashlight_zm.mdl",
 			icon = "https://cdn-icons-png.flaticon.com/512/3068/3068819.png",
-			class = "weapon_flashlight"
+			class = "weapon_flashlight",
+			hooks = {
+				unequip = function(item, client)
+					client:Flashlight(false)
+				end
+			}
 		},
 		extinguisher = {
 			name = "Огнетушитель",

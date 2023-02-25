@@ -26,7 +26,7 @@ for k, v in pairs(gamemode_table) do
 end
 
 Arbitrage = Arbitrage or {}
-Arbitrage.version = "0.95 (13.01.2023)"
+Arbitrage.version = "0.96 (25.02.2023)"
 Arbitrage.GM = GM
 
 include("framework/sh_batch.lua")

@@ -112,7 +112,7 @@ do
     hook.Add("asterionlib.workshop:Initialize", "asterionlib.workshop", function()
         -- MAIN
         workshop:Add("2902905430") -- Asterion Hope's Peak [Pre-Release]
-        workshop:Add("2715755590") -- Danganronpa - Main Content
+        workshop:Add("2715755590") -- Danganronpa - Main Content #1
         workshop:Add("2786490267") -- Danganronpa - Main Content #2
         workshop:Add("2717853308") -- Danganronpa - Models Content #1
         workshop:Add("2780751458") -- Danganronpa - Models Content #2
@@ -131,6 +131,7 @@ do
         workshop:Add("1161268544") -- Pink Blood
         workshop:Add("160250458") -- Wiremod
         workshop:Add("2840295308") -- Primitive
+        workshop:Add("2938912306") -- Suppression Mat
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload

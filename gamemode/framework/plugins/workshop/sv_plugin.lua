@@ -182,7 +182,7 @@ local function cancel(id)
     asterionlib.data:Set("workshop", data)
 end
 netstream.Hook("Workshop:Cancel", function(client, array)
-    if !client:IsSuperAdmin() then return end
+    if !client:IsAdmin() then return end
 
     local logInfo = "("
     local i = 1
@@ -217,7 +217,7 @@ local function remove(id)
     })
 end
 netstream.Hook("Workshop:Remove", function(client, array)
-    if !client:IsSuperAdmin() then return end
+    if !client:IsAdmin() then return end
 
     local logInfo = "("
     local i = 1

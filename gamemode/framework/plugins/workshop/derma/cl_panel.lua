@@ -230,25 +230,25 @@ function PANEL:CreateMain()
 
             netstream.Start("Workshop:Install", self.installArray)
         end
+    end
 
-        local cancelButton = leftPanel:Add("DButton")
-        cancelButton:SetText("")
-        cancelButton:SetTall(H(25))
-        cancelButton:Dock(BOTTOM)
-        cancelButton:DockMargin(0, 0, 0, 5)
-        cancelButton.alpha = 0
-        cancelButton.Paint = function(_, w, h)
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-            draw.DrawText("Отменить " .. table.Count(self.installArray) .. " дополнений", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+    local cancelButton = leftPanel:Add("DButton")
+    cancelButton:SetText("")
+    cancelButton:SetTall(H(25))
+    cancelButton:Dock(BOTTOM)
+    cancelButton:DockMargin(0, 0, 0, 5)
+    cancelButton.alpha = 0
+    cancelButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText("Отменить " .. table.Count(self.installArray) .. " дополнений", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
-            surface.SetDrawColor(255, 61, 96, 30)
-            surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
-        end
-        cancelButton.DoClick = function()
-            if table.Count(self.installArray) <= 0 then return end
+        surface.SetDrawColor(255, 61, 96, 30)
+        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+    end
+    cancelButton.DoClick = function()
+        if table.Count(self.installArray) <= 0 then return end
 
-            netstream.Start("Workshop:Cancel", self.installArray)
-        end
+        netstream.Start("Workshop:Cancel", self.installArray)
     end
 
     local rightPanel = mainPanel:Add("Panel")
@@ -288,25 +288,23 @@ function PANEL:CreateMain()
         end
     end
 
-    if LocalPlayer():IsSuperAdmin() then
-        local removeButton = rightPanel:Add("DButton")
-        removeButton:SetText("")
-        removeButton:SetTall(H(25))
-        removeButton:Dock(BOTTOM)
-        removeButton:DockMargin(0, 0, 0, 5)
-        removeButton.alpha = 0
-        removeButton.Paint = function(_, w, h)
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-            draw.DrawText("Удалить " .. table.Count(self.removeArray) .. " дополнений", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+    local removeButton = rightPanel:Add("DButton")
+    removeButton:SetText("")
+    removeButton:SetTall(H(25))
+    removeButton:Dock(BOTTOM)
+    removeButton:DockMargin(0, 0, 0, 5)
+    removeButton.alpha = 0
+    removeButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        draw.DrawText("Удалить " .. table.Count(self.removeArray) .. " дополнений", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
-            surface.SetDrawColor(255, 61, 96, 30)
-            surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
-        end
-        removeButton.DoClick = function()
-            if table.Count(self.removeArray) <= 0 then return end
+        surface.SetDrawColor(255, 61, 96, 30)
+        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+    end
+    removeButton.DoClick = function()
+        if table.Count(self.removeArray) <= 0 then return end
 
-            netstream.Start("Workshop:Remove", self.removeArray)
-        end
+        netstream.Start("Workshop:Remove", self.removeArray)
     end
 end
 

@@ -331,6 +331,8 @@ local ActionPressIDList = {
         end
 
         if !vgui.CursorVisible() or Arbitrage.lawEnable then
+            if Arbitrage.gui.chat:GetActive() then return end
+
             vgui.Create("InventoryBase:Menu")
         end
     end

@@ -21,7 +21,6 @@ function Character.Caching()
 		if !Material.cache[path] then
 			timer.Simple(i, function()
 				Material(path)
-				print(path)
 			end)
 
 			i = i + time

@@ -816,6 +816,7 @@ local function teleport()
 end
 
 function Arbitrage:StartGame()
+    netstream.Start(nil, "Character:Caching")
     SetNetVar("arb.Time", 28800)
 
     syncvars()

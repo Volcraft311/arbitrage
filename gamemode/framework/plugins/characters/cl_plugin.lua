@@ -12,7 +12,21 @@
 ]]--
 
 function Character.Caching()
+	local client = LocalPlayer()
 	local i = 0
+
+	local function caching(path, time)
+		time = time or 0.2
+
+		if !Material.cache[path] then
+			timer.Simple(i, function()
+				Material(path)
+				print(path)
+			end)
+
+			i = i + time
+		end
+	end
 
 	for k, v in ipairs(player.GetAll()) do
 		local faction = Character.team:GetByID(v:Team())
@@ -22,19 +36,25 @@ function Character.Caching()
 	    local emoji = Character.emoji:GetByUniqueID(uniqueID)
 	    if !emoji then continue end
 
-	    local var = v:GetNetVar("emoji", 1)
-	    local big, _ = emoji:GetByIndex(var)
+	    if v == client then
+	    	for _, stored in pairs(emoji:GetData()) do
+	    		for _, v2 in ipairs({"big", "min"}) do
+		    		for _, path in pairs(stored[v2]) do
+		    			caching(path)
+		    		end
+		    	end
+	    	end
+	    else
+	    	local var = v:GetNetVar("emoji", 1)
+	    	local big = emoji:GetByIndex(var)
 
-	    if !big then
-	        big, _ = emoji:GetByIndex(1)
-	    end
+	    	if !big then
+	    		big = emoji:GetByIndex(1)
+	    	end
 
-	    if big then
-	    	timer.Simple(i, function()
-	    		Material(big)
-	    	end)
-
-	    	i = i + 0.2
+	    	if big then
+	    		caching(big)
+	    	end
 	    end
 	end
 end

@@ -18,6 +18,7 @@ local IsValid = IsValid
 Arbitrage.ThirdPerson = Arbitrage.ThirdPerson or false
 
 function Arbitrage.IsThirdPerson()
+	if Arbitrage.lawEnable then return end
 	if !Arbitrage.OnThirdPerson() then return end
 
 	local client = LocalPlayer()

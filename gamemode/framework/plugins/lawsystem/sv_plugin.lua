@@ -134,6 +134,10 @@ function Arbitrage:StartLaw()
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)
 
     ScriptMusic:ChangeTheme("law", true)
+    for k, v in ipairs(player.GetAll()) do
+        v:SendLua([=[RunConsoleCommand("stopsound")]=])
+    end
+
     netstream.Start(nil, "arb.StartLaw")
 
     for k, v in ipairs(player.GetAll()) do

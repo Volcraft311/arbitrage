@@ -24,6 +24,8 @@ function PANEL:Init()
     self:AlphaTo(255, 0.3)
     self:Center()
     self:ShowCloseButton(false)
+    self:SetZPos(30002)
+    self:SetDrawOnTop(true)
 
     local close = self:Add("DButton")
     close:SetPos(self:GetWide() - H(70), 0)

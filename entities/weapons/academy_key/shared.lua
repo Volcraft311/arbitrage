@@ -28,7 +28,7 @@ SWEP.Contact = ""
 SWEP.Purpose = ""
 
 SWEP.WorldModel = ""
-SWEP.ViewModel = ""
+SWEP.ViewModel = Model("models/weapons/c_arms.mdl")
 
 SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false

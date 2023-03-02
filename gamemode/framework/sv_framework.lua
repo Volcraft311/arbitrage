@@ -822,7 +822,7 @@ function Arbitrage:StartGame()
     syncvars()
     changetheme()
 
-    netstream.Start(nil, "arb.Intro", 8)
+    netstream.Start(nil, "arb.Blackout", 6.5)
 
     showtailent()
     fixfaction()
@@ -841,7 +841,7 @@ function Arbitrage:StopGame()
     Arbitrage.lawEnable = false
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)
 
-    netstream.Start(nil, "arb.Intro", 3)
+    netstream.Start(nil, "arb.Blackout", 1.5)
 
     timer.Simple(2, function()
         netstream.Start(nil, "arb.ClearLaw")

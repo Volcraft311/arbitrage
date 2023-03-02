@@ -14,17 +14,16 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:StartPointing()
-    self._angles = Angle(0, 0, 0)
+    hook.Remove("CalcView", "arb.LawTransferCamPos")
 
-    self._fov = 90
+    self._angles = self._tcpAng
+
+    self._fov = nil
     self._entity = NULL
     self.__camPos = Arbitrage.camPosEnd
     self.animID = 1
     self.oldAnimID = -1
-
-    timer.Simple(0.5, function()
-        self._movescene = true
-    end)
+    self.someoneAlreadySaid = false
 
     timer.Simple(6, function()
         hook.Add("ArbitrageVoiceStart", "arb.LawStartVoice", function(client)
@@ -48,8 +47,20 @@ function PLUGIN:StartPointing()
         vgui.Create("arb.LawTimer")
     end)
 
+    local incline = 0
     hook.Add("CalcView", "arb.LawStartPointing", function(client, pos, angles, fov)
+        incline = Lerp(FrameTime() * 0.5, incline, 5)
+
+        if !self._fov then
+            self._fov = fov + 40
+        end
+
         if IsValid(self._entity) then
+            if !self.someoneAlreadySaid then
+                self.someoneAlreadySaid = true
+                self._fov = 90
+            end
+
             Arbitrage:ReplaceVariables()
             self.__camPos, self._angles, self._fov, self._entity = self.CamAnimData[self.animID](
                 self.__camPos,
@@ -60,10 +71,14 @@ function PLUGIN:StartPointing()
                 self.oldAnimID
             )
         else
-            self._angles.y = CurTime() % 20 * 18
+            self._angles.y = self._angles.y + FrameTime() * 25
+
+            if !self.someoneAlreadySaid then
+                self._fov = Lerp(FrameTime() * 2, self._fov, 90)
+            end
         end
 
-        local angRot = IsValid(self._entity) and 0 or 2
+        local angRot = IsValid(self._entity) and 0 or incline
 
         local view = {
             origin = self.__camPos - Vector(0, 0, 10),
@@ -79,11 +94,11 @@ function PLUGIN:StartPointing()
 end
 
 function PLUGIN:TransferCamPos()
+    hook.Remove("CalcView", "arb.LawCameraTwist")
+
     local data = Arbitrage.camPos
     self._camPos = data[1]
     self._angCam = 0
-    self._movescene = false
-    self.__movescene = 0
     self._angUp = 0
 
     hook.Add("CalcView", "arb.LawTransferCamPos", function(client, pos, angles, fov)
@@ -92,10 +107,11 @@ function PLUGIN:TransferCamPos()
         local frame = FrameTime() * 60
         self._angCam = self._angCam + frame
         self._angUp = Lerp(FrameTime(), self._angUp, 30)
+        self._tcpAng = data[2] + Angle(0, self._angCam, 0) - Angle(self._angUp, 0, 0)
 
         local view = {
             origin = self._camPos,
-            angles = data[2] + Angle(0, self._angCam, 0) - Angle(self._angUp, 0, 0),
+            angles = self._tcpAng,
             fov = fov,
             drawviewer = true
         }
@@ -167,6 +183,8 @@ local circleMat = Material("danganronpa/law/circle.png")
 local circleMatB = Material("danganronpa/law/circle_b.png")
 local startMat = Material("danganronpa/law/start.png")
 function PLUGIN:SendStartText()
+    hook.Remove("RenderScreenspaceEffects", "arb.LawIntroText")
+
     local size = 0
     local alpha = 255
     local alphaTo = alpha
@@ -426,95 +444,6 @@ function PLUGIN:RenderScreenspaceEffects()
     DrawColorModify(tab)
 end
 
--- function PLUGIN:PostDrawOpaqueRenderables()
---     if Arbitrage.placesList and !Arbitrage.lawEnable then
---         local client = LocalPlayer()
---         local var = client:LawPlace()
---         local place = Arbitrage.placesList[var]
-
---         if var >= 0 and place then
---             local anim = math.sin(CurTime() * 1.5) * 5
---             local vec = place[1] - Vector(0, 0, 10 + anim)
-
---             local ang = Angle(0, EyeAngles().y, EyeAngles().z)
---             ang:RotateAroundAxis(ang:Forward(), 90)
---             ang:RotateAroundAxis(ang:Right(), 90)
-
---             local sizeW, sizeH = 150, 150
-
---             cam.Start3D2D(vec, ang, 0.03)
---                 surface.SetDrawColor(255, 255, 255)
---                 surface.SetMaterial(matArrow)
---                 surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
---             cam.End3D2D()
---         end
---     end
-
---     if !Arbitrage.lawEnable then return end
---     if Arbitrage.OffShowClassTrial() then return end
-
---     local pos = Arbitrage.camPosEnd
---     if !pos then return end
-
---     local angle = Angle(90, 0, 0)
---     local radius = 250
---     local seg = 360
-
---     do
---         for d = 1, 4 do
---             local i = d * 90 + CurTime() * 10 % 360
---             local ang = (math.pi * 2) / (seg - 1) * i
-
---             local x = math.sin(ang)
---             local y = math.cos(ang)
-
---             local right = angle:Right() * x * radius
---             local forward = angle:Up() * y * radius
-
---             local Pos = pos + right + forward
---             Pos = Pos + Vector(0, 0, 6)
-
---             local WPos = Pos
---             local Ang = WPos - pos
---             Ang = Ang:Angle()
-
---             local ang_t = Angle(0, Ang.y, Ang.z)
---             ang_t:RotateAroundAxis(ang_t:Forward(), 90)
---             ang_t:RotateAroundAxis(ang_t:Right(), 90)
-
---             local text = "class trial"
---             cam.Start3D2D(Pos, ang_t, 0.3)
---                 draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
---                 draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
---             cam.End3D2D()
---         end
---     end
--- end
-
-function PLUGIN:BlackScreen(data, speed)
-    local alpha = 0
-
-    hook.Add("RenderScreenspaceEffects", "arb.LawBlackScreen", function()
-        alpha = Lerp(FrameTime() * (speed * 4), alpha, 257)
-
-        surface.SetDrawColor(0, 0, 0, alpha)
-        surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-    end)
-
-    timer.Simple(data or 5, function()
-        hook.Add("RenderScreenspaceEffects", "arb.LawBlackScreen", function()
-            alpha = Lerp(FrameTime() * speed, alpha, -3)
-
-            surface.SetDrawColor(0, 0, 0, alpha)
-            surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-        end)
-
-        timer.Simple(data + 5, function()
-            hook.Remove("RenderScreenspaceEffects", "arb.LawBlackScreen")
-        end)
-    end)
-end
-
 function PLUGIN:CameraTwist()
     hook.Add("CalcView", "arb.LawCameraTwist", function(ply, pos, angles, fov)
         local view = {
@@ -544,15 +473,20 @@ local moving = 0
 local _moving = moving
 
 function PLUGIN:StartCylinder()
-    local cyl = {}
-    for i = 1, 4 do
-        cyl[i] = 100
+    local info = {}
+    for k, v in pairs(LocalPlayer():GetEvidences()) do
+        local evidence = Evidence:GetEvidence(k)
+
+        if evidence and #info < 6 then
+            info[#info + 1] = evidence.name
+        end
     end
 
+    local cyl = {}
+    for i = 1, #info do cyl[i] = 100 end
+
     local cyl2 = {}
-    for k, v in pairs(cyl) do
-        cyl2[k] = v
-    end
+    for k, v in pairs(cyl) do cyl2[k] = v end
 
     local function RegNewCylinder()
         local x = 0
@@ -604,7 +538,7 @@ function PLUGIN:StartCylinder()
                         surface.SetMaterial(bullet)
                         surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                        draw.SimpleText("Monokuma File 1", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
+                        draw.SimpleText("Файл Монокумы", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
                     cam.PopModelMatrix()
                 end
             end)
@@ -640,7 +574,7 @@ function PLUGIN:StartCylinder()
                 cam.PopModelMatrix()
             end
 
-            for i = 1, 4 do
+            for i, v in ipairs(info) do
                 timer.Simple(i * 0.3, function()
                     if cyl[i] == -1 or cyl[i] == 101 then return end
                     cyl[i] = -1
@@ -668,14 +602,14 @@ function PLUGIN:StartCylinder()
                     surface.SetMaterial(bullet)
                     surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW, bulletSizeH)
 
-                    draw.SimpleText("Monokuma File " .. i, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), color_black, TEXT_ALIGN_LEFT)
+                    draw.SimpleText(v, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), color_black, TEXT_ALIGN_LEFT)
                 cam.PopModelMatrix()
             end
         end)
 
-        timer.Simple(3, function()
+        timer.Simple(#info * 0.5, function()
             _x = 0
-            for i = 1, 4 do
+            for i = 1, #info do
                 cyl[i] = 101
             end
 
@@ -686,96 +620,98 @@ function PLUGIN:StartCylinder()
     RegCylinder()
 end
 
+function PLUGIN:CreateBulletAnimation1()
+    for i = 1, 5 do
+        timer.Simple(i * math.random(100, 150) / 1000, function()
+            local bulletData, id = PLUGIN:CreateBullet({
+                x = 0,
+                y = ScrH() / 2 + math.random(-10, 10) * 20 + 35,
+                size = math.random(15, 30),
+                color = table.Random(bulletColors),
+                alpha = math.random(200, 255),
+                speed = 5
+            })
+
+            timer.Simple(math.random(100, 300) / 200, function()
+                if !bulletData then return end
+
+                bulletData.alpha = 0
+
+                timer.Simple(1, function()
+                    PLUGIN.bulletList[id] = nil
+                end)
+            end)
+        end)
+    end
+
+    timer.Simple(0.15, function()
+        PLUGIN:SendIntroText()
+    end)
+end
+
+function PLUGIN:CreateBulletAnimation2()
+    for i = 1, 20 do
+        timer.Simple(i * math.random(100, 150) / 3000, function()
+            local bulletData, id = PLUGIN:CreateBullet({
+                x = 0,
+                y = ScrH() / 2 + math.random(-10, 10) * 50,
+                size = math.random(10, 75),
+                color = table.Random(bulletColors),
+                alpha = math.random(200, 255),
+                speed = 7
+            })
+
+            timer.Simple(0.3, function()
+                if !bulletData then return end
+
+                bulletData.alpha = 0
+
+                timer.Simple(1, function()
+                    PLUGIN.bulletList[id] = nil
+                end)
+            end)
+        end)
+    end
+
+    timer.Simple(2, function()
+        PLUGIN:StartCylinder()
+    end)
+end
+
 
 netstream.Hook("arb.StartLaw", function()
     Arbitrage:ReplaceVariables()
     PLUGIN:Clear()
 
-    PLUGIN:BlackScreen(4, 1)
-    timer.Simple(4, function()
+    vgui.Create("arb.Blackout"):Callback(function()
         Arbitrage.lawEnable = true
         PLUGIN:CameraTwist()
 
         timer.Simple(1, function()
-            PLUGIN:BlackScreen(1, 3)
-        end)
-    end)
+            vgui.Create("arb.Blackout"):Callback(function()
+                PLUGIN:TransferCamPos()
 
-    timer.Simple(6, function()
-        hook.Remove("CalcView", "arb.LawCameraTwist")
-        PLUGIN:TransferCamPos()
-    end)
+                timer.Simple(0.5, function()
+                    PLUGIN:CreateBulletAnimation1()
 
-    timer.Simple(6.5, function()
-        for i = 1, 5 do
-            timer.Simple(i * math.random(100, 150) / 1000, function()
-                local bulletData, id = PLUGIN:CreateBullet({
-                    x = 0,
-                    y = ScrH() / 2 + math.random(-10, 10) * 20 + 35,
-                    size = math.random(15, 30),
-                    color = table.Random(bulletColors),
-                    alpha = math.random(200, 255),
-                    speed = 5
-                })
+                    timer.Simple(2, function()
+                        PLUGIN:SendStartText()
 
-                timer.Simple(math.random(100, 300) / 200, function()
-                    if !bulletData then return end
+                        timer.Simple(1.5, function()
+                            PLUGIN:StartPointing()
 
-                    bulletData.alpha = 0
-
-                    timer.Simple(1, function()
-                        PLUGIN.bulletList[id] = nil
-                    end)
-                end)
-            end)
-        end
-
-        timer.Simple(0.15, function()
-            PLUGIN:SendIntroText()
-        end)
-    end)
-
-    timer.Simple(9, function()
-        hook.Remove("RenderScreenspaceEffects", "arb.LawIntroText")
-        PLUGIN:SendStartText()
-
-        timer.Simple(1.5, function()
-            hook.Remove("CalcView", "arb.LawTransferCamPos")
-            PLUGIN:StartPointing()
-
-            for i = 1, 8 do
-                timer.Simple(i * math.random(100, 150) / 1000, function()
-                    local bulletData, id = PLUGIN:CreateBullet({
-                        x = 0,
-                        y = ScrH() / 2 + math.random(-10, 10) * 50,
-                        size = math.random(10, 75),
-                        color = table.Random(bulletColors),
-                        alpha = math.random(200, 255),
-                        speed = 3
-                    })
-
-                    timer.Simple(0.3, function()
-                        if !bulletData then return end
-
-                        bulletData.alpha = 0
-
-                        timer.Simple(1, function()
-                            PLUGIN.bulletList[id] = nil
+                            PLUGIN:CreateBulletAnimation2()
                         end)
                     end)
                 end)
-            end
-
-            timer.Simple(2, function()
-                PLUGIN:StartCylinder()
-            end)
+            end, 0, 0.5)
         end)
-    end)
+    end, 1.5, 0.5)
 end)
 
 netstream.Hook("arb.EndLaw", function()
     Arbitrage:ReplaceVariables()
-    PLUGIN:BlackScreen(4, 1)
+    vgui.Create("arb.Blackout"):Callback(nil, 2.5)
 
     timer.Simple(2, function()
         Arbitrage.lawEnable = false

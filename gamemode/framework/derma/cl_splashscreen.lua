@@ -55,6 +55,7 @@ function PANEL:Init()
     self:SetAlpha(0)
     self:AlphaTo(255, 2)
     self:MakePopup()
+    self:SetCursor("blank")
 
     Arbitrage.gui.splashscreen = self
 
@@ -66,6 +67,7 @@ function PANEL:Init()
         local bA = 0
 
         self.matScreen = self:Add("Panel")
+        self.matScreen:SetCursor("blank")
         self.matScreen:Dock(FILL)
         self.matScreen.alpha = 0
         self.matScreen.black = 0
@@ -151,6 +153,7 @@ function PANEL:ShowTitle()
     local textAlpha = 0
 
     self.TitlePanel = self.matScreen:Add("Panel")
+    self.TitlePanel:SetCursor("blank")
     self.TitlePanel:SetPos(0, 0)
     self.TitlePanel:SetSize(ScrW(), ScrH())
     self.TitlePanel.Paint = function(_, w, h)
@@ -198,12 +201,13 @@ function PANEL:ShowTitle()
 end
 
 function PANEL:ShowSurvival()
-    local size = ScrH() * 0.11
+    local size = ScrH() * 0.15
 
     local surv = self.data[1]
     local dead = self.data[2]
 
     self.survival = self:Add("Panel")
+    self.survival:SetCursor("blank")
     self.survival:SetPos(0, ScrH() * 0.5)
     self.survival:SetSize(ScrW(), ScrH() - ScrH() * 0.5)
     self.survival.List = {}
@@ -218,7 +222,7 @@ function PANEL:ShowSurvival()
             end
 
             local sizeW, sizeH = size, size * 1.7
-            local shift = sizeW * 0.8
+            local shift = sizeW * 0.65
 
             surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
             surface.SetMaterial(v.material)
@@ -304,6 +308,7 @@ end
 function PANEL:BlackScreen()
     timer.Simple(1, function()
         local panel = self:Add("Panel")
+        panel:SetCursor("blank")
         panel:SetPos(0, 0)
         panel:SetSize(ScrW(), ScrH())
         panel:SetAlpha(0)
@@ -334,6 +339,7 @@ function PANEL:ShowSurvivalText()
     self.allSurv = table.Count(self.data[1])
 
     self.TextPanel = self:Add("Panel")
+    self.TextPanel:SetCursor("blank")
     self.TextPanel:SetPos(0, ScrH() - size)
     self.TextPanel:SetSize(ScrW(), size)
     self.TextPanel:SetAlpha(0)

@@ -32,6 +32,7 @@ function Character.Caching()
 	    if !faction then continue end
 
 	    local uniqueID = faction:GetUniqueID()
+
 	    local emoji = Character.emoji:GetByUniqueID(uniqueID)
 	    if !emoji then continue end
 
@@ -54,6 +55,11 @@ function Character.Caching()
 	    	if big then
 	    		caching(big)
 	    	end
+	    end
+
+	    local assets = faction:GetAssets()
+	    if assets and assets.white then
+	    	caching(assets.white)
 	    end
 	end
 end

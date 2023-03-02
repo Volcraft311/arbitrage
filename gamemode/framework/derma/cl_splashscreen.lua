@@ -222,7 +222,7 @@ function PANEL:ShowSurvival()
             end
 
             local sizeW, sizeH = size, size * 1.7
-            local shift = sizeW * 0.65
+            local shift = sizeW * 0.55
 
             surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
             surface.SetMaterial(v.material)

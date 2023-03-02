@@ -627,4 +627,6 @@ concommand.Add("arb_close_lawaction", function(client, cmd, args)
     if IsValid(Arbitrage.gui.playertable) then
         Arbitrage.gui.playertable:Remove()
     end
+
+    PLUGIN:Clear()
 end)

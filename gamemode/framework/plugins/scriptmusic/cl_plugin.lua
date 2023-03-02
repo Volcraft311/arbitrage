@@ -14,6 +14,8 @@
 
 local PLUGIN = PLUGIN
 
+PLUGIN.sound = nil
+
 RunConsoleCommand("stopsound") -- refresh
 
 function PLUGIN:InitializeTrack(path, callback)
@@ -30,12 +32,8 @@ function PLUGIN:InitializeTrack(path, callback)
     end)
 end
 
-function PLUGIN:GetGlobalSound()
-    return self.sound
-end
-
 function PLUGIN:IsValidGlobalSound()
-    local s = self:GetGlobalSound()
+    local s = self.sound
 
     if s and type(s) == "IGModAudioChannel" and s:IsValid() then
         return true
@@ -45,31 +43,28 @@ function PLUGIN:IsValidGlobalSound()
 end
 
 function PLUGIN:VolumeDown(channel, callback)
-    local gSound = channel
     local uniqueID = util.CRC(channel:GetFileName())
 
-    timer.Create("ScriptMusic:Volume_" .. uniqueID, FrameTime(), 0, function()
-        if !self:IsValidGlobalSound() then
-            timer.Remove("ScriptMusic:Volume_" .. uniqueID)
+    local function cb()
+        timer.Remove("ScriptMusic:Volume_" .. uniqueID)
 
-            if callback then
-                callback()
-            end
-
-            return
+        if callback then
+            callback()
         end
+    end
 
-        local volume = gSound:GetVolume()
-        volume = math.Approach(volume, 0, FrameTime() * 0.3)
+    timer.Create("ScriptMusic:Volume_" .. uniqueID, FrameTime(), 0, function()
+        if self:IsValidGlobalSound() then
+            local volume = self.sound:GetVolume()
+            volume = math.Approach(volume, 0, FrameTime() * 0.3)
 
-        gSound:SetVolume(volume)
+            self.sound:SetVolume(volume)
 
-        if volume <= 0 and callback then
-            timer.Remove("ScriptMusic:Volume_" .. uniqueID)
-
-            if callback then
-                callback()
+            if volume <= 0 and callback then
+                cb()
             end
+        else
+            cb()
         end
     end)
 end
@@ -78,67 +73,52 @@ function PLUGIN:VolumeUp(channel, max_volume, callback)
     max_volume = max_volume or 100
     self.max_volume = max_volume
 
-    local gSound = channel
     local uniqueID = util.CRC(channel:GetFileName())
 
-    timer.Create("ScriptMusic:Volume_" .. uniqueID, FrameTime(), 0, function()
-        if !self:IsValidGlobalSound() then
-            timer.Remove("ScriptMusic:Volume_" .. uniqueID)
+    local function cb()
+        timer.Remove("ScriptMusic:Volume_" .. uniqueID)
 
-            if callback then
-                callback()
-            end
-
-            return
+        if callback then
+            callback()
         end
+    end
 
-        local volume = gSound:GetVolume()
-        volume = math.Approach(volume, max_volume / 100, FrameTime() * 0.3)
+    timer.Create("ScriptMusic:Volume_" .. uniqueID, FrameTime(), 0, function()
+        if self:IsValidGlobalSound() then
+            local volume = self.sound:GetVolume()
+            volume = math.Approach(volume, max_volume / 100, FrameTime() * 0.3)
 
-        gSound:SetVolume(volume)
+            self.sound:SetVolume(volume)
 
-        if volume >= max_volume / 100 then
-            timer.Remove("ScriptMusic:Volume_" .. uniqueID)
-
-            if callback then
-                callback()
+            if volume >= max_volume / 100 then
+                cb()
             end
+        else
+            cb()
         end
     end)
 end
 
 function PLUGIN:StopGlobalSound(callback)
     if self:IsValidGlobalSound() then
-        local channel = self:GetGlobalSound()
-        local uniqueID = util.CRC(channel:GetFileName())
+        self:VolumeDown(self.sound, function()
+            if self.sound then
+                self.sound:Stop()
+                self.sound = nil
 
-        if uniqueID then
-            timer.Remove("ScriptMusic:Volume_" .. uniqueID)
-        end
-
-        self:VolumeDown(self:GetGlobalSound(), function()
-            channel:Stop()
-
-            if self:IsValidGlobalSound() then
-                local gSound = self:GetGlobalSound()
-                gSound:Stop()
-            end
-
-            PLUGIN.sound = nil
-
-            if callback then
-                timer.Simple(1, function()
+                if callback then
+                    timer.Simple(1, function()
+                        callback()
+                    end)
+                end
+            else
+                if callback then
                     callback()
-                end)
+                end
             end
         end)
     else
-        if self:IsValidGlobalSound() then
-            local gSound = self:GetGlobalSound()
-            gSound:Stop()
-        end
-
-        PLUGIN.sound = nil
+        self.sound = nil
 
         if callback then
             timer.Simple(1, function()
@@ -151,28 +131,24 @@ end
 function PLUGIN:IsStoping()
     if !self:IsValidGlobalSound() then return true end
 
-    local gSound = self:GetGlobalSound()
-    local state = gSound:GetState()
-
-    return state != GMOD_CHANNEL_PLAYING and state != GMOD_CHANNEL_STALLED
+    local state = self.sound:GetState()
+    return state == GMOD_CHANNEL_STOPPED or state == GMOD_CHANNEL_PAUSED
 end
 
 function PLUGIN:UpdateSoundVolume()
     if !self:IsValidGlobalSound() then return end
     if self:IsStoping() then return end
 
-    local gSound = self:GetGlobalSound()
-
-    local uniqueID = util.CRC(gSound:GetFileName())
+    local uniqueID = util.CRC(self.sound:GetFileName())
     local max_volume = (self.max_volume or 100) / 100
-    local volume = gSound:GetVolume()
+    local volume = self.sound:GetVolume()
     local option_volume = SETTINGS.options.Get("music_volume") / 100
 
     if !timer.Exists("ScriptMusic:Volume_" .. uniqueID) then
         local new_volume = max_volume * option_volume
 
         if volume != new_volume then
-            gSound:SetVolume(new_volume)
+            self.sound:SetVolume(new_volume)
         end
     end
 end
@@ -188,14 +164,12 @@ function PLUGIN:ChangeMusic()
             netstream.Start("ScriptMusic:PlayEventGL", theme)
 
             if self:IsValidGlobalSound() then
-                local gSound = self:GetGlobalSound()
-                gSound:Stop()
-
-                PLUGIN.sound = nil
+                self.sound:Stop()
+                self.sound = nil
             end
-        end
 
-        self.uChangeMusic = CurTime() + 3
+            self.uChangeMusic = CurTime() + 10
+        end
     end
 end
 
@@ -228,19 +202,29 @@ netstream.Hook("ScriptMusic:OpenMenuSub", function(id, data)
     panel:SetData(id, data)
 end)
 
-netstream.Hook("ScriptMusic:GlobalTrack", function(data, volume, max_volume)
+local isLoading = false
+netstream.Hook("ScriptMusic:GlobalTrack", function(path, volume, max_volume)
+    if isLoading then return end
+
     volume = volume and volume / 100 or 0
 
-    PLUGIN:InitializeTrack(data, function(channel)
-        PLUGIN:StopGlobalSound(function()
+    isLoading = true
+    PLUGIN:StopGlobalSound(function()
+        PLUGIN.sound = nil
+
+        PLUGIN:InitializeTrack(path, function(channel)
+            if PLUGIN.sound then
+                PLUGIN.sound:Stop()
+                PLUGIN.sound = nil
+            end
+
             PLUGIN.sound = channel
-
-            print(PLUGIN.sound)
-
             channel:SetVolume(0)
             channel:Play()
 
-            --PLUGIN:VolumeUp(channel, max_volume)
+            MsgC(Color(0, 255, 0), "Сейчас играет: ", channel:GetFileName(), "\n")
+
+            isLoading = false
         end)
     end)
 end)

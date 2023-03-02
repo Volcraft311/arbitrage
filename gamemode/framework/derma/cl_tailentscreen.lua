@@ -44,6 +44,8 @@ function PANEL:Init()
     self:SetSize(ScrW(), ScrH())
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
+    self:SetZPos(30001)
+    self:SetDrawOnTop(true)
 
     self.nameAlpha = 0
     self.nameMove = self:GetWide()

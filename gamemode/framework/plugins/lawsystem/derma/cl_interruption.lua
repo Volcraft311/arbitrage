@@ -49,6 +49,8 @@ function PANEL:Init()
             self:Remove()
         end)
     end)
+
+    LocalPlayer():EmitSound("academy/law/counter.mp3")
 end
 
 function PANEL:Paint(w, h)

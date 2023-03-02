@@ -190,6 +190,8 @@ function PLUGIN:SendStartText()
     local alphaTo = alpha
     local rot = 0
 
+    LocalPlayer():EmitSound("academy/law/start2.mp3")
+
     hook.Add("RenderScreenspaceEffects", "arb.LawStartText", function()
         size = Lerp(FrameTime() * 3, size, 400)
         alpha = Lerp(FrameTime() * 10, alpha, alphaTo)
@@ -582,6 +584,8 @@ function PLUGIN:StartCylinder()
                     timer.Simple(0.1, function()
                         moving = moving + 50
                     end)
+
+                    LocalPlayer():EmitSound("academy/law/bullet.mp3")
                 end)
 
                 cyl2[i] = Lerp(FrameTime() * 20, cyl2[i], cyl[i])
@@ -621,6 +625,8 @@ function PLUGIN:StartCylinder()
 end
 
 function PLUGIN:CreateBulletAnimation1()
+    LocalPlayer():EmitSound("academy/law/start1.mp3")
+
     for i = 1, 5 do
         timer.Simple(i * math.random(100, 150) / 1000, function()
             local bulletData, id = PLUGIN:CreateBullet({

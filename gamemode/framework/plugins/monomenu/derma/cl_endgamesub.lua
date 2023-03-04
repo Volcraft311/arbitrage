@@ -21,7 +21,7 @@ function PANEL:Init()
     self:AlphaTo(255, 0.3)
     self.startTime = SysTime()
 
-    local t = H(350)
+    local t = H(500)
 
     self.main = self:Add("Panel")
     self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
@@ -54,6 +54,12 @@ function PANEL:Init()
 
         draw.DrawText("Выберите убегающего персонажа", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
         draw.DrawText("Кируми Тоджо", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+
+        draw.DrawText("Введите значение первого текста", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("%s был признан виновным.", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+
+        draw.DrawText("Введите значение второго текста", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("Время для наказания!", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -94,6 +100,20 @@ function PANEL:Init()
         self.targetS = data
     end
 
+    self.text1 = self.main:Add("DTextEntry")
+    self.text1:SetValue("%s был признан виновным.")
+    self.text1:SetPos(W(5), H(315))
+    self.text1:SetSize(self.main:GetWide() - W(10), H(25))
+    self.text1:SetPlaceholderText("%s был признан виновным.")
+    self.text1:SetFont("arb.Font_FuturaPTBook_8")
+
+    self.text2 = self.main:Add("DTextEntry")
+    self.text2:SetValue("Время для наказания!")
+    self.text2:SetPos(W(5), H(395))
+    self.text2:SetSize(self.main:GetWide() - W(10), H(25))
+    self.text2:SetPlaceholderText("Время для наказания!")
+    self.text2:SetFont("arb.Font_FuturaPTBook_8")
+
     for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
         if v:GetAssets().pixel then
             self.attackerBox:AddChoice(v:GetName(), k)
@@ -116,14 +136,14 @@ function PANEL:Init()
     end
 
     submitButton.DoClick = function()
-        local a, b, c = self.title:GetValue(), self.attackerS, self.targetS
-        if a == "" or !b or !c then return end
+        local a, b, c, d, e = self.title:GetValue(), self.attackerS, self.targetS, self.text1:GetValue(), self.text2:GetValue()
+        if a == "" or !b or !c or d == "" or e == "" then return end
 
         self:AlphaTo(0, 0.3, 0, function()
             self:Remove()
         end)
 
-        netstream.Start("arb.MonoEndGame", a, b, c)
+        netstream.Start("arb.MonoEndGame", a, b, c, d, e)
     end
 end
 

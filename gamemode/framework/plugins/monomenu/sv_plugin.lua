@@ -610,7 +610,7 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
     end)
 end)
 
-netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID)
+netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID, text1, text2)
     if !client:IsAdmin() then return end
 
     local factionAttacker = Character.team:GetByID(attackerID)
@@ -620,7 +620,7 @@ netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID)
     if !factionTarget then return end
 
     for k, v in ipairs(player.GetAll()) do
-        asterionlib.netgui:Create(v, "arb.MonoEndGame", nil, "SetData", title, attackerID, targetID)
+        asterionlib.netgui:Create(v, "arb.MonoEndGame", nil, "SetData", title, attackerID, targetID, text1, text2)
     end
 
     Arbitrage.adminnotify:SendNotify("startendgame", client:FullName())

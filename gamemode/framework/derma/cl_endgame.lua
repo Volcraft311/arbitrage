@@ -171,7 +171,7 @@ function PANEL:Blur()
 	end
 end
 
-function PANEL:SetData(title, teamAttacker, teamTarget)
+function PANEL:SetData(title, teamAttacker, teamTarget, text1, text2)
 	self.title = title
 
 	do
@@ -198,6 +198,9 @@ function PANEL:SetData(title, teamAttacker, teamTarget)
 			self.targetName = factionTarget:GetName()
 		end
 	end
+
+	self.text1 = text1:format(self.targetName)
+	self.text2 = text2
 end
 
 function PANEL:AddTitle()
@@ -300,7 +303,7 @@ function PANEL:AddMessage(name)
 		        surface.SetDrawColor(255, 255, 255)
 			    surface.DrawRect(0, 0, wide, h)
 		    end, function()
-		        draw.SimpleText(name .. " был признан виновным.", "arb.EndGameFont", w / 2, height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
+		        draw.SimpleText(self.text1, "arb.EndGameFont", w / 2, height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
 		    end)
 		end
 
@@ -311,7 +314,7 @@ function PANEL:AddMessage(name)
 		        surface.SetDrawColor(255, 255, 255)
 			    surface.DrawRect(0, 0, wide, h)
 		    end, function()
-		        draw.SimpleText("Время для наказания!", "arb.EndGameFont", w / 2, height + height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
+		        draw.SimpleText(self.text2, "arb.EndGameFont", w / 2, height + height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
 		    end)
 		end
 	end

@@ -11,14 +11,14 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-include("shared.lua");
+include("shared.lua")
 
-AddCSLuaFile("cl_init.lua");
-AddCSLuaFile("shared.lua");
+AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("shared.lua")
 
 local BoundsVector = 16
 function ENT:Initialize()
-	self:SetSolid(SOLID_VPHYSICS)
+	self:SetSolid(SOLID_BBOX)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
@@ -29,4 +29,10 @@ function ENT:Initialize()
 	end)
 
 	self:PhysicsInitBox(Vector(-BoundsVector, -BoundsVector, 0), Vector(BoundsVector, BoundsVector, BoundsVector))
+
+	local physObj = self:GetPhysicsObject()
+	if IsValid(physObj) then
+		physObj:EnableMotion(false)
+		physObj:Wake()
+	end
 end

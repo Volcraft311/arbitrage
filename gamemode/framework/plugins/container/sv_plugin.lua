@@ -16,49 +16,30 @@ function Container:LeftClick(data)
     if !data then return end
 
     local entity = data.entity
-    if !IsValid(data.entity) then return end
+    if !IsValid(entity) then return end
 
-    entity:SetNetVar("container_name", data.name)
+    if entity:GetClass() == "arb_container" then return tostring(entity) .. " уже является контейнером!" end
 
-    entity._containerName = data.name
-    entity.Inventory = InventoryBase.CreateInventory(data.w, data.h)
+    local container = ents.Create("arb_container")
+    container:SetPos(entity:GetPos())
+    container:SetAngles(entity:GetAngles())
+
+    container:SetContainer(entity:GetModel(), data.name, data.w, data.h)
+    entity:Remove()
 
     return "Вы успешно создали контейнер у " .. tostring(entity) .. "."
 end
 
-function Container:RightClick(data)
+function Container:Reload(data)
     if !data then return end
 
     local entity = data.entity
-    if !IsValid(data.entity) then return end
+    if !IsValid(entity) then return end
 
-    entity:SetNetVar("container_name", nil)
+    if entity:GetClass() != "arb_container" then return tostring(entity) .. " не является контейнером!" end
 
-    local inventory = entity.Inventory
-    if inventory then
-        entity.Inventory = nil
-        return "Вы успешно удалили контейнер из " .. tostring(entity) .. "."
-    end
+    local name = tostring(entity)
+    entity:Remove()
 
-    return tostring(entity) .. " не является контейнером!"
-end
-
-function Container:PlayerUse(client, entity)
-    local inventory = entity.Inventory
-    if !inventory then return end
-    if entity:IsPlayer() then return end
-
-    if !client.containerCD or CurTime() >= client.containerCD then
-        client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
-
-        Arbitrage.action.ActionRun(client, "Обыскиваем", 1, function()
-            if client:GetEyeTrace().Entity != entity then return true end
-            if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
-
-            return false
-        end, function(activator)
-            InventoryBase.Open(client, inventory:GetID(), entity._containerName)
-        end)
-        client.containerCD = CurTime() + 2
-    end
+    return "Вы успешно удалили контейнер из " .. name .. "."
 end

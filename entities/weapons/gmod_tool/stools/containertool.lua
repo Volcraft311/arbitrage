@@ -18,7 +18,7 @@ TOOL.Name = "Container Tool"
 TOOL.Category = "Asterion Tools"
 TOOL.Information = {
     {name = "left", stage = 0},
-    {name = "right", stage = 0}
+    {name = "reload"}
 }
 
 TOOL.ClientConVar.name = "Название"
@@ -29,7 +29,7 @@ if CLIENT then
     language.Add("tool.containertool.name", "Container Tool")
     language.Add("tool.containertool.desc", "Позволяет превращать из сущностей - контейнер")
     language.Add("tool.containertool.left", "Нажмите левую кнопку мышки чтобы поставить контейнер.")
-    language.Add("tool.containertool.right", "Нажмите правую кнопку мышки чтобы удалить контейнер.")
+    language.Add("tool.containertool.reload", "Нажмите Перезарядка чтобы удалить контейнер.")
 end
 
 function TOOL:LeftClick()
@@ -47,7 +47,7 @@ function TOOL:LeftClick()
     end
 end
 
-function TOOL:RightClick()
+function TOOL:Reload()
     if CLIENT then return true end
 
     local client = self:GetOwner()
@@ -55,7 +55,7 @@ function TOOL:RightClick()
     local data = Container:GetToolData(client)
     if !data then return end
 
-    local message = Container:RightClick(data)
+    local message = Container:Reload(data)
 
     if message then
         client:ChatPrint(message)

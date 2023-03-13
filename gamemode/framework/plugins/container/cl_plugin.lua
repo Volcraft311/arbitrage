@@ -62,18 +62,18 @@ timer_Create("Container:Update", 1, 0, function()
     local tr = getTrace(client)
 
     for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
-        local name = v:GetNetVar("container_name")
-        if name then
-            local bNotVisible = Arbitrage.hud.VectorObstructed(EyePos(), v:GetPos(), {LocalPlayer(), v})
-            if bNotVisible then continue end
+        if v:GetClass() != "arb_container" then continue end
 
-            v.textalpha = v.textalpha or 0
+        local name = v:GetContainerName()
+        local bNotVisible = Arbitrage.hud.VectorObstructed(EyePos(), v:GetPos(), {LocalPlayer(), v})
+        if bNotVisible then continue end
 
-            entities[#entities + 1] = {v, name}
+        v.textalpha = v.textalpha or 0
 
-            if tr.Entity == v then
-                ent = v
-            end
+        entities[#entities + 1] = {v, name}
+
+        if tr.Entity == v then
+            ent = v
         end
     end
 end)

@@ -239,27 +239,6 @@ Arbitrage.commands.Add("roll", {
     end
 })
 
-Arbitrage.commands.Add("freezeprops", {
-    arguments = {},
-    OnAction = function(client)
-        if !client:IsAdmin() then return end
-
-        local count = 0
-
-        for k, v in pairs(ents.FindByClass("prop_physics")) do
-            local physicsObject = v:GetPhysicsObject()
-
-            if physicsObject and physicsObject:IsMotionEnabled() then
-                physicsObject:EnableMotion(false)
-
-                count = count + 1
-            end
-        end
-
-        Arbitrage.commands.Notify(client, "Вы успешно заморозили " .. count .. " пропов!")
-    end
-})
-
 Arbitrage.commands.Add("editor", {
     arguments = {},
     OnAction = function(client)

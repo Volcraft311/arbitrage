@@ -15,7 +15,7 @@ local PLUGIN = PLUGIN
 
 -- Localize Global Calls
 local surface_CreateFont = surface.CreateFont
-local draw_SimpleText = draw.SimpleText
+local draw_SimpleTextOutlined = draw.SimpleTextOutlined
 local IsValid = IsValid
 local timer_Create = timer.Create
 local pairs = pairs
@@ -68,11 +68,14 @@ local function drawing(entity, info, eyePos)
 	for _, data in ipairs(info) do
 		if isfunction(data) then
 			data(entity)
-			continue
 		end
+	end
 
-		draw_SimpleText(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT)
-		y2 = y2 + 15
+	for _, data in ipairs(info) do
+		if !isfunction(data) then
+			local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
+			y2 = y2 + _y
+		end
 	end
 end
 

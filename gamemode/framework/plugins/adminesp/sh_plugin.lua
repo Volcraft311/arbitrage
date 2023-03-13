@@ -19,13 +19,12 @@ PLUGIN.playerinfo = {}
 PLUGIN.entityinfo = {}
 
 PLUGIN.entslist = {
-    ["prop_ragdoll"] = Color(157, 111, 210),
-    ["arb_dispenser"] = Color(111, 175, 210),
+    ["arb_player"] = Color(111, 175, 210),
+    ["arb_wardrobe"] = Color(111, 175, 210),
+    ["arb_fridge"] = Color(111, 175, 210),
+    ["arb_dead"] = Color(111, 175, 210),
     ["arb_item"] = Color(213, 150, 56),
-    ["arb_ration"] = Color(111, 175, 210),
-    ["arb_shower"] = Color(111, 175, 210),
-    ["arb_sink"] = Color(111, 175, 210),
-    ["arb_weapon"] = Color(240, 73, 61),
+    ["arb_container"] = Color(240, 73, 61),
 }
 
 if CLIENT then

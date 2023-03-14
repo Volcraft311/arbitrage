@@ -19,6 +19,7 @@ PLUGIN.playerinfo = {}
 PLUGIN.entityinfo = {}
 
 PLUGIN.entslist = {
+    ["prop_ragdoll"] = Color(157, 111, 210),
     ["arb_player"] = Color(111, 175, 210),
     ["arb_wardrobe"] = Color(111, 175, 210),
     ["arb_fridge"] = Color(111, 175, 210),

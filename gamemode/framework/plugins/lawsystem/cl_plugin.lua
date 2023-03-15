@@ -611,7 +611,7 @@ function PLUGIN:StartCylinder()
             end
         end)
 
-        timer.Simple(#info * 0.5, function()
+        timer.Simple(5 * 0.5, function()
             _x = 0
             for i = 1, #info do
                 cyl[i] = 101

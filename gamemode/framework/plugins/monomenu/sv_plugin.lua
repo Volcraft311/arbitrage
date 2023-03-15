@@ -215,14 +215,15 @@ local actionList = {
         if !IsValid(target) then return end
 
         local count = table.Count(Arbitrage.players)
+        local id = Arbitrage.placesList and math.Clamp(count + 1, 1, #Arbitrage.placesList) or -1
 
         Arbitrage.players[target:SteamID()] = {
             faction = target:Team(),
-            place = Arbitrage.placesList and math.Clamp(count + 1, 1, #Arbitrage.placesList) or -1,
+            place = id,
             steamname = target:SteamName()
         }
 
-        target:SetNetVar("arbLaw", count + 1)
+        target:SetNetVar("arbLaw", id)
 
         Arbitrage.adminnotify:SendNotify("addgame", client:FullName(), target:FullName())
     end,

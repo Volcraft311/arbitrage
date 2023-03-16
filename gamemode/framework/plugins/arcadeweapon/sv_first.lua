@@ -18,11 +18,6 @@ local function dropEntity(client, entity)
         client:SetLocalVar("owner", nil)
     end
 
-    if client.Drag then
-        --client:SetWalkSpeed(arcade.standart_walkspeed)
-        --client:SetRunSpeed(arcade.standart_runspeed)
-    end
-
     client.Drag = nil
 end
 
@@ -39,28 +34,16 @@ function PLUGIN:PlayerPostThink(client)
             if (client:KeyDown(IN_ATTACK2) or client:KeyDown(IN_ATTACK)) and IsValid(entity) and entity:GetPos():Distance(client:GetPos()) <= 500 then
                 local Phys = entity:GetPhysicsObject()
                 if !IsValid(Phys) then return end
-
-                if Phys:GetMass() >= 400 then
-                    dropEntity(client, entity)
-                    return
-                end
-
-                if entity:GetClass() == "prop_ragdoll" and entity:GetNetVar("sleeprag") then
-                    dropEntity(client, entity)
-                    return
-                end
+                if Phys:GetMass() >= 400 then return dropEntity(client, entity) end
 
                 if IsValid(Phys) then
                     local Pos2 = pos + aim * 150 * client.Drag.Fraction
-                    local OffPos = entity:LocalToWorld( client.Drag.OffPos )
+                    local OffPos = entity:LocalToWorld(client.Drag.OffPos)
                     local Dif = Pos2 -OffPos
                     local Nom = (Dif:GetNormal() * math.min(1, Dif:Length() / 100) * 500 -Phys:GetVelocity()) * Phys:GetMass()
 
-                    Phys:ApplyForceOffset( Nom, OffPos )
-                    Phys:AddAngleVelocity( -Phys:GetAngleVelocity() / 4 )
-
-                    --client:SetWalkSpeed(arcade.standart_walkspeed * 0.8)
-                    --client:SetRunSpeed(arcade.standart_walkspeed * 0.8)
+                    Phys:ApplyForceOffset(Nom, OffPos)
+                    Phys:AddAngleVelocity(-Phys:GetAngleVelocity() / 4)
                 end
             else
                 dropEntity(client, entity)
@@ -83,14 +66,9 @@ function PLUGIN:ArcadeFistsSecondary(client)
     if client.Drag then
         entity = client.Drag.Entity
     else
-        if not IsValid( entity ) or entity:GetMoveType() != MOVETYPE_VPHYSICS or
-            entity:IsVehicle() or entity:GetNWBool( "NoDrag", false ) or
-            entity.BlockDrag or
-            IsValid( entity:GetParent() ) then
-            return
-        end
+        if !IsValid(entity) or entity:GetMoveType() != MOVETYPE_VPHYSICS or entity:IsVehicle() or IsValid(entity:GetParent()) then return end
 
-        if not client.Drag then
+        if !client.Drag then
             client.Drag = {
                 OffPos = entity:WorldToLocal(trace.HitPos),
                 Entity = entity,
@@ -102,44 +80,11 @@ function PLUGIN:ArcadeFistsSecondary(client)
     end
 end
 
-function PLUGIN:PlaceDecal(client, ent, data)
-    if (!IsValid(ent) and !ent:IsWorld()) then return end
-
-    local bone
-    if ( data.bone and data.bone < ent:GetPhysicsObjectCount() ) then
-        bone = ent:GetPhysicsObjectNum( data.bone )
-    end
-
-    if (!IsValid(bone)) then
-        bone = ent:GetPhysicsObject()
-    end
-
-    if (!IsValid(bone)) then
-        bone = ent
-    end
-
-    util.Decal(data.decal, bone:LocalToWorld( data.Pos1 ), bone:LocalToWorld(data.Pos2), client)
-
-    local i = ent.DecalCount or 0
-    i = i + 1
-    duplicator.StoreEntityModifier( ent, "decal" .. i, data )
-    ent.DecalCount = i
-end
-
 function PLUGIN:EntityTakeDamage(target, dmginfo)
     local attacker = dmginfo:GetAttacker()
 
-    if dmginfo:GetDamageType() == 32 then -- Падение
-        local trace = util.TraceLine({
-            start = target:GetPos(),
-            endpos = target:GetPos() - target:GetAngles():Up() * 99999999,
-            filter = player.GetAll()
-        })
-    end
-
     if dmginfo:GetDamageType() == 1 then -- Удар от пропа
-        dmginfo:SetDamage(0)
-        return
+        return dmginfo:SetDamage(0)
     end
 
     if attacker and IsValid(attacker) and attacker:IsPlayer() then

@@ -76,6 +76,9 @@ MonoMenu:AddGameFunction("Игра запущена", "icon16/control_play_blue.
     end,
     OnCheck = function(client)
         return Arbitrage.IsStartGame()
+    end,
+    onCreate = function(client)
+        return !Arbitrage.lawEnable
     end
 })
 

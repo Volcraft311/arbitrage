@@ -52,7 +52,7 @@ function PLUGIN:StartPointing()
         incline = Lerp(FrameTime() * 0.5, incline, 5)
 
         if !self._fov then
-            self._fov = fov + 40
+            self._fov = 130
         end
 
         if IsValid(self._entity) then
@@ -81,7 +81,7 @@ function PLUGIN:StartPointing()
         local angRot = IsValid(self._entity) and 0 or incline
 
         local view = {
-            origin = self.__camPos - Vector(0, 0, 10),
+            origin = self.__camPos - Vector(0, 0, 6),
             angles = Angle(0, self._angles.y, self._angles.z - angRot),
             fov = self._fov - 40,
             drawviewer = true
@@ -96,23 +96,34 @@ end
 function PLUGIN:TransferCamPos()
     hook.Remove("CalcView", "arb.LawCameraTwist")
 
-    local data = Arbitrage.camPos
-    self._camPos = data[1]
-    self._angCam = 0
-    self._angUp = 0
+    local newFov = 70
+    local endPos = Arbitrage.camPosEnd
+    local startPos = Arbitrage.camPos[1]
+    local startAng = Arbitrage.camPos[2]
+    startAng.p = startAng.p + 30
+
+    self._tcpAng = startAng
 
     hook.Add("CalcView", "arb.LawTransferCamPos", function(client, pos, angles, fov)
-        self._camPos = Lerp(FrameTime() * 1.3, self._camPos, Arbitrage.camPosEnd)
+        local ft = FrameTime()
 
-        local frame = FrameTime() * 60
-        self._angCam = self._angCam + frame
-        self._angUp = Lerp(FrameTime(), self._angUp, 30)
-        self._tcpAng = data[2] + Angle(0, self._angCam, 0) - Angle(self._angUp, 0, 0)
+        startPos = LerpVector(ft * 0.9, startPos, endPos)
+        startAng.p = Lerp(ft * 0.6, startAng.p, -7)
+        newFov = Lerp(ft * 2, newFov, 90)
+
+        local WPos = endPos
+        local Ang = WPos - startPos
+        Ang = Ang:Angle()
+
+        Ang.p = startAng.p
+        self._tcpAng = Ang
+
+        startPos = startPos + Ang:Right() * (ft * (startPos:Distance(endPos) * 2))
 
         local view = {
-            origin = self._camPos,
-            angles = self._tcpAng,
-            fov = fov,
+            origin = startPos,
+            angles = Ang,
+            fov = newFov,
             drawviewer = true
         }
 
@@ -450,8 +461,8 @@ function PLUGIN:CameraTwist()
     hook.Add("CalcView", "arb.LawCameraTwist", function(ply, pos, angles, fov)
         local view = {
             origin = Arbitrage.camPosEnd,
-            angles = Angle(0, -CurTime() % 2 * 180, 0),
-            fov = fov,
+            angles = Angle(0, CurTime() * 230 % 360, 0),
+            fov = 50,
             drawviewer = true
         }
 

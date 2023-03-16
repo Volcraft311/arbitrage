@@ -105,7 +105,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		return
 	end
 
-	local camera_smoothness = SETTINGS.options.Get("camera_smoothnessNEW")
+	local camera_smoothness = SETTINGS.options.Get("camera_smoothness")
 
 	if !CurView then
 		CurView = angles

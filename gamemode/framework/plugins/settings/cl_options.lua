@@ -99,7 +99,7 @@ SETTINGS.options.Add("corpse_find_volume", SETTINGS.type.number, 50, {
     max = 100
 })
 
-SETTINGS.options.Add("camera_smoothnessNEW", SETTINGS.type.number, 7, {
+SETTINGS.options.Add("camera_smoothness", SETTINGS.type.number, 25, {
     name = "Регулятор инерции камеры",
     title = "Регулятор инерции камеры",
     description = "Отвечает за плавность и скорость вращения камеры от лица персонажа. При выставлении минимальных процентов, вращение камеры становится медленным и с дополнительным эффектом плавности, а при максимальном проценте — поворот камеры становится мгновенным и полностью теряет плавность",

@@ -486,6 +486,9 @@ local moving = 0
 local _moving = moving
 
 function PLUGIN:StartCylinder()
+    self.bulletMask = 0
+    self.bulletText = nil
+
     local info = {}
     for k, v in pairs(LocalPlayer():GetEvidences()) do
         local evidence = Evidence:GetEvidence(k)
@@ -536,6 +539,8 @@ function PLUGIN:StartCylinder()
                 surface.SetMaterial(interface)
                 surface.DrawTexturedRect(ScrW() * 0.035, ScrH() * 0.61, ScrW() * 0.28125, ScrH() * 0.41666666666)
 
+                self.bulletMask = Lerp(FrameTime() * 5, self.bulletMask, self.bulletText and bulletSizeW * 1.5 or 0)
+
                 do
                     local m = Matrix()
                     m:Translate(center)
@@ -543,15 +548,20 @@ function PLUGIN:StartCylinder()
                     m:Translate(-center)
 
                     cam.PushModelMatrix(m)
-                        surface.SetDrawColor(255, 61, 96, alpha)
-                        surface.SetMaterial(bulletblur)
-                        surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
+                        asterionlib.DrawRender(function()
+                            surface.SetDrawColor(255, 255, 255)
+                            surface.DrawRect(ScrW() * 0.1, 0, self.bulletMask, ScrH())
+                        end, function()
+                            surface.SetDrawColor(255, 61, 96, alpha)
+                            surface.SetMaterial(bulletblur)
+                            surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                        surface.SetDrawColor(208, 61, 88)
-                        surface.SetMaterial(bullet)
-                        surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
+                            surface.SetDrawColor(208, 61, 88)
+                            surface.SetMaterial(bullet)
+                            surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                        draw.SimpleText("Файл Монокумы", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
+                            draw.SimpleText(self.bulletText or "", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
+                        end)
                     cam.PopModelMatrix()
                 end
             end)
@@ -888,6 +898,11 @@ netstream.Hook("arb.ShowEvidence", function(client, data, indx)
     if !IsValid(panel) then return end
 
     timer.Simple(1, function()
+        PLUGIN.bulletText = Evidence:GetEvidence(indx).name
+        PLUGIN.bulletMask = -50
+
+        LocalPlayer():EmitSound("academy/law/bullet.mp3")
+
         if panel.select == 2 then
             for i = 1, 2 do -- upd
                 panel.panels[i].DoClick()

@@ -46,7 +46,7 @@ function PANEL:Init()
 
 	self.cursorX = self:GetWide() / 2
 	self.cursorY = self:GetTall() / 2
-	self.editing = false
+	self.editing = nil
 	self.selectcategory = nil
 	self.historyPanels = {}
 
@@ -298,6 +298,8 @@ function PANEL:OnRemove()
 end
 
 function PANEL:Intro()
+	self.editing = false
+
 	self:DrawScanLine()
 
 	local logoSize = 300
@@ -700,6 +702,8 @@ function PANEL:Rebuild()
 end
 
 function PANEL:Menu()
+	self.editing = true
+
 	self:DrawScanLine()
 	self:DrawCursor()
 	MonoPad:StartRegisterMeta(self)

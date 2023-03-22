@@ -202,13 +202,22 @@ netstream.Hook("ScriptMusic:OpenMenuSub", function(id, data)
     panel:SetData(id, data)
 end)
 
-local isLoading = false
+PLUGIN.isLoading = false
+timer.Remove("ScriptMusic:RemoveLoading")
 netstream.Hook("ScriptMusic:GlobalTrack", function(path, volume, max_volume)
-    if isLoading then return end
+    if PLUGIN.isLoading then return end
 
     volume = volume and volume / 100 or 0
 
-    isLoading = true
+    PLUGIN.isLoading = true
+    timer.Remove("ScriptMusic:RemoveLoading")
+    timer.Create("ScriptMusic:RemoveLoading", 20, 1, function()
+        timer.Remove("ScriptMusic:RemoveLoading")
+
+        PLUGIN.isLoading = false
+    end)
+
+
     PLUGIN:StopGlobalSound(function()
         PLUGIN.sound = nil
 
@@ -224,7 +233,8 @@ netstream.Hook("ScriptMusic:GlobalTrack", function(path, volume, max_volume)
 
             MsgC(Color(0, 255, 0), "Сейчас играет: ", channel:GetFileName(), "\n")
 
-            isLoading = false
+            PLUGIN.isLoading = false
+            timer.Remove("ScriptMusic:RemoveLoading")
         end)
     end)
 end)

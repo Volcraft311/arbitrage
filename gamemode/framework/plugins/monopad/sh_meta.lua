@@ -29,7 +29,7 @@ MONOPAD.evidences = {}
 MONOPAD.rulesNotify = {}
 
 MONOPAD.caseStored = {}
-MONOPAD.mutedChats = {}
+MONOPAD.mutedChats = {[-1] = true}
 MONOPAD.history = {}
 
 function MONOPAD:__tostring()

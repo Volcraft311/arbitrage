@@ -27,7 +27,6 @@ netstream.Hook("ColorModify:Set", function(client, key, value)
     if !client:IsAdmin() then return end
 
     PLUGIN:Set(key, value)
-    Arbitrage.adminnotify:SendNotify("changecolormodify", client:FullName(), key, tostring(value))
 end)
 
 netstream.Hook("ColorModify:AddPlayer", function(client, steamid)
@@ -57,5 +56,4 @@ netstream.Hook("ColorModify:Standart", function(client)
     if !client:IsAdmin() then return end
 
     SetNetVar("colormodify", PLUGIN:Default())
-    Arbitrage.adminnotify:SendNotify("standartcolormodify", client:FullName())
 end)

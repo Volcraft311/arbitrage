@@ -18,6 +18,8 @@ PLUGIN.disconnectPlayers = PLUGIN.disconnectPlayers or {}
 local lifting = Vector(0, 0, 64)
 
 function PLUGIN:OneSecond()
+    if Arbitrage.OffSpawnDeadTablets() then return end
+
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
 

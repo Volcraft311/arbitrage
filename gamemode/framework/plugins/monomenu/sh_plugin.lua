@@ -511,6 +511,23 @@ MonoMenu:AddGameFunction("Убийца детектит труп", "icon16/camer
     end
 })
 
+MonoMenu:AddGameFunction("Создавать мертвые портреты", "icon16/tag_blue_delete.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffSpawnDeadTablets", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffSpawnDeadTablets", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffSpawnDeadTablets()
+    end
+})
+
 MonoMenu:AddGameFunction("Оповещение нахождения трупа", "icon16/camera_error.png", {
     isCheckBox = true,
     onEnable = function(client)

@@ -420,25 +420,24 @@ local function DingDongBingBong()
             asterionlib.EmitSound("dingdong.wav")
         end
     end)
-
-    Arbitrage.DingDongBingBongCD = CurTime() + 5
 end
 
 
+local oldType = Arbitrage.IsDay()
 timer.Create("arb.DayChangeNotifications", 1, 0, function()
     if !Arbitrage.IsStartGame() then return end
     if LocalPlayer().IsPlaying and !LocalPlayer():IsPlaying() then return end
     if Arbitrage.OffSoundNightAndDay() then return end
 
-    local oldType = Arbitrage.IsDay()
+    if oldType != Arbitrage.IsDay() then
+        if (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
+            DingDongBingBong()
 
-    timer.Simple(1, function()
-        if oldType != Arbitrage.IsDay() then
-            if (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
-                DingDongBingBong()
-            end
+            Arbitrage.DingDongBingBongCD = CurTime() + 5
         end
-    end)
+    end
+
+    oldType = Arbitrage.IsDay()
 end)
 
 timer.Create("arb.BillSound", 1, 1, function()

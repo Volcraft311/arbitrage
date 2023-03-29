@@ -41,8 +41,8 @@ function MonoPad:SendNotify(client, class, ...)
 			if !IsValid(client) then return end
 
 			if self:FindMonoPad(client) then
-				if !client:IsNocliping() and allow != false then
-					client:EmitSound(MonoPad.sounds.notification)
+				if !client:IsNocliping() and allow == true then
+					client:EmitSound(self.sounds.notification)
 				end
 
 				netstream.Start(client, "MonoPad:Notify")

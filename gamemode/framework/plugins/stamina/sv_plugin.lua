@@ -50,7 +50,7 @@ function Stamina:GetMaxWalkSpeed(client)
 	end
 
 	if (client.StaminaBrokenLegsTime or CurTime()) > CurTime() then
-		local value = math.Clamp(math.abs(math.sin(RealTime() * 1.9)), 0.3, 1)
+		local value = math.Clamp(math.abs(math.sin(RealTime() * 2.5)), 0.3, 1)
 
 		if value <= 0.35 and client:GetVelocity():LengthSqr() >= 1000 then
 			if (!client.StaminaShakeTime or CurTime() >= client.StaminaShakeTime) then

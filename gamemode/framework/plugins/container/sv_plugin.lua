@@ -39,6 +39,20 @@ function Container:Reload(data)
     if entity:GetClass() != "arb_container" then return tostring(entity) .. " не является контейнером!" end
 
     local name = tostring(entity)
+
+    local prop = ents.Create("prop_physics")
+    prop:SetPos(entity:GetPos())
+    prop:SetAngles(entity:GetAngles())
+    prop:SetModel(entity:GetModel())
+
+    prop:Spawn()
+
+    local physObj = prop:GetPhysicsObject()
+    if IsValid(physObj) then
+        physObj:EnableMotion(false)
+        physObj:Wake()
+    end
+
     entity:Remove()
 
     return "Вы успешно удалили контейнер из " .. name .. "."

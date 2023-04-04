@@ -49,6 +49,20 @@ function Stamina:GetMaxWalkSpeed(client)
 		speed = speed - value
 	end
 
+	if (client.StaminaBrokenLegsTime or CurTime()) > CurTime() then
+		local value = math.Clamp(math.abs(math.sin(RealTime() * 1.9)), 0.3, 1)
+
+		if value <= 0.35 and client:GetVelocity():LengthSqr() >= 1000 then
+			if (!client.StaminaShakeTime or CurTime() >= client.StaminaShakeTime) then
+				client:ViewPunch(Angle(0.7, -0.5, 0.3))
+
+				client.StaminaShakeTime = CurTime() + 0.6
+			end
+		end
+
+		speed = speed * (value * 0.8)
+	end
+
 	return speed
 end
 
@@ -234,7 +248,7 @@ function Stamina:PlayerInitialSpawn(client)
 	self:CreateTimer(client)
 end
 
-function Stamina:EntityTakeDamage(target, dmginfo)
+function Stamina:ScalePlayerDamage(target, hitgroup, dmginfo)
 	if !target:IsPlayer() then return end
 
 	local stamina = self:GetStamina(target)
@@ -251,6 +265,13 @@ function Stamina:EntityTakeDamage(target, dmginfo)
 
 		self:SetStamina(target, self:GetStamina(target) + damage * 2)
 		target.StaminaDamageTime = CurTime() + 10
+	end
+
+	if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+		self:SetStamina(target, 0)
+		self:SetStaminaCD(target, 20)
+
+		target.StaminaBrokenLegsTime = CurTime() + 20
 	end
 end
 

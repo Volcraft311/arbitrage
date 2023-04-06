@@ -662,6 +662,7 @@ Character.team:Create({
     stamina = {run_consumption = 0.8},
     speed = {walk = 0.95, run = 1.1},
     needs = {hunger = 36, thirst = 36, fatique = 51},
+    weapons = {"weapon_broom"},
     scale = 0.998,
     hullscale = 0.956,
     hullduckscale = 1.28,

@@ -923,10 +923,30 @@ local function registerItem(base, id, info)
 		id = prefix .. "_" .. id
 	end
 
+	local hooks = info.hooks
+	info.hooks = nil
+
 	local ITEM = ItemBase.GetBase(base)
 
 	for k, v in pairs(info) do
 		ITEM[k] = v
+	end
+
+	if hooks then
+		ITEM.hooks = ITEM.hooks or {}
+
+		for k, v in pairs(hooks) do
+			if ITEM.hooks[k] then
+				local oldFunc = ITEM.hooks[k]
+
+				ITEM.hooks[k] = function(...)
+					v(...)
+					oldFunc(...)
+				end
+			else
+				ITEM.hooks[k] = v
+			end
+		end
 	end
 
 	ItemBase:RegisterItem(id, ITEM)

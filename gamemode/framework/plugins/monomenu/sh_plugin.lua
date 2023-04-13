@@ -98,6 +98,9 @@ MonoMenu:AddGameFunction("Суд запущен", "icon16/control_equalizer_blue
         return Arbitrage.IsStartLaw()
     end,
     onCreate = function(client)
+        if !Arbitrage.camPos then return false end
+        if !Arbitrage.camPosEnd then return false end
+
         return Arbitrage.IsStartGame()
     end
 })

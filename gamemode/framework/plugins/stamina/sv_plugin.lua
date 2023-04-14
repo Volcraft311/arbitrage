@@ -31,6 +31,11 @@ function Stamina:GetStaminaCD(client)
 end
 
 function Stamina:SetStaminaCD(client, time)
+	local oldTime = client.StaminaCD
+	if oldTime and oldTime > CurTime() + time then
+		return
+	end
+
 	client.StaminaCD = CurTime() + time
 end
 
@@ -263,8 +268,10 @@ function Stamina:ScalePlayerDamage(target, hitgroup, dmginfo)
 			if class == "academy_first" then return end
 		end
 
-		self:SetStamina(target, self:GetStamina(target) + damage * 2)
-		target.StaminaDamageTime = CurTime() + 10
+		if (target.StaminaBrokenLegsTime or CurTime()) <= CurTime() then
+			self:SetStamina(target, self:GetStamina(target) + damage * 2)
+			target.StaminaDamageTime = CurTime() + 10
+		end
 	end
 
 	if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then

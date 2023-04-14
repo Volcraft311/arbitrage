@@ -218,24 +218,32 @@ Arbitrage.commands.Add("settime", {
 })
 
 Arbitrage.commands.Add("roll", {
-    arguments = {},
-    OnAction = function(client)
+    arguments = {
+        [1] = {
+            name = "Значение",
+            type = "number",
+            important = false
+        },
+    },
+    OnAction = function(client, maxRand)
         if client:IsSpectate() then return end
-        local rand = math.random(1, 100)
+
+        maxRand = maxRand or 100
+        local rand = math.random(1, maxRand)
 
         local character = Character.team:GetByID(client:Team())
         if character then
             if character:GetUniqueID() == "nagito" then
-                rand = client.nagitoRandom and 100 or 0
+                rand = client.nagitoRandom and maxRand or 0
                 client.nagitoRandom = !client.nagitoRandom
-            elseif character:GetUniqueID() == "makoto" and rand < 50 then
+            elseif character:GetUniqueID() == "makoto" and rand < maxRand / 2 then
                 if math.random(1, 5) == 5 then -- 20% на то, что повезет
-                    rand = 100
+                    rand = maxRand
                 end
             end
         end
 
-        Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из 100.")
+        Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из " .. maxRand .. ".")
     end
 })
 

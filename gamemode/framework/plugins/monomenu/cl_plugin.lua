@@ -788,7 +788,7 @@ function PLUGIN:HUDPaint()
 
     local x, y = ScrW() / 2 , ScrH()
     for k, v in ipairs(entities) do
-        local point = v:GetPos() + v:OBBCenter()
+        local point = v:GetPos()
         local data2D = point:ToScreen()
         if !data2D.visible then continue end
 

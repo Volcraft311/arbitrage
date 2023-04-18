@@ -20,6 +20,7 @@ CATEGORY.name = "Название категории"
 CATEGORY.description = "Описание категории"
 CATEGORY.icon = "icon16/contrast.png"
 CATEGORY.background = nil
+CATEGORY.allow_creation = false
 
 function CATEGORY:__tostring()
 	return "category[" .. self.name .. "][" .. self.uniqueID .. "]"

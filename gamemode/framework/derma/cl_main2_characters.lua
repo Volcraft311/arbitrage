@@ -326,7 +326,8 @@ function PANEL:Init()
         self:AddCategory({
             name = v.name,
             desc = v.description,
-            image = Material(background)
+            image = Material(background),
+            allow_creation = v.allow_creation
         })
     end
 
@@ -424,7 +425,19 @@ function PANEL:InitCategory()
                 v2.key = k2
 
                 if v2:GetCategory() == v.name then
-                    data[#data + 1] = v2
+                    local allow = true
+
+                    if v2.isCreation then
+                        allow = false
+
+                        if v.allow_creation then
+                            allow = true
+                        end
+                    end
+
+                    if allow then
+                        data[#data + 1] = v2
+                    end
                 end
             end
 

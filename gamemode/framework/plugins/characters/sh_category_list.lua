@@ -54,6 +54,14 @@ Character.category:Register("personal_talents", {
 	background = "danganronpa/ui/category/personal_talents.png"
 })
 
+Character.category:Register("original_characters", {
+	name = "ORIGINAL CHARACTERS",
+	description = "Играйте за оригинальных персонажей\nсозданных для игры",
+	icon = "icon16/bullet_green.png",
+	background = "danganronpa/ui/category/personal_talents.png",
+	allow_creation = true
+})
+
 Character.category:Register("leading", {
 	name = "Ведущие",
 	icon = "icon16/bullet_star.png"

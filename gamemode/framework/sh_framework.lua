@@ -132,6 +132,7 @@ do
         workshop:Add("160250458") -- Wiremod
         workshop:Add("2840295308") -- Primitive
         workshop:Add("2938912306") -- Suppression Mat
+        workshop:Add("2963988886") -- more materials
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload

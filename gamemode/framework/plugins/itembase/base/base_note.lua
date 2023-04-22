@@ -259,27 +259,4 @@ ItemBase:RegisterBase("base_note", BASE)
 NOTE_MAX_EDITORS = 30
 NOTE_MAX_PAGES = 15
 NOTE_SIZE_TITLE = 32
-NOTE_SIZE_TEXT = 5000
-
-NOTE_FONTS = {
-    [1] = {
-        name = "Baskerville WGL4 BT",
-        font = "arb.Font_BaskervilleWGL4BT_"
-    },
-    [2] = {
-        name = "Open Sans",
-        font = "arb.Font_OpenSansLight_"
-    },
-    [3] = {
-        name = "Futura PT Book",
-        font = "arb.Font_FuturaPTBook_"
-    },
-    [4] = {
-        name = "Futura PT Demi",
-        font = "arb.Font_FuturaPTDemi_"
-    },
-    [5] = {
-        name = "Roboto",
-        font = "arb.Font_Roboto_"
-    }
-}
+NOTE_SIZE_TEXT = 10000

@@ -40,7 +40,7 @@ function PLUGIN:FacialEmotesOption()
 				name = name,
 				id = "emotion_" .. LocalPlayer():Team() .. "_" .. k,
 				icon = facialEmote.interface.emojis[v.image],
-				description = "Изменить анимацию лица персонажа на: \"" .. name .. "\"",
+				description = "Изменить анимацию лица персонажа на: '" .. name .. "'",
 				action = function()
 					facialEmote.network.sendCommand("applyEmotion", k)
 				end
@@ -65,7 +65,7 @@ function PLUGIN:SittingOption()
 		data[#data + 1] = {
 			name = v[1],
 			id = "sitting_" .. k,
-			description = "Изменить анимацию при сидении на: \"" .. v[1] .. "\"",
+			description = "Изменить анимацию при сидении на: '" .. v[1] .. "'",
 			action = function()
 				RunConsoleCommand("say", "/sitting " .. k)
 			end
@@ -89,7 +89,7 @@ function PLUGIN:MoodsOption()
 		data[#data + 1] = {
 			name = v.name,
 			id = "mood_" .. k,
-			description = "Изменить настроение персонажа на: \"" .. v.name .. "\"",
+			description = "Изменить настроение персонажа на: '" .. v.name .. "'",
 			action = function()
 				RunConsoleCommand("say", "/mood " .. k)
 			end
@@ -336,7 +336,7 @@ function PLUGIN:StaticAnimationsOption()
 				info[#info + 1] = {
 					name = v2.name,
 					id = "saction_" .. sequnce,
-					description = "Установить анимацию персонажа на: \"" .. v2.name .. "\"",
+					description = "Установить анимацию персонажа на: '" .. v2.name .. "'",
 					action = function()
 						RunConsoleCommand("say", "/action " .. sequnce)
 					end
@@ -348,7 +348,7 @@ function PLUGIN:StaticAnimationsOption()
 
 		data[#data + 1] = {
 			name = v.name,
-			description = "Выбрать анимацию из категории: \"" .. v.name .. "\"",
+			description = "Выбрать анимацию из категории: '" .. v.name .. "'",
 			iscategory = true,
 			action = stored
 		}
@@ -378,7 +378,7 @@ function PLUGIN:DynamicAnimationsOption()
 		data[#data + 1] = {
 			name = v,
 			id = "daction_" .. k,
-			description = "Проиграть анимацию \"" .. v .. "\"",
+			description = "Проиграть анимацию '" .. v .. "'",
 			action = function()
 				RunConsoleCommand("act", k)
 			end

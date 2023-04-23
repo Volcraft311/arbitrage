@@ -161,7 +161,7 @@ function PLUGIN:ChatAddText(client, message)
         local data = v:GetLocalVar("spectatescommand", {})
 
         if data[client:SteamID()] then
-            netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Слежка] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "\"", message, "\"")
+            netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Слежка] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "'", message, "'")
         end
     end
 end

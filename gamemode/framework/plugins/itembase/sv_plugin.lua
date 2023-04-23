@@ -130,10 +130,10 @@ netstream.Hook("ItemBase:GiveItem", function(client, target, uniqueID)
         return Arbitrage.commands.Notify(client, errNotify)
     end
 
-    Arbitrage.commands.Notify(client, "Вы успешно выдали \"" .. item:GetName() .. "\" игроку \"" .. target:Name() .. "\"!")
+    Arbitrage.commands.Notify(client, "Вы успешно выдали '" .. item:GetName() .. "' игроку '" .. target:Name() .. "'!")
 
     if client != target then
-        Arbitrage.commands.Notify(target, "Администратор выдал вам предмет \"" .. item:GetName() .. "\"!")
+        Arbitrage.commands.Notify(target, "Администратор выдал вам предмет '" .. item:GetName() .. "'!")
     end
 end)
 

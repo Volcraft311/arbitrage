@@ -16,7 +16,7 @@ Arbitrage.library.LibraryLoaded = {}
 
 function Arbitrage.library.Add(data)
 	if !Arbitrage.library.LibraryLoaded[data] then
-		Arbitrage.util.WriteMessage(Color(255, 132, 0), "{" .. string.upper(Arbitrage.util.GetSide()) .. "} ", Color(255, 174, 0), "Libraries \"" .. data .. "\" was created.")
+		Arbitrage.util.WriteMessage(Color(255, 132, 0), "{" .. string.upper(Arbitrage.util.GetSide()) .. "} ", Color(255, 174, 0), "Libraries '" .. data .. "' was created.")
 		Arbitrage.library.LibraryLoaded[data] = true
 	end
 

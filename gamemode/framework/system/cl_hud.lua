@@ -177,7 +177,7 @@ function Arbitrage.hud.ALTMenuDraw()
 	Arbitrage.hud.y = 0
 
 	if SETTINGS.options.Get("interface_open_button") then
-		draw_SimpleText("Зажмите клавишу \"C\", чтобы открыть интерфейс", "arb.Font_FuturaPTBook_8", ScrW() - 100, ScrH() - 50, Color( 255, 255, 255, 255 / 2 - Arbitrage.hud.alpha ), TEXT_ALIGN_RIGHT)
+		draw_SimpleText("Зажмите клавишу 'C', чтобы открыть интерфейс", "arb.Font_FuturaPTBook_8", ScrW() - 100, ScrH() - 50, Color( 255, 255, 255, 255 / 2 - Arbitrage.hud.alpha ), TEXT_ALIGN_RIGHT)
 	end
 
 	if Arbitrage.hud.alpha > 0.01 then

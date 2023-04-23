@@ -30,7 +30,7 @@ function Arbitrage.statistics.Set(client, data, amount)
         client[tableData.data] = amount
         client:SetNetVar(index, client[tableData.data], getPlayers(client))
     else
-        Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found \"" .. data .. "\"")
+        Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found '" .. data .. "'")
     end
 end
 

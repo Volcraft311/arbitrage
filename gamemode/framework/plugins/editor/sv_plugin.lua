@@ -90,7 +90,7 @@ netstream.Hook("Editor:ChangeProperty", function(client, id, data)
 			end
 		end
 
-		Arbitrage.commands.Notify(client, "Вы успешно добавили изменения в \"" .. id .. "\".")
+		Arbitrage.commands.Notify(client, "Вы успешно добавили изменения в '" .. id .. "'.")
 		Arbitrage:ReplaceVariables()
 		netstream.Start(nil, "Editor:SetVariables", info)
 	end

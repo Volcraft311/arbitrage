@@ -101,7 +101,7 @@ local data = {
 	        health      = 10,
 	        model       = "models/w_models/weapons/w_eq_painpills.mdl",
 	        maxuse      = 5,
-	        description = "Универсальные таблетки \"Убейболь\".",
+	        description = "Универсальные таблетки 'Убейболь'.",
 	    },
 	    painkillers = {
 	        maxuse      = 5,

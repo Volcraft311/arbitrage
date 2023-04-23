@@ -48,10 +48,10 @@ end
 function Hints:OnSettingsLoad()
     self:Add("Вы всегда можете настроить игру под себя в настройках главного меню.")
     self:Add("Для большего погружения, не забывайте использовать RP-команды (/me, /try, /it).")
-    self:Add("При наличии ошибок с моделями или текстурами, проверьте статус скачанных аддонов во вкладке \"Контент\" игровых настроек.")
+    self:Add("При наличии ошибок с моделями или текстурами, проверьте статус скачанных аддонов во вкладке 'Контент' игровых настроек.")
 
-    self:Add("Открыть главное меню можно нажатием клавиши \"" .. input.GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "\"")
-    self:Add("При помощи клавиш \"" .. input.GetKeyName(SETTINGS.binds.Get("voice_up")) .. "\" и \"" .. input.GetKeyName(SETTINGS.binds.Get("voice_down")) .. "\", вы можете регулировать дальность слышимости вашего микрофона.")
+    self:Add("Открыть главное меню можно нажатием клавиши '" .. input.GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
+    self:Add("При помощи клавиш '" .. input.GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' и '" .. input.GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', вы можете регулировать дальность слышимости вашего микрофона.")
 end
 
 timer.Create("Hints:Random", 150, 0, function()

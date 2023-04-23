@@ -15,7 +15,7 @@ do
     local ITEM = ItemBase.GetBase()
 
     ITEM.name = "Ключи"
-    ITEM.description = "Ключи от комнаты: \"%s\""
+    ITEM.description = "Ключи от комнаты: '%s'"
     ITEM.model = "models/gibs/metal_gib4.mdl"
     ITEM.category = "Уникальные"
     ITEM.icon = "danganronpa/inventory/items/key_dorms.png"
@@ -180,7 +180,7 @@ do
             local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
 
             client:SetModel(model)
-            Arbitrage.commands.Notify(client, "Вы сменили личность на \"" .. (isGenocide and "Токо Фукава" or "Геноцид Сё") .. "\".")
+            Arbitrage.commands.Notify(client, "Вы сменили личность на '" .. (isGenocide and "Токо Фукава" or "Геноцид Сё") .. "'.")
 
             return false
         end,

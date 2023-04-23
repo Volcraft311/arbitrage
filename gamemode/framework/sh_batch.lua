@@ -49,7 +49,7 @@ function Arbitrage.Initialize()
 			return client:IsAdmin()
 		end
 
-		Arbitrage.util.WriteMessage("The gamemode \"" .. engine.ActiveGamemode() .. "\" was started!")
+		Arbitrage.util.WriteMessage("The gamemode '" .. engine.ActiveGamemode() .. "' was started!")
 	end
 
 	timer.Simple(1, function()
@@ -168,7 +168,7 @@ Arbitrage.GamemodeCompletion = os.clock()
 if Arbitrage.util.IsServerSide() then
 	local time = Arbitrage.GamemodeCompletion - Arbitrage.GamemodeStart
 
-	Arbitrage.util.WriteMessage(Color(0, 255, 0), "Arbitrage gamemode was successfully loaded for \"" .. math.Round(time, 3) .. "s\". You are using version \"" .. Arbitrage.version .. "\"")
+	Arbitrage.util.WriteMessage(Color(0, 255, 0), "Arbitrage gamemode was successfully loaded for '" .. math.Round(time, 3) .. "s'. You are using version '" .. Arbitrage.version .. "'")
 end
 
 

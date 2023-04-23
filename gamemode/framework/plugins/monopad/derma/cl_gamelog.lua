@@ -138,7 +138,7 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 		    end
 
 		    draw.SimpleText("Дело №" .. id .. ", " .. (this.inflictorFaction and this.inflictorFaction:GetName() or "Неизвестно"), MonoPad:GetFont("gamelog_title"), 176, 14, color_white, TEXT_ALIGN_LEFT)
-		    draw.SimpleText("Глава \"" .. chapterTitle .. "\"", MonoPad:GetFont("gamelog_text"), 176, 44, color_white, TEXT_ALIGN_LEFT)
+		    draw.SimpleText("Глава '" .. chapterTitle .. "'", MonoPad:GetFont("gamelog_text"), 176, 44, color_white, TEXT_ALIGN_LEFT)
 
 		    do
 		    	local _w, _ = draw.SimpleText("Статус: ", MonoPad:GetFont("gamelog_text"), 176, 76, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)

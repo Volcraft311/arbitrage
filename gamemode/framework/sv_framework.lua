@@ -1077,8 +1077,8 @@ local function ChangeTokoType(client, idx)
         local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
         local text = isGenocide and "Токо Фукава" or "Геноцид Сё"
 
-        Arbitrage.commands.Notify(client, "Вы сменили личность на \"" .. text .. "\".")
-        Arbitrage.commands.RunCommand(client, "me", {"сменила личность на \"" .. text .. "\"."})
+        Arbitrage.commands.Notify(client, "Вы сменили личность на '" .. text .. "'.")
+        Arbitrage.commands.RunCommand(client, "me", {"сменила личность на '" .. text .. "'."})
         client:SetModel(model)
 
         ChangeTokoType(client, idx)

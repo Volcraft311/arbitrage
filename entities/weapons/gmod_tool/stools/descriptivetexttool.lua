@@ -67,7 +67,7 @@ function TOOL:RightClick()
         client:ChatNotify("Вы успешно прикрепили свой текст к объекту " .. tostring(entity) .. ".")
 
         if entity:IsPlayer() then
-            entity:ChatNotify("Администратор прикрепил к вам текст: \"" .. data .. "\"!")
+            entity:ChatNotify("Администратор прикрепил к вам текст: '" .. data .. "'!")
         end
     end
 end

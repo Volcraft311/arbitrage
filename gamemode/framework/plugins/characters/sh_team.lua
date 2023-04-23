@@ -100,7 +100,7 @@ end
 
 function Character.team:Join(client, data, bRespawn)
     local info = self:GetByID(tonumber(data)) or self:GetByUniqueID(tostring(data))
-    if !info then return ErrorNoHalt("[characters] Error when trying to find team with argument: \"" .. data .. "\"\n") end
+    if !info then return ErrorNoHalt("[characters] Error when trying to find team with argument: '" .. data .. "'\n") end
 
     local id = info:GetID()
 

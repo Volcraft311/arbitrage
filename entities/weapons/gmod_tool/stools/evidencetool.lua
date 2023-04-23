@@ -257,15 +257,9 @@ function TOOL.BuildCPanel(CPanel)
 
             _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or _.index == convar) and 200 or 0)
 
-            surface.SetDrawColor(255, 61, 96, _.alpha)
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(5, 5, w - 10, h - 10)
-
-            surface.SetDrawColor(255, 61, 96, 150)
-            surface.DrawOutlinedRect(0, 0, w, h, 1)
+            asterionlib.DrawRect(0, 0, w, h, {255, 61, 96, _.alpha})
+            asterionlib.DrawTexturedRect(mat, 5, 5, w - 10, h - 10, {255, 255, 255})
+            asterionlib.DrawOutlinedRect(0, 0, w, h, {255, 61, 96, 150})
         end
 
         ListItem.DoClick = function()
@@ -277,8 +271,7 @@ function TOOL.BuildCPanel(CPanel)
     ribbonScrollPanel:DockMargin(W(5), H(5), W(5), H(5))
     ribbonScrollPanel:SetTall(130)
     ribbonScrollPanel.Paint = function(_, w, h)
-        surface.SetDrawColor(0, 0, 0)
-        surface.DrawOutlinedRect(0, 0, w, h)
+        asterionlib.DrawOutlinedRect(0, 0, w, h, {0, 0, 0})
     end
     CPanel:AddPanel(ribbonScrollPanel)
 
@@ -301,15 +294,9 @@ function TOOL.BuildCPanel(CPanel)
 
             _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or _.index == convar) and 200 or 0)
 
-            surface.SetDrawColor(255, 61, 96, _.alpha)
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(5, 5, w - 10, h - 10)
-
-            surface.SetDrawColor(255, 61, 96, 150)
-            surface.DrawOutlinedRect(0, 0, w, h, 1)
+            asterionlib.DrawRect(0, 0, w, h, {255, 61, 96, _.alpha})
+            asterionlib.DrawTexturedRect(mat, 5, 5, w - 10, h - 10, {255, 255, 255})
+            asterionlib.DrawOutlinedRect(0, 0, w, h, {255, 61, 96, 150})
         end
 
         ListItem.DoClick = function()
@@ -322,8 +309,7 @@ function TOOL.BuildCPanel(CPanel)
     factionScrollPanel:SetTall(130)
     factionScrollPanel.list = {}
     factionScrollPanel.Paint = function(_, w, h)
-        surface.SetDrawColor(0, 0, 0)
-        surface.DrawOutlinedRect(0, 0, w, h)
+        asterionlib.DrawOutlinedRect(0, 0, w, h, {0, 0, 0})
     end
     CPanel:AddPanel(factionScrollPanel)
 

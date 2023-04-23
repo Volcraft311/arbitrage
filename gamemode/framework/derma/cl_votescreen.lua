@@ -39,10 +39,8 @@ function PANEL:Init()
     self.timerPanel:SetWide(W(190))
     self.timerPanel:Dock(RIGHT)
     self.timerPanel.Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255, 3)
-
-        surface.DrawRect(0, 0, w, 2)
-        surface.DrawRect(0, h - 2, w, 2)
+        asterionlib.DrawRect(0, 0, w, 2, {255, 255, 255, 3})
+        asterionlib.DrawRect(0, h - 2, w, 2)
 
         local thisTime = self.startTime - RealTime()
 
@@ -77,14 +75,12 @@ function PANEL:Init()
         bar:DockMargin(0, 0, 0, 0)
 
         bar.Paint = function(_, w, h)
-            surface.SetDrawColor(255, 255, 255, 3)
-            surface.DrawRect(0, 0, w, h)
+            asterionlib.DrawRect(0, 0, w, h, {255, 255, 255, 3})
         end
         bar.btnUp.Paint = function(_, w, h) end
         bar.btnDown.Paint = function(_, w, h) end
         bar.btnGrip.Paint = function(_, w, h)
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(0, 0, w, h)
+            asterionlib.DrawRect(0, 0, w, h, {255, 255, 255})
         end
     end
 
@@ -134,9 +130,7 @@ function PANEL:SetInfo(faction, steamid)
         self.infoPanel.Paint = function(_, w, h)
             local size = h * 0.9
 
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(splashscreen)
-            surface.DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2, size, size)
+            asterionlib.DrawTexturedRect(splashscreen, w / 2 - size / 2, h / 2 - size / 2, size, size, {255, 255, 255})
         end
 
         self.panels[#self.panels + 1] = self.infoPanel
@@ -146,8 +140,7 @@ function PANEL:SetInfo(faction, steamid)
         local textPanel = self.infoPanel:Add("Panel")
         textPanel:Dock(FILL)
         textPanel.Paint = function(_, w, h)
-            surface.SetDrawColor(255, 220, 228, 10)
-            surface.DrawRect(w * 0.2, h - H(179), w - (w * 0.2) * 2, 2)
+            asterionlib.DrawRect(w * 0.2, h - H(179), w - (w * 0.2) * 2, 2, {255, 220, 228, 10})
 
             draw.DrawText(data:GetName(), "arb.Font_FuturaPTBook_14", w / 2, h - H(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
             draw.DrawText(data:GetTitle(), "arb.Font_FuturaPTBook_9", w / 2, h - H(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
@@ -165,11 +158,8 @@ function PANEL:SetInfo(faction, steamid)
         selectButton.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and _:IsEnabled()) and 1 or 0.2)
 
-            surface.SetDrawColor(27, 10, 13, 204 * _.alpha)
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(255, 61, 96, 165.75 * _.alpha)
-            surface.DrawOutlinedRect(0, 0, w, h, 2)
+            asterionlib.DrawRect(0, 0, w, h, {27, 10, 13, 204 * _.alpha})
+            asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {255, 61, 96, 165.75 * _.alpha})
 
             draw.DrawText("Подтвердить голос", "arb.Font_FuturaPTBook_9", w / 2, H(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
@@ -213,23 +203,18 @@ function PANEL:SetData(data, votingList)
         character.alpha = 0
         character.alpha2 = 0
         character.Paint = function(_, w, h)
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.character == faction) and 1 or 0.4)
-            _.alpha2 = Lerp(FrameTime() * 10, _.alpha2, self.voting == steamid and 1 or -0.1)
+            local ft = FrameTime()
+
+            _.alpha = Lerp(ft * 10, _.alpha, (_:IsHovered() or self.character == faction) and 1 or 0.4)
+            _.alpha2 = Lerp(ft * 10, _.alpha2, self.voting == steamid and 1 or -0.1)
 
             if !alive then _.alpha = 0.05 end
 
             local xPos = w / 2 - (W(100) / 2)
 
-            surface.SetDrawColor(27, 10, 13, 204 * _.alpha)
-            surface.DrawRect(xPos, 0, W(100), H(100))
-
-            surface.SetDrawColor(255, 255, 255, _.alpha * 255)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(xPos + 6, 9, W(100) - 12, H(100) - 12)
-
-            surface.SetDrawColor(255, 255, 255, 255 * _.alpha2)
-            surface.SetMaterial(mat2)
-            surface.DrawTexturedRect(xPos + 6, 9, W(100) - 12, H(100) - 12)
+            asterionlib.DrawRect(xPos, 0, W(100), H(100), {27, 10, 13, 204 * _.alpha})
+            asterionlib.DrawTexturedRect(mat, xPos + 6, 9, W(100) - 12, H(100) - 12, {255, 255, 255, _.alpha * 255})
+            asterionlib.DrawTexturedRect(mat2, xPos + 6, 9, W(100) - 12, H(100) - 12, {255, 255, 255, 255 * _.alpha2})
 
             Arbitrage.DrawTextBlur(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 
@@ -237,9 +222,7 @@ function PANEL:SetData(data, votingList)
                 draw.DrawText(factionData.name, "arb.Font_FuturaPTBookBlurN_7", w / 2, h - H(25), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
 
-            surface.SetDrawColor(255, 61, 96, 165.75 * (_.alpha + 0.5))
-            surface.DrawOutlinedRect(xPos, 3, W(100), H(100), 2)
-
+            asterionlib.DrawOutlinedRect(xPos, 3, W(100), H(100), 2, {255, 61, 96, 165.75 * (_.alpha + 0.5)})
             Arbitrage.DrawOutlinedRectBlur(xPos, 3, W(100), H(100), Color(255, 238, 177, 255 * _.alpha2), 2, 4)
         end
         character.DoClick = function()
@@ -285,9 +268,7 @@ function PANEL:ShowWinning(data)
         panel:SetPos(ScrW() / 2 - wide / 2, ScrH() / 2 - tall / 2)
     end
     panel.Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255)
-        surface.SetMaterial(mat)
-        surface.DrawTexturedRect(0, 0, w, h)
+        asterionlib.DrawTexturedRect(mat, 0, 0, w, h, {255, 255, 255})
     end
 
     timer.Simple(5, function()
@@ -361,35 +342,24 @@ function PANEL:ShowVotings(winning, votingData)
         ListItem.Paint = function(_, w, h)
             asterionlib.DrawBlur(self, 3)
 
-            surface.SetDrawColor(0, 0, 0, 90)
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(0, 0, 0, 100)
-            surface.DrawRect(0, 0, h, h)
-
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(0, 0, h, h)
+            asterionlib.DrawRect(0, 0, w, h, {0, 0, 0, 90})
+            asterionlib.DrawRect(0, 0, h, h, {0, 0, 0, 100})
+            asterionlib.DrawTexturedRect(mat, 0, 0, h, h, {255, 255, 255})
 
             local sizeH = h * 0.55
             local sizeW = sizeH * 0.3
 
             for i = 0, count - 1 do
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(vote_emptyMat)
-                surface.DrawTexturedRect(h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH)
+                asterionlib.DrawTexturedRect(vote_emptyMat, h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH, {255, 255, 255})
             end
 
             for i = 0, votes - 1 do
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(vote_markMat)
-                surface.DrawTexturedRect(h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH)
+                asterionlib.DrawTexturedRect(vote_markMat, h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH, {255, 255, 255})
             end
 
             Arbitrage.DrawTextBlur(name, "arb.Font_FuturaPTBook_7", h + W(10), 0, Color(255, 238, 177), TEXT_ALIGN_LEFT)
 
-            surface.SetDrawColor(255, 61, 96, 40)
-            surface.DrawOutlinedRect(0, 0, w, h)
+            asterionlib.DrawOutlinedRect(0, 0, w, h, {255, 61, 96, 40})
         end
     end
 
@@ -420,35 +390,27 @@ local padding = 0.07
 local speed = 1
 
 function PANEL:Paint(w, h)
-    local x, y = math.Clamp(gui.MouseX(), 0, ScrW()), math.Clamp(gui.MouseY(), 0, ScrH())
-    local Wx, Wy = -((ScrW() / 2 - x) * padding), -((ScrH() / 2 - y) * padding)
+    local ft = FrameTime()
 
-    local sizeX = ScrW() / 2 * padding
-    local sizeY = ScrH() / 2 * padding
+    local x, y = math.Clamp(gui.MouseX(), 0, w), math.Clamp(gui.MouseY(), 0, h)
+    local Wx, Wy = -((w / 2 - x) * padding), -((h / 2 - y) * padding)
 
-    lerpX = Lerp(FrameTime() * speed, lerpX, Wx)
-    lerpY = Lerp(FrameTime() * speed, lerpY, Wy)
+    local sizeX = w / 2 * padding
+    local sizeY = h / 2 * padding
 
-    lerpX_g = Lerp(FrameTime() * (speed * 3), lerpX_g, Wx)
-    lerpY_g = Lerp(FrameTime() * (speed * 3), lerpY_g, Wy)
+    lerpX = Lerp(ft * speed, lerpX, Wx)
+    lerpY = Lerp(ft * speed, lerpY, Wy)
 
-    lerpX_l = Lerp(FrameTime() * (speed * 10), lerpX_l, Wx)
-    lerpY_l = Lerp(FrameTime() * (speed * 10), lerpY_l, Wy)
+    lerpX_g = Lerp(ft * (speed * 3), lerpX_g, Wx)
+    lerpY_g = Lerp(ft * (speed * 3), lerpY_g, Wy)
 
-    surface.SetDrawColor(255, 255, 255)
-    surface.SetMaterial(material_bg)
-    surface.DrawTexturedRect(0 - lerpX - sizeX, 0 - lerpY - sizeY, w + sizeX * 2, h + sizeY * 2)
+    lerpX_l = Lerp(ft * (speed * 10), lerpX_l, Wx)
+    lerpY_l = Lerp(ft * (speed * 10), lerpY_l, Wy)
 
-    surface.SetDrawColor(0, 0, 0, 190)
-    surface.DrawRect(0, 0, w, h)
-
-    surface.SetDrawColor(255, 255, 255, 150)
-    surface.SetMaterial(material_bg_glass)
-    surface.DrawTexturedRect(0 - lerpX_g - sizeX, 0 - lerpY_g - sizeY, w + sizeX * 2, h + sizeY * 2)
-
-    surface.SetDrawColor(255, 255, 255, 25)
-    surface.SetMaterial(material_bg_light)
-    surface.DrawTexturedRect(0 - lerpX_l - sizeX, 0 - lerpY_l - sizeY, w + sizeX * 2, h + sizeY * 2)
+    asterionlib.DrawTexturedRect(material_bg, 0 - lerpX - sizeX, 0 - lerpY - sizeY, w + sizeX * 2, h + sizeY * 2, {255, 255, 255})
+    asterionlib.DrawRect(0, 0, w, h, {0, 0, 0, 190})
+    asterionlib.DrawTexturedRect(material_bg_glass, 0 - lerpX_g - sizeX, 0 - lerpY_g - sizeY, w + sizeX * 2, h + sizeY * 2, {255, 255, 255, 150})
+    asterionlib.DrawTexturedRect(material_bg_light, 0 - lerpX_l - sizeX, 0 - lerpY_l - sizeY, w + sizeX * 2, h + sizeY * 2, {255, 255, 255, 25})
 
     asterionlib.DrawBlur(self, 5)
 end

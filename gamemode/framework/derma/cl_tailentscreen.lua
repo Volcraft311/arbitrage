@@ -120,25 +120,14 @@ function PANEL:DrawCylinder(w, h)
     local add = 70
     local color = Color(self.color.r + add, self.color.g + add, self.color.b + add, 180)
 
-    surface.SetDrawColor(color)
-    surface.SetMaterial(cylinderMat)
-    surface.DrawTexturedRectRotated(-cylinderSize + self.cylinderX, h / 2, cylinderSize, cylinderSize, rot)
-
-    surface.SetMaterial(circleMat1)
-    surface.DrawTexturedRectRotated(-cylinderSize + self.cylinderX, h / 2, cylinderSize * 1.45, cylinderSize * 1.45, -rot)
-
-    surface.SetMaterial(circleMat2)
-    surface.DrawTexturedRectRotated(-cylinderSize + self.cylinderX, h / 2, cylinderSize * 1.45, cylinderSize * 1.45, -rot)
+    asterionlib.DrawTexturedRect(cylinderMat, -cylinderSize + self.cylinderX, h / 2, cylinderSize, cylinderSize, color, rot)
+    asterionlib.DrawTexturedRect(circleMat1, -cylinderSize + self.cylinderX, h / 2, cylinderSize * 1.45, cylinderSize * 1.45, nil, -rot)
+    asterionlib.DrawTexturedRect(circleMat2, -cylinderSize + self.cylinderX, h / 2, cylinderSize * 1.45, cylinderSize * 1.45, nil, -rot)
 end
 
 function PANEL:DrawSprite()
-    surface.SetDrawColor(0, 0, 0)
-    surface.SetMaterial(self.sprite)
-    surface.DrawTexturedRect(self.spriteX - self.BmoveX, self.spriteY - self.BmoveY - self.indent, self.spriteW * self.Bsize, self.spriteH * self.Bsize)
-
-    surface.SetDrawColor(255, 255, 255)
-    surface.SetMaterial(self.sprite)
-    surface.DrawTexturedRect(self.spriteX, self.spriteY - self.indent, self.spriteW, self.spriteH)
+    asterionlib.DrawTexturedRect(self.sprite, self.spriteX - self.BmoveX, self.spriteY - self.BmoveY - self.indent, self.spriteW * self.Bsize, self.spriteH * self.Bsize, {0, 0, 0})
+    asterionlib.DrawTexturedRect(self.sprite, self.spriteX, self.spriteY - self.indent, self.spriteW, self.spriteH, {255, 255, 255})
 end
 
 function PANEL:RotatedText(text, x, y, ang, scale, color)
@@ -166,45 +155,36 @@ function PANEL:DrawLines(w, h)
     do
         local ang = 11
 
+        local a = RSize * 0.5
+        local b = RSize * 0.25
+        local c = RSize * 0.3
+        local d = RSize * 0.4
+        local e = RSize * 1.1
+        local f = RSize * 0.1
+        local g = RSize * 0.2
+
         local m = Matrix()
         m:Rotate(Angle(0, ang, 0))
         m:Scale(Vector(1.1, 1.1, 1))
 
         cam.PushModelMatrix(m)
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawRect(0, y - RSize * 0.5, self.lines[2][2], RSize * 0.5)
+            asterionlib.DrawRect(0, y - a, self.lines[2][2], a, {0, 0, 0})
+            asterionlib.DrawRect(0, y - a - b, self.lines[3][2], b, color)
 
-            surface.SetDrawColor(color)
-            surface.DrawRect(0, y - RSize * 0.5 - RSize * 0.25, self.lines[3][2], RSize * 0.25)
-            Arbitrage.DrawGradient(GRADIENT_DOWN, 0, y - RSize * 0.5 - 10, self.lines[3][2], 10, color_black)
+            Arbitrage.DrawGradient(GRADIENT_DOWN, 0, y - a - 10, self.lines[3][2], 10, color_black)
 
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawRect(0, y - RSize * 0.5 - RSize * 0.25 - RSize * 0.3, self.lines[4][2], RSize * 0.1)
+            asterionlib.DrawRect(0, y - a - b - c, self.lines[4][2], f, {0, 0, 0})
+            asterionlib.DrawRect(0, y - a - b - c - d, self.lines[5][2], RSize * 0.05)
+            asterionlib.DrawRect(0, y - a - b - c - d - RSize * 0.6, self.lines[6][2], RSize * 0.6, {255, 255, 255})
 
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawRect(0, y - RSize * 0.5 - RSize * 0.25 - RSize * 0.3 - RSize * 0.4, self.lines[5][2], RSize * 0.05)
+            Arbitrage.DrawGradient(GRADIENT_DOWN, 0, y - a - b - c - d - RSize * 0.6 - 10, self.lines[3][2], 10, color_white)
 
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(0, y - RSize * 0.5 - RSize * 0.25 - RSize * 0.3 - RSize * 0.4 - RSize * 0.6, self.lines[6][2], RSize * 0.6)
-            Arbitrage.DrawGradient(GRADIENT_DOWN, 0, y - RSize * 0.5 - RSize * 0.25 - RSize * 0.3 - RSize * 0.4 - RSize * 0.6 - 10, self.lines[3][2], 10, color_white)
-
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(0, y - RSize * 0.5 - RSize * 0.25 - RSize * 0.3 - RSize * 0.4 - RSize * 0.6 - RSize * 0.3, self.lines[7][2], RSize * 0.06)
-
-            surface.SetDrawColor(92, 128, 163)
-            surface.DrawRect(0, y + RSize * 1.1, self.lines[8][2], RSize * 0.03)
-
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(0, y + RSize * 1.1 + RSize * 0.1, self.lines[9][2], RSize * 0.1)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawRect(0, y + RSize * 1.1 + RSize * 0.4, self.lines[10][2], RSize * 0.09)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawRect(0, y + RSize * 1.1 + RSize * 0.4 + RSize * 0.25, self.lines[11][2], RSize * 0.05)
-
-            surface.SetDrawColor(37, 71, 83)
-            surface.DrawRect(0, y + RSize * 1.1 + RSize * 0.4 + RSize * 0.25 + RSize * 0.2, self.lines[12][2], RSize * 0.06)
+            asterionlib.DrawRect(0, y - a - b - c - d - RSize * 0.6 - c, self.lines[7][2], RSize * 0.06, {255, 255, 255})
+            asterionlib.DrawRect(0, y + e, self.lines[8][2], RSize * 0.03, {92, 128, 163})
+            asterionlib.DrawRect(0, y + e + f, self.lines[9][2], f, {255, 255, 255})
+            asterionlib.DrawRect(0, y + e + d, self.lines[10][2], RSize * 0.09, {0, 0, 0})
+            asterionlib.DrawRect(0, y + e + d + b, self.lines[11][2], RSize * 0.05)
+            asterionlib.DrawRect(0, y + e + d + b + g, self.lines[12][2], RSize * 0.06, {37, 71, 83})
 
             local moving = 0
             for k, v in ipairs(self.cubeList) do
@@ -217,8 +197,7 @@ function PANEL:DrawLines(w, h)
             end
 
             Arbitrage.DrawGradient(GRADIENT_DOWN, 0, y - 10, self.lines[1][2], 10, color_white)
-            surface.SetDrawColor(255, 255, 255)
-            surface.DrawRect(0, y, self.lines[1][2], RSize)
+            asterionlib.DrawRect(0, y, self.lines[1][2], RSize, {255, 255, 255})
             Arbitrage.DrawGradient(GRADIENT_UP, 0, y + RSize, self.lines[1][2], 10, color_white)
 
             Arbitrage.DrawTextBlur(self.title, "arb.Font_FuturaPTBook_30", self.lines[1][2] * 0.65, y, Color(0, 0, 0), TEXT_ALIGN_CENTER, color)
@@ -282,26 +261,16 @@ function PANEL:Paint(w, h)
     self.nameAlpha = Lerp(ft, self.nameAlpha, 256)
     self.nameMove = Lerp(ft * 8, self.nameMove, 0)
 
-    surface.SetDrawColor(self.color)
-    surface.SetMaterial(bgMat)
-    surface.DrawTexturedRectRotated(w / 2, h / 2, w, h, 180)
-
-    surface.SetDrawColor(0, 0, 0, 40)
-    surface.SetMaterial(bgEffect1)
-    surface.DrawTexturedRect(0, 0, w, h)
-
-    surface.SetDrawColor(0, 0, 0, 70)
-    surface.SetMaterial(bgEffect2)
-    surface.DrawTexturedRect(0, 0, w, h)
+    asterionlib.DrawTexturedRect(bgMat, w / 2, h / 2, w, h, self.color, 180)
+    asterionlib.DrawTexturedRect(bgEffect1, 0, 0, w, h, {0, 0, 0, 40})
+    asterionlib.DrawTexturedRect(bgEffect2, 0, 0, w, h, {0, 0, 0, 70})
 
     self:DrawCylinder(w, h)
     self:DrawLines(w, h)
     self:DrawSprite()
 
     local sizeW, sizeH = w * 1.03, h * 1.03
-    surface.SetDrawColor(self.color)
-    surface.SetMaterial(vignetteMat)
-    surface.DrawTexturedRect(w / 2 - sizeW / 2, h / 2 - sizeH / 2, sizeW, sizeH)
+    asterionlib.DrawTexturedRect(vignetteMat, w / 2 - sizeW / 2, h / 2 - sizeH / 2, sizeW, sizeH, self.color)
 end
 
 vgui.Register("arb.TailentScreen", PANEL, "EditablePanel")

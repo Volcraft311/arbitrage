@@ -116,14 +116,12 @@ function PANEL:Init()
 	bar:DockMargin(0, 0, 0, 0)
 
 	bar.Paint = function(_, w, h)
-	    surface.SetDrawColor(255, 255, 255, 3)
-	    surface.DrawRect(20 + 7, 30, w, h - 60)
+	    asterionlib.DrawRect(20 + 7, 30, w, h - 60, {255, 255, 255, 3})
 	end
 	bar.btnUp.Paint = function(_, w, h) end
 	bar.btnDown.Paint = function(_, w, h) end
 	bar.btnGrip.Paint = function(_, w, h)
-	    surface.SetDrawColor(255, 255, 255)
-	    surface.DrawRect(20 + 7, 0, w, h)
+	    asterionlib.DrawRect(20 + 7, 0, w, h, {255, 255, 255})
 	end
 
 	local saveButton = rightPanel:Add("DButton")
@@ -135,11 +133,8 @@ function PANEL:Init()
 	saveButton.Paint = function(_, w, h)
 	    _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 1 or 0.1)
 
-	    surface.SetDrawColor(15, 5, 6, 255 * _.alpha)
-	    surface.DrawRect(0, 0, w, h)
-
-	    surface.SetDrawColor(99, 17, 32, 255 * _.alpha)
-	    surface.DrawOutlinedRect(0, 0, w, h, 2)
+	    asterionlib.DrawRect(0, 0, w, h, {15, 5, 6, 255 * _.alpha})
+	    asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {99, 17, 32, 255 * _.alpha})
 
 	    draw.SimpleText("Сохранить изменения", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 	end
@@ -177,11 +172,8 @@ function PANEL:SetData(model)
                 local bSelect = self.skin == i2
                 _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or bSelect) and 1 or 0.05)
 
-                surface.SetDrawColor(15, 5, 6, 255 * _.alpha)
-                surface.DrawRect(0, 0, w, h)
-
-                surface.SetDrawColor(99, 17, 32, 255 * _.alpha)
-                surface.DrawOutlinedRect(0, 0, w, h, 2)
+                asterionlib.DrawRect(0, 0, w, h, {15, 5, 6, 255 * _.alpha})
+                asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {99, 17, 32, 255 * _.alpha})
 
                 draw.SimpleText(i2, "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
@@ -223,11 +215,8 @@ function PANEL:SetData(model)
                 local bSelect = self.bg[name] == i2
                 _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or bSelect) and 1 or 0.05)
 
-                surface.SetDrawColor(15, 5, 6, 255 * _.alpha)
-                surface.DrawRect(0, 0, w, h)
-
-                surface.SetDrawColor(99, 17, 32, 255 * _.alpha)
-                surface.DrawOutlinedRect(0, 0, w, h, 2)
+                asterionlib.DrawRect(0, 0, w, h, {15, 5, 6, 255 * _.alpha})
+                asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {99, 17, 32, 255 * _.alpha})
 
                 draw.SimpleText(i2, "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
@@ -249,8 +238,7 @@ function PANEL:AddCategory(name)
     self.categoryPanels[name]:Dock(TOP)
     self.categoryPanels[name]:SetTall(H(28))
     self.categoryPanels[name].Paint = function(_, w, h)
-        surface.SetDrawColor(255, 234, 238, 20)
-        surface.DrawRect(0, h - 2, w, 2)
+        asterionlib.DrawRect(0, h - 2, w, 2, {255, 234, 238, 20})
 
         draw.SimpleText(name, "arb.Font_FuturaPTBook_7", 0, 0, Color(255, 234, 238, 30), TEXT_ALIGN_LEFT)
     end
@@ -259,8 +247,7 @@ function PANEL:AddCategory(name)
 end
 
 function PANEL:Paint(w, h)
-    surface.SetDrawColor(4, 2, 2)
-    surface.DrawRect(0, 0, w, h)
+    asterionlib.DrawRect(0, 0, w, h, {4, 2, 2})
 end
 
 vgui.Register("arb.OpenWardrobe", PANEL, "EditablePanel")

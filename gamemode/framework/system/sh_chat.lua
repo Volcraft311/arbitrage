@@ -88,7 +88,7 @@ Arbitrage.chat.List = {
     },
     ["ic"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " говорит: ", "'" .. data[1] .. "'"
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " говорит: ", "\"" .. data[1] .. "\""
         end,
         OnSend = function(client, name, data)
             if !data then return end

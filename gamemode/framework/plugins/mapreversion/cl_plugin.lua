@@ -96,7 +96,7 @@ function MapReversion:CreateMove(cmd)
 	end
 end
 
-function MapReversion:RenderScreenspaceEffects()
+function MapReversion:Render()
 	if Arbitrage.OnMapReversion() then
 		local frame = self:GetFrame()
 		if !IsValid(frame) then

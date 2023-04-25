@@ -181,6 +181,8 @@ function Arbitrage:HUDPaint()
 end
 
 function Arbitrage:RenderScreenspaceEffects()
+    MapReversion:Render()
+
     Arbitrage.hud.GrayCorrect()
     Arbitrage.hud.VignetteDraw()
     Arbitrage.hud.LowHealthDraw()

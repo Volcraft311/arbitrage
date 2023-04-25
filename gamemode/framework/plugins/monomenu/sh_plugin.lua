@@ -314,6 +314,23 @@ MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.p
     end
 })
 
+MonoMenu:AddGameFunction("Реверсия карты", "icon16/script_code_red.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnMapReversion", true)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnMapReversion", false)
+    end,
+    OnCheck = function(client)
+        return Arbitrage.OnMapReversion()
+    end
+})
+
 MonoMenu:AddGameFunction("Отображение списка игроков", "icon16/information.png", {
     isCheckBox = true,
     onEnable = function(client)

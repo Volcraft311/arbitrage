@@ -17,6 +17,10 @@ MapReversion.material = MapReversion.material or nil
 MapReversion.tex = MapReversion.tex or nil
 MapReversion.frame = MapReversion.frame or nil
 
+MapReversion.vec = MapReversion.vec or Vector()
+MapReversion.ang = MapReversion.ang or Angle()
+MapReversion.fov = MapReversion.fov or 90
+
 
 function MapReversion:CreateTex()
 	local tex = GetRenderTarget("MapReversion_" .. CurTime(), ScrW(), ScrH())
@@ -51,8 +55,9 @@ function MapReversion:CreateFrame()
 			render.SetRenderTarget(self.tex)
 				self.shouldHidden = true
 					render.RenderView({
-						origin = EyePos(),
-						angles = client:EyeAngles(),
+						origin = self.vec,
+						angles = self.ang,
+						fov = self.fov,
 						x = 0,
 						y = 0,
 						w = w,
@@ -116,6 +121,14 @@ end
 function MapReversion:PrePlayerDraw(client)
 	if Arbitrage.OnMapReversion() and client == LocalPlayer() and !self.shouldHidden then
 		return true
+	end
+end
+
+function MapReversion:RenderScene(vec, ang, fov)
+	if Arbitrage.OnMapReversion() then
+		self.vec = vec
+		self.ang = ang
+		self.fov = fov
 	end
 end
 

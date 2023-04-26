@@ -198,9 +198,17 @@ function Arbitrage:StartLaw()
     PLUGIN.interruption = nil
 
     hook.Add("SetupPlayerVisibility", "LawCamera", function(pPlayer, pViewEntity)
-        for k, v in ipairs(player.GetAll()) do
-            if v:LawPlace() >= 0 then
-                AddOriginToPVS(v:GetPos())
+        local entity = PLUGIN.talk_entity
+
+        if IsValid(entity) then
+            AddOriginToPVS(entity:GetPos())
+        end
+
+        for k, v in ipairs({"camPosEnd"}) do
+            local pos = Arbitrage[v]
+
+            if pos then
+                AddOriginToPVS(pos)
             end
         end
     end)

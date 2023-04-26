@@ -24,16 +24,6 @@ local function randomID(old)
     end
 end
 
-function PLUGIN:DrawSprites(client, bState)
-    if !IsValid(client) then return end
-
-    client:SetNoDraw(bState)
-    client:SetNotSolid(bState)
-    client:DrawWorldModel(!bState)
-    client:DrawShadow(bState)
-    client:SetNoTarget(!bState)
-end
-
 function PLUGIN:StartRebuttalShowdowns(client1, client2)
     if !Arbitrage.lawEnable then return end
     if self.IsRebuttalShowdowns then return end
@@ -187,10 +177,7 @@ function Arbitrage:StartLaw()
                 v:SetPos(Arbitrage.camPosEnd)
             end
 
-            timer.Simple(0.1, function()
-                v:Freeze(true)
-                PLUGIN:DrawSprites(v, true)
-            end)
+            v:Freeze(true)
         end
     end)
 
@@ -228,7 +215,6 @@ function Arbitrage:EndLaw()
     timer.Simple(2, function()
         for k, v in ipairs(player.GetAll()) do
             v:Freeze(false)
-            PLUGIN:DrawSprites(v, false)
 
             if v.arbOldPos then
                 v:SetPos(v.arbOldPos)
@@ -377,8 +363,6 @@ function PLUGIN:PlayerInitialSpawn(client)
 
         timer.Simple(0.1, function()
             client:Freeze(true)
-            PLUGIN:DrawSprites(client, true)
-
 
             if PLUGIN.IsRebuttalShowdowns then
                 local data = {}

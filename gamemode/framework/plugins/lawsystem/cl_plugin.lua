@@ -705,6 +705,11 @@ function PLUGIN:CreateBulletAnimation2()
     end)
 end
 
+function PLUGIN:PrePlayerDraw()
+    if Arbitrage.lawEnable then
+        return true
+    end
+end
 
 netstream.Hook("arb.StartLaw", function()
     Arbitrage:ReplaceVariables()

@@ -103,6 +103,8 @@ PLUGIN:AddPlayerESPCustomization("trace_pl", {
         desc = "Показывать куда смотрит игрок"
     },
     data = function(entity)
+        if entity:IsDormant() then return end
+
         local col = team.GetColor(entity:Team())
 
         local tr = {}

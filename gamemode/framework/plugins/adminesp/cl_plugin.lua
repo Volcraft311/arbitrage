@@ -38,7 +38,7 @@ surface_CreateFont( "AdminESPFont", {
 	weight = 100,
 })
 
-local function getScreenPon(isPlayer, pos)
+local function getScreenPos(isPlayer, pos)
 	local head = Vector(pos.x, pos.y, isPlayer and pos.z + 60 or pos.z)
 	local headPos = head:ToScreen()
 	local x, y = headPos.x, headPos.y
@@ -46,13 +46,19 @@ local function getScreenPon(isPlayer, pos)
 	return headPos, x, y
 end
 
+local function getPos(entity, isPlayer)
+	local pos = entity:GetPos()
+
+	return isPlayer and (entity:IsDormant() and entity:GetNetVar("esp.position", pos)) or pos
+end
+
 local function drawing(entity, info, eyePos)
 	if !IsValid(entity) then return end
 
 	local isPlayer = entity:IsPlayer()
-	local entityPos = entity:GetPos()
+	local entityPos = getPos(entity, isPlayer)
 
-	local headPos, x, y = getScreenPon(isPlayer, entityPos)
+	local headPos, x, y = getScreenPos(isPlayer, entityPos)
 	if !headPos.visible then return end
 
 	local distance = eyePos:Distance(entityPos)
@@ -119,9 +125,9 @@ local function caching(entity)
 		cache[entity] = {}
 
 		local eyePos = EyePos()
-		local entityPos = entity:GetPos()
+		local entityPos = getPos(entity, isPlayer)
 
-		local headPos = getScreenPon(isPlayer, entityPos)
+		local headPos = getScreenPos(isPlayer, entityPos)
 		if !headPos.visible then return end
 
 		for k, v in pairs(entity:ESPInfo()) do

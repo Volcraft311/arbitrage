@@ -13,7 +13,7 @@
 
 local PLUGIN = PLUGIN
 
-PLUGIN.name = "[AsterionProject] AdminESP"
+PLUGIN.name = "AdminESP"
 
 PLUGIN.playerinfo = {}
 PLUGIN.entityinfo = {}
@@ -93,3 +93,4 @@ end
 
 Arbitrage.base.Include("cl_config.lua")
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("sv_plugin.lua")

@@ -64,7 +64,7 @@ timer_Create("Container:Update", 1, 0, function()
     for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
         if v:GetClass() != "arb_container" then continue end
 
-        local name = v:GetContainerName()
+        local name = v.GetContainerName and v:GetContainerName() or "" -- attempt to call method 'GetContainerName' (a nil value) / wtf
         local bNotVisible = Arbitrage.hud.VectorObstructed(EyePos(), v:GetPos(), {LocalPlayer(), v})
         if bNotVisible then continue end
 

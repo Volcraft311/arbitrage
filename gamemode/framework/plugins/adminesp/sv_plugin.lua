@@ -28,6 +28,8 @@ end
 timer.Create("AdminESP:UpdatePlayersPosition", 0.2, 0, function()
     local receivers = getReceivers()
 
+    if #receivers <= 0 then return end
+
     for k, v in ipairs(player.GetAll()) do
         v:SetNetVar("esp.position", v:GetPos(), receivers)
     end

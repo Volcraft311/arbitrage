@@ -33,6 +33,8 @@ function PANEL:Init()
     self.item = nil
     self.inventory = client:GetInventory()
 
+    if !self.inventory then return end
+
     local inventoryPanel = self:Add("InventoryBase:Inventory")
     inventoryPanel:SetInventory(self.inventory)
     self.invIDClient = self.inventory:GetID()

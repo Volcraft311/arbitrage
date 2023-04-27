@@ -52,8 +52,6 @@ local function getDist()
 end
 
 local function chatColor(name)
-    if !name then return end
-
     return Arbitrage.chat.List[name].Color or color_white
 end
 

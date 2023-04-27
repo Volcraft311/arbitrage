@@ -115,6 +115,8 @@ function playerMeta:StartAction(uniqueID)
 	uniqueID = tostring(uniqueID) or ""
 	uniqueID = string.lower(uniqueID)
 
+	if self.GetSitting and self:GetSitting() then return Arbitrage.commands.Notify(self, "Вы не можете запустить анимацию, когда вы сидите!") end
+
 	local data = Emotes.action.stored[uniqueID]
 	if !data then return Arbitrage.commands.Notify(self, "Данной анимации не существует!") end
 

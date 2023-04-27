@@ -140,6 +140,9 @@ function PANEL:OnRightClick()
 end
 
 function PANEL:OnMiddleClick()
+	if self.bClose then return end
+	if !self.selected then return end
+
 	local option = self.options[self.selected + 1]
 	if !option then return end
 

@@ -153,6 +153,11 @@ function PANEL:CreateSearch()
         data = string.Replace(data, "http://", "")
         data = string.Replace(data, "www.", "")
 
+        if string.find(data, "&") then
+            local pattern = "(.-)&.*"
+            data = string.match(data, pattern)
+        end
+
         local id = tonumber(data)
         if !id then return end
 
@@ -497,7 +502,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText(self.collectionChildren and "Добавить дополнения из коллекции" or "Добавить новое дополнение", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(self.isCollection and "Добавить дополнения из коллекции" or "Добавить новое дополнение", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -559,7 +564,19 @@ function PANEL:Init()
             self:Remove()
         end)
 
-        netstream.Start("Workshop:Add", self.collectionChildren or self.id)
+        local info = {self.id}
+
+        if self.allowAttachment or self.isCollection then
+            if self.isCollection then
+                info = {}
+            end
+
+            for k, v in ipairs(self.collectionChildren) do
+                info[#info + 1] = v
+            end
+        end
+
+        netstream.Start("Workshop:Add", info)
     end
 
     local openButton = self.main:Add("DButton")
@@ -580,11 +597,33 @@ function PANEL:Init()
 
         steamworks.ViewFile(self.id)
     end
+
+    local attachmentCheckBox = self.main:Add("DCheckBoxLabel")
+    attachmentCheckBox:DockMargin(W(10), H(5), 0, H(5))
+    attachmentCheckBox:SetText("Принимать дополнительный контент дополнения")
+    attachmentCheckBox:SetValue(true)
+    attachmentCheckBox:SetTall(H(25))
+    attachmentCheckBox:Dock(BOTTOM)
+    attachmentCheckBox.OnChange = function(this, value)
+        self.allowAttachment = value
+    end
+
+    local collectionCheckBox = self.main:Add("DCheckBoxLabel")
+    collectionCheckBox:DockMargin(W(10), H(5), 0, H(5))
+    collectionCheckBox:SetText("Данный аддон является коллекцией")
+    collectionCheckBox:SetValue(false)
+    collectionCheckBox:SetTall(H(25))
+    collectionCheckBox:Dock(BOTTOM)
+    collectionCheckBox.OnChange = function(this, value)
+        self.isCollection = value
+    end
 end
 
 function PANEL:SetData(id)
     self.id = id
-    self.collectionChildren = nil
+    self.isCollection = false
+    self.allowAttachment = true
+    self.collectionChildren = {}
 
     self.title = "Загрузка..."
     self.description = "Загрузка..."
@@ -598,7 +637,7 @@ function PANEL:SetData(id)
         self.description = info.description
         self.tags = info.tags
 
-        if info.fileid and info.children and #info.children > 0 then
+        if info.children and #info.children > 0 then
             self.collectionChildren = info.children
         end
 

@@ -224,7 +224,7 @@ BASE:AddAction("Разоружить", {
 
 		local itemsAmmo = {}
 	    for k, v in pairs(ItemBase.list) do
-	        if v.base == "base_ammo" then
+	        if v.base == "base_ammo" and v.category != "Converter" then
 	            itemsAmmo[string.lower(v.ammoClass)] = k
 	        end
 	    end

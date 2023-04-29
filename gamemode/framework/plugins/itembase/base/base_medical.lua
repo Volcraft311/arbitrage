@@ -85,7 +85,17 @@ function BASE:GetDescription()
 end
 
 local function RecoveryFunc(item, target)
+    local client = item.player
+
     if !IsValid(target) or !target:IsPlayer() then return false, "Не валидный игрок!" end
+
+    local text = "Использует '" .. item:GetName() .. "'"
+    if target != client then
+        text = text .. " на человеке '" .. target:Name() .. "'"
+    end
+    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, text, Color(255, 170, 23))
+    end
 
     local song = item:GetSound()
     if song and song != "" and song != " " then

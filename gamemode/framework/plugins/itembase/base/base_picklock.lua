@@ -89,8 +89,11 @@ local function HackDoor(client, entity, time)
 
         if !client.keyAnim or CurTime() >= client.keyAnim then
             client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
-
             client.keyAnim = CurTime() + 2.1
+
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+                TypingDraw:SetTypingText(v, client, "Взламывает дверь", Color(255, 170, 23))
+            end
         end
 
         return false

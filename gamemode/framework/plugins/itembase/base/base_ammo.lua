@@ -86,6 +86,10 @@ BASE:AddAction("Использовать", {
         local ammoAmount = tonumber(item:GetAmount())
 
         client:GiveAmmo(ammoAmount, ammoClass)
+
+        for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            TypingDraw:SetTypingText(v, client, "Использует '" .. item:GetName() .. "'", Color(255, 170, 23))
+        end
     end,
     OnCanRun = function(item)
         return true

@@ -834,6 +834,24 @@ local function isSelect(arguments, id, numSel, bHaveOptional)
 	return false
 end
 
+local function GetChatType(value)
+	for k, v in ipairs(PLUGIN.typesData) do
+		if string.Left(value:lower(), v:len() + 1) ==  "/" .. v:lower() then
+			return k
+		end
+	end
+
+	if string.Left(value, 2) == "[[" or string.Left(value, 2) == "./" then
+		return 5
+	end
+
+	if string.Left(value, 2) == "//" then
+		return 6
+	end
+
+	return nil
+end
+
 local padding = 5
 function PANEL:OnTextChanged(text)
 	hook.Run("ChatTextChanged", text)
@@ -925,6 +943,14 @@ function PANEL:OnTextChanged(text)
 		end)
 
 		self._numEx = 0
+	end
+
+	local oldChatType = LocalPlayer():GetNetVar("arb.chattype")
+	local var = GetChatType(text)
+	local ChatType = PLUGIN.typesData[var]
+
+	if oldChatType != ChatType then
+		netstream.Start("arb.SetChatType", var)
 	end
 end
 

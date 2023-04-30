@@ -3,6 +3,15 @@ local PLUGIN = PLUGIN
 PLUGIN.chat = PLUGIN.chat or {}
 PLUGIN.gui = PLUGIN.gui or {}
 
+PLUGIN.typesData = {
+    "me",
+    "try",
+    "it",
+    "roll",
+    "looc",
+    "ooc"
+}
+
 function PLUGIN.Bind(self, callback)
     return function(_, ...)
         return callback(self, ...)

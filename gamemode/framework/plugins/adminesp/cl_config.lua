@@ -207,6 +207,8 @@ PLUGIN:AddEntityESPCustomization("chams_en", {
         desc = "Включить чамсы энтити"
     },
     data = function(entity)
+        if Arbitrage.OnMapReversion() then return end
+
         local col = PLUGIN.entslist[entity:GetClass()]
 
         cam.Start3D(EyePos(), EyeAngles())

@@ -126,7 +126,9 @@ SETTINGS.options.Add("music_volume", SETTINGS.type.number, 50, {
 SETTINGS.options.Add("show_typingdraw", SETTINGS.type.bool, true, {
     name = "Отображать текст над головой",
     title = "Отображение текста",
-    description = "Включить отображение текста игрока который написал в чат над его головой."
+    description = "Включить отображение текста игрока над его головой при взаимодействии или написания в чат."
+})
+
 })
 
 SETTINGS.options.Add("show_hints", SETTINGS.type.bool, true, {

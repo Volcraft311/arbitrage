@@ -107,7 +107,9 @@ function PLUGIN:DrawText(client, text, color, alpha)
 
 	alpha = alpha - distance
 
-	local data2D = pos:ToScreen()
+	local fraction = client.arbTextAlphaChat or 0
+
+	local data2D = (pos + Vector(0, 0, fraction * 5)):ToScreen()
 	if !data2D.visible then return end
 
 	local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, player.GetAll())

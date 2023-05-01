@@ -62,6 +62,7 @@ timer.Create("TypingDraw:Update", 1, 0, function()
 
 	for k, v in ipairs(player.GetAll()) do
 		if v == client then continue end
+		if v:IsNocliping() then continue end
 
 		local pos = v:GetPos()
 

@@ -277,6 +277,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 end
 
 function PLUGIN:HUDPaint()
-    self:DrawPlayersChat()
+    if SETTINGS.options.Get("show_chaticon") then
+        self:DrawPlayersChat()
+    end
+
     self:DrawVoiceIcon()
 end

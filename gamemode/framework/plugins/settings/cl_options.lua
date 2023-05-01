@@ -129,6 +129,10 @@ SETTINGS.options.Add("show_typingdraw", SETTINGS.type.bool, true, {
     description = "Включить отображение текста игрока над его головой при взаимодействии или написания в чат."
 })
 
+SETTINGS.options.Add("show_chaticon", SETTINGS.type.bool, true, {
+    name = "Отображать иконки над головой",
+    title = "Отображение иконки",
+    description = "Включить отображение иконки игрока над его головой, которая указывает в какой чат печатает игрок."
 })
 
 SETTINGS.options.Add("show_hints", SETTINGS.type.bool, true, {

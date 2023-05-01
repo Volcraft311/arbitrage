@@ -259,6 +259,10 @@ local function cuff(item, ropeLength)
     end, function()
     end)
 
+    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, "Связывает '" .. target:Name() .. "'", Color(255, 170, 23))
+    end
+
     Arbitrage.action.ActionRun(client, "Связываем", cuffTime, function()
         if findTarget(client) != target then return true end
 

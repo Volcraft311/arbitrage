@@ -56,6 +56,8 @@ function PANEL:Init()
     end
 
     InventoryBase:CreateInfoPanel(self, inventoryPanel:GetX(), inventoryPanel:GetY() + h + H(40), math.max(w, W(420)))
+
+    netstream.Start("Inventory:OpenMenu")
 end
 
 function PANEL:Paint()

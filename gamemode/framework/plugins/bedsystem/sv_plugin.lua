@@ -47,6 +47,10 @@ function PLUGIN:PlayerUse(client, entity)
     local allow = self.allowBed[string.lower(tostring(entity:GetModel()) or "")]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
+        for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            TypingDraw:SetTypingText(v, client, "Ложится на кровать", Color(255, 170, 23))
+        end
+
         Arbitrage.action.ActionRun(client, "Ложимся на кровать", 5, function()
             if client:GetEyeTrace().Entity != entity then return true end
             if client:GetPos():Distance(entity:GetPos()) >= 180 then return true end

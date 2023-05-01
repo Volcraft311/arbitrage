@@ -24,6 +24,10 @@ function ENT:Initialize()
 end
 
 function ENT:Use(client, caller)
+	for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+	    TypingDraw:SetTypingText(v, client, "Обыскивает 'Холодильник'", Color(255, 170, 23))
+	end
+
 	Arbitrage.action.ActionRun(client, "Берем еду", 10, function()
 		if client:GetEyeTrace().Entity != self then return true end
 		if client:GetPos():Distance(self:GetPos()) >= 110 then return true end

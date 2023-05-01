@@ -35,6 +35,14 @@ end
 function ENT:Use(client, caller)
 	client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
+	local name = self.GetContainerName and self:GetContainerName() or ""
+
+	if name != "" and name != " " then
+		for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+		    TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
+		end
+	end
+
 	Arbitrage.action.ActionRun(client, "Обыскиваем", 1, function()
 	    if client:GetEyeTrace().Entity != self then return true end
 	    if client:GetPos():Distance(self:GetPos()) >= 200 then return true end

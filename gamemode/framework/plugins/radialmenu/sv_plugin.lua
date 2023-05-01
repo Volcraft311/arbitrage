@@ -29,6 +29,10 @@ netstream.Hook("RadialMenu:PushAction", function(client)
 
     client:ViewPunch(KnockViewPunchAngle)
     target:ViewPunch(KnockViewPunchAngle)
+
+    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, "Толкает '" .. target:Name() .. "'", Color(255, 170, 23))
+    end
 end)
 
 netstream.Hook("RadialMenu:SearchAction", function(client)
@@ -36,6 +40,10 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
 
     local target = PLUGIN:ReturnTracePlayer(client)
     if !IsValid(target) then return end
+
+    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, "Обыскивает '" .. target:Name() .. "'", Color(255, 170, 23))
+    end
 
     Arbitrage.action.ActionRun(client, "Обыскиваем", 15, function()
         if PLUGIN:ReturnTracePlayer(client) != target then return true end
@@ -49,6 +57,10 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
     end, function(activator)
         local inventory = target:GetInventory()
         InventoryBase.Open(client, inventory:GetID(), target:Name())
+
+        for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            TypingDraw:SetTypingText(v, client, "Осматривает '" .. target:Name() .. "'", Color(255, 170, 23))
+        end
     end)
 end)
 

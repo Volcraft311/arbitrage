@@ -56,6 +56,10 @@ local soundList = {"knocking.wav", "loud_knocking.wav"}
 local function DoorAction(client, door, bClose)
     client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
+    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, (bClose and "Закрывает" or "Открывает") .. " дверь", Color(255, 170, 23))
+    end
+
     Arbitrage.action.ActionRun(client, bClose and "Закрываем дверь" or "Открываем дверь", 2, function()
         if client:GetEyeTrace().Entity != door then return true end
         if client:GetPos():Distance(door:GetPos()) >= 130 then return true end

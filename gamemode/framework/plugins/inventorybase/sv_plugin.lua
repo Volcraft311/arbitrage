@@ -196,3 +196,9 @@ netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
     client:RemoveAmmo(amount, name)
     client:ChatNotify("Вы успешно вытащили " .. amount .. " патрон из запаса для " .. name .. "!")
 end)
+
+netstream.Hook("Inventory:OpenMenu", function(client)
+    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, "Осматривает карманы", Color(255, 170, 23))
+    end
+end)

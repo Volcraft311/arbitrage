@@ -37,6 +37,11 @@ function ItemBase.GetBase(base)
             client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_DROP, true)
 
             item:Transfer(nil)
+
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+                TypingDraw:SetTypingText(v, client, "Выкидывает '" .. item:GetName() .. "'", Color(255, 170, 23))
+            end
+
             return false
         end,
         OnCanRun = function(item)
@@ -65,6 +70,10 @@ function ItemBase.GetBase(base)
             local notify = client:GetInventory():AddItem(item:GetID())
             if notify then
                 Arbitrage.commands.Notify(client, notify)
+            end
+
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+                TypingDraw:SetTypingText(v, client, "Поднимает '" .. item:GetName() .. "'", Color(255, 170, 23))
             end
 
             return false

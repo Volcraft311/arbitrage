@@ -1,11 +1,9 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.chat.history = PLUGIN.chat.history or {}
-PLUGIN.chat.currentCommand = ""
-PLUGIN.chat.currentArguments = {}
 
 function PLUGIN:CreateChat()
-    if (IsValid(self.panel)) then
+    if IsValid(self.panel) then
         self.panel:Remove()
     end
 
@@ -17,9 +15,7 @@ function PLUGIN:CreateChat()
 end
 
 function PLUGIN:TabExists(id)
-    if (!IsValid(self.panel)) then
-        return false
-    end
+    if !IsValid(self.panel) then return false end
 
     return self.panel.tabs:GetTabs()[id] != nil
 end
@@ -31,7 +27,7 @@ end
 function PLUGIN:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
-    if (bind:find("messagemode") and pressed) then
+    if bind:find("messagemode") and pressed then
         self.panel:SetActive(true)
 
         return true
@@ -39,7 +35,7 @@ function PLUGIN:PlayerBindPress(client, bind, pressed)
 end
 
 function PLUGIN:HUDShouldDraw(element)
-    if (element == "CHudChat") then
+    if element == "CHudChat" then
         return false
     end
 end
@@ -49,7 +45,7 @@ function PLUGIN:OnScreenSizeChanged(oldWidth, oldHeight)
 end
 
 function PLUGIN:ChatText(index, name, text, messageType)
-    if (messageType == "none" and IsValid(self.panel)) then
+    if IsValid(self.panel) then
         self.panel:AddMessage(text)
     end
 end

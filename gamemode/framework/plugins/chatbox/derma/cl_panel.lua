@@ -101,7 +101,7 @@ function PANEL:SetMarkup(text)
 end
 
 function PANEL:PerformLayout(width, height)
-	if ((IsValid(PLUGIN.gui.chat) and PLUGIN.gui.chat.bSizing) or width == self.markup:GetWidth()) then
+	if ((IsValid(Arbitrage.gui.chat) and Arbitrage.gui.chat.bSizing) or width == self.markup:GetWidth()) then
 		return
 	end
 
@@ -112,12 +112,12 @@ function PANEL:PerformLayout(width, height)
 end
 
 function PANEL:Paint(width, height)
-	local chatbox = PLUGIN.gui.chat
+	local chatbox = Arbitrage.gui.chat
 
 	local newAlpha
 
-	if (PLUGIN.gui.chat:GetActive()) then
-		newAlpha = math.max(PLUGIN.gui.chat.alpha, self.alpha)
+	if (Arbitrage.gui.chat:GetActive()) then
+		newAlpha = math.max(Arbitrage.gui.chat.alpha, self.alpha)
 	else
 		newAlpha = self.alpha
 	end
@@ -184,8 +184,8 @@ function PANEL:Init()
 	self.buttons:Dock(TOP)
 	self.buttons:SetTall(H(35))
 	self.buttons:DockPadding(1, 1, 0, 0)
-	self.buttons.OnMousePressed = PLUGIN.Bind(PLUGIN.gui.chat, PLUGIN.gui.chat.OnMousePressed)
-	self.buttons.OnMouseReleased = PLUGIN.Bind(PLUGIN.gui.chat, PLUGIN.gui.chat.OnMouseReleased)
+	self.buttons.OnMousePressed = PLUGIN.Bind(Arbitrage.gui.chat, Arbitrage.gui.chat.OnMousePressed)
+	self.buttons.OnMouseReleased = PLUGIN.Bind(Arbitrage.gui.chat, Arbitrage.gui.chat.OnMouseReleased)
 
 	self.buttons.Paint = function(_, w, h)
 		surface.SetDrawColor(0, 0, 0)
@@ -314,7 +314,7 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(_, w, h)
-	local alpha = PLUGIN.gui.chat:GetAlpha()
+	local alpha = Arbitrage.gui.chat:GetAlpha()
 	local bar = self:GetVBar()
 
 	bar:SetAlpha(alpha)
@@ -329,7 +329,7 @@ end
 DEFINE_BASECLASS("DScrollPanel")
 function PANEL:PerformLayoutInternal()
 	local bar = self:GetVBar()
-	local bScroll = !PLUGIN.gui.chat:GetActive() or bar.Scroll == bar.CanvasSize
+	local bScroll = !Arbitrage.gui.chat:GetActive() or bar.Scroll == bar.CanvasSize
 
 	BaseClass.PerformLayoutInternal(self)
 
@@ -480,7 +480,6 @@ PANEL = {}
 AccessorFunc(PANEL, "bActive", "Active", FORCE_BOOL)
 
 function PANEL:Init()
-	PLUGIN.gui.chat = self
 	Arbitrage.gui.chat = self
 
 	self:SetZPos(32000)
@@ -594,7 +593,7 @@ function PANEL:Init()
 	close_button:SetWide(self.tabs.buttons:GetTall())
 	close_button.alpha = 50
 	close_button.DoClick = function()
-		PLUGIN.gui.chat:SetActive(false)
+		Arbitrage.gui.chat:SetActive(false)
 	end
 	close_button.Paint = function(_, w, h)
 		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 50)

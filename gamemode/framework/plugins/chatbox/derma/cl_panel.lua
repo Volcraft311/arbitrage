@@ -348,6 +348,10 @@ function PANEL:AddLine(elements, bShouldScroll)
 		"<font=arb.Font_FuturaPTBook_" .. getFontSize() .. ">"
 	}
 
+	buffer[#buffer + 1] = "<color=150,150,150>("
+	buffer[#buffer + 1] = os.date("%H:%M")
+	buffer[#buffer + 1] = ") "
+
 	for _, v in ipairs(elements) do
 		if (type(v) == "IMaterial") then
 			local texture = v:GetName()

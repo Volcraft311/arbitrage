@@ -183,3 +183,10 @@ function PLUGIN:CreateMove(ucmd)
 	local eyeAng = ucmd:GetViewAngles()
 	ucmd:SetViewAngles(Angle(math_Clamp(eyeAng.p, -s, m), eyeAng.y, eyeAng.r))
 end
+
+
+concommand.Add("arb_camerafix", function(client, cmd, args)
+	local ang = EyeAngles()
+
+	client:SetEyeAngles(Angle(ang.p, ang.y, 0))
+end)

@@ -286,7 +286,7 @@ function PLUGIN:Think()
 	local client = LocalPlayer()
 
 	if input.IsKeyDown(KEY_F2) and client:IsAdmin() and !vgui.CursorVisible() then
-		local trace = client:GetEyeTraceNoCursor()
+		local trace = util.QuickTrace(EyePos(), EyeAngles():Forward() * 999999, LocalPlayer())
 		local entity = trace.Entity
 
 		if !IsValid(entity) then return end

@@ -51,8 +51,6 @@ SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = ""
 
-local soundList = {"knocking.wav", "loud_knocking.wav"}
-
 local function DoorAction(client, door, bClose)
     client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 
@@ -117,7 +115,9 @@ local function FindKey(client, doorData)
     return false
 end
 
-function SWEP:SecondaryAttack()
+local doorVar = "Locked"
+local doorText = "Данная дверь уже"
+function SWEP:InteractionDoor(bClose)
     if CLIENT then return end
 
     local client = self:GetOwner()
@@ -127,54 +127,34 @@ function SWEP:SecondaryAttack()
     if !IsValid(door) then return end
 
     if door:GetPos():Distance(client:GetPos()) > 100 then return end
-
     if !door:IsDoor() then return end
 
     if (!client.doorSpam or CurTime() >= client.doorSpam) then
+        client.doorSpam = CurTime() + 2
+
         local doorData = FindDoorData(door)
+
         local bHaveKeys = FindKey(client, doorData)
+        if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас нету ключей от данной двери!") end
 
-        if bHaveKeys then
-            if !door:GetNWBool("Locked") then return Arbitrage.commands.Notify(client, "Данная дверь уже открыта!") end
-
-            DoorAction(client, door, false)
-        else
-            local s, _ = table.Random(soundList)
-            client:EmitSound(s)
+        if !bClose and !door:GetNWBool(doorVar) then
+            return Arbitrage.commands.Notify(client, doorText .. " открыта!")
         end
 
-        client.doorSpam = CurTime() + 2
+        if bClose and door:GetNWBool(doorVar) then
+            return Arbitrage.commands.Notify(client, doorText .. " закрыта!")
+        end
+
+        DoorAction(client, door, bClose)
     end
 end
 
+function SWEP:SecondaryAttack()
+    self:InteractionDoor(false)
+end
+
 function SWEP:PrimaryAttack()
-    if CLIENT then return end
-
-    local client = self:GetOwner()
-    local trace = client:GetEyeTraceNoCursor()
-
-    local door = trace.Entity
-    if !IsValid(door) then return end
-
-    if door:GetPos():Distance(client:GetPos()) > 100 then return end
-
-    if !door:IsDoor() then return end
-
-    if (!client.doorSpam or CurTime() >= client.doorSpam) then
-        local doorData = FindDoorData(door)
-        local bHaveKeys = FindKey(client, doorData)
-
-        if bHaveKeys then
-            if door:GetNWBool("Locked") then return Arbitrage.commands.Notify(client, "Данная дверь уже закрыта!") end
-
-            DoorAction(client, door, true)
-        else
-            local s, _ = table.Random(soundList)
-            client:EmitSound(s)
-        end
-
-        client.doorSpam = CurTime() + 2
-    end
+    self:InteractionDoor(true)
 end
 
 function SWEP:Initialize()

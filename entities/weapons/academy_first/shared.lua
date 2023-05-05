@@ -55,6 +55,7 @@ SWEP.DrawAmmo = false
 SWEP.HitDistance = 48
 SWEP.KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 
+local SoundList = {"knocking.wav", "loud_knocking.wav"}
 local SwingSound = Sound("WeaponFrag.Throw")
 local HitSound = Sound("Flesh.ImpactHard")
 
@@ -109,8 +110,24 @@ function SWEP:PrimaryAttack()
         self:SetNextPrimaryFire(CurTime() + 0.4)
         self:SetNextSecondaryFire(CurTime() + 0.4)
     else
-        hook.Run("ArcadeFistsSecondary", self:GetOwner())
+        local trace = client:GetEyeTraceNoCursor()
+        local entity = trace.Entity
+
+        if SERVER and entity:GetPos():Distance(client:GetPos()) <= 100 and entity:IsDoor() then
+            if (!client.doorSpam or CurTime() >= client.doorSpam) then
+                client.doorSpam = CurTime() + 2
+
+                local s, _ = table.Random(SoundList)
+                client:EmitSound(s)
+            end
+        else
+            hook.Run("ArcadeFistsSecondary", self:GetOwner())
+        end
     end
+end
+
+function SWEP:SecondaryAttack()
+    hook.Run("ArcadeFistsSecondary", self:GetOwner())
 end
 
 function SWEP:Reload()
@@ -138,10 +155,6 @@ end
 
 function SWEP:ShouldDrawViewModel()
     return self:GetAttack()
-end
-
-function SWEP:SecondaryAttack()
-    hook.Run("ArcadeFistsSecondary", self:GetOwner())
 end
 
 function SWEP:DealDamage()

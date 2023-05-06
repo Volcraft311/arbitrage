@@ -915,6 +915,7 @@ timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
         v:StripWeapons()
         v:StripAmmo()
         v:Spectate(OBS_MODE_CHASE)
+        v:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
     end
 end)
 

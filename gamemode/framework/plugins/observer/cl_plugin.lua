@@ -14,11 +14,25 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:HUDPaint()
+    local client = LocalPlayer()
+
     if Arbitrage.lawEnable then return end
-    if !LocalPlayer():GetLocalVar("observer") then return end
+
+    local isObserver = client:GetLocalVar("observer")
+    local isSpectating = client:IsSpectating()
+    if !isObserver and !isSpectating then return end
+
+    local text = "невидимости"
+    if isSpectating then
+        text = "режиме наблюдения"
+
+        if isObserver then
+            text = text .. " и невидимости"
+        end
+    end
 
     local alpha = math.abs(math.sin(CurTime() * 1)) * 100
-    draw.SimpleText("Вы находитесь в невидимости!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText("Вы находитесь в " .. text .. "!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
 end
 
 function PLUGIN:DrawPhysgunBeam(client, physgun, enabled, target, bone, hitPos)

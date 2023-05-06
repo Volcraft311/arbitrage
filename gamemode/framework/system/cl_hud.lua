@@ -286,6 +286,7 @@ do
 		if !SETTINGS.options.Get("show_crosshair") then return false end
 		if disableCrossHair then return false end
 		if client:IsSpectate() then return false end
+		if client:IsSpectating() then return false end
 		if client.GetSitting and client:GetSitting() then return false end
 		if select(3, client:GetAction()) then return false end
 

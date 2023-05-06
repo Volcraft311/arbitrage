@@ -87,3 +87,12 @@ SETTINGS.binds.Add("radialmenu", KEY_H, {
     title = "Меню действий",
     description = "Кнопка которая открываем интерфейс с разными взаимодействиями"
 })
+
+SETTINGS.binds.Add("spectating", KEY_B, {
+    name = "Режим наблюдения",
+    title = "Режим наблюдения",
+    description = "Кнопка, которая отвечает за заход/выход из режима наблюдения",
+    IsHidden = function(client)
+        return client:IsAdmin()
+    end
+})

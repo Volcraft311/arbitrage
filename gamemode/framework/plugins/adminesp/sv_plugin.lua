@@ -17,7 +17,7 @@ local function getReceivers()
     local admins = {}
 
     for k, v in ipairs(player.GetAll()) do
-        if v:IsAdmin() and v:IsNocliping() then
+        if v:IsAdmin() and (v:IsNocliping() or v:IsSpectating()) then
             admins[#admins + 1] = v
         end
     end

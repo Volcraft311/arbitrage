@@ -51,6 +51,8 @@ local PLAYER_OFFSET = Vector(0, 0, 72 - 20)
 local nCameraType = 1
 local bKeyDown = false
 function Emotes:CalcView(client, origin)
+	if client:IsSpectating() then return end
+
 	local bThirdPerson = select(3, client:GetAction())
 	if bThirdPerson then
 		local ang = client:EyeAngles()

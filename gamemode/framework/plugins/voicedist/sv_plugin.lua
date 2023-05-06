@@ -1,5 +1,6 @@
 local PLUGIN = PLUGIN
 
+local dist = 650
 function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
     if talker:IsSpectate() then return false end
     if !talker:oldAlive() then return false end
@@ -29,7 +30,30 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
 
     local GetVoiceScale = talker:GetNetVar("arb.voicescale", 0.5)
 
-    if listener:GetPos():Distance(talker:GetPos()) > 650 * GetVoiceScale then return false end
+    if listener:IsSpectating() then
+        -- там где находится камера
+        local position = listener._CameraPosition
+        if position:Distance(talker:GetPos()) <= dist * GetVoiceScale then
+            return true, false
+        end
+
+        -- объект за которым закреплен
+        local entity = listener._CameraEntity
+        if IsValid(entity) then
+            position = entity:IsPlayer() and entity:GetShootPos() or entity:GetPos()
+
+            if position:Distance(talker:GetPos()) <= dist * GetVoiceScale then
+                return true, false
+            end
+        end
+
+        -- для тех кто рядом со мной (обычная позиция без спектейта)
+        if listener:GetPos():Distance(talker:GetPos()) <= dist * GetVoiceScale then
+            return true, false
+        end
+    end
+
+    if listener:GetPos():Distance(talker:GetPos()) > dist * GetVoiceScale then return false end
 
     return true, true
 end

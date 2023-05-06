@@ -62,6 +62,7 @@ local function allow()
 	if !client:oldAlive() then return false end
 	if !client:IsPlaying() then return false end
 	if client:IsPlayingTaunt() then return false end
+	if client:IsSpectating() then return false end
 
 	local weapon = client:GetActiveWeapon()
 	if !IsValid(weapon) then return true end

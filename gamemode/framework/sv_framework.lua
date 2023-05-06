@@ -397,6 +397,27 @@ Arbitrage.commands.Add("settimespeed", {
     end
 })
 
+Arbitrage.commands.Add("spectate", {
+    arguments = {
+        [1] = {
+            name = "Игрок",
+            type = "string",
+            important = false
+        }
+    },
+    OnAction = function(client, text)
+        if !client:IsAdmin() then return end
+
+        local target = nil
+
+        if text then
+            target = player.GetByIdentifier(text)
+        end
+
+        AdminESP:Spec(client, target)
+    end
+})
+
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end

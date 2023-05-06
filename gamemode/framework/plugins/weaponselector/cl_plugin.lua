@@ -172,6 +172,8 @@ local function get_active_tool(ply, tool)
 end
 
 function PLUGIN:PlayerBindPress(client, bind, bPress)
+    if client:IsSpectate() then return end
+    if client:IsSpectating() then return end
     if !client:oldAlive() then return end
     if #client:GetWeapons() <= 0 then return end
 

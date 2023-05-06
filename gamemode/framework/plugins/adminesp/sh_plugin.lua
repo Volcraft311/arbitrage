@@ -13,6 +13,8 @@
 
 local PLUGIN = PLUGIN
 
+AdminESP = PLUGIN
+
 PLUGIN.name = "AdminESP"
 
 PLUGIN.playerinfo = {}
@@ -80,6 +82,10 @@ function metaPl:ESPInfo()
     return data
 end
 
+function metaPl:IsSpectating()
+    return self:GetLocalVar("spectating", false)
+end
+
 local metaEn = FindMetaTable("Entity")
 function metaEn:ESPInfo()
     local data = {}
@@ -93,4 +99,6 @@ end
 
 Arbitrage.base.Include("cl_config.lua")
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("cl_spectate.lua")
 Arbitrage.base.Include("sv_plugin.lua")
+Arbitrage.base.Include("sv_spectate.lua")

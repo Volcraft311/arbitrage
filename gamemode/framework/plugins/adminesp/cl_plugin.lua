@@ -90,7 +90,7 @@ local function isAllow(client)
 
 	if !client:oldAlive() then return false end
 	if !client:IsAdmin() then return false end
-	if !client:IsNocliping() then return false end
+	if !client:IsNocliping() and !client:IsSpectating() then return false end
 	if !SETTINGS.options.Get("show_admin_esp") then return false end
 	if client.GetSitting and client:GetSitting() then return false end
 	if Arbitrage.lawEnable then return false end
@@ -118,10 +118,12 @@ end)
 local function caching(entity)
 	local client = LocalPlayer()
 
+	if entity == client and !client:IsSpectating() then return end
+
 	local isPlayer = entity:IsPlayer()
 	if !isPlayer and !PLUGIN.entslist[entity:GetClass()] then return end
 
-	if !isPlayer or (isPlayer and entity != client and entity:oldAlive()) then
+	if !isPlayer or (isPlayer and entity:oldAlive()) then
 		cache[entity] = {}
 
 		local eyePos = EyePos()
@@ -176,5 +178,10 @@ function PLUGIN:HUDPaint()
 	local eyePos = EyePos()
 	for entity, info in pairs(cache) do
 		drawing(entity, info, eyePos)
+	end
+
+	local client = LocalPlayer()
+	if client:IsSpectating() then
+		self:SpectatePaint()
 	end
 end

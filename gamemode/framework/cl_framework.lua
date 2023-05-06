@@ -413,6 +413,12 @@ function Arbitrage:PreDrawViewModel(vm, client, weapon)
     end
 end
 
+function Arbitrage:PrePlayerDraw(client, flags)
+    if client:IsSpectate() then
+        return true
+    end
+end
+
 local function DingDongBingBong()
     timer.Simple(2, function() -- Исправление проблемы с текстом
         local data = Arbitrage.IsDay() and "Наступило дневное время!" or "Наступило ночное время!"

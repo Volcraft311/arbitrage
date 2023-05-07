@@ -228,7 +228,7 @@ function MonoPad:GetUI()
 end
 
 function MonoPad:SyncHistory(object)
-    netstream.Start("MonoPad:SyncHistory", object.id, object.history, object.lastHistory)
+    netstream.Heavy("MonoPad:SyncHistory", object.id, object.history, object.lastHistory)
 end
 
 function MonoPad:StartRegisterMeta(panel)

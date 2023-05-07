@@ -147,7 +147,7 @@ if SERVER then
 		end
 
 		local function sync(pl)
-		    netstream.Start(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify, self.caseStored, self.mutedChats)
+		    netstream.Heavy(pl, "MonoPad:SyncObject", self.id, self.team, self.evidences, messagesNotify, self.caseStored, self.mutedChats)
 		end
 
 		if IsValid(client) then
@@ -163,7 +163,7 @@ if SERVER then
 
 	function MONOPAD:SyncHistory(client)
 		local function sync(pl)
-			netstream.Start(pl, "MonoPad:SyncObjectHistory", self.id, self.history, self.lastHistory)
+			netstream.Heavy(pl, "MonoPad:SyncObjectHistory", self.id, self.history, self.lastHistory)
 		end
 
 		if IsValid(client) then

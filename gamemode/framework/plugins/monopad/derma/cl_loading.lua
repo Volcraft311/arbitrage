@@ -244,7 +244,10 @@ function PANEL:EndAnimation()
         self:Remove()
 
         local main = MonoPad:GetUI()
-        main.isLoading = false
+
+        if IsValid(main) then
+            main.isLoading = false
+        end
     end)
 end
 

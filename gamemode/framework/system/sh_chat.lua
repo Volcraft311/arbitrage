@@ -55,11 +55,36 @@ local function chatColor(name)
     return Arbitrage.chat.List[name].Color or color_white
 end
 
+local function format(data, bIsCapitalize, bIsDot)
+    if bIsCapitalize != nil then
+        local firstLetter = string.utf8sub(data, 1, 1)
+        local func = bIsCapitalize and string.utf8upper or string.utf8lower
+
+        firstLetter = func(firstLetter)
+        data = firstLetter .. string.utf8sub(data, 2, string.utf8len(data))
+    end
+
+    if bIsDot != nil then
+        local len = string.utf8len(data)
+        local lastLetter = string.utf8sub(data, len, len)
+
+        if lastLetter != "?" and lastLetter != "!" and lastLetter != ";" then
+            if bIsDot and lastLetter != "." then
+                data = data .. "."
+            elseif !bIsDot and lastLetter == "." then
+                data = string.utf8sub(data, 1, string.utf8len(data) - 1)
+            end
+        end
+    end
+
+    return data
+end
+
 Arbitrage.chat.List = {
     ["me"] = {
         Color = Color(44, 176, 247),
         OnCreate = function(client, sender, data)
-            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. data[1]
+            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -73,7 +98,7 @@ Arbitrage.chat.List = {
     ["try"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -86,7 +111,7 @@ Arbitrage.chat.List = {
     },
     ["ic"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " говорит: ", "\"" .. data[1] .. "\""
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " говорит: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -126,7 +151,7 @@ Arbitrage.chat.List = {
     ["broadcast"] = {
         Color = Color(216, 62, 62),
         OnCreate = function(client, sender, data)
-            return chatColor("broadcast"), "[Уведомление] ", Arbitrage.chat.Colors.other, data[1]
+            return chatColor("broadcast"), "[Уведомление] ", Arbitrage.chat.Colors.other, format(data[1], true, nil)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -138,7 +163,7 @@ Arbitrage.chat.List = {
     },
     ["whispers"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " шепчет: ", "'" .. data[1] .. "'"
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " шепчет: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -151,7 +176,7 @@ Arbitrage.chat.List = {
     },
     ["yell"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " кричит: ", "'" .. data[1] .. "'"
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " кричит: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -165,7 +190,7 @@ Arbitrage.chat.List = {
     ["it"] = {
         Color = color_white,
         OnCreate = function(client, sender, data)
-            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", data[1], Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
+            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end

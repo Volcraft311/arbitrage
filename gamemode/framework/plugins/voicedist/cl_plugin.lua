@@ -109,9 +109,11 @@ timer.Create("VoiceDist:Update", 1, 0, function()
     allow = isAllow(client)
     if !allow then return end
 
-    for k, v in pairs(player.GetAll()) do
+    for k, v in ipairs(player.GetAll()) do
         if v == client then continue end
+        if v:IsSpectate() then continue end
         if v:IsNocliping() then continue end
+        if v:IsDormant() then continue end
 
         local distance = v:GetPos():DistToSqr(EyePos())
         if distance > d then continue end
@@ -126,11 +128,11 @@ local sizeMat = H(40)
 function PLUGIN:DrawVoiceIcon()
     local client = LocalPlayer()
     local size = ScrW() * 0.05
-    local value = LocalPlayer():GetNetVar("arb.voicescale", 0.5)
+    local value = client:GetNetVar("arb.voicescale", 0.5)
     local bShow = self.realtime >= RealTime()
 
-    self.pos = Lerp(FrameTime() * 10, self.pos, self.players[LocalPlayer()] and 100 or 0)
-    self.alpha = Lerp(FrameTime() * sizeMat, self.alpha, self.players[LocalPlayer()] and 255 or 0)
+    self.pos = Lerp(FrameTime() * 10, self.pos, self.players[client] and 100 or 0)
+    self.alpha = Lerp(FrameTime() * sizeMat, self.alpha, self.players[client] and 255 or 0)
 
     if self.alpha > 0.2 then
         local isGlobal = client:GetLocalVar("arbGlobalVoice")
@@ -187,6 +189,9 @@ end
 local oldColor = Color(238, 220, 194)
 local iconChatMat = Material("danganronpa/hud/chat_icon.png")
 function PLUGIN:DrawPlayersChat()
+    local eyepos = EyePos()
+    local players = player.GetAll()
+
     for k, v in ipairs(showPlayerList) do
         if !IsValid(v) then continue end
 
@@ -195,13 +200,16 @@ function PLUGIN:DrawPlayersChat()
         local fraction = v.arbTextAlphaChat
         if fraction <= 0.1 then continue end
 
-        local distance = v:GetPos():DistToSqr(EyePos())
+        local distance = v:GetPos():DistToSqr(eyepos)
         local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
 
-        local point = self:GetTypingIndicatorPosition(v) - Vector(0, 0, 5 - fraction * 2)
-        local data2D = point:ToScreen()
+        local pos = self:GetTypingIndicatorPosition(v) - Vector(0, 0, 5 - fraction * 2)
+        local data2D = pos:ToScreen()
 
         if !data2D.visible then continue end
+
+        local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, players)
+        if bNotVisible then return end
 
         oldColor = LerpColor(FrameTime() * 5, oldColor, getColor(v))
 

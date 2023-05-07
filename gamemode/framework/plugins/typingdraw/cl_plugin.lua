@@ -51,6 +51,8 @@ function PLUGIN:GetTypingColor(entity)
 	return entity.tDrawColor or Color(255, 255, 255)
 end
 
+local d = 150000
+
 PLUGIN.infoList = {}
 timer.Create("TypingDraw:Update", 1, 0, function()
 	PLUGIN.infoList = {}
@@ -62,12 +64,12 @@ timer.Create("TypingDraw:Update", 1, 0, function()
 
 	for k, v in ipairs(player.GetAll()) do
 		if v == client then continue end
+		if v:IsSpectate() then continue end
 		if v:IsNocliping() then continue end
+		if v:IsDormant() then continue end
 
-		local pos = v:GetPos()
-
-		local distance = EyePos():DistToSqr(pos)
-		if distance > 150000 then continue end
+		local distance = v:GetPos():DistToSqr(EyePos())
+		if distance > d then continue end
 
 		PLUGIN.infoList[#PLUGIN.infoList + 1] = {
 			client = v,
@@ -102,6 +104,7 @@ end
 function PLUGIN:DrawText(client, text, color, alpha)
 	local size = ScrW() * 0.2
 	local eyepos = EyePos()
+	local players = player.GetAll()
 	local pos = self:GetTypingIndicatorPosition(client)
 	local distance = eyepos:Distance(pos)
 
@@ -112,7 +115,7 @@ function PLUGIN:DrawText(client, text, color, alpha)
 	local data2D = (pos + Vector(0, 0, fraction * 5)):ToScreen()
 	if !data2D.visible then return end
 
-	local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, player.GetAll())
+	local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, players)
 	if bNotVisible then return end
 
 	local a = ColorAlpha(color, alpha)

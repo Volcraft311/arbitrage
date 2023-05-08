@@ -114,7 +114,7 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
 
                 local tr = util.TraceLine({
                     start = caller:EyePos(),
-                    endpos = caller:EyePos() + caller:EyeAngles():Forward() * dist,
+                    endpos = caller:EyePos() + caller:EyeAngles():Forward() * 100,
                     filter = caller
                 })
 

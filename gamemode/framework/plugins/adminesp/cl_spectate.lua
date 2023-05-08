@@ -98,6 +98,7 @@ end)
 
 local cameraSpeed = 1250
 function PLUGIN:CalcView(client, pos, angles, fov)
+	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
 	client:SetEyeAngles(eyeAng)
@@ -149,6 +150,8 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 end
 
 function PLUGIN:SpectatePaint()
+	if Arbitrage.lawEnable then return end
+
 	local entity = returnEntity()
 
 	if IsValid(entity) then
@@ -159,6 +162,7 @@ function PLUGIN:SpectatePaint()
 end
 
 function PLUGIN:PlayerBindPress(client, bind, pressed)
+	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
 	if bind == "+reload" and pressed then
@@ -242,6 +246,7 @@ function PLUGIN:PlayerBindPress(client, bind, pressed)
 end
 
 function PLUGIN:CreateMove(cmd)
+	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
 	cmd:SetForwardMove(0)
@@ -251,6 +256,7 @@ function PLUGIN:CreateMove(cmd)
 end
 
 function PLUGIN:InputMouseApply(cmd, x, y, ang)
+	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
 	local pitch = y * GetConVar("m_pitch"):GetFloat()
@@ -261,6 +267,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 end
 
 function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
+	if Arbitrage.lawEnable then return end
 	if bIsVisibleGUI then return end
 
 	if id == "spectating" then

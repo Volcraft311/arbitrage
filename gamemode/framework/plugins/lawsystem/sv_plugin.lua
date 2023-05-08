@@ -138,6 +138,10 @@ function Arbitrage:StartLaw()
         v:ExitAction()
         v:ExitVehicle()
         v:SetNWBool("SitGroundSitting", false)
+
+        if v:IsSpectating() then
+            v:ConCommand("spectate")
+        end
     end
 
     timer.Simple(2, function()

@@ -16,7 +16,7 @@ local PLUGIN = PLUGIN
 function PLUGIN:SendNotify(notify, ...)
     if !self.notifyList[notify] then return end
 
-    for k, v in pairs(player.GetAll()) do
+    for k, v in ipairs(player.GetAll()) do
         if self:HasAccess(v) then
             netstream.Start(v, "ixAdminNotify", notify, ...)
         end

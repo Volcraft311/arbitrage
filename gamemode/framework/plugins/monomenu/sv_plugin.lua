@@ -25,7 +25,7 @@ function PLUGIN:OpenMonoMenu(client, bRefresh)
         data.character[k] = v
     end
 
-    for k, v in pairs(player.GetAll()) do
+    for k, v in ipairs(player.GetAll()) do
         local steamid = v:SteamID()
 
         if !Arbitrage.players[steamid] then

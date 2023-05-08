@@ -45,7 +45,7 @@ function PANEL:Init()
     tablePl:SetSpaceX(6)
     tablePl:SetSpaceY(2)
 
-    for k, v in pairs(player.GetAll()) do
+    for k, v in ipairs(player.GetAll()) do
         if v:LawPlace() < 0 then continue end
 
         local panel = tablePl:Add("Panel")

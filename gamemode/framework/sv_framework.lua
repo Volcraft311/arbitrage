@@ -656,7 +656,7 @@ end
 local function syncvars()
     Arbitrage.startgame = true
     SetNetVar("arb.StartGame", Arbitrage.startgame)
-    for k, v in pairs(player.GetAll()) do
+    for k, v in ipairs(player.GetAll()) do
         v:SyncVars()
     end
 end
@@ -854,7 +854,7 @@ function Arbitrage:StopGame()
     timer.Simple(2, function()
         netstream.Start(nil, "arb.ClearLaw")
 
-        for k, v in pairs(player.GetAll()) do
+        for k, v in ipairs(player.GetAll()) do
             local vector, _ = Arbitrage.lobbyList and table.Random(Arbitrage.lobbyList) or Vector(0, 0, 0)
             v:SetPos(vector)
         end

@@ -142,7 +142,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(player.GetAll()) do
+            for k, v in ipairs(player.GetAll()) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end,
@@ -156,7 +156,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(player.GetAll()) do
+            for k, v in ipairs(player.GetAll()) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end

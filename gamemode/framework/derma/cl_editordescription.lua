@@ -1,6 +1,8 @@
 local PANEL = {}
 
 function PANEL:Init()
+    DermaStringRequest = self
+
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
     self:MakePopup()

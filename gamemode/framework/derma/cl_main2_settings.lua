@@ -118,8 +118,6 @@ end
 
 local stagesData = {
     ["game_process"] = function(panel)
-        local parent = panel:GetParent()
-
         panel:SettingsCreatePanels()
 
         panel.titleText = "НАСТРОЙКИ"
@@ -127,9 +125,9 @@ local stagesData = {
 
         for k, v in pairs(SETTINGS.GetStored().options) do
             local createPanel = v.type
-            local isHidden = v.IsHidden
-            local bShow = true
 
+            local bShow = true
+            local isHidden = v.IsHidden
             if isfunction(isHidden) then
                 bShow = isHidden(LocalPlayer())
             end
@@ -142,20 +140,24 @@ local stagesData = {
         end
     end,
     ["control"] = function(panel, data)
-        local parent = panel:GetParent()
-
         panel.titleText = "НАСТРОЙКИ"
         panel.titleAlpha = 0
 
         panel:SettingsCreatePanels()
 
         for k, v in pairs(SETTINGS.GetStored().binds) do
+            local bShow = true
+            local isHidden = v.IsHidden
+            if isfunction(isHidden) then
+                bShow = isHidden(LocalPlayer())
+            end
+
+            if !bShow then continue end
+
             SETTINGS.type.bind(v, panel.scrollPanel, panel.informationPanel)
         end
     end,
     ["content"] = function(panel, data)
-        local parent = panel:GetParent()
-
         panel.titleText = "НАСТРОЙКИ"
         panel.titleAlpha = 0
 

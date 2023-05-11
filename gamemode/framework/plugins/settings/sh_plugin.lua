@@ -100,6 +100,7 @@ function PLUGIN.binds.Add(id, default, data)
         title = data.title or "Не указано",
         description = data.description or "Не указано",
         image = data.image or nil,
+        IsHidden = data.IsHidden or nil,
         OnChanged = data.OnChanged or nil
     }
 end

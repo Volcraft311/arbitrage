@@ -257,7 +257,7 @@ MonoMenu:AddGameFunction("Сбросить всем всю статистику"
     onRun = function(client)
         if CLIENT then return end
 
-        for k, v in pairs(player.GetAll()) do
+        for k, v in ipairs(player.GetAll()) do
             v:SetHealth(ARBITRAGE_HEALTH)
             v:SetArmor(ARBITRAGE_ARMOR)
 
@@ -272,7 +272,7 @@ MonoMenu:AddGameFunction("Остановить всем все звуки", "ico
     onRun = function(client)
         if CLIENT then return end
 
-        for k, v in pairs(player.GetAll()) do
+        for k, v in ipairs(player.GetAll()) do
             v:ConCommand("stopsound")
         end
     end
@@ -282,7 +282,7 @@ MonoMenu:AddGameFunction("Удалить все улики на карте", "ic
     onRun = function(client)
         if CLIENT then return end
 
-        for k, v in pairs(ents.GetAll()) do
+        for k, v in ipairs(ents.GetAll()) do
             if v:IsNPC() then v:Remove() end
             if v:GetClass() == "arb_weapon" then v:Remove() end
             if v:GetClass() == "arb_evidence" then v:Remove() end
@@ -302,7 +302,7 @@ MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.p
     onRun = function(client)
         if CLIENT then return end
 
-        for k, v in pairs(player.GetAll()) do
+        for k, v in ipairs(player.GetAll()) do
             v:SendLua([[
                 RunConsoleCommand("arb_chatbox_reload")
 

@@ -81,5 +81,5 @@ function PLUGIN:RenderScreenspaceEffects()
     if !isSleep then return end
     if client:GetLocalVar("sleeping") then return end
 
-    draw.SimpleText("Чтобы проснуться нажмите на 'Пробел'", "arb.Font_FuturaPTBook_12", ScrW() / 2, ScrH() * 0.45, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
+    Hints:AddKeyDraw("Проснуться", "+jump")
 end

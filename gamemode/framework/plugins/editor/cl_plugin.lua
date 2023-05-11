@@ -143,6 +143,9 @@ function Editor:HUDPaint()
 
     self:DrawInfo("Конечное место камеры", Arbitrage.camPosEnd, nil, Color(0, 255, 0), "camPosEnd", "models/editor/air_node_hint.mdl")
     self:DrawInfo("Место начальной камеры", Arbitrage.camPos and Arbitrage.camPos[1], Arbitrage.camPos and Arbitrage.camPos[2], Color(171, 57, 193), "camPos", "models/editor/cone_helper.mdl", true)
+
+    Hints:AddKeyDraw("Удалить точки", {MOUSE_RIGHT})
+    Hints:AddKeyDraw("Изменить точки", {MOUSE_LEFT})
 end
 
 netstream.Hook("Editor:SetEditor", function(data)

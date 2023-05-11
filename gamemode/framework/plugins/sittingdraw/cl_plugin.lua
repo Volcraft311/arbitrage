@@ -143,6 +143,9 @@ function PLUGIN:StartSit(trace)
 			self.StartPos = trace.StartPos
 			self.Normal = trace.Normal
 		end
+
+		Hints:AddKeyDraw("Предыдущая поза", {MOUSE_RIGHT, SETTINGS.binds.Get("sitting")})
+		Hints:AddKeyDraw("Следующая поза", {MOUSE_LEFT, SETTINGS.binds.Get("sitting")})
 	end)
 end
 

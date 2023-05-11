@@ -12,6 +12,8 @@
 ]]--
 
 local PLUGIN = PLUGIN
+BedSystem = PLUGIN
+
 PLUGIN.name = "BedSystem"
 
 PLUGIN.animation = "d1_town05_Wounded_Idle_1"

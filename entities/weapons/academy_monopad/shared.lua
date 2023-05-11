@@ -299,6 +299,21 @@ if CLIENT then
             MonoPad.clip()
         cam.End3D2D()
     end
+
+    function SWEP:DrawHUD()
+        local client = LocalPlayer()
+        if client.GetSitting and client:GetSitting() then return end
+
+        Hints:AddKeyDraw("Убрать планшет", SETTINGS.binds.Get("open_material_ui"))
+
+        local ui = MonoPad:GetUI()
+        if IsValid(ui) then
+            Hints:AddKeyDraw("Управлять " .. (ui.editing and "камерой" or "курсором"), "+jump")
+        end
+
+        Hints:AddKeyDraw((self.Edit and "Отдалить" or "Приблизить") .. " планшет", MOUSE_RIGHT)
+        Hints:AddKeyDraw("Выбрать", MOUSE_LEFT)
+    end
 else
     function SWEP:CreateTablet()
         netstream.Start(self:GetOwner(), "MonoPad:CreateTablet", self)

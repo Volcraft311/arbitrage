@@ -455,6 +455,11 @@ function PLUGIN:RenderScreenspaceEffects()
     if !Arbitrage.lawEnable then return end
 
     DrawColorModify(tab)
+
+    Hints:AddKeyDraw("Говорить / Перевести камеру", "+voicerecord")
+
+    local ui = MonoPad:GetUI()
+    Hints:AddKeyDraw((IsValid(ui) and "Убрать" or "Достать") .. " планшет", SETTINGS.binds.Get("open_material_ui"))
 end
 
 function PLUGIN:CameraTwist()

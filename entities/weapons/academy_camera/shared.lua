@@ -64,7 +64,7 @@ function SWEP:Initialize()
 end
 
 function SWEP:Reload()
-	if !self.Owner:KeyDown(IN_ATTACK2) then
+	if !self:GetOwner():KeyDown(IN_ATTACK2) then
 		self:SetZoom(75)
 	end
 
@@ -75,14 +75,13 @@ function SWEP:PrimaryAttack()
 	if SERVER then return end
 	if !IsFirstTimePredicted() then return end
 
-	local client = self.Owner
-
+	local client = self:GetOwner()
 	local cmd = client:GetCurrentCommand()
 	if cmd:KeyDown(IN_USE) then
-		Arbitrage.notify.NotifyChat("Вы " .. (self.isFlash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
-		self.isFlash = !self.isFlash
+		Arbitrage.notify.NotifyChat("Вы " .. (self.Flash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
+		self.Flash = !self.Flash
 	else
-		netstream.Start("Photos:Request", !self.isFlash)
+		netstream.Start("Photos:Request", !self.Flash)
 	end
 end
 
@@ -90,7 +89,7 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Tick()
-	local client = self.Owner
+	local client = self:GetOwner()
 	if CLIENT and client != LocalPlayer() then return end
 
 	local cmd = client:GetCurrentCommand()
@@ -109,7 +108,9 @@ function SWEP:Deploy()
 end
 
 function SWEP:Equip()
-	if self:GetZoom() == 70 and self.Owner:IsPlayer() and !self.Owner:IsBot() then
+	local client = self:GetOwner()
+
+	if self:GetZoom() == 70 and client:IsPlayer() and !client:IsBot() then
 		self:SetZoom(75)
 	end
 end
@@ -121,7 +122,9 @@ end
 if SERVER then return end
 
 function SWEP:FreezeMovement()
-	if self.Owner:KeyDown(IN_ATTACK2) or self.Owner:KeyReleased(IN_ATTACK2) then
+	local client = self:GetOwner()
+
+	if client:KeyDown(IN_ATTACK2) or client:KeyReleased(IN_ATTACK2) then
 		return true
 	end
 
@@ -137,7 +140,18 @@ function SWEP:CalcView(client, origin, angles, fov)
 end
 
 function SWEP:AdjustMouseSensitivity()
-	if self.Owner:KeyDown(IN_ATTACK2) then return 1 end
+	local client = self:GetOwner()
+
+	if client:KeyDown(IN_ATTACK2) then return 1 end
 
 	return self:GetZoom() / 80
+end
+
+function SWEP:DrawHUD()
+	local client = LocalPlayer()
+	if client.GetSitting and client:GetSitting() then return end
+
+	Hints:AddKeyDraw((self.Flash and "Включить" or "Выключить") .. " вспышку", {MOUSE_LEFT, "+use"})
+	Hints:AddKeyDraw("Изменить ракурс", MOUSE_RIGHT)
+	Hints:AddKeyDraw("Сфотографировать", MOUSE_LEFT)
 end

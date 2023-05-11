@@ -285,7 +285,22 @@ end
 
 if CLIENT then
     function SWEP:DrawHUD()
-        local client = self:GetOwner()
+        local client = LocalPlayer()
+        if client.GetSitting and client:GetSitting() then return end
+
+        local isAttack = self:GetAttack()
+        Hints:AddKeyDraw((isAttack and "Опустить" or "Поднять") .. " руки", "+reload")
+
+        local t_entity = client:GetEyeTrace().Entity
+        if (IsValid(t_entity) and t_entity:GetClass() == "prop_physics" and t_entity:GetPos():DistToSqr(EyePos()) < 15000) or client:KeyDown(IN_ATTACK2) then
+            Hints:AddKeyDraw("Тянуть", MOUSE_RIGHT)
+        end
+
+        if !isAttack then
+            if IsValid(t_entity) and t_entity:IsDoor() and t_entity:GetPos():DistToSqr(EyePos()) < 6000 then
+                Hints:AddKeyDraw("Постучать в дверь", MOUSE_LEFT)
+            end
+        end
 
         if IsValid(client:GetVehicle()) then return end
 

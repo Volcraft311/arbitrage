@@ -159,6 +159,20 @@ function PLUGIN:SpectatePaint()
 	end
 
 	cameraTraceEntity = entity
+
+	Hints:AddKeyDraw("Выйти из наблюдения", SETTINGS.binds.Get("spectating"))
+	Hints:AddKeyDraw("Телепортироваться на место камеры", {"+reload"})
+
+	Hints:AddKeyDraw(IsValid(cameraEntity) and "Открепиться от объекта" or "Прикрепиться к объекту", {MOUSE_LEFT})
+	Hints:AddKeyDraw(IsValid(cameraEntity) and "Изменить положение камеры" or "Переместиться вперед", {MOUSE_RIGHT})
+
+	if IsValid(cameraEntity) and cameraEntity:IsPlayer() then
+		Hints:AddKeyDraw("Получить изображение экрана", {"+use"})
+	end
+
+	if IsValid(entity) and ((entity:IsPlayer() and entity != LocalPlayer()) or entity:IsDoor()) then
+		Hints:AddKeyDraw("Меню свойств объекта", {KEY_F2})
+	end
 end
 
 function PLUGIN:PlayerBindPress(client, bind, pressed)

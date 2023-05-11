@@ -160,3 +160,15 @@ end
 function SWEP:Initialize()
     self:SetHoldType("normal")
 end
+
+if CLIENT then
+    function SWEP:DrawHUD()
+        local client = LocalPlayer()
+        local t_entity = client:GetEyeTrace().Entity
+
+        if IsValid(t_entity) and t_entity:IsDoor() and t_entity:GetPos():DistToSqr(EyePos()) < 6000 then
+            Hints:AddKeyDraw("Закрыть дверь", MOUSE_LEFT)
+            Hints:AddKeyDraw("Открыть дверь", MOUSE_RIGHT)
+        end
+    end
+end

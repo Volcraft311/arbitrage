@@ -69,9 +69,10 @@ local blockReload = {
     tfa_nmrih_chainsaw = true
 }
 timer.Create("Hints:Update", 0.1, 0, function()
-    if !SETTINGS.options.Get("interface_open_button") then return end
-
     local client = LocalPlayer()
+    if !IsValid(client) then return end
+
+    if !SETTINGS.options.Get("interface_open_button") then return end
     if client.GetSitting and client:GetSitting() then return end
 
     local trace = client:GetEyeTrace()

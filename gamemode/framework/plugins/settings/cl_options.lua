@@ -148,3 +148,9 @@ SETTINGS.options.Add("chatbox_size", SETTINGS.type.number, 8, {
     min = 3,
     max = 20
 })
+
+SETTINGS.options.Add("static_crosshair", SETTINGS.type.bool, false, {
+    name = "Статический прицел",
+    title = "Статический прицел",
+    description = "Выключить динамический прицел и перейти в статическую версию."
+})

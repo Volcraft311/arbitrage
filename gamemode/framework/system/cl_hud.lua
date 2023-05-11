@@ -312,6 +312,10 @@ do
 			disableCrossHair = (class and !weaponData[class])
 		end
 
+		if SETTINGS.options.Get("static_crosshair") then
+			isNoAnim = false
+		end
+
 		allow = isAllow(client)
 	end)
 

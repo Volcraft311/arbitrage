@@ -156,6 +156,8 @@ function PLUGIN:SpectatePaint()
 
 	if IsValid(entity) then
 		outline.Add({entity}, Color(0, 255, 0), 0)
+
+		Hints:AddKeyDraw("Прикрепиться к объекту", {MOUSE_LEFT})
 	end
 
 	cameraTraceEntity = entity
@@ -163,7 +165,10 @@ function PLUGIN:SpectatePaint()
 	Hints:AddKeyDraw("Выйти из наблюдения", SETTINGS.binds.Get("spectating"))
 	Hints:AddKeyDraw("Телепортироваться на место камеры", {"+reload"})
 
-	Hints:AddKeyDraw(IsValid(cameraEntity) and "Открепиться от объекта" or "Прикрепиться к объекту", {MOUSE_LEFT})
+	if IsValid(cameraEntity) then
+		Hints:AddKeyDraw("Открепиться от объекта", {MOUSE_LEFT})
+	end
+
 	Hints:AddKeyDraw(IsValid(cameraEntity) and "Изменить положение камеры" or "Переместиться вперед", {MOUSE_RIGHT})
 
 	if IsValid(cameraEntity) and cameraEntity:IsPlayer() then

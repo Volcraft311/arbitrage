@@ -177,6 +177,7 @@ function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
 
 	if client:IsNocliping() then return end
 	if client.GetSitting and client:GetSitting() then return end
+	if Arbitrage.lawEnable then return end
 
 	self.Ang = nil
 	self.StartPos = nil

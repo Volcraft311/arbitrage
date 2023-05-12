@@ -72,6 +72,7 @@ timer.Create("Hints:Update", 0.1, 0, function()
     local client = LocalPlayer()
     if !IsValid(client) then return end
 
+    if Arbitrage.lawEnable then return end
     if !SETTINGS.options.Get("interface_open_button") then return end
     if client.GetSitting and client:GetSitting() then return end
 

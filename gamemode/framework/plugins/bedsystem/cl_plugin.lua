@@ -56,8 +56,9 @@ end
 
 function PLUGIN:RenderScreenspaceEffects()
     local client = LocalPlayer()
-
     if !client:oldAlive() then return end
+
+    if Arbitrage.lawEnable then return end
 
     local isSleep = client:GetNetVar("inbed") or client:GetLocalVar("sleeping")
 

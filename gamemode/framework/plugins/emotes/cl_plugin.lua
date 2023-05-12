@@ -51,6 +51,7 @@ local PLAYER_OFFSET = Vector(0, 0, 72 - 20)
 local nCameraType = 1
 local bKeyDown = false
 function Emotes:CalcView(client, origin)
+	if Arbitrage.lawEnable then return end
 	if client:IsSpectating() then return end
 
 	local bThirdPerson = select(3, client:GetAction())

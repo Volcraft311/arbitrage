@@ -163,6 +163,8 @@ end
 
 if CLIENT then
     function SWEP:DrawHUD()
+        if Arbitrage.lawEnable then return end
+
         local client = LocalPlayer()
         local t_entity = client:GetEyeTrace().Entity
 

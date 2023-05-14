@@ -141,6 +141,20 @@ function Character.CreationRemoveKeys(key, uniqueID)
     Character.creation[key][uniqueID] = nil
 end
 
+-- я ненавижу JSON Гарика, который string-и автоматически в number-ы переводит
+function Character.FixArray(array)
+    local data = {}
+    for k, v in pairs(array) do
+        if isnumber(k) then
+            print(k)
+        end
+
+        data[tostring(k)] = v
+    end
+
+    return data
+end
+
 Arbitrage.base.Include("sh_emoji.lua")
 Arbitrage.base.Include("sh_category.lua")
 Arbitrage.base.Include("sh_team.lua")

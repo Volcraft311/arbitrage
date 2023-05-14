@@ -80,6 +80,8 @@ netstream.Hook("Character:CreationRemoveKeys", function(key, uniqueID)
 end)
 
 netstream.Hook("Character:CreationSync", function(key, stored)
+	stored = Character.FixArray(stored)
+
 	for uniqueID, info in SortedPairs(stored) do
 		Character.CreationRegisterKeys(key, uniqueID, info)
 	end

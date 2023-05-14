@@ -145,9 +145,9 @@ end
 function Character.FixArray(array)
     local data = {}
     for k, v in pairs(array) do
-        if isnumber(k) then
-            print(k)
-        end
+        -- if isnumber(k) then
+        --     print(k)
+        -- end
 
         data[tostring(k)] = v
     end

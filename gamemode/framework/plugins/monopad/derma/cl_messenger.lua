@@ -418,6 +418,8 @@ function PANEL:InitInput()
 end
 
 function PANEL:InitMessages(id)
+	if !id then return end
+
 	local monopad = MonoPad:GetObject()
 	local localFaction = Character.team:GetByID(monopad.team)
 	if !localFaction then return end
@@ -751,14 +753,6 @@ function PANEL:AddPlayerButton(id)
 
 		local _, y = self.scrollPanel:GetChildPosition(this)
 		if y < -this:GetTall() or y > self.scrollPanel:GetTall() then return end
-
-		-- self.selectID = id
-
-		-- self.title:SetAlpha(0)
-		-- self.title:AlphaTo(255, 0.2)
-		-- self.title.icon = pixelMat
-		-- self.title.icon2 = localPixelMat
-		-- self.title.text = id > 0 and "Диалог с " .. name or "Общий чат"
 
 		self:InitMessages(id)
 		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)

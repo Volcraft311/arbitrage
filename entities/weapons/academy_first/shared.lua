@@ -287,6 +287,7 @@ if CLIENT then
     function SWEP:DrawHUD()
         local client = LocalPlayer()
         if client.GetSitting and client:GetSitting() then return end
+        if client:IsSpectating() then return end
 
         local isAttack = self:GetAttack()
         Hints:AddKeyDraw((isAttack and "Опустить" or "Поднять") .. " руки", "+reload")

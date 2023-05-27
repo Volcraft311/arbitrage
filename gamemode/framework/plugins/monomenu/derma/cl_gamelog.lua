@@ -313,7 +313,7 @@ function PANEL:Init()
         local a, b, c, d, e, f = self.inflictorID, self.chapterEntry:GetValue(), tonumber(self.investigationID), self.attackerID, self.timeEntry and tonumber(self.timeEntry:GetValue()), self.id
         if !c then return end
 
-        if b == "" or b == " " or b == "   " then
+        if string.Trim(b) == "" then
             b = "Отсутствует"
         end
 

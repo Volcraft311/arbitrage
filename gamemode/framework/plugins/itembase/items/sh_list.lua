@@ -914,7 +914,7 @@ local data = {
 }
 
 local function registerItem(base, id, info)
-	if base == "" or base == " " or base == "default" then
+	if string.Trim(base) == "" or base == "default" then
 		base = nil
 	end
 

@@ -355,7 +355,7 @@ function PANEL:Init()
         local id_playlist = self.data[1]
         local id_type = self.activemenu
 
-        if id_playlist == "" or id_playlist == " " then return end
+        if string.Trim(id_playlist) == "" then return end
         if !PLUGIN:GetEvents()[id_type] then return end
 
         Derma_StringRequest("Добавить новый трек", "Укажите путь к файлу или URL", "", function(path_file)

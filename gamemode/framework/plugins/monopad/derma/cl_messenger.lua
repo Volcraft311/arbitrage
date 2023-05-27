@@ -384,7 +384,7 @@ function PANEL:InitInput()
 		if !self.selectID then return end
 
 		DermaStringRequest = Derma_StringRequest("Отправить сообщение", "Введите текст который вы хотите отправить", "", function(text)
-			if text == "" or text == " " or text == "  " then return end
+			if string.Trim(text) == "" then return end
 
 			self.isSent = true
 			netstream.Start("MonoPad:SendMessage", self.selectID, text)

@@ -397,7 +397,7 @@ function PANEL:Init()
 		for k, v in pairs(self.panels or {}) do
 			if IsValid(v) then
 				local text = v:GetValue(v)
-				if k != "uniqueID" and (text == "" or text == " " or text == "  ") then
+				if k != "uniqueID" and (string.Trim(text) == "") then
 					local holder = v:GetPlaceholderText()
 
 					text = utf8.sub(holder, 0, utf8.len(holder) - 1)
@@ -412,7 +412,7 @@ function PANEL:Init()
 		end
 
 		for k, v in pairs(data) do
-			if v == "" or v == " " or v == "  " then
+			if string.Trim(v) == "" then
 				data[k] = nil
 			end
 		end
@@ -651,7 +651,7 @@ function PANEL:Init()
 
 	submitButton.DoClick = function()
 		local uniqueID = self.uniqueIDPanel:GetValue()
-		if uniqueID == "" or uniqueID == " " or uniqueID == "  " then return end
+		if string.Trim(uniqueID) == "" then return end
 
 		local data = {}
 		for k, v in pairs(self.categorys) do
@@ -889,7 +889,7 @@ function PANEL:Init()
 		for k, v in pairs(self.panels or {}) do
 			if IsValid(v) then
 				local text = v:GetValue(v)
-				if k != "uniqueID" and (text == "" or text == " " or text == "  ") then
+				if k != "uniqueID" and (string.Trim(text) == "") then
 					local holder = v:GetPlaceholderText()
 
 					text = utf8.sub(holder, 0, utf8.len(holder) - 1)
@@ -904,7 +904,7 @@ function PANEL:Init()
 		end
 
 		for k, v in pairs(data) do
-			if v == "" or v == " " or v == "  " then
+			if string.Trim(v) == "" then
 				data[k] = nil
 			end
 		end

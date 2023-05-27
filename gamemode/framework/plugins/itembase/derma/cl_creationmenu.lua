@@ -360,7 +360,7 @@ function PANEL:Init()
 		end
 
 		for k, v in pairs(data) do
-			if v == "" or v == " " or v == "  " then
+			if string.Trim(v) == "" then
 				data[k] = nil
 			end
 		end

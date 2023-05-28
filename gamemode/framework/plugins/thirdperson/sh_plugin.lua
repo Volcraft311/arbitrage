@@ -37,26 +37,54 @@ local traceMax = Vector(10, 10, 10)
 local camAng = Angle(0, 0, 0)
 local crouchFactor = 0
 
+local fovShift = 0
+local endPosShift = 0
+local cameraShift = 75
+local lerpCameraShift = 75
+
 function PLUGIN:CalcView(client, pos, angles, fov)
 	if !Arbitrage.IsThirdPerson() then return end
 
-	if LocalPlayer():GetViewEntity() == LocalPlayer() then
+	if client:GetViewEntity() == client then
 		local ft = FrameTime()
-		local bNoclip = LocalPlayer():IsNocliping()
+		local bNoclip = client:IsNocliping()
 		local curAng = camAng or angle_zero
 
 		crouchFactor = Lerp(ft * 5, crouchFactor, client:KeyDown(IN_DUCK) and 1 or 0)
 
+		local startPos = client:GetPos() + client:GetViewOffset() + curAng:Up() * 7 + curAng:Right() * 0 - client:GetViewOffsetDucked() * 0.5 * crouchFactor
+		local endPos = startPos - curAng:Forward() * lerpCameraShift
+		local endPosMax = startPos - curAng:Forward() * cameraShift
+
 		local traceData = {}
-		traceData.start = client:GetPos() + client:GetViewOffset() + curAng:Up() * 10 + curAng:Right() * 0 - client:GetViewOffsetDucked() * 0.5 * crouchFactor
-		traceData.endpos = traceData.start - curAng:Forward() * 75
+		traceData.start = startPos
+		traceData.endpos = endPos
 		traceData.filter = client
 		traceData.ignoreworld = bNoclip
 		traceData.mins = traceMin
 		traceData.maxs = traceMax
 
+		local traceHull = util_TraceHull(traceData)
+		local traceHitPos = traceHull.HitPos
+
+		local traceData3 = {}
+		traceData3.start = startPos
+		traceData3.endpos = endPosMax
+		traceData3.filter = client
+		traceData3.ignoreworld = bNoclip
+		traceData3.mins = traceMin
+		traceData3.maxs = traceMax
+
+		local traceHull3 = util_TraceHull(traceData3)
+		local traceHitPos3 = traceHull3.HitPos
+
+		local dist = endPosMax:Distance(traceHitPos3)
+		endPosShift = Lerp(ft * 1, endPosShift, dist)
+
+		lerpCameraShift = cameraShift - endPosShift
+
 		local view = {}
-		view.origin = util_TraceHull(traceData).HitPos
+		view.origin = traceHitPos
 		view.angles = curAng + client:GetViewPunchAngles()
 
 		local aimOrigin = view.origin
@@ -89,6 +117,16 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 			client:SetEyeAngles(currentAngles)
 		end
+
+		local value = client:GetVelocity():Length2D() * 0.02
+		if client:KeyDown(IN_BACK) then
+			value = -value
+		end
+
+		value = math.Clamp(value, -8, 8)
+		fovShift = Lerp(ft * 3, fovShift, value)
+
+		view.fov = fov - fovShift
 
 		return view
 	end

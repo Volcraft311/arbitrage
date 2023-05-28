@@ -42,13 +42,30 @@ local endPosShift = 0
 local cameraShift = 75
 local lerpCameraShift = 75
 
+local curAng = Angle(0, 0, 0)
+
+local function LerpA(a, b, t)
+	local delta = (b - a) % 360
+
+	if delta > 180 then
+		delta = delta - 360
+	end
+
+	return a + delta * t
+end
+
 function PLUGIN:CalcView(client, pos, angles, fov)
 	if !Arbitrage.IsThirdPerson() then return end
 
 	if client:GetViewEntity() == client then
 		local ft = FrameTime()
 		local bNoclip = client:IsNocliping()
-		local curAng = camAng or angle_zero
+
+		for k, v in ipairs({"p", "y"}) do
+			curAng[v] = LerpA(curAng[v], camAng[v], ft * 15)
+		end
+
+		curAng.r = camAng.r
 
 		crouchFactor = Lerp(ft * 5, crouchFactor, client:KeyDown(IN_DUCK) and 1 or 0)
 

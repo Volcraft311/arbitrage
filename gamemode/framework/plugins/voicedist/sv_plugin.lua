@@ -33,7 +33,7 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
     if listener:IsSpectating() then
         -- там где находится камера
         local position = listener._CameraPosition
-        if position:Distance(talker:GetPos()) <= dist * GetVoiceScale then
+        if position and position:Distance(talker:GetPos()) <= dist * GetVoiceScale then
             return true, false
         end
 
@@ -42,7 +42,7 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
         if IsValid(entity) then
             position = entity:IsPlayer() and entity:GetShootPos() or entity:GetPos()
 
-            if position:Distance(talker:GetPos()) <= dist * GetVoiceScale then
+            if position and position:Distance(talker:GetPos()) <= dist * GetVoiceScale then
                 return true, false
             end
         end

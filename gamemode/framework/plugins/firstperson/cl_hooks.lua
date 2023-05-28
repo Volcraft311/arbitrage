@@ -94,6 +94,7 @@ function PLUGIN:ShouldDrawLocalPlayer()
 	end
 end
 
+local fovShift = 0
 function PLUGIN:CalcView(client, pos, angles, fov)
 	if !self.isAllow then return end
 
@@ -134,7 +135,20 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 	if eyeAtt then
 		view.origin = eyeAtt.Pos + (Vector(forwardVec.x * (ViewOffsetForward + ViewOffsetForward2), forwardVec.y * (ViewOffsetForward + ViewOffsetForward2 - 0.3), 0)) + Vector(0, 0, ViewOffsetUp) + client:GetRight() * ViewOffsetLeftRight
 		view.angles = CurView
-		view.fov = fov
+
+		local shift = client:GetVelocity():Length2D() * 0.02
+
+		local value = 0
+		if client:KeyDown(IN_FORWARD) then
+			value = shift
+		elseif client:KeyDown(IN_BACK) then
+			value = -shift
+		end
+
+		value = math.Clamp(value, -8, 8)
+		fovShift = Lerp(FrameTime() * 3, fovShift, value)
+
+		view.fov = fov + fovShift
 
 		return GAMEMODE:CalcView(client, view.origin, view.angles, view.fov, view.znear)
 	end

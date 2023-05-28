@@ -236,6 +236,16 @@ function PANEL:Think()
 	end
 end
 
+local function LerpA(a, b, t)
+	local delta = (b - a) % 360
+
+	if delta > 180 then
+		delta = delta - 360
+	end
+
+	return a + delta * t
+end
+
 local lmbMat = Material("gui/lmb.png")
 local rmbMat = Material("gui/rmb.png")
 local starMat = Material("icon16/star.png")
@@ -266,7 +276,7 @@ function PANEL:Paint(w, h)
 	self.background()
 
 	self.rotate = self.rotate or self.selected * segment_size
-	self.rotate = Lerp(FrameTime() * 20, self.rotate, self.selected * segment_size)
+	self.rotate = LerpA(self.rotate, self.selected * segment_size, FrameTime() * 20)
 
 	local outline1 = circles.New(CIRCLE_OUTLINED, self.m_r + self.size + self.selSize, self.m_x, self.m_y, self.size * 2 + self.selSize * 2)
 	outline1:SetColor(Color(255, 41, 76))

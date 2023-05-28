@@ -898,7 +898,7 @@ end)
 
 timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
     for k, v in ipairs(player.GetAll()) do
-        if !v:IsSpectate() then return end
+        if !v:IsSpectate() then continue end
 
         local spectate = v.spectateent
 

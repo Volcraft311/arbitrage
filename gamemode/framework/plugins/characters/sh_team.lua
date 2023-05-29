@@ -158,7 +158,7 @@ function Character.team:Join(client, data, bRespawn)
 
     timer.Simple(0.3, function()
         local modelScale = info:GetScale()
-        client:SetModelScale(modelScale)
+        client:SetModelScale(modelScale == 1 and 0.999999 or modelScale)
 
         Character.team:EstablishHull(client)
     end)

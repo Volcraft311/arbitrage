@@ -115,7 +115,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		CurView = LerpAngle(FT * camera_smoothness, CurView, angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency))
 	end
 
-	if camera_smoothness == 25 then
+	if camera_smoothness >= 25 then
 		CurView = angles + Angle(0, 0, eyeAtt.Ang.r * RollDependency)
 	end
 

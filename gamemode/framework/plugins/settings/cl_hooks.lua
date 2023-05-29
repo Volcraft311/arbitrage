@@ -24,13 +24,13 @@ function PLUGIN:Think()
 end
 
 function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
-    netstream.Start("SETTINGS:KeyPressID", client, id, bIsVisibleGUI)
+    netstream.Start("SETTINGS:KeyPressID", id, bIsVisibleGUI)
 
     -- print(tostring(client) .. " нажал " .. id)
 end
 
 function PLUGIN:KeyReleaseID(client, id, bIsVisibleGUI)
-    netstream.Start("SETTINGS:KeyReleaseID", client, id, bIsVisibleGUI)
+    netstream.Start("SETTINGS:KeyReleaseID", id, bIsVisibleGUI)
 
     -- print(tostring(client) .. " отпустил " .. id)
 end

@@ -222,6 +222,9 @@ local function getSequenceID(array, id, client)
 end
 
 function Emotes:CalcMainActivity(client, velocity)
+	local isProne = client.IsProne and client:IsProne()
+	if isProne then return end
+
 	-- Акты
 	do
 		local seq, seqTime = client:GetAction()

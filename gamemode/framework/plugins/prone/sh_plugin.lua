@@ -4,7 +4,7 @@ Prone = PLUGIN
 Prone.name = "Prone"
 
 function Prone:CanHandle(client)
-	if Arbitrage.lawEnable then return false, "Вы не можете лечь за данного персонажа!" end
+	if Arbitrage.lawEnable then return false, "Вы не можете лечь во время суда!" end
 
 	local seq = client:GetAction()
 	if seq then return false, "Вы находитесь в анимации!" end
@@ -12,7 +12,7 @@ function Prone:CanHandle(client)
 	local info = Character.team:GetByID(client:Team())
 
 	if info then
-		return info.allowProne == nil and true or info.allowProne
+		return info.allowProne == nil and true or info.allowProne, "Вы не можете лечь за данного персонажа!"
 	end
 
 	return true

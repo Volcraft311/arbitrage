@@ -311,7 +311,7 @@ if CLIENT then
             Hints:AddKeyDraw("Управлять " .. (ui.editing and "камерой" or "курсором"), "+jump")
 
             local hideHands = ui.hidehands
-            Hints:AddKeyDraw(hideHands and "Показать" or "Скрыть" .. " руки", "+reload")
+            Hints:AddKeyDraw((hideHands and "Показать" or "Скрыть") .. " руки", "+reload")
         end
 
         Hints:AddKeyDraw((self.Edit and "Отдалить" or "Приблизить") .. " планшет", MOUSE_RIGHT)

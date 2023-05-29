@@ -1,5 +1,8 @@
 function Prone:Handle(client)
-	if !self:CanHandle(client) then return client:ChatNotify("Вы не можете лечь за данного персонажа!") end
+	local succ, text = self:CanHandle(client)
+	if !succ then
+		return client:ChatNotify(text)
+	end
 
 	if (!client.proneCD or CurTime() >= client.proneCD) then
 		prone.Handle(client)

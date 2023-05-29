@@ -98,9 +98,46 @@ function Character.team:GetByUniqueID(uniqueID)
     end
 end
 
+function Character.team:EstablishHull(client)
+    local hullMin, hullMax, hullduckMin, hullduckMax = Vector(-16, -16, 0), Vector(16, 16, 72), Vector(-16, -16, 0), Vector(16, 16, 36)
+    local info = Character.team:GetByID(client:Team())
+
+    local modelScale = info:GetScale()
+    local decrease = 0
+    if modelScale > 1 then
+        local increased = modelScale - 1
+
+        decrease = 16 * increased
+    end
+
+    do
+        local scale = info:GetHullScale()
+        local min, max = hullMin, hullMax
+
+        local sizeMin = Vector(min.x + decrease, min.y + decrease, min.z)
+        local sizeMax = Vector(max.x - decrease, max.y - decrease, max.z * scale)
+
+        client:SetHull(sizeMin, sizeMax, true)
+    end
+
+    do
+        local scale = info:GetHullDuckScale()
+        local min, max = hullduckMin, hullduckMax
+
+        local sizeMin = Vector(min.x + decrease, min.y + decrease, min.z)
+        local sizeMax = Vector(max.x - decrease, max.y - decrease, max.z * scale)
+
+        client:SetHullDuck(sizeMin, sizeMax, true)
+    end
+
+    Arbitrage.player.SetupViewOffset(client)
+end
+
 function Character.team:Join(client, data, bRespawn)
     local info = self:GetByID(tonumber(data)) or self:GetByUniqueID(tostring(data))
     if !info then return ErrorNoHalt("[characters] Error when trying to find team with argument: '" .. data .. "'\n") end
+
+    local hullMin, hullMax, hullduckMin, hullduckMax = Vector(-16, -16, 0), Vector(16, 16, 72), Vector(-16, -16, 0), Vector(16, 16, 36)
 
     local id = info:GetID()
 
@@ -108,8 +145,6 @@ function Character.team:Join(client, data, bRespawn)
         client:SetTeam(id)
         return Arbitrage.player.Respawn(client)
     end
-
-    local hullMin, hullMax, hullduckMin, hullduckMax = Vector(-16, -16, 0), Vector(16, 16, 72), Vector(-16, -16, 0), Vector(16, 16, 36)
 
     client:SetTeam(id)
     client:SetModel(info:GetModel())
@@ -125,34 +160,7 @@ function Character.team:Join(client, data, bRespawn)
         local modelScale = info:GetScale()
         client:SetModelScale(modelScale)
 
-        local decrease = 0
-        if modelScale > 1 then
-            local increased = modelScale - 1
-
-            decrease = 16 * increased
-        end
-
-        do
-            local scale = info:GetHullScale()
-            local min, max = hullMin, hullMax
-
-            local sizeMin = Vector(min.x + decrease, min.y + decrease, min.z)
-            local sizeMax = Vector(max.x - decrease, max.y - decrease, max.z * scale)
-
-            client:SetHull(sizeMin, sizeMax, true)
-        end
-
-        do
-            local scale = info:GetHullDuckScale()
-            local min, max = hullduckMin, hullduckMax
-
-            local sizeMin = Vector(min.x + decrease, min.y + decrease, min.z)
-            local sizeMax = Vector(max.x - decrease, max.y - decrease, max.z * scale)
-
-            client:SetHullDuck(sizeMin, sizeMax, true)
-        end
-
-        Arbitrage.player.SetupViewOffset(client)
+        Character.team:EstablishHull(client)
     end)
 
     if info.OnChange then

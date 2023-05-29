@@ -139,6 +139,10 @@ function Arbitrage:StartLaw()
         v:ExitVehicle()
         v:SetNWBool("SitGroundSitting", false)
 
+        if v.IsProne and v:IsProne() then
+            prone.Exit(v)
+        end
+
         if v:IsSpectating() then
             v:ConCommand("spectate")
         end
@@ -168,8 +172,6 @@ function Arbitrage:StartLaw()
                     client.oldScale = client:GetModelScale()
                     client:SetModelScale(0.1)
                 end
-            else
-                -- Типо игрока нету понял?
             end
         end
 

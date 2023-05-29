@@ -87,6 +87,10 @@ function PLUGIN:StartSit(trace)
 	timer.Create(uniqueID, FrameTime(), 0, function()
 		if !IsValid(self.csEnt) then self:CreateCSEnt() end
 
+		if client.IsProne and client:IsProne() then
+			return self:RemoveCSEnt()
+		end
+
 		self.csEnt:SetColor(color_yellow)
 
 		local currentAng = Angle(0, 0, 0)
@@ -152,6 +156,11 @@ end
 function PLUGIN:DoSit(trace)
 	if !trace.Hit then return end
 
+	local client = LocalPlayer()
+	if client.IsProne and client:IsProne() then
+		return self:RemoveCSEnt()
+	end
+
 	if trace.HitPos:Distance(EyePos()) >= 150 then
 		return self:RemoveCSEnt()
 	end
@@ -177,6 +186,7 @@ function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
 
 	if client:IsNocliping() then return end
 	if client.GetSitting and client:GetSitting() then return end
+	if client.IsProne and client:IsProne() then return end
 	if Arbitrage.lawEnable then return end
 
 	self.Ang = nil

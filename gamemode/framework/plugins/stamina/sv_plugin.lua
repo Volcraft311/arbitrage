@@ -13,6 +13,10 @@
 
 
 function Stamina:IsRunning(client)
+	if client.IsProne and client:IsProne() then
+		return false
+	end
+
 	return client:GetVelocity():Length() > self:GetMaxWalkSpeed(client) and client:KeyDown(IN_SPEED)
 end
 
@@ -167,7 +171,11 @@ function Stamina:StaminaHandler(client, info)
 	local stamina = info.stamina
 	local isRunning = info.isRunning
 	local isWalking = info.isWalking
-	local isShifting = (isWalking and client:KeyDown(IN_SPEED))
+	local isShifting = isWalking and client:KeyDown(IN_SPEED)
+
+	if client.IsProne and client:IsProne() then
+		isShifting = false
+	end
 
 	if stamina < 100 or isShifting then
 		local regeneration = self:CalcRegeneration(client, info)
@@ -242,6 +250,8 @@ function Stamina:KeyPress(client, key)
 	if !client:IsPlaying() or !client:oldAlive() then return end
 
 	if key == IN_JUMP and client:OnGround() and !client:InVehicle() then
+		if client.IsProne and client:IsProne() then return end
+
 		local stamina = self:GetStamina(client)
 
 		self:SetStamina(client, math.max(0, stamina - 10))

@@ -11,7 +11,8 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN;
+local PLUGIN = PLUGIN
+FirstPerson = PLUGIN
 
 PLUGIN.name = "FirstPerson"
 

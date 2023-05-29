@@ -95,7 +95,9 @@ Character.team:Create({
     scale = 1.02,
     hullscale = 0.914,
     hullduckscale = 1.099,
-    inventory = {w = 4, h = 3}
+    inventory = {w = 4, h = 3},
+
+    allowProne = false
 })
 
 Character.team:Create({
@@ -769,7 +771,9 @@ Character.team:Create({
     scale = 1.08,
     hullscale = 0.53,
     hullduckscale = 0.38,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+
+    allowProne = false
 })
 
 Character.team:Create({
@@ -839,7 +843,9 @@ Character.team:Create({
     scale = 1.11,
     hullscale = 0.63,
     hullduckscale = 0.56,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+
+    allowProne = false
 })
 
 Character.team:Create({
@@ -873,7 +879,9 @@ Character.team:Create({
     scale = 1.138,
     hullscale = 0.638,
     hullduckscale = 0.634,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+
+    allowProne = false
 })
 
 Character.team:Create({
@@ -890,7 +898,9 @@ Character.team:Create({
     scale = 1.118,
     hullscale = 0.638,
     hullduckscale = 0.575,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+
+    allowProne = false
 })
 
 Character.team:Create({
@@ -907,7 +917,9 @@ Character.team:Create({
     scale = 1.153,
     hullscale = 0.627,
     hullduckscale = 0.607,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+
+    allowProne = false
 })
 
 Character.team:Create({
@@ -924,7 +936,9 @@ Character.team:Create({
     scale = 1.171,
     hullscale = 0.64,
     hullduckscale = 0.6,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+
+    allowProne = false
 })
 
 
@@ -943,5 +957,7 @@ Character.team:Create({
     scale = 0.628,
     hullscale = 0.643,
     hullduckscale = 0.564,
-    inventory = {w = 4, h = 5}
+    inventory = {w = 4, h = 5},
+
+    allowProne = false
 })

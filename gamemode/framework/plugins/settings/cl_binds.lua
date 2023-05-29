@@ -91,8 +91,14 @@ SETTINGS.binds.Add("radialmenu", KEY_H, {
 SETTINGS.binds.Add("spectating", KEY_B, {
     name = "Режим наблюдения",
     title = "Режим наблюдения",
-    description = "Кнопка, которая отвечает за заход/выход из режима наблюдения",
+    description = "Кнопка, которая отвечает за вход/выход из режима наблюдения",
     IsHidden = function(client)
         return client:IsAdmin()
     end
+})
+
+SETTINGS.binds.Add("prone", KEY_SLASH, {
+    name = "Лечь на землю",
+    title = "Лечь на землю",
+    description = "Кнопка, которая отвечает за вход/выход из режима ползания"
 })

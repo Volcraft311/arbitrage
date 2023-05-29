@@ -79,7 +79,9 @@ timer.Create("Hints:Update", 0.1, 0, function()
     local trace = client:GetEyeTrace()
     local sit_key = SETTINGS.binds.Get("sitting")
     if trace.HitPos:DistToSqr(EyePos()) < 5000 or input.IsKeyDown(sit_key) then
-        Hints:AddKeyDraw("Сесть", sit_key)
+        if !client.IsProne or !client:IsProne() then
+            Hints:AddKeyDraw("Сесть", sit_key)
+        end
     end
 
     local t_entity = trace.Entity

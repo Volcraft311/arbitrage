@@ -61,11 +61,16 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		local ft = FrameTime()
 		local bNoclip = client:IsNocliping()
 
-		for k, v in ipairs({"p", "y"}) do
-			curAng[v] = LerpA(curAng[v], camAng[v], ft * 15)
-		end
+		local camera_smoothness = SETTINGS.options.Get("camera_smoothness")
+		if camera_smoothness >= 25 then
+			curAng = camAng
+		else
+			for k, v in ipairs({"p", "y"}) do
+				curAng[v] = LerpA(curAng[v], camAng[v], ft * camera_smoothness)
+			end
 
-		curAng.r = camAng.r
+			curAng.r = camAng.r
+		end
 
 		crouchFactor = Lerp(ft * 5, crouchFactor, client:KeyDown(IN_DUCK) and 1 or 0)
 

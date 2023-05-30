@@ -155,6 +155,7 @@ function Character.team:Join(client, data, bRespawn)
     client:SetModelScale(1)
     client:SetHull(hullMin, hullMax)
     client:SetHullDuck(hullduckMin, hullduckMax)
+    client:SetRenderMode(RENDERMODE_TRANSCOLOR)
 
     timer.Simple(0.3, function()
         local modelScale = info:GetScale()

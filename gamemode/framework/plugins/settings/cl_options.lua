@@ -154,3 +154,9 @@ SETTINGS.options.Add("static_crosshair", SETTINGS.type.bool, false, {
     title = "Статический прицел",
     description = "Выключить динамический прицел и перейти в статическую версию."
 })
+
+SETTINGS.options.Add("alpha_localplayer", SETTINGS.type.bool, true, {
+    name = "Изменять прозрачность игроку от 3-его лица",
+    title = "Изменять прозрачность игроку от 3-его лица",
+    description = "Включить изменение прозрачности локального игрока в зависимости от дальности камеры."
+})

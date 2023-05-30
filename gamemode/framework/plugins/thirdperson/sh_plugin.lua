@@ -41,7 +41,6 @@ local fovShift = 0
 local endPosShift = 0
 local cameraShift = 75
 local lerpCameraShift = 75
-
 local curAng = Angle(0, 0, 0)
 
 local function LerpA(a, b, t)
@@ -54,8 +53,57 @@ local function LerpA(a, b, t)
 	return a + delta * t
 end
 
+local saveAlpha = 255
+local player_alpha = 255
+local function playerAlpha(dist)
+	local client = LocalPlayer()
+	local ft = FrameTime()
+
+	local value = dist * 7 - 180
+
+	player_alpha = Lerp(ft * 10, player_alpha, value)
+	player_alpha = math.floor(player_alpha)
+
+	if value >= 200 and value <= 254 then
+		player_alpha = math.min(200, saveAlpha)
+	end
+
+	local max = math.min(255, saveAlpha)
+	if player_alpha <= 0 then
+		player_alpha = 0
+	elseif player_alpha >= max then
+		player_alpha = max
+	end
+
+	local color = client:GetColor()
+	if color.a != player_alpha then
+		client:SetColor(Color(color.r, color.g, color.b, player_alpha))
+	end
+end
+
+local bIsThirdPerson = false
+local bOldIsThirdPerson = false
 function PLUGIN:CalcView(client, pos, angles, fov)
-	if !Arbitrage.IsThirdPerson() then return end
+	local alpha_localplayer = SETTINGS.options.Get("alpha_localplayer")
+	bIsThirdPerson = Arbitrage.IsThirdPerson()
+
+	if !bIsThirdPerson and alpha_localplayer then
+		if bOldIsThirdPerson != bIsThirdPerson then
+			local color = client:GetColor()
+
+			if saveAlpha != color.a then
+				client:SetColor(Color(color.r, color.g, color.b, saveAlpha))
+			end
+		end
+	else
+		if bOldIsThirdPerson != bIsThirdPerson then
+			local color = client:GetColor()
+			saveAlpha = color.a
+		end
+	end
+
+	bOldIsThirdPerson = bIsThirdPerson
+	if !bIsThirdPerson then return end
 
 	if client:GetViewEntity() == client then
 		local ft = FrameTime()
@@ -63,12 +111,12 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 		local camera_smoothness = SETTINGS.options.Get("camera_smoothness")
 		if camera_smoothness >= 25 then
-			curAng = camAng
+			curAng = Angle(camAng.p, camAng.y, camAng.r)
 		else
-			for k, v in ipairs({"p", "y"}) do
-				curAng[v] = LerpA(curAng[v], camAng[v], ft * camera_smoothness)
-			end
+			local t = ft * camera_smoothness
 
+			curAng.p = LerpA(curAng.p, camAng.p, t)
+			curAng.y = LerpA(curAng.y, camAng.y, t)
 			curAng.r = camAng.r
 		end
 
@@ -104,6 +152,10 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		endPosShift = Lerp(ft * 1, endPosShift, dist)
 
 		lerpCameraShift = cameraShift - endPosShift
+
+		if alpha_localplayer then
+			playerAlpha(traceHitPos:Distance(client:GetPos() + client:OBBCenter()))
+		end
 
 		local view = {}
 		view.origin = traceHitPos
@@ -155,7 +207,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 end
 
 function PLUGIN:CreateMove(cmd)
-	if !Arbitrage.IsThirdPerson() then return end
+	if !bIsThirdPerson then return end
 
 	local client = LocalPlayer()
 
@@ -173,7 +225,7 @@ function PLUGIN:CreateMove(cmd)
 end
 
 function PLUGIN:InputMouseApply(cmd, x, y, ang)
-	if !Arbitrage.IsThirdPerson() then return end
+	if !bIsThirdPerson then return end
 
 	camAng.p = math_Clamp(math_NormalizeAngle(camAng.p + y / 50), -85, 85)
 	camAng.y = math_NormalizeAngle(camAng.y - x / 50)
@@ -184,7 +236,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 end
 
 function PLUGIN:ShouldDrawLocalPlayer()
-	if !Arbitrage.IsThirdPerson() then return end
+	if !bIsThirdPerson then return end
 
 	local client = LocalPlayer()
 	if client:GetViewEntity() == client and !IsValid(client:GetVehicle()) then

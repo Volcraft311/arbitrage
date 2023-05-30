@@ -43,6 +43,9 @@ local function GetHeadBone(client)
 	return head
 end
 
+local endPosShift = 0
+local cameraShift = 80
+local lerpCameraShift = 80
 local offset = 16
 local height = Vector(0, 0, 20)
 local forwardOffset = 16
@@ -60,13 +63,37 @@ function Emotes:CalcView(client, origin)
 
 		local ang = client:EyeAngles()
 
+		local startPos = client:GetPos() + PLAYER_OFFSET
+		local endPos = startPos - ang:Forward() * lerpCameraShift
+		local endPosMax = startPos - ang:Forward() * cameraShift
+
 		local data = {}
-		data.start = client:GetPos() + PLAYER_OFFSET
-		data.endpos = data.start - ang:Forward() * 80
+		data.start = startPos
+		data.endpos = endPos
 		data.filter = client
 
+		local traceData3 = {}
+		traceData3.start = startPos
+		traceData3.endpos = endPosMax
+		traceData3.filter = client
+		traceData3.ignoreworld = bNoclip
+		traceData3.mins = traceMin
+		traceData3.maxs = traceMax
+
+		local traceHull3 = util.TraceHull(traceData3)
+		local traceHitPos3 = traceHull3.HitPos
+
+		local traceLine = util.TraceLine(data)
+		local hitPos = traceLine.HitPos
+		local pos = hitPos + GROUND_PADDING + ang:Forward() * 4
+
+		local dist = endPosMax:Distance(traceHitPos3)
+		endPosShift = Lerp(FrameTime(), endPosShift, dist)
+
+		lerpCameraShift = cameraShift - endPosShift
+
 		local view = {}
-		view.origin = util.TraceLine(data).HitPos + GROUND_PADDING + ang:Forward() * 4
+		view.origin = pos
 		view.angles = ang
 		view.filter = client
 

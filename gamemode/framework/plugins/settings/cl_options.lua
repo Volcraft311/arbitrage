@@ -115,7 +115,7 @@ SETTINGS.options.Add("monopad_smoothness", SETTINGS.type.number, 3, {
     max = 10
 })
 
-SETTINGS.options.Add("music_volume", SETTINGS.type.number, 50, {
+SETTINGS.options.Add("music_volume", SETTINGS.type.number, 20, {
     name = "Громкость музыки",
     title = "Громкость проигрываемой музыки",
     description = "Отвечает за громкость проигрываемой музыки на заднем фоне, во время игрового процесса.",

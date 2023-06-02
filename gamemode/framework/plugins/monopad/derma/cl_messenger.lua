@@ -32,7 +32,7 @@ function PANEL:Init()
 		end
 
 		ui:Rebuild()
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self.scrollPanel = self:Add("DScrollPanel")
@@ -127,7 +127,7 @@ function PANEL:Init()
 		self.noRebuild = true
 		self.isSent = true
 		netstream.Start("MonoPad:MuteChat", self.selectID)
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end
 
 	self.messagesScroll = self.messagerPanel:Add("DScrollPanel")
@@ -173,7 +173,7 @@ function PANEL:Init()
 		end
 
 		if !self.isSent then
-			LocalPlayer():EmitSound(MonoPad.sounds.message_came)
+			asterionlib.EmitSound(MonoPad.sounds.message_came)
 		else
 			self.isSent = nil
 		end
@@ -281,7 +281,7 @@ function PANEL:CreateAttachments()
 
 			self.isSent = true
 			netstream.Start("MonoPad:SendEvidence", self.selectID, id)
-			LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+			asterionlib.EmitSound(MonoPad.sounds.message_sent)
 		end
 
 		local ui = MonoPad:GetUI()
@@ -357,7 +357,7 @@ function PANEL:InitInput()
 			self:CreateAttachments()
 		end
 
-		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+		asterionlib.EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	local inputButton = self.inputPanel:Add("DButton")
@@ -388,7 +388,7 @@ function PANEL:InitInput()
 
 			self.isSent = true
 			netstream.Start("MonoPad:SendMessage", self.selectID, text)
-			LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+			asterionlib.EmitSound(MonoPad.sounds.message_sent)
 		end, nil, "Отправить", "Отменить")
 		DermaStringRequest.startTime = SysTime()
 		DermaStringRequest:SetAlpha(0)
@@ -413,7 +413,7 @@ function PANEL:InitInput()
 	    DermaStringRequest:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
 	    DermaStringRequest:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
 
-	    LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+	    asterionlib.EmitSound(MonoPad.sounds.message_sent)
 	end
 end
 
@@ -602,7 +602,7 @@ function PANEL:InitMessages(id)
 						end)
 					end)
 
-					LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+					asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 				end
 			end
 
@@ -755,7 +755,7 @@ function PANEL:AddPlayerButton(id)
 		if y < -this:GetTall() or y > self.scrollPanel:GetTall() then return end
 
 		self:InitMessages(id)
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end
 end
 
@@ -783,7 +783,7 @@ function PANEL:Init()
 			self:Remove()
 		end)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self:SetAlpha(0)

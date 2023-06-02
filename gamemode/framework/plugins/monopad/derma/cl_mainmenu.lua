@@ -269,7 +269,7 @@ function PANEL:CreateButton(uniqueID, text, desc, x, y, image, callback, isNotif
             end
 
             callback(button)
-            LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+            asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
             MonoPad:SyncHistory(monopad)
         end
     end

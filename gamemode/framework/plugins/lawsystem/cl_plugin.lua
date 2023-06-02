@@ -201,7 +201,7 @@ function PLUGIN:SendStartText()
     local alphaTo = alpha
     local rot = 0
 
-    LocalPlayer():EmitSound("academy/law/start2.mp3")
+    asterionlib.EmitSound("academy/law/start2.mp3")
 
     hook.Add("RenderScreenspaceEffects", "arb.LawStartText", function()
         size = Lerp(FrameTime() * 3, size, 400)
@@ -611,7 +611,7 @@ function PLUGIN:StartCylinder()
                         moving = moving + 50
                     end)
 
-                    LocalPlayer():EmitSound("academy/law/bullet.mp3")
+                    asterionlib.EmitSound("academy/law/bullet.mp3")
                 end)
 
                 cyl2[i] = Lerp(FrameTime() * 20, cyl2[i], cyl[i])
@@ -651,7 +651,7 @@ function PLUGIN:StartCylinder()
 end
 
 function PLUGIN:CreateBulletAnimation1()
-    LocalPlayer():EmitSound("academy/law/start1.mp3")
+    asterionlib.EmitSound("academy/law/start1.mp3")
 
     for i = 1, 5 do
         timer.Simple(i * math.random(100, 150) / 1000, function()
@@ -911,7 +911,7 @@ netstream.Hook("arb.ShowEvidence", function(client, data, indx)
         PLUGIN.bulletText = Evidence:GetEvidence(indx).name
         PLUGIN.bulletMask = -50
 
-        LocalPlayer():EmitSound("academy/law/bullet.mp3")
+        asterionlib.EmitSound("academy/law/bullet.mp3")
 
         if panel.select == 2 then
             for i = 1, 2 do -- upd

@@ -30,7 +30,7 @@ function PANEL:Init()
 		end
 
 		ui:Rebuild()
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self.scrollPanel = self:Add("DScrollPanel")
@@ -181,7 +181,7 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 			case:SetData(id)
 		end)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end
 
 	self.panels[id] = button
@@ -209,7 +209,7 @@ function PANEL:Init()
 			self:Remove()
 		end)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self:SetAlpha(0)
@@ -377,7 +377,7 @@ function PANEL:SetData(id)
 			self:SetData(id)
 		end, id)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+		asterionlib.EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	local evidencePanel = self.rightPanel:Add("Panel")

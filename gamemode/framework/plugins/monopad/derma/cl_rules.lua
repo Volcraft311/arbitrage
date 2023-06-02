@@ -31,7 +31,7 @@ function PANEL:Init()
 		end
 
 		ui:Rebuild()
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self.scrollPanel = self:Add("DScrollPanel")
@@ -177,7 +177,7 @@ function PANEL:AddRules(id, title, description, url)
 			subMenu:SetData(id)
 		end)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 
 		self.isOpen = true
 	end
@@ -216,7 +216,7 @@ function PANEL:Init()
 			{}
 		})
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self:SetAlpha(0)
@@ -286,7 +286,7 @@ function PANEL:Init()
 				{id}
 			})
 
-			LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+			asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 		end
 
 		local downButton = self:Add("DButton")
@@ -324,7 +324,7 @@ function PANEL:Init()
 				{id}
 			})
 
-			LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+			asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 		end
 	end
 end

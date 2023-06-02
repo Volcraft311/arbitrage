@@ -23,7 +23,7 @@ function PANEL:Init()
 
 	Arbitrage.gui.radialmenu = self
 
-	LocalPlayer():EmitSound("academy/radialmenu/whoosh" .. math.random(1, 6) .. ".wav")
+	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math.random(1, 6) .. ".wav")
 
 	self:SetPos(0, 0)
 	self:SetSize(ScrW(), ScrH())
@@ -70,7 +70,7 @@ function PANEL:NewClose()
 	if self.bClose then return end
 	self.bClose = true
 
-	LocalPlayer():EmitSound("academy/radialmenu/whoosh" .. math.random(1, 6) .. ".wav")
+	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math.random(1, 6) .. ".wav")
 
 	self:SetMouseInputEnabled(false)
 	self:AlphaTo(0, 0.3, 0, function()
@@ -94,7 +94,7 @@ function PANEL:SelectOption(id)
 
 	local action = option.action
 	if isfunction(action) then
-		LocalPlayer():EmitSound("academy/radialmenu/press.wav")
+		asterionlib.EmitSound("academy/radialmenu/press.wav")
 		local info, backFunc = action(PLUGIN, self)
 
 		if istable(info) then
@@ -132,7 +132,7 @@ function PANEL:OnRightClick()
 			self.textAlpha = 0
 
 			self.backFunc = backFunc
-			LocalPlayer():EmitSound("academy/radialmenu/press.wav")
+			asterionlib.EmitSound("academy/radialmenu/press.wav")
 		end
 	else
 		self:NewClose()
@@ -172,7 +172,7 @@ function PANEL:OnRotate()
 	self.selSize = self.selSize + 8
 	self.textAlpha = 0
 
-	LocalPlayer():EmitSound("academy/radialmenu/rollover.wav")
+	asterionlib.EmitSound("academy/radialmenu/rollover.wav")
 end
 
 function PANEL:Think()

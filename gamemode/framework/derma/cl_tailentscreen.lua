@@ -104,7 +104,7 @@ function PANEL:Init()
     self.sizeSymbols, _ = surface.GetTextSize(self.name)
 
     self:GenerateCubes()
-    LocalPlayer():EmitSound("academy/tailentscreen/song.mp3")
+    asterionlib.EmitSound("academy/tailentscreen/song.mp3")
 end
 
 local cylinderMat = Material("danganronpa/law/cylinder.png")

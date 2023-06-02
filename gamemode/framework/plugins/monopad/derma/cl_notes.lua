@@ -32,7 +32,7 @@ function PANEL:Init()
 		end
 
 		ui:Rebuild()
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	local leftPanel = self:Add("Panel")
@@ -90,7 +90,7 @@ function PANEL:Init()
 	    DermaStringRequest:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
 	    DermaStringRequest:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
 
-	    LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+	    asterionlib.EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	self.scrollPanel = leftPanel:Add("DScrollPanel")
@@ -182,7 +182,7 @@ function PANEL:Init()
 
 		DermaStringRequest = panel
 
-		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+		asterionlib.EmitSound(MonoPad.sounds.message_sent)
 	end
 
 	local removeButton = self.title:Add("DButton")
@@ -209,7 +209,7 @@ function PANEL:Init()
 			self:Rebuild()
 		end)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+		asterionlib.EmitSound(MonoPad.sounds.message_sent)
 		Arbitrage.notify.NotifyChat("Вы успешно удалили заметку!")
 	end
 
@@ -326,7 +326,7 @@ function PANEL:AddNotes(id, title)
 			{id, title}
 		})
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end
 end
 

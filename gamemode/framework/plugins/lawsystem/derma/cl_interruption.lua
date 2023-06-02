@@ -50,7 +50,7 @@ function PANEL:Init()
         end)
     end)
 
-    LocalPlayer():EmitSound("academy/law/counter.mp3")
+    asterionlib.EmitSound("academy/law/counter.mp3")
 end
 
 function PANEL:Paint(w, h)

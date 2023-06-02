@@ -33,7 +33,7 @@ function PANEL:Init()
 		end
 
 		ui:Rebuild()
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	local bottomPanel = self:Add("Panel")
@@ -80,7 +80,7 @@ function PANEL:Init()
 					{selectCategory}
 				})
 
-				LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+				asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 			end
 
 			button.Paint = function(_, w, h)

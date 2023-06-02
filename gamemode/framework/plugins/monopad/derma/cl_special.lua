@@ -30,7 +30,7 @@ function PANEL:Init()
 		end
 
 		ui:Rebuild()
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self.evidencePanel = self:CreateButton("Найденные улики", "Все найденные вами улики заносятся в данную\nкатегорию. Распределяйте их по активным делам\nдля правильного выявления виновного", Material("danganronpa/monopad/evidence.png"))
@@ -54,7 +54,7 @@ function PANEL:Init()
 			{1}
 		})
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end
 
 	self.secretsPanel = self:CreateButton("Тайны Академии", "Особые материалы и файлы, помогающие\nраскрывать общую тайну. Используйте их для\nполного успешного прохождения Академии.", Material("danganronpa/monopad/secrets.png"))
@@ -127,7 +127,7 @@ function PANEL:Init()
 			self:Remove()
 		end)
 
-		LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
 	self:SetAlpha(0)
@@ -299,7 +299,7 @@ function PANEL:Rebuild()
 				self.selectID = k
 			end
 
-			LocalPlayer():EmitSound(MonoPad.sounds.message_came)
+			asterionlib.EmitSound(MonoPad.sounds.message_came)
 		end
 
 		local clearButton = title:Add("DButton")
@@ -323,7 +323,7 @@ function PANEL:Rebuild()
 				self:Rebuild()
 			end)
 
-			LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+			asterionlib.EmitSound(MonoPad.sounds.message_sent)
 		end
 
 		local List = panel:Add("DIconLayout")
@@ -426,7 +426,7 @@ function PANEL:AddEvidence(id, parent, scroll, noFind)
 				self:Rebuild()
 			end)
 
-			LocalPlayer():EmitSound(MonoPad.sounds.message_sent)
+			asterionlib.EmitSound(MonoPad.sounds.message_sent)
 		else
 			self.isOpen = true
 			self.leftPanel:AlphaTo(0, 0.3)
@@ -442,7 +442,7 @@ function PANEL:AddEvidence(id, parent, scroll, noFind)
 				end)
 			end)
 
-			LocalPlayer():EmitSound(MonoPad.sounds.planshet_beep)
+			asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 		end
 	end
 

@@ -56,11 +56,15 @@ PLUGIN.type = {
         labelPanel:DockMargin(0, 0, W(20), 0)
 
         sliderPanel.OnValueChanged = function(_, value)
+            local oldValue = SETTINGS.options.Get(data.id)
+
+            if oldValue != value then
+                SETTINGS.options.Set(data.id, value)
+                hook.Run("SETTINGS:OnOptionChange", data.id, value)
+            end
+
             value = math.floor(value)
-
             labelPanel:SetText(value)
-
-            SETTINGS.options.Set(data.id, value)
         end
 
         labelPanel:SetText(data.value)
@@ -98,6 +102,7 @@ PLUGIN.type = {
             if status then return end
 
             SETTINGS.options.Set(data.id, false)
+            hook.Run("SETTINGS:OnOptionChange", data.id, false)
         end
 
         local buttonYes = frame:Add("DButton")
@@ -123,6 +128,7 @@ PLUGIN.type = {
             if status then return end
 
             SETTINGS.options.Set(data.id, true)
+            hook.Run("SETTINGS:OnOptionChange", data.id, true)
         end
     end,
     ["string"] = 3,
@@ -170,6 +176,7 @@ PLUGIN.type = {
                     buttonKey.isEdit = false
 
                     SETTINGS.binds.Set(data.id, key)
+                    hook.Run("SETTINGS:OnBindChange", data.id, key)
                 end
             end)
 
@@ -311,9 +318,15 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
 
         if frame.OnReset then
             if isBind then
-                frame:OnReset(SETTINGS.binds.GetDefault(data.id))
+                local default = SETTINGS.binds.GetDefault(data.id)
+                frame:OnReset(default)
+
+                hook.Run("SETTINGS:OnBindChange", data.id, default)
             else
-                frame:OnReset(SETTINGS.options.GetDefault(data.id))
+                local default = SETTINGS.options.GetDefault(data.id)
+                frame:OnReset(default)
+
+                hook.Run("SETTINGS:OnOptionChange", data.id, default)
             end
         end
     end

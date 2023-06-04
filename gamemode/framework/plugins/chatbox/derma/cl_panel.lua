@@ -350,7 +350,7 @@ function PANEL:AddLine(elements, bShouldScroll)
 
 	buffer[#buffer + 1] = "<color=150,150,150>("
 	buffer[#buffer + 1] = os.date("%H:%M")
-	buffer[#buffer + 1] = ") "
+	buffer[#buffer + 1] = ")<color=255,255,255> "
 
 	for _, v in ipairs(elements) do
 		if (type(v) == "IMaterial") then

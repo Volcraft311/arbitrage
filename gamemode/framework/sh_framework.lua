@@ -111,25 +111,24 @@ do
 
     hook.Add("asterionlib.workshop:Initialize", "asterionlib.workshop", function()
         -- MAIN
-        workshop:Add("2902905430") -- Asterion Hope's Peak [Pre-Release]
-        workshop:Add("2715755590") -- Danganronpa - Main Content #1
-        workshop:Add("2786490267") -- Danganronpa - Main Content #2
-        workshop:Add("2717853308") -- Danganronpa - Models Content #1
-        workshop:Add("2780751458") -- Danganronpa - Models Content #2
-        workshop:Add("2723789180") -- Danganronpa - Models Content #3
-        workshop:Add("2849953494") -- Danganronpa - Models Content #4
+        workshop:Add("2715755590") -- Asterion Academy - Main Content #1
+        workshop:Add("2786490267") -- Asterion Academy - Main Content #2
+        workshop:Add("2717853308") -- Asterion Academy - Models Content #1
+        workshop:Add("2780751458") -- Asterion Academy - Models Content #2
+        workshop:Add("2723789180") -- Asterion Academy - Models Content #3
+        workshop:Add("2849953494") -- Asterion Academy - Models Content #4
         workshop:Add("2791583716") -- Asterion Academy - Additional Content
         workshop:Add("2860471023") -- Asterion Academy — Prop Content #1
         workshop:Add("2903072502") -- Asterion Academy - RadialMenu Assets (beta)
 
         -- OTHER
-        workshop:Add("246756300") -- Stream Radio
+        workshop:Add("160250458") -- Wiremod
         workshop:Add("2840031720") -- TFA Base
+        workshop:Add("246756300") -- Stream Radio
         workshop:Add("108024198") -- Food and Household items
         workshop:Add("1920810365") -- Facial Emote Mod
         workshop:Add("1784911999") -- LED screens
         workshop:Add("1161268544") -- Pink Blood
-        workshop:Add("160250458") -- Wiremod
         workshop:Add("2840295308") -- Primitive
         workshop:Add("2938912306") -- Suppression Mat
         workshop:Add("2963988886") -- more materials
@@ -143,6 +142,7 @@ do
         workshop:Add("104607228") -- Fire Extinguisher
 
         -- MAPS
+        workshop:Add("2902905430") -- Asterion Hope's Peak [Pre-Release]
         workshop:Add("1892549430") -- drp_hopespeak (WIP) Danganronpa map
         workshop:Add("1892565701") -- drp_hopespeak - Content
 
@@ -158,6 +158,7 @@ do
         workshop:Add("2892089039") -- UNION Content Pack#1 [props]
         workshop:Add("2892095571") -- UNION Content Pack#6 [furniture]
 
+        -- LAST DOWNLOAD
         workshop:Add("2982352247") -- Asterion - Animations
     end)
 end
@@ -801,7 +802,7 @@ player_manager.AddValidHands("Gonta Gokuhara", "models/player/dewobedil/danganro
 player_manager.AddValidModel( "Komaru Naegi (UDG)", "models/player/someguy/komaru_p.mdl" )
 player_manager.AddValidHands( "Komaru Naegi (UDG)", "models/player/someguy/komaru_arms.mdl", 0, "00000000")
 
--- отключаем звук при инициализации игрока
+-- отключаем ненужные звуки
 sound.Add({
     name = "Player.DrownStart",
     channel = CHAN_STATIC,

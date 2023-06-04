@@ -661,10 +661,16 @@ end
 do
     local entityMeta = FindMetaTable("Entity")
 
+    local doorsArray = {
+        ["prop_door_rotating"] = true,
+        ["func_door_rotating"] = true,
+        ["func_door"] = true
+    }
+
     function entityMeta:IsDoor()
         local class = self:GetClass()
 
-        if class == "prop_door_rotating" or class == "func_door_rotating" or class == "func_door" then
+        if doorsArray[class] then
             return true
         end
 

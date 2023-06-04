@@ -15,10 +15,11 @@ local IsValid = IsValid
 Arbitrage.ThirdPerson = Arbitrage.ThirdPerson or false
 
 function Arbitrage.IsThirdPerson()
-	if Arbitrage.lawEnable then return end
-	if !Arbitrage.OnThirdPerson() then return end
+	if Arbitrage.lawEnable then return false end
+	if !Arbitrage.OnThirdPerson() then return false end
 
 	local client = LocalPlayer()
+	if client:IsNocliping() then return false end
 
 	if Arbitrage.ThirdPerson then
 		if (client.GetSitting and client:GetSitting()) or select(3, client:GetAction()) then

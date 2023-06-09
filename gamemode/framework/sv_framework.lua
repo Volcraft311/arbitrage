@@ -544,9 +544,9 @@ local function initPlayer(client)
 
     hook.Run("PlayerInitial", client)
 
-    local id = "Arbitrage:StatisticsThink_" .. client:EntIndex()
-    timer.Create(id, 2, 0, function()
-        if !IsValid(client) then return timer.Remove(id) end
+    local thinkID = "Arbitrage:StatisticsThink_" .. client:EntIndex()
+    timer.Create(thinkID, 2, 0, function()
+        if !IsValid(client) then return timer.Remove(thinkID) end
 
         if !client:Alive() then return end
         if !client:IsPlaying() then return end
@@ -555,6 +555,30 @@ local function initPlayer(client)
         if Arbitrage.lawEnable then return end
 
         Arbitrage.statistics.PlayerPostThink(client)
+    end)
+
+    local unstuckID = "Arbitrage:AutoUnStuckThink_" .. client:EntIndex()
+    timer.Create(unstuckID, 0.5, 0, function()
+        if !IsValid(client) then return timer.Remove(unstuckID) end
+
+        if client:IsSpectate() then return end
+        if client.GetSitting and client:GetSitting() then return end
+        if client:IsNocliping() then return end
+
+        local isStuck = client:IsStuck()
+        if isStuck then
+            client._stuck_count = (client._stuck_count or 0) + 1
+        else
+            client._stuck_count = 0
+            client._stuck_cd = nil
+        end
+
+        if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
+            client:UnStuck()
+            client:ChatNotify("Похоже вы застряли. Сервер телепортировал вас на ближайшую позицию!")
+
+            client._stuck_cd = CurTime() + 10
+        end
     end)
 end
 

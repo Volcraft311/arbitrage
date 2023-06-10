@@ -106,7 +106,7 @@ function BASE:Equip(client, item, id)
 	end
 
 	local saveAmmoTable = client:GetAmmo() -- копия всех патрон
-	local weapon = client:Give(class)
+	local weapon = client:Give(class, true)
 
 	if IsValid(weapon) then
 		local ammoType = weapon:GetPrimaryAmmoType()

@@ -5,11 +5,15 @@ PLUGIN.gui = PLUGIN.gui or {}
 
 PLUGIN.typesData = {
     "me",
+    "mec",
     "try",
+    "tryc",
     "it",
+    "itc",
     "roll",
     "looc",
-    "ooc"
+    "ooc",
+    "command"
 }
 
 function PLUGIN.Bind(self, callback)

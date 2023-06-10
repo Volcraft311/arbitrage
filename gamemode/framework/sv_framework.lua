@@ -44,6 +44,39 @@ Arbitrage.commands.Add("me", {
     end
 })
 
+Arbitrage.commands.Add("mec", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        Arbitrage.chat.SendCommand("mec", client, text)
+    end
+})
+
+local function try(client, text, id)
+    local rand = math.random(0, 100) >= 50 and true or false
+
+    local character = Character.team:GetByID(client:Team())
+    if character then
+        if character:GetUniqueID() == "nagito" then
+            rand = client.nagitoRandom
+            client.nagitoRandom = !client.nagitoRandom
+        elseif character:GetUniqueID() == "makoto" and !rand then
+            if math.random(1, 5) == 5 then -- 20% на то, что повезет
+                rand = true
+            end
+        end
+    end
+
+    Arbitrage.chat.SendCommand(id, client, text, rand)
+end
+
 Arbitrage.commands.Add("try", {
     arguments = {
         [1] = {
@@ -54,21 +87,23 @@ Arbitrage.commands.Add("try", {
     },
     OnAction = function(client, text)
         if client:IsSpectate() then return end
-        local rand = math.random(0, 100) >= 50 and true or false
 
-        local character = Character.team:GetByID(client:Team())
-        if character then
-            if character:GetUniqueID() == "nagito" then
-                rand = client.nagitoRandom
-                client.nagitoRandom = !client.nagitoRandom
-            elseif character:GetUniqueID() == "makoto" and !rand then
-                if math.random(1, 5) == 5 then -- 20% на то, что повезет
-                    rand = true
-                end
-            end
-        end
+        try(client, text, "try")
+    end
+})
 
-        Arbitrage.chat.SendCommand("try", client, text, rand)
+Arbitrage.commands.Add("tryc", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        try(client, text, "tryc")
     end
 })
 
@@ -114,6 +149,21 @@ Arbitrage.commands.Add("it", {
         if client:IsSpectate() then return end
 
         Arbitrage.chat.SendCommand("it", client, text)
+    end
+})
+
+Arbitrage.commands.Add("itc", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        Arbitrage.chat.SendCommand("itc", client, text)
     end
 })
 

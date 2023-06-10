@@ -167,12 +167,15 @@ end
 
 local colors = {
     ["me"] = Color(44, 176, 247),
+    ["mec"] = Color(44, 176, 247),
     ["try"] = Color(44, 247, 85),
+    ["tryc"] = Color(44, 247, 85),
+    ["it"] = Color(255, 255, 255),
+    ["itc"] = Color(255, 255, 255),
+    ["roll"] = Color(209, 69, 69),
     ["looc"] = Color(190, 62, 62),
     ["ooc"] = Color(236, 62, 62),
-    ["it"] = Color(236, 62, 62),
-    ["roll"] = Color(209, 69, 69),
-    ["it"] = Color(255, 255, 255)
+    ["command"] = Color(121, 17, 255),
 }
 
 local function getColor(client)

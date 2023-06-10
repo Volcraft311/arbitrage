@@ -839,17 +839,25 @@ end
 
 local function GetChatType(value)
 	for k, v in ipairs(PLUGIN.typesData) do
-		if string.Left(value:lower(), v:len() + 1) ==  "/" .. v:lower() then
+		if "/" .. v:lower() .. " " == string.Left(value:lower(), v:len() + 2) then
 			return k
 		end
 	end
 
 	if string.Left(value, 2) == "[[" or string.Left(value, 2) == "./" then
-		return 5
+		return 8
 	end
 
 	if string.Left(value, 2) == "//" then
-		return 6
+		return 9
+	end
+
+	if (string.Left(value, 1) == "/" or string.Left(value, 1) == "!") and value:len() > 1 then
+		local explode = string.Explode(" ", value)
+
+		if #explode > 1 then
+			return 10
+		end
 	end
 
 	return nil

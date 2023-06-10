@@ -867,18 +867,18 @@ local function GetChatType(value)
 	end
 
 	if string.Left(value, 2) == "[[" or string.Left(value, 2) == "./" then
-		return 8
+		return 10
 	end
 
 	if string.Left(value, 2) == "//" then
-		return 9
+		return 11
 	end
 
 	if (string.Left(value, 1) == "/" or string.Left(value, 1) == "!") and value:len() > 1 then
 		local explode = string.Explode(" ", value)
 
 		if #explode > 1 then
-			return 10
+			return 13
 		end
 	end
 

@@ -103,7 +103,21 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist() * 0.3)) do
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+                TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["mel"] = {
+        Color = Color(44, 176, 247),
+        OnCreate = function(client, sender, data)
+            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -131,7 +145,21 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist() * 0.3)) do
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+                TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["tryl"] = {
+        Color = Color(44, 247, 85),
+        OnCreate = function(client, sender, data)
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -237,7 +265,21 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist() * 0.3)) do
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+                TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["itl"] = {
+        Color = color_white,
+        OnCreate = function(client, sender, data)
+            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end

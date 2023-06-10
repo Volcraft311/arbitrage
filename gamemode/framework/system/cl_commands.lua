@@ -22,14 +22,20 @@ local function RegisterCommand(command, help, arguments, optionalArguments)
     }
 end
 
-RegisterCommand("me", "Описать действие от третьего лица с окружающими.", {"text"})
-RegisterCommand("mec", "Описать действие с маленькой дистанцией от третьего лица с окружающими.", {"text"})
-RegisterCommand("try", "Возможное действие случая.", {"text"})
-RegisterCommand("tryc", "Возможное действие случая с маленькой дистанцией.", {"text"})
+RegisterCommand("me", "Говорить от третьего лица с окружающими.", {"text"})
+RegisterCommand("mec", "Говорить от третьего лица с окружающими ВБЛИЗИ вас.", {"text"})
+RegisterCommand("mel", "Говорить от третьего лица с окружающими большой площади вокруг вас", {"text"})
+
+RegisterCommand("try", "Возможное действие случай.", {"text"})
+RegisterCommand("tryc", "Возможное действие случай ближнего радиуса.", {"text"})
+RegisterCommand("tryl", "Возможное действие случая на большом расстоянии.", {"text"})
+
+RegisterCommand("it", "Описать местное действие или событие.", {"text"})
+RegisterCommand("itc", "Опишисать локальное действие или событие ближнего радиуса действия.", {"text"})
+RegisterCommand("itl", "Опишисать локальное действие или событие на большом расстоянии.", {"text"})
+
 RegisterCommand("w", "Шептать персонажам рядом с вами.", {"text"})
 RegisterCommand("y", "Крикнуть персонажам рядом с вами.", {"text"})
-RegisterCommand("it", "Описать местное действие или событие.", {"text"})
-RegisterCommand("itc", "Описать местное действие или событие с маленькой дистанцией.", {"text"})
 RegisterCommand("looc", "Написать в локальный НонРП чат.", {"text"})
 RegisterCommand("ooc", "Написать в глобальный НонРП чат.", {"text"})
 RegisterCommand("broadcast", "Написать уведомление в общий чат.", {"text"})

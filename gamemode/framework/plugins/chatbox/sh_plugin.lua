@@ -6,13 +6,19 @@ PLUGIN.gui = PLUGIN.gui or {}
 PLUGIN.typesData = {
     "me",
     "mec",
+    "mel",
+
     "try",
     "tryc",
+    "tryl",
+
     "it",
     "itc",
-    "roll",
+    "itl",
+
     "looc",
     "ooc",
+    "roll",
     "command"
 }
 

@@ -59,6 +59,21 @@ Arbitrage.commands.Add("mec", {
     end
 })
 
+Arbitrage.commands.Add("mel", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        Arbitrage.chat.SendCommand("mel", client, text)
+    end
+})
+
 local function try(client, text, id)
     local rand = math.random(0, 100) >= 50 and true or false
 
@@ -104,6 +119,21 @@ Arbitrage.commands.Add("tryc", {
         if client:IsSpectate() then return end
 
         try(client, text, "tryc")
+    end
+})
+
+Arbitrage.commands.Add("tryl", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        try(client, text, "tryl")
     end
 })
 
@@ -164,6 +194,21 @@ Arbitrage.commands.Add("itc", {
         if client:IsSpectate() then return end
 
         Arbitrage.chat.SendCommand("itc", client, text)
+    end
+})
+
+Arbitrage.commands.Add("itl", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        Arbitrage.chat.SendCommand("itl", client, text)
     end
 })
 

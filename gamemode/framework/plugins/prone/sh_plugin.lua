@@ -6,8 +6,10 @@ Prone.name = "Prone"
 function Prone:CanHandle(client)
 	if Arbitrage.lawEnable then return false, "Вы не можете лечь во время суда!" end
 
-	local seq = client:GetAction()
-	if seq then return false, "Вы находитесь в анимации!" end
+	if !client:IsProne() then
+		local seq = client:GetAction()
+		if seq then return false, "Вы находитесь в анимации!" end
+	end
 
 	local info = Character.team:GetByID(client:Team())
 

@@ -889,8 +889,10 @@ local padding = 5
 function PANEL:OnTextChanged(text)
 	hook.Run("ChatTextChanged", text)
 
+	local abbreviatedCommand = string.Left(text, 2) == "[[" or string.Left(text, 2) == "./" or string.Left(text, 2) == "//"
+
 	local prefix = string.sub(text, 1, 1)
-	if (prefix == "!" or prefix == "/") or (string.Left(text, 2) == "[[" or string.Left(text, 2) == "./" or string.Left(text, 2) == "//") then
+	if prefix == "!" or prefix == "/" or abbreviatedCommand then
 		local inputCommand = text:utf8sub(2, text:utf8len())
 		local explode = string.Explode(" ", inputCommand)
 		inputCommand = explode[1]
@@ -900,18 +902,20 @@ function PANEL:OnTextChanged(text)
 
 		local useCommand = nil
 		if #explode > 1 then
-			local id = explode[1]
-
-			local command = commands[id]
-			if command then
-				useCommand = id
+			if !abbreviatedCommand then
+				useCommand = explode[1]
 			end
 		end
 
 		if useCommand then
-			commands = {
-				[useCommand] = commands[useCommand]
-			}
+			local command = commands[useCommand]
+			if command then
+				commands = {
+					[useCommand] = commands[useCommand]
+				}
+			else
+				commands = {}
+			end
 		end
 
 		for k, v in pairs(self.commandsPanel.stored) do

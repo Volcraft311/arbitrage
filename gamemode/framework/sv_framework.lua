@@ -625,7 +625,6 @@ local function initPlayer(client)
 
         if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
             client:UnStuck()
-            client:ChatNotify("Похоже вы застряли. Сервер телепортировал вас на ближайшую позицию!")
 
             client._stuck_cd = CurTime() + 10
         end

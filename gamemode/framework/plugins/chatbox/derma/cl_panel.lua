@@ -797,7 +797,7 @@ function PANEL:Paint(width, height)
 	end
 end
 
-local function GetAllCommands(text, onlySG)
+local function GetAllCommands(text, onlySG, originalText)
 	local data = {}
 
 	for command, stored in pairs(serverguard.command.stored) do
@@ -819,6 +819,28 @@ local function GetAllCommands(text, onlySG)
 					stored.help
 				}
 			end
+		end
+
+		if string.Left(originalText, 2) == "[[" or string.Left(originalText, 2) == "./" then
+			local command = "looc"
+			local stored = Arbitrage.commands.stored[command]
+
+			 data[command] = {
+				stored.arguments or {},
+				stored.optionalArguments or {},
+				stored.help
+			}
+		end
+
+		if string.Left(originalText, 2) == "//" then
+			local command = "ooc"
+			local stored = Arbitrage.commands.stored[command]
+
+			 data[command] = {
+				stored.arguments or {},
+				stored.optionalArguments or {},
+				stored.help
+			}
 		end
 	end
 
@@ -868,21 +890,43 @@ function PANEL:OnTextChanged(text)
 	hook.Run("ChatTextChanged", text)
 
 	local prefix = string.sub(text, 1, 1)
-	if prefix == "!" or prefix == "/" then
+	if (prefix == "!" or prefix == "/") or (string.Left(text, 2) == "[[" or string.Left(text, 2) == "./" or string.Left(text, 2) == "//") then
 		local inputCommand = text:utf8sub(2, text:utf8len())
 		local explode = string.Explode(" ", inputCommand)
 		inputCommand = explode[1]
 		self._numEx = #explode
 
-		local commands = GetAllCommands(inputCommand, prefix == "!")
+		local commands = GetAllCommands(inputCommand, prefix == "!", text)
+
+		local useCommand = nil
+		if #explode > 1 then
+			local id = explode[1]
+
+			local command = commands[id]
+			if command then
+				useCommand = id
+			end
+		end
+
+		if useCommand then
+			commands = {
+				[useCommand] = commands[useCommand]
+			}
+		end
 
 		for k, v in pairs(self.commandsPanel.stored) do
 			local isFind = false
 
-			for k2, v2 in pairs(commands) do
-				if k == k2 then
+			if !useCommand then
+				for k2, v2 in pairs(commands) do
+					if k == k2 then
+						isFind = true
+						break
+					end
+				end
+			else
+				if k == useCommand then
 					isFind = true
-					break
 				end
 			end
 

@@ -189,17 +189,6 @@ PLUGIN:AddEntityESPCustomization("model_en", {
     end
 })
 
-PLUGIN:AddEntityESPCustomization("vector_en", {
-    dist = 500,
-    config = {
-        name = "Позиция энтити",
-        desc = "Включить показатель энтити"
-    },
-    data = function(entity)
-        return "Vector(" .. math.Round(entity:GetPos().x, 2) .. ", " .. math.Round(entity:GetPos().y, 2) .. ", " .. math.Round(entity:GetPos().z, 2) .. ")"
-    end
-})
-
 PLUGIN:AddEntityESPCustomization("chams_en", {
     dist = 1000,
     config = {

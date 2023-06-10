@@ -26,9 +26,9 @@ RegisterCommand("me", "Говорить от третьего лица с окр
 RegisterCommand("mec", "Говорить от третьего лица с окружающими ВБЛИЗИ вас.", {"text"})
 RegisterCommand("mel", "Говорить от третьего лица с окружающими большой площади вокруг вас", {"text"})
 
-RegisterCommand("try", "Возможное действие случай.", {"text"})
-RegisterCommand("tryc", "Возможное действие случай ближнего радиуса.", {"text"})
-RegisterCommand("tryl", "Возможное действие случая на большом расстоянии.", {"text"})
+RegisterCommand("try", "Возможное действие случая.", {"text"})
+RegisterCommand("tryc", "Возможное действие случая ближнего радиуса.", {"text"})
+RegisterCommand("tryl", "Возможное действие случая большого радиуса.", {"text"})
 
 RegisterCommand("it", "Описать местное действие или событие.", {"text"})
 RegisterCommand("itc", "Опишисать локальное действие или событие ближнего радиуса действия.", {"text"})
@@ -41,7 +41,7 @@ RegisterCommand("ooc", "Написать в глобальный НонРП ча
 RegisterCommand("broadcast", "Написать уведомление в общий чат.", {"text"})
 RegisterCommand("sg", "Получить изображение экрана игрока.", {"player"})
 RegisterCommand("settime", "Установить время на сервере.", {"time"})
-RegisterCommand("roll", "Крутить число от 0 до 100.")
+RegisterCommand("roll", "Крутить число от 0 до 100.", nil, {"number"})
 RegisterCommand("freezeprops", "Заморозить все физические пропы.")
 RegisterCommand("editor", "Зайти в режим редактирования.")
 RegisterCommand("unstuck", "Телепортироваться на ближайшую позицию.")

@@ -183,13 +183,14 @@ if CLIENT then
 
                 wm:SetRenderOrigin(vec + ang:Right() * self.Pos.x * 0.8 + ang:Forward() * self.Pos.y * -0.3 + ang:Up() * self.Pos.z * .3)
                 wm:SetRenderAngles(ang)
-                wm:DrawModel()
                 wm:SetModelScale(0.8, 0)
+
+                if !owner:IsNocliping() then
+                    wm:DrawModel()
+                end
 
                 self:UpdateLight(owner:GetPos())
             end
-        else
-            self:DrawModel()
         end
     end
 

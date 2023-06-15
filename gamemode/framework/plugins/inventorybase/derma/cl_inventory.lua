@@ -120,11 +120,98 @@ function PANEL:InitSlot(panel)
         if bDoDrop then
             item.selectPanel = nil
 
+            local function transfer()
+                if !IsValid(item) then return end
+
+                netstream.Start("InventoryBase:TransferItem", item.item:GetID(), this.invID, this.slotX, this.slotY)
+            end
+
+            local function unstack(value)
+                if !IsValid(item) then return end
+
+                value = math.Round(value, 0)
+                netstream.Start("InventoryBase:ItemUnStack", item.item:GetID(), this.invID, value, this.slotX, this.slotY)
+            end
+
+            local function stack()
+                if !IsValid(panel) then return end
+                if !IsValid(item) then return end
+
+                netstream.Start("InventoryBase:ItemStack", panel.item:GetID(), item.item:GetID())
+            end
+
             local parent = item:GetParent()
             if !parent then return end
-            if panel.item then return end
+            if panel.item then
+                return stack()
+            end
 
-            netstream.Start("InventoryBase:TransferItem", item.item:GetID(), this.invID, this.slotX, this.slotY)
+            if input.IsKeyDown(KEY_LSHIFT) or input.IsKeyDown(KEY_LCONTROL) then
+                local func = item.item.UnStackValue
+                if !func then return transfer() end
+
+                local maxValue = func(item.item)
+                if !maxValue then return transfer() end
+
+                if maxValue > 1 then
+                    local DermaPanel = vgui.Create("DFrame")
+                    DermaPanel:SetTitle("Разложить предметы")
+                    DermaPanel:SetSize(400, 100)
+                    DermaPanel:Center()
+                    DermaPanel:MakePopup()
+
+                    local DermaNumSlider = DermaPanel:Add("DNumSlider")
+                    DermaNumSlider:Dock(FILL)
+                    DermaNumSlider:SetText("Количество:")
+                    DermaNumSlider:SetMin(1)
+                    DermaNumSlider:SetMax(maxValue)
+                    DermaNumSlider:SetDecimals(0)
+                    DermaNumSlider:SetValue(math.floor(maxValue / 2))
+
+                    local DermaButton = DermaNumSlider:Add("DButton")
+                    DermaButton:SetText("Разложить")
+                    DermaButton:Dock(BOTTOM)
+                    DermaButton.DoClick = function()
+                        local value = DermaNumSlider:GetValue()
+
+                        DermaPanel:Remove()
+                        unstack(value)
+                    end
+
+                    DermaPanel.startTime = SysTime()
+                    DermaPanel:SetAlpha(0)
+                    DermaPanel:AlphaTo(255, 0.3)
+
+                    DermaPanel.Paint = function(_, w, h)
+                        Derma_DrawBackgroundBlur(_, _.startTime)
+
+                        surface.SetDrawColor(41, 22, 25)
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(255, 61, 96, 165.75)
+                        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+                        surface.SetDrawColor(255, 61, 96, 165.75)
+                        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+
+                        surface.SetDrawColor(255, 61, 96, 20)
+                        surface.DrawRect(0, 0, w, H(23))
+
+                        if !IsValid(Arbitrage.gui.inventory) then
+                            _:Remove()
+                        end
+                    end
+
+                    DermaPanel:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
+                    DermaPanel:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
+                elseif maxValue == 1 then
+                    unstack(1)
+                else
+                    transfer()
+                end
+            else
+                transfer()
+            end
         else
             item.selectPanel = this
         end

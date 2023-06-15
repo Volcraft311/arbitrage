@@ -197,6 +197,61 @@ netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
     client:ChatNotify("Вы успешно вытащили " .. amount .. " патрон из запаса для " .. name .. "!")
 end)
 
+netstream.Hook("InventoryBase:ItemUnStack", function(client, itemID, invID, value, x, y)
+    if client:IsSpectate() then return end
+
+    local item = ItemBase.instances[itemID]
+    if !item then return end
+
+    local inventoryItem = item:GetInventory()
+    if !inventoryItem then return end
+    if !inventoryItem:IsReceiver(client) then return end
+
+    local inventoryTransfer = InventoryBase.instances[invID]
+    if !inventoryTransfer then return end
+    if !inventoryTransfer:IsReceiver(client) then return end
+
+    if inventoryTransfer:GetItemAt(x, y) then return end
+
+    local funcUnStackValue = item.UnStackValue
+    if !funcUnStackValue then return end
+
+    local maxValue = funcUnStackValue(item)
+    if !maxValue then return end
+    if maxValue <= 0 then return end
+    if value > maxValue then return end
+
+    local funcUnStack = item.UnStack
+    if !funcUnStack then return end
+
+    funcUnStack(item, value, inventoryTransfer, x, y)
+end)
+
+netstream.Hook("InventoryBase:ItemStack", function(client, itemID, itemID2)
+    if client:IsSpectate() then return end
+
+    if itemID == itemID2 then return end
+
+    local item = ItemBase.instances[itemID]
+    if !item then return end
+
+    local inventoryItem = item:GetInventory()
+    if !inventoryItem then return end
+    if !inventoryItem:IsReceiver(client) then return end
+
+    local item2 = ItemBase.instances[itemID2]
+    if !item2 then return end
+
+    local inventoryItem2 = item2:GetInventory()
+    if !inventoryItem2 then return end
+    if !inventoryItem2:IsReceiver(client) then return end
+
+    local funcStack = item.Stack
+    if !funcStack then return end
+
+    funcStack(item, item2)
+end)
+
 netstream.Hook("Inventory:OpenMenu", function(client)
     for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
         TypingDraw:SetTypingText(v, client, "Осматривает карманы", Color(255, 170, 23))

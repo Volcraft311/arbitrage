@@ -169,6 +169,7 @@ netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
     local ammoCount = client:GetAmmo()[id]
     if !ammoCount then return end
 
+    amount = math.floor(amount)
     amount = math.Clamp(amount, 0, ammoCount)
     if amount <= 0 then return end
 
@@ -215,6 +216,8 @@ netstream.Hook("InventoryBase:ItemUnStack", function(client, itemID, invID, valu
 
     local funcUnStackValue = item.UnStackValue
     if !funcUnStackValue then return end
+
+    value = math.floor(value)
 
     local maxValue = funcUnStackValue(item)
     if !maxValue then return end

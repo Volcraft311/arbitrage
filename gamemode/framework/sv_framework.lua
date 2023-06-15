@@ -80,8 +80,7 @@ local function try(client, text, id)
     local character = Character.team:GetByID(client:Team())
     if character then
         if character:GetUniqueID() == "nagito" then
-            rand = client.nagitoRandom
-            client.nagitoRandom = !client.nagitoRandom
+            rand = math.random(1, 2) == 1
         elseif character:GetUniqueID() == "makoto" and !rand then
             if math.random(1, 5) == 5 then -- 20% на то, что повезет
                 rand = true
@@ -329,8 +328,7 @@ Arbitrage.commands.Add("roll", {
         local character = Character.team:GetByID(client:Team())
         if character then
             if character:GetUniqueID() == "nagito" then
-                rand = client.nagitoRandom and maxRand or 0
-                client.nagitoRandom = !client.nagitoRandom
+                rand = math.random(1, 2) == 1 and maxRand or 0
             elseif character:GetUniqueID() == "makoto" and rand < maxRand / 2 then
                 if math.random(1, 5) == 5 then -- 20% на то, что повезет
                     rand = maxRand

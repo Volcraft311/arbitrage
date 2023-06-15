@@ -78,6 +78,46 @@ function BASE:GetDescription()
     return self:GetData("m_description", self.description) .. " Количество патрон: " .. amount .. "."
 end
 
+function BASE:Stack(item)
+    if item.base != item.base then return end
+
+    local itemClass = self:GetAmmoClass()
+    local item2Class = item:GetAmmoClass()
+    if itemClass != item2Class then return end
+
+    local itemAmount = self:GetAmount()
+    local item2Amount = item:GetAmount()
+
+    item:Remove()
+    self:SetData("amount", itemAmount + item2Amount)
+end
+
+function BASE:UnStack(value, inventory, x, y)
+    local amount = self:GetAmount()
+
+    local item = ItemBase.CreateItem(self:GetUniqueID())
+    if !item then return end
+
+    local errNotify = item:Transfer(inventory:GetID(), x, y)
+    if errNotify then return end
+
+    self:SetData("amount", amount - value)
+    item:SetData("amount", value)
+
+    local data = ItemBase.data[self:GetID()]
+    for k, v in pairs(data) do
+        if string.Left(k, 2) == "m_" then
+            item:SetData(k, v)
+        end
+    end
+end
+
+function BASE:UnStackValue()
+    local amount = self:GetAmount()
+
+    return amount - 1
+end
+
 BASE:AddAction("Использовать", {
     icon = "icon16/tick.png",
     OnRun = function(item)

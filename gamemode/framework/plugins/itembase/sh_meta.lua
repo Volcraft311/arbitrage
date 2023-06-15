@@ -141,17 +141,26 @@ if SERVER then
             if !inventory then return "Невозможно передвинуть предмет!" end
 
             local owner = inventory:GetOwner()
+            if !IsValid(owner) then
+                local newInventory = self._oldInventory
+
+                if newInventory then
+                    owner = newInventory:GetOwner()
+                end
+            end
+
             if !IsValid(owner) then return end
 
             local dist = 100
-            local tr = owner:GetPos() + owner:GetAngles():Forward() * dist
-
+            local tr = nil
             if owner:IsPlayer() then
                 tr = util.TraceLine({
                     start = owner:EyePos(),
                     endpos = owner:EyePos() + owner:EyeAngles():Forward() * dist,
                     filter = owner
                 })
+            else
+                tr = owner:GetPos() + owner:GetAngles():Forward() * dist
             end
 
             self:HookRun("drop")

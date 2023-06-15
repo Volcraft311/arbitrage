@@ -36,7 +36,9 @@ function ItemBase.GetBase(base)
             local client = item.player
             client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_DROP, true)
 
+            item._oldInventory = client:GetInventory() -- нужно для получения старого инвентаря если запускается с контейнера
             item:Transfer(nil)
+            item._oldInventory = nil
 
             for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
                 TypingDraw:SetTypingText(v, client, "Выкидывает '" .. item:GetName() .. "'", Color(255, 170, 23))

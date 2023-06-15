@@ -112,7 +112,6 @@ function PANEL:InitSlot(panel)
 		local itemPanel = panel:Add("DButton")
 	    itemPanel:SetText("")
 	    itemPanel:Dock(FILL)
-	    itemPanel:Droppable("transferItem")
 	    itemPanel.Paint = function(this, w, h)
 	    	if icon then
 		        surface.SetDrawColor(255, 255, 255)

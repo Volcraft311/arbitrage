@@ -58,6 +58,18 @@ function PANEL:Init()
     InventoryBase:CreateInfoPanel(self, inventoryPanel:GetX(), inventoryPanel:GetY() + h + H(40), math.max(w, W(420)))
 
     netstream.Start("Inventory:OpenMenu")
+    self:Receiver("transferItem", function(this, panels, bDoDrop)
+        local panel = panels[1]
+        if !panel then return end
+
+        local item = panel.item
+
+        if bDoDrop and item then
+            panel.selectPanel = nil
+
+            netstream.Start("ItemBase:SendAction", item:GetID(), "Выбросить")
+        end
+    end)
 end
 
 function PANEL:Paint()

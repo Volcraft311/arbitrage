@@ -212,34 +212,52 @@ function PLUGIN:ActionsOption()
 					id = "unequip_ammo_" .. string.lower(name),
 					description = "Вытащить патроны из запаса для " .. name,
 					action = function()
-						DermaStringRequest = Derma_StringRequest("Разоружить оружие", "Введите количество патрон, которое вы хотите вытащить", count, function(text)
-							text = tonumber(text)
-							if !text then return end
+					    local DermaPanel = vgui.Create("DFrame")
+	                    DermaPanel:SetTitle("Вытащить патроны")
+	                    DermaPanel:SetSize(400, 100)
+	                    DermaPanel:Center()
+	                    DermaPanel:MakePopup()
 
-							netstream.Start("Inventory:UnequipAmmo", id, text)
-						end, nil, "Вытащить", "Отменить")
-						DermaStringRequest.startTime = SysTime()
-						DermaStringRequest:SetAlpha(0)
-						DermaStringRequest:AlphaTo(255, 0.3)
+	                    local DermaNumSlider = DermaPanel:Add("DNumSlider")
+	                    DermaNumSlider:Dock(FILL)
+	                    DermaNumSlider:SetText("Количество:")
+	                    DermaNumSlider:SetMin(1)
+	                    DermaNumSlider:SetMax(count)
+	                    DermaNumSlider:SetDecimals(0)
+	                    DermaNumSlider:SetValue(math.floor(count / 2))
 
-					    DermaStringRequest.Paint = function(_, w, h)
-					        Derma_DrawBackgroundBlur(_, _.startTime)
+	                    local DermaButton = DermaNumSlider:Add("DButton")
+	                    DermaButton:SetText("Вытащить")
+	                    DermaButton:Dock(BOTTOM)
+	                    DermaButton.DoClick = function()
+	                        local value = DermaNumSlider:GetValue()
 
-					        surface.SetDrawColor(41, 22, 25)
-					        surface.DrawRect(0, 0, w, h)
+	                        DermaPanel:Remove()
+	                        netstream.Start("Inventory:UnequipAmmo", id, math.Round(value, 0))
+	                    end
 
-					        surface.SetDrawColor(255, 61, 96, 165.75)
-					        surface.DrawOutlinedRect(0, 0, w, h, 2)
+	                    DermaPanel.startTime = SysTime()
+	                    DermaPanel:SetAlpha(0)
+	                    DermaPanel:AlphaTo(255, 0.3)
 
-					        surface.SetDrawColor(255, 61, 96, 165.75)
-					        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+	                    DermaPanel.Paint = function(_, w, h)
+	                        Derma_DrawBackgroundBlur(_, _.startTime)
 
-					        surface.SetDrawColor(255, 61, 96, 20)
-					        surface.DrawRect(0, 0, w, H(23))
-					    end
+	                        surface.SetDrawColor(41, 22, 25)
+	                        surface.DrawRect(0, 0, w, h)
 
-					    DermaStringRequest:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
-					    DermaStringRequest:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
+	                        surface.SetDrawColor(255, 61, 96, 165.75)
+	                        surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+	                        surface.SetDrawColor(255, 61, 96, 165.75)
+	                        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+
+	                        surface.SetDrawColor(255, 61, 96, 20)
+	                        surface.DrawRect(0, 0, w, H(23))
+	                    end
+
+	                    DermaPanel:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
+	                    DermaPanel:GetChildren()[5]:GetChildren()[1]:SetTextColor(Color(255, 255, 255))
 					end
 				}
 			end

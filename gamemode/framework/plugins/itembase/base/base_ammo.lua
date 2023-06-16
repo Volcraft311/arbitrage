@@ -79,7 +79,7 @@ function BASE:GetDescription()
 end
 
 function BASE:Stack(item)
-    if item.base != item.base then return end
+    if self.base != item.base then return end
 
     local itemClass = self:GetAmmoClass()
     local item2Class = item:GetAmmoClass()

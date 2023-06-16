@@ -56,6 +56,7 @@ PLUGIN.type = {
         labelPanel:DockMargin(0, 0, W(20), 0)
 
         sliderPanel.OnValueChanged = function(_, value)
+            value = math.floor(value)
             local oldValue = SETTINGS.options.Get(data.id)
 
             if oldValue != value then
@@ -63,7 +64,6 @@ PLUGIN.type = {
                 hook.Run("SETTINGS:OnOptionChange", data.id, value)
             end
 
-            value = math.floor(value)
             labelPanel:SetText(value)
         end
 

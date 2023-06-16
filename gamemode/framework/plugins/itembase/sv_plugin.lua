@@ -71,25 +71,29 @@ netstream.Hook("ItemBase:SendAction", function(client, itemID, action)
         if !inventory:IsReceiver(client) then return end
     end
 
-    item.player = client
-    item.entity = entity
+    if (!client.ItemActionCD or CurTime() >= client.ItemActionCD) then
+        client.ItemActionCD = CurTime() + 0.3
 
-    local actionList = item:GetValidActions()
-    local actionInfo = actionList[action]
-    if actionInfo then
-        local actionRun = actionInfo.OnRun
+        item.player = client
+        item.entity = entity
 
-        if actionRun then
-            local data = actionRun(item)
+        local actionList = item:GetValidActions()
+        local actionInfo = actionList[action]
+        if actionInfo then
+            local actionRun = actionInfo.OnRun
 
-            if data != false then
-                item:Remove()
+            if actionRun then
+                local data = actionRun(item)
+
+                if data != false then
+                    item:Remove()
+                end
             end
         end
-    end
 
-    item.player = nil
-    item.entity = nil
+        item.player = nil
+        item.entity = nil
+    end
 end)
 
 netstream.Hook("ItemBase:SpawnItem", function(client, uniqueID)

@@ -61,15 +61,15 @@ if CLIENT then
 end
 
 function BASE:GetAmmoClass()
-    return self:GetData("m_ammoClass", self.ammoClass)
+    return tostring(self:GetData("m_ammoClass", self.ammoClass))
 end
 
 function BASE:GetAmmoAmount()
-    return self:GetData("m_ammoAmount", self.ammoAmount)
+    return tonumber(self:GetData("m_ammoAmount", self.ammoAmount))
 end
 
 function BASE:GetAmount()
-    return self:GetData("amount", tonumber(self:GetAmmoAmount()))
+    return tonumber(self:GetData("amount", self:GetAmmoAmount()))
 end
 
 function BASE:GetDescription()

@@ -67,15 +67,15 @@ function BASE:GetDescription()
 end
 
 function BASE:GetMaxStack()
-    return self:GetData("m_maxstack", self.maxstack)
+    return tonumber(self:GetData("m_maxstack", self.maxstack))
 end
 
 function BASE:GetStackDefault()
-    return self:GetData("m_stackdefault", self.stackdefault)
+    return tonumber(self:GetData("m_stackdefault", self.stackdefault))
 end
 
 function BASE:GetStack()
-    return self:GetData("stack", self:GetStackDefault())
+    return tonumber(self:GetData("stack", self:GetStackDefault()))
 end
 
 function BASE:Stack(item)

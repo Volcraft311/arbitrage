@@ -420,7 +420,7 @@ Character.team:Create({
     stamina = {run_consumption = 1},
     speed = {walk = 1, run = 1},
     needs = {hunger = 30, thirst = 30, fatique = 46},
-    items = {"camera"},
+    items = {"weapon_camera"},
     scale = 0.993,
     hullscale = 0.91,
     hullduckscale = 1.184,

@@ -405,3 +405,13 @@ do
 
     ItemBase:RegisterItem("converter_weapon", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_stack")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_stack", ITEM)
+end

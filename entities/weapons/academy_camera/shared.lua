@@ -154,4 +154,5 @@ function SWEP:DrawHUD()
 	Hints:AddKeyDraw((self.Flash and "Включить" or "Выключить") .. " вспышку", {MOUSE_LEFT, "+use"})
 	Hints:AddKeyDraw("Изменить ракурс", MOUSE_RIGHT)
 	Hints:AddKeyDraw("Сфотографировать", MOUSE_LEFT)
+	Hints:AddKeyDraw("Сбросить камеру", "+reload")
 end

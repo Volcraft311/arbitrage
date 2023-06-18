@@ -256,7 +256,7 @@ local actionList = {
 
         for k, v in ipairs(ents.FindByClass("prop_ragdoll")) do
             if v.client == target then
-                local inventory = v:GetInventory()
+                local inventory = v:GetInventory() or v._containerInventory
                 if inventory then
                     for x = 1, inventory.w do
                         for y = 1, inventory.h do

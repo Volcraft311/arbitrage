@@ -79,14 +79,14 @@ function PLUGIN:DoPlayerDeath(client, attacker, damageinfo)
         if !inventory then return end
 
         entity._containerName = client:Name()
-        entity.Inventory = InventoryBase.CreateInventory(inventory.w, inventory.h)
+        entity._containerInventory = InventoryBase.CreateInventory(inventory.w, inventory.h)
 
         for x = 1, inventory.w do
             for y = 1, inventory.h do
                 local item = inventory:GetItemAt(x, y)
 
                 if item and !item:GetData("equip") then
-                    item:Transfer(entity.Inventory:GetID(), x, y)
+                    item:Transfer(entity._containerInventory:GetID(), x, y)
                 end
             end
         end

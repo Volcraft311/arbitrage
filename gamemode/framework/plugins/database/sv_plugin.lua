@@ -70,6 +70,7 @@ function PLUGIN:PlayerDisconnected(client)
 
         local hullMin, hullMax = client:GetHull()
         local hullduckMin, hullduckMax = client:GetHullDuck()
+        local inventory = client:GetInventory()
 
         entity.data = {
             health = client:Health(),
@@ -79,7 +80,7 @@ function PLUGIN:PlayerDisconnected(client)
             activeweapon = client:GetActiveWeapon():GetClass(),
             statistic = {},
             evidence = client:GetEvidences(),
-            inventoryID = client:GetInventory():GetID(),
+            inventoryID = inventory:GetID(),
             ammo = client:GetAmmo(),
             scale = client:GetModelScale(),
             hullscale = {hullMin, hullMax},
@@ -109,6 +110,9 @@ function PLUGIN:PlayerDisconnected(client)
             end
         end
 
+        entity._containerTime = 15
+        entity._containerName = client:Name()
+        entity._containerInventory = inventory
         self.disconnectPlayers[client:SteamID()] = entity
     end
 end

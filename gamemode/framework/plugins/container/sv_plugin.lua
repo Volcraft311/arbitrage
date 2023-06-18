@@ -57,3 +57,25 @@ function Container:Reload(data)
 
     return "Вы успешно удалили контейнер из " .. name .. "."
 end
+
+function Container:PlayerUse(client, entity)
+    local inventory = entity._containerInventory
+    if !inventory then return end
+
+    if entity:IsPlayer() then return end
+
+    if !client.containerCD or CurTime() >= client.containerCD then
+        client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+
+        Arbitrage.action.ActionRun(client, "Обыскиваем", entity._containerTime or 1, function()
+            if client:GetEyeTrace().Entity != entity then return true end
+            if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
+
+             return false
+        end, function(activator)
+            InventoryBase.Open(client, inventory:GetID(), entity._containerName)
+        end)
+
+        client.containerCD = CurTime() + 2
+    end
+end

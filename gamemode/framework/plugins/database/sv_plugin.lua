@@ -158,7 +158,7 @@ function PLUGIN:PlayerInitial(client)
     if !data then return end
 
     client:SetPos(leaveEntity:GetPos() + Vector(0, 0, 10))
-    client:SetEyeAngles(leaveEntity:GetAngles())
+    client:SetEyeAngles(Angle(0, 0, 0))
 
     Character.team:Join(client, data.faction)
 
@@ -209,6 +209,7 @@ function PLUGIN:PlayerInitialSpawnForRealz(client)
     local data = client.saveData
     if !data then return end
 
+    client:SetEyeAngles(Angle(0, 0, 0))
     client:SelectWeapon(data.activeweapon)
 
     for k, v in pairs(data.statistic) do

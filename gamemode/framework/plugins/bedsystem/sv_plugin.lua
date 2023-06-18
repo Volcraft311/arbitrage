@@ -44,7 +44,7 @@ function PLUGIN:GetUpBed(client, entity)
 end
 
 function PLUGIN:PlayerUse(client, entity)
-    local allow = self.allowBed[string.lower(tostring(entity:GetModel()) or "")]
+    local allow = self.allowBed[string.lower(tostring(entity:GetModel() or ""))]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
         for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do

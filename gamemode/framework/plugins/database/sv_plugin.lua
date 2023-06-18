@@ -129,10 +129,10 @@ timer.Create("DataBase:Saver", 60, 0, function()
         local sm = entity:GetMaterials()
         if sm then
             for k, v in ipairs(sm) do
-                local mat = entity:GetSubMaterial(k)
+                local mat = entity:GetSubMaterial(k - 1)
 
                 if mat and mat != "" then
-                    entity._saver.SubMat[k] = mat
+                    entity._saver.SubMat[k - 1] = mat
                 end
             end
         end

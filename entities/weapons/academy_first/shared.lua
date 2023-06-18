@@ -89,7 +89,12 @@ function SWEP:PrimaryAttack()
 
     local client = self:GetOwner()
 
-    if client:GetLocalVar("bIsHoldingObject", false) then return self:DropObject(true) end
+    if client:GetLocalVar("bIsHoldingObject", false) then
+        self:SetNextPrimaryFire(CurTime() + 0.5)
+        self:SetNextSecondaryFire(CurTime() + 0.5)
+
+        return self:DropObject(true)
+    end
 
     if self:GetAttack() then
         local stamina = Stamina:GetStamina(client)

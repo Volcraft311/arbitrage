@@ -278,6 +278,8 @@ function SWEP:GetHeldPhysicsObject()
 end
 
 function SWEP:CanHoldObject(entity)
+    if entity:IsPlayer() then return false end
+
     local physics = entity:GetPhysicsObject()
 
     return IsValid(physics) and (physics:GetMass() <= 200 and physics:IsMoveable()) and !self:IsHoldingObject() and !IsValid(entity._HeldOwner)

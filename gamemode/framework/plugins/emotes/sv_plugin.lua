@@ -41,6 +41,19 @@ function Emotes:OnPlayerSitting(client, vehicle)
 		if !client:GetSitting() then
 			client:CheckStuck(0.2)
 			timer.Remove(timerID)
+
+			local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
+			if table.Count(entities) <= 0 then return end
+
+			client:SetNoDraw(true)
+		    client:SetNotSolid(true)
+		    client:DrawWorldModel(false)
+
+		    timer.Simple(0.2, function()
+			    client:SetNoDraw(false)
+			    client:SetNotSolid(false)
+			    client:DrawWorldModel(true)
+			end)
 		end
 	end)
 end

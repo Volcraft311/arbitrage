@@ -42,7 +42,7 @@ SWEP.HitDistance = 48
 SWEP.KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 
 SWEP.holdDistance = 64
-SWEP.maxHoldDistance = 96
+SWEP.maxHoldDistance = 150
 SWEP.maxHoldStress = 4000
 
 local SoundList = {"knocking.wav", "loud_knocking.wav"}

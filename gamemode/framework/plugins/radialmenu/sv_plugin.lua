@@ -21,17 +21,22 @@ netstream.Hook("RadialMenu:PushAction", function(client)
     local target = PLUGIN:ReturnTracePlayer(client)
     if !IsValid(target) then return end
 
-    local direction = client:GetAimVector() * 150
-    direction.z = 0
+    if (!client.PushActionCD or CurTime() >= client.PushActionCD) then
+        local direction = client:GetAimVector() * 150
+        direction.z = 0
 
-    target:SetVelocity(direction)
-    client:EmitSound("Weapon_Crossbow.BoltHitBody")
+        target:SetVelocity(direction)
+        client:EmitSound("Weapon_Crossbow.BoltHitBody")
 
-    client:ViewPunch(KnockViewPunchAngle)
-    target:ViewPunch(KnockViewPunchAngle)
+        client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_2HAND, true)
+        client:ViewPunch(KnockViewPunchAngle)
+        target:ViewPunch(KnockViewPunchAngle)
 
-    for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, "Толкает '" .. target:Name() .. "'", Color(255, 170, 23))
+        for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            TypingDraw:SetTypingText(v, client, "Толкает '" .. target:Name() .. "'", Color(255, 170, 23))
+        end
+
+        client.PushActionCD = CurTime() + 1
     end
 end)
 

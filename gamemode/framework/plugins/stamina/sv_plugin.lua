@@ -157,11 +157,6 @@ function Stamina:CalcRegeneration(client, info)
 		if length <= 0 then
 			regeneration = regeneration * 2
 		end
-
-		local isCrouching = client:Crouching()
-		if isCrouching then
-			regeneration = regeneration * 2
-		end
 	end
 
 	return regeneration

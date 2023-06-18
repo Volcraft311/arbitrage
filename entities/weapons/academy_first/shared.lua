@@ -85,11 +85,11 @@ function SWEP:UpdateNextIdle()
 end
 
 function SWEP:PrimaryAttack()
+    if !IsFirstTimePredicted() then return end
+
     local client = self:GetOwner()
 
-    if client:GetLocalVar("bIsHoldingObject", false) then
-        return self:DropObject(true)
-    end
+    if client:GetLocalVar("bIsHoldingObject", false) then return self:DropObject(true) end
 
     if self:GetAttack() then
         local stamina = Stamina:GetStamina(client)
@@ -119,15 +119,29 @@ function SWEP:PrimaryAttack()
         self:SetNextPrimaryFire(CurTime() + 0.4)
         self:SetNextSecondaryFire(CurTime() + 0.4)
     else
-        local trace = client:GetEyeTraceNoCursor()
+        local data = {}
+        data.start = client:GetShootPos()
+        data.endpos = data.start + client:GetAimVector() * 84
+        data.filter = {self, client}
+
+        local trace = util.TraceLine(data)
         local entity = trace.Entity
 
-        if SERVER and entity:GetPos():Distance(client:GetPos()) <= 100 and entity:IsDoor() then
-            if (!client.doorSpam or CurTime() >= client.doorSpam) then
-                client.doorSpam = CurTime() + 2
+        if SERVER and IsValid(entity) then
+            if entity:IsDoor() then
+                if (!client.doorSpam or CurTime() >= client.doorSpam) then
+                    client.doorSpam = CurTime() + 2
 
-                local s, _ = table.Random(SoundList)
-                client:EmitSound(s)
+                    local s, _ = table.Random(SoundList)
+                    client:EmitSound(s)
+                end
+            else
+                if self:CanHoldObject(entity) then
+                    client:SetLocalVar("bIsHoldingObject", true)
+                    self:PickupObject(entity)
+                    self:PlayPickupSound(trace.SurfaceProps)
+                    self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
+                end
             end
         end
     end
@@ -258,18 +272,10 @@ function SWEP:GetHeldPhysicsObject()
     return IsValid(self.heldEntity) and self.heldEntity:GetPhysicsObject() or nil
 end
 
-local allowedHoldableClasses = {
-    ["arb_item"] = true,
-    ["prop_physics"] = true,
-    ["prop_physics_override"] = true,
-    ["prop_physics_multiplayer"] = true,
-    ["prop_ragdoll"] = true
-}
-
 function SWEP:CanHoldObject(entity)
     local physics = entity:GetPhysicsObject()
 
-    return IsValid(physics) and (physics:GetMass() <= 100 and physics:IsMoveable()) and !self:IsHoldingObject() and !IsValid(entity._HeldOwner)
+    return IsValid(physics) and (physics:GetMass() <= 200 and physics:IsMoveable()) and !self:IsHoldingObject() and !IsValid(entity._HeldOwner)
 end
 
 function SWEP:IsHoldingObject()
@@ -496,6 +502,14 @@ function SWEP:Think()
 end
 
 if CLIENT then
+    local allowedHoldableClasses = {
+        ["arb_item"] = true,
+        ["prop_physics"] = true,
+        ["prop_physics_override"] = true,
+        ["prop_physics_multiplayer"] = true,
+        ["prop_ragdoll"] = true
+    }
+
     function SWEP:DrawHUD()
         local client = LocalPlayer()
         if client.GetSitting and client:GetSitting() then return end

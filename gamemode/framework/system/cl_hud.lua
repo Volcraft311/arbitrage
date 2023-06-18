@@ -340,9 +340,14 @@ do
 		local drawColor = color_white
 		local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
 
-		if isUseFirst and (client:KeyDown(IN_ATTACK) or client:KeyDown(IN_ATTACK2)) then
-			realGap = math_Round(gap * 2)
-			drawColor = color_red
+		if isUseFirst then
+			if client:GetNetVar("bIsHoldingObject", false) then
+				drawColor = color_red
+
+				if client:KeyDown(IN_ATTACK2) then
+					realGap = math_Round(gap * 2)
+				end
+			end
 		else
 			local tr = trace.Entity
 

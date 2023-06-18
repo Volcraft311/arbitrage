@@ -1,17 +1,3 @@
---[[
-        © AsterionStaff 2022.
-        This script was created from the developers of the Asterion Staff.
-        You can get more information from one of the links below:
-            Site - https://asterion.games
-            Discord - https://discord.gg/Np5evb5ZsR
-        
-        developer(s):
-            Selenter - https://steamcommunity.com/id/selenter
-
-        ——— Chop your own wood and it will warm you twice.
-]]--
-
-
 AddCSLuaFile()
 
 if CLIENT then
@@ -23,7 +9,7 @@ end
 
 SWEP.PrintName = "Руки"
 SWEP.Author = ""
-SWEP.Instructions = "Левая клик - Закрыть дверь\nПравый клик - Открыть дверь\nR - Поднять руки"
+SWEP.Instructions = ""
 SWEP.Contact = ""
 SWEP.Purpose = ""
 
@@ -45,7 +31,7 @@ SWEP.Primary.DefaultClip = 0
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = ""
 
-SWEP.Secondary.Delay = 0.3
+SWEP.Secondary.Delay = 0.5
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
@@ -55,6 +41,10 @@ SWEP.DrawAmmo = false
 SWEP.HitDistance = 48
 SWEP.KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 
+SWEP.holdDistance = 64
+SWEP.maxHoldDistance = 96
+SWEP.maxHoldStress = 4000
+
 local SoundList = {"knocking.wav", "loud_knocking.wav"}
 local SwingSound = Sound("WeaponFrag.Throw")
 local HitSound = Sound("Flesh.ImpactHard")
@@ -62,6 +52,22 @@ local HitSound = Sound("Flesh.ImpactHard")
 function SWEP:Initialize()
     self:SetHoldType("normal")
     self:SetAttack(false)
+
+    self.lastHand = 0
+    self.maxHoldDistanceSquared = self.maxHoldDistance ^ 2
+    self.heldObjectAngle = Angle(angle_zero)
+end
+
+if CLIENT then
+    hook.Add("CreateMove", "HandsCreateMove", function(cmd)
+        if (LocalPlayer():GetLocalVar("bIsHoldingObject", false) and cmd:KeyDown(IN_ATTACK2)) then
+            cmd:ClearMovement()
+
+            local angle = RenderAngles()
+            angle.z = 0
+            cmd:SetViewAngles(angle)
+        end
+    end)
 end
 
 function SWEP:SetupDataTables()
@@ -80,7 +86,10 @@ end
 
 function SWEP:PrimaryAttack()
     local client = self:GetOwner()
-    local right = math.random(1, 2) == 1 and true or false
+
+    if client:GetLocalVar("bIsHoldingObject", false) then
+        return self:DropObject(true)
+    end
 
     if self:GetAttack() then
         local stamina = Stamina:GetStamina(client)
@@ -96,7 +105,7 @@ function SWEP:PrimaryAttack()
         client:SetAnimation(PLAYER_ATTACK1)
 
         local anim = "fists_left"
-        if right then anim = "fists_right" end
+        if math.random(1, 2) == 1 then anim = "fists_right" end
         if self:GetCombo() >= 2 then anim = "fists_uppercut" end
 
         local vm = client:GetViewModel()
@@ -120,22 +129,170 @@ function SWEP:PrimaryAttack()
                 local s, _ = table.Random(SoundList)
                 client:EmitSound(s)
             end
-        else
-            hook.Run("ArcadeFistsSecondary", self:GetOwner())
         end
     end
 end
 
 function SWEP:SecondaryAttack()
-    hook.Run("ArcadeFistsSecondary", self:GetOwner())
+    if !IsFirstTimePredicted() then return end
+
+    local client = self:GetOwner()
+
+    local data = {}
+    data.start = client:GetShootPos()
+    data.endpos = data.start + client:GetAimVector() * 84
+    data.filter = {self, client}
+
+    local trace = util.TraceLine(data)
+    local entity = trace.Entity
+
+    if SERVER and IsValid(entity) and self:CanHoldObject(entity) then
+        client:SetLocalVar("bIsHoldingObject", true)
+        self:PickupObject(entity)
+        self:PlayPickupSound(trace.SurfaceProps)
+        self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
+    end
+end
+
+function SWEP:PlayPickupSound(surfaceProperty)
+    local client = self:GetOwner()
+    local result = "Flesh.ImpactSoft"
+
+    if surfaceProperty != nil then
+        local surfaceName = util.GetSurfacePropName(surfaceProperty)
+        local soundName = surfaceName:gsub("^metal$", "SolidMetal") .. ".ImpactSoft"
+
+        if (sound.GetProperties(soundName)) then
+            result = soundName
+        end
+    end
+
+    client:SendLua([[asterionlib.EmitSound("]] .. result .. [[", 75, 100, 40)]])
+end
+
+function SWEP:PickupObject(entity)
+    if self:IsHoldingObject() or !IsValid(entity) or !IsValid(entity:GetPhysicsObject()) then return end
+
+    local client = self:GetOwner()
+
+    local physics = entity:GetPhysicsObject()
+    physics:EnableGravity(false)
+    physics:AddGameFlag(FVPHYSICS_PLAYER_HELD)
+
+    entity._HeldOwner = client
+    entity._CollisionGroup = entity:GetCollisionGroup()
+    entity:StartMotionController()
+    entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+
+    self.heldObjectAngle = entity:GetAngles()
+    self.heldEntity = entity
+
+    self.holdEntity = ents.Create("prop_physics")
+    self.holdEntity:SetPos(self.heldEntity:LocalToWorld(self.heldEntity:OBBCenter()))
+    self.holdEntity:SetAngles(self.heldEntity:GetAngles())
+    self.holdEntity:SetModel("models/weapons/w_bugbait.mdl")
+    self.holdEntity:SetOwner(client)
+
+    self.holdEntity:SetNoDraw(true)
+    self.holdEntity:SetNotSolid(true)
+    self.holdEntity:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+    self.holdEntity:DrawShadow(false)
+    self.holdEntity:Spawn()
+
+    local trace = client:GetEyeTrace()
+    local physicsObject = self.holdEntity:GetPhysicsObject()
+
+    if IsValid(physicsObject) then
+        physicsObject:SetMass(2048)
+        physicsObject:SetDamping(0, 1000)
+        physicsObject:EnableGravity(false)
+        physicsObject:EnableCollisions(false)
+        physicsObject:EnableMotion(false)
+    end
+
+    if trace.Entity:IsRagdoll() then
+        local tracedEnt = trace.Entity
+
+        self.holdEntity:SetPos(tracedEnt:GetBonePosition(tracedEnt:TranslatePhysBoneToBone(trace.PhysicsBone)))
+    end
+
+    self.constraint = constraint.Weld(self.holdEntity, self.heldEntity, 0, trace.Entity:IsRagdoll() and trace.PhysicsBone or 0, 0, true, true)
+end
+
+function SWEP:DropObject(bThrow)
+    local client = self:GetOwner()
+    if !IsValid(self.heldEntity) or self.heldEntity._HeldOwner != client then return end
+
+    self.lastPlayerAngles = nil
+    client:SetLocalVar("bIsHoldingObject", false)
+
+    self.constraint:Remove()
+    self.holdEntity:Remove()
+
+    self.heldEntity:StopMotionController()
+    self.heldEntity:SetCollisionGroup(self.heldEntity._CollisionGroup or COLLISION_GROUP_NONE)
+
+    local physics = self:GetHeldPhysicsObject()
+    physics:EnableGravity(true)
+    physics:Wake()
+    physics:ClearGameFlag(FVPHYSICS_PLAYER_HELD)
+
+    if bThrow then
+        timer.Simple(0, function()
+            if IsValid(physics) and IsValid(client) then
+                physics:AddGameFlag(FVPHYSICS_WAS_THROWN)
+                physics:ApplyForceCenter(client:GetAimVector() * 4500)
+
+                client:ViewPunch(self.KnockViewPunchAngle)
+                client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
+            end
+        end)
+    end
+
+    self.heldEntity._HeldOwner = nil
+    self.heldEntity._CollisionGroup = nil
+    self.heldEntity = nil
+end
+
+function SWEP:GetHeldPhysicsObject()
+    return IsValid(self.heldEntity) and self.heldEntity:GetPhysicsObject() or nil
+end
+
+local allowedHoldableClasses = {
+    ["arb_item"] = true,
+    ["prop_physics"] = true,
+    ["prop_physics_override"] = true,
+    ["prop_physics_multiplayer"] = true,
+    ["prop_ragdoll"] = true
+}
+
+function SWEP:CanHoldObject(entity)
+    local physics = entity:GetPhysicsObject()
+
+    return IsValid(physics) and (physics:GetMass() <= 100 and physics:IsMoveable()) and !self:IsHoldingObject() and !IsValid(entity._HeldOwner)
+end
+
+function SWEP:IsHoldingObject()
+    return IsValid(self.heldEntity) and IsValid(self.heldEntity._HeldOwner) and self.heldEntity._HeldOwner == self:GetOwner()
 end
 
 function SWEP:Reload()
+    if !IsFirstTimePredicted() then return end
+
     local client = self:GetOwner()
     if !client:KeyPressed(IN_RELOAD) then return end
 
-    self:SetAttack(!self:GetAttack())
-    self:ChangeType()
+    if client:GetLocalVar("bIsHoldingObject", false) then
+        if SERVER then
+            self:DropObject()
+        end
+    else
+        self:SetAttack(!self:GetAttack())
+
+        timer.Simple(0, function()
+            self:ChangeType()
+        end)
+    end
 end
 
 function SWEP:ChangeType()
@@ -144,12 +301,11 @@ function SWEP:ChangeType()
 
     self:SetHoldType(data and "fist" or "normal")
 
-    local speed = 1
-
     if data then
         local vm = client:GetViewModel()
+
         vm:SendViewModelMatchingSequence(vm:LookupSequence("fists_draw"))
-        vm:SetPlaybackRate(speed)
+        vm:SetPlaybackRate(1)
     end
 end
 
@@ -268,7 +424,7 @@ function SWEP:Think()
     if idletime > 0 and CurTime() > idletime then
         local vm = client:GetViewModel()
 
-        vm:SendViewModelMatchingSequence(vm:LookupSequence( "fists_idle_0" .. math.random(1, 2)))
+        vm:SendViewModelMatchingSequence(vm:LookupSequence("fists_idle_0" .. math.random(1, 2)))
         self:UpdateNextIdle()
     end
 
@@ -281,6 +437,62 @@ function SWEP:Think()
     if SERVER and CurTime() > self:GetNextPrimaryFire() + 0.1 then
         self:SetCombo(0)
     end
+
+    if !IsValid(client) then return end
+    if SERVER then
+        if self:IsHoldingObject() then
+            local physics = self:GetHeldPhysicsObject()
+            local bIsRagdoll = self.heldEntity:IsRagdoll()
+            local holdDistance = bIsRagdoll and self.holdDistance * 0.5 or self.holdDistance
+            local targetLocation = client:GetShootPos() + client:GetForward() * holdDistance
+
+            if bIsRagdoll then
+                targetLocation.z = math.min(targetLocation.z, client:GetShootPos().z - 32)
+            end
+
+            if !IsValid(physics) then return self:DropObject() end
+
+            if (physics:GetPos():DistToSqr(targetLocation) > self.maxHoldDistanceSquared) then
+                self:DropObject()
+            else
+                local physicsObject = self.holdEntity:GetPhysicsObject()
+                local currentPlayerAngles = client:EyeAngles()
+
+                if client:KeyDown(IN_ATTACK2) then
+                    local cmd = client:GetCurrentCommand()
+
+                    self.heldObjectAngle:RotateAroundAxis(currentPlayerAngles:Forward(), cmd:GetMouseX() / 15)
+                    self.heldObjectAngle:RotateAroundAxis(currentPlayerAngles:Right(), cmd:GetMouseY() / 15)
+                end
+
+                self.lastPlayerAngles = self.lastPlayerAngles or currentPlayerAngles
+                self.heldObjectAngle.y = self.heldObjectAngle.y - math.AngleDifference(self.lastPlayerAngles.y, currentPlayerAngles.y)
+                self.lastPlayerAngles = currentPlayerAngles
+
+                physicsObject:Wake()
+                physicsObject:ComputeShadowControl({
+                    secondstoarrive = 0.01,
+                    pos = targetLocation,
+                    angle = self.heldObjectAngle,
+                    maxangular = 256,
+                    maxangulardamp = 10000,
+                    maxspeed = 256,
+                    maxspeeddamp = 10000,
+                    dampfactor = 0.8,
+                    teleportdistance = self.maxHoldDistance * 0.75,
+                    deltatime = FrameTime()
+                })
+
+                if (physics:GetStress() > self.maxHoldStress) then
+                    self:DropObject()
+                end
+            end
+
+            if !IsValid(self.heldEntity) and client:GetLocalVar("bIsHoldingObject", true) then
+                client:SetLocalVar("bIsHoldingObject", false)
+            end
+        end
+    end
 end
 
 if CLIENT then
@@ -289,45 +501,29 @@ if CLIENT then
         if client.GetSitting and client:GetSitting() then return end
         if client:IsSpectating() then return end
 
-        local isAttack = self:GetAttack()
-        Hints:AddKeyDraw((isAttack and "Опустить" or "Поднять") .. " руки", "+reload")
-
-        local t_entity = client:GetEyeTrace().Entity
-        if (IsValid(t_entity) and t_entity:GetClass() == "prop_physics" and t_entity:GetPos():DistToSqr(EyePos()) < 15000) or client:KeyDown(IN_ATTACK2) then
-            Hints:AddKeyDraw("Тянуть", MOUSE_RIGHT)
-        end
-
-        if !isAttack then
-            if IsValid(t_entity) and t_entity:IsDoor() and t_entity:GetPos():DistToSqr(EyePos()) < 6000 then
-                Hints:AddKeyDraw("Постучать в дверь", MOUSE_LEFT)
-            end
-        end
-
-        if IsValid(client:GetVehicle()) then return end
-
-        local data = client:GetLocalVar("owner")
-        if !data then return end
-
-        local pos = data[1]
-        local entity = data[2]
-
-        if entity and IsValid(entity) and (client:KeyDown(IN_ATTACK) or client:KeyDown(IN_ATTACK2)) then
-            self.dragentity = entity
-
-            local pos2 = entity:LocalToWorld(pos)
-
-            local data2D = pos2:ToScreen()
-            if !data2D.visible then return end
-
-            local x = data2D.x
-            local y = data2D.y
-
-            local traceNew = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
-
-            surface.SetDrawColor(255, 61, 96)
-            surface.DrawLine(x, y, traceNew.x, traceNew.y)
+        if client:GetLocalVar("bIsHoldingObject", false) then
+            Hints:AddKeyDraw("Отпустить объект", "+reload")
+            Hints:AddKeyDraw("Кинуть объект", MOUSE_LEFT)
+            Hints:AddKeyDraw("Крутить объект вокруг оси", MOUSE_RIGHT)
         else
-            self.dragentity = nil
+            local isAttack = self:GetAttack()
+            Hints:AddKeyDraw((isAttack and "Опустить" or "Поднять") .. " руки", "+reload")
+
+            local data = {}
+            data.start = client:GetShootPos()
+            data.endpos = data.start + client:GetAimVector() * 84
+            data.filter = {self, client}
+
+            local trace = util.TraceLine(data)
+            local entity = trace.Entity
+
+            if IsValid(entity) then
+                if allowedHoldableClasses[entity:GetClass()] then
+                    Hints:AddKeyDraw("Поднять объект", MOUSE_RIGHT)
+                elseif entity:IsDoor() and !isAttack then
+                    Hints:AddKeyDraw("Постучать в дверь", MOUSE_LEFT)
+                end
+            end
         end
     end
 end

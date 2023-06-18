@@ -260,7 +260,7 @@ function SWEP:DropObject(bThrow)
         timer.Simple(0, function()
             if IsValid(physics) and IsValid(client) then
                 physics:AddGameFlag(FVPHYSICS_WAS_THROWN)
-                physics:ApplyForceCenter(client:GetAimVector() * 4500)
+                physics:ApplyForceCenter(client:GetAimVector() * 2500)
 
                 client:ViewPunch(self.KnockViewPunchAngle)
                 client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)

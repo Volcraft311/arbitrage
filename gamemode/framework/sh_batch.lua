@@ -49,6 +49,20 @@ function Arbitrage.Initialize()
 			return client:IsAdmin()
 		end
 
+		Arbitrage.GM.PhysgunPickup = function(_, client, entity)
+			if entity.PhysgunDisabled then return false end
+
+			if client:IsAdmin() then
+				return true
+			end
+		end
+
+		Arbitrage.GM.CanTool = function(_, client)
+			if client:IsAdmin() then
+				return true
+			end
+		end
+
 		Arbitrage.util.WriteMessage("The gamemode '" .. engine.ActiveGamemode() .. "' was started!")
 	end
 

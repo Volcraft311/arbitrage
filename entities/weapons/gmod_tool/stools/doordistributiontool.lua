@@ -195,11 +195,10 @@ else
 end
 
 local l = "doordistributiontool_"
-function TOOL:LeftClick()
+function TOOL:LeftClick(trace)
     if CLIENT then return true end
 
     local client = self:GetOwner()
-    local trace = client:GetEyeTrace()
     local entity = trace.Entity
     if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
 
@@ -212,22 +211,20 @@ function TOOL:LeftClick()
     netstream.Start(client, "DoorDistribution:Add", entity:EntIndex(), id, convar)
 end
 
-function TOOL:RightClick()
+function TOOL:RightClick(trace)
     if CLIENT then return true end
 
     local client = self:GetOwner()
-    local trace = client:GetEyeTrace()
     local entity = trace.Entity
     if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
 
     netstream.Start(client, "DoorDistribution:Remove", entity:EntIndex())
 end
 
-function TOOL:Reload()
+function TOOL:Reload(trace)
     if CLIENT then return true end
 
     local client = self:GetOwner()
-    local trace = client:GetEyeTrace()
     local entity = trace.Entity
     if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
 

@@ -90,6 +90,17 @@ function PLUGIN:PlayerDisconnected(client)
             saver = client._saver
         }
 
+        local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
+        if table.Count(entities) > 0 then
+            local array = CompositeEntities.GetArrayEntitites(client)
+
+            entity.data.composite = array
+
+            if #array > 0 then
+                CompositeEntities.LoadingArray(array, entity)
+            end
+        end
+
         for k, v in ipairs({"Hunger", "Thirst", "Sleep"}) do
             entity.data.statistic[v] = Arbitrage.statistics.Get(client, v)
         end
@@ -140,8 +151,10 @@ timer.Create("DataBase:Saver", 60, 0, function()
         local bg = entity:GetBodyGroups()
         if bg then
             for k, v in ipairs(bg) do
-                if entity:GetBodygroup(v.id) > 0 then
-                    entity._saver.BodyG[v.id] = entity:GetBodygroup(v.id)
+                local bodygroup = entity:GetBodygroup(v.id)
+
+                if bodygroup > 0 then
+                    entity._saver.BodyG[v.id] = bodygroup
                 end
             end
         end
@@ -172,6 +185,10 @@ function PLUGIN:PlayerInitial(client)
 
     client.arb_walkSpeed = data.speed[1]
     client.arb_runSpeed = data.speed[2]
+
+    if data.composite and #data.composite > 0 then
+        CompositeEntities.LoadingArray(data.composite, client)
+    end
 
     local saver = data.saver
     if saver then

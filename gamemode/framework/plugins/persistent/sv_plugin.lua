@@ -46,10 +46,10 @@ function PLUGIN:CreateRagdoll(client)
     local sm = client:GetMaterials()
     if sm then
         for k, v in ipairs(sm) do
-            local mat = client:GetSubMaterial(k)
+            local mat = client:GetSubMaterial(k - 1)
 
             if mat and mat != "" then
-                entity:SetSubMaterial(k, mat)
+                entity:SetSubMaterial(k - 1, mat)
             end
         end
     end

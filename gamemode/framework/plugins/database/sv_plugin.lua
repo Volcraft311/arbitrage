@@ -132,7 +132,7 @@ function PLUGIN:PlayerDisconnected(client)
     end
 end
 
-timer.Create("DataBase:Saver", 1, 0, function()
+timer.Create("DataBase:Saver", 60, 0, function()
     for _, entity in ipairs(player.GetAll()) do
         entity._saver = {SubMat = {}, BodyG = {}}
 

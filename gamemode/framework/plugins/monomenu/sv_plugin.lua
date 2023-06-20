@@ -252,6 +252,33 @@ local actionList = {
         timer.Simple(0.1, function()
             target:SetPos(data[2])
             Arbitrage.player.SetupHealth(target)
+
+            local info = target.persistent
+            if info then
+                target:SetModel(info.model)
+
+                local saver = info.saver
+                if saver then
+                    target:SetSkin(saver.Skin)
+                    target:SetMaterial(saver.Material)
+                    target:SetRenderMode(saver.RenderMode)
+                    target:SetColor(saver.Color)
+
+                    for k, v in pairs(saver.BodyG) do
+                        target:SetBodygroup(k, v)
+                    end
+
+                    for k, v in pairs(saver.SubMat) do
+                        target:SetSubMaterial(k, v)
+                    end
+                end
+
+                if info.composite and #info.composite > 0 then
+                    CompositeEntities.LoadingArray(info.composite, target)
+                end
+            end
+
+            target.persistent = nil
         end)
 
         for k, v in ipairs(ents.FindByClass("prop_ragdoll")) do

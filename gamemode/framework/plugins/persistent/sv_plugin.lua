@@ -39,27 +39,34 @@ function PLUGIN:CreateRagdoll(client)
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
     entity:Activate()
 
-    entity:SetRenderMode(client:GetRenderMode())
-    entity:SetColor(client:GetColor())
-    entity:SetMaterial(client:GetMaterial())
+    local saver = client._saver
+    if saver then
+        entity:SetSkin(saver.Skin)
+        entity:SetMaterial(saver.Material)
+        entity:SetRenderMode(saver.RenderMode)
+        entity:SetColor(saver.Color)
 
-    local sm = client:GetMaterials()
-    if sm then
-        for k, v in ipairs(sm) do
-            local mat = client:GetSubMaterial(k - 1)
+        for k, v in pairs(saver.BodyG) do
+            entity:SetBodygroup(k, v)
+        end
 
-            if mat and mat != "" then
-                entity:SetSubMaterial(k - 1, mat)
-            end
+        for k, v in pairs(saver.SubMat) do
+            entity:SetSubMaterial(k, v)
         end
     end
 
-    local bg = client:GetBodyGroups()
-    if bg then
-        for k, v in ipairs(bg) do
-            if client:GetBodygroup(v.id) > 0 then
-                entity:SetBodygroup(v.id, client:GetBodygroup(v.id))
-            end
+    client.persistent = {}
+    client.persistent.model = client:GetModel()
+    client.persistent.saver = saver
+
+    local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
+    if table.Count(entities) > 0 then
+        local array = CompositeEntities.GetArrayEntitites(client)
+
+        client.persistent.composite = array
+
+        if #array > 0 then
+            CompositeEntities.LoadingArray(array, entity)
         end
     end
 

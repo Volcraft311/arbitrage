@@ -155,24 +155,27 @@ function Character.team:Join(client, data, bRespawn)
     client:SetModelScale(1)
     client:SetHull(hullMin, hullMax)
     client:SetHullDuck(hullduckMin, hullduckMax)
-    client:SetRenderMode(RENDERMODE_TRANSCOLOR)
-    client:SetSkin(0)
-    client:SetMaterial("")
-    client:SetColor(Color(255, 255, 255))
 
-    local sm = client:GetMaterials()
-    if sm then
-        for k, v in ipairs(sm) do
-            client:SetSubMaterial(k - 1, nil)
-        end
-    end
+    timer.Simple(FrameTime(), function()
+        client:SetRenderMode(RENDERMODE_TRANSCOLOR)
+        client:SetSkin(0)
+        client:SetMaterial("")
+        client:SetColor(Color(255, 255, 255))
 
-    local bg = client:GetBodyGroups()
-    if bg then
-        for k, v in ipairs(bg) do
-            client:SetBodygroup(v.id, 0)
+        local sm = client:GetMaterials()
+        if sm then
+            for k, v in ipairs(sm) do
+                client:SetSubMaterial(k - 1, nil)
+            end
         end
-    end
+
+        local bg = client:GetBodyGroups()
+        if bg then
+            for k, v in ipairs(bg) do
+                client:SetBodygroup(v.id, 0)
+            end
+        end
+    end)
 
     timer.Simple(0.3, function()
         local modelScale = info:GetScale()

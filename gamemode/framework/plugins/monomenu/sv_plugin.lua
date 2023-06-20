@@ -259,22 +259,26 @@ local actionList = {
 
                 local saver = info.saver
                 if saver then
-                    target:SetSkin(saver.Skin)
-                    target:SetMaterial(saver.Material)
-                    target:SetRenderMode(saver.RenderMode)
-                    target:SetColor(saver.Color)
+                    timer.Simple(0.4, function()
+                        target:SetSkin(saver.Skin)
+                        target:SetMaterial(saver.Material)
+                        target:SetRenderMode(saver.RenderMode)
+                        target:SetColor(saver.Color)
 
-                    for k, v in pairs(saver.BodyG) do
-                        target:SetBodygroup(k, v)
-                    end
+                        for k, v in pairs(saver.BodyG) do
+                            target:SetBodygroup(k, v)
+                        end
 
-                    for k, v in pairs(saver.SubMat) do
-                        target:SetSubMaterial(k, v)
-                    end
+                        for k, v in pairs(saver.SubMat) do
+                            target:SetSubMaterial(k, v)
+                        end
+                    end)
                 end
 
                 if info.composite and #info.composite > 0 then
-                    CompositeEntities.LoadingArray(info.composite, target)
+                    timer.Simple(FrameTime(), function()
+                        CompositeEntities.LoadingArray(info.composite, target)
+                    end)
                 end
             end
 

@@ -97,7 +97,9 @@ function PLUGIN:PlayerDisconnected(client)
             entity.data.composite = array
 
             if #array > 0 then
-                CompositeEntities.LoadingArray(array, entity)
+                timer.Simple(FrameTime(), function()
+                    CompositeEntities.LoadingArray(array, entity)
+                end)
             end
         end
 
@@ -107,18 +109,20 @@ function PLUGIN:PlayerDisconnected(client)
 
         local saver = entity.data.saver
         if saver then
-            entity:SetSkin(saver.Skin)
-            entity:SetMaterial(saver.Material)
-            entity:SetRenderMode(saver.RenderMode)
-            entity:SetColor(saver.Color)
+            timer.Simple(0.4, function()
+                entity:SetSkin(saver.Skin)
+                entity:SetMaterial(saver.Material)
+                entity:SetRenderMode(saver.RenderMode)
+                entity:SetColor(saver.Color)
 
-            for k, v in pairs(saver.BodyG) do
-                entity:SetBodygroup(k, v)
-            end
+                for k, v in pairs(saver.BodyG) do
+                    entity:SetBodygroup(k, v)
+                end
 
-            for k, v in pairs(saver.SubMat) do
-                entity:SetSubMaterial(k, v)
-            end
+                for k, v in pairs(saver.SubMat) do
+                    entity:SetSubMaterial(k, v)
+                end
+            end)
         end
 
         entity._containerTime = 15
@@ -128,7 +132,7 @@ function PLUGIN:PlayerDisconnected(client)
     end
 end
 
-timer.Create("DataBase:Saver", 60, 0, function()
+timer.Create("DataBase:Saver", 1, 0, function()
     for _, entity in ipairs(player.GetAll()) do
         entity._saver = {SubMat = {}, BodyG = {}}
 
@@ -186,25 +190,29 @@ function PLUGIN:PlayerInitial(client)
     client.arb_walkSpeed = data.speed[1]
     client.arb_runSpeed = data.speed[2]
 
-    if data.composite and #data.composite > 0 then
-        CompositeEntities.LoadingArray(data.composite, client)
-    end
-
-    local saver = data.saver
-    if saver then
-        client:SetSkin(saver.Skin)
-        client:SetMaterial(saver.Material)
-        client:SetRenderMode(saver.RenderMode)
-        client:SetColor(saver.Color)
-
-        for k, v in pairs(saver.BodyG) do
-            client:SetBodygroup(k, v)
+    timer.Simple(0.1, function()
+        if data.composite and #data.composite > 0 then
+            CompositeEntities.LoadingArray(data.composite, client)
         end
 
-        for k, v in pairs(saver.SubMat) do
-            client:SetSubMaterial(k, v)
-        end
-    end
+        timer.Simple(0.5, function()
+            local saver = data.saver
+            if saver then
+                client:SetSkin(saver.Skin)
+                client:SetMaterial(saver.Material)
+                client:SetRenderMode(saver.RenderMode)
+                client:SetColor(saver.Color)
+
+                for k, v in pairs(saver.BodyG) do
+                    client:SetBodygroup(k, v)
+                end
+
+                for k, v in pairs(saver.SubMat) do
+                    client:SetSubMaterial(k, v)
+                end
+            end
+        end)
+    end)
 
     client:StripWeapons()
     for k, v in pairs(data.weapons) do

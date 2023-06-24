@@ -389,7 +389,7 @@ function SWEP:DealDamage()
     end
 
     if SERVER then
-        if (hit and anim != "fists_uppercut") then
+        if hit and anim != "fists_uppercut" then
             self:SetCombo(self:GetCombo() + 1)
         else
             self:SetCombo(0)
@@ -427,7 +427,22 @@ function SWEP:Holster()
     self:SetHoldType("normal")
     self:SetAttack(false)
 
+    if !IsFirstTimePredicted() or CLIENT then return end
+    self:DropObject()
+
     return true
+end
+
+function SWEP:OnRemove()
+    if SERVER then
+        self:DropObject()
+    end
+end
+
+function SWEP:OwnerChanged()
+    if SERVER then
+        self:DropObject()
+    end
 end
 
 function SWEP:Think()
@@ -451,8 +466,7 @@ function SWEP:Think()
         self:SetCombo(0)
     end
 
-    if !IsValid(client) then return end
-    if SERVER then
+    if SERVER and IsValid(client) then
         if self:IsHoldingObject() then
             local physics = self:GetHeldPhysicsObject()
             local bIsRagdoll = self.heldEntity:IsRagdoll()
@@ -465,7 +479,7 @@ function SWEP:Think()
 
             if !IsValid(physics) then return self:DropObject() end
 
-            if (physics:GetPos():DistToSqr(targetLocation) > self.maxHoldDistanceSquared) then
+            if physics:GetPos():DistToSqr(targetLocation) > self.maxHoldDistanceSquared then
                 self:DropObject()
             else
                 local physicsObject = self.holdEntity:GetPhysicsObject()
@@ -496,7 +510,7 @@ function SWEP:Think()
                     deltatime = FrameTime()
                 })
 
-                if (physics:GetStress() > self.maxHoldStress) then
+                if physics:GetStress() > self.maxHoldStress then
                     self:DropObject()
                 end
             end

@@ -737,13 +737,10 @@ function Arbitrage:PlayerSay(client, data)
             table.insert(extra, 1, client:IsAdmin() and "a" or "help")
         end
 
-        local command = "sg"
+        local command = extra[1]
+        table.remove(extra, 1)
 
-        if data:sub(1, 1) == "~" then
-            command = "sgs"
-        end
-
-        netstream.Start(client, "arb.SendCommand", command, extra)
+        serverguard.command.Run(client, command, data:sub(1, 1) == "~", unpack(extra))
         return ""
     end
 
@@ -762,8 +759,6 @@ function Arbitrage:PlayerSay(client, data)
 
         return Arbitrage.commands.PlayerSay(client, data)
     end
-
-    -- eh...
 end
 
 

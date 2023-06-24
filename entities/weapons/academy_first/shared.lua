@@ -500,10 +500,10 @@ function SWEP:Think()
                     self:DropObject()
                 end
             end
+        end
 
-            if !IsValid(self.heldEntity) and client:GetLocalVar("bIsHoldingObject", true) then
-                client:SetLocalVar("bIsHoldingObject", false)
-            end
+        if !IsValid(self.heldEntity) and client:GetLocalVar("bIsHoldingObject", true) then
+            client:SetLocalVar("bIsHoldingObject", false)
         end
     end
 end

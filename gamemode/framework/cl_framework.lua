@@ -451,8 +451,19 @@ end)
 timer.Create("arb.BillSound", 1, 1, function()
     timer.Remove("arb.BillSound")
 
-    system.FlashWindow()
-    sound.PlayFile("sound/hl1/fvox/bell.wav", "", zero)
+    local panel = vgui.Create("Panel")
+    panel.PlaySound = function(this)
+        system.FlashWindow()
+        sound.PlayFile("sound/hl1/fvox/bell.wav", "", zero)
+
+        this:Remove()
+    end
+    panel.Think = function(this)
+        if !IsValid(LocalPlayer()) then return end
+
+        this.Think = nil
+        this:PlaySound()
+    end
 end)
 
 function Arbitrage:GetPos(client)

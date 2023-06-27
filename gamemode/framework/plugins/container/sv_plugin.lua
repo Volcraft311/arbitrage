@@ -61,19 +61,24 @@ end
 function Container:PlayerUse(client, entity)
     local inventory = entity._containerInventory
     if !inventory then return end
-
     if entity:IsPlayer() then return end
 
     if !client.containerCD or CurTime() >= client.containerCD then
-        client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+        local name = entity._containerName
+        if name != "" and name != " " then
+            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+                TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
+            end
+        end
 
+        client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
         Arbitrage.action.ActionRun(client, "Обыскиваем", entity._containerTime or 1, function()
             if client:GetEyeTrace().Entity != entity then return true end
             if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 
              return false
         end, function(activator)
-            InventoryBase.Open(client, inventory:GetID(), entity._containerName)
+            InventoryBase.Open(client, inventory:GetID(), name)
         end)
 
         client.containerCD = CurTime() + 2

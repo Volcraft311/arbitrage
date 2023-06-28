@@ -24,6 +24,24 @@ function PLUGIN:Spec(client, target)
 
 		netstream.Start(client, "AdminESP:CameraSetEntity", target)
 	end
+
+	local hookID = "AdminESP:StartCommand_" .. client:SteamID()
+	if !var then
+		hook.Add("StartCommand", hookID, function(_, ucmd)
+			if !IsValid(client) then return hook.Remove(hookID) end
+
+			ucmd:ClearMovement()
+			ucmd:SetForwardMove(0)
+			ucmd:SetUpMove(0)
+			ucmd:SetSideMove(0)
+
+			ucmd:SetMouseX(0)
+			ucmd:SetMouseY(0)
+			ucmd:SetMouseWheel(0)
+		end)
+	else
+		hook.Remove("StartCommand", hookID)
+	end
 end
 
 concommand.Add("spectate", function(client, cmd, args)
@@ -77,20 +95,6 @@ function PLUGIN:ChatAddText(client, message)
 	    	netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Наблюдение] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "'", message, "'")
 	    end
 	end
-end
-
-function PLUGIN:StartCommand(client, ucmd)
-	if !client:IsAdmin() then return end
-	if !client:IsSpectating() then return end
-
-	ucmd:ClearMovement()
-	ucmd:SetForwardMove(0)
-	ucmd:SetUpMove(0)
-	ucmd:SetSideMove(0)
-
-	ucmd:SetMouseX(0)
-	ucmd:SetMouseY(0)
-	ucmd:SetMouseWheel(0)
 end
 
 

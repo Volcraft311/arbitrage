@@ -33,10 +33,10 @@ Emotes.ActionList = {
 			{name = "Стойка 1", icon = "", info = "LineIdle01"},
 			{name = "Стойка 2", icon = "", info = "LineIdle02"},
 			{name = "Стойка 3", icon = "", info = "LineIdle03"},
-			{name = "Стойка 4", icon = "", info = "menu_combine"},
-			{name = "Стойка 5", icon = "", info = "pose_standing_02"},
-			{name = "Стойка 6", icon = "", info = "standpose_1"},
-			{name = "Стойка 7", icon = "", info = "standpose_3"},
+			-- {name = "Стойка 4", icon = "", info = "menu_combine"},
+			{name = "Руки на пояс", icon = "", info = "pose_standing_02"},
+			{name = "Рука на бок", icon = "", info = "standpose_1"},
+			{name = "Руки на пояснице", icon = "", info = "standpose_3"},
 			{name = "Руки за спину", icon = "", info = "standpose_5"},
 			{name = "Облокотиться", icon = "", info = "idle_suitcase"},
 			{name = "Официально", icon = "", info = "menu_gman"},
@@ -177,6 +177,18 @@ Emotes.MoodList = {
 		sequences = {
 			idle = "LineIdle02",
 			walk = "pace_all"
+		}
+	},
+	[5] = {
+		name = "Уверенный",
+		sequences = {
+			idle = "standpose_1"
+		}
+	},
+	[6] = {
+		name = "Прилежный",
+		sequences = {
+			idle = "standpose_5"
 		}
 	}
 }

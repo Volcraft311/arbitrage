@@ -216,7 +216,7 @@ function PLUGIN:CreateMove(cmd)
 		diff = diff / 90
 
 		cmd:SetForwardMove(fm + sm * diff)
-		cmd:SetSideMove(sm + fm * diff)
+		cmd:SetSideMove((Arbitrage.OnMapReversion() and -sm or sm) + fm * diff)
 
 		return false
 	end
@@ -226,7 +226,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 	if !bIsThirdPerson then return end
 
 	camAng.p = math_Clamp(math_NormalizeAngle(camAng.p + y / 50), -85, 85)
-	camAng.y = math_NormalizeAngle(camAng.y - x / 50)
+	camAng.y = math_NormalizeAngle(camAng.y - (Arbitrage.OnMapReversion() and -x or x) / 50)
 
 	if LocalPlayer():GetViewEntity() == LocalPlayer() then
 		return true

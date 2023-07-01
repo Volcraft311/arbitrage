@@ -19,15 +19,16 @@ function PLUGIN:Spec(client, target)
 	local var = client:GetLocalVar("spectating", false)
 	client:SetLocalVar("spectating", !var)
 
-	if !var and IsValid(target) then
-		client._CameraEntity = target
-
-		netstream.Start(client, "AdminESP:CameraSetEntity", target)
-	end
-
-	local hookID = "AdminESP:StartCommand_" .. client:SteamID()
 	if !var then
+		if IsValid(target) then
+			client._CameraEntity = target
+
+			netstream.Start(client, "AdminESP:CameraSetEntity", target)
+		end
+
+		local hookID = "AdminESP:StartCommand_" .. client:SteamID()
 		hook.Add("StartCommand", hookID, function(_, ucmd)
+			if client != _ then return end
 			if !IsValid(client) then return hook.Remove(hookID) end
 
 			ucmd:ClearMovement()

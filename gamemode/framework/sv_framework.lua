@@ -1251,6 +1251,7 @@ netstream.Hook("arb.Sleeping", function(client)
 
             if IsValid(client) then
                 client:SetLocalVar("sleeping", false)
+                client:RemoveTemporaryStatusEffect("sleep", 0)
             end
         end
 
@@ -1288,6 +1289,8 @@ netstream.Hook("arb.Sleeping", function(client)
 
                 clear()
             end)
+
+            client:AddTemporaryStatusEffect("sleep", 0)
         end
 
         if !isSleeping then

@@ -64,6 +64,11 @@ do
         end,
         OnCanRun = function(client, info)
             return !Arbitrage.OffFallHunger()
+        end,
+        OnCanSpend = function(client, info)
+            if client:HasTemporaryStatusEffect("hunger_a") then
+                return false
+            end
         end
     })
 
@@ -92,6 +97,11 @@ do
         OnCanRun = function(client, info)
             return !Arbitrage.OffFallThirst()
         end,
+        OnCanSpend = function(client, info)
+            if client:HasTemporaryStatusEffect("thirst_a") then
+                return false
+            end
+        end
     })
 
     Arbitrage.statistics.Add("sleep", {
@@ -102,6 +112,11 @@ do
         end,
         OnCanRun = function(client, info)
             return !Arbitrage.OffFallSleep()
+        end,
+        OnCanSpend = function(client, info)
+            if client:HasTemporaryStatusEffect("sleep_a") then
+                return false
+            end
         end
     })
 end

@@ -196,6 +196,8 @@ function Character.team:Join(client, data, bRespawn)
     Arbitrage.player.SetupSpeed(client)
     Arbitrage.player.SetupInventory(client)
 
+    client:ClearTemporaryStatusEffects()
+
     timer.Simple(1, function()
         netstream.Start(nil, "Character:Caching")
     end)

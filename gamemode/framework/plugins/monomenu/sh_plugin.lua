@@ -153,6 +153,14 @@ MonoMenu:AddGameFunction("Изменить журнал игры", "icon16/calen
     end
 })
 
+MonoMenu:AddGameFunction("Изменить статус эффекты", "icon16/pill_go.png", {
+    onRun = function(client)
+        if SERVER then return false end
+
+        vgui.Create("Medical:StatusEffectsEdit")
+    end
+})
+
 MonoMenu:AddGameFunction("Заморозить всех игроков", "icon16/shading.png", {
     onRun = function(client)
         if CLIENT then return end

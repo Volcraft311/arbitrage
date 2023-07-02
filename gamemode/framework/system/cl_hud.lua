@@ -402,18 +402,6 @@ function Arbitrage.hud.LowHealthDraw()
 	local health = client:Health()
 	if health <= 0 then return end
 
-	if client:Health() <= 10 then
-		if !client.lastDSP then
-			client:SetDSP(14)
-			client.lastDSP = 14
-		end
-	else
-		if client.lastDSP then
-			client:SetDSP(0)
-			client.lastDSP = nil
-		end
-	end
-
 	Arbitrage.hud.intensity = math_Approach(Arbitrage.hud.intensity, math_Clamp(1 - math_Clamp(health / 25, 0, 1), 0, 1), FrameTime() * 3)
 
 	if Arbitrage.hud.intensity > 0 then

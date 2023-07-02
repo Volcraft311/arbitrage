@@ -44,8 +44,17 @@ function Arbitrage.statistics.PlayerPostThink(client)
         client[colddown] = tonumber(client[colddown]) or 0
 
         if data and (!client[colddown] or CurTime() >= client[colddown]) then
-            if v.OnCanRun then
-                local allow = v.OnCanRun(client, v)
+            local OnCanRun = v.OnCanRun
+            if OnCanRun then
+                local allow = OnCanRun(client, v)
+                if allow == false then
+                    continue
+                end
+            end
+
+            local OnCanSpend = v.OnCanSpend
+            if OnCanSpend then
+                local allow = OnCanSpend(client, v)
                 if allow == false then
                     continue
                 end
@@ -59,8 +68,9 @@ function Arbitrage.statistics.PlayerPostThink(client)
             client[data] = math.Clamp(tonumber(client[data] - 1), 0, 100)
             client:SetNetVar(k, client[data], getPlayers(client))
 
-            if v.OnRun then
-                v.OnRun(client, v)
+            local OnRun = v.OnRun
+            if OnRun then
+                OnRun(client, v)
             end
 
             client[colddown] = CurTime() + time

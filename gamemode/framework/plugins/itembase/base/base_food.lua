@@ -22,6 +22,8 @@ BASE.thirst = 10
 BASE.hunger = 10
 BASE.sleep = 10
 BASE.sound = "garrysmod/ui_click.wav"
+BASE.addstatuseffects = ""
+BASE.removestatuseffects = ""
 
 BASE.creationExample = {
     {
@@ -53,6 +55,16 @@ BASE.creationExample = {
         variable = "sound",
         title = "Звук при использовании",
         default = "garrysmod/ui_click.wav"
+    },
+    {
+        variable = "addstatuseffects",
+        title = "Какие статус эффекты будут выдаваться",
+        default = ""
+    },
+    {
+        variable = "removestatuseffects",
+        title = "Какие статус эффекты будут удаляться",
+        default = ""
     }
 }
 
@@ -77,7 +89,13 @@ BASE.propertiesInfo = {
     end},
     {"sound", "Звук при использовании", function(a)
         return a:GetSound()
-    end}
+    end},
+    {"addstatuseffects", "Выдаются статус эффекты", function(a)
+        return a:GetAddStatusEffects()
+    end},
+    {"removestatuseffects", "Удаляются статус эффекты", function(a)
+        return a:GetRemoveStatusEffects()
+    end},
 }
 
 function BASE:GetMaxUse()
@@ -104,6 +122,14 @@ function BASE:GetSound()
     return self:GetData("m_sound", self.sound)
 end
 
+function BASE:GetAddStatusEffects()
+    return self:GetData("m_addstatuseffects", self.addstatuseffects)
+end
+
+function BASE:GetRemoveStatusEffects()
+    return self:GetData("m_removestatuseffects", self.removestatuseffects)
+end
+
 function BASE:GetDescription()
     local left = self:GetLeft()
 
@@ -120,12 +146,34 @@ local function RecoveryFunc(item, bAll)
 
     local data = {"Thirst", "Hunger", "Sleep"}
     for k, v in ipairs(data) do
-        local info = Arbitrage.statistics.Get(client, v)
         local amount = tonumber(item["Get" .. v](item))
         if !amount then continue end
         if amount == 0 then continue end
 
-        Arbitrage.statistics.Set(client, v, math.Clamp(info + (amount * (bAll and left or 1)), 0, 100))
+        local value = amount * (bAll and left or 1)
+        if value > 0 then
+            local info = Arbitrage.statistics.Get(client, v)
+            local delay = (client:GetTemporaryStatusEffectDelay(v:lower()) or CurTime()) - CurTime()
+            delay = delay + value
+
+            local max = info + delay
+            local maxStatus = 100
+            if max > maxStatus then
+                local maxAStatus = 400
+                local keyname = v:lower() .. "_a"
+                local a_delay = (client:GetTemporaryStatusEffectDelay(keyname) or CurTime()) - CurTime()
+                a_delay = math.min(maxAStatus, a_delay + value * 2)
+
+                client:SetTemporaryStatusEffect(keyname, a_delay)
+            end
+
+            delay = math.min(maxStatus, delay)
+            client:SetTemporaryStatusEffect(v:lower(), delay)
+        elseif value < 0 then
+            local info = Arbitrage.statistics.Get(client, v) or 100
+
+            Arbitrage.statistics.Set(client, v, math.Clamp(info + value, 0, 100))
+        end
     end
 
     local health = client:Health()
@@ -135,9 +183,25 @@ local function RecoveryFunc(item, bAll)
         client:SetHealth(math.Clamp(health + addHealth, 0, 100))
     end
 
-    local song = item.sound
+    local song = item:GetSound()
     if song and song != "" and song != " " then
         client:EmitSound(song)
+    end
+
+    local add_status_effects = item:GetAddStatusEffects()
+    for name, delay in pairs(Medical:StringToObject(add_status_effects)) do
+        local uniqueID = Medical:GetTemporaryStatusEffectsByName(name)
+        if !uniqueID then continue end
+
+        client:AddTemporaryStatusEffect(uniqueID, delay)
+    end
+
+    local remove_status_effects = item:GetRemoveStatusEffects()
+    for _, name in ipairs(Medical:StringToTable(remove_status_effects)) do
+        local uniqueID = Medical:GetTemporaryStatusEffectsByName(name)
+        if !uniqueID then continue end
+
+        client:RemoveTemporaryStatusEffect(uniqueID)
     end
 end
 

@@ -145,6 +145,10 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 			value = -shift
 		end
 
+		if client:HasTemporaryStatusEffect("berserk") then
+			value = value + 15
+		end
+
 		value = math.Clamp(value, -8, 8)
 		fovShift = Lerp(FrameTime() * 3, fovShift, value)
 

@@ -28,6 +28,8 @@ function PLUGIN:LayDownBed(client, entity)
         client:Freeze(true)
     end)
 
+    client:AddTemporaryStatusEffect("sleep", 0)
+    client:AddTemporaryStatusEffect("health_bed", 0)
     client:SetNetVar("inbed", entity)
 
     client.bedentity = entity
@@ -41,6 +43,8 @@ function PLUGIN:GetUpBed(client, entity)
     client:SetNetVar("inbed", nil)
     client:SetPos(client:GetPos() + Vector(0, 0, 10))
     client:SetEyeAngles(Angle(0, 0, 0))
+    client:RemoveTemporaryStatusEffect("sleep")
+    client:RemoveTemporaryStatusEffect("health_bed")
 end
 
 function PLUGIN:PlayerUse(client, entity)
@@ -61,33 +65,6 @@ function PLUGIN:PlayerUse(client, entity)
         end)
 
         client.BedCD = CurTime() + 1
-    end
-end
-
-function PLUGIN:PlayerPostThink(client)
-    if !client:oldAlive() then return end
-
-    local inBed = client:GetNetVar("inbed")
-    local isSleeping = client:GetLocalVar("sleeping")
-
-    if inBed then
-        if (!client.BedHPRegen or CurTime() >= client.BedHPRegen) then
-            local health = client:Health()
-            if health > 0 and health < 100 then
-                client:SetHealth(math.Clamp(health + 1, 0, 100))
-
-                client.BedHPRegen = CurTime() + 6
-            end
-        end
-    end
-
-    if inBed or isSleeping then
-        if (!client.BedRegen or CurTime() >= client.BedRegen) then
-            local amount = Arbitrage.statistics.Get(client, "Sleep") or 100
-            Arbitrage.statistics.Set(client, "Sleep", math.Clamp(amount + 1, 0, 100))
-
-            client.BedRegen = CurTime() + 2
-        end
     end
 end
 

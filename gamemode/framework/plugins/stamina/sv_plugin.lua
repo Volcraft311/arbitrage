@@ -51,25 +51,31 @@ function Stamina:GetMaxWalkSpeed(client)
 		speed = speed * arbWalkSpeed
 	end
 
-	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
-	if sleep <= 40 then
-		local value = math.abs(sleep - 40)
+	if client:HasTemporaryStatusEffect("exhaustion") then
+		local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
 
-		speed = speed - value
+		if sleep <= 40 then
+			speed = speed - (40 - sleep)
+		end
 	end
 
-	if (client.StaminaBrokenLegsTime or CurTime()) > CurTime() then
+	if client:HasTemporaryStatusEffect("berserk") then
+		local increase = 1 + (Medical:TemporaryStatusEffectsValues("berserk")[1] / 100)
+
+		speed = speed * increase
+	end
+
+	if client:HasTemporaryStatusEffect("broken_leg") and !client:HasTemporaryStatusEffect("painkillers") then
 		local value = math.Clamp(math.abs(math.sin(RealTime() * 2.5)), 0.3, 1)
 
-		if value <= 0.35 and client:GetVelocity():LengthSqr() >= 1000 then
-			if (!client.StaminaShakeTime or CurTime() >= client.StaminaShakeTime) then
-				client:ViewPunch(Angle(0.7, -0.5, 0.3))
+		if (!client.StaminaShakeTime or CurTime() >= client.StaminaShakeTime) and value <= 0.35 and client:GetVelocity():LengthSqr() >= 1000 then
+			client:ViewPunch(Angle(0.7, -0.5, 0.3))
 
-				client.StaminaShakeTime = CurTime() + 0.6
-			end
+			client.StaminaShakeTime = CurTime() + 0.6
 		end
 
-		speed = speed * (value * 0.8)
+		local decrease = 1 - (Medical:TemporaryStatusEffectsValues("broken_leg")[1] / 100)
+		speed = speed * (value * decrease)
 	end
 
 	return speed
@@ -90,20 +96,27 @@ function Stamina:GetMaxRunSpeed(client)
 
 	local stamina = self:GetStamina(client)
 	if stamina <= 50 then
-		local value = math.abs(stamina - 50)
-
-		speed = speed - value * 1.25
+		speed = speed - (50 - stamina) * 1.25
 	end
 
-	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
-	if sleep <= 40 then
-		local value = math.abs(sleep - 40)
+	if client:HasTemporaryStatusEffect("exhaustion") then
+		local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
 
-		speed = speed - value
+		if sleep <= 40 then
+			speed = speed - (40 - sleep)
+		end
 	end
 
-	if (client.StaminaDamageTime or CurTime()) > CurTime() then
-		speed = speed * 1.1
+	if client:HasTemporaryStatusEffect("adrenalin") then
+		local increase = 1 + (Medical:TemporaryStatusEffectsValues("adrenalin")[1] / 100)
+
+		speed = speed * increase
+	end
+
+	if client:HasTemporaryStatusEffect("berserk") then
+		local increase = 1 + (Medical:TemporaryStatusEffectsValues("berserk")[1] / 100)
+
+		speed = speed * increase
 	end
 
 	return speed
@@ -150,8 +163,7 @@ function Stamina:CalcRegeneration(client, info)
 
 		regeneration = regeneration * 3 -- восстанавливаем стамину быстрее, чем тратим
 
-		local thirst = Arbitrage.statistics.Get(client, "Thirst") or 100
-		if thirst < 10 then return 0 end
+		if client:HasTemporaryStatusEffect("dehydration") then return 0 end
 
 		local length = info.length
 		if length <= 0 then
@@ -273,17 +285,13 @@ function Stamina:ScalePlayerDamage(target, hitgroup, dmginfo)
 			if class == "academy_first" then return end
 		end
 
-		if (target.StaminaBrokenLegsTime or CurTime()) <= CurTime() then
+		if target:HasTemporaryStatusEffect("broken_leg") and !target:HasTemporaryStatusEffect("painkillers") then
+			-- eh...
+		else
 			self:SetStamina(target, self:GetStamina(target) + damage * 2)
-			target.StaminaDamageTime = CurTime() + 10
+
+			target:AddTemporaryStatusEffect("adrenalin", 10)
 		end
-	end
-
-	if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
-		self:SetStamina(target, 0)
-		self:SetStaminaCD(target, 20)
-
-		target.StaminaBrokenLegsTime = CurTime() + 20
 	end
 end
 

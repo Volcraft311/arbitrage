@@ -38,6 +38,107 @@ function PANEL:Init()
         surface.DrawRect(0, 0, w, h)
     end
 
+    self.statusPanel = self:Add("Panel")
+    self.statusPanel:SetWide(ScrH() * 0.25)
+    self.statusPanel:Dock(RIGHT)
+    self.statusPanel:DockMargin(0, H(100), 0, 0)
+
+    local padding = W(40)
+    local size = H(25)
+    local i = 0
+    for k, v in SortedPairsByMemberValue(LocalPlayer():GetTemporaryStatusEffects(), "delay") do
+        local uniqueID = v.uniqueID
+        local info = Medical.t_status_effects[uniqueID]
+
+        if info.isHidden then continue end
+
+        local material = Material(info.icon or "err.png")
+
+        local isHover = false
+        local tooltip = self:Add("DLabel")
+        tooltip.text = Medical:FormatTemporaryDescription(uniqueID, info.description)
+        tooltip.len = 0
+        tooltip.lenMax = utf8.len(tooltip.text)
+        tooltip:SetText("")
+        tooltip:SetFont("arb.Font_FuturaPTBook_6")
+        tooltip:SizeToContents()
+        tooltip:SetAlpha(0)
+        tooltip.Paint = function(this, w, h)
+            asterionlib.DrawBlur(this, 6)
+
+            surface.SetDrawColor(0, 0, 0, 100)
+            surface.DrawRect(0, 0, w, h)
+
+            local x, y = gui.MouseX() - w / 2, gui.MouseY() - h * 1.5
+
+            if x + w >= ScrW() - 10 then x = ScrW() - w - 10 end
+            if x <= 10 then x = 10 end
+
+            if y + h >= ScrH() - 10 then y = ScrH() - h - 10 end
+            if y <= 10 then y = 10 end
+
+            this:SetPos(x, y)
+        end
+        local time = RealTime()
+        tooltip.Think = function(this)
+            if this:GetAlpha() <= 0 then return end
+            if this.len >= this.lenMax then return end
+
+            if RealTime() >= time then
+                this.len = this.len + 2
+                this:SetText(utf8.sub(this.text, 1, this.len))
+                this:SizeToContents()
+
+                time = RealTime() + 0.05
+            end
+        end
+
+        local panel = self.statusPanel:Add("DPanel")
+        panel:Dock(TOP)
+        panel:DockMargin(0, 0, 0, 0)
+        panel:SetTall(0)
+        panel:SetAlpha(0)
+        panel.Paint = function(_, w, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(material)
+            surface.DrawTexturedRect(w - size - padding, 0, size, size)
+
+            draw.SimpleText(info.name .. "  ", "arb.Font_FuturaPTBook_7", w - size - padding, size / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+
+            if panel:IsHovered() then
+                if !isHover then
+                    tooltip:AlphaTo(255, 0.5)
+                    tooltip:SetText("")
+                    tooltip:SizeToContents()
+
+                    tooltip.len = 0
+                end
+
+                isHover = true
+            else
+                if isHover then
+                    tooltip:AlphaTo(0, 0.5, 0, function()
+                        tooltip:SetText("")
+                        tooltip:SizeToContents()
+
+                        tooltip.len = 0
+                    end)
+                end
+
+                isHover = false
+            end
+        end
+
+        timer.Simple(i * 0.3, function()
+            if !IsValid(panel) then return end
+
+            panel:SizeTo(-1, size + H(5), 0.3, 0, -1)
+            panel:AlphaTo(255, 1)
+        end)
+
+        i = i + 1
+    end
+
     local aTitle = self.favoritesPanel:Add("Panel")
     aTitle:Dock(TOP)
     aTitle:SetTall(H(57))

@@ -37,8 +37,7 @@ function Stamina:StartCommand(client, ucmd)
 		ucmd:RemoveKey(IN_JUMP)
 	end
 
-	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
-	if speed and sleep <= 10 then
+	if speed and client:HasTemporaryStatusEffect("severe_exhaustion") then
 		ucmd:RemoveKey(IN_SPEED)
 	end
 end

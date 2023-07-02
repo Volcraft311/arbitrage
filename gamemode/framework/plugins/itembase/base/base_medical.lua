@@ -20,6 +20,8 @@ BASE.category = "Медикаменты"
 BASE.sethealth = 50
 BASE.maxuse = 1
 BASE.sound = "items/medshot4.wav"
+BASE.addstatuseffects = ""
+BASE.removestatuseffects = ""
 
 BASE.creationExample = {
     {
@@ -41,6 +43,16 @@ BASE.creationExample = {
         variable = "sound",
         title = "Звук при использовании",
         default = "items/medshot4.wav"
+    },
+    {
+        variable = "addstatuseffects",
+        title = "Какие статус эффекты будут выдаваться",
+        default = ""
+    },
+    {
+        variable = "removestatuseffects",
+        title = "Какие статус эффекты будут удаляться",
+        default = ""
     }
 }
 
@@ -59,7 +71,10 @@ BASE.propertiesInfo = {
     end},
     {"sound", "Звук при использовании", function(a)
         return a:GetSound()
-    end}
+    end},
+    {"removestatuseffects", "Удаляются статус эффекты", function(a)
+        return a:GetRemoveStatusEffects()
+    end},
 }
 
 function BASE:GetSetHealth()
@@ -76,6 +91,14 @@ end
 
 function BASE:GetSound()
     return self:GetData("m_sound", self.sound)
+end
+
+function BASE:GetAddStatusEffects()
+    return self:GetData("m_addstatuseffects", self.addstatuseffects)
+end
+
+function BASE:GetRemoveStatusEffects()
+    return self:GetData("m_removestatuseffects", self.removestatuseffects)
 end
 
 function BASE:GetDescription()
@@ -97,15 +120,35 @@ local function RecoveryFunc(item, target)
         TypingDraw:SetTypingText(v, client, text, Color(255, 170, 23))
     end
 
+    local value = tonumber(item:GetSetHealth())
+    if value > 0 then
+        local delay = (client:GetTemporaryStatusEffectDelay("health") or CurTime()) - CurTime()
+        delay = math.Clamp(delay + value, 0, 100)
+
+        client:SetTemporaryStatusEffect("health", delay)
+    elseif value < 0 then
+        target:TakeDamage(-value)
+    end
+
     local song = item:GetSound()
     if song and song != "" and song != " " then
         target:EmitSound(song)
     end
 
-    target:SetHealth(math.min(target:Health() + tonumber(item:GetSetHealth()), target:GetMaxHealth()))
+    local add_status_effects = item:GetAddStatusEffects()
+    for name, delay in pairs(Medical:StringToObject(add_status_effects)) do
+        local uniqueID = Medical:GetTemporaryStatusEffectsByName(name)
+        if !uniqueID then continue end
 
-    if target:Health() <= 0 then
-        target:Kill()
+        client:AddTemporaryStatusEffect(uniqueID, delay)
+    end
+
+    local remove_status_effects = item:GetRemoveStatusEffects()
+    for _, name in ipairs(Medical:StringToTable(remove_status_effects)) do
+        local uniqueID = Medical:GetTemporaryStatusEffectsByName(name)
+        if !uniqueID then continue end
+
+        client:RemoveTemporaryStatusEffect(uniqueID)
     end
 
     local left = item:GetLeft()

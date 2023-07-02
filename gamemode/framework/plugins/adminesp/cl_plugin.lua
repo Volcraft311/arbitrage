@@ -52,6 +52,7 @@ local function getPos(entity, isPlayer)
 	return isPlayer and (entity:IsDormant() and entity:GetNetVar("esp.position", pos)) or pos
 end
 
+local iconSize = 15
 local function drawing(entity, info, eyePos)
 	if !IsValid(entity) then return end
 
@@ -81,6 +82,19 @@ local function drawing(entity, info, eyePos)
 		if !isfunction(data) then
 			local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
 			y2 = y2 + _y
+		end
+	end
+
+	if isPlayer then
+		for k, v in ipairs(entity:GetTemporaryStatusEffects()) do
+			local uniqueID = v.uniqueID
+	    	local status = Medical.t_status_effects[uniqueID]
+
+	    	local material = Material(status.icon or "err.png")
+
+	    	surface.SetDrawColor(255, 255, 255)
+	    	surface.SetMaterial(material)
+	    	surface.DrawTexturedRect(x + (k * iconSize - iconSize), y - iconSize, iconSize, iconSize)
 		end
 	end
 end

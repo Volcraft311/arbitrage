@@ -110,6 +110,72 @@ local function getPlaces(steamid)
     return data
 end
 
+local function getAllTemporaryStatusEffects(steamid)
+    local client = player.GetBySteamID(steamid)
+
+    local disable = GetNetVar("medical:statuseffects_disable", {})
+    local all_effects = {}
+    for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
+        all_effects[#all_effects + 1] = {
+            name = v.name,
+            icon = v.icon,
+            data = function()
+                Derma_StringRequest("Выдать статус эфект", "Введите время, насколько вы хотите выдать игроку данный эффект\n(Если вы хотите установить его навсегда, то введите 0)", "", function(text)
+                    text = tonumber(text)
+                    if !text then return end
+
+                    runAction("addtemporarystatuseffect", steamid, k, text)
+                end)
+            end,
+            check = function()
+                return IsValid(client) and !disable[k]
+            end
+        }
+    end
+
+    local client_effects = {}
+    if IsValid(client) then
+        for _, v in SortedPairsByMemberValue(client:GetTemporaryStatusEffects(), "delay") do
+            local uniqueID = v.uniqueID
+            local info = Medical.t_status_effects[uniqueID]
+            local delay = v.delay <= 0 and "∞" or math.floor(v.delay - CurTime())
+
+            client_effects[#client_effects + 1] = {
+                name = info.name .. " (" .. delay .. " sec)",
+                icon = info.icon,
+                data = function()
+                    runAction("removetemporarystatuseffect", client, uniqueID)
+                end
+            }
+        end
+    end
+
+    local data = {
+        {
+            name = "Выдать",
+            icon = "icon16/pill_add.png",
+            data = all_effects
+        },
+        {
+            name = "Забрать",
+            icon = "icon16/pill_delete.png",
+            data = client_effects
+        },
+        {
+            name = "Очистить все эффекты",
+            icon = "icon16/pill.png",
+            data = function()
+                runAction("cleartemporarystatuseffects", client)
+            end,
+            check = function()
+                return IsValid(client) and #client_effects > 0
+            end
+        }
+    }
+
+    return data
+end
+
 local function getClient(client, steamid)
     if IsValid(client) then
         return client
@@ -484,6 +550,11 @@ local function getActionList(clientinfo)
                         end
                     }
                 }
+            },
+            {
+                name = "Изменить статус эффекты",
+                icon = "icon16/pill_go.png",
+                data = getAllTemporaryStatusEffects(m_steamid)
             },
             {
                 name = "Изменить скорость",

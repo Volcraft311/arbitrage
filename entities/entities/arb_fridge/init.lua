@@ -28,13 +28,17 @@ function ENT:Use(client, caller)
 	    TypingDraw:SetTypingText(v, client, "Обыскивает 'Холодильник'", Color(255, 170, 23))
 	end
 
+	client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
 	Arbitrage.action.ActionRun(client, "Берем еду", 10, function()
 		if client:GetEyeTrace().Entity != self then return true end
 		if client:GetPos():Distance(self:GetPos()) >= 110 then return true end
 
 		return false
-	end, function(activator)
-		Arbitrage.statistics.Set(activator, "Hunger", 100)
-		Arbitrage.statistics.Set(activator, "Thirst", 100)
+	end, function()
+		client:AddTemporaryStatusEffect("hunger", 100)
+		client:AddTemporaryStatusEffect("hunger_a", 400)
+
+		client:AddTemporaryStatusEffect("thirst", 100)
+		client:AddTemporaryStatusEffect("thirst_a", 400)
 	end)
 end

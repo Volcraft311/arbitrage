@@ -86,6 +86,7 @@ function PLUGIN:PlayerDisconnected(client)
             hullscale = {hullMin, hullMax},
             hullduckscale = {hullduckMin, hullduckMax},
             speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
+            t_status_effects = {},
 
             saver = client._saver
         }
@@ -105,6 +106,16 @@ function PLUGIN:PlayerDisconnected(client)
 
         for k, v in ipairs({"Hunger", "Thirst", "Sleep"}) do
             entity.data.statistic[v] = Arbitrage.statistics.Get(client, v)
+        end
+
+        for k, v in ipairs(client:GetTemporaryStatusEffects()) do
+            local uniqueID = v.uniqueID
+            local delay = v.delay
+
+            local info = Medical.t_status_effects[uniqueID]
+            if info.noSave then continue end
+
+            entity.data.t_status_effects[uniqueID] = delay <= 0 and 0 or delay - CurTime()
         end
 
         local saver = entity.data.saver
@@ -257,6 +268,12 @@ function PLUGIN:PlayerInitialSpawnForRealz(client)
             inventory:Sync()
         end
     end
+
+    timer.Simple(0.1, function()
+        for k, v in pairs(data.t_status_effects) do
+            client:SetTemporaryStatusEffect(k, v)
+        end
+    end)
 
     client.saveData = nil
 end

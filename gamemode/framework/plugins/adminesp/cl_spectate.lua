@@ -121,9 +121,15 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 	end
 
 	if client:KeyDown(IN_MOVELEFT) then
-		cameraPosition = cameraPosition - cameraAngles:Right() * speed
+		local a = cameraAngles:Right() * speed
+		a = Arbitrage.OnMapReversion() and -a or a
+
+		cameraPosition = cameraPosition - a
 	elseif client:KeyDown(IN_MOVERIGHT) then
-		cameraPosition = cameraPosition + cameraAngles:Right() * speed
+		local a = cameraAngles:Right() * speed
+		a = Arbitrage.OnMapReversion() and -a or a
+
+		cameraPosition = cameraPosition + a
 	end
 
 	local entity = cameraEntity
@@ -282,7 +288,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 	local yaw = x * GetConVar("m_yaw"):GetFloat()
 
 	cameraAngles.p = math.Clamp(cameraAngles.p + pitch, -90, 90)
-	cameraAngles.y = cameraAngles.y - yaw
+	cameraAngles.y = cameraAngles.y - (Arbitrage.OnMapReversion() and -yaw or yaw)
 end
 
 function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)

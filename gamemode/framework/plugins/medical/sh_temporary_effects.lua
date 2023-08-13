@@ -399,7 +399,7 @@ Medical:TemporaryStatusEffects("exhaustion", {
 	icon = "danganronpa/ui/medical/exhaustion.png",
 	description = "Скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
-		if math.random(1, 40) == 1 then
+		if math.random(1, 80) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
 		end
 	end,
@@ -416,7 +416,7 @@ Medical:TemporaryStatusEffects("severe_exhaustion", {
 	icon = "danganronpa/ui/medical/exhaustion.png",
 	description = "Вы больше не можете бегать, а скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
-		if math.random(1, 20) == 1 then
+		if math.random(1, 40) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
 		end
 	end,

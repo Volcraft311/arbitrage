@@ -48,7 +48,7 @@ function Medical:OnMedicalHandler(client)
 	end
 
 	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
-	if sleep <= 40 then
+	if sleep <= 30 then
 		if !client.exhaustionHandler then
 			client:AddTemporaryStatusEffect("exhaustion", 0)
 			client.exhaustionHandler = true

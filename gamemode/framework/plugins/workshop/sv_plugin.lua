@@ -91,7 +91,7 @@ function PLUGIN:Install(id)
     id = tostring(id)
 
     local ip = getIP()
-    asterionlib.Post("http://" .. ip .. "/api/downloader", {
+    asterionlib.Post("http://" .. ip .. ":1337/api/downloader", {
         token = token,
         id = id,
         ip = ip
@@ -102,7 +102,7 @@ function PLUGIN:Delete(id)
     id = tostring(id)
 
     local ip = getIP()
-    asterionlib.Post("http://" .. ip .. "/api/remove", {
+    asterionlib.Post("http://" .. ip .. ":1337/api/remove", {
         token = token,
         id = id,
         ip = ip

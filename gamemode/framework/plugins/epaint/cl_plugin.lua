@@ -163,7 +163,7 @@ netstream.Hook("EPaint:Load", function(idx, array)
 		render.OverrideAlphaWriteEnable(false)
 	render.PopRenderTarget()
 
-	local material = CreateMaterial(uniqueID .. "_mat", "UnlitGeneric", {
+	local material = CreateMaterial(uniqueID .. "_mat", "LightmappedGeneric", {
 		["$basetexture"] = EPaintRT:GetName(),
 		["$translucent"] = 1,
 		["$vertexcolor"] = 1

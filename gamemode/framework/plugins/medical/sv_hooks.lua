@@ -29,6 +29,8 @@ function Medical:ScalePlayerDamage(target, hitgroup, dmginfo)
 end
 
 function Medical:EntityTakeDamage(client, dmginfo)
+	if !client:IsPlayer() then return end
+
 	if dmginfo:IsFallDamage() then
 		client:AddTemporaryStatusEffect("broken_leg", 20)
 	end

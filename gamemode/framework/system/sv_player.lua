@@ -132,6 +132,8 @@ function Arbitrage.player.Respawn(client)
     client:SetNoCollideWithTeammates(false)
 
     timer.Simple(0.2, function()
+        if !IsValid(client) then return end
+
         if !client:IsNotCharacter() and !client:IsSpectate() then
             Arbitrage.player.SetupWeapons(client)
         end
@@ -153,6 +155,8 @@ function Arbitrage.player.Respawn(client)
     Arbitrage.player.SetupStatistics(client)
 
     timer.Simple(2, function()
+        if !IsValid(client) then return end
+
         client:SetupHands()
     end)
 

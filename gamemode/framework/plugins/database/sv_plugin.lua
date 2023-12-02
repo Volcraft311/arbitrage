@@ -31,7 +31,8 @@ function PLUGIN:OneSecond()
         else
             local entity = self.deathPlaques[k]
             if !IsValid(entity) then
-            	if !Arbitrage.placesList[place] then continue end
+                if !Arbitrage.placesList then continue end
+                if !Arbitrage.placesList[place] then continue end
 
                 local stored = Arbitrage.placesList[place]
                 local pos = stored[1] - lifting

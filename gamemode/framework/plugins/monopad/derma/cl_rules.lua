@@ -336,7 +336,10 @@ function PANEL:SetPage(id)
 	self.id = id
 
 	local rulesList = Arbitrage.GetAcademyRules()
+	if !rulesList then return end
+
 	local rules = rulesList[id]
+	if !rules then return end
 
 	local url = rules[1]
 	local description = "Правило №" .. self.id .. "." .. rules[3]

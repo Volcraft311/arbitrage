@@ -40,6 +40,8 @@ MonoPad.icons = {
 MonoPad.categoryActions = {
     navigation = function(mapID)
         local ui = MonoPad:GetUI()
+        if !ui then return end
+
         local panel = ui.menu:Add("MonoPad:MiniMap")
         panel:Dock(FILL)
 
@@ -51,6 +53,8 @@ MonoPad.categoryActions = {
     end,
     rules = function(rulesID)
         local ui = MonoPad:GetUI()
+        if !ui then return end
+
         local panel = ui.menu:Add("MonoPad:Rules")
         panel:Dock(FILL)
 
@@ -72,6 +76,8 @@ MonoPad.categoryActions = {
     end,
     messenger = function(chatID)
         local ui = MonoPad:GetUI()
+        if !ui then return end
+
         local panel = ui.menu:Add("MonoPad:Messenger")
         panel:Dock(FILL)
 
@@ -83,6 +89,8 @@ MonoPad.categoryActions = {
     end,
     gamelog = function()
         local ui = MonoPad:GetUI()
+        if !ui then return end
+
         local panel = ui.menu:Add("MonoPad:GameLog")
         panel:Dock(FILL)
 
@@ -90,6 +98,8 @@ MonoPad.categoryActions = {
     end,
     notes = function(noteID, noteTitle)
         local ui = MonoPad:GetUI()
+        if !ui then return end
+
         local panel = ui.menu:Add("MonoPad:Notes")
         panel:Dock(FILL)
 
@@ -101,6 +111,8 @@ MonoPad.categoryActions = {
     end,
     special = function(categoryID)
         local ui = MonoPad:GetUI()
+        if !ui then return end
+
         local panel = ui.menu:Add("MonoPad:Special")
         panel:Dock(FILL)
 

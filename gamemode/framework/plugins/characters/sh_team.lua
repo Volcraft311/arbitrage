@@ -178,6 +178,8 @@ function Character.team:Join(client, data, bRespawn)
     end)
 
     timer.Simple(0.3, function()
+        if !IsValid(client) then return end
+
         local modelScale = info:GetScale()
         client:SetModelScale(modelScale == 1 and 0.999999 or modelScale)
 
@@ -189,6 +191,8 @@ function Character.team:Join(client, data, bRespawn)
     end
 
     timer.Simple(2, function()
+        if !IsValid(client) then return end
+
         client:SetupHands()
     end)
 

@@ -639,6 +639,7 @@ function PANEL:Rebuild()
 
 	netstream.Request("MonoPad:GetMessages", nil, function(data)
 		if !self then return end
+		if !self.notify then return end
 
 		local stored = {}
 

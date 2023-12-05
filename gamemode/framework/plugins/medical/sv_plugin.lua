@@ -104,11 +104,7 @@ do
 			local allow, message = onCanAdd(self, delay)
 
 			if allow == false then
-				if message then
-					return message
-				end
-
-				return "Невозможно выдать данный статус эффект"
+				return message or "Невозможно выдать данный статус эффект"
 			end
 		end
 

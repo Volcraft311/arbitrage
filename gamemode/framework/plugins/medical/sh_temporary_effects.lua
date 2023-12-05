@@ -382,12 +382,13 @@ Medical:TemporaryStatusEffects("health_bed", {
 		end
 
 
-		-- normal code...
 		stored.time = (stored.time or 0) + 1
 		if stored.time <= 6 then return end
 
 		local health = client:Health()
-		client:SetHealth(math.Clamp(health + 1, 0, 100))
+		if health < 100 then
+		    client:SetHealth(math.Clamp(health + 1, 0, 100))
+		end
 
 		stored.time = 0
 	end,
@@ -399,7 +400,7 @@ Medical:TemporaryStatusEffects("exhaustion", {
 	icon = "danganronpa/ui/medical/exhaustion.png",
 	description = "Скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
-		if math.random(1, 80) == 1 then
+		if math.random(1, 90) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
 		end
 	end,
@@ -416,7 +417,7 @@ Medical:TemporaryStatusEffects("severe_exhaustion", {
 	icon = "danganronpa/ui/medical/exhaustion.png",
 	description = "Вы больше не можете бегать, а скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
-		if math.random(1, 40) == 1 then
+		if math.random(1, 50) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
 		end
 	end,
@@ -445,7 +446,7 @@ Medical:TemporaryStatusEffects("painkillers", {
 	icon = "danganronpa/ui/medical/painkillers.png",
 	description = "Немного увеличивает контраст и снимает эффект боли.\n(При переломе) Позволяет идти с нормальной скоростью или бежать, но вы можете получить урон.",
 	handler = function(client, stored, values)
-
+        -- eh...
 	end,
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)

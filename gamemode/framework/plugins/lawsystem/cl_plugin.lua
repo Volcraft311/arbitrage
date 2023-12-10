@@ -253,7 +253,7 @@ function PLUGIN:Talking(client, anim)
     self._entity = client
 
     local RC = Arbitrage.gui.RebuttalShowdowns
-    if IsValid(RC) then
+    if IsValid(RC) and RC.players and RC.players[client] then
         RC.players[client].animID = anim
     end
 end

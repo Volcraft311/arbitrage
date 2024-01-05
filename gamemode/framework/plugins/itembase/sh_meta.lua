@@ -255,4 +255,4 @@ if SERVER then
 end
 
 
-debug.getregistry().Item = ITEM
+Arbitrage.meta.item = ITEM

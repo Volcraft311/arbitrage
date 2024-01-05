@@ -180,4 +180,4 @@ if SERVER then
 end
 
 
-debug.getregistry().Inventory = INVENTORY
+Arbitrage.meta.inventory = INVENTORY

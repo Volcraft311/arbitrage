@@ -20,7 +20,7 @@ function Character.team:New(id)
         return self.instances[id]
     end
 
-    local meta = table.Copy(FindMetaTable("Character:Team"))
+    local meta = table.Copy(Arbitrage.meta.character_team)
     local team = setmetatable({id = id}, meta)
 
     self.instances[id] = team

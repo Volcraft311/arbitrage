@@ -69,4 +69,4 @@ function EMOJI:GetByIndex(index)
 end
 
 
-debug.getregistry()["Character:Emoji"] = EMOJI
+Arbitrage.meta.character_emoji = EMOJI

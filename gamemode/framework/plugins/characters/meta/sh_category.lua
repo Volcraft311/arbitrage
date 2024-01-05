@@ -55,4 +55,4 @@ function CATEGORY:GetBackground()
 end
 
 
-debug.getregistry()["Character:Category"] = CATEGORY
+Arbitrage.meta.character_category = CATEGORY

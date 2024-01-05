@@ -26,7 +26,7 @@ PLUGIN.data = PLUGIN.data or {}
 PLUGIN.defaultBaseID = "basic"
 
 function ItemBase.GetBase(base)
-    local meta = table.Copy(FindMetaTable("Item"))
+    local meta = table.Copy(Arbitrage.meta.item)
 
     meta:AddAction("Выбросить", {
         icon = "icon16/brick_delete.png",

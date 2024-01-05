@@ -329,7 +329,7 @@ end)
 
 local function create_monopad(item, id)
     if !item.stored then
-        local meta = table.Copy(FindMetaTable("Monopad"))
+        local meta = table.Copy(Arbitrage.meta.monopad)
         local monopad = setmetatable({id = id}, meta)
 
         item.stored = monopad

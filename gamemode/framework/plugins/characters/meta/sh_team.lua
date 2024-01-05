@@ -151,4 +151,4 @@ function TEAM:GetItems()
 end
 
 
-debug.getregistry()["Character:Team"] = TEAM
+Arbitrage.meta.character_team = TEAM

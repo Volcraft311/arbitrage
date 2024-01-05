@@ -20,7 +20,7 @@ function Character.category:New(id)
         return self.instances[id]
     end
 
-    local meta = table.Copy(FindMetaTable("Character:Category"))
+    local meta = table.Copy(Arbitrage.meta.character_category)
     local category = setmetatable({id = id}, meta)
 
     self.instances[id] = category

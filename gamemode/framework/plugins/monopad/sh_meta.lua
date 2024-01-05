@@ -178,4 +178,4 @@ if SERVER then
 	end
 end
 
-debug.getregistry().Monopad = MONOPAD
+Arbitrage.meta.monopad = MONOPAD

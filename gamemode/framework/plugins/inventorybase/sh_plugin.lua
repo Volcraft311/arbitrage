@@ -25,7 +25,7 @@ function InventoryBase:New(id, w, h)
         return self.instances[id]
     end
 
-    local inventoryData = table.Copy(FindMetaTable("Inventory"))
+    local inventoryData = table.Copy(Arbitrage.meta.inventory)
     local inventory = setmetatable({id = id}, inventoryData)
 
     inventory.w = w or 4

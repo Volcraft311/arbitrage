@@ -21,7 +21,7 @@ Arbitrage.meta = Arbitrage.meta or {}
 
 function Arbitrage.Initialize()
 	function Arbitrage.GM:GetGameDescription()
-		return "Danganronpa RP"
+		return "Asterion Academy"
 	end
 
 	local commandData = {

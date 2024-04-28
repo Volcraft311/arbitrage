@@ -63,10 +63,6 @@ function PANEL:InitInventory()
     end
 end
 
-local function isURL(url)
-    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
-end
-
 function PANEL:InitSlot(panel)
     local x, y = panel.slotX, panel.slotY
 
@@ -221,7 +217,7 @@ function PANEL:InitSlot(panel)
     if item then
         local path = item:GetIcon()
         local icon = nil
-        if isURL(path) then
+        if string.isURL(path) then
             asterionlib.DownloadImage(path, function(mat)
                 icon = mat
             end)

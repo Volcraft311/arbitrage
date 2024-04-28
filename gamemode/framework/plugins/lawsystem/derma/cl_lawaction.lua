@@ -60,13 +60,9 @@ local function createCategory(panel, name)
 	return category
 end
 
-local function isURL(url)
-    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
-end
-
 local function createItemButton(panel, id, path, name, data)
     local icon = nil
-    if isURL(path) then
+    if string.isURL(path) then
         asterionlib.DownloadImage(path, function(mat)
             icon = mat
         end)

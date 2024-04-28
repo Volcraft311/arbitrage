@@ -38,10 +38,6 @@ local icons = {
     ["Оружие - CSS Alt"] = "gun"
 }
 
-local function isURL(url)
-    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
-end
-
 spawnmenu.AddContentType("Item", function(container, item)
     local name = item:GetName()
     if !name then return end
@@ -54,10 +50,9 @@ spawnmenu.AddContentType("Item", function(container, item)
     icon:SetSpawnName(uniqueID)
     icon:SetMaterial(item.icon)
 
-
     local path = item.icon
     local mat = nil
-    if isURL(path) then
+    if string.isURL(path) then
         asterionlib.DownloadImage(path, function(_, imagePath)
             mat = imagePath
         end)
@@ -68,7 +63,6 @@ spawnmenu.AddContentType("Item", function(container, item)
     if mat then
         icon:SetMaterial(mat)
     end
-
 
     icon.DoClick = function()
         netstream.Start("ItemBase:SpawnItem", uniqueID)

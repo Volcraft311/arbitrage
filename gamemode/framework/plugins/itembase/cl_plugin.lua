@@ -14,10 +14,6 @@
 
 local PLUGIN = PLUGIN
 
-local function isURL(url)
-	return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
-end
-
 local entities = {}
 local ent = nil
 timer.Create("ItemBase:UpdateDraw", 1, 0, function()
@@ -47,7 +43,7 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 
 			local path = item:GetIcon()
 	        local icon = nil
-	        if isURL(path) then
+	        if string.isURL(path) then
 	            asterionlib.DownloadImage(path, function(mat)
 	                icon = mat
 	            end)

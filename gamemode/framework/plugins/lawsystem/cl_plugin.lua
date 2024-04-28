@@ -921,15 +921,11 @@ netstream.Hook("arb.ShowEvidence", function(client, data, indx)
     end)
 end)
 
-local function isURL(url)
-    return string.Left(url, 8) == "https://" or string.Left(url, 7) == "http://"
-end
-
 netstream.Hook("arb.ShowItem", function(client, path, indx)
     local name = client:Name()
 
     local icon = nil
-    if isURL(path) then
+    if string.isURL(path) then
         asterionlib.DownloadImage(path, function(image)
             icon = image
         end)

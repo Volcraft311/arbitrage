@@ -13,7 +13,7 @@
 
 
 Medical:TemporaryStatusEffects("light_bleeding", {
-	name = "Кровотичение",
+	name = "Кровотечение",
 	icon = "danganronpa/ui/medical/bleeding.png",
 	description = "Вы теряете {1} HP каждые {2} секунд.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
 	values = {
@@ -37,13 +37,13 @@ Medical:TemporaryStatusEffects("light_bleeding", {
 	end,
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("heavy_bleeding") then
-			return false, "Игрок имеет статус эффект 'Сильное кровотичение'"
+			return false, "Игрок имеет статус эффект 'Сильное кровотечение'"
 		end
 	end
 })
 
 Medical:TemporaryStatusEffects("heavy_bleeding", {
-	name = "Сильное кровотичение",
+	name = "Сильное кровотечение",
 	icon = "danganronpa/ui/medical/heavy_bleeding.png",
 	description = "Вы теряете {1} HP каждые {2} секунд.\nВы оставляете брызги крови, а так же снижается максимальное количество выносливости.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
 	values = {
@@ -64,7 +64,7 @@ Medical:TemporaryStatusEffects("heavy_bleeding", {
 
 		client:TakeDamage(values[1])
 		stored.time = 0
-	end,
+	end, 
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.alpha = stored.alpha or 0

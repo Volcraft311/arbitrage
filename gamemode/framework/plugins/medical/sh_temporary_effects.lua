@@ -538,8 +538,12 @@ Medical:TemporaryStatusEffects("poisoning_effect", {
 		end
 	},
 	onCanAdd = function(client, delay)
-		if client:HasTemporaryStatusEffect("poisoning_effect") then
-			return false, "Игрок имеет статус эффект 'Отравление'"
+		if client:HasTemporaryStatusEffect("poisoning_damage") then
+			return false, "Игрок имеет статус эффект 'Отравление (постоянный урон)'"
+		end
+
+		if client:HasTemporaryStatusEffect("poisoning_dead") then
+			return false, "Игрок имеет статус эффект 'Отравление (мгновенная смерть)'"
 		end
 	end,
 	isHidden = true
@@ -594,9 +598,14 @@ Medical:TemporaryStatusEffects("poisoning_damage", {
 		local values = Medical:TemporaryStatusEffectsValues("poisoning_damage")
 		local time = values[2] + 1
 
-		if delay > 0 and time then
-			return false, "Данный эффект нельзя установить меньше чем " .. time .. " секунд"
+		if delay < time then
+			return false, "Данный эффект нельзя установить меньше чем " .. time .. " секунд."
 		end
+	end,
+	onAdd = function(client, delay)
+		if CLIENT then return end
+
+		client:RemoveTemporaryStatusEffect("poisoning_effect")
 	end,
 	isHidden = true
 })
@@ -637,9 +646,15 @@ Medical:TemporaryStatusEffects("poisoning_dead", {
 		local values = Medical:TemporaryStatusEffectsValues("poisoning_dead")
 		local time = values[2] + 1
 
-		if delay > 0 and time then
-			return false, "Данный эффект нельзя установить меньше чем " .. time .. " секунд"
+		if delay != 0 then
+			return false, "Данный эффект можно установить только на 0 секунд."
 		end
+	end,
+	onAdd = function(client, delay)
+		if CLIENT then return end
+
+		client:RemoveTemporaryStatusEffect("poisoning_effect")
+		client:RemoveTemporaryStatusEffect("poisoning_damage")
 	end,
 	isHidden = true
 })

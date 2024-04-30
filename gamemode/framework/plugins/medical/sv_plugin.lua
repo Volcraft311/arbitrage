@@ -101,7 +101,7 @@ do
 
 		local onCanAdd = info.onCanAdd
 		if onCanAdd then
-			local allow, message = onCanAdd(self, delay)
+			local allow, message = onCanAdd(self, _delay)
 
 			if allow == false then
 				return message or "Невозможно выдать данный статус эффект"

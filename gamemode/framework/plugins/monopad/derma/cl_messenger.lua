@@ -372,7 +372,7 @@ function PANEL:InitInput()
 		    if IsValid(a) then
 		        local b = a:GetChildren()[2]
 		        
-		        if IsValid(b() then
+		        if IsValid(b) then
 		            text = b:GetValue()
 		        end
 		    end

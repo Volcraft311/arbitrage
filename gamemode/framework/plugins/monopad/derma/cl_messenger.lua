@@ -367,7 +367,15 @@ function PANEL:InitInput()
 	inputButton.Paint = function(_, w, h)
 		local text = nil
 		if IsValid(DermaStringRequest) then
-			text = DermaStringRequest:GetChildren()[5]:GetChildren()[2]:GetValue()
+		    local a = DermaStringRequest:GetChildren()[5]
+		    
+		    if IsValid(a) then
+		        local b = a:GetChildren()[2]
+		        
+		        if IsValid(b() then
+		            text = b:GetValue()
+		        end
+		    end
 		end
 
 		_.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or text) and 1 or 0.05)

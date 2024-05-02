@@ -28,7 +28,7 @@ function PLUGIN:Spec(client, target)
 		end
 
 		hook.Add("StartCommand", hookID, function(client2, ucmd)
-			if !IsValid(client) then return hook.Remove(hookID) end
+			if !IsValid(client) then return hook.Remove("StartCommand", hookID) end
 
 			if client == client2 then
 				ucmd:ClearMovement()

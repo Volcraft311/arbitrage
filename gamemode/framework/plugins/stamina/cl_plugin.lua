@@ -64,10 +64,17 @@ function Stamina:HUDPaint()
 
 	local client = LocalPlayer()
 	local frametime = FrameTime()
+	local get_stamina = self:GetStamina(client)
 
-	stamina = Lerp(frametime * 10, stamina, self:GetStamina(client))
+	if get_stamina != 100 or (stamina < 99.8 or stamina > 100.2) then
+		stamina = Lerp(frametime * 10, stamina, get_stamina)
+	end
 
-	alphastamina = Lerp(frametime * 10, alphastamina, (stamina < 98 or stamina > 100) and 255 or 0)
+	local a = (stamina < 98 or stamina > 100) and 255 or 0 
+	if a != 0 or alphastamina > 0.05 then 
+		alphastamina = Lerp(frametime * 10, alphastamina, a)
+	end
+	
 	if alphastamina <= 0.1 then return end
 
 	surface_SetDrawColor(ColorAlpha(color, alphastamina * (10 / 255)))

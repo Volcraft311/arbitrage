@@ -447,14 +447,30 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, data)
 	cam.End3D2D()
 end
 
-local doors = {}
-timer.Create("Doors:UpdateDraw", 1, 0, function()
-	doors = {}
+local doors_all = {}
+timer.Create("Doors:UpdateAllDoors", 15, 0, function()
+    doors_all = {}
+    
+    for k, v in ipairs(ents.GetAll()) do
+        if !v:IsDoor() then continue end
+        
+        doors_all[#doors_all + 1] = v
+    end
+end)
+
+local d = 100000
+local doors_cache = {}
+timer.Create("Doors:UpdateDraw", 2, 0, function()
+	doors_cache = {}
+	
+	if #doors_all <= 0 then return end
 
 	local eyePos = EyePos()
-
-	for k, v in ipairs(ents.FindInSphere(eyePos, 1000)) do
-		if !v:IsDoor() then continue end
+	for k, v in ipairs(doors_all) do
+		if !IsValid(v) then continue end
+		
+		local distance = v:GetPos():DistToSqr(eyePos)
+        if distance > d * 2 then continue end
 
 		local data = v:GetNetVar("arb.image", {})
 		if #data <= 0 then continue end
@@ -468,23 +484,31 @@ timer.Create("Doors:UpdateDraw", 1, 0, function()
 			info[#info + 1] = Material(faction:GetAssets().pixel)
 		end
 
-		doors[#doors + 1] = {v, info}
+		doors_cache[#doors_cache + 1] = {v, info}
 	end
 end)
 
 function PLUGIN:PostDrawTranslucentRenderables()
-	if table.Count(doors) <= 0 then return end
+	if #doors_cache <= 0 then return end
+	
+	local doors = {}
+	for k, v in ipairs(doors) do
+	    local entity = v[1]
+	    
+	    if IsValid(entity) then
+	        doors[#doors + 1] = v
+	    end
+	end
+	
+	if #doors <= 0 then return end
 
 	local eyePos, eyeAngle = EyePos(), EyeAngles()
-
 	cam.Start3D(eyePos, eyeAngle)
-		for k, v in ipairs(doors or {}) do
+		for k, v in ipairs(doors) do
 			local entity = v[1]
 			local data = v[2]
 
-			if IsValid(entity) then
-				self:DrawDoorText(entity, eyePos, eyeAngles, data)
-			end
+			self:DrawDoorText(entity, eyePos, eyeAngles, data)
 		end
 	cam.End3D()
 end

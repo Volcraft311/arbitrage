@@ -25,9 +25,12 @@ local function getReceivers()
     return admins
 end
 
-timer.Create("AdminESP:UpdatePlayersPosition", 0.2, 0, function()
-    local receivers = getReceivers()
+local receivers = {}
+timer.Create("AdminESP:UpdateReceivers", 2, 0, function()
+    receivers = getReceivers()
+end)
 
+timer.Create("AdminESP:UpdatePlayersPosition", 0.35, 0, function()
     if #receivers <= 0 then return end
 
     for k, v in ipairs(player.GetAll()) do

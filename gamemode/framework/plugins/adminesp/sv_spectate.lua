@@ -41,16 +41,15 @@ function PLUGIN:Spec(client, target)
 	local var = client:GetLocalVar("spectating", false)
 	client:SetLocalVar("spectating", !var)
 
-	local hookID = "AdminESP:StartCommand_" .. client:SteamID()
 	if !var then
-		if IsValid(target) then
-			client._CameraEntity = target
-
-			netstream.Start(client, "AdminESP:CameraSetEntity", target)
-		end
-
 		players_hook[client] = true
 		create_hook()
+		
+		if IsValid(target) then
+			client._CameraEntity = target
+		
+			netstream.Start(client, "AdminESP:CameraSetEntity", target)
+		end
 	else
 		players_hook[client] = nil
 		

@@ -43,23 +43,29 @@ end)
 
 local font = "arb.Font_FuturaPTBook_38"
 local text = "AFK"
+surface.SetFont(font)
+local textWidth, textHeight = surface.GetTextSize("A")
 function PLUGIN:PostDrawTranslucentRenderables()
 	if Arbitrage.lawEnable then return end
 	if #cache <= 0 then return end
-
+	
+	local players = {}
+	for k, v in ipairs(cache) do
+	    if IsValid(v) then
+	        players[#players + 1] = v
+	    end
+	end
+	
+	if #players <= 0 then return end
+	
 	local angle = EyeAngles()
 	angle:RotateAroundAxis(angle:Forward(), 90)
 	angle:RotateAroundAxis(angle:Right(), 90)
-
-	surface.SetFont(font)
-	local textWidth, textHeight = surface.GetTextSize("A")
-
+	
 	local frametime = FrameTime() * 3
 	local realtime = RealTime()
 
-	for _, v in ipairs(cache) do
-		if !IsValid(v) then continue end
-
+	for _, v in ipairs(players) do
 		v.arbAfkTextAlpha = Lerp(frametime, v.arbAfkTextAlpha, v:IsAFK() and 1 or 0)
 
 		local fraction = v.arbAfkTextAlpha

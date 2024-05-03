@@ -45,20 +45,6 @@ local hook_Remove = hook.Remove
 local chat_AddText = chat.AddText
 local unpack = unpack
 
-function PLUGIN:PostDrawOpaqueRenderables()
-    local client = LocalPlayer()
-
-    local data = self:GetToolData(client)
-    if !data then return end
-
-    local trace = LocalPlayer():GetEyeTrace()
-    local angle = trace.HitNormal:Angle()
-
-    render_DrawLine(trace.HitPos, trace.HitPos + 8 * angle:Forward(), Color(255, 0, 0), true)
-    render_DrawLine(trace.HitPos, trace.HitPos + 8 * -angle:Right(), Color(0, 255, 0), true)
-    render_DrawLine(trace.HitPos, trace.HitPos + 8 * angle:Up(), Color(0, 0, 255), true)
-end
-
 local evidences_all = {}
 timer_Create("Evidence:UpdateAll", 3, 0, function()
     evidences_all = {}

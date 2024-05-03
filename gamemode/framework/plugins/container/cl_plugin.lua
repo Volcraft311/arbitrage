@@ -20,7 +20,6 @@ local util_TraceLine = util.TraceLine
 local timer_Create = timer.Create
 local IsValid = IsValid
 local ipairs = ipairs
-local ents_FindInSphere = ents.FindInSphere
 local EyePos = EyePos
 local Arbitrage = Arbitrage
 local Lerp = Lerp

@@ -38,7 +38,7 @@ function ENT:Use(client, caller)
 	local name = self.GetContainerName and self:GetContainerName() or ""
 
 	if name != "" and name != " " then
-		for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+		for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
 		    TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
 		end
 	end

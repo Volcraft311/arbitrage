@@ -89,7 +89,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -103,7 +103,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -117,7 +117,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -131,7 +131,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -145,7 +145,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -159,7 +159,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -172,7 +172,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -185,7 +185,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end,
@@ -224,7 +224,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -237,7 +237,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -251,7 +251,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -265,7 +265,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -279,7 +279,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -293,7 +293,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end

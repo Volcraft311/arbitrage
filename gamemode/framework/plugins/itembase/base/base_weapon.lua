@@ -138,7 +138,7 @@ function BASE:Equip(client, item, id)
 		item:HookRun("equip", client)
 	end
 
-	for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+	for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
 		TypingDraw:SetTypingText(v, client, "Экипирует '" .. item:GetName() .. "'", Color(255, 170, 23))
 	end
 end

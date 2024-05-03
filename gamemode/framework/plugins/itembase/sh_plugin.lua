@@ -40,7 +40,7 @@ function ItemBase.GetBase(base)
             item:Transfer(nil)
             item._oldInventory = nil
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
                 TypingDraw:SetTypingText(v, client, "Выкидывает '" .. item:GetName() .. "'", Color(255, 170, 23))
             end
 
@@ -74,7 +74,7 @@ function ItemBase.GetBase(base)
                 Arbitrage.commands.Notify(client, notify)
             end
 
-            for k, v in pairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
                 TypingDraw:SetTypingText(v, client, "Поднимает '" .. item:GetName() .. "'", Color(255, 170, 23))
             end
 

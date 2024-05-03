@@ -77,7 +77,7 @@ function PANEL:InitSlot(panel)
         end
     end
 
-    local color = ColorAlpha(Color(99, 17, 32), 20)
+    local color = Color(99, 17, 32, 20)
 
     panel.Paint = function(this, w, h)
     	local bSelect = panel.itemPanel and ((panel.itemPanel:IsHovered() or panel.item == self.item) and true) or false

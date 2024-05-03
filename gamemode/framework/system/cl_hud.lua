@@ -610,12 +610,12 @@ do
 		if !data2D.visible then return end
 		local x, y = data2D.x, data2D.y
 
-		draw_SimpleText(client:Name(), genericFont, x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), textAlpha), TEXT_ALIGN_CENTER)
+		draw_SimpleText(client:Name(), genericFont, x, y - (genericHeight / 2) - 10, Color(255, 61, 96, textAlpha), TEXT_ALIGN_CENTER)
 
 		surface_SetFont(genericFont)
 		local width = surface_GetTextSize(client:Name()) * textAlpha / 255
 
-		surface_SetDrawColor(ColorAlpha(Color(255, 61, 96), textAlpha))
+		surface_SetDrawColor(Color(255, 61, 96, textAlpha))
 		surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
 
 		local newY = y + 4

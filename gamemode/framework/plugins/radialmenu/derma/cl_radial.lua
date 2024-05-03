@@ -385,7 +385,7 @@ function PANEL:Paint(w, h)
 			option.wrap = option.wrap or asterionlib.WrapText(description, self.radialSize, descFont)
 
 			for k, v in ipairs(option.wrap) do
-				draw_SimpleText(v, descFont, w / 2, h / 2 + k * fontHeight, ColorAlpha(Color(220, 220, 220), self.textAlpha), TEXT_ALIGN_CENTER)
+				draw_SimpleText(v, descFont, w / 2, h / 2 + k * fontHeight, Color(220, 220, 220, self.textAlpha), TEXT_ALIGN_CENTER)
 			end
 		end
 	end

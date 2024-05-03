@@ -13,6 +13,30 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local Vector = Vector
+local Angle = Angle
+local EyeAngles = EyeAngles
+local LocalPlayer = LocalPlayer
+local IsValid = IsValid
+local util_QuickTrace = util.QuickTrace
+local EyePos = EyePos
+local util_TraceLine = util.TraceLine
+local RealTime = RealTime
+local netstream = netstream
+local timer_Create = timer.Create
+local FrameTime = FrameTime
+local input_IsKeyDown = input.IsKeyDown
+local Arbitrage = Arbitrage
+local outline = outline
+local Color = Color
+local CurTime = CurTime
+local RunConsoleCommand = RunConsoleCommand
+local math_max = math.max
+local ipairs = ipairs
+local GetConVar = GetConVar
+local math_Clamp = math.Clamp
+
 local cameraEntity = nil
 local cameraTraceEntity = nil
 local cameraPosition = Vector(0, 0, 0)
@@ -20,6 +44,7 @@ local cameraAngles = Vector(0, 0, 0)
 local eyeAng = Angle(0, 0, 0)
 local cameraThirdPerson = true
 local thirdPersonDistance = 100
+
 
 local function fixCameraRoll(bFixEye)
 	cameraAngles.r = 0
@@ -43,7 +68,7 @@ end
 local function returnEntity()
 	if IsValid(cameraEntity) then return end
 
-	local trace = util.QuickTrace(EyePos(), EyeAngles():Forward() * 5000)
+	local trace = util_QuickTrace(EyePos(), EyeAngles():Forward() * 5000)
 	local entity = trace.Entity
 
 	return entity
@@ -59,7 +84,7 @@ local function getThirdPersonPos(entity)
 	local startpos = getEntityPosition(entity)
 	local endpos = startpos - cameraAngles:Forward() * thirdPersonDistance
 
-	local trace = util.TraceLine({
+	local trace = util_TraceLine({
 	    start = startpos,
 	    endpos = endpos,
 	    filter = entity
@@ -78,7 +103,7 @@ local function syncCameraPosition()
 end
 
 local isSpectating = false
-timer.Create("AdminESP:UpdateAllow", 0.1, 0, function()
+timer_Create("AdminESP:UpdateAllow", 0.1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 
@@ -106,11 +131,11 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 	local speed = FrameTime() * cameraSpeed
 	if client:KeyDown(IN_SPEED) then
 		speed = speed * 3
-	elseif input.IsKeyDown(KEY_LCONTROL) or input.IsKeyDown(KEY_RCONTROL) then
+	elseif input_IsKeyDown(KEY_LCONTROL) or input_IsKeyDown(KEY_RCONTROL) then
 		speed = speed * 0.2
 	end
 
-	if input.IsKeyDown(KEY_SPACE) then
+	if input_IsKeyDown(KEY_SPACE) then
 		cameraPosition = cameraPosition + cameraAngles:Up() * (speed * 0.6)
 	end
 
@@ -255,9 +280,9 @@ function PLUGIN:PlayerBindPress(client, bind, pressed)
 		local amount = invNext and 1 or -1
 
 		if IsValid(cameraEntity) then
-			thirdPersonDistance = math.max(20, thirdPersonDistance + amount * 10)
+			thirdPersonDistance = math_max(20, thirdPersonDistance + amount * 10)
 		else
-			cameraSpeed = math.max(50, cameraSpeed + amount * -150)
+			cameraSpeed = math_max(50, cameraSpeed + amount * -150)
 		end
 
 		return true
@@ -287,7 +312,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 	local pitch = y * GetConVar("m_pitch"):GetFloat()
 	local yaw = x * GetConVar("m_yaw"):GetFloat()
 
-	cameraAngles.p = math.Clamp(cameraAngles.p + pitch, -90, 90)
+	cameraAngles.p = math_Clamp(cameraAngles.p + pitch, -90, 90)
 	cameraAngles.y = cameraAngles.y - (Arbitrage.OnMapReversion() and -yaw or yaw)
 end
 

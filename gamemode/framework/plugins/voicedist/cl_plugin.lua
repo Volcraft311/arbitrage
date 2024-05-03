@@ -20,6 +20,49 @@ PLUGIN.realtime = RealTime()
 PLUGIN.lerp = 0
 PLUGIN.lerp2 = 0
 
+-- Localize Global Calls
+local RealTime = RealTime
+local Material = Material
+local Vector = Vector
+local Color = Color
+local string_find = string.find
+local hook_Run = hook.Run
+local netstream = netstream
+local render_ClearStencil = render.ClearStencil
+local render_SetStencilEnable = render.SetStencilEnable
+local render_SetStencilWriteMask = render.SetStencilWriteMask
+local render_SetStencilTestMask = render.SetStencilTestMask
+local render_SetStencilReferenceValue = render.SetStencilReferenceValue
+local render_SetStencilFailOperation = render.SetStencilFailOperation
+local render_SetStencilCompareFunction = render.SetStencilCompareFunction
+local surface = surface
+local draw_NoTexture = draw.NoTexture
+local surface_DrawPoly = surface.DrawPoly
+local IsValid = IsValid
+local timer_Create = timer.Create
+local ipairs = ipairs
+local player_GetAll = player.GetAll
+local EyePos = EyePos
+local ScrW = ScrW
+local Lerp = Lerp
+local FrameTime = FrameTime
+local ScrH = ScrH
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local draw_SimpleText = draw.SimpleText
+local surface_DrawRect = surface.DrawRect
+local math_min = math.min
+local LerpColor = LerpColor
+local ColorAlpha = ColorAlpha
+local EyeAngles = EyeAngles
+local surface_SetFont = surface.SetFont
+local surface_GetTextSize = surface.GetTextSize
+local cam_Start3D2D = cam.Start3D2D
+local Angle = Angle
+local draw_SimpleTextOutlined = draw.SimpleTextOutlined
+local cam_End3D2D = cam.End3D2D
+
 local mat = Material("danganronpa/hud/voice.png")
 local standingOffset = Vector(0, 0, 72)
 local crouchingOffset = Vector(0, 0, 38)
@@ -33,7 +76,7 @@ function PLUGIN:GetTypingIndicatorPosition(client)
     for i = 1, client:GetBoneCount() do
         local name = client:GetBoneName(i)
 
-        if (string.find(name:lower(), "head")) then
+        if (string_find(name:lower(), "head")) then
             head = i
             break
         end
@@ -46,7 +89,7 @@ end
 function PLUGIN:PlayerStartVoice(client)
     self.players[client] = true
 
-    hook.Run("ArbitrageVoiceStart", client)
+    hook_Run("ArbitrageVoiceStart", client)
 
     return true
 end
@@ -54,7 +97,7 @@ end
 function PLUGIN:PlayerEndVoice(client)
     self.players[client] = nil
 
-    hook.Run("ArbitrageVoiceEnd", client)
+    hook_Run("ArbitrageVoiceEnd", client)
 end
 
 function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
@@ -68,26 +111,26 @@ end
 
 do
     function surface.draw_circle_outline(x, y, radius, thickness, passes)
-        render.ClearStencil()
-        render.SetStencilEnable(true)
-        render.SetStencilWriteMask(255)
-        render.SetStencilTestMask(255)
-        render.SetStencilReferenceValue(28)
-        render.SetStencilFailOperation(STENCIL_REPLACE)
+        render_ClearStencil()
+        render_SetStencilEnable(true)
+        render_SetStencilWriteMask(255)
+        render_SetStencilTestMask(255)
+        render_SetStencilReferenceValue(28)
+        render_SetStencilFailOperation(STENCIL_REPLACE)
 
-        render.SetStencilCompareFunction(STENCIL_EQUAL)
+        render_SetStencilCompareFunction(STENCIL_EQUAL)
             surface.draw_circle(x, y, radius - (thickness or 1), passes)
-            render.SetStencilCompareFunction(STENCIL_NOTEQUAL)
+            render_SetStencilCompareFunction(STENCIL_NOTEQUAL)
             surface.draw_circle(x, y, radius, passes)
-            render.SetStencilEnable(false)
-        render.ClearStencil()
+            render_SetStencilEnable(false)
+        render_ClearStencil()
     end
 
     function surface.draw_circle(x, y, radius, passes)
         local info = Arbitrage.hud.GeneratePoly(x, y, radius, passes)
 
-        draw.NoTexture()
-        surface.DrawPoly(info)
+        draw_NoTexture()
+        surface_DrawPoly(info)
     end
 end
 
@@ -102,14 +145,14 @@ end
 local d = 150000
 local showPlayerList = {}
 local allow = false
-timer.Create("VoiceDist:Update", 1, 0, function()
+timer_Create("VoiceDist:Update", 1, 0, function()
     showPlayerList = {}
 
     local client = LocalPlayer()
     allow = isAllow(client)
     if !allow then return end
 
-    for k, v in ipairs(player.GetAll()) do
+    for k, v in ipairs(player_GetAll()) do
         if v == client then continue end
         if v:IsSpectate() then continue end
         if v:IsNocliping() then continue end
@@ -141,12 +184,12 @@ function PLUGIN:DrawVoiceIcon()
         local x = ScrW() / 2
         local y = ScrH() - self.pos
 
-        surface.SetDrawColor(color)
-        surface.SetMaterial(mat)
-        surface.DrawTexturedRect(x - sizeMat / 2, y, sizeMat, sizeMat)
+        surface_SetDrawColor(color)
+        surface_SetMaterial(mat)
+        surface_DrawTexturedRect(x - sizeMat / 2, y, sizeMat, sizeMat)
 
         if !isGlobal then
-            draw.SimpleText(value * 100 .. "%", "arb.Font_FuturaPTBook_4", x, y + sizeMat * 1.2, color, TEXT_ALIGN_CENTER)
+            draw_SimpleText(value * 100 .. "%", "arb.Font_FuturaPTBook_4", x, y + sizeMat * 1.2, color, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -155,13 +198,13 @@ function PLUGIN:DrawVoiceIcon()
     self.lerp = Lerp(FrameTime() * 15, self.lerp, (size * 2) * value)
 
     if self.alpha2 > 0.2 then
-        draw.SimpleText("Дальность голоса " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
+        draw_SimpleText("Дальность голоса " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
 
-        surface.SetDrawColor(255, 255, 255, self.alpha2 * 0.1)
-        surface.DrawRect(ScrW() / 2 - size, ScrH() - self.pos2 * 3, size * 2, 5)
+        surface_SetDrawColor(255, 255, 255, self.alpha2 * 0.1)
+        surface_DrawRect(ScrW() / 2 - size, ScrH() - self.pos2 * 3, size * 2, 5)
 
-        surface.SetDrawColor(255, 255, 255, self.alpha2)
-        surface.DrawRect(ScrW() / 2 - size, ScrH() - self.pos2 * 3, self.lerp, 5)
+        surface_SetDrawColor(255, 255, 255, self.alpha2)
+        surface_DrawRect(ScrW() / 2 - size, ScrH() - self.pos2 * 3, self.lerp, 5)
     end
 end
 
@@ -199,7 +242,7 @@ local oldColor = Color(238, 220, 194)
 local iconChatMat = Material("danganronpa/hud/chat_icon.png")
 function PLUGIN:DrawPlayersChat()
     local eyepos = EyePos()
-    local players = player.GetAll()
+    local players = player_GetAll()
 
     for k, v in ipairs(showPlayerList) do
         if !IsValid(v) then continue end
@@ -210,7 +253,7 @@ function PLUGIN:DrawPlayersChat()
         if fraction <= 0.1 then continue end
 
         local distance = v:GetPos():DistToSqr(eyepos)
-        local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
+        local alpha = (1 - math_min(distance, d) / d) * 255 * fraction
 
         local pos = self:GetTypingIndicatorPosition(v) - Vector(0, 0, 5 - fraction * 2)
         local data2D = pos:ToScreen()
@@ -233,7 +276,7 @@ function PLUGIN:DrawPlayersVoice()
     angle:RotateAroundAxis(angle:Forward(), 90)
     angle:RotateAroundAxis(angle:Right(), 90)
 
-    surface.SetFont("arb.Font_FuturaPTBook_30")
+    surface_SetFont("arb.Font_FuturaPTBook_30")
 
     for k, v in ipairs(showPlayerList) do
         if !IsValid(v) then continue end
@@ -247,7 +290,7 @@ function PLUGIN:DrawPlayersVoice()
             text = "Шепчет"
         end
 
-        local _, textHeight = surface.GetTextSize(text)
+        local _, textHeight = surface_GetTextSize(text)
 
         v.arbTextAlphaVoice = Lerp(FrameTime() * 8, v.arbTextAlphaVoice, self.players[v] and 1 or 0)
 
@@ -255,11 +298,11 @@ function PLUGIN:DrawPlayersVoice()
         if fraction <= 0.1 then continue end
 
         local distance = v:GetPos():DistToSqr(EyePos())
-        local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
+        local alpha = (1 - math_min(distance, d) / d) * 255 * fraction
 
-        cam.Start3D2D(self:GetTypingIndicatorPosition(v), Angle(0, angle.y, 90), 0.05)
-            draw.SimpleTextOutlined(text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
-        cam.End3D2D()
+        cam_Start3D2D(self:GetTypingIndicatorPosition(v), Angle(0, angle.y, 90), 0.05)
+            draw_SimpleTextOutlined(text, "arb.Font_FuturaPTBook_30", 0, -textHeight * 0.5 * fraction, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, ColorAlpha(shadowColor, alpha))
+        cam_End3D2D()
     end
 end
 
@@ -272,16 +315,16 @@ function PLUGIN:DrawCircle()
 
         self.lerp2 = Lerp(FrameTime() * 10, self.lerp2, value)
 
-        cam.Start3D2D(client:GetPos() + Vector(0, 0, 5), Angle(0, 0, 0), 1)
-            surface.SetDrawColor(0, 255, 85, self.alpha2)
+        cam_Start3D2D(client:GetPos() + Vector(0, 0, 5), Angle(0, 0, 0), 1)
+            surface_SetDrawColor(0, 255, 85, self.alpha2)
             surface.draw_circle_outline(0, 0, dist * 1, 3, 50)
 
-            surface.SetDrawColor(255, 0, 0, self.alpha2)
+            surface_SetDrawColor(255, 0, 0, self.alpha2)
             surface.draw_circle_outline(0, 0, dist * 0.1, 3, 50)
 
-            surface.SetDrawColor(255, 255, 255, self.alpha2)
+            surface_SetDrawColor(255, 255, 255, self.alpha2)
             surface.draw_circle_outline(0, 0, dist * self.lerp2, 3, 50)
-        cam.End3D2D()
+        cam_End3D2D()
     end
 end
 

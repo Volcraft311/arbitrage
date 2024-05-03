@@ -14,6 +14,15 @@
 local PLUGIN = PLUGIN
 SETTINGS = PLUGIN
 
+-- Localize Global Calls
+local pairs = pairs
+local input_IsKeyDown = CLIENT and input.IsKeyDown
+local gui_IsConsoleVisible = CLIENT and gui.IsConsoleVisible
+local gui_IsGameUIVisible = CLIENT and gui.IsGameUIVisible
+local IsValid = IsValid
+local hook_Run = hook.Run
+local ipairs = ipairs
+
 PLUGIN.name = "Settings"
 
 PLUGIN.keys = {}
@@ -149,7 +158,7 @@ end
 
 function PLUGIN.binds.GetClampedKey()
     for key, value in pairs(PLUGIN.keys) do
-        local info = input.IsKeyDown(key)
+        local info = input_IsKeyDown(key)
 
         if info == true then
             return key, value
@@ -159,7 +168,7 @@ end
 
 local function IsVisibleGUI()
     -- Консоль и ESC
-    if gui.IsConsoleVisible() or gui.IsGameUIVisible() then return true end
+    if gui_IsConsoleVisible() or gui_IsGameUIVisible() then return true end
 
     -- Контекстное меню
     if IsValid(Arbitrage.gui.context) then return true end
@@ -195,10 +204,10 @@ function PLUGIN.binds.IsClampedID(id, bCallHooks)
     local data = SETTINGS.binds.Get(id)
 
     if data then
-        local info = input.IsKeyDown(data)
+        local info = input_IsKeyDown(data)
 
         if info and bCallHooks then
-            hook.Run("KeyClampID", LocalPlayer(), id, IsVisibleGUI())
+            hook_Run("KeyClampID", LocalPlayer(), id, IsVisibleGUI())
         end
 
         return info
@@ -209,14 +218,14 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
     local data = SETTINGS.binds.Get(id)
 
     if data then
-        local info = input.IsKeyDown(data)
+        local info = input_IsKeyDown(data)
 
         if PLUGIN.pressed[id] then
             if info == false then
                 PLUGIN.pressed[id] = false
 
                 if bCallHooks then
-                    hook.Run("KeyReleaseID", LocalPlayer(), id, IsVisibleGUI())
+                    hook_Run("KeyReleaseID", LocalPlayer(), id, IsVisibleGUI())
                 end
             end
 
@@ -226,7 +235,7 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
                 PLUGIN.pressed[id] = true
 
                 if bCallHooks then
-                    hook.Run("KeyPressID", LocalPlayer(), id, IsVisibleGUI())
+                    hook_Run("KeyPressID", LocalPlayer(), id, IsVisibleGUI())
                 end
 
                 return true

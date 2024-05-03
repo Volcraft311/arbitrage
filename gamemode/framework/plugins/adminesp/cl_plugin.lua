@@ -30,6 +30,11 @@ local next = next
 local coroutine_yield = coroutine.yield
 local coroutine_resume = coroutine.resume
 local coroutine_create = coroutine.create
+local Color = Color
+local Material = Material
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
 
 surface_CreateFont( "AdminESPFont", {
 	font = "Roboto",
@@ -92,9 +97,9 @@ local function drawing(entity, info, eyePos)
 
 	    	local material = Material(status.icon or "err.png")
 
-	    	surface.SetDrawColor(255, 255, 255)
-	    	surface.SetMaterial(material)
-	    	surface.DrawTexturedRect(x + (k * iconSize - iconSize), y - iconSize, iconSize, iconSize)
+	    	surface_SetDrawColor(255, 255, 255)
+	    	surface_SetMaterial(material)
+	    	surface_DrawTexturedRect(x + (k * iconSize - iconSize), y - iconSize, iconSize, iconSize)
 		end
 	end
 end

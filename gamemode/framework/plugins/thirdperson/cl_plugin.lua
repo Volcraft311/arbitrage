@@ -11,6 +11,10 @@ local util_TraceLine = util.TraceLine
 local math_Clamp = math.Clamp
 local math_NormalizeAngle = math.NormalizeAngle
 local IsValid = IsValid
+local math_floor = math.floor
+local math_min = math.min
+local Color = Color
+local hook_Add = hook.Add
 
 Arbitrage.ThirdPerson = Arbitrage.ThirdPerson or false
 
@@ -60,13 +64,13 @@ local function playerAlpha(dist)
 	local value = dist * 7 - 180
 
 	player_alpha = Lerp(ft * 10, player_alpha, value)
-	player_alpha = math.floor(player_alpha)
+	player_alpha = math_floor(player_alpha)
 
 	if value >= 200 and value <= 254 then
-		player_alpha = math.min(200, saveAlpha)
+		player_alpha = math_min(200, saveAlpha)
 	end
 
-	local max = math.min(255, saveAlpha)
+	local max = math_min(255, saveAlpha)
 	if player_alpha <= 0 then
 		player_alpha = 0
 	elseif player_alpha >= max then
@@ -195,7 +199,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 			value = -value
 		end
 
-		value = math.Clamp(value, -8, 8)
+		value = math_Clamp(value, -8, 8)
 		fovShift = Lerp(ft * 3, fovShift, value)
 
 		view.fov = fov - fovShift
@@ -243,7 +247,7 @@ function PLUGIN:ShouldDrawLocalPlayer()
 end
 
 
-hook.Add("SETTINGS:OnOptionChange", "ThirdPerson:OnOptionChange", function(id, value)
+hook_Add("SETTINGS:OnOptionChange", "ThirdPerson:OnOptionChange", function(id, value)
 	if id != "alpha_localplayer" then return end
 	if value != false then return end
 

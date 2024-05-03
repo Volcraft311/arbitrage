@@ -13,11 +13,53 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local draw_RoundedBox = draw.RoundedBox
+local Color = Color
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawRect = surface.DrawRect
+local IsValid = IsValid
+local ipairs = ipairs
+local isfunction = isfunction
+local string_find = string.find
+local SortedPairsByMemberValue = SortedPairsByMemberValue
+local Derma_Query = Derma_Query
+local netstream = netstream
+local player_GetAll = player.GetAll
+local pairs = pairs
+local DermaMenu = DermaMenu
+local ScrW = ScrW
+local ScrH = ScrH
+local input_IsKeyDown = input.IsKeyDown
+local vgui_CursorVisible = vgui.CursorVisible
+local util_QuickTrace = util.QuickTrace
+local EyePos = EyePos
+local EyeAngles = EyeAngles
+local ents_FindInSphere = ents.FindInSphere
+local math_abs = math.abs
+local util_TraceLine = util.TraceLine
+local type = type
+local math_Clamp = math.Clamp
+local surface_GetTextureID = surface.GetTextureID
+local surface_SetTexture = surface.SetTexture
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local math_max = math.max
+local surface_SetMaterial = surface.SetMaterial
+local cam_Start3D2D = cam.Start3D2D
+local cam_End3D2D = cam.End3D2D
+local timer_Create = timer.Create
+local ents_GetAll = ents.GetAll
+local Material = Material
+local cam_Start3D = cam.Start3D
+local cam_End3D = cam.End3D
+local timer_Simple = timer.Simple
+
+
 local cornerRadius = 5
 local function paintMenu(panel)
     panel.Paint = function(_, w, h)
-        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
-        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
+        draw_RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
+        draw_RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
     end
 end
 
@@ -27,15 +69,15 @@ local function paintOption(panel, drawline)
         local alpha = 130
 
         if _:IsHovered() and _:IsEnabled() then
-            surface.SetDrawColor(27, 10, 13, 200)
-            surface.DrawRect(2, 2, w - 4, h - 4)
+            surface_SetDrawColor(27, 10, 13, 200)
+            surface_DrawRect(2, 2, w - 4, h - 4)
 
             alpha = 255
         end
 
         if !_:IsEnabled() then
-            surface.SetDrawColor(255, 0, 0, 20)
-            surface.DrawRect(2, 0, w - 4, h)
+            surface_SetDrawColor(255, 0, 0, 20)
+            surface_DrawRect(2, 0, w - 4, h)
 
             alpha = 255
         end
@@ -43,8 +85,8 @@ local function paintOption(panel, drawline)
         panel:SetTextColor(Color(240, 240, 240, alpha))
 
         if drawline then
-            surface.SetDrawColor(255, 255, 255, 50)
-            surface.DrawRect(w * 0.1, h - 2, w - w * 0.2, 2)
+            surface_SetDrawColor(255, 255, 255, 50)
+            surface_DrawRect(w * 0.1, h - 2, w - w * 0.2, 2)
         end
     end
 end
@@ -59,14 +101,14 @@ local function paintBar(panel)
 	bar:DockMargin(0, 0, 0, 0)
 
 	bar.Paint = function(_, w, h)
-	    surface.SetDrawColor(255, 255, 255, 3)
-	    surface.DrawRect(barMargin, 30, w - barMargin - 4, h - 60)
+	    surface_SetDrawColor(255, 255, 255, 3)
+	    surface_DrawRect(barMargin, 30, w - barMargin - 4, h - 60)
 	end
 	bar.btnUp.Paint = function(_, w, h) end
 	bar.btnDown.Paint = function(_, w, h) end
 	bar.btnGrip.Paint = function(_, w, h)
-	    surface.SetDrawColor(255, 255, 255)
-	    surface.DrawRect(barMargin, 0, w - barMargin - 4, h)
+	    surface_SetDrawColor(255, 255, 255)
+	    surface_DrawRect(barMargin, 0, w - barMargin - 4, h)
 	end
 end
 
@@ -89,7 +131,7 @@ local function CreatePanels(data, parent)
 		panel:SetImage(v.icon)
 
 		for k2, v2 in ipairs(panel:GetChildren()) do
-			if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then
+			if v2:GetName() == "DImage" and !string_find(v2:GetImage(), "icon16/") then
 				local size = parent:GetTall() * 1.5
 
 				v2:SetSize(size, size)
@@ -167,7 +209,7 @@ end
 local function gRequestAddDoorPlayer()
 	local data = {}
 
-	for k, v in ipairs(player.GetAll()) do
+	for k, v in ipairs(player_GetAll()) do
 		local id = v:Team()
 
 		local faction = Character.team:GetByID(id)
@@ -285,8 +327,8 @@ end
 function PLUGIN:Think()
 	local client = LocalPlayer()
 
-	if input.IsKeyDown(KEY_F2) and client:IsAdmin() and !vgui.CursorVisible() then
-		local trace = util.QuickTrace(EyePos(), EyeAngles():Forward() * 999999, LocalPlayer())
+	if input_IsKeyDown(KEY_F2) and client:IsAdmin() and !vgui_CursorVisible() then
+		local trace = util_QuickTrace(EyePos(), EyeAngles():Forward() * 999999, LocalPlayer())
 		local entity = trace.Entity
 
 		if !IsValid(entity) then return end
@@ -306,7 +348,7 @@ function PLUGIN:CalculateDoorPosition(door, reversed)
 	local obbMins = door:OBBMins()
 
 	traceData.endpos = door:LocalToWorld(obbCenter)
-	traceData.filter = ents.FindInSphere(traceData.endpos, 20)
+	traceData.filter = ents_FindInSphere(traceData.endpos, 20)
 
 	for k, v in pairs(traceData.filter) do
 		if v == door then
@@ -318,9 +360,9 @@ function PLUGIN:CalculateDoorPosition(door, reversed)
 	local width = 0
 	local size = obbMins - obbMaxs
 
-	size.x = math.abs(size.x)
-	size.y = math.abs(size.y)
-	size.z = math.abs(size.z)
+	size.x = math_abs(size.x)
+	size.y = math_abs(size.y)
+	size.z = math_abs(size.z)
 
 	if size.z < size.x and size.z < size.y then
 		length = size.z
@@ -352,7 +394,7 @@ function PLUGIN:CalculateDoorPosition(door, reversed)
 		end
 	end
 
-	local trace = util.TraceLine(traceData)
+	local trace = util_TraceLine(traceData)
 	local angles = trace.HitNormal:Angle()
 
 	if (trace.HitWorld and !reversed) then
@@ -375,7 +417,7 @@ function PLUGIN:CalculateDoorPosition(door, reversed)
 		position = position,
 		hitWorld = trace.HitWorld,
 		angles = angles,
-		width = math.abs(width)
+		width = math_abs(width)
 	}
 end
 
@@ -392,39 +434,39 @@ function PLUGIN:CalculateAlphaFromDistance(maximum, start, finish)
 		finish = finish:GetPos()
 	end
 
-	return math.Clamp(255 - ((255 / maximum) * (start:Distance(finish))), 0, 255)
+	return math_Clamp(255 - ((255 / maximum) * (start:Distance(finish))), 0, 255)
 end
 
 PLUGIN.Gradients = {
-	[GRADIENT_CENTER] = surface.GetTextureID("gui/center_gradient"),
-	[GRADIENT_RIGHT] = surface.GetTextureID("gui/gradient"),
-	[GRADIENT_DOWN] = surface.GetTextureID("gui/gradient_down"),
-	[GRADIENT_UP] = surface.GetTextureID("gui/gradient_up"),
+	[GRADIENT_CENTER] = surface_GetTextureID("gui/center_gradient"),
+	[GRADIENT_RIGHT] = surface_GetTextureID("gui/gradient"),
+	[GRADIENT_DOWN] = surface_GetTextureID("gui/gradient_down"),
+	[GRADIENT_UP] = surface_GetTextureID("gui/gradient_up"),
 }
 
 function PLUGIN:DrawGradient(gradientType, x, y, width, height, color)
 	if !self.Gradients[gradientType] then return end
 
-	surface.SetDrawColor(color.r, color.g, color.b, color.a)
-	surface.SetTexture(self.Gradients[gradientType])
-	surface.DrawTexturedRect(x, y, width, height)
+	surface_SetDrawColor(color.r, color.g, color.b, color.a)
+	surface_SetTexture(self.Gradients[gradientType])
+	surface_DrawTexturedRect(x, y, width, height)
 end
 
 local sSize = 400
 function PLUGIN:DrawImage(alpha, data)
-	local size = sSize / math.max(#data / 2, 1)
+	local size = sSize / math_max(#data / 2, 1)
 	local margin = (sSize - size) / 2
 
 	for k, v in ipairs(data) do
 		local index = k - 1
 		local padding = ((#data - 1) * size) / 2
 
-		surface.SetDrawColor(15, 6, 7, alpha)
-		surface.DrawRect(index * size - padding + margin, margin, size, size)
+		surface_SetDrawColor(15, 6, 7, alpha)
+		surface_DrawRect(index * size - padding + margin, margin, size, size)
 
-		surface.SetDrawColor(255, 255, 255, alpha)
-		surface.SetMaterial(v)
-		surface.DrawTexturedRect(index * size - padding + margin, margin, size, size)
+		surface_SetDrawColor(255, 255, 255, alpha)
+		surface_SetMaterial(v)
+		surface_DrawTexturedRect(index * size - padding + margin, margin, size, size)
 	end
 end
 
@@ -438,29 +480,29 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, data)
 	local alpha = self:CalculateAlphaFromDistance(1000, eyePos, entity:GetPos())
 	if alpha <= 0 then return end
 
-	cam.Start3D2D(doorData.position + doorData.angles:Right() * -30 + doorData.angles:Forward() * -10, doorData.angles, 0.05)
+	cam_Start3D2D(doorData.position + doorData.angles:Right() * -30 + doorData.angles:Forward() * -10, doorData.angles, 0.05)
 		self:DrawImage(alpha, data)
-	cam.End3D2D()
+	cam_End3D2D()
 
-	cam.Start3D2D(doorData.positionBack + doorData.anglesBack:Right() * -30 + doorData.anglesBack:Forward() * -10, doorData.anglesBack, 0.05)
+	cam_Start3D2D(doorData.positionBack + doorData.anglesBack:Right() * -30 + doorData.anglesBack:Forward() * -10, doorData.anglesBack, 0.05)
 		self:DrawImage(alpha, data)
-	cam.End3D2D()
+	cam_End3D2D()
 end
 
 local doors_all = {}
-timer.Create("Doors:UpdateAllDoors", 15, 0, function()
+timer_Create("Doors:UpdateAllDoors", 15, 0, function()
     doors_all = {}
     
-    for k, v in ipairs(ents.GetAll()) do
+    for k, v in ipairs(ents_GetAll()) do
         if !v:IsDoor() then continue end
         
         doors_all[#doors_all + 1] = v
     end
 end)
 
-local d = 100000
+local d = 500000
 local doors_cache = {}
-timer.Create("Doors:UpdateDraw", 2, 0, function()
+timer_Create("Doors:UpdateDraw", 2, 0, function()
 	doors_cache = {}
 	
 	if #doors_all <= 0 then return end
@@ -503,14 +545,14 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	if #doors <= 0 then return end
 
 	local eyePos, eyeAngle = EyePos(), EyeAngles()
-	cam.Start3D(eyePos, eyeAngle)
+	cam_Start3D(eyePos, eyeAngle)
 		for k, v in ipairs(doors) do
 			local entity = v[1]
 			local data = v[2]
 
 			self:DrawDoorText(entity, eyePos, eyeAngles, data)
 		end
-	cam.End3D()
+	cam_End3D()
 end
 
 netstream.Hook("arb.DoorGetData", function(data)
@@ -519,6 +561,6 @@ netstream.Hook("arb.DoorGetData", function(data)
 	PLUGIN.DoorsData = data
 end)
 
-timer.Simple(1, function()
+timer_Simple(1, function()
 	netstream.Start("arb.DoorGetData")
 end)

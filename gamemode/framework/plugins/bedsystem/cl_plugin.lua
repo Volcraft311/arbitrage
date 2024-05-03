@@ -14,13 +14,31 @@
 local PLUGIN = PLUGIN
 PLUGIN.dot = 1
 
+-- Localize Global Calls
+local input_IsKeyDown = input.IsKeyDown
+local vgui_CursorVisible = vgui.CursorVisible
+local CurTime = CurTime
+local netstream = netstream
+local IsValid = IsValid
+local Lerp = Lerp
+local FrameTime = FrameTime
+local surface_SetDrawColor = surface.SetDrawColor
+local math_Clamp = math.Clamp
+local surface_DrawRect = surface.DrawRect
+local ScrW = ScrW
+local ScrH = ScrH
+local draw_SimpleText = draw.SimpleText
+local string_rep = string.rep
+local Color = Color
+
+
 function PLUGIN:Think()
     local client = LocalPlayer()
 
     if !client:oldAlive() then return end
     if !client:GetNetVar("inbed") then client.inbedpos = client:EyePos() client.inbedang = client:EyeAngles() return end
 
-    if input.IsKeyDown(KEY_SPACE) and !vgui.CursorVisible() and (!client.BedCD or CurTime() >= client.BedCD) then
+    if input_IsKeyDown(KEY_SPACE) and !vgui_CursorVisible() and (!client.BedCD or CurTime() >= client.BedCD) then
         netstream.Start("arb.GetUpBed")
         client.BedCD = CurTime() + 5
     end
@@ -67,8 +85,8 @@ function PLUGIN:RenderScreenspaceEffects()
 
     if client.bedalpha <= 0.05 then return end
 
-    surface.SetDrawColor(0, 0, 0, math.Clamp(client.bedalpha, 0, 255))
-    surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+    surface_SetDrawColor(0, 0, 0, math_Clamp(client.bedalpha, 0, 255))
+    surface_DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
 
     if (!self.dotUpdate or CurTime() >= self.dotUpdate) then
         self.dot = self.dot >= 4 and 1 or self.dot + 1
@@ -77,7 +95,7 @@ function PLUGIN:RenderScreenspaceEffects()
 
     local actionAlpha = Arbitrage.action.data and ((Arbitrage.action.data.alpha and Arbitrage.action.data.alpha or 0) + 1) or 0
 
-    draw.SimpleText("Вы спите" .. string.rep(".", self.dot), "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
+    draw_SimpleText("Вы спите" .. string_rep(".", self.dot), "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
 
     if !isSleep then return end
     if client:GetLocalVar("sleeping") then return end

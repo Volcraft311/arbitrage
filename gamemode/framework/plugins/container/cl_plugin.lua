@@ -11,7 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-
+-- Localize Global Calls
 local draw_GetFontHeight = draw.GetFontHeight
 local draw_SimpleText = draw.SimpleText
 local ColorAlpha = ColorAlpha
@@ -21,9 +21,9 @@ local timer_Create = timer.Create
 local IsValid = IsValid
 local ipairs = ipairs
 local EyePos = EyePos
-local Arbitrage = Arbitrage
 local Lerp = Lerp
 local FrameTime = FrameTime
+local ents_FindInSphere = ents.FindInSphere
 
 local font = "arb.Font_FuturaPTBook_8"
 local genericHeight = draw_GetFontHeight(font)

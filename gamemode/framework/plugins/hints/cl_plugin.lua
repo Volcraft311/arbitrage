@@ -1,3 +1,4 @@
+
 --[[
         © AsterionStaff 2022.
         This script was created from the developers of the Asterion Staff.
@@ -10,6 +11,36 @@
 
         ——— Chop your own wood and it will warm you twice.
 ]]--
+
+-- Localize Global Calls
+local RealTime = RealTime
+local timer_Simple = timer.Simple
+local input_GetKeyName = input.GetKeyName
+local timer_Create = timer.Create
+local math_random = math.random
+local IsValid = IsValid
+local EyePos = EyePos
+local input_IsKeyDown = input.IsKeyDown
+local string_Left = string.Left
+local string = string
+local istable = istable
+local table_concat = table.concat
+local ScrW = ScrW
+local ScrH = ScrH
+local draw_SimpleText = draw.SimpleText
+local Color = Color
+local ipairs = ipairs
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawOutlinedRect = surface.DrawOutlinedRect
+local surface_DrawRect = surface.DrawRect
+local Material = Material
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local isstring = isstring
+local input_LookupBinding = input.LookupBinding
+local Lerp = Lerp
+local FrameTime = FrameTime
+local SortedPairsByMemberValue = SortedPairsByMemberValue
 
 Hints.stored = Hints.stored or {}
 Hints.keysDraw = {}
@@ -37,10 +68,10 @@ function Hints:Select(id)
 
     asterionlib.EmitSound("garrysmod/ui_return.wav")
 
-    timer.Simple(data:utf8len() * 0.1 + 8, function()
+    timer_Simple(data:utf8len() * 0.1 + 8, function()
         self.alphaTo = 0
 
-        timer.Simple(2, function()
+        timer_Simple(2, function()
             self.select = nil
         end)
     end)
@@ -51,12 +82,12 @@ function Hints:OnSettingsLoad()
     self:Add("Для большего погружения, не забывайте использовать RP-команды (/me, /try, /it).")
     self:Add("При наличии ошибок с моделями или текстурами, проверьте статус скачанных аддонов во вкладке 'Контент' игровых настроек.")
 
-    self:Add("Открыть главное меню можно нажатием клавиши '" .. input.GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
-    self:Add("При помощи клавиш '" .. input.GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' и '" .. input.GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', вы можете регулировать дальность слышимости вашего микрофона.")
+    self:Add("Открыть главное меню можно нажатием клавиши '" .. input_GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
+    self:Add("При помощи клавиш '" .. input_GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' и '" .. input_GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', вы можете регулировать дальность слышимости вашего микрофона.")
 end
 
-timer.Create("Hints:Random", 150, 0, function()
-    local id = math.random(1, #Hints.stored)
+timer_Create("Hints:Random", 150, 0, function()
+    local id = math_random(1, #Hints.stored)
 
     local data = Hints.stored[id]
     if !data then return end
@@ -68,7 +99,7 @@ local blockReload = {
     tfa_nmrih_asaw = true,
     tfa_nmrih_chainsaw = true
 }
-timer.Create("Hints:Update", 0.1, 0, function()
+timer_Create("Hints:Update", 0.1, 0, function()
     local client = LocalPlayer()
     if !IsValid(client) then return end
 
@@ -78,7 +109,7 @@ timer.Create("Hints:Update", 0.1, 0, function()
 
     local trace = client:GetEyeTrace()
     local sit_key = SETTINGS.binds.Get("sitting")
-    if trace.HitPos:DistToSqr(EyePos()) < 5000 or input.IsKeyDown(sit_key) then
+    if trace.HitPos:DistToSqr(EyePos()) < 5000 or input_IsKeyDown(sit_key) then
         if !client.IsProne or !client:IsProne() then
             Hints:AddKeyDraw("Сесть", sit_key)
         end
@@ -107,7 +138,7 @@ timer.Create("Hints:Update", 0.1, 0, function()
         local base = weapon.Base or ""
         local class = weapon:GetClass()
 
-        if string.Left(base, 4) == "tfa_" then
+        if string_Left(base, 4) == "tfa_" then
             if base == "tfa_nmrimelee_base" then
                 if !blockReload[class] then
                     local id = "tfa_safety_" .. class
@@ -143,7 +174,7 @@ end
 
 local count = 0
 function Hints:AddKeyDraw(text, key)
-    local uniqueID = istable(key) and table.concat(key, "_") or key
+    local uniqueID = istable(key) and table_concat(key, "_") or key
 
     if !self.keysDraw[uniqueID] then
         count = count + 1
@@ -172,41 +203,41 @@ local padding = 0
 local paddingX, paddingY = 25, 25
 local function drawKey(info)
     local x, y = ScrW() - paddingX, ScrH() - paddingY - padding
-    local w, h = draw.SimpleText(info.text, "arb.Font_FuturaPTBook_9", x, y, Color(255, 242, 245, info.alpha), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+    local w, h = draw_SimpleText(info.text, "arb.Font_FuturaPTBook_9", x, y, Color(255, 242, 245, info.alpha), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
 
     x, y = x - w - h * 1.2, y - h
 
     local keys = istable(info.key) and info.key or {info.key}
     for k, v in ipairs(keys) do
-        surface.SetDrawColor(255, 242, 245, (info.alpha / 255) * 12)
-        surface.DrawOutlinedRect(x, y, h, h, 2)
+        surface_SetDrawColor(255, 242, 245, (info.alpha / 255) * 12)
+        surface_DrawOutlinedRect(x, y, h, h, 2)
 
-        surface.SetDrawColor(1, 0, 0, (info.alpha / 255) * 153)
-        surface.DrawRect(x, y, h, h)
+        surface_SetDrawColor(1, 0, 0, (info.alpha / 255) * 153)
+        surface_DrawRect(x, y, h, h)
 
         if keysUseMat[v] then
             local mat = Material(keysUseMat[v])
 
             local size = h * 0.8
-            surface.SetDrawColor(255, 242, 245, info.alpha)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(x + (h - size) / 2, y + (h - size) / 2, size, size)
+            surface_SetDrawColor(255, 242, 245, info.alpha)
+            surface_SetMaterial(mat)
+            surface_DrawTexturedRect(x + (h - size) / 2, y + (h - size) / 2, size, size)
         else
             local button = v
 
             if isstring(button) then
-                button = (input.LookupBinding(button) or ""):upper()
+                button = (input_LookupBinding(button) or ""):upper()
             else
-                button = input.GetKeyName(button):upper()
+                button = input_GetKeyName(button):upper()
             end
 
             if button != "" then
                 button = button:gsub("MOUSE", "M")
                 button = button:gsub("SPACE", "")
 
-                draw.SimpleText(button, "arb.Font_FuturaPTDemi_8", x + h / 2 - 1, y + h / 2 - 1, Color(255, 242, 245, info.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw_SimpleText(button, "arb.Font_FuturaPTDemi_8", x + h / 2 - 1, y + h / 2 - 1, Color(255, 242, 245, info.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             else
-                draw.SimpleText(info.button, "arb.Font_FuturaPTDemi_4", x + h / 2 - 1, y + h / 2 - 1, Color(255, 242, 245, info.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw_SimpleText(info.button, "arb.Font_FuturaPTDemi_4", x + h / 2 - 1, y + h / 2 - 1, Color(255, 242, 245, info.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -222,11 +253,11 @@ function Hints:HUDPaint()
         self.alpha = Lerp(FrameTime() * 2, self.alpha, self.alphaTo)
 
         if self.alpha >= 0.1 then
-            local w, h = draw.SimpleText(self.text, "arb.Font_FuturaPTBook_7", paddingX, paddingY, Color(255, 255, 255, self.alpha), TEXT_ALIGN_LEFT)
+            local w, h = draw_SimpleText(self.text, "arb.Font_FuturaPTBook_7", paddingX, paddingY, Color(255, 255, 255, self.alpha), TEXT_ALIGN_LEFT)
 
-            surface.SetDrawColor(255, 255, 255, self.alpha)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(paddingX, paddingY + h, w, 1)
+            surface_SetDrawColor(255, 255, 255, self.alpha)
+            surface_SetMaterial(mat)
+            surface_DrawTexturedRect(paddingX, paddingY + h, w, 1)
         end
     end
 

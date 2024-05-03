@@ -11,9 +11,23 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local timer_Create = timer.Create
+local IsValid = IsValid
+local ipairs = ipairs
+local H = H
+local table_Count = table.Count
+local math_abs = math.abs
+local math_sin = math.sin
+local RealTime = RealTime
+local pairs = pairs
+local Material = Material
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
 
 local cache = {}
-timer.Create("Medical:UpdateStatus", 0.1, 0, function()
+timer_Create("Medical:UpdateStatus", 0.1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 
@@ -48,8 +62,8 @@ local x, y, size, padding = 30, 100, H(25), H(5)
 function Medical:HUDPaint(...)
 	-- run("HUDPaint", ...) -- пока что не использовались хуки HUDPaint, по этому в комментарии
 
-	if table.Count(self.ui_effects) <= 0 then return end
-	local alpha = math.abs(math.sin(RealTime() * 3)) * 255
+	if table_Count(self.ui_effects) <= 0 then return end
+	local alpha = math_abs(math_sin(RealTime() * 3)) * 255
 	local client = LocalPlayer()
 
 	local i = 1
@@ -59,9 +73,9 @@ function Medical:HUDPaint(...)
 		local info = Medical.t_status_effects[uniqueID]
 		local material = Material(info.icon or "err.png")
 
-		surface.SetDrawColor(255, 255, 255, alpha)
-		surface.SetMaterial(material)
-		surface.DrawTexturedRect(x * i + padding * i - padding, y, size, size)
+		surface_SetDrawColor(255, 255, 255, alpha)
+		surface_SetMaterial(material)
+		surface_DrawTexturedRect(x * i + padding * i - padding, y, size, size)
 
 		i = i + 1
 	end

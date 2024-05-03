@@ -13,11 +13,45 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local RealTime = RealTime
+local timer_Simple = timer.Simple
+local hook_Remove = hook.Remove
+local Material = Material
+local pairs = pairs
+local string = string
+local utf8_sub = utf8.sub
+local utf8_len = utf8.len
+local facialEmote = facialEmote
+local RunConsoleCommand = RunConsoleCommand
+local vgui_Create = vgui.Create
+local netstream = netstream
+local table_Count = table.Count
+local game_GetAmmoName = game.GetAmmoName
+local string_lower = string.lower
+local math_floor = math.floor
+local math_Round = math.Round
+local SysTime = SysTime
+local Derma_DrawBackgroundBlur = Derma_DrawBackgroundBlur
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawRect = surface.DrawRect
+local surface_DrawOutlinedRect = surface.DrawOutlinedRect
+local Color = Color
+local ipairs = ipairs
+local istable = istable
+local IsValid = IsValid
+local net_Start = net.Start
+local net_WriteEntity = net.WriteEntity
+local net_SendToServer = net.SendToServer
+local vgui_CursorVisible = vgui.CursorVisible
+local concommand_Add = concommand.Add
+local IsFirstTimePredicted = IsFirstTimePredicted
+
 PLUGIN.isClose = false
 PLUGIN.clampingTime = RealTime()
 
-timer.Simple(1, function()
-	hook.Remove("PlayerButtonDown", "PlayerButtonDown_FacialEmote")
+timer_Simple(1, function()
+	hook_Remove("PlayerButtonDown", "PlayerButtonDown_FacialEmote")
 end)
 
 function PLUGIN:FacialEmotesOption()
@@ -33,8 +67,8 @@ function PLUGIN:FacialEmotesOption()
 	if facialEmote and facialEmote.face.data[LocalPlayer():GetModel()] then
 		for k, v in pairs(facialEmote.face.data[LocalPlayer():GetModel()]) do
 			local name = v.name
-			local firstSymbol = string.utf8upper(utf8.sub(name, 1, 1))
-			name = firstSymbol .. utf8.sub(name, 2, utf8.len(name))
+			local firstSymbol = string.utf8upper(utf8_sub(name, 1, 1))
+			name = firstSymbol .. utf8_sub(name, 2, utf8_len(name))
 
 			data[#data + 1] = {
 				name = name,
@@ -113,7 +147,7 @@ function PLUGIN:ActionsOption()
 			description = "Открыть редактор внешнего вида вашего персонажа",
 			icon = Material("danganronpa/radialmenu/fashion.png"),
 			action = function()
-				local panel = vgui.Create("arb.OpenWardrobe")
+				local panel = vgui_Create("arb.OpenWardrobe")
 				panel:SetData(LocalPlayer():GetModel())
 			end
 		},
@@ -142,7 +176,7 @@ function PLUGIN:ActionsOption()
 			description = "Изменить РП описание вашего персонажа",
 			icon = Material("danganronpa/radialmenu/loupe.png"),
 			action = function()
-				vgui.Create("arb.OpenEditorDescription")
+				vgui_Create("arb.OpenEditorDescription")
 			end
 		},
 		-- {
@@ -192,7 +226,7 @@ function PLUGIN:ActionsOption()
 	end
 
 	local ammo = LocalPlayer():GetAmmo()
-	if table.Count(ammo) > 0 then
+	if table_Count(ammo) > 0 then
 		local function stored()
 			local info = {
 				{
@@ -204,15 +238,15 @@ function PLUGIN:ActionsOption()
 			}
 
 		    for id, count in pairs(ammo) do
-				local name = game.GetAmmoName(id)
+				local name = game_GetAmmoName(id)
 				if !name then continue end
 
 				info[#info + 1] = {
 					name = name .. " (" .. count .. ")",
-					id = "unequip_ammo_" .. string.lower(name),
+					id = "unequip_ammo_" .. string_lower(name),
 					description = "Вытащить патроны из запаса для " .. name,
 					action = function()
-					    local DermaPanel = vgui.Create("DFrame")
+					    local DermaPanel = vgui_Create("DFrame")
 	                    DermaPanel:SetTitle("Вытащить патроны")
 	                    DermaPanel:SetSize(400, 100)
 	                    DermaPanel:Center()
@@ -224,7 +258,7 @@ function PLUGIN:ActionsOption()
 	                    DermaNumSlider:SetMin(1)
 	                    DermaNumSlider:SetMax(count)
 	                    DermaNumSlider:SetDecimals(0)
-	                    DermaNumSlider:SetValue(math.floor(count / 2))
+	                    DermaNumSlider:SetValue(math_floor(count / 2))
 
 	                    local DermaButton = DermaNumSlider:Add("DButton")
 	                    DermaButton:SetText("Вытащить")
@@ -233,7 +267,7 @@ function PLUGIN:ActionsOption()
 	                        local value = DermaNumSlider:GetValue()
 
 	                        DermaPanel:Remove()
-	                        netstream.Start("Inventory:UnequipAmmo", id, math.Round(value, 0))
+	                        netstream.Start("Inventory:UnequipAmmo", id, math_Round(value, 0))
 	                    end
 
 	                    DermaPanel.startTime = SysTime()
@@ -243,17 +277,17 @@ function PLUGIN:ActionsOption()
 	                    DermaPanel.Paint = function(_, w, h)
 	                        Derma_DrawBackgroundBlur(_, _.startTime)
 
-	                        surface.SetDrawColor(41, 22, 25)
-	                        surface.DrawRect(0, 0, w, h)
+	                        surface_SetDrawColor(41, 22, 25)
+	                        surface_DrawRect(0, 0, w, h)
 
-	                        surface.SetDrawColor(255, 61, 96, 165.75)
-	                        surface.DrawOutlinedRect(0, 0, w, h, 2)
+	                        surface_SetDrawColor(255, 61, 96, 165.75)
+	                        surface_DrawOutlinedRect(0, 0, w, h, 2)
 
-	                        surface.SetDrawColor(255, 61, 96, 165.75)
-	                        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+	                        surface_SetDrawColor(255, 61, 96, 165.75)
+	                        surface_DrawOutlinedRect(0, 0, w, H(23), 2)
 
-	                        surface.SetDrawColor(255, 61, 96, 20)
-	                        surface.DrawRect(0, 0, w, H(23))
+	                        surface_SetDrawColor(255, 61, 96, 20)
+	                        surface_DrawRect(0, 0, w, H(23))
 	                    end
 
 	                    DermaPanel:GetChildren()[4]:SetTextColor(Color(255, 255, 255))
@@ -526,9 +560,9 @@ function PLUGIN:PlayerOption()
 			description = "Развязать данного игрока при помощи ваших наручников",
 			icon = Material("danganronpa/radialmenu/uncuff.png"),
 			action = function()
-				net.Start("Cuffs_FreePlayer")
-					net.WriteEntity(target)
-				net.SendToServer()
+				net_Start("Cuffs_FreePlayer")
+					net_WriteEntity(target)
+				net_SendToServer()
 			end
 		}
 	end
@@ -537,9 +571,9 @@ function PLUGIN:PlayerOption()
 end
 
 function PLUGIN:OpenRadialMenu()
-	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui.CursorVisible() or (Arbitrage.lawEnable and !Arbitrage.gui.chat:GetActive())) then
+	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui_CursorVisible() or (Arbitrage.lawEnable and !Arbitrage.gui.chat:GetActive())) then
 		self.clampingTime = RealTime() + 0.5
-		return vgui.Create("Radial:Menu")
+		return vgui_Create("Radial:Menu")
 	end
 
 	local panel = Arbitrage.gui.radialmenu
@@ -583,7 +617,7 @@ function PLUGIN:GetActionsList()
 	return data
 end
 
-concommand.Add("arb_radialmenu_action", function(client, cmd, args)
+concommand_Add("arb_radialmenu_action", function(client, cmd, args)
 	local id = args[1]
 	if !id then return end
 

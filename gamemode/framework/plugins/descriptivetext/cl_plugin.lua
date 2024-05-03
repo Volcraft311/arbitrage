@@ -14,15 +14,26 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local draw_GetFontHeight = draw.GetFontHeight
+local timer_Create = timer.Create
+local EyePos = EyePos
+local ipairs = ipairs
+local ents_FindInSphere = ents.FindInSphere
+local ScrW = ScrW
+local IsValid = IsValid
+local draw_SimpleText = draw.SimpleText
+local Color = Color
+
 local font = "arb.Font_FuturaPTBook_6"
-local fontHeight = draw.GetFontHeight(font)
+local fontHeight = draw_GetFontHeight(font)
 
 local cache = {}
-timer.Create("DescriptiveText:UpdateDraw", 1, 0, function()
+timer_Create("DescriptiveText:UpdateDraw", 1, 0, function()
 	cache = {}
 
 	local eyePos = EyePos()
-	for k, v in ipairs(ents.FindInSphere(eyePos, 700)) do
+	for k, v in ipairs(ents_FindInSphere(eyePos, 700)) do
 		local text = v:GetNetVar("DescriptiveText")
 
 		if text then
@@ -54,7 +65,7 @@ function PLUGIN:HUDPaint()
 		local alpha = 255 - distance
 
 		for k2, v2 in ipairs(data) do
-			draw.SimpleText(v2, font, x, y + fontHeight * k2 - (fontHeight * #data) / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
+			draw_SimpleText(v2, font, x, y + fontHeight * k2 - (fontHeight * #data) / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
 		end
 	end
 end

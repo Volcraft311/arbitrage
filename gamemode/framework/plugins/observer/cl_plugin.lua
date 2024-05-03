@@ -13,6 +13,15 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local math_abs = math.abs
+local math_sin = math.sin
+local CurTime = CurTime
+local draw_SimpleText = draw.SimpleText
+local ScrW = ScrW
+local ScrH = ScrH
+local Color = Color
+
 function PLUGIN:HUDPaint()
     local client = LocalPlayer()
 
@@ -31,8 +40,8 @@ function PLUGIN:HUDPaint()
         end
     end
 
-    local alpha = math.abs(math.sin(CurTime() * 1)) * 100
-    draw.SimpleText("Вы находитесь в " .. text .. "!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
+    local alpha = math_abs(math_sin(CurTime() * 1)) * 100
+    draw_SimpleText("Вы находитесь в " .. text .. "!", "arb.Font_FuturaPTDemi_8", ScrW() / 2, ScrH() * 0.97, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
 end
 
 function PLUGIN:DrawPhysgunBeam(client, physgun, enabled, target, bone, hitPos)

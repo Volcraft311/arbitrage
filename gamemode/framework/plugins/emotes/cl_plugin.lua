@@ -11,6 +11,17 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local select = select
+local RunConsoleCommand = RunConsoleCommand
+local string_find = string.find
+local Vector = Vector
+local util_TraceHull = util.TraceHull
+local util_TraceLine = util.TraceLine
+local Lerp = Lerp
+local FrameTime = FrameTime
+local timer_Simple = timer.Simple
+
 function Emotes:PlayerBindPress(client, bind, bPressed)
 	local bThirdPerson = select(3, client:GetAction())
 	if !bThirdPerson then return end
@@ -34,7 +45,7 @@ local function GetHeadBone(client)
 	for i = 1, client:GetBoneCount() do
 		local name = client:GetBoneName(i)
 
-		if (string.find(name:lower(), "head")) then
+		if (string_find(name:lower(), "head")) then
 			head = i
 			break
 		end
@@ -80,10 +91,10 @@ function Emotes:CalcView(client, origin)
 		traceData3.mins = traceMin
 		traceData3.maxs = traceMax
 
-		local traceHull3 = util.TraceHull(traceData3)
+		local traceHull3 = util_TraceHull(traceData3)
 		local traceHitPos3 = traceHull3.HitPos
 
-		local traceLine = util.TraceLine(data)
+		local traceLine = util_TraceLine(data)
 		local hitPos = traceLine.HitPos
 		local pos = hitPos + GROUND_PADDING + ang:Forward() * 4
 
@@ -106,7 +117,7 @@ function Emotes:CalcView(client, origin)
 
 		if client:GetPos():DistToSqr(Vector(0, 0, 0)) <= 150 then
 			RunConsoleCommand("+use")
-			timer.Simple(0.2, function()
+			timer_Simple(0.2, function()
 				RunConsoleCommand("-use")
 			end)
 
@@ -150,7 +161,7 @@ function Emotes:CalcView(client, origin)
 			data.endpos = data.start - ang:Forward() * 72
 			data.filter = client
 
-			view.origin = util.TraceLine(data).HitPos + GROUND_PADDING
+			view.origin = util_TraceLine(data).HitPos + GROUND_PADDING
 		elseif nCameraType == 2 then
 			local enterAngle = client:GetAngles()
 			local forward = enterAngle:Forward()
@@ -165,7 +176,7 @@ function Emotes:CalcView(client, origin)
 					filter = client
 				}
 
-				data = util.TraceHull(data)
+				data = util_TraceHull(data)
 
 				if data.Hit then
 					view.origin = data.HitPos

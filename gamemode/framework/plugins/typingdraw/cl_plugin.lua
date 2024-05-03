@@ -14,6 +14,26 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local Vector = Vector
+local string_find = string.find
+local Color = Color
+local timer_Create = timer.Create
+local IsValid = IsValid
+local ipairs = ipairs
+local player_GetAll = player.GetAll
+local EyePos = EyePos
+local RealTime = RealTime
+local FrameTime = FrameTime
+local Lerp = Lerp
+local ScrW = ScrW
+local ColorAlpha = ColorAlpha
+local draw_GetFontHeight = draw.GetFontHeight
+local draw_SimpleText = draw.SimpleText
+local utf8_len = utf8.len
+local math_Clamp = math.Clamp
+local netstream = netstream
+
 local standingOffset = Vector(0, 0, 72)
 local crouchingOffset = Vector(0, 0, 38)
 local boneOffset = Vector(0, 0, 15)
@@ -25,7 +45,7 @@ function PLUGIN:GetTypingIndicatorPosition(client)
 	for i = 1, client:GetBoneCount() do
 	    local name = client:GetBoneName(i)
 
-	    if (string.find(name:lower(), "head")) then
+	    if (string_find(name:lower(), "head")) then
 	        head = i
 	        break
 	    end
@@ -54,7 +74,7 @@ end
 local d = 150000
 
 PLUGIN.infoList = {}
-timer.Create("TypingDraw:Update", 1, 0, function()
+timer_Create("TypingDraw:Update", 1, 0, function()
 	PLUGIN.infoList = {}
 
 	local client = LocalPlayer()
@@ -62,7 +82,7 @@ timer.Create("TypingDraw:Update", 1, 0, function()
 	if !SETTINGS.options.Get("show_typingdraw") then return end
 	if Arbitrage.lawEnable then return end
 
-	for k, v in ipairs(player.GetAll()) do
+	for k, v in ipairs(player_GetAll()) do
 		if v == client then continue end
 		if v:IsSpectate() then continue end
 		if v:IsNocliping() then continue end
@@ -104,7 +124,7 @@ end
 function PLUGIN:DrawText(client, text, color, alpha)
 	local size = ScrW() * 0.2
 	local eyepos = EyePos()
-	local players = player.GetAll()
+	local players = player_GetAll()
 	local pos = self:GetTypingIndicatorPosition(client)
 	local distance = eyepos:Distance(pos)
 
@@ -121,18 +141,18 @@ function PLUGIN:DrawText(client, text, color, alpha)
 	local a = ColorAlpha(color, alpha)
 	local x, y = data2D.x, data2D.y
 
-	local genericHeight = draw.GetFontHeight(font)
+	local genericHeight = draw_GetFontHeight(font)
 	local drawText = asterionlib.WrapText(text, size, font)
 	for k, v in ipairs(drawText) do
 		local y2 = genericHeight * (k - 1)
 
-		draw.SimpleText(v, font, x, y + y2, a, TEXT_ALIGN_CENTER)
+		draw_SimpleText(v, font, x, y + y2, a, TEXT_ALIGN_CENTER)
 	end
 end
 
 function PLUGIN:SetTypingText(client, data, color)
-	local len = utf8.len(data)
-	local time = math.Clamp(len * 0.2, 2, 15)
+	local len = utf8_len(data)
+	local time = math_Clamp(len * 0.2, 2, 15)
 
 	client.tDrawText = data
 	client.tDrawTime = RealTime() + time + 5

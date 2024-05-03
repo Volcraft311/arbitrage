@@ -15,7 +15,7 @@ local PLUGIN = PLUGIN
 
 PLUGIN.isAllow = false
 
-local Arbitrage = Arbitrage
+-- Localize Global Calls
 local IsValid = IsValid
 local RealFrameTime = RealFrameTime
 local LerpAngle = LerpAngle
@@ -25,6 +25,10 @@ local Lerp = Lerp
 local math_Clamp = math.Clamp
 local Vector = Vector
 local util_TraceLine = util.TraceLine
+local select = select
+local FrameTime = FrameTime
+local concommand_Add = concommand.Add
+local EyeAngles = EyeAngles
 
 PLUGIN.name = "First Person"
 
@@ -149,7 +153,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 			value = value + 15
 		end
 
-		value = math.Clamp(value, -8, 8)
+		value = math_Clamp(value, -8, 8)
 		fovShift = Lerp(FrameTime() * 3, fovShift, value)
 
 		view.fov = fov + fovShift
@@ -204,7 +208,7 @@ function PLUGIN:CreateMove(ucmd)
 end
 
 
-concommand.Add("arb_camerafix", function(client, cmd, args)
+concommand_Add("arb_camerafix", function(client, cmd, args)
 	local ang = EyeAngles()
 
 	client:SetEyeAngles(Angle(ang.p, ang.y, 0))

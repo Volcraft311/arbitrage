@@ -11,6 +11,25 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local Vector = Vector
+local Angle = Angle
+local GetRenderTarget = GetRenderTarget
+local CurTime = CurTime
+local ScrW = ScrW
+local ScrH = ScrH
+local CreateMaterial = CreateMaterial
+local vgui_Create = vgui.Create
+local LocalPlayer = LocalPlayer
+local IsValid = IsValid
+local render_SetRenderTarget = render.SetRenderTarget
+local render_RenderView = render.RenderView
+local GetConVar = GetConVar
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local FindMetaTable = FindMetaTable
+
 MapReversion.shouldHidden = false
 MapReversion.startDrawing = MapReversion.startDrawing or false
 MapReversion.material = MapReversion.material or nil
@@ -44,7 +63,7 @@ function MapReversion:CreateFrame()
 	self.startDrawing = false -- если начинаем рисовать сразу, то появляется белый квадрат
 	self.tex, self.material = self:CreateTex()
 
-	local frame = vgui.Create("EditablePanel")
+	local frame = vgui_Create("EditablePanel")
 	frame:SetPos(0, 0)
 	frame:SetSize(ScrW(), ScrH())
 	frame.Paint = function(this, w, h)
@@ -52,9 +71,9 @@ function MapReversion:CreateFrame()
 			local client = LocalPlayer()
 			if !IsValid(client) then return end
 
-			render.SetRenderTarget(self.tex)
+			render_SetRenderTarget(self.tex)
 				self.shouldHidden = true
-					render.RenderView({
+					render_RenderView({
 						origin = self.vec,
 						angles = self.ang,
 						fov = self.fov,
@@ -65,7 +84,7 @@ function MapReversion:CreateFrame()
 						drawviewmodel = false
 					})
 				self.shouldHidden = false
-			render.SetRenderTarget()
+			render_SetRenderTarget()
 
 			self.material:SetTexture("$basetexture", self.tex)
 			self.startDrawing = true
@@ -110,9 +129,9 @@ function MapReversion:Render()
 			local material = self:GetMaterial()
 
 			if material and self.startDrawing then
-				surface.SetDrawColor(255, 255, 255)
-				surface.SetMaterial(material)
-				surface.DrawTexturedRect(-1, -1, ScrW() + 1, ScrH() + 1)
+				surface_SetDrawColor(255, 255, 255)
+				surface_SetMaterial(material)
+				surface_DrawTexturedRect(-1, -1, ScrW() + 1, ScrH() + 1)
 			end
 		end
 	end

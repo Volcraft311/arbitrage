@@ -14,6 +14,27 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local Color = Color
+local util_IntersectRayWithPlane = util.IntersectRayWithPlane
+local Vector = Vector
+local WorldToLocal = WorldToLocal
+local Angle = Angle
+local SitAnywhere = SitAnywhere
+local math_abs = math.abs
+local timer_Create = timer.Create
+local FrameTime = FrameTime
+local IsValid = IsValid
+local EyePos = EyePos
+local RunConsoleCommand = RunConsoleCommand
+local timer_Remove = timer.Remove
+local net_Start = net.Start
+local net_WriteInt = net.WriteInt
+local net_WriteFloat = net.WriteFloat
+local net_WriteVector = net.WriteVector
+local net_SendToServer = net.SendToServer
+local ents_CreateClientProp = ents.CreateClientProp
+
 PLUGIN.csEnt = NULL
 
 local sitBindID = "sitting"
@@ -26,7 +47,7 @@ local uniqueID = "SittingDraw:Timer"
 local fixAng = 180
 
 function PLUGIN:GetInfo(wantedAng, client, trace)
-	local vec = util.IntersectRayWithPlane(client:EyePos(), client:EyeAngles():Forward(), trace.HitPos, Vector(0, 0, 1))
+	local vec = util_IntersectRayWithPlane(client:EyePos(), client:EyeAngles():Forward(), trace.HitPos, Vector(0, 0, 1))
 	if !vec then
 		return {
 			wantedAng = wantedAng
@@ -65,7 +86,7 @@ function PLUGIN:GetAngles(client, trace, wantedAng)
 	local surfaceAng = trace.HitNormal:Angle() + Angle(-270, 0, 0)
 	local ang = surfaceAng
 
-	if wantedAng and math.abs(surfaceAng.pitch) <= 15 then
+	if wantedAng and math_abs(surfaceAng.pitch) <= 15 then
 		ent = trace.Entity
 
 		if trace.HitWorld or !ent:IsPlayer() then
@@ -84,7 +105,7 @@ function PLUGIN:StartSit(trace)
 	local wantedAng = nil
 	local client = LocalPlayer()
 
-	timer.Create(uniqueID, FrameTime(), 0, function()
+	timer_Create(uniqueID, FrameTime(), 0, function()
 		if !IsValid(self.csEnt) then self:CreateCSEnt() end
 
 		if client.IsProne and client:IsProne() then
@@ -169,7 +190,7 @@ function PLUGIN:DoSit(trace)
 	local playerTrace = !trace.HitWorld and IsValid(trace.Entity) and trace.Entity:IsPlayer()
 
 	local goodSit = SitAnywhere.GetAreaProfile(trace.HitPos + Vector(0, 0, 0.1), 24, true)
-	if math.abs(surfaceAng.pitch) >= 15 or !goodSit or playerTrace then
+	if math_abs(surfaceAng.pitch) >= 15 or !goodSit or playerTrace then
 		return RunConsoleCommand("sit")
 	end
 
@@ -201,19 +222,19 @@ function PLUGIN:KeyReleaseID(client, id)
 	if id != sitBindID then return end
 	if !SitAnywhere then return end
 
-	timer.Remove(uniqueID)
+	timer_Remove(uniqueID)
 	self:RemoveCSEnt()
 
 	if client:IsNocliping() then return end
 	if client.GetSitting and client:GetSitting() then return end
 
 	if self.Ang and self.StartPos and self.Normal then
-		net.Start("SitAnywhere")
-			net.WriteInt(0, 4)
-			net.WriteFloat(self.Ang.y - fixAng)
-			net.WriteVector(self.StartPos)
-			net.WriteVector(self.Normal)
-		net.SendToServer()
+		net_Start("SitAnywhere")
+			net_WriteInt(0, 4)
+			net_WriteFloat(self.Ang.y - fixAng)
+			net_WriteVector(self.StartPos)
+			net_WriteVector(self.Normal)
+		net_SendToServer()
 	end
 
 	self.Ang = nil
@@ -225,7 +246,7 @@ function PLUGIN:CreateCSEnt()
 	local client = LocalPlayer()
 	local trace = client:GetEyeTrace()
 
-	local entity = ents.CreateClientProp(client:GetModel())
+	local entity = ents_CreateClientProp(client:GetModel())
 	entity:SetRenderMode(RENDERMODE_TRANSCOLOR)
 	entity:SetAngles(Angle(0, 0, 0))
 	entity:SetPos(trace.HitPos + Vector(0, 0, 1))

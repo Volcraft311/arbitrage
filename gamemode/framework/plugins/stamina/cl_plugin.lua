@@ -11,6 +11,25 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local IsValid = IsValid
+local timer_Create = timer.Create
+local Color = Color
+local ScrW = ScrW
+local ScrH = ScrH
+local FrameTime = FrameTime
+local Lerp = Lerp
+local surface_SetDrawColor = surface.SetDrawColor
+local ColorAlpha = ColorAlpha
+local surface_DrawRect = surface.DrawRect
+local LerpColor = LerpColor
+local math_abs = math.abs
+local math_sin = math.sin
+local RealTime = RealTime
+local draw_SimpleText = draw.SimpleText
+local math_floor = math.floor
+
+
 local function isAllow(client)
 	if !IsValid(client) then return false end
 
@@ -23,7 +42,7 @@ local function isAllow(client)
 end
 
 local allow = false
-timer.Create("StaminaDraw:Update", 1, 0, function()
+timer_Create("StaminaDraw:Update", 1, 0, function()
 	local client = LocalPlayer()
 
 	allow = isAllow(client)
@@ -51,19 +70,19 @@ function Stamina:HUDPaint()
 	alphastamina = Lerp(frametime * 10, alphastamina, (stamina < 98 or stamina > 100) and 255 or 0)
 	if alphastamina <= 0.1 then return end
 
-	surface.SetDrawColor(ColorAlpha(color, alphastamina * (10 / 255)))
-	surface.DrawRect(scrW / 2 - staminaMax, scrH - 30, staminaMax * 2, 4)
+	surface_SetDrawColor(ColorAlpha(color, alphastamina * (10 / 255)))
+	surface_DrawRect(scrW / 2 - staminaMax, scrH - 30, staminaMax * 2, 4)
 
-	surface.SetDrawColor(ColorAlpha(color, alphastamina))
-	surface.DrawRect(scrW / 2 - stamina * size, scrH - 30, stamina * size * 2, 4)
-	surface.DrawRect(scrW / 2 - staminaMax - 4, scrH - 30, 4, 4)
-	surface.DrawRect(scrW / 2 + staminaMax - 1, scrH - 30, 4, 4)
+	surface_SetDrawColor(ColorAlpha(color, alphastamina))
+	surface_DrawRect(scrW / 2 - stamina * size, scrH - 30, stamina * size * 2, 4)
+	surface_DrawRect(scrW / 2 - staminaMax - 4, scrH - 30, 4, 4)
+	surface_DrawRect(scrW / 2 + staminaMax - 1, scrH - 30, 4, 4)
 
 	if stamina <= 10 then
 		color = LerpColor(frametime * 2, color, color_red)
 
 		if stamina <= 1 then
-			alphastamina = 255 * math.abs(math.sin(RealTime() * 4))
+			alphastamina = 255 * math_abs(math_sin(RealTime() * 4))
 		end
 	elseif stamina <= 30 then
 		color = LerpColor(frametime * 2, color, color_yellow)
@@ -73,5 +92,5 @@ function Stamina:HUDPaint()
 		color = LerpColor(frametime * 2, color, color_white)
 	end
 
-	draw.SimpleText(math.floor(stamina) .. "/100", "arb.Font_FuturaPTBook_4", scrW / 2, scrH - 45, ColorAlpha(color, alphastamina), TEXT_ALIGN_CENTER)
+	draw_SimpleText(math_floor(stamina) .. "/100", "arb.Font_FuturaPTBook_4", scrW / 2, scrH - 45, ColorAlpha(color, alphastamina), TEXT_ALIGN_CENTER)
 end

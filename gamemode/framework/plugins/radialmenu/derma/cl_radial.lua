@@ -13,6 +13,39 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local IsValid = IsValid
+local math_random = math.random
+local ScrW = ScrW
+local ScrH = ScrH
+local Color = Color
+local Vector = Vector
+local input_GetCursorPos = input.GetCursorPos
+local math_atan2 = math.atan2
+local math_floor = math.floor
+local RealTime = RealTime
+local math_rad = math.rad
+local math_cos = math.cos
+local math_sin = math.sin
+local isfunction = isfunction
+local istable = istable
+local ipairs = ipairs
+local table_remove = table.remove
+local table_insert = table.insert
+local input_IsMouseDown = input.IsMouseDown
+local input_IsKeyDown = input.IsKeyDown
+local input_SetCursorPos = input.SetCursorPos
+local Material = Material
+local FrameTime = FrameTime
+local Lerp = Lerp
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local draw_SimpleText = draw.SimpleText
+local ColorAlpha = ColorAlpha
+local draw_GetFontHeight = draw.GetFontHeight
+local vgui_Register = vgui.Register
+
 local circles = asterionlib.Circles
 local PANEL = {}
 
@@ -23,7 +56,7 @@ function PANEL:Init()
 
 	Arbitrage.gui.radialmenu = self
 
-	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math.random(1, 6) .. ".wav")
+	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math_random(1, 6) .. ".wav")
 
 	self:SetPos(0, 0)
 	self:SetSize(ScrW(), ScrH())
@@ -54,23 +87,23 @@ function PANEL:Init()
 end
 
 function PANEL:FindSelected(segment_size)
-	local mouse_pos = Vector(input.GetCursorPos())
+	local mouse_pos = Vector(input_GetCursorPos())
 	mouse_pos:Sub(Vector(self.m_x, self.m_y, 0))
 
-	local mouse_ang = math.atan2(mouse_pos[2], mouse_pos[1]) * 180 / math.pi
+	local mouse_ang = math_atan2(mouse_pos[2], mouse_pos[1]) * 180 / math.pi
 
 	if mouse_ang < 0 then
 		mouse_ang = 360 + mouse_ang
 	end
 
-	return math.floor(mouse_ang / segment_size)
+	return math_floor(mouse_ang / segment_size)
 end
 
 function PANEL:NewClose()
 	if self.bClose then return end
 	self.bClose = true
 
-	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math.random(1, 6) .. ".wav")
+	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math_random(1, 6) .. ".wav")
 
 	self:SetMouseInputEnabled(false)
 	self:AlphaTo(0, 0.3, 0, function()
@@ -88,9 +121,9 @@ function PANEL:SelectOption(id)
 	if !option then return end
 
 	local segment_size = 360 / #self.options
-	local a = math.rad(segment_size * (id - 1) + segment_size / 2)
-	local x = self.m_x + math.cos(a) * self.m_r
-	local y = self.m_y + math.sin(a) * self.m_r
+	local a = math_rad(segment_size * (id - 1) + segment_size / 2)
+	local x = self.m_x + math_cos(a) * self.m_r
+	local y = self.m_y + math_sin(a) * self.m_r
 
 	local action = option.action
 	if isfunction(action) then
@@ -159,9 +192,9 @@ function PANEL:OnMiddleClick()
 	end
 
 	if find then
-		table.remove(data, find)
+		table_remove(data, find)
 	else
-		table.insert(data, id)
+		table_insert(data, id)
 	end
 
 	asterionlib.data:Set("radialmenu_favorites", data)
@@ -176,7 +209,7 @@ function PANEL:OnRotate()
 end
 
 function PANEL:Think()
-	local onLeftClick = input.IsMouseDown(MOUSE_LEFT)
+	local onLeftClick = input_IsMouseDown(MOUSE_LEFT)
 	if onLeftClick then
 		if !self.bLeftClick then
 			self:OnLeftClick()
@@ -187,7 +220,7 @@ function PANEL:Think()
 		self.bLeftClick = nil
 	end
 
-	local onRightClick = input.IsMouseDown(MOUSE_RIGHT)
+	local onRightClick = input_IsMouseDown(MOUSE_RIGHT)
 	if onRightClick then
 		if !self.bRightClick then
 			self:OnRightClick()
@@ -198,7 +231,7 @@ function PANEL:Think()
 		self.bRightClick = nil
 	end
 
-	local onMiddleClick = input.IsMouseDown(MOUSE_MIDDLE)
+	local onMiddleClick = input_IsMouseDown(MOUSE_MIDDLE)
 	if onMiddleClick then
 		if !self.bMiddleClick then
 			self:OnMiddleClick()
@@ -214,7 +247,7 @@ function PANEL:Think()
 	for i = 37, 46 do data[#data + 1] = i end
 
 	for k, i in ipairs(data) do
-		local onDown = input.IsKeyDown(i + 1)
+		local onDown = input_IsKeyDown(i + 1)
 
 		if onDown then
 			if !self.clampKeys[i] then
@@ -225,7 +258,7 @@ function PANEL:Think()
 				local x, y = self:SelectOption(info)
 
 				if x and y then
-					input.SetCursorPos(x, y)
+					input_SetCursorPos(x, y)
 				end
 			end
 
@@ -297,9 +330,9 @@ function PANEL:Paint(w, h)
 	for i = 0, #self.options - 1 do
 		local option = self.options[i + 1]
 
-		local a = math.rad(segment_size * i + segment_size / 2)
-		local x = self.m_x + math.cos(a) * self.m_r
-		local y = self.m_y + math.sin(a) * self.m_r
+		local a = math_rad(segment_size * i + segment_size / 2)
+		local x = self.m_x + math_cos(a) * self.m_r
+		local y = self.m_y + math_sin(a) * self.m_r
 
 		local color = self.selected == i and Color(255, 41, 76) or color_white
 
@@ -308,9 +341,9 @@ function PANEL:Paint(w, h)
 				if v == option.id then
 					local size = self:GetTall() * 0.035
 
-					surface.SetDrawColor(255, 255, 255)
-					surface.SetMaterial(starMat)
-					surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+					surface_SetDrawColor(255, 255, 255)
+					surface_SetMaterial(starMat)
+					surface_DrawTexturedRect(x - size, y - size, size * 2, size * 2)
 					break
 				end
 			end
@@ -319,15 +352,15 @@ function PANEL:Paint(w, h)
 		if option.icon then
 			local size = self:GetTall() * 0.03
 
-			surface.SetDrawColor(color)
-			surface.SetMaterial(option.icon)
-			surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+			surface_SetDrawColor(color)
+			surface_SetMaterial(option.icon)
+			surface_DrawTexturedRect(x - size, y - size, size * 2, size * 2)
 		else
-			draw.SimpleText(option.name, "arb.Font_FuturaPTBook_10", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw_SimpleText(option.name, "arb.Font_FuturaPTBook_10", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
 		local b = self.m_r * 0.8
-		draw.SimpleText(i + 1, "arb.Font_FuturaPTDemi_5", self.m_x + math.cos(a) * b, self.m_y + math.sin(a) * b, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw_SimpleText(i + 1, "arb.Font_FuturaPTDemi_5", self.m_x + math_cos(a) * b, self.m_y + math_sin(a) * b, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 
 	local option = self.options[self.selected + 1]
@@ -339,20 +372,20 @@ function PANEL:Paint(w, h)
 		if icon then
 			local size = self:GetTall() * 0.1
 
-			surface.SetDrawColor(ColorAlpha(color_white, self.textAlpha))
-			surface.SetMaterial(icon)
-			surface.DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
+			surface_SetDrawColor(ColorAlpha(color_white, self.textAlpha))
+			surface_SetMaterial(icon)
+			surface_DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
 		end
 
-		draw.SimpleText(name, "arb.Font_FuturaPTDemi_13", w / 2, h / 2, ColorAlpha(color_white, self.textAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw_SimpleText(name, "arb.Font_FuturaPTDemi_13", w / 2, h / 2, ColorAlpha(color_white, self.textAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 		if description then
 			local descFont = "arb.Font_FuturaPTBook_8"
-			local fontHeight = draw.GetFontHeight(descFont)
+			local fontHeight = draw_GetFontHeight(descFont)
 			option.wrap = option.wrap or asterionlib.WrapText(description, self.radialSize, descFont)
 
 			for k, v in ipairs(option.wrap) do
-				draw.SimpleText(v, descFont, w / 2, h / 2 + k * fontHeight, ColorAlpha(Color(220, 220, 220), self.textAlpha), TEXT_ALIGN_CENTER)
+				draw_SimpleText(v, descFont, w / 2, h / 2 + k * fontHeight, ColorAlpha(Color(220, 220, 220), self.textAlpha), TEXT_ALIGN_CENTER)
 			end
 		end
 	end
@@ -360,26 +393,26 @@ function PANEL:Paint(w, h)
 	local size = H(30)
 	if option and option.id then
 		local tall = H(105)
-		local width, height = draw.SimpleText("Добавить в избранное", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
-		surface.SetDrawColor(255, 255, 255)
-		surface.SetMaterial(Material("err.png"))
-		surface.DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
+		local width, height = draw_SimpleText("Добавить в избранное", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
+		surface_SetDrawColor(255, 255, 255)
+		surface_SetMaterial(Material("err.png"))
+		surface_DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
 	end
 
 	do
 		local tall = H(70)
-		local width, height = draw.SimpleText("Выбрать опцию", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
-		surface.SetDrawColor(255, 255, 255)
-		surface.SetMaterial(lmbMat)
-		surface.DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
+		local width, height = draw_SimpleText("Выбрать опцию", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
+		surface_SetDrawColor(255, 255, 255)
+		surface_SetMaterial(lmbMat)
+		surface_DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
 	end
 
 	if isfunction(self.backFunc) then
 		local tall = H(35)
-		local width, height = draw.SimpleText("Вернуться назад", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
-		surface.SetDrawColor(255, 255, 255)
-		surface.SetMaterial(rmbMat)
-		surface.DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
+		local width, height = draw_SimpleText("Вернуться назад", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
+		surface_SetDrawColor(255, 255, 255)
+		surface_SetMaterial(rmbMat)
+		surface_DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
 	end
 
 	if self.selected != self.oldselected then
@@ -389,4 +422,4 @@ function PANEL:Paint(w, h)
 	self.oldselected = self.selected
 end
 
-vgui.Register("Radial:Menu", PANEL, "Panel")
+vgui_Register("Radial:Menu", PANEL, "Panel")

@@ -1,5 +1,29 @@
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
+local Vector = Vector
+local Color = Color
+local string_find = string.find
+local timer_Create = timer.Create
+local EyePos = EyePos
+local ipairs = ipairs
+local player_GetAll = player.GetAll
+local surface_SetFont = surface.SetFont
+local surface_GetTextSize = surface.GetTextSize
+local IsValid = IsValid
+local EyeAngles = EyeAngles
+local FrameTime = FrameTime
+local RealTime = RealTime
+local Lerp = Lerp
+local math_min = math.min
+local math_sin = math.sin
+local Angle = Angle
+local cam_Start3D2D = cam.Start3D2D
+local draw_SimpleTextOutlined = draw.SimpleTextOutlined
+local ColorAlpha = ColorAlpha
+local cam_End3D2D = cam.End3D2D
+local netstream = netstream
+
 local standingOffset = Vector(0, 0, 72)
 local crouchingOffset = Vector(0, 0, 38)
 local boneOffset = Vector(0, 0, 15)
@@ -12,7 +36,7 @@ function PLUGIN:GetTypingIndicatorPosition(client)
 	for i = 1, client:GetBoneCount() do
 	    local name = client:GetBoneName(i)
 
-	    if (string.find(name:lower(), "head")) then
+	    if (string_find(name:lower(), "head")) then
 	        head = i
 	        break
 	    end
@@ -24,12 +48,12 @@ end
 
 local d = 50000
 local cache = {}
-timer.Create("AfkDraw:Update", 1, 0, function()
+timer_Create("AfkDraw:Update", 1, 0, function()
 	cache = {}
 
 	local client = LocalPlayer()
 	local eyePos = EyePos()
-	for k, v in ipairs(player.GetAll()) do
+	for k, v in ipairs(player_GetAll()) do
 		if v == client then continue end
 	    if v:IsNocliping() then continue end
 	    if v:IsSpectate() then continue end
@@ -44,8 +68,8 @@ end)
 
 local font = "arb.Font_FuturaPTBook_38"
 local text = "AFK"
-surface.SetFont(font)
-local textWidth, textHeight = surface.GetTextSize("A")
+surface_SetFont(font)
+local textWidth, textHeight = surface_GetTextSize("A")
 function PLUGIN:PostDrawTranslucentRenderables()
 	if Arbitrage.lawEnable then return end
 	if #cache <= 0 then return end
@@ -73,11 +97,11 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	    if fraction <= 0.01 then continue end
 
 	    local distance = v:GetPos():DistToSqr(EyePos())
-		local alpha = (1 - math.min(distance, d) / d) * 255 * fraction
+		local alpha = (1 - math_min(distance, d) / d) * 255 * fraction
 
 		local pos = PLUGIN:GetTypingIndicatorPosition(v)
 		for i = -1, 1 do
-			local time = math.sin(realtime) * ((i + 2) * 3)
+			local time = math_sin(realtime) * ((i + 2) * 3)
 			local rot = (i == -1 or i == 1) and time or - time
 
 			local ang = Angle(rot, angle.y, 90)
@@ -85,9 +109,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 			local sizeF = (textWidth * 0.07) * i
 			local sizeR = (textHeight * 0.015) * i
 
-			cam.Start3D2D(pos + ang:Forward() * sizeF + ang:Right() * -sizeR + ang:Right() * math.sin((realtime * (i + 2)) * 0.5) * 1, ang, 0.05)
-				draw.SimpleTextOutlined(text[i + 2], font, 0, -fraction * 150 + 50, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 4, ColorAlpha(shadowColor, alpha))
-			cam.End3D2D()
+			cam_Start3D2D(pos + ang:Forward() * sizeF + ang:Right() * -sizeR + ang:Right() * math_sin((realtime * (i + 2)) * 0.5) * 1, ang, 0.05)
+				draw_SimpleTextOutlined(text[i + 2], font, 0, -fraction * 150 + 50, ColorAlpha(textColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 4, ColorAlpha(shadowColor, alpha))
+			cam_End3D2D()
 		end
 	end
 end

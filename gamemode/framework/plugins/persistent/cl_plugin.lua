@@ -11,18 +11,45 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-
 local PLUGIN = PLUGIN
+
+-- Localize Global Calls
+local surface_GetTextureID = surface.GetTextureID
+local math_abs = math.abs
+local math_sin = math.sin
+local RealTime = RealTime
+local DrawColorModify = DrawColorModify
+local DrawSobel = DrawSobel
+local math_random = math.random
+local Material = Material
+local Lerp = Lerp
+local FrameTime = FrameTime
+local ScrW = ScrW
+local ScrH = ScrH
+local surface_SetMaterial = surface.SetMaterial
+local surface_SetDrawColor = surface.SetDrawColor
+local Color = Color
+local surface_DrawTexturedRectRotated = surface.DrawTexturedRectRotated
+local math_Rand = math.Rand
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local surface_DrawRect = surface.DrawRect
+local surface_SetTexture = surface.SetTexture
+local timer_Exists = timer.Exists
+local timer_Create = timer.Create
+local sound_PlayFile = sound.PlayFile
+local IsValid = IsValid
+local netstream = netstream
+
 
 PLUGIN.alpha = 255
 PLUGIN.isOn = false
 PLUGIN.bodyList = PLUGIN.bodyList or {}
 
-local vignitte = surface.GetTextureID("vgui/vignette")
+local vignitte = surface_GetTextureID("vgui/vignette")
 function PLUGIN:RenderScreenspaceEffects()
 	if self.alpha >= 250 then return end
 
-	local ba = math.abs(math.sin(RealTime()))
+	local ba = math_abs(math_sin(RealTime()))
 
 	local tab = {
 	    ["$pp_colour_addr"] = 0,
@@ -37,7 +64,7 @@ function PLUGIN:RenderScreenspaceEffects()
 	}
 
 	DrawColorModify(tab)
-	DrawSobel(math.random(self.alpha + 1, 10))
+	DrawSobel(math_random(self.alpha + 1, 10))
 end
 
 local static = Material("danganronpa/hud/static.png")
@@ -47,41 +74,41 @@ function PLUGIN:HUDPaint()
 	self.alpha = Lerp(FrameTime(), self.alpha, self.isOn and 0 or 255)
 	if self.alpha >= 250 then return end
 
-	local ba = math.abs(math.sin(RealTime()))
+	local ba = math_abs(math_sin(RealTime()))
 	local size = 50
 	local w, h = ScrW() + size, ScrH() + size
 	local staticX, staticY = w / 2, h / 2
 
 	lens:SetFloat("$refractamount",	(255 - self.alpha) * 0.00015)
 
-	surface.SetMaterial(lens)
-	surface.SetDrawColor(Color(255,255,255,1))
-	surface.DrawTexturedRectRotated(staticX + math.Rand(-15,15), staticY + math.Rand(-15,15), w * math.Rand(0.8,2), h * math.Rand(0.8,2), 0)
+	surface_SetMaterial(lens)
+	surface_SetDrawColor(Color(255,255,255,1))
+	surface_DrawTexturedRectRotated(staticX + math_Rand(-15,15), staticY + math_Rand(-15,15), w * math_Rand(0.8,2), h * math_Rand(0.8,2), 0)
 
-	surface.SetDrawColor(255, 255, 255, math.random(10, 100) - self.alpha / 2)
-	surface.SetMaterial(static)
-	surface.DrawTexturedRect(ScrW() / 2 - w / 2 + math.random(-size, size), ScrH() / 2 - h / 2 + math.random(-size, size), w, h)
+	surface_SetDrawColor(255, 255, 255, math_random(10, 100) - self.alpha / 2)
+	surface_SetMaterial(static)
+	surface_DrawTexturedRect(ScrW() / 2 - w / 2 + math_random(-size, size), ScrH() / 2 - h / 2 + math_random(-size, size), w, h)
 
-	surface.SetDrawColor(0, 0, 0, math.random(0, 50) - self.alpha)
-	surface.DrawRect(0, 0, w, h)
+	surface_SetDrawColor(0, 0, 0, math_random(0, 50) - self.alpha)
+	surface_DrawRect(0, 0, w, h)
 
 	for i = 1, 2 do
-		surface.SetTexture(vignitte)
-		surface.SetDrawColor(255, 255, 255, (ba * 255) - self.alpha)
-		surface.DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		surface_SetTexture(vignitte)
+		surface_SetDrawColor(255, 255, 255, (ba * 255) - self.alpha)
+		surface_DrawTexturedRect(-1, -1, ScrW() + 2, ScrH() + 2)
 	end
 end
 
 function PLUGIN:EnableEffect(entity)
 	self.isOn = true
 
-	if !timer.Exists("fb:DisableEffect") then
-	    timer.Create("fb:DisableEffect", self.turnoff_time, 1, function()
+	if !timer_Exists("fb:DisableEffect") then
+	    timer_Create("fb:DisableEffect", self.turnoff_time, 1, function()
 	        self.isOn = false
 	    end)
 
 	    local volume = SETTINGS.options.Get("corpse_find_volume") or 50
-	    sound.PlayFile("sound/discoverycreepy.wav", "", function(station)
+	    sound_PlayFile("sound/discoverycreepy.wav", "", function(station)
 	        if IsValid(station) then
 	            station:SetVolume(volume / 100)
 	        end
@@ -97,7 +124,7 @@ function PLUGIN:IsOn()
 	return self.isOn
 end
 
-timer.Create("fb:CheckTrace", 0.1, 0, function()
+timer_Create("fb:CheckTrace", 0.1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 

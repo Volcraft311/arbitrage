@@ -14,24 +14,36 @@
 
 local PLUGIN = PLUGIN
 
+-- Localize Global Calls
 local render_DrawLine = render.DrawLine
 local Color = Color
 local ipairs = ipairs
-local ents_FindInSphere = ents.FindInSphere
 local math_Clamp = math.Clamp
 local math_abs = math.abs
 local math_sin = math.sin
 local CurTime = CurTime
-local Arbitrage = Arbitrage
-local pairs = pairs
-local ents_FindByClass = ents.FindByClass
 local EyePos = EyePos
-local surface_SetDrawColor = surface.SetDrawColor
 local ColorAlpha = ColorAlpha
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
 local draw_DrawText = draw.DrawText
 local netstream = netstream
+local timer_Create = timer.Create
+local ents_GetAll = ents.GetAll
+local IsValid = IsValid
+local Material = Material
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local tostring = tostring
+local math_random = math.random
+local hook_Add = hook.Add
+local Lerp = Lerp
+local FrameTime = FrameTime
+local surface_SetDrawColor = surface.SetDrawColor
+local timer_Simple = timer.Simple
+local hook_Remove = hook.Remove
+local chat_AddText = chat.AddText
+local unpack = unpack
 
 function PLUGIN:PostDrawOpaqueRenderables()
     local client = LocalPlayer()
@@ -48,30 +60,30 @@ function PLUGIN:PostDrawOpaqueRenderables()
 end
 
 local evidences_all = {}
-timer.Create("Evidence:UpdateAll", 3, 0, function()
+timer_Create("Evidence:UpdateAll", 3, 0, function()
     evidences_all = {}
     
-    for k, v in ipairs(ents.GetAll()) do
+    for k, v in ipairs(ents_GetAll()) do
         local idx = v:GetEvidence()
-        if !idx then return end
+        if !idx then continue end
         
         local data = PLUGIN:GetEvidence(idx)
-        if !data then return end
+        if !data then continue end
         
-        evidences_all[#evidences_all] = v
+        evidences_all[#evidences_all + 1] = v
     end
 end)
 
 local d = 100000
 local evidences_cache = {}
-timer.Create("Evidence:UpdateDraw", 1, 0, function()
+timer_Create("Evidence:UpdateDraw", 1, 0, function()
 	evidences_cache = {}
 	
 	if #evidences_all <= 0 then return end
 	
 	local eyePos = EyePos()
 	for k, v in ipairs(evidences_all) do
-	    if !IsValid(v) then return end
+	    if !IsValid(v) then continue end
 	    
 	    local distance = v:GetPos():DistToSqr(eyePos)
 	    if distance > d * 2 then continue end
@@ -91,12 +103,14 @@ local function get_ignore_list()
 end
 
 local function draw_admin_evidences(client)
+
     if #evidences_all <= 0 then return end
 
     if !client:IsAdmin() then return end
     if !client:IsNocliping() then return end
     if client.GetSitting and client:GetSitting() then return end
 	if !SETTINGS.options.Get("show_admin_esp") then return end
+
     
     for k, v in ipairs(evidences_all) do
         if !IsValid(v) then continue end
@@ -165,8 +179,8 @@ local function draw_player_evidences(client)
         	bAllow = true
         end
         
-        if !bAllow then return end
-        if Arbitrage.hud.VectorObstructed(eyePos, pos, ignore_list) then return end
+        if !bAllow then continue end
+        if Arbitrage.hud.VectorObstructed(eyePos, pos, ignore_list) then continue end
         
         local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
 		local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
@@ -179,8 +193,8 @@ local function draw_player_evidences(client)
             local size = b * 0.7
 
 			surface_SetDrawColor(255, 255, 255, a)
-			surface.SetMaterial(starIcon)
-			surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+			surface_SetMaterial(starIcon)
+			surface_DrawTexturedRect(x - size, y - size, size * 2, size * 2)
         else
             local circle = Arbitrage.hud.GeneratePoly(x, y, b * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
 
@@ -192,7 +206,7 @@ local function draw_player_evidences(client)
 end
 
 function PLUGIN:HUDPaint()
-    local client = LocalPlayers()
+    local client = LocalPlayer()
 
     draw_admin_evidences(client)
     draw_player_evidences(client)
@@ -201,14 +215,14 @@ end
 function PLUGIN:StartAnimation(entity, mat)
 	local anim, anim2 = 0, 0
 
-	local random = tostring(math.random(16383, 2147483647))
+	local random = tostring(math_random(16383, 2147483647))
 	local uniqueID = "Evidence:Anim_" .. random
 
-	hook.Add("Think", uniqueID, function()
+	hook_Add("Think", uniqueID, function()
 		anim = Lerp(FrameTime() * 10, anim, 1)
 	end)
 
-	hook.Add("HUDPaint", uniqueID, function()
+	hook_Add("HUDPaint", uniqueID, function()
 		if !IsValid(entity) then return end
 
 		local alpha = anim * 255
@@ -221,20 +235,20 @@ function PLUGIN:StartAnimation(entity, mat)
 
 		local x, y = data2D.x + move, data2D.y - move
 
-		surface.SetDrawColor(255, 255, 255, alpha)
-		surface.SetMaterial(mat)
-		surface.DrawTexturedRect(x - size / 2, y - size / 2, size, size)
+		surface_SetDrawColor(255, 255, 255, alpha)
+		surface_SetMaterial(mat)
+		surface_DrawTexturedRect(x - size / 2, y - size / 2, size, size)
 	end)
 
-	timer.Simple(3, function()
-		hook.Add("Think", uniqueID, function()
+	timer_Simple(3, function()
+		hook_Add("Think", uniqueID, function()
 			anim2 = Lerp(FrameTime() * 10, anim2, 1)
 		end)
 	end)
 
-	timer.Simple(8, function()
-		hook.Remove("HUDPaint", uniqueID)
-		hook.Remove("Think", uniqueID)
+	timer_Simple(8, function()
+		hook_Remove("HUDPaint", uniqueID)
+		hook_Remove("Think", uniqueID)
 	end)
 end
 
@@ -257,5 +271,5 @@ netstream.Hook("Evidence:ChatNotify", function(title, description, image)
 	local dEvidence = Evidence.icons
 	local evidenceMat = Material(dEvidence[image])
 
-	chat.AddText(unpack({evidenceMat, title, ". ", description}))
+	chat_AddText(unpack({evidenceMat, title, ". ", description}))
 end)

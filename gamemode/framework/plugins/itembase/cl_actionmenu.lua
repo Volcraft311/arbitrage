@@ -17,19 +17,46 @@ PLUGIN.actionMenu = PLUGIN.actionMenu or {}
 PLUGIN.actionMenu.stored = {}
 PLUGIN.actionMenu.font = "arb.Font_FuturaPTBook_9"
 
+-- Localize Global Calls
+local table_Count = table.Count
+local ScrW = ScrW
+local ScrH = ScrH
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawRect = surface.DrawRect
+local ipairs = ipairs
+local surface_GetTextSize = surface.GetTextSize
+local math_max = math.max
+local unpack = unpack
+local surface_SetFont = surface.SetFont
+local W = W
+local pairs = pairs
+local IsValid = IsValid
+local Lerp = Lerp
+local FrameTime = FrameTime
+local math_min = math.min
+local draw_RoundedBox = draw.RoundedBox
+local Color = Color
+local math_Clamp = math.Clamp
+local surface_SetMaterial = surface.SetMaterial
+local Material = Material
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local draw_SimpleText = draw.SimpleText
+local CurTime = CurTime
+local netstream = netstream
+
 function PLUGIN.actionMenu:New(data)
     self.stored[data.entity] = data
 end
 
 function PLUGIN.actionMenu:DrawCursor()
-    if table.Count(self.stored) <= 0 then return end
+    if table_Count(self.stored) <= 0 then return end
 
     local x, y = ScrW() / 2, ScrH() / 2
 
-    surface.SetDrawColor(95, 28, 39, 255)
-    surface.DrawRect(x - 3, y - 3, 6, 6)
-    surface.SetDrawColor(15, 5, 6, 255)
-    surface.DrawRect(x - 2, y - 2, 4, 4)
+    surface_SetDrawColor(95, 28, 39, 255)
+    surface_DrawRect(x - 3, y - 3, 6, 6)
+    surface_SetDrawColor(15, 5, 6, 255)
+    surface_DrawRect(x - 2, y - 2, 4, 4)
 end
 
 function PLUGIN.actionMenu:GetMaxWidth(id)
@@ -39,13 +66,13 @@ function PLUGIN.actionMenu:GetMaxWidth(id)
 
     local data = {}
     for k, text in ipairs(self.stored[id].options) do
-        local width, _ = surface.GetTextSize(text[1])
+        local width, _ = surface_GetTextSize(text[1])
 
         data[#data + 1] = width
     end
 
     if #data > 0 then
-        local max = math.max(unpack(data))
+        local max = math_max(unpack(data))
         self.stored[id].maxWidth = max
 
         return max
@@ -71,7 +98,7 @@ local cornerRadius = 5
 function PLUGIN.actionMenu:Paint()
     local client = LocalPlayer()
 
-    surface.SetFont(self.font)
+    surface_SetFont(self.font)
     local size = W(20)
 
     for k, v in pairs(self.stored) do
@@ -88,7 +115,7 @@ function PLUGIN.actionMenu:Paint()
         local distance = client:GetPos():Distance(pos)
 
         v.alpha = Lerp(FrameTime(), v.alpha, 256)
-        local alpha = math.min(v.alpha + 345 - distance * 4, 255)
+        local alpha = math_min(v.alpha + 345 - distance * 4, 255)
 
         if alpha <= -50 and v.alpha >= 200 then
             self.stored[k] = nil
@@ -100,7 +127,7 @@ function PLUGIN.actionMenu:Paint()
             local fontHeight = 0
 
             for k2, v2 in ipairs(v.options) do
-                local _, height = surface.GetTextSize(v2[1])
+                local _, height = surface_GetTextSize(v2[1])
 
                 maxHeight = maxHeight + height
                 fontHeight = height
@@ -109,12 +136,12 @@ function PLUGIN.actionMenu:Paint()
             local _x = x - maxWidth / 2 - size
             local _w = maxWidth + size * 2 + fontHeight + W(20)
 
-            draw.RoundedBox(cornerRadius, _x, y, _w, maxHeight, Color(212, 59, 85, alpha))
-            draw.RoundedBox(cornerRadius, _x + 2, y + 2, _w - 4, maxHeight - 4, Color(41, 22, 25, alpha))
+            draw_RoundedBox(cornerRadius, _x, y, _w, maxHeight, Color(212, 59, 85, alpha))
+            draw_RoundedBox(cornerRadius, _x + 2, y + 2, _w - 4, maxHeight - 4, Color(41, 22, 25, alpha))
 
             local isFindSelect = false
             for k2, v2 in ipairs(v.options) do
-                local _, height = surface.GetTextSize(v2[1])
+                local _, height = surface_GetTextSize(v2[1])
                 local tall = y + ((k2 - 1) * height)
 
                 local _y, _h = tall, height + 2
@@ -126,23 +153,23 @@ function PLUGIN.actionMenu:Paint()
 
                 local alphanew = alpha * 0.5
                 if bSelected then
-                    surface.SetDrawColor(27, 10, 13, 200)
-                    surface.DrawRect(_x + 2, _y + 2, _w - 4, _h - 4)
+                    surface_SetDrawColor(27, 10, 13, 200)
+                    surface_DrawRect(_x + 2, _y + 2, _w - 4, _h - 4)
 
                     alphanew = alphanew * 2
                 end
 
-                alphanew = math.Clamp(alphanew, 0, 255)
+                alphanew = math_Clamp(alphanew, 0, 255)
 
                 if v2[2] then
                     local a = fontHeight * 0.67
 
-                    surface.SetDrawColor(255, 255, 255, alpha)
-                    surface.SetMaterial(Material(v2[2]))
-                    surface.DrawTexturedRect(_x + (fontHeight / 2 - a / 2), _y + (fontHeight / 2 - a / 2), a, a)
+                    surface_SetDrawColor(255, 255, 255, alpha)
+                    surface_SetMaterial(Material(v2[2]))
+                    surface_DrawTexturedRect(_x + (fontHeight / 2 - a / 2), _y + (fontHeight / 2 - a / 2), a, a)
                 end
 
-                draw.SimpleText(v2[1], self.font, _x + fontHeight + W(10), tall, Color(240, 240, 240, alphanew), TEXT_ALIGN_LEFT)
+                draw_SimpleText(v2[1], self.font, _x + fontHeight + W(10), tall, Color(240, 240, 240, alphanew), TEXT_ALIGN_LEFT)
 
                 if bSelected then isSelect = v2[1] end
             end

@@ -11,6 +11,16 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local timer_Simple = timer.Simple
+local Material = Material
+local ipairs = ipairs
+local player_GetAll = player.GetAll
+local pairs = pairs
+local FrameTime = FrameTime
+local netstream = netstream
+local SortedPairs = SortedPairs
+
 function Character.Caching()
 	local client = LocalPlayer()
 	local i = 0
@@ -19,7 +29,7 @@ function Character.Caching()
 		time = time or 0.2
 
 		if !Material.cache[path] then
-			timer.Simple(i, function()
+			timer_Simple(i, function()
 				Material(path)
 			end)
 
@@ -27,7 +37,7 @@ function Character.Caching()
 		end
 	end
 
-	for k, v in ipairs(player.GetAll()) do
+	for k, v in ipairs(player_GetAll()) do
 		local faction = Character.team:GetByID(v:Team())
 	    if !faction then continue end
 
@@ -64,7 +74,7 @@ function Character.Caching()
 	end
 end
 
-timer.Simple(FrameTime(), Character.Caching)
+timer_Simple(FrameTime(), Character.Caching)
 
 
 netstream.Hook("Character:CreationRegisterKeys", function(key, uniqueID, info)

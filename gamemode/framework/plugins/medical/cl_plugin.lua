@@ -11,6 +11,12 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local CurTime = CurTime
+local timer_Remove = timer.Remove
+local timer_Create = timer.Create
+local math_min = math.min
+local netstream = netstream
 
 Medical.ui_effects = Medical.ui_effects or {}
 
@@ -32,10 +38,10 @@ function Medical:AddTemporaryStatusEffect(uniqueID, delay)
 	delay = delay - CurTime()
 
 	local timerID = "Medical:RemoveTimer_" .. uniqueID
-	timer.Remove(timerID)
+	timer_Remove(timerID)
 
-	timer.Create(timerID, delay <= 0 and 15 or math.min(15, delay), 1, function()
-		timer.Remove(timerID)
+	timer_Create(timerID, delay <= 0 and 15 or math_min(15, delay), 1, function()
+		timer_Remove(timerID)
 
 		self.ui_effects[uniqueID] = nil
 	end)
@@ -54,7 +60,7 @@ function Medical:RemoveTemporaryStatusEffect(uniqueID)
 	info.stored[index] = nil
 
 	local timerID = "Medical:RemoveTimer_" .. uniqueID
-	timer.Remove(timerID)
+	timer_Remove(timerID)
 end
 
 

@@ -14,11 +14,19 @@
 
 local PLUGIN = PLUGIN
 
+local items_all = {}
+timer.Create("ItemBase:UpdateAllItems", 5, 0, function()
+    items_all = ents.FindByClass("arb_item")
+end)
+
 local entities = {}
 local ent = nil
+local d = 50000
 timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	entities = {}
 	ent = nil
+	
+	if #items_all <= 0 then return end
 
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
@@ -29,8 +37,14 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	traceline.filter = client
 	local tr = util.TraceLine(traceline)
 
-	for k, v in ipairs(ents.FindInSphere(EyePos(), 500)) do
-		if v:GetClass() == "arb_item" and !v:IsDormant() and v.GetUniqueID and v.GetItemID then
+    local eyePos = EyePos()
+	for k, v in ipairs(items_all) do
+	    if !IsValid(v) then continue end
+
+	    local distance = v:GetPos():DistToSqr(eyePos)
+        if distance > d * 2 then continue end
+
+		if !v:IsDormant() and v.GetUniqueID and v.GetItemID then
 			local uniqueID = v:GetUniqueID()
 			local id = v:GetItemID()
 
@@ -50,7 +64,6 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	        else
 	            icon = Material(path)
 	        end
-
 
 			v.panelAlpha = v.panelAlpha or 0
 

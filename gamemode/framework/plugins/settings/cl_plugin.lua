@@ -197,7 +197,10 @@ PLUGIN.type = {
 
                 if key then
                     PLUGIN.ClearTimers()
-                    buttonKey.isEdit = false
+                    
+                    if IsValid(buttonKey) then
+                        buttonKey.isEdit = false
+                    end
 
                     SETTINGS.binds.Set(data.id, key)
                     hook_Run("SETTINGS:OnBindChange", data.id, key)
@@ -206,7 +209,10 @@ PLUGIN.type = {
 
             timer_Create("SETTINGS:ChangeKeyDelay", 50, 1, function()
                 PLUGIN.ClearTimers()
-                buttonKey.isEdit = false
+                
+                if IsValid(buttonKey) then
+                    buttonKey.isEdit = false
+                end
             end)
         end
 

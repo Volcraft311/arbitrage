@@ -47,99 +47,155 @@ function PLUGIN:PostDrawOpaqueRenderables()
     render_DrawLine(trace.HitPos, trace.HitPos + 8 * angle:Up(), Color(0, 0, 255), true)
 end
 
-local evidences = {}
+local evidences_all = {}
+timer.Create("Evidence:UpdateAll", 3, 0, function()
+    evidences_all = {}
+    
+    for k, v in ipairs(ents.GetAll()) do
+        local idx = v:GetEvidence()
+        if !idx then return end
+        
+        local data = PLUGIN:GetEvidence(idx)
+        if !data then return end
+        
+        evidences_all[#evidences_all] = v
+    end
+end)
+
+local d = 100000
+local evidences_cache = {}
 timer.Create("Evidence:UpdateDraw", 1, 0, function()
+	evidences_cache = {}
+	
+	if #evidences_all <= 0 then return end
+	
 	local eyePos = EyePos()
-	evidences = ents_FindInSphere(eyePos, 1000)
-
-	for k, v in ipairs(evidences) do
-		local idx = v:GetEvidence()
-
-		if !idx then
-			evidences[k] = nil
-		else
-			local data = PLUGIN:GetEvidence(idx)
-
-			if !data then
-				evidences[k] = nil
-			end
-		end
+	for k, v in ipairs(evidences_all) do
+	    if !IsValid(v) then return end
+	    
+	    local distance = v:GetPos():DistToSqr(eyePos)
+	    if distance > d * 2 then continue end
+	    
+	    evidences_cache[#evidences_cache + 1] = v
 	end
 end)
 
-function PLUGIN:HUDPaint()
+local function get_ignore_list()
+    local array = {LocalPlayer()}
+    
+    for k, v in ipairs(evidences_all) do
+        array[#array + 1] = v
+    end
+    
+    return array
+end
+
+local function draw_admin_evidences(client)
+    if #evidences_all <= 0 then return end
+
+    if !client:IsAdmin() then return end
+    if !client:IsNocliping() then return end
+    if client.GetSitting and client:GetSitting() then return end
+	if !SETTINGS.options.Get("show_admin_esp") then return end
+    
+    for k, v in ipairs(evidences_all) do
+        if !IsValid(v) then continue end
+
+        local idx = v:GetEvidence()
+        if !idx then continue end
+
+        local data = PLUGIN:GetEvidence(idx)
+        if !data then continue end
+
+		local pos = v:GetPos()
+		
+		local data2D = pos:ToScreen()
+		if !data2D.visible then continue end
+
+		local x, y = data2D.x, data2D.y
+		local name, description, color = data.name, data.description, data.color
+
+        draw_DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
+    end
+end
+
+local max_alpha = 150
+local starIcon = Material("icon16/star.png")
+local function draw_player_evidences(client)
+    if #evidences_cache <= 0 then return end
+    
 	local offPickEvidence = Arbitrage.OffPickingEvidence()
-	local client = LocalPlayer()
+	if offPickEvidence then return end
 
-	local faction = Character.team:GetByID(client:Team())
+    local curTime = CurTime()
+    local eyePos = EyePos()
+    local ignore_list = get_ignore_list()
+    
+	local factionID = client:Team()
+	local faction = Character.team:GetByID(factionID)
+	local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
+	
+    for k, v in ipairs(evidences_cache) do
+        if !IsValid(v) then continue end
 
-	local ignore_list = {}
-	ignore_list[#ignore_list + 1] = client
-	for k2, v2 in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v2 end
+        local idx = v:GetEvidence()
+        if !idx then continue end
 
-	for k, v in pairs(evidences) do
-		if IsValid(v) then
-			ignore_list[#ignore_list + 1] = v
+        local data = PLUGIN:GetEvidence(idx)
+        if !data then continue end
+        
+        local pos = v:GetPos()
+        		
+        local data2D = pos:ToScreen()
+        if !data2D.visible then continue end
+        
+        local x, y = data2D.x, data2D.y
+        local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
+        
+        local bAllow = false
+       	local bUnique = false
+        if data.factiondata then
+        	local allow = data.factiondata[factionID]
+        
+        	if allow then
+        		bAllow = true
+        		bUnique = true
+        	end
+       	else
+        	bAllow = true
+        end
+        
+        if !bAllow then return end
+        if Arbitrage.hud.VectorObstructed(eyePos, pos, ignore_list) then return end
+        
+        local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
+		local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
+		local b = math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255)
+		local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
+	    a = a - (255 - (Arbitrage.statistics.Get(client, "Sleep") or 100) * 2.55)
+		a = math_Clamp(a, 0, 255)
 
-			local idx = v:GetEvidence()
-			local data = self:GetEvidence(idx)
-			if !data then continue end
+        if bUnique then
+            local size = b * 0.7
 
-			local allow = false
-			local bUnique = false
-			if data.factiondata then
-				local bAllow = data.factiondata[client:Team()]
+			surface_SetDrawColor(255, 255, 255, a)
+			surface.SetMaterial(starIcon)
+			surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+        else
+            local circle = Arbitrage.hud.GeneratePoly(x, y, b * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
 
-				if bAllow then
-					allow = true
-					bUnique = true
-				end
-			else
-				allow = true
-			end
+            surface_SetDrawColor(ColorAlpha(color, a))
+            draw_NoTexture()
+            surface_DrawPoly(circle)
+        end
+    end
+end
 
-			local pos = v:GetPos()
-			local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
+function PLUGIN:HUDPaint()
+    local client = LocalPlayers()
 
-			local data2D = pos:ToScreen()
-			if !data2D.visible then continue end
-
-			local x, y = data2D.x, data2D.y
-			if allow and !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) and !offPickEvidence then
-				local max_alpha = 150
-				local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
-				local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
-
-				local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
-				local b = math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255)
-			    local circle = Arbitrage.hud.GeneratePoly(x, y, b * 0.5, math_Clamp(curalpha - alpha, 0, max_alpha))
-			    local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
-			    a = a - (255 - (Arbitrage.statistics.Get(client, "Sleep") or 100) * 2.55)
-				a = math.Clamp(a, 0, 255)
-
-			    surface_SetDrawColor(ColorAlpha(color, a))
-
-			    if bUnique then
-			    	local size = b * 0.7
-
-			    	surface_SetDrawColor(255, 255, 255, a)
-			    	surface.SetMaterial(Material("icon16/star.png"))
-			    	surface.DrawTexturedRect(x - size, y - size, size * 2, size * 2)
-			    else
-			    	surface_SetDrawColor(ColorAlpha(color, a))
-			    	draw_NoTexture()
-			    	surface_DrawPoly(circle)
-				end
-			end
-
-			if !client:IsNocliping() then continue end
-			if !client:IsAdmin() then continue end
-			if client.GetSitting and client:GetSitting() then continue end
-			if !SETTINGS.options.Get("show_admin_esp") then continue end
-
-			draw_DrawText("ID: " .. idx .. "\n" .. name .. "\n" .. description, "Default", x, y, color, TEXT_ALIGN_CENTER)
-		end
-	end
+    draw_admin_evidences(client)
+    draw_player_evidences(client)
 end
 
 function PLUGIN:StartAnimation(entity, mat)

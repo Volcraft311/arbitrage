@@ -492,7 +492,7 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	if #doors_cache <= 0 then return end
 	
 	local doors = {}
-	for k, v in ipairs(doors) do
+	for k, v in ipairs(doors_cache) do
 	    local entity = v[1]
 	    
 	    if IsValid(entity) then

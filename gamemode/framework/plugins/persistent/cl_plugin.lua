@@ -74,7 +74,6 @@ function PLUGIN:HUDPaint()
 	local a = self.isOn and 0 or 255
 	if a != 255 or self.alpha < 254.05 then	
 		self.alpha = Lerp(FrameTime(), self.alpha, a)
-		Print(self.alpha, CurTime(), a)
 	end
 
 	if self.alpha >= 250 then return end

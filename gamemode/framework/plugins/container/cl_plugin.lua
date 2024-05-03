@@ -34,31 +34,22 @@ local function createTextContainer(entity, name)
     if !data2D.visible then return end
 
     local x, y = data2D.x, data2D.y
+    
     local alpha = entity.textalpha
+    if alpha <= 0 then return end
 
-    draw_SimpleText(name, font, x, y - (genericHeight / 2) - 10, ColorAlpha(Color(255, 61, 96), alpha), TEXT_ALIGN_CENTER)
-end
-
-local function getTrace(client)
-    local traceline = {}
-    traceline.start = client:GetShootPos()
-    traceline.endpos = traceline.start + client:GetAimVector() * 120
-    traceline.filter = client
-
-    return util_TraceLine(traceline)
+    draw_SimpleText(name, font, x, y - (genericHeight / 2) - 10, Color(255, 61, 96, alpha), TEXT_ALIGN_CENTER)
 end
 
 local entities = {}
 local ent = nil
 timer_Create("Container:Update", 1, 0, function()
     entities = {}
-    ent = nil
+    ent = LocalTraceEntity()
 
     local client = LocalPlayer()
     if !IsValid(client) then return end
     if client:IsSpectate() then return end
-
-    local tr = getTrace(client)
 
     for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
         if v:GetClass() != "arb_container" then continue end
@@ -70,10 +61,6 @@ timer_Create("Container:Update", 1, 0, function()
         v.textalpha = v.textalpha or 0
 
         entities[#entities + 1] = {v, name}
-
-        if tr.Entity == v then
-            ent = v
-        end
     end
 end)
 

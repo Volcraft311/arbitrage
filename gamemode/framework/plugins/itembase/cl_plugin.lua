@@ -24,18 +24,12 @@ local ent = nil
 local d = 50000
 timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 	entities = {}
-	ent = nil
+	ent = LocalTraceEntity()
 	
 	if #items_all <= 0 then return end
 
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
-
-	local traceline = {}
-	traceline.start = client:GetShootPos()
-	traceline.endpos = traceline.start + client:GetAimVector() * 180
-	traceline.filter = client
-	local tr = util.TraceLine(traceline)
 
     local eyePos = EyePos()
 	for k, v in ipairs(items_all) do
@@ -68,10 +62,6 @@ timer.Create("ItemBase:UpdateDraw", 1, 0, function()
 			v.panelAlpha = v.panelAlpha or 0
 
 			entities[#entities + 1] = {v, name, desc, category, icon}
-
-			if tr.Entity == v then
-				ent = v
-			end
 		end
 	end
 end)

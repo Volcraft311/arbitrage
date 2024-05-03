@@ -646,28 +646,17 @@ do
 		end
 	end
 
-	local function getTrace(client)
-		local traceline = {}
-		traceline.start = client:GetShootPos()
-		traceline.endpos = traceline.start + client:GetAimVector() * 150
-		traceline.filter = client
-
-		return util_TraceLine(traceline)
-	end
-
 	local entities = {}
 	local ent = nil
 	timer_Create("PlayerInfoDraw:Update", 1, 0, function()
 		entities = {}
-		ent = nil
+		ent = LocalTraceEntity()
 
 		if Arbitrage.lawEnable then return end
 
 		local client = LocalPlayer()
 		if !IsValid(client) then return end
 		if client:IsSpectate() then return end
-
-		local tr = getTrace(client)
 
 		for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
 			if v:IsPlayer() then
@@ -678,10 +667,6 @@ do
 				v.textalpha = v.textalpha or 0
 
 				entities[#entities + 1] = v
-
-				if tr.Entity == v then
-					ent = v
-				end
 			end
 		end
 	end)

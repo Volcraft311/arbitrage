@@ -208,15 +208,15 @@ function PLUGIN:SendStartText()
         alpha = Lerp(FrameTime() * 10, alpha, alphaTo)
         rot = Lerp(FrameTime() * 2, rot, 180)
 
-        surface.SetDrawColor(Color(255, 61, 96, alpha * 0.3))
+        surface.SetDrawColor(255, 61, 96, alpha * 0.3)
         surface.SetMaterial(circleMat)
         surface.DrawTexturedRectRotated(ScrW() / 2, ScrH() / 2, size * 3, size * 3, rot)
 
-        surface.SetDrawColor(Color(255, 61, 96, alpha * 0.3))
+        surface.SetDrawColor(255, 61, 96, alpha * 0.3)
         surface.SetMaterial(circleMatB)
         surface.DrawTexturedRectRotated(ScrW() / 2, ScrH() / 2, size * 3, size * 3, rot)
 
-        surface.SetDrawColor(Color(255, 61, 96, alpha))
+        surface.SetDrawColor(255, 61, 96, alpha)
         surface.SetMaterial(startMat)
         surface.DrawTexturedRect(ScrW() / 2 - (size * 2.5) / 2, ScrH() / 2 - size / 2, size * 2.5, size)
     end)

@@ -476,7 +476,7 @@ function PANEL:Init()
                     if LocalPlayer():GetLocalVar("rs_stopvoting") then
                         text = "Ожидаем второго участника"
 
-                        surface.SetDrawColor(Color(111, 191, 83, 255 / 2))
+                        surface.SetDrawColor(111, 191, 83, 255 / 2)
                         surface.DrawRect(0, 0, w, h)
                     end
                 end

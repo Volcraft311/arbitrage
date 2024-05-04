@@ -615,7 +615,7 @@ do
 		surface_SetFont(genericFont)
 		local width = surface_GetTextSize(client:Name()) * textAlpha / 255
 
-		surface_SetDrawColor(Color(255, 61, 96, textAlpha))
+		surface_SetDrawColor(255, 61, 96, textAlpha)
 		surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
 
 		local newY = y + 4

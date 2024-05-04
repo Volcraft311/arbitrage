@@ -86,7 +86,7 @@ function PLUGIN:HUDPaint()
 	lens:SetFloat("$refractamount",	(255 - self.alpha) * 0.00015)
 
 	surface_SetMaterial(lens)
-	surface_SetDrawColor(Color(255,255,255,1))
+	surface_SetDrawColor(255, 255, 255, 1)
 	surface_DrawTexturedRectRotated(staticX + math_Rand(-15,15), staticY + math_Rand(-15,15), w * math_Rand(0.8,2), h * math_Rand(0.8,2), 0)
 
 	surface_SetDrawColor(255, 255, 255, math_random(10, 100) - self.alpha / 2)

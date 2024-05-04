@@ -192,7 +192,7 @@ function PANEL:SetData(data)
         deleteButton.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
 
-            surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+            surface.SetDrawColor(255, 255, 255, _.alpha)
             surface.SetMaterial(deleteMat)
             surface.DrawTexturedRect(5, 5, w - 10, h - 10)
         end
@@ -208,7 +208,7 @@ function PANEL:SetData(data)
         editButton.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
 
-            surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+            surface.SetDrawColor(255, 255, 255, _.alpha)
             surface.SetMaterial(settingsMat)
             surface.DrawTexturedRect(5, 5, w - 10, h - 10)
         end
@@ -510,7 +510,7 @@ function PANEL:AddTrack(id, path)
     rmButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
 
-        surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+        surface.SetDrawColor(255, 255, 255, _.alpha)
         surface.SetMaterial(deleteMat)
         surface.DrawTexturedRect(2, 2, w - 4, h - 4)
     end

@@ -111,7 +111,7 @@ function PANEL:DrawScanLine()
 	self.scanline.Paint = function(_, w, h)
 		surface.SetDrawColor(color_white)
 
-		surface.SetDrawColor(Color(0, 0, 0, 170))
+		surface.SetDrawColor(0, 0, 0, 170)
 		surface.SetTexture(gradientLeft)
 		surface.DrawTexturedRect(0, 0, size, h)
 

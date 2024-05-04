@@ -126,7 +126,7 @@ function PANEL:SetData()
         remove.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
 
-            surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+            surface.SetDrawColor(255, 255, 255, _.alpha)
             surface.SetMaterial(deleteMat)
             surface.DrawTexturedRect(6, 6, w - 12, h - 12)
         end
@@ -147,7 +147,7 @@ function PANEL:SetData()
         edit.Paint = function(_, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
 
-            surface.SetDrawColor(Color(255, 255, 255, _.alpha))
+            surface.SetDrawColor(255, 255, 255, _.alpha)
             surface.SetMaterial(editMat)
             surface.DrawTexturedRect(6, 6, w - 12, h - 12)
         end

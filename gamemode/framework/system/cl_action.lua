@@ -91,14 +91,14 @@ function Arbitrage.action.Draw()
     draw_SimpleText(text .. string_rep(".", Arbitrage.action.dot), "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 + 30, color, TEXT_ALIGN_CENTER)
 
     local circle = Arbitrage.hud.GeneratePoly(ScrW() / 2, ScrH() / 2, 25, 25)
-    surface_SetDrawColor(Color(0, 0, 0, Arbitrage.action.data.alpha * 0.3))
+    surface_SetDrawColor(0, 0, 0, Arbitrage.action.data.alpha * 0.3)
     draw_NoTexture()
     surface_DrawPoly(circle)
 
     asterionlib.DrawRender(function()
         asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, color_white, -12.5, 0)
     end, function()
-        surface_SetDrawColor(Color(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5))
+        surface_SetDrawColor(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5)
         surface_DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)
     end)
 end

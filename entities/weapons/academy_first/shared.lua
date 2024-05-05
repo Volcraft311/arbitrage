@@ -482,36 +482,40 @@ function SWEP:Think()
             if physics:GetPos():DistToSqr(targetLocation) > self.maxHoldDistanceSquared then
                 self:DropObject()
             else
-                local physicsObject = self.holdEntity:GetPhysicsObject()
-                local currentPlayerAngles = client:EyeAngles()
+                if IsValid(self.holdEntity) then
+                    local physicsObject = self.holdEntity:GetPhysicsObject()
+                    local currentPlayerAngles = client:EyeAngles()
 
-                if client:KeyDown(IN_ATTACK2) then
-                    local cmd = client:GetCurrentCommand()
+                    if client:KeyDown(IN_ATTACK2) then
+                        local cmd = client:GetCurrentCommand()
 
-                    self.heldObjectAngle:RotateAroundAxis(currentPlayerAngles:Forward(), cmd:GetMouseX() / 15)
-                    self.heldObjectAngle:RotateAroundAxis(currentPlayerAngles:Right(), cmd:GetMouseY() / 15)
-                end
+                        self.heldObjectAngle:RotateAroundAxis(currentPlayerAngles:Forward(), cmd:GetMouseX() / 15)
+                        self.heldObjectAngle:RotateAroundAxis(currentPlayerAngles:Right(), cmd:GetMouseY() / 15)
+                    end
 
-                self.lastPlayerAngles = self.lastPlayerAngles or currentPlayerAngles
-                self.heldObjectAngle.y = self.heldObjectAngle.y - math.AngleDifference(self.lastPlayerAngles.y, currentPlayerAngles.y)
-                self.lastPlayerAngles = currentPlayerAngles
+                    self.lastPlayerAngles = self.lastPlayerAngles or currentPlayerAngles
+                    self.heldObjectAngle.y = self.heldObjectAngle.y - math.AngleDifference(self.lastPlayerAngles.y, currentPlayerAngles.y)
+                    self.lastPlayerAngles = currentPlayerAngles
 
-                physicsObject:Wake()
-                physicsObject:ComputeShadowControl({
-                    secondstoarrive = 0.01,
-                    pos = targetLocation,
-                    angle = self.heldObjectAngle,
-                    maxangular = 256,
-                    maxangulardamp = 10000,
-                    maxspeed = 256,
-                    maxspeeddamp = 10000,
-                    dampfactor = 0.8,
-                    teleportdistance = self.maxHoldDistance * 0.75,
-                    deltatime = FrameTime()
-                })
+                    physicsObject:Wake()
+                    physicsObject:ComputeShadowControl({
+                        secondstoarrive = 0.01,
+                        pos = targetLocation,
+                        angle = self.heldObjectAngle,
+                        maxangular = 256,
+                        maxangulardamp = 10000,
+                        maxspeed = 256,
+                        maxspeeddamp = 10000,
+                        dampfactor = 0.8,
+                        teleportdistance = self.maxHoldDistance * 0.75,
+                        deltatime = FrameTime()
+                    })
 
-                if physics:GetStress() > self.maxHoldStress then
-                    self:DropObject()
+                    if physics:GetStress() > self.maxHoldStress then
+                        self:DropObject()
+                    end
+                else
+                    seld:DropObject()
                 end
             end
         end

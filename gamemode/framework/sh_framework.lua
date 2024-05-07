@@ -548,7 +548,7 @@ do
     playerMeta.GetFakeName = playerMeta.FakeName
 
     function playerMeta:GetName()
-        if !IsValid(self) then return "" end -- Tried to use a NULL entity! (WTF??)
+        if self == NULL then return "" end -- Tried to use a NULL entity
 
         if CLIENT and self != LocalPlayer() and self:GetNetVar("hideName") then
             return "Неизвестно"

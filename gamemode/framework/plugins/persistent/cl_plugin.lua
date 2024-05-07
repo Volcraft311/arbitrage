@@ -141,9 +141,10 @@ timer_Create("fb:CheckTrace", 0.1, 0, function()
 	local attackerID = entity:IsCorpse()
 	if !attackerID then return end
 
-	if !Arbitrage.KillerDetectsCorpses() and attackerID == LocalPlayer():SteamID() then return end
+	if !Arbitrage.KillerDetectsCorpses() and attackerID == client:SteamID() then return end
 
-	local dist = client:GetPos():DistToSqr(entity:GetPos())
+    local eyePos = EyePos()
+	local dist = entity:GetPos():DistToSqr(eyePos)
 	if dist >= 270000 then return end
 
 	if !PLUGIN.bodyList[entity] then

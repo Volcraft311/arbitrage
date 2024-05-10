@@ -135,7 +135,7 @@ function PLUGIN:DrawText(client, text, color, alpha)
 	local data2D = (pos + Vector(0, 0, fraction * 5)):ToScreen()
 	if !data2D.visible then return end
 
-	local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, players)
+	local bNotVisible = util.VectorObstructed(eyepos, pos, players)
 	if bNotVisible then return end
 
 	local a = ColorAlpha(color, alpha)

@@ -82,7 +82,7 @@ function PLUGIN:HUDPaint()
 		local data2D = pos:ToScreen()
 		if !data2D.visible then continue end
 
-		local bNotVisible = Arbitrage.hud.VectorObstructed(eyePos, pos, {client, entity})
+		local bNotVisible = util.VectorObstructed(eyePos, pos, {client, entity})
 		if bNotVisible then continue end
 
 		local x, y = data2D.x, data2D.y

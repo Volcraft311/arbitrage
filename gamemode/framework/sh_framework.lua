@@ -292,7 +292,7 @@ function Arbitrage:GetInfo()
     local data = {}
 
     -- копируем информацию из основной базы позиций
-    local arbStored = table.Copy(Arbitrage:GetStored())
+    local arbStored = table.Copy(self:GetStored())
     for k, v in pairs(arbStored) do
         local info = v[game.GetMap()]
 
@@ -315,19 +315,20 @@ function Arbitrage:ClearVariables(data)
 
     for k, v in ipairs(variables) do
         if data[v] == nil then
-            Arbitrage[v] = nil
+            self[v] = nil
         end
     end
 end
 
 function Arbitrage:SaveVariables(data)
     for k, v in pairs(data) do
-        Arbitrage[k] = v
+        self[k] = v
     end
 end
 
 function Arbitrage:ReplaceVariables()
-    local data = asterionlib.DeepCopy(Arbitrage:GetInfo())
+    local info = self:GetInfo()
+    local data = DeepCopy(info)
 
     -- чистим переменные которые равны nil
     self:ClearVariables(data)

@@ -166,7 +166,9 @@ local function draw_player_evidences(client)
         end
         
         if !bAllow then continue end
-        if Arbitrage.hud.VectorObstructed(eyePos, pos, ignore_list) then continue end
+
+        local bNotVisible = util.VectorObstructed(eyePos, pos, ignore_list)
+        if bNotVisible then continue end
         
         local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
 		local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)

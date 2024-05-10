@@ -50,7 +50,7 @@ function Arbitrage.evidence.CreateText(data)
     local ignore_list = {}
     ignore_list[#ignore_list + 1] = client
 
-    if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
+    if !util.VectorObstructed(EyePos(), pos, ignore_list) then
         local data2D = pos:ToScreen()
         if !data2D.visible then return end
 

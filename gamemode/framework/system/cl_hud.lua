@@ -507,16 +507,6 @@ do
 	end
 end
 
-function Arbitrage.hud.VectorObstructed(vec1, vec2, filter)
-	local trace = util_TraceLine({
-		start = vec1,
-		endpos = vec2,
-		filter = filter
-	})
-
-	return trace.Hit
-end
-
 function Arbitrage.hud.SeeVector(a, b, _debug)
 	local client = LocalPlayer()
 	local zPos = client:GetPos()[3]

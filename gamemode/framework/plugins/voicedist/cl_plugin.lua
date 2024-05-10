@@ -260,7 +260,7 @@ function PLUGIN:DrawPlayersChat()
 
         if !data2D.visible then continue end
 
-        local bNotVisible = Arbitrage.hud.VectorObstructed(eyepos, pos, players)
+        local bNotVisible = util.VectorObstructed(eyepos, pos, players)
         if bNotVisible then continue end
 
         oldColor = LerpColor(FrameTime() * 5, oldColor, getColor(v))

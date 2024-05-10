@@ -40,8 +40,6 @@ Arbitrage.evidence = Arbitrage.library.Add("evidence")
 
 local color = Color(255, 61, 96)
 function Arbitrage.evidence.CreateText(data)
-    if !data then return end
-
     local client = LocalPlayer()
     local pos = data.pos
     local name = data.name
@@ -51,14 +49,6 @@ function Arbitrage.evidence.CreateText(data)
 
     local ignore_list = {}
     ignore_list[#ignore_list + 1] = client
-
-    for k, v in pairs(ents_FindByClass("arb_evidence")) do ignore_list[#ignore_list + 1] = v end
-
-    if class then
-        for k, v in pairs(ents_FindByClass(class)) do
-            ignore_list[#ignore_list + 1] = v
-        end
-    end
 
     if !Arbitrage.hud.VectorObstructed(EyePos(), pos, ignore_list) then
         local data2D = pos:ToScreen()
@@ -120,42 +110,60 @@ function Arbitrage.evidence.CreateText(data)
     end
 end
 
-local entities = {}
+local entities_all = {}
+timer_Create("Entities:UpdateAll", 10, 0, function()
+    entities_all = {}
+    
+    for k, v in ipairs(ents.GetAll()) do
+        local class = v:GetClass()
+        
+        local info = Arbitrage.evidence.entities[class]
+        if !info then continue end
+        
+        entities_all[#entities_all + 1] = v
+    end
+end)
+
+local d = 100000
+local entities_cache = {}
 timer_Create("Entities:UpdateDraw", 1, 0, function()
-    entities = {}
+    entities_cache = {}
+    
+    if #entities_all <= 0 then return end
 
     local eyePos = EyePos()
-
-    for k, v in ipairs(ents_FindInSphere(eyePos, 500)) do
-        local entity = Arbitrage.evidence.entities[v:GetClass()]
-
-        if entity then
-            entities[#entities + 1] = v
-        end
+    for k, v in ipairs(entities_all) do
+        if !IsValid(v) then continue end
+        if v:IsDormant() then continue end
+	    
+	    local distance = v:GetPos():DistToSqr(eyePos)
+	    if distance > d * 2 then continue end
+	    
+	    entities_cache[#entities_cache + 1] = v
     end
 end)
 
 function Arbitrage.evidence.Draw()
-	for k, v in ipairs(entities) do
-		if IsValid(v) and !v:IsDormant() then
-			local entity = Arbitrage.evidence.entities[v:GetClass()]
+	for k, v in ipairs(entities_cache) do
+		if !IsValid(v) then continue end
+        
+        local entity = Arbitrage.evidence.entities[v:GetClass()]
 
-			local up = entity.up or 0
-		    local right = entity.right or 0
-		    local forward = entity.forward or 0
+		local up = entity.up or 0
+		local right = entity.right or 0
+		local forward = entity.forward or 0
 
-		    local newPos = v:GetPos()
-		    newPos = newPos + (v:GetUp() * up)
-		    newPos = newPos + (v:GetRight() * right)
-		    newPos = newPos + (v:GetForward() * forward)
+		local newPos = v:GetPos()
+		newPos = newPos + (v:GetUp() * up)
+        newPos = newPos + (v:GetRight() * right)
+		newPos = newPos + (v:GetForward() * forward)
 
-			Arbitrage.evidence.CreateText({
-		        pos = newPos,
-		        name = entity.name,
-		        desc = entity.desc,
-		        class = v:GetClass(),
-		        data = v
-		    })
-		end
+		Arbitrage.evidence.CreateText({
+		    pos = newPos,
+            name = entity.name,
+            desc = entity.desc,
+            class = v:GetClass(),
+		    data = v
+		})
 	end
 end

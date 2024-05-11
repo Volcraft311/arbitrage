@@ -63,7 +63,11 @@ function TOOL:RightClick()
     if IsValid(entity) then
         local data = client.DescriptiveTextDescription or "Ваш текст"
         entity:SetNetVar("DescriptiveText", data)
-        netstream.Start(nil, "DescriptiveText:Update")
+        
+        -- Обновляем так как entscollector сам обновляет только в случае создания Entity
+        for k, v in ipairs(player.GetAll()) do
+            v:SendLua([=[asterionlib.entscollector:UpdateTracks()]=])
+        end
 
         client:ChatNotify("Вы успешно прикрепили свой текст к объекту " .. tostring(entity) .. ".")
 

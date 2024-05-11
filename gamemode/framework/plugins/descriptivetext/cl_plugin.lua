@@ -82,7 +82,3 @@ function PLUGIN:HUDPaint()
 		end
 	end
 end
-
-netstream.Hook("DescriptiveText:Update", function()
-	asterionlib.entscollector:UpdateTracks()
-end)

@@ -134,7 +134,7 @@ function PANEL:OpenPage(page)
     local music = self.data[page][2]
 
     self.image = nil
-    asterionlib.DownloadImage(image, function(matPath)
+    asterionlib.downloader:Image(image, function(matPath)
         if !IsValid(self) then return end
 
         self.image = matPath

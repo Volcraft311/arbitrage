@@ -44,7 +44,7 @@ local function workshop_gui(scrollPanel, informationPanel)
 
     for k, v in pairs(asterionlib.workshop.list) do
         local image, imageSize = nil, W(120)
-        asterionlib.DownloadImage(v.image, function(matPath)
+        asterionlib.downloader:Image(v.image, function(matPath)
             image = matPath
         end)
 

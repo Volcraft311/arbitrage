@@ -84,7 +84,7 @@ function PANEL:AddRules(id, title, description, url)
 	local rulesList = monopad.rulesNotify
 
 	local image = nil
-	asterionlib.DownloadImage(url, function(mat)
+	asterionlib.downloader:Image(url, function(mat)
 		image = mat
 	end)
 
@@ -345,7 +345,7 @@ function PANEL:SetPage(id)
 	local description = "Правило №" .. self.id .. "." .. rules[3]
 
 	local image = nil
-	asterionlib.DownloadImage(url, function(mat)
+	asterionlib.downloader:Image(url, function(mat)
 		image = mat
 	end)
 

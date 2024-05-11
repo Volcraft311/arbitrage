@@ -98,7 +98,7 @@ function PANEL:InitSlot(panel)
 		local path = item:GetIcon()
 	    local icon = nil
 	    if string.isURL(path) then
-	        asterionlib.DownloadImage(path, function(mat)
+	        asterionlib.downloader:Image(path, function(mat)
 	            icon = mat
 	        end)
 	    else

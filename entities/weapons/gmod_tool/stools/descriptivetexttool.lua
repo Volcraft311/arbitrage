@@ -39,10 +39,10 @@ function TOOL:LeftClick()
     local pos = client:GetEyeTrace().HitPos
 
     local entity = ents.Create("gmod_button")
-    entity:SetModel("models/hunter/blocks/cube025x025x025.mdl")
+    entity:SetModel("models/hunter/plates/plate.mdl")
     entity:SetPos(pos)
-    entity:SetSolid(SOLID_VPHYSICS)
-    entity:SetMoveType(MOVETYPE_VPHYSICS)
+    entity:SetSolid(SOLID_NONE)
+    entity:SetMoveType(MOVETYPE_NONE)
     entity:DrawShadow(false)
     entity:SetNoDraw(true)
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
@@ -63,6 +63,7 @@ function TOOL:RightClick()
     if IsValid(entity) then
         local data = client.DescriptiveTextDescription or "Ваш текст"
         entity:SetNetVar("DescriptiveText", data)
+        netstream.Start(nil, "DescriptiveText:Update")
 
         client:ChatNotify("Вы успешно прикрепили свой текст к объекту " .. tostring(entity) .. ".")
 

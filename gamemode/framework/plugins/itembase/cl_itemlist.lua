@@ -53,7 +53,7 @@ spawnmenu.AddContentType("Item", function(container, item)
     local path = item.icon
     local mat = nil
     if string.isURL(path) then
-        asterionlib.DownloadImage(path, function(_, imagePath)
+        asterionlib.downloader:Image(path, function(_, imagePath)
             mat = imagePath
         end)
     else

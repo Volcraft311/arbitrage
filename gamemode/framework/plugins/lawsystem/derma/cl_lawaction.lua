@@ -63,7 +63,7 @@ end
 local function createItemButton(panel, id, path, name, data)
     local icon = nil
     if string.isURL(path) then
-        asterionlib.DownloadImage(path, function(mat)
+        asterionlib.downloader:Image(path, function(mat)
             icon = mat
         end)
     else

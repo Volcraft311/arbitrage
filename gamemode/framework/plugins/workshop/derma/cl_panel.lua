@@ -429,7 +429,7 @@ local function createPanel(scrollPanel, array, icon, id, author)
         stars = math.Round((info.score * 10) / 2)
         total = info.total
 
-        asterionlib.DownloadImage(info.previewurl, function(matPath, path)
+        asterionlib.downloader:Image(info.previewurl, function(matPath, path)
             if !IsValid(panel) then return end
 
             image = matPath
@@ -641,7 +641,7 @@ function PANEL:SetData(id)
             self.collectionChildren = info.children
         end
 
-        asterionlib.DownloadImage(info.previewurl, function(matPath, path)
+        asterionlib.downloader:Image(info.previewurl, function(matPath, path)
             if !IsValid(self) then return end
 
             self.image = matPath

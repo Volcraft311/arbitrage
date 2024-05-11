@@ -94,7 +94,7 @@ function PANEL:Init()
 end
 
 function PANEL:OpenData(imageURL)
-    asterionlib.DownloadImage(imageURL, function(matPath, path)
+    asterionlib.downloader:Image(imageURL, function(matPath, path)
         if !IsValid(self) then return end
 
         self.image = matPath

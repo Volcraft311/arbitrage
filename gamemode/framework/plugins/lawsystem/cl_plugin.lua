@@ -926,7 +926,7 @@ netstream.Hook("arb.ShowItem", function(client, path, indx)
 
     local icon = nil
     if string.isURL(path) then
-        asterionlib.DownloadImage(path, function(image)
+        asterionlib.downloader:Image(path, function(image)
             icon = image
         end)
     else

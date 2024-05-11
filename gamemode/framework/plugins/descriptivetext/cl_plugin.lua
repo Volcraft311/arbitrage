@@ -30,51 +30,33 @@ local fontHeight = draw_GetFontHeight(font)
 local wraptext_size = ScrW() * 0.3
 local wraptext_cache = {}
 
-local descriptive_all = {}
-timer_Create("DescriptiveText:UpdateAll", 5, 0, function()
-    descriptive_all = {}
-    
-    for k, v in ipairs(ents.GetAll()) do
-        local text = v:GetNetVar("DescriptiveText")
-        if !text then continue end
-        
-        local data = wraptext_cache[text]
-        if !data then
-            data = asterionlib.WrapText(text, wraptext_size, font, true)
-            
-            wraptext_cache[text] = data
-        end
-        
-        descriptive_all[#descriptive_all + 1] = {v, data}
-    end
-end)
+asterionlib.entscollector:AddTrack("descriptivetext", {
+	delay_apply = 3,
+	onCanTrack = function(entity)
+		local text = entity:GetNetVar("DescriptiveText")
+		if text then 
+			local data = wraptext_cache[text]
+			if not data then
+				wraptext_cache[text] = asterionlib.WrapText(text, wraptext_size, font, true)
+			end
 
-local d = 100000
-local descriptive_cache = {}
-timer_Create("DescriptiveText:UpdateDraw", 1, 0, function()
-	descriptive_cache = {}
-	
-	if #descriptive_all <= 0 then return end
-	
-	local eyePos = EyePos()
-	for k, v in ipairs(descriptive_all) do
-	    local entity = v[1]
+			return true
+		end
+	end, 
+	onCanApply = function(entity)
+		local distance = entity:GetPos():DistToSqr(EyePos())
+	    if distance > 200000 then return false end
 
-	    if !IsValid(entity) then continue end
-	    
-	    local distance = entity:GetPos():DistToSqr(eyePos)
-	    if distance > d * 2 then continue end
-	    
-	    descriptive_cache[#descriptive_cache + 1] = v
+	    return true
 	end
-end)
+})
 
 function PLUGIN:HUDPaint()
 	local client = LocalPlayer()
 
 	local eyePos = EyePos()
-	for k, v in ipairs(descriptive_cache) do
-		local entity, data = v[1], v[2]
+	local data = asterionlib.entscollector:GetApply("descriptivetext")
+	for k, entity in ipairs(data) do
 		if !IsValid(entity) then continue end
 
 		local pos = entity:LocalToWorld(entity:OBBCenter())
@@ -91,8 +73,16 @@ function PLUGIN:HUDPaint()
 		local alpha = 255 - distance
 		if alpha <= 0 then continue end
 
-		for k2, v2 in ipairs(data) do
+		local text = entity:GetNetVar("DescriptiveText")
+		local wraptext = wraptext_cache[text]
+		if !wraptext then continue end
+
+		for k2, v2 in ipairs(wraptext) do
 			draw_SimpleText(v2, font, x, y + fontHeight * k2 - (fontHeight * #data) / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
 		end
 	end
 end
+
+netstream.Hook("DescriptiveText:Update", function()
+	asterionlib.entscollector:UpdateTracks()
+end)

@@ -41,39 +41,43 @@ local function createTextContainer(entity, name)
     draw_SimpleText(name, font, x, y - (genericHeight / 2) - 10, Color(255, 61, 96, alpha), TEXT_ALIGN_CENTER)
 end
 
-local entities = {}
-local ent = nil
-timer_Create("Container:Update", 1, 0, function()
-    entities = {}
-    ent = LocalTraceEntity()
+asterionlib.entscollector:AddTrack("container", {
+	delay_apply = 1,
+	onCanTrack = function(entity)
+		local class = entity:GetClass()
+		if class == "arb_container" then
+		    local name = entity.GetContainerName and entity:GetContainerName() or ""
+		    
+		    if name != "" and name != " " then
+		        return true
+		    end
+		end
+	end, 
+	onCanApply = function(entity)
+	    local eyePos = EyePos()
+	    local entityPos = entity:GetPos()
 
-    local client = LocalPlayer()
-    if !IsValid(client) then return end
-    if client:IsSpectate() then return end
+		local distance = entityPos:DistToSqr(eyePos)
+	    if distance > 200000 then return false end
+	    
+	    local bNotVisible = util.VectorObstructed(eyePos, entityPos, {LocalPlayer(), entity})
+        if bNotVisible then return false end
 
-    for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
-        if v:GetClass() != "arb_container" then continue end
-
-        local name = v.GetContainerName and v:GetContainerName() or "" -- attempt to call method 'GetContainerName' (a nil value) / wtf
-        local bNotVisible = util.VectorObstructed(EyePos(), v:GetPos(), {LocalPlayer(), v})
-        if bNotVisible then continue end
-
-        v.textalpha = v.textalpha or 0
-
-        entities[#entities + 1] = {v, name}
-    end
-end)
+	    return true
+	end
+})
 
 function Container:HUDPaint()
-    for k, v in ipairs(entities) do
-        local entity = v[1]
-        local name = v[2]
+    local ent = LocalTraceEntity()
 
+    local data = asterionlib.entscollector:GetApply("container")
+    for k, entity in ipairs(data) do
         if !IsValid(entity) then continue end
         if ent != entity and entity.textalpha <= 0.1 then continue end
 
         entity.textalpha = Lerp(FrameTime() * 5, entity.textalpha, ent == entity and 256 or 0)
 
+        local name = entity.GetContainerName and entity:GetContainerName() or "" -- attempt to call method 'GetContainerName' (a nil value) / wtf
         createTextContainer(entity, name)
     end
 end

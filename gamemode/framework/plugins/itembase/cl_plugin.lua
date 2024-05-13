@@ -27,7 +27,7 @@ asterionlib.entscollector:AddTrack("items", {
 	    local uniqueID = entity:GetUniqueID()
 	    if !uniqueID then return false end
 	    
-	    local id = v:GetItemID()
+	    local id = entity:GetItemID()
 	    if !id then return false end
 
 		local item = (PLUGIN.instances[id] or PLUGIN.list[uniqueID]) or Arbitrage.meta.item

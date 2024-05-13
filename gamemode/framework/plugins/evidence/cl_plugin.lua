@@ -45,43 +45,30 @@ local hook_Remove = hook.Remove
 local chat_AddText = chat.AddText
 local unpack = unpack
 
-local evidences_all = {}
-timer_Create("Evidence:UpdateAll", 3, 0, function()
-    evidences_all = {}
-    
-    for k, v in ipairs(ents_GetAll()) do
-        local idx = v:GetEvidence()
-        if !idx then continue end
+asterionlib.entscollector:AddTrack("evidence", {
+	delay_apply = 3,
+	onCanTrack = function(entity)
+		local idx = entity:GetEvidence()
+        if !idx then return false end
         
         local data = PLUGIN:GetEvidence(idx)
-        if !data then continue end
+        if !data then return false end
         
-        evidences_all[#evidences_all + 1] = v
-    end
-end)
+        return true
+	end, 
+	onCanApply = function(entity)
+		local distance = entity:GetPos():DistToSqr(EyePos())
+	    if distance > 200000 then return false end
 
-local d = 100000
-local evidences_cache = {}
-timer_Create("Evidence:UpdateDraw", 1, 0, function()
-	evidences_cache = {}
-	
-	if #evidences_all <= 0 then return end
-	
-	local eyePos = EyePos()
-	for k, v in ipairs(evidences_all) do
-	    if !IsValid(v) then continue end
-	    
-	    local distance = v:GetPos():DistToSqr(eyePos)
-	    if distance > d * 2 then continue end
-	    
-	    evidences_cache[#evidences_cache + 1] = v
+	    return true
 	end
-end)
+})
 
 local function get_ignore_list()
     local array = {LocalPlayer()}
     
-    for k, v in ipairs(evidences_all) do
+    local data = asterionlib.entscollector:GetAll("evidence")
+    for k, v in ipairs(data) do
         array[#array + 1] = v
     end
     
@@ -89,16 +76,15 @@ local function get_ignore_list()
 end
 
 local function draw_admin_evidences(client)
-
-    if #evidences_all <= 0 then return end
+    local data = asterionlib.entscollector:GetAll("evidence")
+    if #data <= 0 then return end
 
     if !client:IsAdmin() then return end
     if !client:IsNocliping() then return end
     if client.GetSitting and client:GetSitting() then return end
 	if !SETTINGS.options.Get("show_admin_esp") then return end
-
     
-    for k, v in ipairs(evidences_all) do
+    for k, v in ipairs(data) do
         if !IsValid(v) then continue end
 
         local idx = v:GetEvidence()
@@ -122,10 +108,11 @@ end
 local max_alpha = 150
 local starIcon = Material("icon16/star.png")
 local function draw_player_evidences(client)
-    if #evidences_cache <= 0 then return end
-    
-	local offPickEvidence = Arbitrage.OffPickingEvidence()
+    local offPickEvidence = Arbitrage.OffPickingEvidence()
 	if offPickEvidence then return end
+
+    local data = asterionlib.entscollector:GetApply("evidence")
+    if #data <= 0 then return end
 
     local curTime = CurTime()
     local eyePos = EyePos()
@@ -135,7 +122,7 @@ local function draw_player_evidences(client)
 	local faction = Character.team:GetByID(factionID)
 	local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
 	
-    for k, v in ipairs(evidences_cache) do
+    for k, v in ipairs(data) do
         if !IsValid(v) then continue end
 
         local idx = v:GetEvidence()

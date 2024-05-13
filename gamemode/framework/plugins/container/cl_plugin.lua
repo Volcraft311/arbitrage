@@ -71,7 +71,7 @@ function Container:HUDPaint()
         
         local isTraceEntity = ent == entity
         
-        if !isTraceEntity and alpha <= 0.1 then continue end
+        if !isTraceEntity and containers_info[entity] <= 0.1 then continue end
         containers_info[entity] = Lerp(ft * 5, containers_info[entity], isTraceEntity and 256 or 0)
         
         if containers_info[entity] <= 0.1 then continue end

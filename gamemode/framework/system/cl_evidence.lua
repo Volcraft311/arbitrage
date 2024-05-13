@@ -47,10 +47,7 @@ function Arbitrage.evidence.CreateText(data)
     local class = data.class
     local dataEvidence = data.data
 
-    local ignore_list = {}
-    ignore_list[#ignore_list + 1] = client
-
-    if !util.VectorObstructed(EyePos(), pos, ignore_list) then
+    if !util.VectorObstructed(EyePos(), pos, {client, dataEvidence}) then
         local data2D = pos:ToScreen()
         if !data2D.visible then return end
 
@@ -110,60 +107,42 @@ function Arbitrage.evidence.CreateText(data)
     end
 end
 
-local entities_all = {}
-timer_Create("Entities:UpdateAll", 10, 0, function()
-    entities_all = {}
-    
-    for k, v in ipairs(ents.GetAll()) do
-        local class = v:GetClass()
-        
-        local info = Arbitrage.evidence.entities[class]
-        if !info then continue end
-        
-        entities_all[#entities_all + 1] = v
-    end
-end)
-
-local d = 100000
-local entities_cache = {}
-timer_Create("Entities:UpdateDraw", 1, 0, function()
-    entities_cache = {}
-    
-    if #entities_all <= 0 then return end
-
-    local eyePos = EyePos()
-    for k, v in ipairs(entities_all) do
-        if !IsValid(v) then continue end
-        if v:IsDormant() then continue end
+asterionlib.entscollector:AddTrack("tooltip", {
+	delay_apply = 3,
+	onCanTrack = function(entity)
+		return Arbitrage.evidence.entities[entity:GetClass()]
+	end, 
+	onCanApply = function(entity)
+	    if entity:GetPos():DistToSqr(EyePos()) > 200000 then return false end
+	    if entity:IsDormant() then return false end
 	    
-	    local distance = v:GetPos():DistToSqr(eyePos)
-	    if distance > d * 2 then continue end
-	    
-	    entities_cache[#entities_cache + 1] = v
-    end
-end)
+	    return true
+	end
+})
 
 function Arbitrage.evidence.Draw()
-	for k, v in ipairs(entities_cache) do
-		if !IsValid(v) then continue end
+    local data = asterionlib.entscollector:GetApply("tooltip")
+	for k, entity in ipairs(data) do
+		if !IsValid(entity) then continue end
         
-        local entity = Arbitrage.evidence.entities[v:GetClass()]
+        local class = entity:GetClass()
+        local info = Arbitrage.evidence.entities[class]
 
-		local up = entity.up or 0
-		local right = entity.right or 0
-		local forward = entity.forward or 0
+		local up = info.up or 0
+		local right = info.right or 0
+		local forward = info.forward or 0
 
-		local newPos = v:GetPos()
-		newPos = newPos + (v:GetUp() * up)
-        newPos = newPos + (v:GetRight() * right)
-		newPos = newPos + (v:GetForward() * forward)
+		local newPos = entity:GetPos()
+		newPos = newPos + (entity:GetUp() * up)
+        newPos = newPos + (entity:GetRight() * right)
+		newPos = newPos + (entity:GetForward() * forward)
 
 		Arbitrage.evidence.CreateText({
 		    pos = newPos,
-            name = entity.name,
-            desc = entity.desc,
-            class = v:GetClass(),
-		    data = v
+            name = info.name,
+            desc = info.desc,
+            class = class,
+		    data = entity
 		})
 	end
 end

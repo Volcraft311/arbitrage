@@ -50,14 +50,19 @@ asterionlib.entscollector:AddTrack("container", {
 		    local name = entity.GetContainerName and entity:GetContainerName() or ""
 		    
 		    if name != "" and name != " " then
-                containers_info[entity] = containers_info[entity] or 0
+                containers_info[entity] = containers_info[entity] or {alpha = 0}
 
 		        return true
 		    end
 		end
 	end, 
 	onCanApply = function(entity)
-	    return entity:GetPos():DistToSqr(EyePos()) <= 200000
+	    if entity:GetPos():DistToSqr(EyePos()) >= 200000 then return false end
+	    
+        local name = entity.GetContainerName and entity:GetContainerName() or ""
+	    containers_info[entity].name = name
+	    
+	    return true
 	end
 })
 
@@ -70,13 +75,13 @@ function Container:HUDPaint()
         if !IsValid(entity) then continue end
         
         local isTraceEntity = ent == entity
+        local info = containers_info[entity]
         
-        if !isTraceEntity and containers_info[entity] <= 0.1 then continue end
-        containers_info[entity] = Lerp(ft * 5, containers_info[entity], isTraceEntity and 256 or 0)
+        if !isTraceEntity and info.alpha <= 0.1 then continue end
+        info.alpha = Lerp(ft * 5, info.alpha, isTraceEntity and 256 or 0)
         
-        if containers_info[entity] <= 0.1 then continue end
+        if info.alpha <= 0.1 then continue end
 
-        local name = entity.GetContainerName and entity:GetContainerName() or "" -- attempt to call method 'GetContainerName' (a nil value) / wtf
-        createTextContainer(entity, name, containers_info[entity])
+        createTextContainer(entity, info.name, info.alpha)
     end
 end

@@ -57,10 +57,7 @@ asterionlib.entscollector:AddTrack("evidence", {
         return true
 	end, 
 	onCanApply = function(entity)
-		local distance = entity:GetPos():DistToSqr(EyePos())
-	    if distance > 200000 then return false end
-
-	    return true
+	    return entity:GetPos():DistToSqr(EyePos()) <= 200000
 	end
 })
 
@@ -68,8 +65,8 @@ local function get_ignore_list()
     local array = {LocalPlayer()}
     
     local data = asterionlib.entscollector:GetAll("evidence")
-    for k, v in ipairs(data) do
-        array[#array + 1] = v
+    for k, entity in ipairs(data) do
+        array[#array + 1] = entity
     end
     
     return array
@@ -84,16 +81,16 @@ local function draw_admin_evidences(client)
     if client.GetSitting and client:GetSitting() then return end
 	if !SETTINGS.options.Get("show_admin_esp") then return end
     
-    for k, v in ipairs(data) do
-        if !IsValid(v) then continue end
+    for k, entity in ipairs(data) do
+        if !IsValid(entity) then continue end
 
-        local idx = v:GetEvidence()
+        local idx = entity:GetEvidence()
         if !idx then continue end
 
         local data = PLUGIN:GetEvidence(idx)
         if !data then continue end
 
-		local pos = v:GetPos()
+		local pos = entity:GetPos()
 		
 		local data2D = pos:ToScreen()
 		if !data2D.visible then continue end
@@ -118,23 +115,28 @@ local function draw_player_evidences(client)
     local eyePos = EyePos()
     local ignore_list = get_ignore_list()
     
+     local clientPos = client:GetPos()
 	local factionID = client:Team()
 	local faction = Character.team:GetByID(factionID)
 	local evidenceVisibility = faction and faction:GetEvidenceVisibility() or 1
+	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
 	
-    for k, v in ipairs(data) do
-        if !IsValid(v) then continue end
+    for k, entity in ipairs(data) do
+        if !IsValid(entity) then continue end
 
-        local idx = v:GetEvidence()
+        local idx = entity:GetEvidence()
         if !idx then continue end
 
         local data = PLUGIN:GetEvidence(idx)
         if !data then continue end
         
-        local pos = v:GetPos()
+        local pos = entity:GetPos()
         		
         local data2D = pos:ToScreen()
         if !data2D.visible then continue end
+        
+        local bNotVisible = util.VectorObstructed(eyePos, pos, ignore_list)
+        if bNotVisible then continue end
         
         local x, y = data2D.x, data2D.y
         local name, description, color, alphaA = data.name, data.description, data.color, data.alpha
@@ -153,15 +155,14 @@ local function draw_player_evidences(client)
         end
         
         if !bAllow then continue end
-
-        local bNotVisible = util.VectorObstructed(eyePos, pos, ignore_list)
-        if bNotVisible then continue end
         
-        local curalpha = math_Clamp(math_abs(math_sin(CurTime() * 3)) * max_alpha, 0, max_alpha)
-		local alpha = math_Clamp(client:GetPos():Distance(pos) / 3, 0, max_alpha)
+        local distance = clientPos:Distance(pos)
+        
+        local curalpha = math_Clamp(math_abs(math_sin(curTime * 3)) * max_alpha, 0, max_alpha)
+		local alpha = math_Clamp(distance / 3, 0, max_alpha)
 		local b = math_Clamp((curalpha - alpha) * 0.2 * evidenceVisibility, 0, 255)
-		local a = alphaA - (client:GetPos():Distance(pos) - (evidenceVisibility * 255)) * 0.7
-	    a = a - (255 - (Arbitrage.statistics.Get(client, "Sleep") or 100) * 2.55)
+		local a = alphaA - (distance - (evidenceVisibility * 255)) * 0.7
+	    a = a - (255 - sleep * 2.55)
 		a = math_Clamp(a, 0, 255)
 
         if bUnique then

@@ -489,6 +489,7 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, data)
 	cam_End3D2D()
 end
 
+local doors_info = {}
 asterionlib.entscollector:AddTrack("doors", {
 	delay_apply = 3,
 	onCanTrack = function(entity)
@@ -499,18 +500,17 @@ asterionlib.entscollector:AddTrack("doors", {
 	    if distance > 1000000 then return false end
 	    
 	    local data = entity:GetNetVar("arb.image", {})
-		if #data <= 0 then continue end
+		if #data <= 0 then return false end
 		
 		local info = {}
 		for k, v in ipairs(data) do
 			local faction = Character.team:GetByID(v)
 			if !faction then continue end
-			if !faction:GetAssets().pixel then continue end
 
 			info[#info + 1] = Material(faction:GetAssets().pixel)
 		end
 		
-		entity.doors_Info = info
+		doors_info[entity] = info
 
 	    return true
 	end
@@ -523,7 +523,7 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	local eyePos, eyeAngle = EyePos(), EyeAngles()
 	cam_Start3D(eyePos, eyeAngle)
 		for k, entity in ipairs(data) do
-			local data = entity.doors_Info
+			local data = doors_info[entity]
 
 			self:DrawDoorText(entity, eyePos, eyeAngles, data)
 		end

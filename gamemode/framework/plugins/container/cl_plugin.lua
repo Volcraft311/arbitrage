@@ -28,10 +28,13 @@ local ents_FindInSphere = ents.FindInSphere
 local font = "arb.Font_FuturaPTBook_8"
 local genericHeight = draw_GetFontHeight(font)
 local function createTextContainer(entity, name)
-    local position = entity:LocalToWorld(entity:OBBCenter())
+    local pos = entity:LocalToWorld(entity:OBBCenter())
 
-    local data2D = position:ToScreen()
+    local data2D = pos:ToScreen()
     if !data2D.visible then return end
+    
+    local bNotVisible = util.VectorObstructed(EyePos(), pos, {LocalPlayer(), entity})
+    if bNotVisible then return false end
 
     local x, y = data2D.x, data2D.y
     
@@ -54,16 +57,7 @@ asterionlib.entscollector:AddTrack("container", {
 		end
 	end, 
 	onCanApply = function(entity)
-	    local eyePos = EyePos()
-	    local entityPos = entity:GetPos()
-
-		local distance = entityPos:DistToSqr(eyePos)
-	    if distance > 200000 then return false end
-	    
-	    local bNotVisible = util.VectorObstructed(eyePos, entityPos, {LocalPlayer(), entity})
-        if bNotVisible then return false end
-
-	    return true
+	    return entity:GetPos():DistToSqr(EyePos()) <= 200000
 	end
 })
 

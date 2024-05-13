@@ -44,10 +44,7 @@ asterionlib.entscollector:AddTrack("descriptivetext", {
 		end
 	end, 
 	onCanApply = function(entity)
-		local distance = entity:GetPos():DistToSqr(EyePos())
-	    if distance > 200000 then return false end
-
-	    return true
+	    return entity:GetPos():DistToSqr(EyePos()) <= 200000
 	end
 })
 

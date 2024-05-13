@@ -63,7 +63,7 @@ asterionlib.entscollector:AddTrack("container", {
 
 
 function Container:HUDPaint()
-    local ft = FrameTime(())
+    local ft = FrameTime()
     local ent = LocalTraceEntity()
     local data = asterionlib.entscollector:GetApply("container")
     for k, entity in ipairs(data) do

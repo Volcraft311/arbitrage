@@ -31,7 +31,7 @@ asterionlib.entscollector:AddTrack("items", {
 	    if !id then return false end
 
 		local item = (PLUGIN.instances[id] or PLUGIN.list[uniqueID]) or Arbitrage.meta.item
-		if !item then return false
+		if !item then return false end
 		    
 		local name = item:GetName()
 		local desc = item:GetDescription()

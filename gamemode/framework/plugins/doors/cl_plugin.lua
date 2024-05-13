@@ -489,66 +489,41 @@ function PLUGIN:DrawDoorText(entity, eyePos, eyeAngles, data)
 	cam_End3D2D()
 end
 
-local doors_all = {}
-timer_Create("Doors:UpdateAllDoors", 15, 0, function()
-    doors_all = {}
-    
-    for k, v in ipairs(ents_GetAll()) do
-        if !v:IsDoor() then continue end
-        
-        doors_all[#doors_all + 1] = v
-    end
-end)
-
-local d = 500000
-local doors_cache = {}
-timer_Create("Doors:UpdateDraw", 2, 0, function()
-	doors_cache = {}
-	
-	if #doors_all <= 0 then return end
-
-	local eyePos = EyePos()
-	for k, v in ipairs(doors_all) do
-		if !IsValid(v) then continue end
-		
-		local distance = v:GetPos():DistToSqr(eyePos)
-        if distance > d * 2 then continue end
-
-		local data = v:GetNetVar("arb.image", {})
+asterionlib.entscollector:AddTrack("doors", {
+	delay_apply = 3,
+	onCanTrack = function(entity)
+		return entity:IsDoor()
+	end, 
+	onCanApply = function(entity)
+		local distance = entity:GetPos():DistToSqr(EyePos())
+	    if distance > 1000000 then return false end
+	    
+	    local data = entity:GetNetVar("arb.image", {})
 		if #data <= 0 then continue end
-
+		
 		local info = {}
-		for k2, v2 in ipairs(data) do
-			local faction = Character.team:GetByID(v2)
+		for k, v in ipairs(data) do
+			local faction = Character.team:GetByID(v)
 			if !faction then continue end
 			if !faction:GetAssets().pixel then continue end
 
 			info[#info + 1] = Material(faction:GetAssets().pixel)
 		end
+		
+		entity.doors_Info = info
 
-		doors_cache[#doors_cache + 1] = {v, info}
+	    return true
 	end
-end)
+})
 
 function PLUGIN:PostDrawTranslucentRenderables()
-	if #doors_cache <= 0 then return end
-	
-	local doors = {}
-	for k, v in ipairs(doors_cache) do
-	    local entity = v[1]
-	    
-	    if IsValid(entity) then
-	        doors[#doors + 1] = v
-	    end
-	end
-	
-	if #doors <= 0 then return end
+	local data = asterionlib.entscollector:GetApply("doors")
+	if #data <= 0 then return end
 
 	local eyePos, eyeAngle = EyePos(), EyeAngles()
 	cam_Start3D(eyePos, eyeAngle)
-		for k, v in ipairs(doors) do
-			local entity = v[1]
-			local data = v[2]
+		for k, entity in ipairs(data) do
+			local data = entity.doors_Info
 
 			self:DrawDoorText(entity, eyePos, eyeAngles, data)
 		end

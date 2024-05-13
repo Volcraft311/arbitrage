@@ -14,70 +14,63 @@
 
 local PLUGIN = PLUGIN
 
-local items_all = {}
-timer.Create("ItemBase:UpdateAllItems", 5, 0, function()
-    items_all = ents.FindByClass("arb_item")
-end)
+local items_info = {}
+asterionlib.entscollector:AddTrack("items", {
+	delay_apply = 1,
+	onCanTrack = function(entity)
+        return entity:GetClass() == "arb_item"
+	end, 
+	onCanApply = function(entity)
+	    if entity:GetPos():DistToSqr(EyePos()) > 200000 then return false end
+	    if entity:IsDormant() then return false end
+	    
+	    local uniqueID = entity:GetUniqueID()
+	    if !uniqueID then return false end
+	    
+	    local id = v:GetItemID()
+	    if !id then return false end
 
-local entities = {}
-local ent = nil
-local d = 50000
-timer.Create("ItemBase:UpdateDraw", 1, 0, function()
-	entities = {}
-	ent = LocalTraceEntity()
-	
-	if #items_all <= 0 then return end
+		local item = (PLUGIN.instances[id] or PLUGIN.list[uniqueID]) or Arbitrage.meta.item
+		if !item then return false
+		    
+		local name = item:GetName()
+		local desc = item:GetDescription()
+		local category = item:GetCategory()
 
-	local client = LocalPlayer()
-	if !IsValid(client) then return end
-
-    local eyePos = EyePos()
-	for k, v in ipairs(items_all) do
-	    if !IsValid(v) then continue end
-
-	    local distance = v:GetPos():DistToSqr(eyePos)
-        if distance > d * 2 then continue end
-
-		if !v:IsDormant() and v.GetUniqueID and v.GetItemID then
-			local uniqueID = v:GetUniqueID()
-			local id = v:GetItemID()
-
-			local item = (PLUGIN.instances[id] or PLUGIN.list[uniqueID]) or Arbitrage.meta.item
-			if !item then continue end
-
-			local name = item:GetName()
-			local desc = item:GetDescription()
-			local category = item:GetCategory()
-
-			local path = item:GetIcon()
-	        local icon = nil
-	        if string.isURL(path) then
-	            asterionlib.downloader:Image(path, function(mat)
-	                icon = mat
-	            end)
-	        else
-	            icon = Material(path)
-	        end
-
-			v.panelAlpha = v.panelAlpha or 0
-
-			entities[#entities + 1] = {v, name, desc, category, icon}
-		end
+		local path = item:GetIcon()
+	    local icon = nil
+	    if string.isURL(path) then
+	        asterionlib.downloader:Image(path, function(mat)
+	            icon = mat
+	        end)
+	    else
+	        icon = Material(path)
+	    end
+	    
+        items_info[entity] = items_info[entity] or {alpha = 0}
+        items_info[entity].name = name
+        items_info[entity].desc = desc
+        items_info[entity].category = category
+        items_info[entity].icon = icon
+	    
+	    return true
 	end
-end)
+})
 
 function PLUGIN:HUDPaint()
-	for k, v in ipairs(entities) do
-		local entity = v[1]
-		if !IsValid(entity) then continue end
-
-		local name, desc, category, icon = v[2], v[3], v[4], v[5]
-
-		if ent != entity and entity.panelAlpha <= 0.1 then continue end
-
-		entity.panelAlpha = Lerp(FrameTime() * 3, entity.panelAlpha, ent == entity and 256 or 0)
-
-		self.infoMenu:Paint(entity, name, desc, category, icon, entity.panelAlpha)
+	local ft = FrameTime()
+	local ent = LocalTraceEntity()
+	local data = asterionlib.entscollector:GetApply("items")
+	for k, entity in ipairs(data) do
+	    if !IsValid(entity) then continue end
+	    
+	    local isTraceEntity = ent == entity
+	    local info = items_info[entity]
+	    
+	    if !isTraceEntity and info.alpha <= 0.1 then continue end
+	    info.alpha = Lerp(ft * 3, info.alpha, isTraceEntity and 256 or 0)
+	    
+	    self.infoMenu:Paint(entity, info.name, info.desc, info.category, info.icon, info.alpha)
 	end
 
 	self.actionMenu:Paint()

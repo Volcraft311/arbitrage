@@ -523,8 +523,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	local eyePos, eyeAngle = EyePos(), EyeAngles()
 	cam_Start3D(eyePos, eyeAngle)
 		for k, entity in ipairs(data) do
+		    if !IsValid(entity) then continue end
+		    
 			local data = doors_info[entity]
-
 			self:DrawDoorText(entity, eyePos, eyeAngles, data)
 		end
 	cam_End3D()

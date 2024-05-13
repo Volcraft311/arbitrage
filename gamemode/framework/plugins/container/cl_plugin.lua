@@ -27,7 +27,7 @@ local ents_FindInSphere = ents.FindInSphere
 
 local font = "arb.Font_FuturaPTBook_8"
 local genericHeight = draw_GetFontHeight(font)
-local function createTextContainer(entity, name)
+local function createTextContainer(entity, name, alpha)
     local pos = entity:LocalToWorld(entity:OBBCenter())
 
     local data2D = pos:ToScreen()
@@ -37,13 +37,11 @@ local function createTextContainer(entity, name)
     if bNotVisible then return false end
 
     local x, y = data2D.x, data2D.y
-    
-    local alpha = entity.textalpha
-    if alpha <= 0 then return end
 
     draw_SimpleText(name, font, x, y - (genericHeight / 2) - 10, Color(255, 61, 96, alpha), TEXT_ALIGN_CENTER)
 end
 
+local containers_info = {}
 asterionlib.entscollector:AddTrack("container", {
 	delay_apply = 1,
 	onCanTrack = function(entity)
@@ -52,6 +50,8 @@ asterionlib.entscollector:AddTrack("container", {
 		    local name = entity.GetContainerName and entity:GetContainerName() or ""
 		    
 		    if name != "" and name != " " then
+                containers_info[entity] = containers_info[entity] or 0
+
 		        return true
 		    end
 		end
@@ -61,17 +61,23 @@ asterionlib.entscollector:AddTrack("container", {
 	end
 })
 
-function Container:HUDPaint()
-    local ent = LocalTraceEntity()
 
+function Container:HUDPaint()
+    local ft = FrameTime(())
+    local ent = LocalTraceEntity()
     local data = asterionlib.entscollector:GetApply("container")
     for k, entity in ipairs(data) do
         if !IsValid(entity) then continue end
-        if ent != entity and entity.textalpha <= 0.1 then continue end
-
-        entity.textalpha = Lerp(FrameTime() * 5, entity.textalpha, ent == entity and 256 or 0)
+        
+        local isTraceEntity = ent == entity
+        local alpha = containers_info[entity]
+        
+        if !isTraceEntity and alpha <= 0.1 then continue end
+        alpha = Lerp(ft * 5, alpha, isTraceEntity and 256 or 0)
+        
+        if alpha <= 0 then continue end
 
         local name = entity.GetContainerName and entity:GetContainerName() or "" -- attempt to call method 'GetContainerName' (a nil value) / wtf
-        createTextContainer(entity, name)
+        createTextContainer(entity, name, alpha)
     end
 end

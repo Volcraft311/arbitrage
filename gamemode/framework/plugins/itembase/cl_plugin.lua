@@ -70,6 +70,8 @@ function PLUGIN:HUDPaint()
 	    if !isTraceEntity and info.alpha <= 0.1 then continue end
 	    info.alpha = Lerp(ft * 3, info.alpha, isTraceEntity and 256 or 0)
 	    
+	    if info.alpha <= 0.1 then continue end
+	    
 	    self.infoMenu:Paint(entity, info.name, info.desc, info.category, info.icon, info.alpha)
 	end
 

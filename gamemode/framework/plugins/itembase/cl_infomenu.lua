@@ -3,8 +3,6 @@ PLUGIN.infoMenu = PLUGIN.infoMenu or {}
 
 local sizeW, sizeH = 400, 120
 function PLUGIN.infoMenu:Paint(entity, name, desc, category, icon, alphaMenu)
-	if alphaMenu <= 0.1 then return end
-
 	local client = LocalPlayer()
 	local pos = entity:GetPos()
 	local data2D = pos:ToScreen()

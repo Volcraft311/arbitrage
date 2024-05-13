@@ -28,7 +28,6 @@ local surface_GetTextSize = surface.GetTextSize
 local math_max = math.max
 local unpack = unpack
 local surface_SetFont = surface.SetFont
-local W = W
 local pairs = pairs
 local IsValid = IsValid
 local Lerp = Lerp

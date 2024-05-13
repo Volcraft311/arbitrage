@@ -70,14 +70,13 @@ function Container:HUDPaint()
         if !IsValid(entity) then continue end
         
         local isTraceEntity = ent == entity
-        local alpha = containers_info[entity]
         
         if !isTraceEntity and alpha <= 0.1 then continue end
-        alpha = Lerp(ft * 5, alpha, isTraceEntity and 256 or 0)
+        containers_info[entity] = Lerp(ft * 5, containers_info[entity], isTraceEntity and 256 or 0)
         
-        if alpha <= 0.1 then continue end
+        if containers_info[entity] <= 0.1 then continue end
 
         local name = entity.GetContainerName and entity:GetContainerName() or "" -- attempt to call method 'GetContainerName' (a nil value) / wtf
-        createTextContainer(entity, name, alpha)
+        createTextContainer(entity, name, containers_info[entity])
     end
 end

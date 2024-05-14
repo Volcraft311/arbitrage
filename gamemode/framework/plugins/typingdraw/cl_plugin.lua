@@ -90,6 +90,8 @@ timer_Create("TypingDraw:Update", 1, 0, function()
 
 		local distance = v:GetPos():DistToSqr(EyePos())
 		if distance > d then continue end
+		
+		client.tDrawAlpha = client.tDrawAlpha or 0
 
 		PLUGIN.infoList[#PLUGIN.infoList + 1] = {
 			client = v,
@@ -109,7 +111,6 @@ function PLUGIN:HUDPaint()
 		if !data then continue end
 
 		local bShow = realtime <= self:GetTypingTime(client)
-		client.tDrawAlpha = client.tDrawAlpha or 0
 		client.tDrawAlpha = Lerp(time, client.tDrawAlpha, bShow and 255 or 0)
 
 		local alpha = self:GetTypingAlpha(client)
@@ -124,18 +125,18 @@ end
 function PLUGIN:DrawText(client, text, color, alpha)
 	local size = ScrW() * 0.2
 	local eyepos = EyePos()
-	local players = player_GetAll()
 	local pos = self:GetTypingIndicatorPosition(client)
 	local distance = eyepos:Distance(pos)
 
 	alpha = alpha - distance
+	if alpha <= 0 then return end
 
 	local fraction = client.arbTextAlphaChat or 0
 
 	local data2D = (pos + Vector(0, 0, fraction * 5)):ToScreen()
 	if !data2D.visible then return end
 
-	local bNotVisible = util.VectorObstructed(eyepos, pos, players)
+	local bNotVisible = util.VectorObstructed(eyepos, pos, client)
 	if bNotVisible then return end
 
 	local a = ColorAlpha(color, alpha)

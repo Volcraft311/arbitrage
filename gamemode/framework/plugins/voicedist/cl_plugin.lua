@@ -163,6 +163,8 @@ timer_Create("VoiceDist:Update", 1, 0, function()
 
         v.arbTextAlphaVoice = v.arbTextAlphaVoice or 0
         v.arbTextAlphaChat = v.arbTextAlphaChat or 0
+        v.arbTextColorChat = v.arbTextColorChat or Color(238, 220, 194)
+        
         showPlayerList[#showPlayerList + 1] = v
     end
 end)
@@ -256,7 +258,6 @@ local function getColor(client)
     return Color(238, 220, 194)
 end
 
-local oldColor = Color(238, 220, 194)
 local iconChatMat = Material("danganronpa/hud/chat_icon.png")
 function PLUGIN:DrawPlayersChat()
     local eyepos = EyePos()
@@ -284,11 +285,11 @@ function PLUGIN:DrawPlayersChat()
         local bNotVisible = util.VectorObstructed(eyepos, pos, v)
         if bNotVisible then continue end
 
-        oldColor = LerpColor(FrameTime() * 5, oldColor, getColor(v))
+        v.arbTextColorChat = LerpColor(ft * 5, v.arbTextColorChat, getColor(v))
 
         local scale = (sizeMat * -distance * 0.00001) + 70 * 0.6
         local x, y = data2D.x, data2D.y
-        asterionlib.DrawTexturedRect(iconChatMat, x - scale * 0.5, y - scale * 0.5, scale, scale, ColorAlpha(oldColor, alpha * 0.8))
+        asterionlib.DrawTexturedRect(iconChatMat, x - scale * 0.5, y - scale * 0.5, scale, scale, ColorAlpha(v.arbTextColorChat, alpha * 0.8))
     end
 end
 

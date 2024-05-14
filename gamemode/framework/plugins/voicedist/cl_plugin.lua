@@ -153,7 +153,7 @@ timer_Create("VoiceDist:Update", 1, 0, function()
     if !allow then return end
 
     for k, v in ipairs(player_GetAll()) do
-        if v == client then continue end
+--      if v == client then continue end
         if v:IsSpectate() then continue end
         if v:IsNocliping() then continue end
         if v:IsDormant() then continue end
@@ -171,11 +171,19 @@ local sizeMat = H(40)
 function PLUGIN:DrawVoiceIcon()
     local client = LocalPlayer()
     local size = ScrW() * 0.05
+    local ft = FrameTime()
     local value = client:GetNetVar("arb.voicescale", 0.5)
     local bShow = self.realtime >= RealTime()
+    local isTalking = self.players[client]
 
-    self.pos = Lerp(FrameTime() * 10, self.pos, self.players[client] and 100 or 0)
-    self.alpha = Lerp(FrameTime() * sizeMat, self.alpha, self.players[client] and 255 or 0)
+    local a = isTalking and 100 or 0
+    if (a == 0 and self.pos > 0.1) or (a == 100 and self.pos < 99.9) then
+        self.pos = Lerp(ft * 10, self.pos, a)
+    end
+
+    if self.pos > 0.1 and self.pos < 99.9 then
+        self.alpha = Lerp(ft * sizeMat, self.alpha, a * 2.55)
+    end
 
     if self.alpha > 0.2 then
         local isGlobal = client:GetLocalVar("arbGlobalVoice")
@@ -193,9 +201,19 @@ function PLUGIN:DrawVoiceIcon()
         end
     end
 
-    self.pos2 = Lerp(FrameTime() * 10, self.pos2, bShow and 100 or 0)
-    self.alpha2 = Lerp(FrameTime() * 20, self.alpha2, bShow and 255 or 0)
-    self.lerp = Lerp(FrameTime() * 15, self.lerp, (size * 2) * value)
+    local b = bShow and 100 or 0
+    if (b == 0 and self.pos2 > 0.1) or (b == 100 and self.pos2 < 99.9) then
+        self.pos2 = Lerp(ft * 10, self.pos2, b)
+    end
+    
+    if self.pos2 > 0.1 and self.pos2 < 99.9 then
+        self.alpha2 = Lerp(ft * 20, self.alpha2, b * 2.55)
+    end
+
+    local c = (size * 2) * value
+    if self.lerp < c - 0.05 or self.lerp > c + 0.05 then
+        self.lerp = Lerp(ft * 15, self.lerp, c)
+    end
 
     if self.alpha2 > 0.2 then
         draw_SimpleText("Дальность голоса " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
@@ -242,12 +260,15 @@ local oldColor = Color(238, 220, 194)
 local iconChatMat = Material("danganronpa/hud/chat_icon.png")
 function PLUGIN:DrawPlayersChat()
     local eyepos = EyePos()
-    local players = player_GetAll()
+    local ft = FrameTime()
 
     for k, v in ipairs(showPlayerList) do
         if !IsValid(v) then continue end
 
-        v.arbTextAlphaChat = Lerp(FrameTime() * 8, v.arbTextAlphaChat, v:IsTyping() and 1 or 0)
+        local a = v:IsTyping() and 1 or 0
+        if (a == 1 and v.arbTextAlphaChat < 0.95) or (a == 0 and v.arbTextAlphaChat > 0.05) then
+            v.arbTextAlphaChat = Lerp(ft * 8, v.arbTextAlphaChat, a)
+        end
 
         local fraction = v.arbTextAlphaChat
         if fraction <= 0.1 then continue end
@@ -260,7 +281,7 @@ function PLUGIN:DrawPlayersChat()
 
         if !data2D.visible then continue end
 
-        local bNotVisible = util.VectorObstructed(eyepos, pos, players)
+        local bNotVisible = util.VectorObstructed(eyepos, pos, v)
         if bNotVisible then continue end
 
         oldColor = LerpColor(FrameTime() * 5, oldColor, getColor(v))
@@ -278,6 +299,8 @@ function PLUGIN:DrawPlayersVoice()
 
     surface_SetFont("arb.Font_FuturaPTBook_30")
 
+    local ft = FrameTime()
+
     for k, v in ipairs(showPlayerList) do
         if !IsValid(v) then continue end
 
@@ -292,8 +315,11 @@ function PLUGIN:DrawPlayersVoice()
 
         local _, textHeight = surface_GetTextSize(text)
 
-        v.arbTextAlphaVoice = Lerp(FrameTime() * 8, v.arbTextAlphaVoice, self.players[v] and 1 or 0)
-
+        local a = self.players[v] and 1 or 0
+        if (a == 1 and v.arbTextAlphaVoice < 0.95) or (a == 0 and v.arbTextAlphaVoice > 0.05) then
+            v.arbTextAlphaVoice = Lerp(ft * 8, v.arbTextAlphaVoice, a)
+        end
+        
         local fraction = v.arbTextAlphaVoice
         if fraction <= 0.1 then continue end
 
@@ -313,7 +339,9 @@ function PLUGIN:DrawCircle()
         local value = client:GetNetVar("arb.voicescale", 0.5)
         local dist = 650
 
-        self.lerp2 = Lerp(FrameTime() * 10, self.lerp2, value)
+        if self.lerp2 < value - 0.00001 or self.lerp2 > value + 0.00001 then
+            self.lerp2 = Lerp(FrameTime() * 10, self.lerp2, value)
+        end
 
         cam_Start3D2D(client:GetPos() + Vector(0, 0, 5), Angle(0, 0, 0), 1)
             surface_SetDrawColor(0, 255, 85, self.alpha2)

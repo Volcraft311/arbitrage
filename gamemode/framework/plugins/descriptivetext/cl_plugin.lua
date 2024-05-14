@@ -28,18 +28,12 @@ local Color = Color
 local font = "arb.Font_FuturaPTBook_6"
 local fontHeight = draw_GetFontHeight(font)
 local wraptext_size = ScrW() * 0.3
-local wraptext_cache = {}
 
 asterionlib.entscollector:AddTrack("descriptivetext", {
 	delay_apply = 3,
 	onCanTrack = function(entity)
 		local text = entity:GetNetVar("DescriptiveText")
-		if text then 
-			local data = wraptext_cache[text]
-			if not data then
-				wraptext_cache[text] = asterionlib.WrapText(text, wraptext_size, font, true)
-			end
-
+		if text then
 			return true
 		end
 	end, 
@@ -71,9 +65,9 @@ function PLUGIN:HUDPaint()
 		if alpha <= 0 then continue end
 
 		local text = entity:GetNetVar("DescriptiveText")
-		local wraptext = wraptext_cache[text]
-		if !wraptext then continue end
-
+		if !text then continue end
+		
+		local wraptext = asterionlib.WrapText(text, wraptext_size, font, true)
 		for k2, v2 in ipairs(wraptext) do
 			draw_SimpleText(v2, font, x, y + fontHeight * k2 - (fontHeight * #data) / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
 		end

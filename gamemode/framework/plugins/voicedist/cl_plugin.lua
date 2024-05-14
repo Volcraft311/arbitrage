@@ -153,7 +153,7 @@ timer_Create("VoiceDist:Update", 1, 0, function()
     if !allow then return end
 
     for k, v in ipairs(player_GetAll()) do
---      if v == client then continue end
+        if v == client then continue end
         if v:IsSpectate() then continue end
         if v:IsNocliping() then continue end
         if v:IsDormant() then continue end

@@ -165,7 +165,8 @@ if SERVER then
 
             self:HookRun("drop")
             self:Remove(true, true)
-            self:Spawn(tr.HitPos + Vector(0, 0, 5))
+            local entity = self:Spawn(tr.HitPos + Vector(0, 0, 5))
+--          ItemBase.AnimDropItem(owner, entity)
             inventory = nil -- чистим инвентарь, ибо выбросили
         end
 

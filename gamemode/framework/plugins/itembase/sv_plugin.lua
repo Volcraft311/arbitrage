@@ -24,6 +24,32 @@ function ItemBase.CreateItemInWorld(uniqueID, pos, ang)
     return item, entity
 end
 
+--[[function ItemBase.AnimDropItem(client, entity)
+    local uniqueID = "itemanim_" .. entity:EntIndex()
+
+    local endpos = entity:GetPos()
+    local startpos = client:GetShootPos()
+    local PhysObj = entity:GetPhysicsObject()
+    if IsValid(PhysObj) then 
+        PhysObj:EnableMotion(false)
+    end
+
+    entity:SetPos(startpos)
+    local vector_tween = Tween(startpos, endpos, 2, TWEEN_EASE_LINEAR)
+    vector_tween:SetCallback(function()
+        timer.Remove(uniqueID)
+    end)
+    vector_tween:Start()
+
+
+    timer.Create(uniqueID, 0, 0, function()
+        if !IsValid(entity) then return timer.Remove(uniqueID) end
+
+        local position = vector_tween:GetValue()
+        entity:SetPos(position)
+    end)
+end]]--
+
 function ItemBase:PlayerInitialSpawn(client)
     ItemBase.CreationSync(client)
 

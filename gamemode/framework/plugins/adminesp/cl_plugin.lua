@@ -80,12 +80,8 @@ local function drawing(entity, info, eyePos)
 	for _, data in ipairs(info) do
 		if isfunction(data) then
 			data(entity)
-		end
-	end
-
-	for _, data in ipairs(info) do
-		if !isfunction(data) then
-			local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
+        else
+		    local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0)
 			y2 = y2 + _y
 		end
 	end
@@ -106,33 +102,41 @@ end
 
 local function isAllow(client)
 	if !IsValid(client) then return false end
-
+	
+	if Arbitrage.lawEnable then return false end
+	if !SETTINGS.options.Get("show_admin_esp") then return false end
 	if !client:oldAlive() then return false end
 	if !client:IsAdmin() then return false end
 	if !client:IsNocliping() and !client:IsSpectating() then return false end
-	if !SETTINGS.options.Get("show_admin_esp") then return false end
 	if client.GetSitting and client:GetSitting() then return false end
-	if Arbitrage.lawEnable then return false end
+	if client:InVehicle() and !client:IsSpectating() then return false end
 
 	return true
 end
 
-local showEntsList = {}
-local cache = {}
 local allow = false
-timer_Create("AdminESP:Update", 1, 0, function()
-	showEntsList = {}
-
-	local client = LocalPlayer()
-	allow = isAllow(client)
-
-	if !allow then cache = {} return end
-	for k, v in ipairs(ents_GetAll()) do
-		if v:IsPlayer() or PLUGIN.entslist[v:GetClass()] then
-			showEntsList[#showEntsList + 1] = v
+local cache = {}
+asterionlib.entscollector:AddTrack("adminesp", {
+	delay_apply = 1,
+	onCanTrack = function(entity)
+		if entity:IsPlayer() or PLUGIN.entslist[entity:GetClass()] then
+		    return true
 		end
+	end, 
+	onCanApply = function(entity)
+	    -- вообще это не должно тут находиться... но... okeeey...
+	    local client = LocalPlayer()
+	    if IsValid(client) then
+	    	allow = isAllow(client)
+	    end
+	    
+	    if !allow then
+	        cache = {}
+	    end
+
+	    return false -- мы не пользуемся :GetApply() в данном случае, по этому не засоряем оперативку лишним мусором
 	end
-end)
+})
 
 local function caching(entity)
 	local client = LocalPlayer()
@@ -164,7 +168,7 @@ local function thread()
 	local showEnts
 
 	while true do
-		showEnts = showEntsList
+		showEnts = asterionlib.entscollector:GetAll("adminesp")
 
 		if !next(showEnts) then
 			coroutine_yield()

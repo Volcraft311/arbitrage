@@ -51,10 +51,31 @@ if IsValid(LocalPlayer()) and LocalPlayer().legs then
 	LocalPlayer().legs:Remove()
 end
 
-function PLUGIN:RenderScreenspaceEffects()
+local allow = false
+local function isAllow()
 	local client = LocalPlayer()
 
-	if !IsValid(client) or client:GetLocalVar("observer") or client:ShouldDrawLocalPlayer() or !client:oldAlive() or client:IsPlayingTaunt() or (client.GetSitting and client:GetSitting()) or client:IsSpectate() or client:GetNetVar("inbed") then return end
+	if !IsValid(client) then return false end
+	if client:GetLocalVar("observer") then return false end
+	if client:ShouldDrawLocalPlayer() then return false end
+	if !client:oldAlive() then return false end
+	if client:IsPlayingTaunt() then return false end
+	if client.GetSitting and client:GetSitting() then return false end
+	if client:IsSpectate() then return false end
+	if client:GetNetVar("inbed") then return false end
+	if client:InVehicle() then return false end
+
+	return true
+end
+
+timer.Create("Legs:Allow", 0.1, 0, function()
+	allow = isAllow()
+end)
+
+function PLUGIN:RenderScreenspaceEffects()
+	if !allow then return end
+
+	local client = LocalPlayer()
 
 	local angs = client:EyeAngles()
 	if angs.p < 0 then return end

@@ -81,7 +81,7 @@ local function drawing(entity, info, eyePos)
 		if isfunction(data) then
 			data(entity)
         else
-		    local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0)
+		    local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
 			y2 = y2 + _y
 		end
 	end
@@ -102,14 +102,16 @@ end
 
 local function isAllow(client)
 	if !IsValid(client) then return false end
+
+	if client:IsSpectating() then return true end
 	
 	if Arbitrage.lawEnable then return false end
 	if !SETTINGS.options.Get("show_admin_esp") then return false end
 	if !client:oldAlive() then return false end
 	if !client:IsAdmin() then return false end
-	if !client:IsNocliping() and !client:IsSpectating() then return false end
+	if !client:IsNocliping() then return false end
 	if client.GetSitting and client:GetSitting() then return false end
-	if client:InVehicle() and !client:IsSpectating() then return false end
+	if client:InVehicle() then return false end
 
 	return true
 end
@@ -144,23 +146,21 @@ local function caching(entity)
 	if entity == client and !client:IsSpectating() then return end
 
 	local isPlayer = entity:IsPlayer()
-	if !isPlayer and !PLUGIN.entslist[entity:GetClass()] then return end
+	if isPlayer and !entity:oldAlive() then return end
 
-	if !isPlayer or (isPlayer and entity:oldAlive()) then
-		cache[entity] = {}
+	cache[entity] = {}
 
-		local eyePos = EyePos()
-		local entityPos = getPos(entity, isPlayer)
+	local eyePos = EyePos()
+	local entityPos = getPos(entity, isPlayer)
 
-		local headPos = getScreenPos(isPlayer, entityPos)
-		if !headPos.visible then return end
+	local headPos = getScreenPos(isPlayer, entityPos)
+	if !headPos.visible then return end
 
-		for k, v in pairs(entity:ESPInfo()) do
-			if !v[1] then continue end
-			if !PLUGIN:DistanceFits(eyePos, entityPos, v[2]) then continue end
+	for k, v in ipairs(entity:ESPInfo()) do
+		if !v[1] then continue end
+		if !PLUGIN:DistanceFits(eyePos, entityPos, v[2]) then continue end
 
-			cache[entity][#cache[entity] + 1] = v[1]
-		end
+		cache[entity][#cache[entity] + 1] = v[1]
 	end
 end
 
@@ -189,6 +189,8 @@ end
 
 local co
 function PLUGIN:Think()
+	if !allow then return end
+
 	if !co or !coroutine_resume(co) then
 		co = coroutine_create(thread)
 		coroutine_resume(co)

@@ -104,7 +104,9 @@ function Arbitrage.player.GetEyesPos(client)
 end
 
 function Arbitrage.player.SetupViewOffset(client)
-    timer.Simple(1, function()
+    timer.Simple(2, function()
+        if !IsValid(client) then return end
+
         local eyePosZ, eyePosDuckZ = Arbitrage.player.GetEyesPos(client)
         client:SetViewOffset(Vector(0, 0, eyePosZ))
         client:SetViewOffsetDucked(Vector(0, 0, eyePosDuckZ))

@@ -515,7 +515,7 @@ function SWEP:Think()
                         self:DropObject()
                     end
                 else
-                    seld:DropObject()
+                    self:DropObject()
                 end
             end
         end

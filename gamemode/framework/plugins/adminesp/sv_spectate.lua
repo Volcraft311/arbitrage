@@ -15,10 +15,10 @@ local PLUGIN = PLUGIN
 
 local players_hook = {}
 local function create_hook()
-    hook.Add("StartCommand", "AdminESP:StartCommand", function(client, ucmd)
-        if !players_hook[client] then return end
-        
-        ucmd:ClearMovement()
+	hook.Add("StartCommand", "AdminESP:StartCommand", function(client, ucmd)
+		if !players_hook[client] then return end
+
+		ucmd:ClearMovement()
 		ucmd:SetForwardMove(0)
 		ucmd:SetUpMove(0)
 		ucmd:SetSideMove(0)
@@ -26,13 +26,30 @@ local function create_hook()
 		ucmd:SetMouseX(0)
 		ucmd:SetMouseY(0)
 		ucmd:SetMouseWheel(0)
-    end)
+	end)
 end
 
 local function remove_hook()
-    players_hook = {}
-    
-    hook.Remove("StartCommand", "AdminESP:StartCommand")
+	players_hook = {}
+
+	hook.Remove("StartCommand", "AdminESP:StartCommand")
+end
+
+local function update_hook(client)
+	if IsValid(client) then
+		players_hook[client] = nil
+	end
+
+	local count = 0
+	for k in pairs(players_hook) do
+		if IsValid(k) then
+			count = count + 1
+		end
+	end
+
+	if count <= 0 then
+		remove_hook()
+	end
 end
 
 function PLUGIN:Spec(client, target)
@@ -44,25 +61,14 @@ function PLUGIN:Spec(client, target)
 	if !var then
 		players_hook[client] = true
 		create_hook()
-		
+
 		if IsValid(target) then
 			client._CameraEntity = target
-		
+
 			netstream.Start(client, "AdminESP:CameraSetEntity", target)
 		end
 	else
-		players_hook[client] = nil
-		
-		local count = 0
-		for k in pairs(players_hook) do
-		    if IsValid(k) then
-		        count = count + 1
-		    end
-		end
-		
-		if count <= 0 then
-		    remove_hook()
-		end
+		update_hook(client)
 	end
 end
 
@@ -150,4 +156,6 @@ netstream.Hook("AdminESP:CameraTeleportToPosition", function(client, vector, ang
 	timer.Simple(0.1, function()
 		client:SetEyeAngles(angles)
 	end)
+
+	update_hook(client)
 end)

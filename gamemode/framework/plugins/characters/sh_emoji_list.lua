@@ -1601,7 +1601,7 @@ Character.emoji:Register("monaca", {
 		"19.png",
 		"20.png",
 		"21.png"
-	}
+	},
 	["На коляске"] = {
 		"22.png",
 		"23.png",

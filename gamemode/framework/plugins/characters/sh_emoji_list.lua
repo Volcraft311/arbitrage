@@ -84,13 +84,7 @@ Character.emoji:Register("celestia", {
 		"14.png",
 		"15.png",
 		"16.png",
-		"17.png",
-		"18.png",
-		"19.png",
-		"20.png",
-		"21.png",
-		"22.png",
-		"23.png"
+		"17.png"
 	}
 })
 
@@ -291,7 +285,8 @@ Character.emoji:Register("mondo", {
 		"14.png",
 		"15.png",
 		"16.png",
-		"17.png"
+		"17.png",
+		"18.png"
 	}
 })
 
@@ -385,8 +380,7 @@ Character.emoji:Register("yasuhiro", {
 		"13.png",
 		"14.png",
 		"15.png",
-		"16.png",
-		"17.png"
+		"16.png"
 	}
 })
 
@@ -493,9 +487,7 @@ Character.emoji:Register("gundham", {
 		"19.png",
 		"20.png",
 		"21.png",
-		"22.png",
-		"23.png",
-		"24.png"
+		"22.png"
 	}
 })
 
@@ -571,7 +563,8 @@ Character.emoji:Register("ibuki", {
 		"13.png",
 		"14.png",
 		"15.png",
-		"16.png"
+		"16.png",
+		
 	}
 })
 
@@ -799,8 +792,7 @@ Character.emoji:Register("twogami", {
 		"12.png",
 		"13.png",
 		"14.png",
-		"15.png",
-		"16.png"
+		"15.png"
 	}
 })
 

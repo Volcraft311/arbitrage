@@ -460,7 +460,13 @@ Character.emoji:Register("fuyuhiko", {
 		"13.png",
 		"14.png",
 		"15.png",
-		"16.png"
+		"16.png",
+		"17.png",
+		"18.png",
+		"19.png",
+		"20.png",
+		"21.png",
+		"22.png"
 	}
 })
 
@@ -513,7 +519,10 @@ Character.emoji:Register("hajime", {
 		"18.png",
 		"19.png",
 		"20.png",
-		"21.png"
+		"21.png",
+		"22.png",
+		"23.png",
+		"24.png"
 	}
 })
 
@@ -564,7 +573,12 @@ Character.emoji:Register("ibuki", {
 		"14.png",
 		"15.png",
 		"16.png",
-		
+		"17.png",
+		"18.png",
+		"19.png",
+		"20.png",
+		"21.png",
+		"22.png"
 	}
 })
 
@@ -745,7 +759,15 @@ Character.emoji:Register("sonia", {
 		"13.png",
 		"14.png",
 		"15.png",
-		"16.png"
+		"16.png",
+		"17.png",
+		"18.png",
+		"19.png",
+		"20.png",
+		"21.png",
+		"22.png",
+		"23.png",
+		"24.png"
 	}
 })
 
@@ -1450,8 +1472,7 @@ Character.emoji:Register("tsumugi", {
 		"25.png",
 		"26.png",
 		"27.png",
-		"28.png",
-		"29.png"
+		"28.png"
 	}
 })
 

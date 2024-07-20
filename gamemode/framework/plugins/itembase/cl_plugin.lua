@@ -18,42 +18,42 @@ local items_info = {}
 asterionlib.entscollector:AddTrack("items", {
 	delay_apply = 1,
 	onCanTrack = function(entity)
-        return entity:GetClass() == "arb_item"
-	end, 
+		return entity:GetClass() == "arb_item"
+	end,
 	onCanApply = function(entity)
-	    if entity:GetPos():DistToSqr(EyePos()) > 200000 then return false end
-	    if entity:IsDormant() then return false end
-	    
-	    local uniqueID = entity:GetUniqueID()
-	    if !uniqueID then return false end
-	    
-	    local id = entity:GetItemID()
-	    if !id then return false end
+		if entity:GetPos():DistToSqr(EyePos()) > 200000 then return false end
+		if entity:IsDormant() then return false end
+
+		local uniqueID = entity.GetUniqueID and entity:GetUniqueID()
+		if !uniqueID then return false end
+
+		local id = entity.GetItemID and entity:GetItemID()
+		if !id then return false end
 
 		local item = (PLUGIN.instances[id] or PLUGIN.list[uniqueID]) or Arbitrage.meta.item
 		if !item then return false end
-		    
+
 		local name = item:GetName()
 		local desc = item:GetDescription()
 		local category = item:GetCategory()
 
 		local path = item:GetIcon()
-	    local icon = nil
-	    if string.isURL(path) then
-	        asterionlib.downloader:Image(path, function(mat)
-	            icon = mat
-	        end)
-	    else
-	        icon = Material(path)
-	    end
-	    
-        items_info[entity] = items_info[entity] or {alpha = 0}
-        items_info[entity].name = name
-        items_info[entity].desc = desc
-        items_info[entity].category = category
-        items_info[entity].icon = icon
-	    
-	    return true
+		local icon = nil
+		if string.isURL(path) then
+			asterionlib.downloader:Image(path, function(mat)
+				icon = mat
+			end)
+		else
+			icon = Material(path)
+		end
+
+		items_info[entity] = items_info[entity] or {alpha = 0}
+		items_info[entity].name = name
+		items_info[entity].desc = desc
+		items_info[entity].category = category
+		items_info[entity].icon = icon
+
+		return true
 	end
 })
 
@@ -62,17 +62,17 @@ function PLUGIN:HUDPaint()
 	local ent = LocalTraceEntity()
 	local data = asterionlib.entscollector:GetApply("items")
 	for k, entity in ipairs(data) do
-	    if !IsValid(entity) then continue end
-	    
-	    local isTraceEntity = ent == entity
-	    local info = items_info[entity]
-	    
-	    if !isTraceEntity and info.alpha <= 0.1 then continue end
-	    info.alpha = Lerp(ft * 3, info.alpha, isTraceEntity and 256 or 0)
-	    
-	    if info.alpha <= 0.1 then continue end
-	    
-	    self.infoMenu:Paint(entity, info.name, info.desc, info.category, info.icon, info.alpha)
+		if !IsValid(entity) then continue end
+
+		local isTraceEntity = ent == entity
+		local info = items_info[entity]
+
+		if !isTraceEntity and info.alpha <= 0.1 then continue end
+		info.alpha = Lerp(ft * 3, info.alpha, isTraceEntity and 256 or 0)
+
+		if info.alpha <= 0.1 then continue end
+
+		self.infoMenu:Paint(entity, info.name, info.desc, info.category, info.icon, info.alpha)
 	end
 
 	self.actionMenu:Paint()
@@ -123,13 +123,13 @@ function PLUGIN:EditProperties(itemID)
 end
 
 netstream.Hook("ItemBase:SyncItem", function(uniqueID, itemID, data)
-    ItemBase:New(uniqueID, itemID)
-    ItemBase.data[itemID] = data
+	ItemBase:New(uniqueID, itemID)
+	ItemBase.data[itemID] = data
 end)
 
 netstream.Hook("ItemBase:SetData", function(id, key, value)
-    ItemBase.data[id] = ItemBase.data[id] or {}
-    ItemBase.data[id][key] = value
+	ItemBase.data[id] = ItemBase.data[id] or {}
+	ItemBase.data[id][key] = value
 end)
 
 netstream.Hook("ItemBase:OpenActions", function(uniqueID, data, entity)

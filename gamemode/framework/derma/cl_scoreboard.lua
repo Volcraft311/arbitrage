@@ -226,15 +226,15 @@ function PANEL:CreateLeftPanel()
     bottomPanel.Paint = P
 
     local serverstat = asterionlib.serverstat:Get()
-    local p_cpu = math.floor(serverstat.ProcessCPUUsage)
-    local s_cpu = math.floor(serverstat.SystemCPUUsage)
+    -- local p_cpu = math.floor(serverstat.ProcessCPUUsage)
+    local s_cpu = math.Clamp(math.floor(serverstat.SystemCPUUsage) * 2, 0, 100)
     local s_m = math.floor(serverstat.SystemMemoryUsage)
     local s_tm = math.floor(serverstat.SystemTotalMemory)
     local s_m_interest = math.floor(100 / (s_tm / s_m))
 
     self:CreateProgressPanel(bottomPanel, "System Memory: " .. s_m_interest .. "% (" .. s_m .. "/" .. s_tm .. " MiB)", s_m_interest, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
     self:CreateProgressPanel(bottomPanel, "System CPU: " .. s_cpu .. "%", s_cpu, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
-    self:CreateProgressPanel(bottomPanel, "Process CPU: " .. p_cpu .. "%", p_cpu, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
+    -- self:CreateProgressPanel(bottomPanel, "Process CPU: " .. p_cpu .. "%", p_cpu, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
 end
 
 function PANEL:CreateText(parent, data, font, bReverse)
@@ -588,13 +588,13 @@ function PANEL:CreateRightPanel()
     local edict_c = asterionlib.GetEdictCount()
     local edict_mc = asterionlib.GetMaxEdictCount()
     local edict_interest = math.floor(100 / (edict_mc / edict_c))
-    local fps_c = asterionlib.GetServerFPS()
-    local fps_mc = asterionlib.GetMaxServerFPS()
-    local fps_interest = math.floor(100 / (fps_mc / fps_c))
+    -- local fps_c = asterionlib.GetServerFPS()
+    -- local fps_mc = asterionlib.GetMaxServerFPS()
+    -- local fps_interest = math.floor(100 / (fps_mc / fps_c))
 
     self:CreateProgressPanel(bottomPanel, "Precached Models: " .. mp_interest .. "% (" .. mp_c .. "/" .. mp_mc .. ")", mp_interest, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)}, true)
     self:CreateProgressPanel(bottomPanel, "Entity Limit: " .. edict_interest .. "% (" .. edict_c .. "/" .. edict_mc .. ")", edict_interest, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)}, true)
-    self:CreateProgressPanel(bottomPanel, "Server FPS: " .. fps_interest .. "% (" .. fps_c .. "/" .. fps_mc .. ")", fps_interest, {Color(255, 57, 57), Color(255, 187, 0), Color(106, 230, 106)}, true)
+    -- self:CreateProgressPanel(bottomPanel, "Server FPS: " .. fps_interest .. "% (" .. fps_c .. "/" .. fps_mc .. ")", fps_interest, {Color(255, 57, 57), Color(255, 187, 0), Color(106, 230, 106)}, true)
 end
 
 function PANEL:Paint(w, h)

@@ -249,59 +249,30 @@ local actionList = {
 
         target:SetNetVar("arb.oldData", nil)
         Character.team:Join(target, data[1], true)
+
         timer.Simple(0.1, function()
             target:SetPos(data[2])
             Arbitrage.player.SetupHealth(target)
-
-            local info = target.persistent
-            if info then
-                target:SetModel(info.model)
-
-                local saver = info.saver
-                if saver then
-                    timer.Simple(0.4, function()
-                        target:SetSkin(saver.Skin)
-                        target:SetMaterial(saver.Material)
-                        target:SetRenderMode(saver.RenderMode)
-                        target:SetColor(saver.Color)
-
-                        for k, v in pairs(saver.BodyG) do
-                            target:SetBodygroup(k, v)
-                        end
-
-                        for k, v in pairs(saver.SubMat) do
-                            target:SetSubMaterial(k, v)
-                        end
-                    end)
-                end
-
-                if info.composite and #info.composite > 0 then
-                    timer.Simple(FrameTime(), function()
-                        CompositeEntities.LoadingArray(info.composite, target)
-                    end)
-                end
-            end
-
-            target.persistent = nil
         end)
 
         for k, v in ipairs(ents.FindByClass("prop_ragdoll")) do
-            if v.client == target then
-                local inventory = v:GetInventory() or v._containerInventory
-                if inventory then
-                    for x = 1, inventory.w do
-                        for y = 1, inventory.h do
-                            local item = inventory:GetItemAt(x, y)
+            if v:GetNetVar("sIsPersistent") != target:SteamID() then continue end
 
-                            if item then
-                                item:Transfer(target:GetInventory():GetID(), x, y)
-                            end
-                        end
-                    end
+            target:LoadSaverInfo(v:GetSaverInfo(), true)
+
+            local inventory = v:GetInventory() or v._containerInventory
+            if !inventory then continue end
+
+            for x = 1, inventory.w do
+                for y = 1, inventory.h do
+                    local item = inventory:GetItemAt(x, y)
+                    if !item then continue end
+
+                    item:Transfer(target:GetInventory():GetID(), x, y)
                 end
-
-                v:Remove()
             end
+
+            v:Remove()
         end
 
         Arbitrage.adminnotify:SendNotify("returngame", client:FullName(), target:FullName())

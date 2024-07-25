@@ -43,7 +43,7 @@ function Emotes:OnPlayerSitting(client, vehicle)
 			timer.Remove(timerID)
 
 			local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
-			if table.Count(entities) <= 0 then return end
+			if #entities <= 0 then return end
 
 			client:SetNoDraw(true)
 		    client:SetNotSolid(true)

@@ -31,54 +31,43 @@ function PLUGIN:CreateRagdoll(client)
     entity:SetPos(client:GetPos())
     entity:SetAngles(client:GetAngles())
     entity:SetModel(client:GetModel())
-    entity:SetSkin(client:GetSkin())
     entity:Spawn()
 
-    entity:SetNetVar("player", client)
+    entity:SetNetVar("sIsPersistent", client:SteamID())
 
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
     entity:Activate()
 
     local saver = client._saver
-    if saver then
-        entity:SetSkin(saver.Skin)
-        entity:SetMaterial(saver.Material)
-        entity:SetRenderMode(saver.RenderMode)
-        entity:SetColor(saver.Color)
+    entity._saver = saver -- нужно для получения полного экземпляра сейвера в будущем
 
-        for k, v in pairs(saver.BodyG) do
-            entity:SetBodygroup(k, v)
-        end
-
-        for k, v in pairs(saver.SubMat) do
-            entity:SetSubMaterial(k, v)
-        end
-    end
-
-    client.persistent = {}
-    client.persistent.model = client:GetModel()
-    client.persistent.saver = saver
-
-    local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
-    if table.Count(entities) > 0 then
-        local array = CompositeEntities.GetArrayEntitites(client)
-
-        client.persistent.composite = array
-
-        if #array > 0 then
-            CompositeEntities.LoadingArray(array, entity)
-        end
-    end
+    entity:LoadSaverInfo(saver)
 
     return entity
+end
+
+function PLUGIN:ClearCompositeEntities(client)
+    client:SetNoDraw(true)
+    client:SetNotSolid(true)
+    client:DrawWorldModel(false)
+
+    local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
+    for _, entity in ipairs(entities) do
+        if IsValid(entity) then
+            entity:SetNoDraw(true)
+            entity:SetNotSolid(true)
+            entity:Remove()
+        end
+    end
 end
 
 function PLUGIN:DoPlayerDeath(client, attacker, damageinfo)
     if Arbitrage.OffSpawnPersistent() then return end
     if !client:InGame() then return end
 
+    self:ClearCompositeEntities(client)
+
     local entity = self:CreateRagdoll(client)
-    entity.client = client
     entity.name = client:Name()
 
     do
@@ -129,8 +118,10 @@ netstream.Hook("fb:TraceBody", function(client, entity)
         end
     end
 
+    if Arbitrage.OffSoundMassFindCorpse() then return end
+
     local count = table.Count(entity.findClients)
-    if count == 3 and !Arbitrage.OffSoundMassFindCorpse() then
+    if count == 3 then
         for k, v in ipairs(player.GetAll()) do
             v:SendLua([[
                 sound.PlayFile("sound/discoveryannounce.wav", "", function(station)

@@ -124,7 +124,7 @@ end
 do
     local workshop = asterionlib.workshop
 
-    hook.Add("asterionlib.workshop:Initialize", "asterionlib.workshop", function()
+    hook.Add("asterionlib.workshop:Initialize", "arbitrage.workshop", function()
         -- MAIN
         workshop:Add("2715755590") -- Asterion Academy - Main Content #1
         workshop:Add("2786490267") -- Asterion Academy - Main Content #2

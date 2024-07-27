@@ -122,10 +122,10 @@ local function RecoveryFunc(item, target)
 
     local value = tonumber(item:GetSetHealth())
     if value > 0 then
-        local delay = (client:GetTemporaryStatusEffectDelay("health") or CurTime()) - CurTime()
+        local delay = (target:GetTemporaryStatusEffectDelay("health") or CurTime()) - CurTime()
         delay = math.Clamp(delay + value, 0, 100)
 
-        client:SetTemporaryStatusEffect("health", delay)
+        target:SetTemporaryStatusEffect("health", delay)
     elseif value < 0 then
         target:TakeDamage(-value)
     end
@@ -140,7 +140,7 @@ local function RecoveryFunc(item, target)
         local uniqueID = Medical:GetTemporaryStatusEffectsByName(name)
         if !uniqueID then continue end
 
-        client:AddTemporaryStatusEffect(uniqueID, delay)
+        target:AddTemporaryStatusEffect(uniqueID, delay)
     end
 
     local remove_status_effects = item:GetRemoveStatusEffects()
@@ -148,7 +148,7 @@ local function RecoveryFunc(item, target)
         local uniqueID = Medical:GetTemporaryStatusEffectsByName(name)
         if !uniqueID then continue end
 
-        client:RemoveTemporaryStatusEffect(uniqueID)
+        target:RemoveTemporaryStatusEffect(uniqueID)
     end
 
     local left = item:GetLeft()

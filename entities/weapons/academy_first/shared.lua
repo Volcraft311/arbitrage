@@ -542,8 +542,8 @@ if CLIENT then
 
         if client:GetLocalVar("bIsHoldingObject", false) then
             Hints:AddKeyDraw("Отпустить объект", "+reload")
-            Hints:AddKeyDraw("Кинуть объект", MOUSE_LEFT)
-            Hints:AddKeyDraw("Крутить объект вокруг оси", MOUSE_RIGHT)
+            Hints:AddKeyDraw("Кинуть", MOUSE_LEFT)
+            Hints:AddKeyDraw("Крутить вокруг оси", MOUSE_RIGHT)
         else
             local isAttack = self:GetAttack()
             Hints:AddKeyDraw((isAttack and "Опустить" or "Поднять") .. " руки", "+reload")

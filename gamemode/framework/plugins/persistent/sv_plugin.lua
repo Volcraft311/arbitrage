@@ -11,34 +11,30 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-
-local PLUGIN = PLUGIN
-
 local meta = FindMetaTable("Entity")
 
 function meta:SetCorpse(bSteamID)
-    self:SetNetVar("iscorpse", bSteamID)
+    self:SetNetVar("sCorpseAttacker", bSteamID)
 end
 
-function PLUGIN:EntityRemoved(entity)
+function Persistent:EntityRemoved(entity)
     if entity:IsCorpse() then
         entity:SetCorpse(false)
     end
 end
 
-function PLUGIN:CreateRagdoll(client)
+function Persistent:CreateRagdoll(client)
     local entity = ents.Create("prop_ragdoll")
     entity:SetPos(client:GetPos())
     entity:SetAngles(client:GetAngles())
     entity:SetModel(client:GetModel())
+    entity:SetModelScale(client:GetModelScale())
     entity:Spawn()
-
-    entity:SetNetVar("sIsPersistent", client:SteamID())
 
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
     entity:Activate()
 
-    local saver = client._saver
+    local saver = client:GetSaverInfo()
     entity._saver = saver -- нужно для получения полного экземпляра сейвера в будущем
 
     entity:LoadSaverInfo(saver)
@@ -46,7 +42,7 @@ function PLUGIN:CreateRagdoll(client)
     return entity
 end
 
-function PLUGIN:ClearCompositeEntities(client)
+function Persistent:ClearCompositeEntities(client)
     client:SetNoDraw(true)
     client:SetNotSolid(true)
     client:DrawWorldModel(false)
@@ -61,19 +57,15 @@ function PLUGIN:ClearCompositeEntities(client)
     end
 end
 
-function PLUGIN:DoPlayerDeath(client, attacker, damageinfo)
-    if Arbitrage.OffSpawnPersistent() then return end
-    if !client:InGame() then return end
-
-    self:ClearCompositeEntities(client)
-
-    local entity = self:CreateRagdoll(client)
+function Persistent:SetPersistent(entity, client, attacker)
+    entity:SetNetVar("sIsPersistent", client:SteamID())
     entity.name = client:Name()
 
     do
         local inventory = client:GetInventory()
         if !inventory then return end
 
+        entity._containerTime = 1
         entity._containerName = client:Name()
         entity._containerInventory = InventoryBase.CreateInventory(inventory.w, inventory.h)
 
@@ -92,13 +84,26 @@ function PLUGIN:DoPlayerDeath(client, attacker, damageinfo)
     entity:SetCorpse(corpseInfo)
 end
 
+function Persistent:DoPlayerDeath(client, attacker)
+    self:ClearCompositeEntities(client)
+
+    if Arbitrage.OffSpawnPersistent() then return end
+    if !client:InGame() then return end
+
+    local ragdoll = client:GetRagdoll()
+    if IsValid(ragdoll) then return end
+
+    local entity = self:CreateRagdoll(client)
+    self:SetPersistent(entity, client, attacker)
+end
+
 netstream.Hook("fb:ChangeFOV", function(client)
     if Arbitrage.OffCorpseEffect() then return end
 
     local oldFOV = client:GetFOV()
-    client:SetFOV(oldFOV - 15, PLUGIN.turnoff_time * 0.65)
+    client:SetFOV(oldFOV - 15, Persistent.turnoff_time * 0.65)
 
-    timer.Simple(PLUGIN.turnoff_time, function()
+    timer.Simple(Persistent.turnoff_time, function()
         if !IsValid(client) then return end
 
         client:SetFOV(0, 1)
@@ -113,7 +118,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
     entity.findClients[client:SteamID()] = true
 
     for k, v in ipairs(player.GetAll()) do
-        if PLUGIN:AllowLogFindCorpse(v) then
+        if Persistent:AllowLogFindCorpse(v) then
             Arbitrage.commands.Notify(v, Format("%s(%s) обнаружил труп! (%s)", client:Name(), client:SteamName(), tostring(entity)))
         end
     end

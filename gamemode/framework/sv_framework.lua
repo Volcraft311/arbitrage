@@ -511,6 +511,31 @@ Arbitrage.commands.Add("spectate", {
     end
 })
 
+Arbitrage.commands.Add("fallover", {
+    arguments = {
+        [1] = {
+            name = "Время",
+            type = "number",
+            important = false
+        },
+    },
+    OnAction = function(client, delay)
+        if delay != nil then
+            delay = tonumber(delay)
+
+            if delay == 0 then
+                delay = nil
+            end
+        end
+
+        if tonumber(delay) then
+            delay = math.Clamp(delay, 1, 60)
+        end
+
+        client:FallOver(delay)
+    end
+})
+
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end

@@ -177,3 +177,11 @@ end)
 PLUGIN:AddNewNotify("startendgame", function(client)
     return Color(63, 162, 184), client, color_white, " запустил заставку (endgame)"
 end)
+
+PLUGIN:AddNewNotify("setfallover", function(client, target, delay)
+    return Color(63, 162, 184), client, color_white, " опрокинул игрока ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), delay or 1, color_white, " секунд"
+end)
+
+PLUGIN:AddNewNotify("setstandup", function(client, target, delay)
+    return Color(63, 162, 184), client, color_white, " поднял игрока ", Color(197, 181, 60), target
+end)

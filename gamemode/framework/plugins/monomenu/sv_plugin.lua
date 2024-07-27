@@ -455,6 +455,20 @@ local actionList = {
         if message then
             client:ChatNotify(message)
         end
+    end,
+    ["setfallover"] = function(client, target, delay)
+        if !IsValid(target) then return end
+
+        target:FallOver(delay)
+
+        Arbitrage.adminnotify:SendNotify("setfallover", client:FullName(), target:FullName(), delay)
+    end,
+    ["setstandup"] = function(client, target)
+        if !IsValid(target) then return end
+
+        target:StandUp()
+
+        Arbitrage.adminnotify:SendNotify("setstandup", client:FullName(), target:FullName())
     end
 }
 

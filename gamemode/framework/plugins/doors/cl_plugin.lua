@@ -334,8 +334,18 @@ function PLUGIN:Think()
 		if !IsValid(entity) then return end
 
 		if entity:IsDoor() then
-			openDoorMenu(entity)
-		elseif entity:IsPlayer() then
+			return openDoorMenu(entity)
+		end
+
+		local bIsRagdoll = entity:GetClass() == "prop_ragdoll"
+		if entity:IsPlayer() or bIsRagdoll then
+			local ragdollSteamID = entity:GetNetVar("sIsRagdoll")
+			if ragdollSteamID then
+				entity = player.GetBySteamID(ragdollSteamID)
+
+				if !IsValid(entity) then return end
+			end
+
 			MonoMenu:OpenEntityMenu(entity, ScrW() / 2, ScrH() / 2)
 		end
 	end

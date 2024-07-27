@@ -82,6 +82,7 @@ function ItemBase.CreationSync(client)
 end
 
 netstream.Hook("ItemBase:SendAction", function(client, itemID, action)
+    if client:IsRagdolling() then return end
     if client:IsSpectate() then return end
 
     local item = ItemBase.instances[itemID]

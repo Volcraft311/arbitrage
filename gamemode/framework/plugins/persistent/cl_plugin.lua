@@ -11,8 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
-
 -- Localize Global Calls
 local surface_GetTextureID = surface.GetTextureID
 local math_abs = math.abs
@@ -28,7 +26,6 @@ local ScrW = ScrW
 local ScrH = ScrH
 local surface_SetMaterial = surface.SetMaterial
 local surface_SetDrawColor = surface.SetDrawColor
-local Color = Color
 local surface_DrawTexturedRectRotated = surface.DrawTexturedRectRotated
 local math_Rand = math.Rand
 local surface_DrawTexturedRect = surface.DrawTexturedRect
@@ -41,12 +38,12 @@ local IsValid = IsValid
 local netstream = netstream
 
 
-PLUGIN.alpha = 255
-PLUGIN.isOn = false
-PLUGIN.bodyList = PLUGIN.bodyList or {}
+Persistent.alpha = 255
+Persistent.isOn = false
+Persistent.bodyList = Persistent.bodyList or {}
 
 local vignitte = surface_GetTextureID("vgui/vignette")
-function PLUGIN:RenderScreenspaceEffects()
+function Persistent:RenderScreenspaceEffects()
 	if self.alpha >= 250 then return end
 
 	local ba = math_abs(math_sin(RealTime()))
@@ -70,7 +67,7 @@ end
 local static = Material("danganronpa/hud/static.png")
 local lens = Material("effects/strider_pinch_dudv")
 
-function PLUGIN:HUDPaint()
+function Persistent:HUDPaint()
 	local a = self.isOn and 0 or 255
 	if a != 255 or self.alpha < 254.05 then	
 		self.alpha = Lerp(FrameTime(), self.alpha, a)
@@ -103,7 +100,7 @@ function PLUGIN:HUDPaint()
 	end
 end
 
-function PLUGIN:EnableEffect(entity)
+function Persistent:EnableEffect(entity)
 	self.isOn = true
 
 	if !timer_Exists("fb:DisableEffect") then
@@ -124,7 +121,7 @@ function PLUGIN:EnableEffect(entity)
 	netstream.Start("fb:TraceBody", entity)
 end
 
-function PLUGIN:IsOn()
+function Persistent:IsOn()
 	return self.isOn
 end
 
@@ -132,7 +129,7 @@ timer_Create("fb:CheckTrace", 0.1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 
-	if !PLUGIN:AllowDetectCorpse(client) then return end
+	if !Persistent:AllowDetectCorpse(client) then return end
 
 	local trace = client:GetEyeTrace()
 	local entity = trace.Entity
@@ -143,15 +140,15 @@ timer_Create("fb:CheckTrace", 0.1, 0, function()
 
 	if !Arbitrage.KillerDetectsCorpses() and attackerID == client:SteamID() then return end
 
-    local eyePos = EyePos()
+	local eyePos = EyePos()
 	local dist = entity:GetPos():DistToSqr(eyePos)
 	if dist >= 270000 then return end
 
-	if !PLUGIN.bodyList[entity] then
-	    PLUGIN.bodyList[entity] = true
+	if !Persistent.bodyList[entity] then
+		Persistent.bodyList[entity] = true
 
-	    if !Arbitrage.OffCorpseEffect() then
-	    	PLUGIN:EnableEffect(entity)
+		if !Arbitrage.OffCorpseEffect() then
+			Persistent:EnableEffect(entity)
 		end
 	end
 end)

@@ -36,12 +36,13 @@ RegisterCommand("itl", "Описать местное действие или с
 
 RegisterCommand("w", "Шептать персонажам рядом с вами.", {"text"})
 RegisterCommand("y", "Крикнуть персонажам рядом с вами.", {"text"})
+
 RegisterCommand("looc", "Написать в локальный НонРП чат.", {"text"})
 RegisterCommand("ooc", "Написать в глобальный НонРП чат.", {"text"})
 RegisterCommand("broadcast", "Написать уведомление в общий чат.", {"text"})
 RegisterCommand("sg", "Получить изображение экрана игрока.", {"player"})
 RegisterCommand("settime", "Установить время на сервере.", {"time"})
-RegisterCommand("roll", "Крутить число от 0 до 100.", nil, {"number"})
+RegisterCommand("roll", "Крутить число от 0 до указанного числа.", nil, {"number"})
 RegisterCommand("freezeprops", "Заморозить все физические пропы.")
 RegisterCommand("editor", "Зайти в режим редактирования.")
 RegisterCommand("unstuck", "Телепортироваться на ближайшую позицию.")
@@ -51,6 +52,7 @@ RegisterCommand("sitting", "Изменить анимацию при сиден�
 RegisterCommand("mood", "Изменить настроение.", {"number"})
 RegisterCommand("lookaround", "Осмотреться.")
 RegisterCommand("settimespeed", "Изменить скорость времени.", {"number"})
+RegisterCommand("fallover", "Заставь своего персонажа упасть на пол.", nil, {"number"})
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

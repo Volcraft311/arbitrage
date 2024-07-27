@@ -210,6 +210,15 @@ function PLUGIN:ActionsOption()
 			action = function()
 				RunConsoleCommand("say", "/roll")
 			end
+		},
+		{
+			name = "Упасть",
+			id = "fallover",
+			description = "Заставить вашего персонажа упасть на пол",
+			icon = Material("icon16/zoom.png"),
+			action = function()
+				RunConsoleCommand("say", "/fallover")
+			end
 		}
 	}
 

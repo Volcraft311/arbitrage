@@ -101,6 +101,7 @@ netstream.Hook("InventoryBase:GetActions", function(client, itemID)
 end)
 
 netstream.Hook("InventoryBase:TransferItem", function(client, itemID, invID, x, y)
+    if client:IsRagdolling() then return end
     if client:IsSpectate() then return end
 
     local item = ItemBase.instances[itemID]
@@ -130,6 +131,7 @@ netstream.Hook("InventoryBase:StopReceiving", function(client, invID)
 end)
 
 netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
+    if client:IsRagdolling() then return end
     if client:IsSpectate() then return end
 
     local item = ItemBase.instances[itemID]
@@ -161,6 +163,7 @@ netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
 end)
 
 netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
+    if client:IsRagdolling() then return end
     if client:IsSpectate() then return end
 
     local inventory = client:GetInventory()
@@ -199,6 +202,7 @@ netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
 end)
 
 netstream.Hook("InventoryBase:ItemUnStack", function(client, itemID, invID, value, x, y)
+    if client:IsRagdolling() then return end
     if client:IsSpectate() then return end
 
     local item = ItemBase.instances[itemID]
@@ -231,6 +235,7 @@ netstream.Hook("InventoryBase:ItemUnStack", function(client, itemID, invID, valu
 end)
 
 netstream.Hook("InventoryBase:ItemStack", function(client, itemID, itemID2)
+    if client:IsRagdolling() then return end
     if client:IsSpectate() then return end
 
     if itemID == itemID2 then return end

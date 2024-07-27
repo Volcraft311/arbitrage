@@ -60,6 +60,7 @@ function PLUGIN:PlayerDisconnected(client)
         entity:SetPos(client:GetPos() - Vector(0, 0, 3))
         entity:GetAngles(client:GetAngles())
         entity:SetModel(client:GetModel())
+        entity:SetModelScale(client:GetModelScale())
         entity:Spawn()
 
         hook.Run("OnCreateDisconnectEntity", client)
@@ -204,11 +205,13 @@ end
 local meta = FindMetaTable("Entity")
 
 function meta:GetSaverInfo()
-    return self._saver and table.Copy(self._saver) or {}
+    return table.Copy(self._saver or {})
 end
 
 function meta:SaveSaverInfo(bDelay)
     timer.Simple(bDelay and 0.6 or 0, function() -- Если мы сохраняем сразу после загрузки, то нужно КД чтобы все объекты успели прогрузиться
+        if !IsValid(self) then return end
+
         self._saver = {}
 
         self._saver.Skin = self:GetSkin()

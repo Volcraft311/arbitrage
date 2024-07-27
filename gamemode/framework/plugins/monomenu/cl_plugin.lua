@@ -591,6 +591,36 @@ local function getActionList(clientinfo)
                 }
             },
             {
+                name = "Изменить статус регдулла",
+                icon = "icon16/zoom.png",
+                data = {
+                    {
+                        name = "Опрокинуть",
+                        icon = "icon16/zoom_in.png",
+                        data = function()
+                            Derma_StringRequest("Изменить регдулл статус", "Введите значение на которое вы хотите опрокинуть игрока.\n0 - дать ему возможность встать самому\n-1 - навсегда", 5, function(text)
+                                if !tonumber(text) then return end
+
+                                runAction("setfallover", client, tonumber(text))
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid and !client:IsRagdolling()
+                        end
+                    },
+                    {
+                        name = "Поднять",
+                        icon = "icon16/zoom_out.png",
+                        data = function()
+                            runAction("setstandup", client)
+                        end,
+                        check = function()
+                            return a_isvalid and client:IsRagdolling()
+                        end
+                    }
+                }
+            },
+            {
                 name = "Включить подсветку",
                 icon = "icon16/arrow_in.png",
                 data = function()
@@ -819,11 +849,20 @@ function PLUGIN:OpenEntityMenu(entity, w, h)
 end
 
 local function OnScreenClick(eyepos, eyevec)
-    local ent = GetHovered(eyepos, eyevec)
-    if !IsValid(ent) then return end
-    if !ent:IsPlayer() then return end
+    local entity = GetHovered(eyepos, eyevec)
+    if !IsValid(entity) then return end
 
-    PLUGIN:OpenEntityMenu(ent)
+    local bIsRagdoll = entity:GetClass() == "prop_ragdoll"
+    if entity:IsPlayer() or bIsRagdoll then
+        local ragdollSteamID = entity:GetNetVar("sIsRagdoll")
+        if ragdollSteamID then
+            entity = player.GetBySteamID(ragdollSteamID)
+
+            if !IsValid(entity) then return end
+        end
+
+        PLUGIN:OpenEntityMenu(entity)
+    end
 end
 
 hook.Add("GUIMousePressed", "MonoMenu:Properties", function(code, vector)

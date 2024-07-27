@@ -248,21 +248,40 @@ function meta:SaveSaverInfo(bDelay)
 end
 
 function meta:LoadSaverInfo(saver, bDelay)
+    saver = saver or {}
+
     timer.Simple(bDelay and 0.4 or 0, function()
-        self:SetSkin(saver.Skin)
-        self:SetMaterial(saver.Material)
-        self:SetRenderMode(saver.RenderMode)
-        self:SetColor(saver.Color)
+        if !IsValid(self) then return end
 
-        for k, v in pairs(saver.BodyG) do
-            self:SetBodygroup(k, v)
+        if saver.Skin then
+            self:SetSkin(saver.Skin)
         end
 
-        for k, v in pairs(saver.SubMat) do
-            self:SetSubMaterial(k, v)
+        if saver.Material then
+            self:SetMaterial(saver.Material)
         end
 
-        if CompositeEntities then
+        if saver.RenderMode then
+            self:SetRenderMode(saver.RenderMode)
+        end
+
+        if saver.Color then
+            self:SetColor(saver.Color)
+        end
+
+        if saver.BodyG then
+            for k, v in pairs(saver.BodyG) do
+                self:SetBodygroup(k, v)
+            end
+        end
+
+        if saver.SubMat then
+            for k, v in pairs(saver.SubMat) do
+                self:SetSubMaterial(k, v)
+            end
+        end
+
+        if CompositeEntities and saver.CompositeEntities then
             CompositeEntities.LoadingArray(saver.CompositeEntities, self)
         end
 

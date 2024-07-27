@@ -89,6 +89,7 @@ function meta:FallOver(delay)
     self:SetVelocity(-self:GetVelocity())
     self:SelectWeapon("academy_key")
 
+    self:AddTemporaryStatusEffect("stun", 0)
     RagdollSystem:CreateSyncTime(self)
 
     entity._containerTime = 30
@@ -134,33 +135,11 @@ function meta:StandUp(bNoRemove)
         end)
     end
 
+    if self:Health() > 10 then
+        self:RemoveTemporaryStatusEffect("stun")
+    end
+
     netstream.Start(self, "RagdollSystem:ClosePanel")
 
     return entity
 end
-
-netstream.Hook("RagdollSystem:StandUp", function(client, entity, time)
-    if isnumber(client.fallOverDelay) and client.fallOverDelay <= -1 then return end
-
-    local ragdoll = client:GetRagdoll()
-    if !IsValid(ragdoll) then return end
-    if entity != ragdoll then return end
-
-    if IsValid(entity._HeldOwner) then return end
-
-    time = isnumber(time) and math.Clamp(time, 1, 60) or 5
-
-    Arbitrage.action.ActionRun(client, "Встаем на ноги", time, function()
-        if !IsValid(ragdoll) then return true end
-
-        local length = ragdoll:GetVelocity():Length()
-        local bAllowStand = length <= 2
-        if !bAllowStand then
-            return true
-        end
-
-         return false
-    end, function(activator)
-        client:StandUp()
-    end)
-end)

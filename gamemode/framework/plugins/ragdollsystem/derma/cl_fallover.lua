@@ -38,6 +38,8 @@ function PANEL:SendNetStandUp()
     if isnumber(self.standUpTime) and self.standUpTime <= -1 then return end
     if IsValid(Arbitrage.gui.action) then return end
 
+    if RealTime() <= self.timeStart + 5 then return end
+
     local ragdoll = self:GetRagdoll()
     if RealTime() >= (self.cdNetTime or 0) and IsValid(ragdoll) then
         netstream.Start("RagdollSystem:StandUp", ragdoll, self.standUpTime)

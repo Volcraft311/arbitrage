@@ -123,7 +123,7 @@ function PANEL:TextPaint(ft, w, h, ragdoll)
     if self.alphaStandUp >= 0.5 then
         draw.SimpleText("Нажмите 'ПРОБЕЛ', чтобы встать", "arb.Font_FuturaPTBook_10", w / 2, h * 0.7 + height, Color(255, 255, 255, self.alphaStandUp), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-        if self.alphaStandUp >= 150 and input.IsKeyDown(KEY_SPACE) then
+        if self.alphaStandUp >= 150 and input.IsKeyDown(KEY_SPACE) and !vgui.CursorVisible() then
             self:SendNetStandUp()
         end
     end

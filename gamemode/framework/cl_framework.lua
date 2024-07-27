@@ -176,7 +176,6 @@ function Arbitrage:HUDPaint()
     Arbitrage.hud.CrosshairDraw()
     Arbitrage.hud.PlayerInfoDraw()
     Arbitrage.hud.ALTMenuDraw()
-    Arbitrage.action.Draw()
     Arbitrage.evidence.Draw()
 end
 

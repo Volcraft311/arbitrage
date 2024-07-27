@@ -18,9 +18,7 @@ local istable = istable
 local tostring = tostring
 local tonumber = tonumber
 local SysTime = SysTime
-local Lerp = Lerp
 local FrameTime = FrameTime
-local CurTime = CurTime
 local math_Clamp = math.Clamp
 local Color = Color
 local draw_SimpleText = draw.SimpleText
@@ -29,76 +27,156 @@ local surface_SetDrawColor = surface.SetDrawColor
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
 local surface_DrawRect = surface.DrawRect
+local IsValid = IsValid
+local vgui_Create = vgui.Create
+local ScrH = ScrH
+local ScrW = ScrW
+local gui_MousePos = gui.MousePos
+local LerpColor = LerpColor
+local render_SetScissorRect = render.SetScissorRect
+local vgui_Register = vgui.Register
 
 Arbitrage.action = Arbitrage.library.Add("action")
 
 netstream.Hook("arb.ActionEnd", function()
     Arbitrage.action.data = Arbitrage.action.data or {}
 
-    Arbitrage.action.data.run = false
+    if !IsValid(Arbitrage.gui.action) then return end
+
+    Arbitrage.gui.action.bOnClose = true
+    Arbitrage.gui.action:CreateAnimation(delay, {
+        index = 4,
+        target = {alpha = 0},
+        easing = "outQuint",
+        Think = function(animation, panel)
+            panel:SetAlpha(panel.alpha)
+        end,
+        OnComplete = function()
+            Arbitrage.gui.action:Remove()
+        end
+    })
 end)
 
 netstream.Hook("arb.ActionRun", function(data)
     if !data then return end
     if !istable(data) then return end
 
-    Arbitrage.action.data = {
-        text = tostring(data.text),
-        time = tonumber(data.time),
-        systime = -SysTime(),
-        run = true,
-    }
-end)
-
-function Arbitrage.action.Draw()
-    if !Arbitrage.action.data then return end
-    if !istable(Arbitrage.action.data) then return end
-    if !Arbitrage.action.data.systime then return end
-
-    Arbitrage.action.data.alpha = Arbitrage.action.data.alpha or 0
-    Arbitrage.action.data.alpha = Lerp(FrameTime() * 5, Arbitrage.action.data.alpha, Arbitrage.action.data.run and 256 or -1)
-
-    if Arbitrage.action.data.alpha <= 0.05 then return end
-
-    if (!Arbitrage.action.timeDot or CurTime() >= Arbitrage.action.timeDot) then
-        Arbitrage.action.dot = Arbitrage.action.dot and (Arbitrage.action.dot + 1) or 0
-        if Arbitrage.action.dot >= 5 then Arbitrage.action.dot = 1 end
-
-        Arbitrage.action.timeDot = CurTime() + 1
+    if IsValid(Arbitrage.gui.action) then
+        Arbitrage.gui.action:Remove()
     end
 
-    local circledraw = math_Clamp((SysTime() + Arbitrage.action.data.systime) * (360 / Arbitrage.action.data.time), 0, 360)
+    local panel = vgui_Create("Action:Menu")
+    panel:SetData({
+        text = tostring(data.text),
+        time = tonumber(data.time),
+        systime = -SysTime()
+    })
 
-    Arbitrage.action.data.color = Arbitrage.action.data.color or {
-        r = 255,
-        g = 255,
-        b = 255
-    }
+    Arbitrage.gui.action = panel
+end)
 
-    Arbitrage.action.data.color.r = Lerp(FrameTime() * 2, Arbitrage.action.data.color.r, circledraw >= 300 and 255 or 255)
-    Arbitrage.action.data.color.g = Lerp(FrameTime() * 2, Arbitrage.action.data.color.g, circledraw >= 300 and 61 or 255)
-    Arbitrage.action.data.color.b = Lerp(FrameTime() * 2, Arbitrage.action.data.color.b, circledraw >= 300 and 96 or 255)
 
-    local color = Color(
-        Arbitrage.action.data.color.r,
-        Arbitrage.action.data.color.g,
-        Arbitrage.action.data.color.b,
-        Arbitrage.action.data.alpha
-    )
+local size = ScrH() * 0.3
+local PANEL = {}
 
-    local text = Arbitrage.action.data.text or "Отсутствует"
+function PANEL:Init()
+    self:SetPos(ScrW() / 2 - size / 2, ScrH() / 2 - size / 2)
+    self:SetSize(size, size)
+    self:SetZPos(-99999)
+    self:SetMouseInputEnabled(false)
+    self:SetKeyboardInputEnabled(false)
+    self:SetDrawOnTop(true)
 
-    draw_SimpleText(text .. string_rep(".", Arbitrage.action.dot), "arb.Font_FuturaPTBook_10", ScrW() / 2, ScrH() / 2 + 30, color, TEXT_ALIGN_CENTER)
+    self.hovered = false
+    self.outAnimation = 1
+    self.data = {}
 
-    local circle = Arbitrage.hud.GeneratePoly(ScrW() / 2, ScrH() / 2, 25, 25)
-    surface_SetDrawColor(0, 0, 0, Arbitrage.action.data.alpha * 0.3)
+    self.alpha = 0
+    self:SetAlpha(self.alpha)
+    self:CreateAnimation(1, {
+        index = 4,
+        target = {alpha = 255},
+        easing = "outQuint",
+
+        Think = function(animation, panel)
+            panel:SetAlpha(panel.alpha)
+        end
+    })
+end
+
+function PANEL:SetData(data)
+    self.data = data
+
+    self.data.text = self.data.text or "Отсутствует"
+    self.data.color = self.data.color or Color(255, 255, 255)
+end
+
+function PANEL:HoverPaint(w, h)
+    local x, y = self:LocalToScreen(0, 0)
+    local mouseX, mouseY = gui_MousePos()
+
+    if mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h then
+        if !self.hovered then
+            self.hovered = true
+
+            if !self.bOnClose then
+                self:CreateAnimation(0.5, {
+                    index = 4,
+                    target = {alpha = 50},
+                    easing = "outQuint",
+                    Think = function(animation, panel)
+                        panel:SetAlpha(panel.alpha)
+                    end
+                })
+            end
+        end
+    elseif self.hovered then
+        self.hovered = false
+
+        if !self.bOnClose then
+            self:CreateAnimation(0.5, {
+                index = 4,
+                target = {alpha = 255},
+                easing = "outQuint",
+
+                Think = function(animation, panel)
+                    panel:SetAlpha(panel.alpha)
+                end
+            })
+        end
+    end
+end
+
+local color_unfinished = Color(255, 255, 255)
+local color_finished = Color(255, 61, 96)
+function PANEL:Paint(w, h)
+    self:HoverPaint(w, h)
+
+    local alpha = self:GetAlpha()
+    local ft = FrameTime()
+    local st = SysTime()
+    local circleClamp = math_Clamp((st + self.data.systime) * (360 / self.data.time), 0, 360)
+
+    local bOnFinished = circleClamp >= 300
+    self.data.color = LerpColor(ft * 2, self.data.color, bOnFinished and color_finished or color_unfinished)
+
+    draw_SimpleText(self.data.text .. string_rep(".", st * 2 % 5), "arb.Font_FuturaPTBook_10", w / 2, h / 2 + 30, self.data.color, TEXT_ALIGN_CENTER)
+
+    local circle = Arbitrage.hud.GeneratePoly(w / 2, h / 2, 25, 25)
+    surface_SetDrawColor(0, 0, 0, alpha * 0.3)
     draw_NoTexture()
     surface_DrawPoly(circle)
 
     asterionlib.DrawRender(function()
-        asterionlib.CircleCustom(ScrW() / 2, ScrH() / 2, 25, 5, circledraw, color_white, -12.5, 0)
+        asterionlib.CircleCustom(w / 2, h / 2, 25, 5, circleClamp, color_white, -12.5, 0)
     end, function()
-        surface_SetDrawColor(Arbitrage.action.data.color.r, Arbitrage.action.data.color.g, Arbitrage.action.data.color.b, Arbitrage.action.data.alpha * 0.5)
-        surface_DrawRect(ScrW() / 2 - 50, ScrH() / 2 - 50, 100, 100)
+        surface_SetDrawColor(self.data.color.r, self.data.color.g, self.data.color.b, alpha * 0.5)
+        surface_DrawRect(w / 2 - 50, h / 2 - 50, 100, 100)
     end)
 end
+
+function PANEL:PaintOver(w, h)
+    render_SetScissorRect(0, 0, 0, 0, false)
+end
+
+vgui_Register("Action:Menu", PANEL, "DPanel")

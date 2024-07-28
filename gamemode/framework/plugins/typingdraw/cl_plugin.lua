@@ -83,14 +83,15 @@ timer_Create("TypingDraw:Update", 1, 0, function()
 	if Arbitrage.lawEnable then return end
 
 	for k, v in ipairs(player_GetAll()) do
-		if v == client then continue end
 		if v:IsSpectate() then continue end
 		if v:IsNocliping() then continue end
 		if v:IsDormant() then continue end
 
+		if !Arbitrage.IsThirdPerson() and v == client then continue end
+
 		local distance = v:GetPos():DistToSqr(EyePos())
 		if distance > d then continue end
-		
+
 		client.tDrawAlpha = client.tDrawAlpha or 0
 
 		PLUGIN.infoList[#PLUGIN.infoList + 1] = {

@@ -153,10 +153,11 @@ timer_Create("VoiceDist:Update", 1, 0, function()
     if !allow then return end
 
     for k, v in ipairs(player_GetAll()) do
-        if v == client then continue end
         if v:IsSpectate() then continue end
         if v:IsNocliping() then continue end
         if v:IsDormant() then continue end
+
+        if !Arbitrage.IsThirdPerson() and v == client then continue end
 
         local distance = v:GetPos():DistToSqr(EyePos())
         if distance > d then continue end
@@ -164,7 +165,7 @@ timer_Create("VoiceDist:Update", 1, 0, function()
         v.arbTextAlphaVoice = v.arbTextAlphaVoice or 0
         v.arbTextAlphaChat = v.arbTextAlphaChat or 0
         v.arbTextColorChat = v.arbTextColorChat or Color(238, 220, 194)
-        
+
         showPlayerList[#showPlayerList + 1] = v
     end
 end)
@@ -207,7 +208,7 @@ function PLUGIN:DrawVoiceIcon()
     if (b == 0 and self.pos2 > 0.1) or (b == 100 and self.pos2 < 99.9) then
         self.pos2 = Lerp(ft * 10, self.pos2, b)
     end
-    
+
     if self.pos2 > 0.1 and self.pos2 < 99.9 then
         self.alpha2 = Lerp(ft * 20, self.alpha2, b * 2.55)
     end
@@ -320,7 +321,7 @@ function PLUGIN:DrawPlayersVoice()
         if (a == 1 and v.arbTextAlphaVoice < 0.95) or (a == 0 and v.arbTextAlphaVoice > 0.05) then
             v.arbTextAlphaVoice = Lerp(ft * 8, v.arbTextAlphaVoice, a)
         end
-        
+
         local fraction = v.arbTextAlphaVoice
         if fraction <= 0.1 then continue end
 

@@ -38,7 +38,10 @@ function InventoryBase:PlayerDeath(client)
     for k, v in pairs(items) do
         if v:GetData("equip") then
             v:UnEquip(client, v)
-            v:Transfer(nil)
+
+            v.bNoAnim = true
+                v:Transfer(nil)
+            v.bNoAnim = nil
 
             local entity = v:GetEntity()
             if IsValid(entity) then

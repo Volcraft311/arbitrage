@@ -175,3 +175,165 @@ netstream.Hook("ItemBase:CreationSync", function(baseID, stored)
 		ItemBase.CreationRegisterItem(baseID, uniqueID, info)
 	end
 end)
+
+netstream.Hook("ItemBase.AnimTakeItem", function(target, pos, ang, model)
+	if target:IsDormant() then return end
+
+	local alpha = 255
+	local scale = 1
+
+	local csEnt = ClientsideModel(model)
+	csEnt:SetPos(pos)
+	csEnt:SetAngles(ang)
+	csEnt:SetRenderMode(RENDERMODE_TRANSCOLOR)
+	csEnt:SetColor(Color(255, 255, 255, 255))
+	csEnt:ManipulateBoneScale(0, Vector(scale, scale, scale))
+
+	local n = 9999999
+	local hook_id = "ItemBase.AnimItem_" .. math.random(1, n) .. math.random(1, n) .. math.random(1, n)
+	local function remove()
+		if IsValid(csEnt) then
+			csEnt:Remove()
+		end
+
+		hook.Remove("Think", hook_id)
+	end
+
+	hook.Add("Think", hook_id, function()
+		if !IsValid(target) then return remove() end
+
+		local ft = FrameTime()
+
+		local endPos = target:GetPos() + target:OBBCenter()
+		local endAng = target:EyeAngles()
+
+		pos = Lerp(ft * 4, pos, endPos)
+		ang = Lerp(ft * 3, ang, endAng)
+		alpha = Lerp(ft * 4, alpha, -2)
+		scale = Lerp(ft * 4, scale, 0.1)
+
+		csEnt:SetPos(pos)
+		csEnt:SetAngles(ang)
+		csEnt:SetColor(Color(255, 255, 255, alpha))
+		csEnt:ManipulateBoneScale(0, Vector(scale, scale, scale))
+
+		if alpha <= 0 then
+			remove()
+		end
+	end)
+end)
+
+local hides_hooks = {
+	"OnEntityCreated",
+	"HUDPaint",
+	"RenderScreenspaceEffects",
+	"RenderScene",
+	"PostDrawTranslucentRenderables",
+	"PreDrawOpaqueRenderables",
+	"PreDrawTranslucentRenderables"
+}
+
+local function awaitSyncEntity(idx, class, callback)
+	local request = 0
+	local hook_id = "awaitSyncEntity_" .. idx .. class
+	hook.Add("Think", hook_id, function()
+		local entity = Entity(idx)
+
+		request = request + 1
+		if request >= 1000 then
+			for k, v in ipairs(hides_hooks) do
+				hook.Remove(v, hook_id)
+			end
+
+			return hook.Remove("Think", hook_id)
+		end
+
+		if IsValid(entity) and entity:GetClass() == class then
+			hook.Remove("Think", hook_id)
+			callback(entity)
+		end
+	end)
+end
+
+netstream.Hook("ItemBase.AnimDropItem", function(target, idx, class)
+	if target:IsDormant() then return end
+
+	local function hide()
+		local entity = Entity(idx)
+
+		if IsValid(entity) and entity:GetClass() == class then
+			entity:SetNoDraw(true)
+			entity:SetNotSolid(true)
+			entity:DrawShadow(false)
+		end
+	end
+
+	local hook_id = "ItemBase.AnimItem_" .. idx
+	for k, v in ipairs(hides_hooks) do
+		hook.Add(v, hook_id, function()
+			hide()
+		end)
+	end
+
+	awaitSyncEntity(idx, class, function(entity)
+		local pos = target:EyePos()
+		local ang = Angle(0, entity:GetAngles().y + math.random(-180, 180), 0)
+		local alpha = 0
+		local scale = 0.5
+
+		local csEnt = ClientsideModel(entity:GetModel())
+		csEnt:SetPos(pos)
+		csEnt:SetAngles(ang)
+		csEnt:SetRenderMode(RENDERMODE_TRANSCOLOR)
+		csEnt:SetColor(Color(255, 255, 255, 0))
+		csEnt:ManipulateBoneScale(0, Vector(scale, scale, scale))
+
+		entity:SetNoDraw(true)
+		entity:SetNotSolid(true)
+		entity:DrawShadow(false)
+
+		local function remove()
+			if IsValid(entity) then
+				entity:SetNoDraw(false)
+				entity:SetNotSolid(false)
+				entity:DrawShadow(true)
+			end
+
+			if IsValid(csEnt) then
+				csEnt:Remove()
+			end
+
+			hook.Remove("Think", hook_id)
+			for k, v in ipairs(hides_hooks) do
+				hook.Remove(v, hook_id)
+			end
+		end
+
+		hook.Add("Think", hook_id, function()
+			if !IsValid(entity) then
+				return remove()
+			end
+
+			hide()
+
+			local ft = FrameTime()
+
+			local endPos = entity:GetPos()
+			local endAng = entity:GetAngles()
+
+			pos = Lerp(ft * 6, pos, endPos)
+			ang = Lerp(ft * 4, ang, endAng)
+			alpha = Lerp(ft * 8, alpha, 257)
+			scale = Lerp(ft * 4, scale, 1)
+
+			csEnt:SetPos(pos)
+			csEnt:SetAngles(ang)
+			csEnt:SetColor(Color(255, 255, 255, alpha))
+			csEnt:ManipulateBoneScale(0, Vector(scale, scale, scale))
+
+			if pos:Distance(entity:GetPos()) <= 0.1 then
+				remove()
+			end
+		end)
+	end)
+end)

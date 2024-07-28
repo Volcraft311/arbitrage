@@ -69,9 +69,17 @@ function ItemBase.GetBase(base)
                 client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
             end
 
+            local entityPos = entity:GetPos()
+            local entityAng = entity:GetAngles()
+            local entityModel = entity:GetModel()
+
             local notify = client:GetInventory():AddItem(item:GetID())
             if notify then
                 Arbitrage.commands.Notify(client, notify)
+            else
+                if !item.bNoAnim then
+                    ItemBase.AnimTakeItem(nil, client, entityPos, entityAng, entityModel)
+                end
             end
 
             for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do

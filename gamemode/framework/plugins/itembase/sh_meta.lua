@@ -135,7 +135,20 @@ if SERVER then
 
             self:HookRun("transfer")
             self:Remove(true, true)
+
             inventory.slots[x][y] = self
+
+            if !self.bNoAnim then
+                local inventoryItem = self.inventory
+                if inventoryItem and inventory and inventoryItem != inventory then
+                    local transmitEntity = inventoryItem:GetOwner()
+                    local receiverEntity = inventory:GetOwner()
+
+                    if IsValid(transmitEntity) and IsValid(receiverEntity) then
+                        ItemBase.AnimTakeItem(transmitEntity, receiverEntity, transmitEntity:GetPos(), transmitEntity:GetAngles(), self:GetModel())
+                    end
+                end
+            end
         else
             inventory = self:GetInventory()
             if !inventory then return "Невозможно передвинуть предмет!" end
@@ -149,39 +162,60 @@ if SERVER then
                 end
             end
 
-            if !IsValid(owner) then return end
+            if IsValid(owner) then
+                -- нужно чтобы выкидывал из контейнера игрок, а не контейнер
+                if owner:GetClass() == "arb_container" then
+                    local newInventory = self._oldInventory
+                    if newInventory then
+                        local transferOwner = newInventory:GetOwner()
+                        if IsValid(transferOwner) then
+                            owner = transferOwner
+                        end
+                    end
+                end
 
-            local dist = 100
-            local tr = nil
-            if owner:IsPlayer() then
-                tr = util.TraceLine({
-                    start = owner:EyePos(),
-                    endpos = owner:EyePos() + owner:EyeAngles():Forward() * dist,
-                    filter = owner
-                })
-            else
-                tr = owner:GetPos() + owner:GetAngles():Forward() * dist
+                local dist = 100
+                local tr = nil
+                if owner:IsPlayer() then
+                    tr = util.TraceLine({
+                        start = owner:EyePos(),
+                        endpos = owner:EyePos() + owner:EyeAngles():Forward() * dist,
+                        filter = owner
+                    })
+                else
+                    tr = owner:GetPos() + owner:GetAngles():Forward() * dist
+                end
+
+
+                self:HookRun("drop")
+                self:Remove(true, true)
+
+                local entity = self:Spawn((isvector(tr) and tr or tr.HitPos) + Vector(0, 0, 5), Angle(0, owner:IsPlayer() and owner:EyeAngles().y - 180 or owner:GetAngles().y - 180, 0))
+
+                if !self.bNoAnim then
+                    ItemBase.AnimDropItem(owner, entity:EntIndex(), entity:GetClass())
+                end
+
+                inventory = nil -- чистим инвентарь, ибо выбросили
             end
-
-            self:HookRun("drop")
-            self:Remove(true, true)
-            local entity = self:Spawn(tr.HitPos + Vector(0, 0, 5))
---          ItemBase.AnimDropItem(owner, entity)
-            inventory = nil -- чистим инвентарь, ибо выбросили
         end
 
         -- Синхранизация
         do
             -- Инвентарь предмета
             local inventoryItem = self.inventory or inventory
-
             if inventoryItem then
                 inventoryItem:Sync()
             end
 
+            -- Старый инвентарь
+            local oldInventoryItem = self._oldInventory
+            if oldInventoryItem and inventoryItem:GetID() != oldInventoryItem:GetID() then
+                oldInventoryItem:Sync()
+            end
+
             -- Инвентарь в который был перемещен предмет
             local inventoryTransfer = InventoryBase.instances[id]
-
             if inventoryTransfer and inventoryItem:GetID() != inventoryTransfer:GetID() then
                 inventoryTransfer:Sync()
 

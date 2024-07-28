@@ -24,31 +24,36 @@ function ItemBase.CreateItemInWorld(uniqueID, pos, ang)
     return item, entity
 end
 
---[[function ItemBase.AnimDropItem(client, entity)
-    local uniqueID = "itemanim_" .. entity:EntIndex()
+local function getPlayersRecivers(pos)
+    local players = {}
 
-    local endpos = entity:GetPos()
-    local startpos = client:GetShootPos()
-    local PhysObj = entity:GetPhysicsObject()
-    if IsValid(PhysObj) then 
-        PhysObj:EnableMotion(false)
+    for k, v in ipairs(player.GetAll()) do
+        local distance = v:GetPos():Distance(pos)
+
+        if distance <= 1000 then
+            players[#players + 1] = v
+        end
     end
 
-    entity:SetPos(startpos)
-    local vector_tween = Tween(startpos, endpos, 2, TWEEN_EASE_LINEAR)
-    vector_tween:SetCallback(function()
-        timer.Remove(uniqueID)
-    end)
-    vector_tween:Start()
+    return players
+end
 
+function ItemBase.AnimTakeItem(transmit, receiver, pos, ang, model)
+    if pos:Distance(receiver:GetPos()) >= 170 then return end
 
-    timer.Create(uniqueID, 0, 0, function()
-        if !IsValid(entity) then return timer.Remove(uniqueID) end
+    if IsValid(transmit) and transmit:IsPlayer() and transmit:IsNocliping() then return end
+    if IsValid(receiver) and receiver:IsPlayer() and receiver:IsNocliping() then return end
 
-        local position = vector_tween:GetValue()
-        entity:SetPos(position)
-    end)
-end]]--
+    local players = getPlayersRecivers(pos)
+
+    netstream.Start(players, "ItemBase.AnimTakeItem", receiver, pos, ang, model)
+end
+
+function ItemBase.AnimDropItem(target, idx, class)
+    local players = getPlayersRecivers(target:GetPos())
+
+    netstream.Start(players, "ItemBase.AnimDropItem", target, idx, class)
+end
 
 function ItemBase:PlayerInitialSpawn(client)
     ItemBase.CreationSync(client)

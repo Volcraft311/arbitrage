@@ -411,6 +411,7 @@ function PANEL:CreatePlayersPanel(parent)
         avatar:SetWide(panel:GetTall())
         avatar:SetPlayer(v, 64)
 
+        local name = v:GetName()
         local steamid = v:SteamID()
         local faction = v:Team()
         local character = Character.team:GetByID(faction)
@@ -474,7 +475,6 @@ function PANEL:CreatePlayersPanel(parent)
 
             local pixel = character:GetAssets().pixel
             local pixelMat = pixel and Material(pixel)
-            local characterName = character:GetName()
 
             local tootipFaction = tooltip:AddPanel("DPanel")
             tootipFaction:SetTall(H(30))
@@ -490,7 +490,7 @@ function PANEL:CreatePlayersPanel(parent)
                     tall = tall + h
                 end
 
-                draw.SimpleText(characterName, "arb.Font_FuturaPTBook_6", tall + 5, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(name, "arb.Font_FuturaPTBook_6", tall + 5, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             local rankMat = Arbitrage.chat:GetIcon(v)

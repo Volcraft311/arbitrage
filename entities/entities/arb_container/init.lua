@@ -61,6 +61,7 @@ function ENT:SetContainer(model, name, w, h)
 	self:Spawn()
 
 	self.Inventory = InventoryBase.CreateInventory(w, h)
+	self.Inventory:SetOwner(self)
 
 	self:SetContainerName(name)
 	self:SetInventoryID(self.Inventory:GetID())

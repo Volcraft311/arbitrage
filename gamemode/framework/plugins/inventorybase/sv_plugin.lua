@@ -42,7 +42,15 @@ function InventoryBase:PlayerDeath(client)
 
             local entity = v:GetEntity()
             if IsValid(entity) then
-                entity:SetPos(client:GetShootPos())
+                local shootPos = client:GetShootPos()
+                local aimVector = client:GetAimVector()
+
+                entity:SetPos(shootPos + (aimVector * 32))
+
+                local physObj = entity:GetPhysicsObject()
+                if IsValid(physObj) then
+                    physObj:SetVelocity(physObj:GetVelocity() + aimVector * 128)
+                end
             end
         end
     end

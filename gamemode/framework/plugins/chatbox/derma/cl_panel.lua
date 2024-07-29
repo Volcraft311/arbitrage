@@ -388,7 +388,7 @@ function PANEL:AddLine(elements, bShouldScroll)
 				local inner = utf8.sub(value, 2, -2)
 
 				if (inner:find("%S")) then
-					return "<font=arb.Font_FuturaPTBookItalic_" .. getFontSize() .. ">" .. utf8.sub(value, 2, -2) .. "</font>"
+					return "<font=arb.Font_FuturaPTBookItalic_" .. getFontSize() - 1 .. ">" .. "*" .. utf8.sub(value, 2, -2) .. "*" .. "</font>"
 				end
 			end):gsub("%b||", function(value)
 				local inner = utf8.sub(value, 2, -2)

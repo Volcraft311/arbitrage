@@ -55,6 +55,49 @@ local function chatColor(name)
     return Arbitrage.chat.List[name].Color or color_white
 end
 
+local emojiList = {
+    [":)"] = "улыбается",
+    [":("] = "грустит",
+    [":D"] = "смеяется",
+    [":P"] = "показывает язык", [":p"] = "показывает язык", [":Р"] = "показывает язык", [":р"] = "показывает язык",
+    [":о"] = "удивлен", [":o"] = "удивлен", [":0"] = "удивлен", [":O"] = "удивлен", [":О"] = "удивлен",
+    [":/"] = "сомневается",
+    [":'("] = "плачет",
+    [":*"] = "целует",
+    [":|"] = "без эмоций",
+    [":$"] = "смущен",
+    [":s"] = "засмущался",
+    [":X"] = "сжал губы", [":x"] = "сжал губы", [":Х"] = "сжал губы", [":х"] = "сжал губы",
+    [":^)"] = "хитро улыбается",
+    ["^_^"] = "радуется",
+    ["-_-"] = "разочарован",
+    ["0_0"] = "в шоке", ["o_o"] = "в шоке", ["O_O"] = "в шоке", ["о_о"] = "в шоке", ["О_О"] = "в шоке",
+    ["T_T"] = "плачет", ["Т_Т"] = "плачет", ["т_т"] = "плачет",
+    [":\\"] = "недоумевает",
+    ["x_x"] = "уставший", ["X_X"] = "уставший", ["Х_Х"] = "уставший", ["х_х"] = "уставший",
+    ["^-^"] = "очень счастлив",
+    [":>"] = "радостный",
+    [":<"] = "расстроенный",
+    ["o_O"] = "удивление", ["о_O"] = "удивление", ["о_О"] = "удивление", ["o_О"] = "удивление", ["o_0"] = "удивление", ["o_0"] = "удивление", ["о_0"] = "удивление",
+    ["O_o"] = "удивление", ["O_о"] = "удивление", ["О_о"] = "удивление", ["О_o"] = "удивление", ["0_o"] = "удивление", ["0_o"] = "удивление", ["0_о"] = "удивление",
+}
+
+local letterList = {
+    ["?"] = true,
+    ["!"] = true,
+    [";"] = true,
+    ["~"] = true,
+    ["|"] = true,
+    ["*"] = true,
+    [":"] = true,
+    ["+"] = true,
+    ["-"] = true,
+    ["/"] = true,
+    ["\\"] = true,
+    ["#"] = true,
+    ["="] = true,
+    ["_"] = true
+}
 local function format(data, bIsCapitalize, bIsDot)
     if bIsCapitalize != nil then
         local firstLetter = string.utf8sub(data, 1, 1)
@@ -68,7 +111,7 @@ local function format(data, bIsCapitalize, bIsDot)
         local len = string.utf8len(data)
         local lastLetter = string.utf8sub(data, len, len)
 
-        if lastLetter != "?" and lastLetter != "!" and lastLetter != ";" then
+        if !letterList[lastLetter] then
             if bIsDot and lastLetter != "." then
                 data = data .. "."
             elseif !bIsDot and lastLetter == "." then
@@ -172,9 +215,15 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
-                TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
-                Arbitrage.chat.SendClient(v, client, name, data)
+            local emojiText = string.Trim(data[1])
+            local emojiAction = emojiList[emojiText]
+            if emojiAction then
+                Arbitrage.chat.SendCommand("me", client, emojiAction)
+            else
+                for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+                    TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
+                    Arbitrage.chat.SendClient(v, client, name, data)
+                end
             end
         end
     },

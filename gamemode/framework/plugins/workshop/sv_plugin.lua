@@ -142,7 +142,7 @@ local function add(client, id)
     local data = asterionlib.data:Get("workshop", {}, true)
     if data[id] then return end
 
-    data[id] = client:SteamName() .. " (" .. client:SteamID() .. ")"
+    data[id] = IsValid(client) and client:SteamName() .. " (" .. client:SteamID() .. ")" or "Console (CONSOLE)"
     asterionlib.data:Set("workshop", data)
 end
 netstream.Hook("Workshop:Add", function(client, id)
@@ -370,4 +370,38 @@ timer.Create("WORKSHOP:UpdateRequest", 5, 0, function()
             end
         end)
     end
+end)
+
+
+concommand.Add("arb_addon_add", function(client, cmd, args)
+    if IsValid(client) then return end
+
+    local id = args[1]
+    add(nil, id)
+end)
+
+concommand.Add("arb_addon_cancel", function(client, cmd, args)
+    if IsValid(client) then return end
+
+    local id = args[1]
+    cancel(id)
+end)
+
+concommand.Add("arb_addon_remove", function(client, cmd, args)
+    if IsValid(client) then return end
+
+    local id = args[1]
+    remove(id)
+end)
+
+concommand.Add("arb_addon_install", function(client, cmd, args)
+    if IsValid(client) then return end
+
+    local id = args[1]
+    local data = asterionlib.data:Get("workshop", {}, true)
+    if !data[id] then
+        add(nil, id)
+    end
+
+    install(id)
 end)

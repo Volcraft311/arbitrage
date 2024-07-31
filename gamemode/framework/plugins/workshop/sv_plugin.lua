@@ -378,6 +378,8 @@ concommand.Add("arb_addon_add", function(client, cmd, args)
 
     local id = args[1]
     add(nil, id)
+
+    print("add " .. id .. " addon")
 end)
 
 concommand.Add("arb_addon_cancel", function(client, cmd, args)
@@ -385,6 +387,8 @@ concommand.Add("arb_addon_cancel", function(client, cmd, args)
 
     local id = args[1]
     cancel(id)
+
+    print("addon " .. id .. " cancel")
 end)
 
 concommand.Add("arb_addon_remove", function(client, cmd, args)
@@ -392,6 +396,8 @@ concommand.Add("arb_addon_remove", function(client, cmd, args)
 
     local id = args[1]
     remove(id)
+
+    print("addon " .. id .. " remove")
 end)
 
 concommand.Add("arb_addon_install", function(client, cmd, args)
@@ -404,4 +410,16 @@ concommand.Add("arb_addon_install", function(client, cmd, args)
     end
 
     install(id)
+
+    print("addon " .. id .. " install")
+end)
+
+concommand.Add("arb_addon_get", function(client, cmd, args)
+    if IsValid(client) then return end
+
+    print("addons add list:")
+    local data = asterionlib.data:Get("workshop", {}, true)
+    for id in pairs(data) do
+        print(id)
+    end
 end)

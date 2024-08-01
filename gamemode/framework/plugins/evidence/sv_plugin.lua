@@ -11,21 +11,19 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+Evidence.numID = Evidence.numID or 1
 
-local PLUGIN = PLUGIN
-PLUGIN.numID = PLUGIN.numID or 1
-
-function PLUGIN:RegisterNewEvidence(data)
+function Evidence:RegisterNewEvidence(data)
     self.list[self.numID] = data
     local idx = self.numID
 
-    netstream.Start(nil, "evidence.Register", idx, self.list[idx])
+    netstream.Start(nil, "Evidence:Register", idx, self.list[idx])
     self.numID = self.numID + 1
 
     return idx
 end
 
-function PLUGIN:SetEntityEvidence(entity, idx)
+function Evidence:SetEntityEvidence(entity, idx)
     if !IsValid(entity) then return "Не валидное Entity!" end
     --if !idx then return "Улики с данным ID не существует!" end // пока комментарии ибо нужно возвращать как-то nil значение для удаления
 
@@ -35,7 +33,7 @@ function PLUGIN:SetEntityEvidence(entity, idx)
 end
 
 local function reg(data)
-    return PLUGIN:RegisterNewEvidence({
+    return Evidence:RegisterNewEvidence({
         name = data.name or "Неизвестно",
         description = data.description or "Неизвестно",
         color = data.color or color_white,
@@ -46,7 +44,7 @@ local function reg(data)
     })
 end
 
-function PLUGIN:LeftClick(data)
+function Evidence:LeftClick(data)
     if !data then return end
 
     local idx = reg(data)
@@ -60,7 +58,7 @@ function PLUGIN:LeftClick(data)
     return entity:SetEvidence(idx)
 end
 
-function PLUGIN:RightClick(data)
+function Evidence:RightClick(data)
     if !data then return end
     if !IsValid(data.entity) then return end
 
@@ -73,7 +71,7 @@ function PLUGIN:RightClick(data)
     return data.entity:SetEvidence(idx)
 end
 
-function PLUGIN:Reload(data)
+function Evidence:Reload(data)
     if !data then return end
     if !IsValid(data.entity) then return end
 
@@ -93,9 +91,9 @@ function PLUGIN:Reload(data)
     return "Вы успешно удалили улику №" .. idx .. " с " .. name .. "."
 end
 
-function PLUGIN:DeleteEvidence(idx)
+function Evidence:DeleteEvidence(idx)
     self.list[idx] = nil
-    netstream.Start(nil, "evidence.Register", idx, nil)
+    netstream.Start(nil, "Evidence:Register", idx, nil)
 
     for k, v in pairs(MonoPad.instances) do
         v:RemoveEvidence(idx)
@@ -109,14 +107,14 @@ end
 local ENTITY = FindMetaTable("Entity")
 
 function ENTITY:SetEvidence(idx)
-    return PLUGIN:SetEntityEvidence(self, idx)
+    return Evidence:SetEntityEvidence(self, idx)
 end
 
 
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:AddEvidence(idx, time)
-    if !PLUGIN:GetEvidence(idx) then return "Ошибка при выдаче улики игроку!" end
+    if !Evidence:GetEvidence(idx) then return "Ошибка при выдаче улики игроку!" end
 
     local monopad = MonoPad:FindMonoPad(self)
     if !monopad then return "У игрока нету монопада!" end
@@ -137,7 +135,7 @@ function PLAYER:AddEvidence(idx, time)
 end
 
 
-function PLUGIN:EntityRemoved(entity)
+function Evidence:EntityRemoved(entity)
     local idx = entity:GetEvidence()
 
     if idx then
@@ -146,26 +144,19 @@ function PLUGIN:EntityRemoved(entity)
     end
 end
 
-local function conclusion(client, idx)
-    local evidence = PLUGIN:GetEvidence(idx)
-
-    netstream.Start(client, "Evidence:ChatNotify", evidence.name, evidence.description, evidence.image)
-end
-
 local function collect(client, entity, idx)
     Arbitrage.action.ActionRun(client, "Собираем улику", 1, function()
+        if !IsValid(entity) then return true end
         if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 
         return false
     end, function()
         client:AddEvidence(idx)
-        conclusion(client, idx)
-
-        netstream.Start(client, "Evidence:Draw", entity, PLUGIN:GetEvidence(idx))
+        netstream.Start(client, "Evidence:Draw", entity)
     end)
 end
 
-function PLUGIN:PlayerUse(client, entity)
+function Evidence:PlayerUse(client, entity)
     local idx = entity:GetEvidence()
     if !idx then return end
 
@@ -194,9 +185,9 @@ function PLUGIN:PlayerUse(client, entity)
     end
 end
 
-function PLUGIN:PlayerInitialSpawn(client)
+function Evidence:PlayerInitialSpawn(client)
     for k, v in pairs(self.list) do
-        netstream.Start(client, "evidence.Register", k, v)
+        netstream.Start(client, "Evidence:Register", k, v)
     end
 end
 

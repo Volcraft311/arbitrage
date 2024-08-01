@@ -15,23 +15,23 @@
 local PLUGIN = PLUGIN
 Evidence = PLUGIN
 
-PLUGIN.list = PLUGIN.list or {}
-PLUGIN.icons = {}
-PLUGIN.ribbons = {}
+Evidence.list = Evidence.list or {}
+Evidence.icons = {}
+Evidence.ribbons = {}
 
-function PLUGIN:AddIcon(file)
+function Evidence:AddIcon(file)
     self.icons[#self.icons + 1] = "danganronpa/evidence/" .. file
 end
 
-function PLUGIN:AddRibbon(file, name, color)
+function Evidence:AddRibbon(file, name, color)
     self.ribbons[#self.ribbons + 1] = {"danganronpa/ribbon/" .. file, name, color}
 end
 
-function PLUGIN:GetEvidence(idx)
+function Evidence:GetEvidence(idx)
     return self.list[idx]
 end
 
-function PLUGIN:GetToolData(client)
+function Evidence:GetToolData(client)
     if !client:IsUsesTool("Evidence Tool") then return end
 
     local trace = client:GetEyeTrace()
@@ -107,24 +107,24 @@ end
 
 
 do
-    PLUGIN:AddIcon("test.png")
-    PLUGIN:AddIcon("camera.png")
-    PLUGIN:AddIcon("Pistol.png")
-    PLUGIN:AddIcon("Documents.png")
-    PLUGIN:AddIcon("antiquebook.png")
-    PLUGIN:AddIcon("knife.png")
-    PLUGIN:AddIcon("papers.png")
-    PLUGIN:AddIcon("deadbody.png")
+    Evidence:AddIcon("test.png")
+    Evidence:AddIcon("camera.png")
+    Evidence:AddIcon("Pistol.png")
+    Evidence:AddIcon("Documents.png")
+    Evidence:AddIcon("antiquebook.png")
+    Evidence:AddIcon("knife.png")
+    Evidence:AddIcon("papers.png")
+    Evidence:AddIcon("deadbody.png")
 end
 
 do
-    PLUGIN:AddRibbon("blue.png", "Информационные носители", Color(89, 118, 224))
-    PLUGIN:AddRibbon("green.png", "Медицина", Color(106, 224, 89))
-    PLUGIN:AddRibbon("orange.png", "Физические носители", Color(220, 124, 61))
-    PLUGIN:AddRibbon("red.png", "Орудия убийства", Color(221, 61, 61))
-    PLUGIN:AddRibbon("violet.png", "Химические материалы", Color(141, 61, 220))
-    PLUGIN:AddRibbon("white.png", "Ключевые материалы", Color(197, 206, 247))
-    PLUGIN:AddRibbon("pink.png", "Мед. экспертиза", Color(253, 177, 255))
+    Evidence:AddRibbon("blue.png", "Информационные носители", Color(89, 118, 224))
+    Evidence:AddRibbon("green.png", "Медицина", Color(106, 224, 89))
+    Evidence:AddRibbon("orange.png", "Физические носители", Color(220, 124, 61))
+    Evidence:AddRibbon("red.png", "Орудия убийства", Color(221, 61, 61))
+    Evidence:AddRibbon("violet.png", "Химические материалы", Color(141, 61, 220))
+    Evidence:AddRibbon("white.png", "Ключевые материалы", Color(197, 206, 247))
+    Evidence:AddRibbon("pink.png", "Мед. экспертиза", Color(253, 177, 255))
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

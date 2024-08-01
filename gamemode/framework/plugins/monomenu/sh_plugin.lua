@@ -302,7 +302,7 @@ MonoMenu:AddGameFunction("Удалить все улики на карте", "ic
         end
 
         Evidence.list = {}
-        netstream.Start(nil, "evidence.Clear")
+        netstream.Start(nil, "Evidence:Clear")
     end
 })
 

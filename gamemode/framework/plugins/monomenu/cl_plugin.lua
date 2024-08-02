@@ -397,6 +397,52 @@ local function getActionList(clientinfo)
                 end
             },
             {
+                name = "Голосовой чат",
+                icon = "icon16/sound.png",
+                data = {
+                    {
+                        name = "Включить глобальный войс",
+                        icon = "icon16/sound_add.png",
+                        data = function()
+                            runAction("globalvoice", client, true)
+                        end,
+                        check = function()
+                            return a_isvalid and !client:GetNetVar("arbGlobalVoice")
+                        end
+                    },
+                    {
+                        name = "Выключить глобальный войс",
+                        icon = "icon16/sound_low.png",
+                        data = function()
+                            runAction("globalvoice", client, false)
+                        end,
+                        check = function()
+                            return a_isvalid and client:GetNetVar("arbGlobalVoice")
+                        end
+                    },
+                    {
+                        name = "Включить микрофон",
+                        icon = "icon16/sound_none.png",
+                        data = function()
+                            runAction("mutevoice", client, false)
+                        end,
+                        check = function()
+                            return a_isvalid and client:GetNetVar("arb.MuteVoice")
+                        end
+                    },
+                    {
+                        name = "Выключить микрофон",
+                        icon = "icon16/sound_mute.png",
+                        data = function()
+                            runAction("mutevoice", client, true)
+                        end,
+                        check = function()
+                            return a_isvalid and !client:GetNetVar("arb.MuteVoice")
+                        end
+                    }
+                }
+            },
+            {
                 name = "Изменить игровой статус",
                 icon = "icon16/world_go.png",
                 data = {

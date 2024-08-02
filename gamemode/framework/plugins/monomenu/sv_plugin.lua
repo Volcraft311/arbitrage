@@ -330,6 +330,32 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("resetstats", client:FullName(), target:FullName())
     end,
+    ["globalvoice"] = function(client, target, value)
+        if !IsValid(target) then return end
+
+        value = value and true or nil
+
+        target:SetNetVar("arbGlobalVoice", value)
+
+        if client != target then
+            Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "включила" or "выключила") .. " вам глобальный голосовой чат!")
+        end
+
+        Arbitrage.adminnotify:SendNotify("globalvoice", client:FullName(), target:FullName(), value)
+    end,
+    ["mutevoice"] = function(client, target, value)
+        if !IsValid(target) then return end
+
+        value = value and true or nil
+
+        target:SetNetVar("arb.MuteVoice", value)
+
+        if client != target then
+            Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "выключила" or "включила") .. " вам голосовой чат!")
+        end
+
+        Arbitrage.adminnotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
+    end,
     ["setstats"] = function(client, target, data, amount)
         if !IsValid(target) then return end
 

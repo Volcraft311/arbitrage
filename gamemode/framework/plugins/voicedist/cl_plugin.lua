@@ -189,7 +189,7 @@ function PLUGIN:DrawVoiceIcon()
     end
 
     if self.alpha > 0.2 then
-        local isGlobal = client:GetLocalVar("arbGlobalVoice")
+        local isGlobal = client:GetNetVar("arbGlobalVoice")
         local color = isGlobal and Color(255, 61, 96, self.alpha) or Color(255, 255, 255, self.alpha * value)
 
         local x = ScrW() / 2

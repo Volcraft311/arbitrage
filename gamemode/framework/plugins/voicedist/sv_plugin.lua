@@ -5,6 +5,7 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
     if talker:IsSpectate() then return false end
     if talker:IsRagdolling() then return false end
     if !talker:oldAlive() then return false end
+    if talker:GetNetVar("arb.MuteVoice") then return false end
 
     if Arbitrage.lawEnable then
         if !talker:Alive() then return false end
@@ -26,7 +27,7 @@ function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
     end
 
     -- глобальный войс
-    if talker:GetLocalVar("arbGlobalVoice") then
+    if talker:GetNetVar("arbGlobalVoice") then
         return true, false
     end
 

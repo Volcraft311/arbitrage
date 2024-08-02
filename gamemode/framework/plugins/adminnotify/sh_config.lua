@@ -146,6 +146,14 @@ PLUGIN:AddNewNotify("scaleinventory", function(client, target, x, y)
     return Color(63, 162, 184), client, color_white, " изменил размер инвентаря игрока ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), x, color_white, " и ", Color(48, 218, 187), y
 end)
 
+PLUGIN:AddNewNotify("globalvoice", function(client, target, value)
+    return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " включил" or " выключил", color_white, " глобальный голосовой чат игроку ", Color(197, 181, 60), target
+end)
+
+PLUGIN:AddNewNotify("mutevoice", function(client, target, value)
+    return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " выключил" or " включил", color_white, " голосовой чат игроку ", Color(197, 181, 60), target
+end)
+
 PLUGIN:AddNewNotify("addhost", function(client, target)
     return Color(63, 162, 184), client, color_white, " сделал ведущим игрока ", Color(48, 218, 187), target
 end)

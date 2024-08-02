@@ -730,15 +730,15 @@ MonoMenu:AddAdminFunction("Глобальный Voice", "icon16/sound_low.png", 
     onEnable = function(client)
         if CLIENT then return end
 
-        client:SetLocalVar("arbGlobalVoice", true)
+        client:SetNetVar("arbGlobalVoice", true)
     end,
     onDisable = function(client)
         if CLIENT then return end
 
-        client:SetLocalVar("arbGlobalVoice", nil)
+        client:SetNetVar("arbGlobalVoice", nil)
     end,
     OnCheck = function(client)
-        return client:GetLocalVar("arbGlobalVoice")
+        return client:GetNetVar("arbGlobalVoice")
     end
 })
 

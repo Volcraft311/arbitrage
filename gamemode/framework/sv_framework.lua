@@ -856,6 +856,11 @@ local function setstats()
         client:ExitVehicle()
         client:SetNWBool("SitGroundSitting", false)
         client:Freeze(true)
+        client:StandUp()
+
+        if v.IsProne and v:IsProne() then
+            prone.Exit(v)
+        end
 
         client:SendLua([[RunConsoleCommand("stopsound")]])
         client:SendLua([[RunConsoleCommand("r_cleardecals")]])

@@ -138,6 +138,7 @@ function Arbitrage:StartLaw()
         v:ExitAction()
         v:ExitVehicle()
         v:SetNWBool("SitGroundSitting", false)
+        v:StandUp()
 
         if v.IsProne and v:IsProne() then
             prone.Exit(v)

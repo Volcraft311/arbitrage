@@ -64,6 +64,7 @@ function meta:FallOver(delay)
     if !self:Alive() then return end
     if self:IsNocliping() then return end
     if self:IsRagdolling() then return end
+    if Arbitrage.lawEnable then return end
 
     local entity = RagdollSystem:CreateRagdoll(self)
 

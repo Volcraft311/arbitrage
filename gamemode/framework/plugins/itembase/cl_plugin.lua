@@ -177,6 +177,7 @@ netstream.Hook("ItemBase:CreationSync", function(baseID, stored)
 end)
 
 netstream.Hook("ItemBase.AnimTakeItem", function(target, pos, ang, model)
+	if !IsValid(target) then return end
 	if target:IsDormant() then return end
 
 	local alpha = 255
@@ -256,6 +257,7 @@ local function awaitSyncEntity(idx, class, callback)
 end
 
 netstream.Hook("ItemBase.AnimDropItem", function(target, idx, class)
+	if !IsValid(target) then return end
 	if target:IsDormant() then return end
 
 	local function hide()

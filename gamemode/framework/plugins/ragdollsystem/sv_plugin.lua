@@ -65,6 +65,8 @@ function meta:FallOver(delay)
     if self:IsNocliping() then return end
     if self:IsRagdolling() then return end
     if Arbitrage.lawEnable then return end
+    if self:InVehicle() then return end
+    if self.IsHandcuffed and self:IsHandcuffed() then return end
 
     local entity = RagdollSystem:CreateRagdoll(self)
 

@@ -562,7 +562,7 @@ function PLUGIN:PlayerOption()
 	end
 
 	local target = self:ReturnTracePlayer(LocalPlayer())
-	if IsValid(target) and target:IsHandcuffed() then
+	if IsValid(target) and target.IsHandcuffed and target:IsHandcuffed() then
 		data[#data + 1] = {
 			name = "Развязать",
 			id = "uncuff",

@@ -135,7 +135,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		speed = speed * 0.2
 	end
 
-	if input_IsKeyDown(KEY_SPACE) then
+	if input_IsKeyDown(KEY_SPACE) and !vgui.CursorVisible() then
 		cameraPosition = cameraPosition + cameraAngles:Up() * (speed * 0.6)
 	end
 

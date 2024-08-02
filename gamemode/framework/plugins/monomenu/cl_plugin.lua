@@ -110,9 +110,7 @@ local function getPlaces(steamid)
     return data
 end
 
-local function getAllTemporaryStatusEffects(steamid)
-    local client = player.GetBySteamID(steamid)
-
+local function getAllTemporaryStatusEffects(client)
     local disable = GetNetVar("medical:statuseffects_disable", {})
     local all_effects = {}
     for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
@@ -124,7 +122,7 @@ local function getAllTemporaryStatusEffects(steamid)
                     text = tonumber(text)
                     if !text then return end
 
-                    runAction("addtemporarystatuseffect", steamid, k, text)
+                    runAction("addtemporarystatuseffect", client, k, text)
                 end)
             end,
             check = function()
@@ -630,7 +628,7 @@ local function getActionList(clientinfo)
             {
                 name = "Изменить статус эффекты",
                 icon = "icon16/pill_go.png",
-                data = getAllTemporaryStatusEffects(m_steamid)
+                data = getAllTemporaryStatusEffects(client)
             },
             {
                 name = "Изменить скорость",

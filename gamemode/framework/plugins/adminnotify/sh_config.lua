@@ -201,3 +201,15 @@ end)
 PLUGIN:AddNewNotify("setstandup", function(client, target, delay)
     return Color(63, 162, 184), client, color_white, " поднял игрока ", Color(197, 181, 60), target
 end)
+
+PLUGIN:AddNewNotify("addstatuseffect", function(client, target, uniqueID, delay)
+    return Color(63, 162, 184), client, color_white, " выдал статус эффект ", Color(48, 218, 187), uniqueID, color_white, " игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), delay
+end)
+
+PLUGIN:AddNewNotify("removestatuseffect", function(client, target, uniqueID)
+    return Color(63, 162, 184), client, color_white, " убрал статус эффект ", Color(48, 218, 187), uniqueID, color_white, " игроку ", Color(197, 181, 60), target
+end)
+
+PLUGIN:AddNewNotify("clearstatuseffect", function(client, target)
+    return Color(63, 162, 184), client, color_white, " убрал все статус эффекты игроку ", Color(197, 181, 60), target
+end)

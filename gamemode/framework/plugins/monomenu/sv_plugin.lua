@@ -475,16 +475,15 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("removehost", client:FullName(), m_target)
     end,
-    ["addtemporarystatuseffect"] = function(client, steamid, uniqueID, delay)
+    ["addtemporarystatuseffect"] = function(client, target, uniqueID, delay)
         if !isnumber(delay) then return end
-
-        local target = player.GetBySteamID(steamid)
-        if !IsValid(target) then return end
 
         local message = target:AddTemporaryStatusEffect(uniqueID, delay)
         if message then
             client:ChatNotify(message)
         end
+
+        Arbitrage.adminnotify:SendNotify("addstatuseffect", client:FullName(), target:FullName(), uniqueID, delay)
     end,
     ["removetemporarystatuseffect"] = function(client, target, uniqueID)
         if !IsValid(target) then return end
@@ -493,6 +492,8 @@ local actionList = {
         if message then
             client:ChatNotify(message)
         end
+
+        Arbitrage.adminnotify:SendNotify("removestatuseffect", client:FullName(), target:FullName(), uniqueID)
     end,
     ["cleartemporarystatuseffects"] = function(client, target)
         if !IsValid(target) then return end
@@ -501,6 +502,8 @@ local actionList = {
         if message then
             client:ChatNotify(message)
         end
+
+        Arbitrage.adminnotify:SendNotify("clearstatuseffect", client:FullName(), target:FullName(), uniqueID)
     end,
     ["setfallover"] = function(client, target, delay)
         if !IsValid(target) then return end

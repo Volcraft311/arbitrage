@@ -267,7 +267,16 @@ local function getActionList(entity, doorData)
 					data = function()
 						netstream.Start("arb.DoorSetHack")
 					end
-				}
+				},
+				{
+					name = "Установить уникальный идентификатор",
+					icon = "icon16/report_key.png",
+					data = function()
+						Derma_StringRequest("Уникальный идентификатор", "Введите уникальный ID который вы хотите установить двери", entity:GetNetVar("key_uniqueid", ""), function(text)
+							netstream.Start("arb.DoorSetUniqueID", text)
+						end)
+					end
+				},
 			}
 		},
 		{

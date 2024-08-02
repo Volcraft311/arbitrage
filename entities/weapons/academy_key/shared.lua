@@ -81,34 +81,37 @@ local function FindDoorData(door)
     end
 end
 
-local function FindKey(client, doorData)
+local function FindKey(client, doorData, entity)
     doorData = doorData or {}
-
-    local data = doorData.list or {}
 
     local inventory = client:GetInventory()
     if !inventory then return false end
 
     local keys = {}
     local items = inventory:GetItems()
-
     for k, v in pairs(items) do
-        local id = v:GetData("faction")
-
         if v.uniqueID == "keys_all" then
             return true
         end
 
+        local id = v:GetData("faction")
         if v.uniqueID == "keys" and id then
-            keys[id] = true
+            keys[#keys + 1] = v
         end
     end
 
-    for idKey in pairs(keys) do
+    local data = doorData.list or {}
+    for k, v in ipairs(keys) do
+        local idKey = v:GetData("faction")
+
         for idDoor in pairs(data) do
             if idKey == idDoor then
                 return true
             end
+        end
+
+        if entity:GetNetVar("key_uniqueid") == idKey then
+            return true
         end
     end
 
@@ -134,7 +137,7 @@ function SWEP:InteractionDoor(bClose)
 
         local doorData = FindDoorData(door)
 
-        local bHaveKeys = FindKey(client, doorData)
+        local bHaveKeys = FindKey(client, doorData, door)
         if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас нету ключей от данной двери!") end
 
         if !bClose and !door:GetNWBool(doorVar) then

@@ -121,3 +121,18 @@ netstream.Hook("arb.DoorSetHack", function(client)
 
 	Arbitrage.commands.Notify(client, "Вы успешно " .. (data and "разрешили" or "запретили") .. " взламывать двеь!")
 end)
+
+netstream.Hook("arb.DoorSetUniqueID", function(client, data)
+	if !client:IsAdmin() then return end
+
+	local trace = client:GetEyeTraceNoCursor()
+
+	local entity = trace.Entity
+	if !IsValid(entity) then return end
+
+	if !entity:IsDoor() then return end
+
+	entity:SetNetVar("key_uniqueid", data)
+
+	Arbitrage.commands.Notify(client, "Вы успешно установили двери уникальный идентификатор " .. data .. "!")
+end)

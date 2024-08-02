@@ -55,6 +55,12 @@ do
         netstream.Hook("ItemBase:OpenCreateKeyMenu", function(id)
             local parent = DermaMenu()
 
+            parent:AddOption("Уникальный идентификатор", function()
+                Derma_StringRequest("Уникальный идентификатор", "Введите уникальный ID который вы хотите установить предмету", "", function(text)
+                    netstream.Start("ItemBase:CreateKey", id, text)
+                end)
+            end)
+
             for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
                 local panel = parent:AddOption(v.name, function()
                     netstream.Start("ItemBase:CreateKey", id, k)
@@ -82,9 +88,6 @@ do
 
             local data = item:GetData("faction")
             if data then return end
-
-            local factionData = Character.team:GetByID(faction)
-            if !factionData then return end
 
             item:SetData("faction", faction)
         end)

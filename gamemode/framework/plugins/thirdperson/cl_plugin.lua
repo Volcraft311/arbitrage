@@ -22,10 +22,12 @@ function Arbitrage.IsThirdPerson()
 	if Arbitrage.lawEnable then return false end
 	if !Arbitrage.OnThirdPerson() then return false end
 
-	local client = LocalPlayer()
-	if client:IsNocliping() then return false end
-
 	if Arbitrage.ThirdPerson then
+		local client = LocalPlayer()
+
+		if client:IsNocliping() or client:IsSpectating() then return false end
+		if client:IsPlayingTaunt() then return false end
+
 		if (client.GetSitting and client:GetSitting()) or select(3, client:GetAction()) then
 			return false
 		end

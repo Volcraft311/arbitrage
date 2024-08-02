@@ -215,77 +215,81 @@ function PLUGIN:PlayerBindPress(client, bind, pressed)
 	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
-	if bind == "+reload" and pressed then
-		setSelectEntityDraw(false)
+	if !vgui.CursorVisible() then
+		if bind == "+reload" and pressed then
+			setSelectEntityDraw(false)
 
-		isSpectating = false
-		netstream.Start("AdminESP:CameraTeleportToPosition", cameraPosition, cameraAngles)
+			isSpectating = false
+			netstream.Start("AdminESP:CameraTeleportToPosition", cameraPosition, cameraAngles)
 
-		return true
-	end
-
-	if bind == "+use" and pressed and IsValid(cameraEntity) and cameraEntity:IsPlayer() then
-		if (!client.screengrabCD or CurTime() >= client.screengrabCD) then
-			RunConsoleCommand("say", "/sg " .. cameraEntity:SteamID())
-
-			client.screengrabCD = CurTime() + 2
+			return true
 		end
-	end
 
-	if bind == "+attack" and pressed then
-		local entity = nil
+		if bind == "+use" and pressed and IsValid(cameraEntity) and cameraEntity:IsPlayer() then
+			if (!client.screengrabCD or CurTime() >= client.screengrabCD) then
+				RunConsoleCommand("say", "/sg " .. cameraEntity:SteamID())
 
-		fixCameraRoll()
-		fixEyeRoll()
-
-		setSelectEntityDraw(false)
-			if IsValid(cameraTraceEntity) then
-				entity = cameraTraceEntity
+				client.screengrabCD = CurTime() + 2
 			end
 
-			if IsValid(entity) and cameraThirdPerson then
-				thirdPersonDistance = cameraPosition:Distance(getEntityPosition(entity))
+			return true
+		end
+
+		if bind == "+attack" and pressed then
+			local entity = nil
+
+			fixCameraRoll()
+			fixEyeRoll()
+
+			setSelectEntityDraw(false)
+				if IsValid(cameraTraceEntity) then
+					entity = cameraTraceEntity
+				end
+
+				if IsValid(entity) and cameraThirdPerson then
+					thirdPersonDistance = cameraPosition:Distance(getEntityPosition(entity))
+				end
+
+				netstream.Start("AdminESP:CameraSetEntity", entity)
+				cameraEntity = entity
+			setSelectEntityDraw(false)
+
+			if !cameraThirdPerson then
+				setSelectEntityDraw(true)
 			end
 
-			netstream.Start("AdminESP:CameraSetEntity", entity)
-			cameraEntity = entity
-		setSelectEntityDraw(false)
-
-		if !cameraThirdPerson then
-			setSelectEntityDraw(true)
+			return true
 		end
 
-		return true
-	end
+		if bind == "+attack2" and pressed then
+			if !IsValid(cameraEntity) then
+				cameraPosition = cameraPosition + cameraAngles:Forward() * 1200
+			else
+				cameraThirdPerson = !cameraThirdPerson
+				setSelectEntityDraw(!cameraThirdPerson)
 
-	if bind == "+attack2" and pressed then
-		if !IsValid(cameraEntity) then
-			cameraPosition = cameraPosition + cameraAngles:Forward() * 1200
-		else
-			cameraThirdPerson = !cameraThirdPerson
-			setSelectEntityDraw(!cameraThirdPerson)
-
-			if cameraThirdPerson then
-				fixCameraRoll()
-				fixEyeRoll()
+				if cameraThirdPerson then
+					fixCameraRoll()
+					fixEyeRoll()
+				end
 			end
+
+			return true
 		end
 
-		return true
-	end
+		local invNext = bind == "invnext"
+		local invPrev = bind == "invprev"
+		if invNext or invPrev then
+			local amount = invNext and 1 or -1
 
-	local invNext = bind == "invnext"
-	local invPrev = bind == "invprev"
-	if invNext or invPrev then
-		local amount = invNext and 1 or -1
+			if IsValid(cameraEntity) then
+				thirdPersonDistance = math_max(20, thirdPersonDistance + amount * 10)
+			else
+				cameraSpeed = math_max(50, cameraSpeed + amount * -150)
+			end
 
-		if IsValid(cameraEntity) then
-			thirdPersonDistance = math_max(20, thirdPersonDistance + amount * 10)
-		else
-			cameraSpeed = math_max(50, cameraSpeed + amount * -150)
+			return true
 		end
-
-		return true
 	end
 
 	for k, v in ipairs({"+duck", "+jump", "slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8", "slot9"}) do

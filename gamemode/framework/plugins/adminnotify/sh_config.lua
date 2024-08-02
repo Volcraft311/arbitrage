@@ -155,11 +155,15 @@ PLUGIN:AddNewNotify("mutevoice", function(client, target, value)
 end)
 
 PLUGIN:AddNewNotify("addhost", function(client, target)
-    return Color(63, 162, 184), client, color_white, " сделал ведущим игрока ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " сделал ведущим игрока ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("removehost", function(client, target)
-    return Color(63, 162, 184), client, color_white, " убрал из ведущих игрока ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " убрал из ведущих игрока ", Color(197, 181, 60), target
+end)
+
+PLUGIN:AddNewNotify("setdescription", function(client, target)
+    return Color(63, 162, 184), client, color_white, " изменил описание игроку ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("registeritem", function(client, uniqueID)

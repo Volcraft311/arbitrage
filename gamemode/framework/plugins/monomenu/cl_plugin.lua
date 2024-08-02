@@ -530,6 +530,18 @@ local function getActionList(clientinfo)
                 end
             },
             {
+                name = "Изменить описание персонажа",
+                icon = "icon16/page_white_edit.png",
+                data = function()
+                    Derma_StringRequest("Изменить описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
+                        runAction("setdescription", client, text)
+                    end)
+                end,
+                check = function()
+                    return a_isvalid
+                end
+            },
+            {
                 name = "Изменить статистику",
                 icon = "icon16/bricks.png",
                 data = {

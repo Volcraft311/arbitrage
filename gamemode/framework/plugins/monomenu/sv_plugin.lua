@@ -356,6 +356,20 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
     end,
+    ["setdescription"] = function(client, target, data)
+        if !IsValid(target) then return end
+
+        data = tostring(data)
+        if !data then return end
+
+        target:SetNetVar("description", (data != "" and data != " ") and data or nil)
+
+        if client != target then
+            Arbitrage.commands.Notify(target, "Администрация сервера изменила вам описание!")
+        end
+
+        Arbitrage.adminnotify:SendNotify("setdescription", client:FullName(), target:FullName())
+    end,
     ["setstats"] = function(client, target, data, amount)
         if !IsValid(target) then return end
 

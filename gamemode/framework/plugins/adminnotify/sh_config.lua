@@ -91,11 +91,11 @@ PLUGIN:AddNewNotify("setchapter", function(client, data)
 end)
 
 PLUGIN:AddNewNotify("removewhitelist", function(client, data)
-    return Color(63, 162, 184), client, color_white, " удалил из WhiteList-а ", Color(48, 218, 187), data
+    return Color(63, 162, 184), client, color_white, " удалил из WhiteList-а ", Color(197, 181, 60), data
 end)
 
 PLUGIN:AddNewNotify("addwhitelist", function(client, data)
-    return Color(63, 162, 184), client, color_white, " добавил в WhiteList ", Color(48, 218, 187), data
+    return Color(63, 162, 184), client, color_white, " добавил в WhiteList ", Color(197, 181, 60), data
 end)
 
 PLUGIN:AddNewNotify("settingswhitelist", function(client, data)
@@ -115,7 +115,7 @@ PLUGIN:AddNewNotify("standartcolormodify", function(client)
 end)
 
 PLUGIN:AddNewNotify("resetstats", function(client, target)
-    return Color(63, 162, 184), client, color_white, " обнулил характеристики игроку ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " обнулил характеристики игроку ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("changestatus", function(client, target, state)
@@ -123,23 +123,27 @@ PLUGIN:AddNewNotify("changestatus", function(client, target, state)
 end)
 
 PLUGIN:AddNewNotify("returngame", function(client, target)
-    return Color(63, 162, 184), client, color_white, " вернул в игру игрока ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " вернул в игру игрока ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("removegame", function(client, target)
-    return Color(63, 162, 184), client, color_white, " убрал из игры игрока ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " убрал из игры игрока ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("addgame", function(client, target)
-    return Color(63, 162, 184), client, color_white, " добавил в игру игрока ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " добавил в игру игрока ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("claerinventory", function(client, target)
-    return Color(63, 162, 184), client, color_white, " очистил инвентарь игроку ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " очистил инвентарь игроку ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("openinventory", function(client, target)
-    return Color(63, 162, 184), client, color_white, " открыл инвентарь игрока ", Color(48, 218, 187), target
+    return Color(63, 162, 184), client, color_white, " открыл инвентарь игрока ", Color(197, 181, 60), target
+end)
+
+PLUGIN:AddNewNotify("scaleinventory", function(client, target, x, y)
+    return Color(63, 162, 184), client, color_white, " изменил размер инвентаря игрока ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), x, color_white, " и ", Color(48, 218, 187), y
 end)
 
 PLUGIN:AddNewNotify("addhost", function(client, target)

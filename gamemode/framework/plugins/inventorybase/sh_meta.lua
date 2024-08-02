@@ -34,8 +34,8 @@ function INVENTORY:GetID()
 end
 
 function INVENTORY:SetSize(w, h)
-    self.w = w
-    self.h = h
+    self.w = tonumber(w)
+    self.h = tonumber(h)
 end
 
 function INVENTORY:GetSize()

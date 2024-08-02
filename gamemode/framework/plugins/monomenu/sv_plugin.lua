@@ -373,16 +373,15 @@ local actionList = {
         if !IsValid(target) then return end
 
         local inventory = target:GetInventory()
-        if inventory then
-            local items = inventory:GetItems()
+        if !inventory then return Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!") end
 
-            for k, v in pairs(items) do
-                if v:GetData("equip") then
-                    v:UnEquip(target, v)
-                end
-
-                v:Remove()
+        local items = inventory:GetItems()
+        for k, v in pairs(items) do
+            if v:GetData("equip") then
+                v:UnEquip(target, v)
             end
+
+            v:Remove()
         end
 
         Arbitrage.adminnotify:SendNotify("claerinventory", client:FullName(), target:FullName())
@@ -390,18 +389,25 @@ local actionList = {
     ["openinventory"] = function(client, target)
         if !IsValid(target) then return end
 
-        if client == target then
-            return Arbitrage.commands.Notify(client, "Нельзя открыть собственный инвентарь!")
-        end
+        if client == target then return Arbitrage.commands.Notify(client, "Нельзя открыть собственный инвентарь!") end
 
         local inventory = target:GetInventory()
-        if inventory then
-            InventoryBase.Open(client, inventory:GetID(), target:Name())
+        if !inventory then return Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!") end
 
-            Arbitrage.adminnotify:SendNotify("openinventory", client:FullName(), target:FullName())
-        else
-            Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!")
-        end
+        InventoryBase.Open(client, inventory:GetID(), target:Name())
+
+        Arbitrage.adminnotify:SendNotify("openinventory", client:FullName(), target:FullName())
+    end,
+    ["scaleinventory"] = function(client, target, x, y)
+        if !IsValid(target) then return end
+
+        local inventory = target:GetInventory()
+        if !inventory then return Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!") end
+
+        inventory:SetSize(x, y)
+        inventory:Sync()
+
+        Arbitrage.adminnotify:SendNotify("scaleinventory", client:FullName(), target:FullName(), x, y)
     end,
     ["addhost"] = function(client, steamid)
         if IsHost(steamid) then return end

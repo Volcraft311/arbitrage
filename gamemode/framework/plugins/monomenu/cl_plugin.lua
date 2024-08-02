@@ -429,10 +429,10 @@ local function getActionList(clientinfo)
             },
             {
                 name = "Изменить инвентарь",
-                icon = "icon16/box.png",
+                icon = "icon16/package_go.png",
                 data = {
                     {
-                        name = "Очистить инвентарь",
+                        name = "Очистить все предметы",
                         icon = "icon16/package_delete.png",
                         data = function()
                             runAction("claerinventory", client)
@@ -446,6 +446,24 @@ local function getActionList(clientinfo)
                         icon = "icon16/package_link.png",
                         data = function()
                             runAction("openinventory", client)
+                        end,
+                        check = function()
+                            return a_isvalid and client != LocalPlayer()
+                        end
+                    },
+                    {
+                        name = "Изменить размер",
+                        icon = "icon16/package.png",
+                        data = function()
+                            Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по ширине", 4, function(inventoryX)
+                                if !tonumber(inventoryX) then return end
+
+                                Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по высоте", 2, function(inventoryY)
+                                    if !tonumber(inventoryY) then return end
+
+                                    runAction("scaleinventory", client, inventoryX, inventoryY)
+                                end)
+                            end)
                         end,
                         check = function()
                             return a_isvalid

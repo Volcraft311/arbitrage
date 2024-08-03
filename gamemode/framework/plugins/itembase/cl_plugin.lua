@@ -225,7 +225,6 @@ netstream.Hook("ItemBase.AnimTakeItem", function(target, pos, ang, model)
 end)
 
 local hides_hooks = {
-	"OnEntityCreated",
 	"HUDPaint",
 	"RenderScreenspaceEffects",
 	"RenderScene",
@@ -299,10 +298,19 @@ netstream.Hook("ItemBase.AnimDropItem", function(target, idx, class)
 				entity:SetNoDraw(false)
 				entity:SetNotSolid(false)
 				entity:DrawShadow(true)
+
+				timer.Simple(0.1, function()
+					if !IsValid(entity) then return end
+
+					entity:SetNoDraw(false)
+					entity:SetNotSolid(false)
+					entity:DrawShadow(true)
+				end)
 			end
 
 			if IsValid(csEnt) then
 				csEnt:Remove()
+				csEnt = nil
 			end
 
 			hook.Remove("Think", hook_id)

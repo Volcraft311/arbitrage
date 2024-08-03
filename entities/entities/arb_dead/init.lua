@@ -31,12 +31,20 @@ end
 
 function ENT:Think()
 	local data = self:GetCharacter()
-	if !data then return end
+	if data then
+		local client = player.GetBySteamID(data.steamid)
+		if IsValid(client) then
+			if client:IsPlaying() and client:Alive() then
+				return self:Remove()
+			end
+		else
+			self:NextThink(CurTime() + 30)
 
-	local client = player.GetBySteamID(data.steamid)
-	if !IsValid(client) then return end
-
-	if client:IsPlaying() and client:Alive() then
-		self:Remove()
+			return true
+		end
 	end
+
+	self:NextThink(CurTime() + 5)
+
+	return true
 end

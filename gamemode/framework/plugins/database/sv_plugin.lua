@@ -16,43 +16,44 @@ PLUGIN.deathPlaques = PLUGIN.deathPlaques or {}
 PLUGIN.disconnectPlayers = PLUGIN.disconnectPlayers or {}
 
 local lifting = Vector(0, 0, 64)
-
-function PLUGIN:OneSecond()
+timer.Create("Arbitrage:DeadTablets", 5, 0, function()
     if Arbitrage.OffSpawnDeadTablets() then return end
+
+    if !Arbitrage.placesList then return end
 
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
+        if !IsValid(client) then continue end
+
+        if client:Alive() then continue end
+        if client:InGame() then continue end
 
         local place = tonumber(v.place)
         if place == -1 then continue end -- Место неуказано
 
-        if IsValid(client) and client:Alive() and client:InGame() then
-            -- eh...
-        else
-            local entity = self.deathPlaques[k]
-            if !IsValid(entity) then
-                if !Arbitrage.placesList then continue end
-                if !Arbitrage.placesList[place] then continue end
+        local entity = PLUGIN.deathPlaques[k]
+        if IsValid(entity) then continue end
 
-                local stored = Arbitrage.placesList[place]
-                local pos = stored[1] - lifting
-                local ang = stored[2]
+        local placeList = Arbitrage.placesList[place]
+        if !placeList then continue end
 
-                entity = ents.Create("arb_dead")
-                entity:SetPos(pos)
-                entity:SetAngles(Angle(0, ang.y, ang.r))
-                entity:Spawn()
+        local stored = placeList
+        local pos = stored[1] - lifting
+        local ang = stored[2]
 
-                entity:SetCharacter({
-                    steamid = k,
-                    faction = v.faction
-                })
+        entity = ents.Create("arb_dead")
+        entity:SetPos(pos)
+        entity:SetAngles(Angle(0, ang.y, ang.r))
+        entity:Spawn()
 
-                self.deathPlaques[k] = entity
-            end
-        end
+        entity:SetCharacter({
+            steamid = k,
+            faction = v.faction
+        })
+
+        PLUGIN.deathPlaques[k] = entity
     end
-end
+end)
 
 function PLUGIN:PlayerDisconnected(client)
     if client:Alive() and client:InGame() then

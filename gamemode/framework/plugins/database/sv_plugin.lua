@@ -25,17 +25,16 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
         local client = player.GetBySteamID(k)
         if !IsValid(client) then continue end
 
-        if client:Alive() then continue end
-        if client:InGame() then continue end
+        if client:Alive() and client:InGame() then continue end
 
         local place = tonumber(v.place)
         if place == -1 then continue end -- Место неуказано
 
-        local entity = PLUGIN.deathPlaques[k]
-        if IsValid(entity) then continue end
-
         local placeList = Arbitrage.placesList[place]
         if !placeList then continue end
+
+        local entity = PLUGIN.deathPlaques[k]
+        if IsValid(entity) then continue end
 
         local stored = placeList
         local pos = stored[1] - lifting

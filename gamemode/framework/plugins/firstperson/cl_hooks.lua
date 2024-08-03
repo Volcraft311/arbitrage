@@ -100,6 +100,8 @@ end
 
 local fovShift = 0
 function PLUGIN:CalcView(client, pos, angles, fov)
+	Flashlight:FlashlightDraw(client)
+
 	if !self.isAllow then return end
 
 	eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))

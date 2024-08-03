@@ -1128,27 +1128,6 @@ concommand.Add("arb_join_notcharacter", function(client, command, arguments)
     end
 end)
 
-concommand.Add("arb_returnnormalflashlight", function(client, command, arguments)
-    if !client:IsAdmin() then return end
-
-    hook.Remove("PlayerSwitchFlashlight", "TPF_SwitchFlashlightHook")
-    hook.Remove("PlayerInitialSpawn", "TPF_InitServerDefaults")
-    hook.Remove("PlayerPostThink", "TPF_Update")
-
-    hook.Add("PlayerSwitchFlashlight", "arb.AllowFlashlight", function()
-        return true
-    end)
-
-    for k, v in ipairs(player.GetAll()) do
-        v:AllowFlashlight(true)
-        v:Flashlight(false)
-
-        if TPF_RemoveProjectedTexture then
-    		TPF_RemoveProjectedTexture(v)
-    	end
-    end
-end)
-
 Arbitrage.TickTime = 17
 timer.Create("arb.CurTime", 2, 0, function()
     local data = Arbitrage.ReturnTime()

@@ -74,28 +74,6 @@ PLUGIN:AddPlayerESPCustomization("weapon_pl", {
     end
 })
 
--- PLUGIN:AddPlayerESPCustomization("vector_pl", {
---     dist = 500,
---     config = {
---         name = "Позиция игрока",
---         desc = "Включить показатель позиции игрока"
---     },
---     data = function(entity)
---         return "Vector(" .. math.Round(entity:GetPos().x, 2) .. ", " .. math.Round(entity:GetPos().y, 2) .. ", " .. math.Round(entity:GetPos().z, 2) .. ")"
---     end
--- })
-
--- PLUGIN:AddPlayerESPCustomization("dist_pl", {
---     dist = 0,
---     config = {
---         name = "Дистанция игрока",
---         desc = "Включить показатель дистанции игрока"
---     },
---     data = function(entity)
---         return math.Round(LocalPlayer():GetPos():Distance(entity:GetPos()), 1)
---     end
--- })
-
 PLUGIN:AddPlayerESPCustomization("trace_pl", {
     dist = 1000,
     config = {
@@ -151,8 +129,15 @@ PLUGIN:AddEntityESPCustomization("name_en", {
         desc = "Включить показатель названия энтити"
     },
     data = function(entity)
-        -- eh...
-        return entity:GetClass() == "arb_item" and (entity:GetItemTable() and entity:GetItemTable():GetName() or "Неизвестно")
+        local class = entity:GetClass()
+        if class == "arb_item" then
+            local itemTable = entity.GetItemTable and entity:GetItemTable()
+            if itemTable then
+                return itemTable.GetName and itemTable:GetName()
+            end
+        end
+
+        return "Неизвестно"
     end
 })
 
@@ -187,27 +172,4 @@ PLUGIN:AddEntityESPCustomization("model_en", {
     data = function(entity)
         return entity:GetModel()
     end
-})
-
-PLUGIN:AddEntityESPCustomization("chams_en", {
-    dist = 1000,
-    config = {
-        name = "Чамсы энтити",
-        desc = "Включить чамсы энтити"
-    },
-    data = function(entity)
-        if Arbitrage.OnMapReversion() then return end
-
-        local col = PLUGIN.entslist[entity:GetClass()]
-
-        cam.Start3D(EyePos(), EyeAngles())
-            render.SuppressEngineLighting(true)
-            render.MaterialOverride(PLUGIN.mat)
-            render.SetColorModulation(col.r / 255, col.g / 255, col.b / 255)
-            entity:DrawModel()
-            render.MaterialOverride()
-            render.SuppressEngineLighting(false)
-        cam.End3D()
-    end,
-    isfunc = true
 })

@@ -12,8 +12,8 @@
 ]]--
 
 
-function Stamina:IsRunning(client)
-	if client.IsProne and client:IsProne() then
+function Stamina:IsRunning(client, isProne)
+	if isProne then
 		return false
 	end
 
@@ -178,9 +178,10 @@ function Stamina:StaminaHandler(client, info)
 	local stamina = info.stamina
 	local isRunning = info.isRunning
 	local isWalking = info.isWalking
+	local isProne = info.isProne
 	local isShifting = isWalking and client:KeyDown(IN_SPEED)
 
-	if client.IsProne and client:IsProne() then
+	if isProne then
 		isShifting = false
 	end
 
@@ -195,7 +196,7 @@ function Stamina:StaminaHandler(client, info)
 
 		self:SetStamina(client, value)
 	elseif stamina > 100 then
-		self:SetStamina(client, self:GetStamina(client) - 0.1)
+		self:SetStamina(client, stamina - 0.1)
 	end
 end
 
@@ -236,10 +237,13 @@ function Stamina:CreateTimer(client)
 
 	    if client:IsNocliping() then return end
 
+		local isProne = client.IsProne and client:IsProne()
+
 		local info = {}
 		info.runSpeed = client:GetRunSpeed()
-		info.isRunning = self:IsRunning(client)
+		info.isRunning = self:IsRunning(client, isProne)
 		info.isWalking = self:IsWalking(client)
+		info.isProne = isProne
 		info.maxWalkSpeed = self:GetMaxWalkSpeed(client)
 		info.maxRunSpeed = self:GetMaxRunSpeed(client)
 		info.stamina = self:GetStamina(client)

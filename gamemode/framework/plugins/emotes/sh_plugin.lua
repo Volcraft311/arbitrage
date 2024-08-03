@@ -245,81 +245,83 @@ local function getSequenceID(array, id, client)
 	end
 end
 
-function Emotes:CalcMainActivity(client, velocity)
-	local isProne = client.IsProne and client:IsProne()
-	if isProne then return end
+if CLIENT then
+	function Emotes:CalcMainActivity(client, velocity)
+		local isProne = client.IsProne and client:IsProne()
+		if isProne then return end
 
-	-- Акты
-	do
-		local seq, seqTime = client:GetAction()
-		if seq then
-			local seqID = client:LookupSequence(seq)
-
-			if seqID > -1 and (seqTime <= -1 or seqTime > CurTime()) then
-				if client:GetSequence() != seqID then
-					client:SetCycle(0)
-					client:SetPlaybackRate(1)
-				end
-
-				return -1, seqID
-			end
-		end
-	end
-
-	-- Сидение
-	do
-		if client.GetSitting and client:GetSitting() then
-			local sitID = client:GetNetVar("sitting")
-			if sitID then
-				local seq = client:GetSittingSequence()
+		-- Акты
+		do
+			local seq, seqTime = client:GetAction()
+			if seq then
 				local seqID = client:LookupSequence(seq)
 
-				if seqID > -1 then
+				if seqID > -1 and (seqTime <= -1 or seqTime > CurTime()) then
+					if client:GetSequence() != seqID then
+						client:SetCycle(0)
+						client:SetPlaybackRate(1)
+					end
+
 					return -1, seqID
 				end
 			end
 		end
-	end
 
-	-- Настроение
-	do
-		local mood = client:GetMood()
-		if mood then
-			local weapon = client:GetActiveWeapon()
-			local holdType = "normal"
-			local class = nil
-			if IsValid(weapon) then
-				holdType = weapon.HoldType or weapon:GetHoldType()
-				class = weapon:GetClass()
-			end
+		-- Сидение
+		do
+			if client.GetSitting and client:GetSitting() then
+				local sitID = client:GetNetVar("sitting")
+				if sitID then
+					local seq = client:GetSittingSequence()
+					local seqID = client:LookupSequence(seq)
 
-			if !client:InVehicle() and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:Crouching() and client:OnGround() then
-				local sequence = nil
-				local data = mood.sequences or {}
-				local len2D = velocity:Length2D()
-
-				if len2D < 10 then
-					local sequenceID = getSequenceID(data, "idle", client)
-					if sequenceID then
-						sequence = sequenceID
-					end
-				elseif len2D >= 140 then
-					local sequenceID = getSequenceID(data, "run", client)
-					if sequenceID then
-						sequence = sequenceID
-					end
-				else
-					local sequenceID = getSequenceID(data, "walk", client)
-					if sequenceID then
-						sequence = sequenceID
+					if seqID > -1 then
+						return -1, seqID
 					end
 				end
+			end
+		end
 
-				if sequence then
-					client.CalcIdeal = ACT_MP_STAND_IDLE
-					client.CalcSeqOverride = sequence
+		-- Настроение
+		do
+			local mood = client:GetMood()
+			if mood then
+				local weapon = client:GetActiveWeapon()
+				local holdType = "normal"
+				local class = nil
+				if IsValid(weapon) then
+					holdType = weapon.HoldType or weapon:GetHoldType()
+					class = weapon:GetClass()
+				end
 
-					return client.CalcIdeal, client.CalcSeqOverride
+				if !client:InVehicle() and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:Crouching() and client:OnGround() then
+					local sequence = nil
+					local data = mood.sequences or {}
+					local len2D = velocity:Length2D()
+
+					if len2D < 10 then
+						local sequenceID = getSequenceID(data, "idle", client)
+						if sequenceID then
+							sequence = sequenceID
+						end
+					elseif len2D >= 140 then
+						local sequenceID = getSequenceID(data, "run", client)
+						if sequenceID then
+							sequence = sequenceID
+						end
+					else
+						local sequenceID = getSequenceID(data, "walk", client)
+						if sequenceID then
+							sequence = sequenceID
+						end
+					end
+
+					if sequence then
+						client.CalcIdeal = ACT_MP_STAND_IDLE
+						client.CalcSeqOverride = sequence
+
+						return client.CalcIdeal, client.CalcSeqOverride
+					end
 				end
 			end
 		end

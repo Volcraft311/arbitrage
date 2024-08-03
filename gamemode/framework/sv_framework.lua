@@ -1150,8 +1150,9 @@ concommand.Add("arb_returnnormalflashlight", function(client, command, arguments
 end)
 
 Arbitrage.TickTime = 17
-timer.Create("arb.CurTime", 1, 0, function()
+timer.Create("arb.CurTime", 2, 0, function()
     local data = Arbitrage.ReturnTime()
+
     SetNetVar("arb.Time", data + Arbitrage.TickTime)
 end)
 

@@ -22,12 +22,10 @@ local RealTime = RealTime
 local asterionlib = asterionlib
 local timer_Create = timer.Create
 local table_Count = table.Count
-local LerpColor = LerpColor
 local util_TraceLine = util.TraceLine
 local ents_FindInSphere = ents.FindInSphere
 local EyePos = EyePos
 local math_cos = math.cos
-local math_floor = math.floor
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local Format = Format
@@ -41,7 +39,6 @@ local draw_SimpleText = draw.SimpleText
 local tostring = tostring
 local IsValid = IsValid
 local Color = Color
-local SortedPairs = SortedPairs
 local math_Clamp = math.Clamp
 local pairs = pairs
 local math_Round = math.Round
@@ -62,7 +59,6 @@ local draw_GetFontHeight = draw.GetFontHeight
 local select = select
 local surface_SetFont = surface.SetFont
 local surface_GetTextSize = surface.GetTextSize
-
 
 
 Arbitrage.hud = Arbitrage.library.Add("hud")
@@ -340,35 +336,32 @@ do
 		local drawColor = color_white
 		local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
 
-		if isUseFirst then
-			if client:GetNetVar("bIsHoldingObject", false) then
-				drawColor = color_red
+		if isUseFirst and client:GetNetVar("bIsHoldingObject", false) then
+			drawColor = color_red
 
-				if client:KeyDown(IN_ATTACK2) then
-					realGap = math_Round(gap * 2)
-				end
-			end
-		else
-			local tr = trace.Entity
-
-			if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or Arbitrage.evidence.entities[tr:GetClass()] or tr:GetClass() == "arb_item") then
-				drawColor = color_red
+			if client:KeyDown(IN_ATTACK2) then
+				realGap = math_Round(gap * 2)
 			end
 		end
 
+		local tr = trace.Entity
+		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or Arbitrage.evidence.entities[tr:GetClass()] or tr:GetClass() == "arb_item") then
+			drawColor = color_red
+		end
+
+		local ft = FrameTime()
 		local velocity = client:GetVelocity():Length2D() * 0.03
-		curGap = Lerp(FrameTime() * 6, curGap, realGap + velocity)
+		curGap = Lerp(ft * 6, curGap, realGap + velocity)
 
 		if isNocliping or isUseTool then
 			curGap = realGap
 		end
 
-		local frametime = FrameTime() * 10
 		local x, y, z = trace.HitPos.x, trace.HitPos.y, trace.HitPos.z
 
-		Arbitrage.hud.lerpX = isNoAnim and Lerp(frametime, Arbitrage.hud.lerpX, x) or x
-		Arbitrage.hud.lerpY = isNoAnim and Lerp(frametime, Arbitrage.hud.lerpY, y) or y
-		Arbitrage.hud.lerpZ = isNoAnim and Lerp(frametime, Arbitrage.hud.lerpZ, z) or z
+		Arbitrage.hud.lerpX = isNoAnim and Lerp(ft * 10, Arbitrage.hud.lerpX, x) or x
+		Arbitrage.hud.lerpY = isNoAnim and Lerp(ft * 10, Arbitrage.hud.lerpY, y) or y
+		Arbitrage.hud.lerpZ = isNoAnim and Lerp(ft * 10, Arbitrage.hud.lerpZ, z) or z
 
 		local trace2D = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
 

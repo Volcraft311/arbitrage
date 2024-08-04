@@ -291,11 +291,6 @@ MonoMenu:AddGameFunction("Удалить все улики на карте", "ic
         if CLIENT then return end
 
         for k, v in ipairs(ents.GetAll()) do
-            if v:IsNPC() then v:Remove() end
-            if v:GetClass() == "arb_weapon" then v:Remove() end
-            if v:GetClass() == "arb_evidence" then v:Remove() end
-            if v:GetClass() == "prop_ragdoll" then v:Remove() end
-
             if v:GetEvidence() then
                 v:Remove()
             end

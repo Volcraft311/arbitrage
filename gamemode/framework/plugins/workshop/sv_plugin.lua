@@ -423,3 +423,16 @@ concommand.Add("arb_addon_get", function(client, cmd, args)
         print(id)
     end
 end)
+
+concommand.Add("arb_addon_remove_all", function(client, cmd, args)
+    if IsValid(client) then return end
+
+    local data = asterionlib.data:Get("workshop", {}, true)
+    for id in pairs(data) do
+        remove(id)
+
+        print("addon " .. id .. " remove")
+    end
+
+    print("addons removed all!")
+end)

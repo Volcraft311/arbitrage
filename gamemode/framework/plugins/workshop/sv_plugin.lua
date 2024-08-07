@@ -285,13 +285,13 @@ netstream.Hook("WORKSHOP:GetStatus", function(client)
     if !client:IsAdmin() then return end
 
     local ip = getIP()
-    asterionlib.Fetch("http://" .. ip .. "/api/ping", function(body)
+    asterionlib.Fetch("http://" .. ip .. ":1030/api/ping", function(body)
         if body == "successfully" then
             netstream.Start(client, "WORKSHOP:SuccessfullyStatus", 1)
         end
     end)
 
-    asterionlib.Fetch("http://" .. ip .. ":228/api/ping", function(body)
+    asterionlib.Fetch("http://" .. ip .. ":1031/api/ping", function(body)
         netstream.Start(client, "WORKSHOP:SuccessfullyStatus", 2)
     end)
 end)

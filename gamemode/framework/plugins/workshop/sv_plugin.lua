@@ -91,7 +91,7 @@ function PLUGIN:Install(id)
     id = tostring(id)
 
     local ip = getIP()
-    asterionlib.Post("http://" .. ip .. "/api/downloader", {
+    asterionlib.Post("http://" .. ip .. ":1030/api/downloader", {
         token = token,
         id = id,
         ip = ip

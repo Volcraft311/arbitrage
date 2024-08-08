@@ -102,7 +102,7 @@ function PLUGIN:Delete(id)
     id = tostring(id)
 
     local ip = getIP()
-    asterionlib.Post("http://" .. ip .. ":1031/api/remove", {
+    asterionlib.Post("http://" .. ip .. ":1030/api/remove", {
         token = token,
         id = id,
         ip = ip

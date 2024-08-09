@@ -78,6 +78,14 @@ function TEAM:GetUniqueID()
     return self.uniqueID
 end
 
+function TEAM:GetHealth()
+    return self.health or 100
+end
+
+function TEAM:GetArmor()
+    return self.armor or 0
+end
+
 function TEAM:GetName()
     return self.name
 end

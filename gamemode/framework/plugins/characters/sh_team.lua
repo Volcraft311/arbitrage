@@ -141,6 +141,10 @@ function Character.team:Join(client, data, bRespawn)
 
     local id = info:GetID()
 
+    client:SetHealth(info:GetHealth())
+    client:SetArmor(info:GetArmor())
+    client:SetLocalVar("stamina", 100)
+
     if bRespawn then
         client:SetTeam(id)
         return Arbitrage.player.Respawn(client)
@@ -149,8 +153,6 @@ function Character.team:Join(client, data, bRespawn)
     client:SetTeam(id)
     client:SetModel(info:GetModel())
     client:SetNoCollideWithTeammates(false)
-
-    client:SetLocalVar("stamina", 100)
 
     client:SetModelScale(1)
     client:SetHull(hullMin, hullMax)

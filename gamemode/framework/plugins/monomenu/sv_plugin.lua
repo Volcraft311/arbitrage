@@ -321,8 +321,17 @@ local actionList = {
     ["resetstats"] = function(client, target)
         if !IsValid(target) then return end
 
-        target:SetHealth(ARBITRAGE_HEALTH)
-        target:SetArmor(ARBITRAGE_ARMOR)
+        local health, armor = ARBITRAGE_HEALTH, ARBITRAGE_ARMOR
+
+        local id = target:Team()
+        local character = Character.team:GetByID(id)
+        if character then
+            health = character:GetHealth()
+            armor = character:GetArmor()
+        end
+
+        target:SetHealth(health)
+        target:SetArmor(armor)
 
         for k, v in pairs(Arbitrage.statistics.list) do
             Arbitrage.statistics.Set(target, v.data, 100)

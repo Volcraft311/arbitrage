@@ -35,8 +35,17 @@ function Arbitrage.player.SetupStatistics(client)
 end
 
 function Arbitrage.player.SetupHealth(client)
-    client:SetHealth(ARBITRAGE_HEALTH)
-    client:SetArmor(ARBITRAGE_ARMOR)
+    local health, armor = ARBITRAGE_HEALTH, ARBITRAGE_ARMOR
+
+    local id = client:Team()
+    local character = Character.team:GetByID(id)
+    if character then
+        health = character:GetHealth()
+        armor = character:GetArmor()
+    end
+
+    client:SetHealth(health)
+    client:SetArmor(armor)
 end
 
 function Arbitrage.player.SetupWeapons(client)
@@ -121,13 +130,19 @@ function Arbitrage.player.Respawn(client)
     client:Freeze(false)
     client:GodDisable()
 
-    local health = ARBITRAGE_HEALTH
-    if !Arbitrage.IsStartGame() then
-        health = 999999999
+    local health, armor = ARBITRAGE_HEALTH, ARBITRAGE_ARMOR
+
+    local id = client:Team()
+    local character = Character.team:GetByID(id)
+    if character then
+        health = character:GetHealth()
+        armor = character:GetArmor()
     end
 
-    client:SetHealth(health)
-    client:SetArmor(ARBITRAGE_ARMOR)
+    timer.Simple(0.2, function()
+        client:SetHealth(Arbitrage.IsStartGame() and health or 999999)
+        client:SetArmor(armor)
+    end)
 
     Arbitrage.player.SetupSpeed(client)
 

@@ -139,22 +139,9 @@ function Arbitrage.player.Respawn(client)
         armor = character:GetArmor()
     end
 
-    timer.Simple(0.2, function()
-        client:SetHealth(Arbitrage.IsStartGame() and health or 999999)
-        client:SetArmor(armor)
-    end)
-
     Arbitrage.player.SetupSpeed(client)
 
     client:SetNoCollideWithTeammates(false)
-
-    timer.Simple(0.2, function()
-        if !IsValid(client) then return end
-
-        if !client:IsNotCharacter() and !client:IsSpectate() then
-            Arbitrage.player.SetupWeapons(client)
-        end
-    end)
 
     client:SetNoDraw(false)
     client:SetNotSolid(false)
@@ -170,12 +157,13 @@ function Arbitrage.player.Respawn(client)
     client:SetEyeAngles(Angle(0, 0, 0))
 
     Arbitrage.player.SetupStatistics(client)
+    Arbitrage.player.SetupWeapons(client)
 
-    timer.Simple(2, function()
+    timer.Simple(1, function()
         if !IsValid(client) then return end
 
+        client:SetHealth(Arbitrage.IsStartGame() and health or 999999)
+        client:SetArmor(armor)
         client:SetupHands()
     end)
-
-    client.weapons = {}
 end

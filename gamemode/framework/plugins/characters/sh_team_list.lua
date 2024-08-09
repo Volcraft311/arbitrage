@@ -952,6 +952,7 @@ Character.team:Create({
     model = "models/player/yourtoast4/danganronpa/monokuma.mdl",
     uniqueID = "monokuma",
     evidence_visibility = 1,
+    health = 9999999,
     stamina = {run_consumption = 0},
     speed = {walk = 1, run = 1.3},
     needs = {hunger = -1, thirst = -1, fatique = -1},

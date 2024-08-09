@@ -44,17 +44,18 @@ function RagdollSystem:CreateRagdoll(client)
 end
 
 function RagdollSystem:CreateSyncTime(client)
-    timer.Create("RagdollSystem:Sync", 0.33, 0, function()
-        if !IsValid(client) then return timer.Remove("RagdollSystem:Sync") end
+    local id = "RagdollSystem:Sync_" .. client:SteamID()
+    timer.Create(id, 0.33, 0, function()
+        if !IsValid(client) then return timer.Remove(id) end
 
         local entity = client:GetRagdoll()
         if !IsValid(entity) then
             client:StandUp()
 
-            return timer.Remove("RagdollSystem:Sync")
+            return timer.Remove(id)
         end
 
-        client:SetPos(entity:GetPos() + Vector(0, 0, 10))
+        client:SetPos(entity:GetPos() + entity:OBBCenter() + Vector(0, 0, -25))
     end)
 end
 

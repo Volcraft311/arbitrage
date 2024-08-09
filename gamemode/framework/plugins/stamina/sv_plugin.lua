@@ -11,6 +11,23 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local CurTime = CurTime
+local math_Clamp = math.Clamp
+local math_abs = math.abs
+local math_sin = math.sin
+local RealTime = RealTime
+local Angle = Angle
+local tonumber = tonumber
+local Lerp = Lerp
+local math_max = math.max
+local math_Round = math.Round
+local math_Approach = math.Approach
+local timer_Simple = timer.Simple
+local IsValid = IsValid
+local timer_Create = timer.Create
+local timer_Remove = timer.Remove
+local FrameTime = FrameTime
 
 function Stamina:IsRunning(client, isProne)
 	if isProne then
@@ -66,7 +83,7 @@ function Stamina:GetMaxWalkSpeed(client)
 	end
 
 	if client:HasTemporaryStatusEffect("broken_leg") and !client:HasTemporaryStatusEffect("painkillers") then
-		local value = math.Clamp(math.abs(math.sin(RealTime() * 2.5)), 0.3, 1)
+		local value = math_Clamp(math_abs(math_sin(RealTime() * 2.5)), 0.3, 1)
 
 		if (!client.StaminaShakeTime or CurTime() >= client.StaminaShakeTime) and value <= 0.35 and client:GetVelocity():LengthSqr() >= 1000 then
 			client:ViewPunch(Angle(0.7, -0.5, 0.3))
@@ -137,9 +154,9 @@ function Stamina:SpeedHandler(client, info)
 	if (!isRunning and runSpeed > maxWalkSpeed + 0.1) or (stamina < 100 or stamina > 100) or (runSpeed < maxWalkSpeed) or (runSpeed > maxRunSpeed) or isShifting then
 		local ftSpeed = info.ft * 12
 		runSpeed = Lerp(ftSpeed, runSpeed, (isRunning and stamina > 5) and maxRunSpeed or maxWalkSpeed + 0.03)
-		runSpeed = math.max(maxWalkSpeed, runSpeed)
+		runSpeed = math_max(maxWalkSpeed, runSpeed)
 
-		if math.Round(info.runSpeed, 2) != math.Round(runSpeed, 2) then
+		if math_Round(info.runSpeed, 2) != math_Round(runSpeed, 2) then
 			client:SetRunSpeed(runSpeed)
 			client:SetWalkSpeed(runSpeed)
 			client:SetSlowWalkSpeed(runSpeed)
@@ -188,7 +205,7 @@ function Stamina:StaminaHandler(client, info)
 	if stamina < 100 or isShifting then
 		local regeneration = self:CalcRegeneration(client, info)
 		local ftSpeed = info.ft * 20
-		local value = math.Approach(stamina, isShifting and 0 or 100, ftSpeed * regeneration)
+		local value = math_Approach(stamina, isShifting and 0 or 100, ftSpeed * regeneration)
 
 		if isRunning then
 			self:SetStaminaCD(client, 1.5)
@@ -204,10 +221,10 @@ function Stamina:JumpHandler(client, info)
 	local stamina = info.stamina
 
 	if stamina < 100 and client:OnGround() then
-		timer.Simple(0.2, function()
+		timer_Simple(0.2, function()
 			if !IsValid(client) then return end
 
-			local jumppower = math.Clamp(stamina * 4, 50, ARBITRAGE_JUMP_POWER)
+			local jumppower = math_Clamp(stamina * 4, 50, ARBITRAGE_JUMP_POWER)
 			if jumppower != client:GetJumpPower() then
 				client:SetJumpPower(jumppower)
 			end
@@ -228,8 +245,8 @@ end
 
 function Stamina:CreateTimer(client)
 	local id = "Stamina:Think_" .. client:EntIndex()
-	timer.Create(id, 0.1, 0, function()
-		if !IsValid(client) then return timer.Remove(id) end
+	timer_Create(id, 0.1, 0, function()
+		if !IsValid(client) then return timer_Remove(id) end
 
 	    if !client:IsPlaying() or !client:oldAlive() then
 	    	return self:ReturnSpeed(client)
@@ -265,7 +282,7 @@ function Stamina:KeyPress(client, key)
 
 		local stamina = self:GetStamina(client)
 
-		self:SetStamina(client, math.max(0, stamina - 10))
+		self:SetStamina(client, math_max(0, stamina - 10))
 		self:SetStaminaCD(client, 3)
 	end
 end

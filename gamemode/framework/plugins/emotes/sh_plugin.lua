@@ -11,6 +11,18 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+-- Localize Global Calls
+local string_lower = string.lower
+local Vector = Vector
+local ipairs = ipairs
+local istable = istable
+local FindMetaTable = FindMetaTable
+local table_Copy = table.Copy
+local CurTime = CurTime
+local IsValid = IsValid
+local select = select
+
+
 local PLUGIN = PLUGIN
 Emotes = PLUGIN
 
@@ -22,7 +34,7 @@ Emotes.action.stored = {}
 Arbitrage.GM.HandlePlayerLanding = zero
 
 function Emotes.action:Register(uniqueID, data)
-	Emotes.action.stored[string.lower(uniqueID)] = data
+	Emotes.action.stored[string_lower(uniqueID)] = data
 end
 
 Emotes.ActionList = {
@@ -214,7 +226,7 @@ function playerMeta:GetAction()
 	local data = self:GetNetVar("action")
 	if !data then return end
 
-	data = table.Copy(data)
+	data = table_Copy(data)
 	return data[1], data[2], data[3], data[4]
 end
 

@@ -166,6 +166,7 @@ Character.category:Init(function()
     -- Персонаж администратора
     TEAM_ADMIN = Character.team:Create({
         name = "Администратор",
+        health = 9999999,
         color = Color(87, 211, 132),
         model = "models/editor/camera.mdl",
         weapons = {"gmod_tool", "weapon_physgun"}
@@ -174,12 +175,14 @@ Character.category:Init(function()
     -- Персонаж не выбранного персонажа
     TEAM_NOTCHARACTER = Character.team:Create({
         name = "Персонаж не выбран",
+        health = 9999999,
         color = Color(211, 87, 87)
     })
 
     -- Персонаж наблюдателя
     TEAM_SPECTATE = Character.team:Create({
         name = "Наблюдатель",
+        health = 9999999,
         color = Color(255, 255, 255),
         OnChange = function(client)
             client:SetNoDraw(true)

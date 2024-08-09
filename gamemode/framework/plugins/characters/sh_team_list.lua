@@ -609,6 +609,7 @@ Character.team:Create({
     model = "models/player_kiibo.mdl",
     uniqueID = "k1b0",
     evidence_visibility = 0.7,
+    armor = 100,
     stamina = {run_consumption = 0.1},
     speed = {walk = 1, run = 1},
     needs = {hunger = -1, thirst = -1, fatique = 351},

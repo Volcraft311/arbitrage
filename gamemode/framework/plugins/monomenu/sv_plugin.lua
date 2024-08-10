@@ -382,8 +382,6 @@ local actionList = {
     ["setstats"] = function(client, target, data, amount)
         if !IsValid(target) then return end
 
-        amount = math.Clamp(tonumber(amount), 0, 1000)
-
         if data == "health" then
             target:SetHealth(amount)
         elseif data == "armor" then

@@ -26,7 +26,6 @@ function Arbitrage.IsThirdPerson()
 		local client = LocalPlayer()
 
 		if client:IsNocliping() or client:IsSpectating() then return false end
-		if client:IsPlayingTaunt() then return false end
 
 		if (client.GetSitting and client:GetSitting()) or select(3, client:GetAction()) then
 			return false
@@ -210,6 +209,15 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 	end
 end
 
+local blockedMovementAct = {
+	[ACT_GMOD_TAUNT_MUSCLE] = true, -- Стриптиз
+	[ACT_GMOD_TAUNT_PERSISTENCE] = true, -- Поза льва
+	[ACT_GMOD_TAUNT_ROBOT] = true, -- Робот
+	[ACT_GMOD_GESTURE_TAUNT_ZOMBIE] = true, -- Зомби
+	[ACT_GMOD_TAUNT_CHEER] = true, -- Приветствие
+	[ACT_GMOD_TAUNT_DANCE] = true, -- Танец
+	[ACT_GMOD_TAUNT_LAUGH] = true -- Смех
+}
 function PLUGIN:CreateMove(cmd)
 	if !bIsThirdPerson then return end
 
@@ -223,6 +231,14 @@ function PLUGIN:CreateMove(cmd)
 
 		cmd:SetForwardMove(fm + sm * diff)
 		cmd:SetSideMove((Arbitrage.OnMapReversion() and -sm or sm) + fm * diff)
+
+		if client:IsPlayingTaunt() then
+			local act = client:GetLocalVar("tauntAct")
+
+			if blockedMovementAct[act] then
+				cmd:ClearMovement()
+			end
+		end
 
 		return false
 	end

@@ -348,10 +348,10 @@ function PLUGIN:Think()
 
 		local bIsRagdoll = entity:GetClass() == "prop_ragdoll"
 		if entity:IsPlayer() or bIsRagdoll then
-			local ragdollSteamID = entity:GetNetVar("sIsRagdoll")
-			if ragdollSteamID then
-				entity = player.GetBySteamID(ragdollSteamID)
+			if bIsRagdoll then
+				local steamID = entity:GetNetVar("sIsRagdoll")
 
+				entity = steamID and player.GetBySteamID(steamID)
 				if !IsValid(entity) then return end
 			end
 

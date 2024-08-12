@@ -425,13 +425,13 @@ function Arbitrage.hud.LowHealthDraw()
 	end
 end
 
-local FishEyeTexture = Material("models/props_c17/fisheyelens")
+local FishEyeTexture = Material("effects/water_warp01")
 function Arbitrage.hud.GrayCorrect()
 	if LocalPlayer():WaterLevel() > 2 then
 	    render_UpdateScreenEffectTexture()
 	        FishEyeTexture:SetFloat("$envmap", 0)
 	        FishEyeTexture:SetFloat("$envmaptint", 0)
-	        FishEyeTexture:SetFloat("$refractamount", 0.1)
+	        FishEyeTexture:SetFloat("$refractamount", 0.15)
 	        FishEyeTexture:SetInt("$ignorez", 1)
 	    render_SetMaterial(FishEyeTexture)
 	    render_DrawScreenQuad()

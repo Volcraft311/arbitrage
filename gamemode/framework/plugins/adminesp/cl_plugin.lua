@@ -17,9 +17,7 @@ local PLUGIN = PLUGIN
 local surface_CreateFont = surface.CreateFont
 local draw_SimpleTextOutlined = draw.SimpleTextOutlined
 local IsValid = IsValid
-local timer_Create = timer.Create
 local pairs = pairs
-local ents_GetAll = ents.GetAll
 local ipairs = ipairs
 local Vector = Vector
 local math_abs = math.abs
@@ -68,7 +66,7 @@ local function drawing(entity, info, eyePos)
 	if !headPos.visible then return end
 
 	local distance = eyePos:Distance(entityPos)
-	local col = (isPlayer and team_GetColor(entity:Team()) or PLUGIN.entslist[entity:GetClass()]) or color_white
+	local col = (isPlayer and team_GetColor(entity:Team()) or PLUGIN.entslist[entity:GetClass()][1]) or color_white
 
 	local f = math_abs(350 / distance)
 	local size = 52 * f
@@ -80,7 +78,7 @@ local function drawing(entity, info, eyePos)
 	for _, data in ipairs(info) do
 		if isfunction(data) then
 			data(entity)
-        else
+		elseif isstring(data) then
 		    local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
 			y2 = y2 + _y
 		end
@@ -104,7 +102,7 @@ local function isAllow(client)
 	if !IsValid(client) then return false end
 
 	if client:IsSpectating() then return true end
-	
+
 	if Arbitrage.lawEnable then return false end
 	if !SETTINGS.options.Get("show_admin_esp") then return false end
 	if !client:oldAlive() then return false end
@@ -121,17 +119,28 @@ local cache = {}
 asterionlib.entscollector:AddTrack("adminesp", {
 	delay_apply = 1,
 	onCanTrack = function(entity)
-		if entity:IsPlayer() or PLUGIN.entslist[entity:GetClass()] then
+		local object = PLUGIN.entslist[entity:GetClass()]
+
+		if entity:IsPlayer() or object then
+			local func = object and object[2]
+			if func then
+				local bAllow = func(entity)
+
+				if bAllow == false then
+					return false
+				end
+			end
+
 		    return true
 		end
-	end, 
+	end,
 	onCanApply = function(entity)
 	    -- вообще это не должно тут находиться... но... okeeey...
 	    local client = LocalPlayer()
 	    if IsValid(client) then
 	    	allow = isAllow(client)
 	    end
-	    
+
 	    if !allow then
 	        cache = {}
 	    end

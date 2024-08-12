@@ -119,6 +119,21 @@ PLUGIN:AddPlayerESPCustomization("observer_pl", {
     end
 })
 
+PLUGIN:AddPlayerESPCustomization("fallover_pl", {
+    dist = 0,
+    config = {
+        name = "Fallover статус",
+        desc = "Включить показатель состояния Fallover-а игрока"
+    },
+    data = function(entity)
+        local ragdoll = entity:IsRagdolling()
+
+        if ragdoll then
+            return "[FALLOVER]"
+        end
+    end
+})
+
 --[[
     Entity
 ]]--

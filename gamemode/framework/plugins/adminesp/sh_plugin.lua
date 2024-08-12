@@ -21,13 +21,17 @@ PLUGIN.playerinfo = {}
 PLUGIN.entityinfo = {}
 
 PLUGIN.entslist = {
-    ["prop_ragdoll"] = Color(157, 111, 210),
-    ["arb_player"] = Color(111, 175, 210),
-    ["arb_wardrobe"] = Color(111, 175, 210),
-    ["arb_fridge"] = Color(111, 175, 210),
-    ["arb_dead"] = Color(111, 175, 210),
-    ["arb_item"] = Color(213, 150, 56),
-    ["arb_container"] = Color(240, 73, 61),
+    ["prop_ragdoll"] = {Color(157, 111, 210), function(entity)
+        if entity:GetNetVar("sIsRagdoll") then
+            return false
+        end
+    end},
+    ["arb_player"] = {Color(111, 175, 210)},
+    ["arb_wardrobe"] = {Color(111, 175, 210)},
+    ["arb_fridge"] = {Color(111, 175, 210)},
+    ["arb_dead"] = {Color(111, 175, 210)},
+    ["arb_item"] = {Color(213, 150, 56)},
+    ["arb_container"] = {Color(240, 73, 61)},
 }
 
 if CLIENT then

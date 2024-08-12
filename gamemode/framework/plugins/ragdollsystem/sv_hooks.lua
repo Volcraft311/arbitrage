@@ -44,6 +44,7 @@ function RagdollSystem:DoPlayerDeath(client, attacker)
     local entity = client:StandUp(true)
     if IsValid(entity) then
         Persistent:SetPersistent(entity, client, attacker)
+        entity:SetNetVar("sIsRagdoll", nil)
     end
 end
 

@@ -43,8 +43,8 @@ function TOOL:LeftClick()
     entity:SetPos(pos)
     entity:SetSolid(SOLID_NONE)
     entity:SetMoveType(MOVETYPE_NONE)
-    entity:DrawShadow(false)
     entity:SetNoDraw(true)
+    entity:DrawShadow(false)
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
     entity:Spawn()
 
@@ -63,7 +63,7 @@ function TOOL:RightClick()
     if IsValid(entity) then
         local data = client.DescriptiveTextDescription or "Ваш текст"
         entity:SetNetVar("DescriptiveText", data)
-        
+
         -- Обновляем так как entscollector сам обновляет только в случае создания Entity
         for k, v in ipairs(player.GetAll()) do
             v:SendLua([=[asterionlib.entscollector:UpdateTracks()]=])

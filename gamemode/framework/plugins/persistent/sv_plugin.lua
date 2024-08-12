@@ -43,15 +43,13 @@ function Persistent:CreateRagdoll(client)
 end
 
 function Persistent:ClearCompositeEntities(client)
-    client:SetNoDraw(true)
-    client:SetNotSolid(true)
-    client:DrawWorldModel(false)
+    client:DrawHide()
 
     local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
     for _, entity in ipairs(entities) do
         if IsValid(entity) then
-            entity:SetNoDraw(true)
-            entity:SetNotSolid(true)
+            entity:DrawHide()
+
             entity:Remove()
         end
     end

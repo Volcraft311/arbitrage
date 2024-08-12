@@ -184,11 +184,10 @@ Character.category:Init(function()
         name = "Наблюдатель",
         health = 9999999,
         color = Color(255, 255, 255),
+        model = "models/props_doors/null.mdl",
         OnChange = function(client)
-            client:SetNoDraw(true)
-            client:SetNotSolid(true)
-            client:DrawWorldModel(false)
-            client:DrawShadow(false)
+            client:DrawHide()
+
             client:GodEnable()
             client:SetNoTarget(true)
             client:StripWeapons()

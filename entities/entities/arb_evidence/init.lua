@@ -17,12 +17,12 @@ AddCSLuaFile("cl_init.lua");
 AddCSLuaFile("shared.lua");
 
 function ENT:Initialize()
-	self:SetModel("models/hunter/blocks/cube025x025x025.mdl")
-	self:SetSolid(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:DrawShadow(false)
-	self:SetUseType(SIMPLE_USE)
-	self:SetNoDraw(true)
+    self:SetModel("models/hunter/blocks/cube025x025x025.mdl")
+    self:SetSolid(SOLID_VPHYSICS)
+    self:SetMoveType(MOVETYPE_VPHYSICS)
+    self:SetUseType(SIMPLE_USE)
+    self:SetNoDraw(true)
+    self:DrawShadow(false)
 
-	self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+    self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 end

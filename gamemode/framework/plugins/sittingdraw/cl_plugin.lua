@@ -252,9 +252,10 @@ function PLUGIN:CreateCSEnt()
 	entity:SetPos(trace.HitPos + Vector(0, 0, 1))
 	entity:SetMaterial("models/debug/debugwhite")
 	entity:SetColor(color_yellow)
+
 	entity:SetNoDraw(false)
-	entity:SetIK(false)
 	entity:DrawShadow(false)
+	entity:SetIK(false)
 
 	local sitID = client:GetNetVar("sitting")
 	if sitID then

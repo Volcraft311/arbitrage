@@ -85,11 +85,10 @@ function meta:FallOver(delay)
     self:SetNetVar("ragdoll", entity:EntIndex())
     self:Freeze(true)
     self:SetMoveType(MOVETYPE_OBSERVER)
-    self:SetNoDraw(true)
-    self:SetNotSolid(true)
-    self:DrawWorldModel(false)
-    self:DrawShadow(false)
+
+    self:DrawHide()
     self:SetNoTarget(true)
+
     self:SetVelocity(-self:GetVelocity())
     self:SelectWeapon("academy_key")
 
@@ -111,11 +110,10 @@ function meta:StandUp(bNoRemove)
     self:SetNetVar("ragdoll", nil)
     self:Freeze(false)
     self:SetMoveType(MOVETYPE_WALK)
-    self:SetNoDraw(false)
-    self:SetNotSolid(false)
-    self:DrawWorldModel(true)
-    self:DrawShadow(true)
+
+    self:DrawUnHide()
     self:SetNoTarget(false)
+
     self:SetVelocity(-self:GetVelocity())
     self:SelectWeapon("academy_key")
     self:CheckStuck(0.1)
@@ -128,15 +126,7 @@ function meta:StandUp(bNoRemove)
 
     local entities = self.getCompositeEntities and self:getCompositeEntities() or {}
     if #entities > 0 then
-        self:SetNoDraw(true)
-        self:SetNotSolid(true)
-        self:DrawWorldModel(false)
-
-        timer.Simple(0.2, function()
-            self:SetNoDraw(false)
-            self:SetNotSolid(false)
-            self:DrawWorldModel(true)
-        end)
+        self:ReDraw()
     end
 
     if self:Health() > 10 then

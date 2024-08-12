@@ -876,11 +876,9 @@ local function setstats()
 
         client:SetLocalVar("stamina", 100)
 
-        client:SetNoDraw(false)
-        client:SetNotSolid(false)
-        client:DrawWorldModel(true)
-        client:DrawShadow(true)
+        client:DrawUnHide()
         client:SetNoTarget(false)
+
         client:SetupHands()
 
         client:SetNoCollideWithTeammates(false)
@@ -1047,10 +1045,8 @@ timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
             v:SetPos(spectate:GetPos())
         end
 
-        v:SetNoDraw(true)
-        v:SetNotSolid(true)
-        v:DrawWorldModel(false)
-        v:DrawShadow(false)
+        v:DrawHide()
+
         v:GodEnable()
         v:SetNoTarget(true)
         v:StripWeapons()
@@ -1075,8 +1071,8 @@ function Arbitrage:PlayerCanPickupWeapon(client, entity)
 end
 
 function Arbitrage.GM:PlayerSpawn(client, transiton)
-    client:SetNoDraw(false)
-    client:SetNotSolid(false)
+    client:DrawUnHide()
+
     client:SetMoveType(MOVETYPE_WALK)
 
     player_manager.SetPlayerClass(client, "player_arbitrage")

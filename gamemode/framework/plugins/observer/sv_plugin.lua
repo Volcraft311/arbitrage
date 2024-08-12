@@ -30,10 +30,7 @@ function PLUGIN:PlayerNoClip(client, state)
 end
 
 function PLUGIN:PlayerEnterNoclip(client)
-    client:SetNoDraw(true)
-    client:SetNotSolid(true)
-    client:DrawWorldModel(false)
-    client:DrawShadow(false)
+    client:DrawHide()
     client:GodEnable()
     client:SetNoTarget(true)
 
@@ -41,10 +38,7 @@ function PLUGIN:PlayerEnterNoclip(client)
 end
 
 function PLUGIN:PlayerExitNoclip(client)
-    client:SetNoDraw(false)
-    client:SetNotSolid(false)
-    client:DrawWorldModel(true)
-    client:DrawShadow(true)
+    client:DrawUnHide()
     client:GodDisable()
     client:SetNoTarget(false)
 

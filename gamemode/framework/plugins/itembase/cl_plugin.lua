@@ -263,9 +263,7 @@ netstream.Hook("ItemBase.AnimDropItem", function(target, idx, class)
 		local entity = Entity(idx)
 
 		if IsValid(entity) and entity:GetClass() == class then
-			entity:SetNoDraw(true)
-			entity:SetNotSolid(true)
-			entity:DrawShadow(false)
+			entity:DrawHide()
 		end
 	end
 
@@ -289,23 +287,19 @@ netstream.Hook("ItemBase.AnimDropItem", function(target, idx, class)
 		csEnt:SetColor(Color(255, 255, 255, 0))
 		csEnt:ManipulateBoneScale(0, Vector(scale, scale, scale))
 
-		entity:SetNoDraw(true)
-		entity:SetNotSolid(true)
-		entity:DrawShadow(false)
+		entity:DrawHide()
 
 		local function remove()
 			if IsValid(entity) then
-				entity:SetNoDraw(false)
-				entity:SetNotSolid(false)
-				entity:DrawShadow(true)
+				entity:DrawUnHide()
 
-				timer.Simple(0.1, function()
-					if !IsValid(entity) then return end
+				for i = 1, 10 do
+					timer.Simple(i / 10, function()
+						if !IsValid(entity) then return end
 
-					entity:SetNoDraw(false)
-					entity:SetNotSolid(false)
-					entity:DrawShadow(true)
-				end)
+						entity:DrawUnHide()
+					end)
+				end
 			end
 
 			if IsValid(csEnt) then

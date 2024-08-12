@@ -143,10 +143,8 @@ function Arbitrage.player.Respawn(client)
 
     client:SetNoCollideWithTeammates(false)
 
-    client:SetNoDraw(false)
-    client:SetNotSolid(false)
-    client:DrawWorldModel(true)
-    client:DrawShadow(true)
+    client:DrawUnHide()
+
     client:GodDisable()
     client:SetNoTarget(false)
     client:SetCollisionGroup(COLLISION_GROUP_PLAYER)

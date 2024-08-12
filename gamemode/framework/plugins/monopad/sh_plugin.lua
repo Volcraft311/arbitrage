@@ -39,8 +39,8 @@ function MonoPad:New(id)
         return self.instances[id]
     end
 
-    local meta = table.Copy(Arbitrage.meta.monopad)
-    local monopad = setmetatable({id = id}, meta)
+    local monopad = {id = id}
+    setmetatable(monopad, table.Copy(Arbitrage.meta.monopad))
 
     self.instances[id] = monopad
     return monopad

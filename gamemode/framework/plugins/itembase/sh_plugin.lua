@@ -144,19 +144,19 @@ function ItemBase:New(uniqueID, id)
         return self.instances[id]
     end
 
-    local itemData = table.Copy(self.list[uniqueID])
+    local itemInfo = self.list[uniqueID]
+    if !itemInfo then return end
 
-    if itemData then
-        local item = setmetatable({id = id}, {
-            __index = itemData,
-            __eq = itemData.__eq,
-            __tostring = itemData.__tostring
-        })
+    local item = {id = id}
+    setmetatable(item, {
+        __index = itemInfo,
+        __eq = itemInfo.__eq,
+        __tostring = itemInfo.__tostring
+    })
 
-        self.instances[id] = item
+    self.instances[id] = item
 
-        return item
-    end
+    return item
 end
 
 ItemBase.converterBase = {

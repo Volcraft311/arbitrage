@@ -20,8 +20,8 @@ function Character.emoji:New(uniqueID)
 	    return self.instances[uniqueID]
 	end
 
-	local meta = table.Copy(Arbitrage.meta.character_emoji)
-	local emoji = setmetatable({uniqueID = uniqueID}, meta)
+	local emoji = {uniqueID = uniqueID}
+	setmetatable(emoji, table.Copy(Arbitrage.meta.character_emoji))
 
 	self.instances[uniqueID] = emoji
 	return emoji

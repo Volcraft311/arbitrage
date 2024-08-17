@@ -143,7 +143,7 @@ function Arbitrage.player.Respawn(client)
 
     client:SetNoCollideWithTeammates(false)
 
-    client:DrawUnHide()
+    client:ReDraw()
 
     client:GodDisable()
     client:SetNoTarget(false)

@@ -42,9 +42,6 @@ function Emotes:OnPlayerSitting(client, vehicle)
 			client:CheckStuck(0.2)
 			timer.Remove(timerID)
 
-			local entities = client.getCompositeEntities and client:getCompositeEntities() or {}
-			if #entities <= 0 then return end
-
 			client:ReDraw()
 		end
 	end)

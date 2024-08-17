@@ -111,7 +111,6 @@ function meta:StandUp(bNoRemove)
     self:Freeze(false)
     self:SetMoveType(MOVETYPE_WALK)
 
-    self:DrawUnHide()
     self:SetNoTarget(false)
 
     self:SetVelocity(-self:GetVelocity())
@@ -124,10 +123,7 @@ function meta:StandUp(bNoRemove)
         entity:Remove()
     end
 
-    local entities = self.getCompositeEntities and self:getCompositeEntities() or {}
-    if #entities > 0 then
-        self:ReDraw()
-    end
+    self:ReDraw()
 
     if self:Health() > 10 then
         self:RemoveTemporaryStatusEffect("stun")

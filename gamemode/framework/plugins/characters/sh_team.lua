@@ -158,7 +158,7 @@ function Character.team:Join(client, data, bRespawn)
     client:SetHull(hullMin, hullMax)
     client:SetHullDuck(hullduckMin, hullduckMax)
 
-    timer.Simple(FrameTime(), function()
+    timer.Simple(0, function()
         client:SetRenderMode(RENDERMODE_TRANSCOLOR)
         client:SetSkin(0)
         client:SetMaterial("")

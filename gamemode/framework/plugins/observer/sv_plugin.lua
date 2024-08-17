@@ -38,7 +38,7 @@ function PLUGIN:PlayerEnterNoclip(client)
 end
 
 function PLUGIN:PlayerExitNoclip(client)
-    client:DrawUnHide()
+    client:ReDraw()
     client:GodDisable()
     client:SetNoTarget(false)
 

@@ -498,18 +498,13 @@ function SWEP:Think()
                     self.lastPlayerAngles = currentPlayerAngles
 
                     physicsObject:Wake()
-                    physicsObject:ComputeShadowControl({
-                        secondstoarrive = 0.01,
-                        pos = targetLocation,
-                        angle = self.heldObjectAngle,
-                        maxangular = 256,
-                        maxangulardamp = 10000,
-                        maxspeed = 256,
-                        maxspeeddamp = 10000,
-                        dampfactor = 0.8,
-                        teleportdistance = self.maxHoldDistance * 0.75,
-                        deltatime = FrameTime()
-                    })
+                    physicsObject:SetPos(targetLocation)
+                    physicsObject:SetAngles(self.heldObjectAngle)
+
+                    -- JVolt FIX
+                    if IsValid(physics) then
+                        physics:ApplyForceCenter(Vector(0, 0, 0))
+                    end
 
                     if physics:GetStress() > self.maxHoldStress then
                         self:DropObject()

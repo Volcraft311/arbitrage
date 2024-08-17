@@ -209,7 +209,7 @@ function SWEP:PickupObject(entity)
     self.holdEntity = ents.Create("prop_physics")
     self.holdEntity:SetPos(self.heldEntity:LocalToWorld(self.heldEntity:OBBCenter()))
     self.holdEntity:SetAngles(self.heldEntity:GetAngles())
-    self.holdEntity:SetModel("models/weapons/w_bugbait.mdl")
+    self.holdEntity:SetModel("models/hunter/plates/plate.mdl")
     self.holdEntity:SetOwner(client)
 
     self.holdEntity:SetNoDraw(true)
@@ -235,7 +235,9 @@ function SWEP:PickupObject(entity)
         self.holdEntity:SetPos(tracedEnt:GetBonePosition(tracedEnt:TranslatePhysBoneToBone(trace.PhysicsBone)))
     end
 
-    self.constraint = constraint.Weld(self.holdEntity, self.heldEntity, 0, trace.Entity:IsRagdoll() and trace.PhysicsBone or 0, 0, true, true)
+    print(trace.PhysicsBone)
+
+    self.constraint = constraint.Weld(self.holdEntity, self.heldEntity, 0, 0 or 0, 0, true, true)
 end
 
 function SWEP:DropObject(bThrow)
@@ -498,12 +500,33 @@ function SWEP:Think()
                     self.lastPlayerAngles = currentPlayerAngles
 
                     physicsObject:Wake()
-                    physicsObject:SetPos(targetLocation)
-                    physicsObject:SetAngles(self.heldObjectAngle)
 
-                    -- JVolt FIX
-                    if IsValid(physics) then
-                        physics:ApplyForceCenter(Vector(0, 0, 0))
+                    if true then -- JVolt FIX
+                        local tr = util.TraceLine({
+                            start = client:GetShootPos(),
+                            endpos = targetLocation,
+                            filter = {client, self.heldEntity, self.holdEntity}
+                        })
+
+                        physicsObject:SetPos(tr.HitPos)
+                        physicsObject:SetAngles(self.heldObjectAngle)
+
+                        if IsValid(physics) then
+                            physics:ApplyForceCenter(Vector(0, 0, 0))
+                        end
+                    else
+                        physicsObject:ComputeShadowControl({
+                            secondstoarrive = 0.01,
+                            pos = targetLocation,
+                            angle = self.heldObjectAngle,
+                            maxangular = 256,
+                            maxangulardamp = 10000,
+                            maxspeed = 256,
+                            maxspeeddamp = 10000,
+                            dampfactor = 0.8,
+                            teleportdistance = self.maxHoldDistance * 0.75,
+                            deltatime = FrameTime()
+                        })
                     end
 
                     if physics:GetStress() > self.maxHoldStress then

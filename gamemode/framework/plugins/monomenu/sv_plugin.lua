@@ -386,6 +386,7 @@ local actionList = {
         if !data then return end
 
         target:SetModelScale(data)
+        Character.team:EstablishHull(target)
 
         Arbitrage.adminnotify:SendNotify("setscale", client:FullName(), target:FullName(), data)
     end,

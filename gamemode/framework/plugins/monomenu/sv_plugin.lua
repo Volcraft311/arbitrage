@@ -379,6 +379,16 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("setdescription", client:FullName(), target:FullName())
     end,
+    ["setscale"] = function(client, target, data)
+        if !IsValid(target) then return end
+
+        data = tonumber(data)
+        if !data then return end
+
+        target:SetModelScale(data)
+
+        Arbitrage.adminnotify:SendNotify("setscale", client:FullName(), target:FullName(), data)
+    end,
     ["setstats"] = function(client, target, data, amount)
         if !IsValid(target) then return end
 

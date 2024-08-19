@@ -540,6 +540,20 @@ local function getActionList(clientinfo)
                 end
             },
             {
+                name = "Изменить размер персонажа",
+                icon = "icon16/link_break.png",
+                data = function()
+                    Derma_StringRequest("Изменить размер", "Введите размер который вы хотите установить персонажу\n1 - стандартная", IsValid(client) and client:GetModelScale() or "", function(text)
+                        if !tonumber(text) then return end
+
+                        runAction("setscale", client, text)
+                    end)
+                end,
+                check = function()
+                    return a_isvalid
+                end
+            },
+            {
                 name = "Изменить статистику",
                 icon = "icon16/bricks.png",
                 data = {

@@ -213,3 +213,7 @@ end)
 PLUGIN:AddNewNotify("clearstatuseffect", function(client, target)
     return Color(63, 162, 184), client, color_white, " убрал все статус эффекты игроку ", Color(197, 181, 60), target
 end)
+
+PLUGIN:AddNewNotify("setscale", function(client, target, delay)
+    return Color(63, 162, 184), client, color_white, " изменил размер модели игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), delay
+end)

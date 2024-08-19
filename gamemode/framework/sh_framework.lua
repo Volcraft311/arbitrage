@@ -147,6 +147,7 @@ do
         workshop:Add("2840295308") -- Primitive
         workshop:Add("2938912306") -- Suppression Mat
         workshop:Add("2963988886") -- more materials
+        workshop:Add("2782265858") -- DSteps: Dynamic Footsteps
 
         -- WEAPONS
         workshop:Add("2842765511") -- nmrih reupload

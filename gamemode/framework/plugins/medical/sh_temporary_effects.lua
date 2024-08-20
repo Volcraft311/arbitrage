@@ -395,6 +395,24 @@ Medical:TemporaryStatusEffects("health_bed", {
 	noSave = true
 })
 
+Medical:TemporaryStatusEffects("sleep_action", {
+	name = "Восстановление энергии (анимация)",
+	icon = "danganronpa/ui/medical/buff.png",
+	description = "Ваш сон очень медленно восстанавливается.",
+	handler = function(client, stored, values)
+		stored.time = (stored.time or 0) + 1
+		if stored.time <= 8 then return end
+
+		local key = "Sleep"
+		local info = Arbitrage.statistics.Get(client, key)
+
+		Arbitrage.statistics.Set(client, key, math.Clamp(info + 1, 0, 100))
+
+		stored.time = 0
+	end,
+	noSave = true
+})
+
 Medical:TemporaryStatusEffects("exhaustion", {
 	name = "Усталость",
 	icon = "danganronpa/ui/medical/exhaustion.png",

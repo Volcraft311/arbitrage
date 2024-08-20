@@ -39,7 +39,7 @@ function PANEL:Init()
     end
 
     self.statusPanel = self:Add("Panel")
-    self.statusPanel:SetWide(ScrH() * 0.25)
+    self.statusPanel:SetWide(ScrH() * 0.3)
     self.statusPanel:Dock(RIGHT)
     self.statusPanel:DockMargin(0, H(100), 0, 0)
 

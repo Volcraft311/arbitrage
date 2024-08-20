@@ -11,16 +11,16 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
-
-function PLUGIN:LayDownBed(client, entity)
+function BedSystem:LayDownBed(client, entity)
     if !IsValid(client) then return end
 
     local pos = self.allowBed[entity:GetModel()].pos or Vector(0, 0, 0)
     local ang = self.allowBed[entity:GetModel()].ang or Angle(0, 0, 0)
 
+    local eyePos = client:EyePos()
+    local eyeAng = client:EyeAngles()
+
     client:SetMoveType(MOVETYPE_OBSERVER)
-    client:SetEyeAngles(entity:GetAngles() + ang)
 
     timer.Simple(0.2, function()
         client:SetPos(entity:GetPos() + pos - Vector(0, 0, 3))
@@ -30,24 +30,29 @@ function PLUGIN:LayDownBed(client, entity)
 
     client:AddTemporaryStatusEffect("sleep", 0)
     client:AddTemporaryStatusEffect("health_bed", 0)
-    client:SetNetVar("inbed", entity)
 
-    client.bedentity = entity
+    netstream.Start(client, "BedSystem:LayDownBed", entity, eyePos, eyeAng)
+
+    client.inBed = true
 end
 
-function PLUGIN:GetUpBed(client, entity)
+function BedSystem:GetUpBed(client)
     if !IsValid(client) then return end
 
     client:Freeze(false)
     client:SetMoveType(MOVETYPE_WALK)
-    client:SetNetVar("inbed", nil)
     client:SetPos(client:GetPos() + Vector(0, 0, 10))
     client:SetEyeAngles(Angle(0, 0, 0))
+
     client:RemoveTemporaryStatusEffect("sleep")
     client:RemoveTemporaryStatusEffect("health_bed")
+
+    netstream.Start(client, "BedSystem:GetUpBed")
+
+    client.inBed = nil
 end
 
-function PLUGIN:PlayerUse(client, entity)
+function BedSystem:PlayerUse(client, entity)
     local allow = self.allowBed[string.lower(tostring(entity:GetModel() or ""))]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
@@ -68,12 +73,42 @@ function PLUGIN:PlayerUse(client, entity)
     end
 end
 
-netstream.Hook("arb.GetUpBed", function(client)
-    if !client:GetNetVar("inbed") then return end
+local bedActionList = {
+    arrestidle = true,
+    d1_town05_winston_down = true,
+    d1_town05_wounded_idle_2 = true,
+    injured1 = true,
+    injured2 = true,
+    injured3 = true,
+    sniper_victim_pre = true,
+    d2_coast11_tobias = true,
+    lying_down = true,
+    d1_town05_wounded_idle_1 = true,
+}
+
+function BedSystem:ActionStart(client, name)
+    name = name:lower()
+
+    if !bedActionList[name] then return end
+    if client.inBed then return end
+
+    client:AddTemporaryStatusEffect("sleep_action", 0)
+end
+
+function BedSystem:ActionEnd(client, name)
+    name = name:lower()
+
+    if !bedActionList[name] then return end
+
+    client:RemoveTemporaryStatusEffect("sleep_action")
+end
+
+netstream.Hook("BedSystem:GetUpBed", function(client)
+    if !client.inBed then return end
 
     Arbitrage.action.ActionRun(client, "Вы просыпаетесь", 5, function()
         return false
     end, function(activator)
-        PLUGIN:GetUpBed(activator, activator.bedentity)
+        BedSystem:GetUpBed(client)
     end)
 end)

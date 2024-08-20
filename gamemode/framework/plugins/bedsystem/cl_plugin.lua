@@ -11,94 +11,23 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
-PLUGIN.dot = 1
-
--- Localize Global Calls
-local input_IsKeyDown = input.IsKeyDown
-local vgui_CursorVisible = vgui.CursorVisible
-local CurTime = CurTime
-local netstream = netstream
-local IsValid = IsValid
-local Lerp = Lerp
-local FrameTime = FrameTime
-local surface_SetDrawColor = surface.SetDrawColor
-local math_Clamp = math.Clamp
-local surface_DrawRect = surface.DrawRect
-local ScrW = ScrW
-local ScrH = ScrH
-local draw_SimpleText = draw.SimpleText
-local string_rep = string.rep
-local Color = Color
-
-
-function PLUGIN:Think()
-    local client = LocalPlayer()
-
-    if !client:oldAlive() then return end
-    if !client:GetNetVar("inbed") then client.inbedpos = client:EyePos() client.inbedang = client:EyeAngles() return end
-
-    if input_IsKeyDown(KEY_SPACE) and !vgui_CursorVisible() and (!client.BedCD or CurTime() >= client.BedCD) then
-        netstream.Start("arb.GetUpBed")
-        client.BedCD = CurTime() + 5
-    end
-end
-
-function PLUGIN:CalcView(client, pos, angles, fov)
-    if !client:oldAlive() then return end
-    if !client:GetNetVar("inbed") then return end
-
-    client.inbedpos = client.inbedpos or client:EyePos()
-    client.inbedang = client.inbedang or client:EyeAngles()
-
-    local entity = client:GetNetVar("inbed")
-    if entity and IsValid(entity) then
-        local posinfo = self.allowBed[entity:GetModel()].eye
-
-        client.inbedpos = Lerp(FrameTime() * 1, client.inbedpos, posinfo.pos(entity:GetPos(), entity:GetAngles()))
-
-        for i = 1, 3, 2 do
-            client.inbedang[i] = Lerp(FrameTime() * 1, client.inbedang[i], entity:GetAngles()[i] + posinfo.ang[i])
-        end
-
-        local view = {
-            origin = client.inbedpos,
-            angles = client.inbedang,
-            fov = fov,
-            drawviewer = false
-        }
-
-        return view
-    end
-end
-
-function PLUGIN:RenderScreenspaceEffects()
-    local client = LocalPlayer()
-    if !client:oldAlive() then return end
-
-    if Arbitrage.lawEnable then return end
-
-    local isSleep = client:GetNetVar("inbed") or client:GetLocalVar("sleeping")
-
-    client.bedalpha = client.bedalpha or 0
-    client.bedalpha = Lerp(FrameTime() * 1.5, client.bedalpha, isSleep and 257 or -3)
-
-    if client.bedalpha <= 0.05 then return end
-
-    surface_SetDrawColor(0, 0, 0, math_Clamp(client.bedalpha, 0, 255))
-    surface_DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-
-    if (!self.dotUpdate or CurTime() >= self.dotUpdate) then
-        self.dot = self.dot >= 4 and 1 or self.dot + 1
-        self.dotUpdate = CurTime() + 1
+netstream.Hook("BedSystem:LayDownBed", function(entity, eyePos, eyeAng)
+    if IsValid(BedSystem.panel) then
+        BedSystem.panel:Remove()
     end
 
-    local actionAlpha = Arbitrage.action.data and ((Arbitrage.action.data.alpha and Arbitrage.action.data.alpha or 0) + 1) or 0
+    local panel = vgui.Create("BedSystem:Menu")
+    panel:SetBedData(entity, eyePos, eyeAng)
 
-    draw_SimpleText("Вы спите" .. string_rep(".", self.dot), "arb.Font_FuturaPTDemi_20", ScrW() / 2, ScrH() * 0.4, Color(255, 255, 255, client.bedalpha - actionAlpha), TEXT_ALIGN_CENTER)
+    BedSystem.panel = panel
+end)
 
-    if !isSleep then return end
-    if client:GetLocalVar("sleeping") then return end
+netstream.Hook("BedSystem:GetUpBed", function()
+    if !IsValid(BedSystem.panel) then return end
 
-    Hints:AddKeyDraw("Проснуться", "+jump")
-end
+    BedSystem.panel.bClose = true
+    BedSystem.panel:SetBedData(nil)
+    BedSystem.panel:AlphaTo(0, 5, 0, function()
+        BedSystem.panel:Remove()
+    end)
+end)

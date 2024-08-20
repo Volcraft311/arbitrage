@@ -91,12 +91,16 @@ function playerMeta:SetAction(name, duration, bThirdPerson, callback, bNoExit, b
 		self:SetMoveType(MOVETYPE_NONE)
 	end
 
+	local _time = bNoExit and -1 or (time <= -1 and time or CurTime() + time)
+
 	self:SetNetVar("action", {
 		name,
-		bNoExit and -1 or (time <= -1 and time or CurTime() + time),
+		_time,
 		bThirdPerson,
 		ang
 	})
+
+	hook.Run("ActionStart", self, name, _time, bThirdPerson, ang)
 end
 
 local function checking(client, name, time)
@@ -167,7 +171,7 @@ function playerMeta:ExitAction(bIsAction)
 	local function remove()
 		if !IsValid(self) then return end
 
-		local _, _, bThirdPerson, actionAng = self:GetAction()
+		local name, time, bThirdPerson, actionAng = self:GetAction()
 
 		local timerID = "Emotes:ClearAction_" .. self:SteamID()
 		timer.Remove(timerID)
@@ -179,6 +183,8 @@ function playerMeta:ExitAction(bIsAction)
 		if bThirdPerson and actionAng then
 			self:SetEyeAngles(actionAng)
 		end
+
+		hook.Run("ActionEnd", self, name, time, bThirdPerson, ang)
 	end
 
 	local activeAction = self.EmotesActiveAction

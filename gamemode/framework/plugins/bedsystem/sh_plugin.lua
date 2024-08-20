@@ -14,10 +14,10 @@
 local PLUGIN = PLUGIN
 BedSystem = PLUGIN
 
-PLUGIN.name = "BedSystem"
+BedSystem.name = "BedSystem"
 
-PLUGIN.animation = "d1_town05_Wounded_Idle_1"
-PLUGIN.allowBed = {
+BedSystem.animation = "d1_town05_Wounded_Idle_1"
+BedSystem.allowBed = {
     ["models/props_downtown/bed_motel01.mdl"] = {
         pos = Vector(0, 0, 30),
         ang = Angle(0, 90, 0),
@@ -100,7 +100,7 @@ PLUGIN.allowBed = {
     },
 }
 
-function PLUGIN:CalcMainActivity(client, vector)
+function BedSystem:CalcMainActivity(client, vector)
     if client:GetNetVar("inbed") then
         return -1, client:LookupSequence(self.animation)
     end

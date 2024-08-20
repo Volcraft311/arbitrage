@@ -1243,6 +1243,8 @@ netstream.Hook("arb.Sleeping", function(client)
     local character = Character.team:GetByID(client:Team())
     if !character then return end
 
+    if client.inBed then return end
+
     local uniqueID = character:GetUniqueID()
     if uniqueID == "chiaki" or uniqueID == "himiko" then
         local isSleeping = client:GetLocalVar("sleeping", false)
@@ -1258,6 +1260,8 @@ netstream.Hook("arb.Sleeping", function(client)
             if IsValid(client) then
                 client:SetLocalVar("sleeping", false)
                 client:RemoveTemporaryStatusEffect("sleep", 0)
+
+                netstream.Start(client, "BedSystem:GetUpBed")
             end
         end
 
@@ -1297,6 +1301,7 @@ netstream.Hook("arb.Sleeping", function(client)
             end)
 
             client:AddTemporaryStatusEffect("sleep", 0)
+            netstream.Start(client, "BedSystem:LayDownBed")
         end
 
         if !isSleeping then

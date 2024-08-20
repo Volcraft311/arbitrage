@@ -58,7 +58,7 @@ function Medical:RenderScreenspaceEffects(...)
 	run("RenderScreenspaceEffects", ...)
 end
 
-local x, y, size, padding = 30, 100, H(25), H(5)
+local x, y, size, padding = 30, 100, H(32), H(5)
 function Medical:HUDPaint(...)
 	-- run("HUDPaint", ...) -- пока что не использовались хуки HUDPaint, по этому в комментарии
 

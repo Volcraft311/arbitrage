@@ -87,6 +87,8 @@ local bedActionList = {
 }
 
 function BedSystem:ActionStart(client, name)
+    if !name then return end
+
     name = name:lower()
 
     if !bedActionList[name] then return end
@@ -96,6 +98,8 @@ function BedSystem:ActionStart(client, name)
 end
 
 function BedSystem:ActionEnd(client, name)
+    if !isstring(name) then return end -- exitaction /lookaround
+
     name = name:lower()
 
     if !bedActionList[name] then return end

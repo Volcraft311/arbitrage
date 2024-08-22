@@ -144,7 +144,7 @@ function ItemBase:New(uniqueID, id)
         return self.instances[id]
     end
 
-    local itemInfo = self.list[uniqueID]
+    local itemInfo = table.Copy(self.list[uniqueID])
     if !itemInfo then return end
 
     local item = {id = id}

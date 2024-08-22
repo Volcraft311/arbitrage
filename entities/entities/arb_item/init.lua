@@ -148,7 +148,8 @@ end
 function ENT:OnDuplicated(entTable)
 	local uniqueID = entTable.DT and entTable.DT.UniqueID
 	local pos, ang = self:GetPos(), self:GetAngles()
-	local data = self.BoneMods and self.BoneMods.saveData
+	local customData = self.BoneMods and self.BoneMods.customData
+	local saveData = self.BoneMods and self.BoneMods.saveData
 	self:Remove()
 
 	if !uniqueID then return end
@@ -156,11 +157,27 @@ function ENT:OnDuplicated(entTable)
 	local item, entity = ItemBase.CreateItemInWorld(uniqueID, pos, ang)
 	if !item then return end
 
-	for key, value in pairs(data or {}) do
+	for key, value in pairs(saveData or {}) do
 		item:SetData(key, value)
 	end
 
-	setItemProperties(item, entity, data)
+	if customData then
+		item.data = customData
+	end
+
+	setItemProperties(item, entity, saveData)
+end
+
+function ENT:PreEntityCopy()
+	self.BoneMods = self.BoneMods or {}
+
+	local item = self:GetItem()
+	if !item then return end
+
+	local customData = item.data
+	if customData then
+		self.BoneMods.customData = customData
+	end
 end
 
 function ENT:UpdateTransmitState()

@@ -92,12 +92,16 @@ function ENT:OnDuplicated(entTable)
 
 	local inventory = container.Inventory
 	for _, v in ipairs(data.items) do
-		local uniqueID, x, y, info = v[1], v[2], v[3], v[4]
+		local uniqueID, x, y, saveData, customData = v[1], v[2], v[3], v[4], v[5]
 
 		local item = ItemBase.CreateItem(uniqueID)
 		if item then
-			for key, value in pairs(info or {}) do
+			for key, value in pairs(saveData or {}) do
 				item:SetData(key, value)
+			end
+
+			if customData then
+				item.data = customData
 			end
 
 			item:Transfer(inventory:GetID(), x, y)
@@ -115,7 +119,7 @@ function ENT:PreEntityCopy()
 			local item = inventory:GetItemAt(x, y)
 
 			if item then
-				items[#items + 1] = {item:GetUniqueID(), x, y, ItemBase.data[item:GetID()]}
+				items[#items + 1] = {item:GetUniqueID(), x, y, ItemBase.data[item:GetID()], item.data}
 			end
 		end
 	end

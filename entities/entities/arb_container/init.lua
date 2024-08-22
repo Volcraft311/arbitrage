@@ -23,7 +23,6 @@ function ENT:Initialize()
 	self:SetUseType(SIMPLE_USE)
 
 	self.BoneMods = self.BoneMods or {}
-	self.BoneMods.containerData = self.BoneMods.containerData or {}
 
 	local physObj = self:GetPhysicsObject()
 	if IsValid(physObj) then
@@ -87,7 +86,6 @@ function ENT:OnDuplicated(entTable)
 	local container = ents.Create("arb_container")
 	container:SetPos(pos)
 	container:SetAngles(ang)
-
 	container:SetContainer(model, data.name, data.w, data.h)
 
 	local inventory = container.Inventory

@@ -38,18 +38,12 @@ function TOOL:LeftClick()
     local client = self:GetOwner()
     local pos = client:GetEyeTrace().HitPos
 
-    local entity = ents.Create("gmod_button")
-    entity:SetModel("models/hunter/plates/plate.mdl")
+    local entity = ents.Create("arb_descriptivetext")
     entity:SetPos(pos)
-    entity:SetSolid(SOLID_NONE)
-    entity:SetMoveType(MOVETYPE_NONE)
-    entity:SetNoDraw(true)
-    entity:DrawShadow(false)
-    entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+    entity:SetAngles(Angle(0, 0, 0))
     entity:Spawn()
 
-    local data = client.DescriptiveTextDescription or "Ваш текст"
-    entity:SetNetVar("DescriptiveText", data)
+    entity:SetDescriptiveText(client.DescriptiveTextDescription or "Ваш текст")
 
     client:ChatNotify("Вы успешно установили свой текст в мире.")
 end
@@ -65,9 +59,7 @@ function TOOL:RightClick()
         entity:SetNetVar("DescriptiveText", data)
 
         -- Обновляем так как entscollector сам обновляет только в случае создания Entity
-        for k, v in ipairs(player.GetAll()) do
-            v:SendLua([=[asterionlib.entscollector:UpdateTracks()]=])
-        end
+        BroadcastLua([=[asterionlib.entscollector:UpdateTracks()]=])
 
         client:ChatNotify("Вы успешно прикрепили свой текст к объекту " .. tostring(entity) .. ".")
 
@@ -87,7 +79,7 @@ function TOOL:Reload()
         entity:SetNetVar("DescriptiveText", nil)
         client:ChatNotify("Вы успешно открепили свой текст от объекта.")
 
-        if entity:GetModel() == "models/hunter/blocks/cube025x025x025.mdl" then
+        if entity:GetClass() == "arb_descriptivetext" then
             entity:Remove()
         end
 

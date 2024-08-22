@@ -148,8 +148,11 @@ end
 function ENT:OnDuplicated(entTable)
 	local uniqueID = entTable.DT and entTable.DT.UniqueID
 	local pos, ang = self:GetPos(), self:GetAngles()
+
+	local propData = self.BoneMods and self.BoneMods.propData
 	local customData = self.BoneMods and self.BoneMods.customData
 	local saveData = self.BoneMods and self.BoneMods.saveData
+
 	self:Remove()
 
 	if !uniqueID then return end
@@ -165,11 +168,20 @@ function ENT:OnDuplicated(entTable)
 		item.data = customData
 	end
 
+	local bMotion = propData.motion
+	if bMotion == false then
+		local physObject = entity:GetPhysicsObject()
+		if IsValid(physObject) then
+			physObject:EnableMotion(false)
+		end
+	end
+
 	setItemProperties(item, entity, saveData)
 end
 
 function ENT:PreEntityCopy()
 	self.BoneMods = self.BoneMods or {}
+	self.BoneMods.propData = self.BoneMods.propData or {}
 
 	local item = self:GetItem()
 	if !item then return end
@@ -177,6 +189,17 @@ function ENT:PreEntityCopy()
 	local customData = item.data
 	if customData then
 		self.BoneMods.customData = customData
+	end
+
+	local physObject = self:GetPhysicsObject()
+	if IsValid(physObject) then
+		local bMotion = physObject:IsMotionEnabled()
+
+		if bMotion == false then
+			self.BoneMods.propData.motion = false
+		else
+			self.BoneMods.propData.motion = nil
+		end
 	end
 end
 

@@ -168,6 +168,8 @@ function ENT:OnDuplicated(entTable)
 		item.data = customData
 	end
 
+	setItemProperties(item, entity, saveData)
+
 	local bMotion = propData.motion
 	if bMotion == false then
 		local physObject = entity:GetPhysicsObject()
@@ -175,8 +177,6 @@ function ENT:OnDuplicated(entTable)
 			physObject:EnableMotion(false)
 		end
 	end
-
-	setItemProperties(item, entity, saveData)
 end
 
 function ENT:PreEntityCopy()

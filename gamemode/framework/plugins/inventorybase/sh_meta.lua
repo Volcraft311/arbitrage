@@ -36,6 +36,10 @@ end
 function INVENTORY:SetSize(w, h)
     self.w = tonumber(w)
     self.h = tonumber(h)
+
+    for x = 1, w do
+        self.slots[x] = self.slots[x] or {}
+    end
 end
 
 function INVENTORY:GetSize()

@@ -376,7 +376,7 @@ local function getActionList(clientinfo)
                 name = "Изменить имя",
                 icon = "icon16/page_white_edit.png",
                 data = function()
-                    Derma_StringRequest("Изменить имя", "Введите имя, которое вы хотите присвоить данному персонажу.\n(Если вы хотите вернуть стандартное имя, то оставьте это поле пустым)", "", function(text)
+                    Derma_StringRequest("Изменить имя", "Введите имя, которое вы хотите присвоить данному персонажу.\n(Если вы хотите вернуть стандартное имя, то оставьте это поле пустым)", IsValid(client) and client:GetNetVar("fakename", "") or "", function(text)
                         runAction("setfakename", client, text)
                     end)
                 end,
@@ -499,10 +499,20 @@ local function getActionList(clientinfo)
                         name = "Изменить размер",
                         icon = "icon16/package.png",
                         data = function()
-                            Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по ширине", 4, function(inventoryX)
+                            local x, y = 4, 2
+                            if IsValid(client) then
+                                local inventory = client:GetInventory()
+
+                                if inventory then
+                                    x = inventory.w or 4
+                                    y = inventory.h or 2
+                                end
+                            end
+
+                            Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по ширине", x, function(inventoryX)
                                 if !tonumber(inventoryX) then return end
 
-                                Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по высоте", 2, function(inventoryY)
+                                Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по высоте", y, function(inventoryY)
                                     if !tonumber(inventoryY) then return end
 
                                     runAction("scaleinventory", client, inventoryX, inventoryY)
@@ -519,7 +529,7 @@ local function getActionList(clientinfo)
                 name = "Изменить модель",
                 icon = "icon16/report_user.png",
                 data = function()
-                    Derma_StringRequest("Изменить модель", "Укажите путь к моделе которую вы хотите поменять игроку", "models/player/combine_super_soldier.mdl", function(text)
+                    Derma_StringRequest("Изменить модель", "Укажите путь к моделе которую вы хотите поменять игроку", IsValid(client) and client:GetModel() or "", function(text)
                         runAction("setmodel", client, text)
                     end)
                 end,
@@ -543,7 +553,7 @@ local function getActionList(clientinfo)
                 name = "Изменить размер персонажа",
                 icon = "icon16/link_break.png",
                 data = function()
-                    Derma_StringRequest("Изменить размер", "Введите размер который вы хотите установить персонажу\n1 - стандартная", IsValid(client) and client:GetModelScale() or "", function(text)
+                    Derma_StringRequest("Изменить размер", "Введите размер который вы хотите установить персонажу\n1 - стандартная", IsValid(client) and client:GetModelScale() or 1, function(text)
                         if !tonumber(text) then return end
 
                         runAction("setscale", client, text)
@@ -571,10 +581,10 @@ local function getActionList(clientinfo)
                         name = "Установить здоровье",
                         icon = "icon16/heart.png",
                         data = function()
-                            Derma_StringRequest("Установить здоровье", "Введите количество здоровье которое вы хотите установить игроку", 100, function(text)
+                            Derma_StringRequest("Установить здоровье", "Введите количество здоровье которое вы хотите установить игроку", IsValid(client) and client:Health() or 100, function(text)
                                 if !tonumber(text) then return end
 
-                                runAction("setstats", client, "health", math.Clamp(tonumber(text), 1, 1000))
+                                runAction("setstats", client, "health", tonumber(text))
                             end)
                         end,
                         check = function()
@@ -585,10 +595,10 @@ local function getActionList(clientinfo)
                         name = "Установить броню",
                         icon = "icon16/shape_square.png",
                         data = function()
-                            Derma_StringRequest("Установить броню", "Введите количество брони которое вы хотите установить игроку", 100, function(text)
+                            Derma_StringRequest("Установить броню", "Введите количество брони которое вы хотите установить игроку", IsValid(client) and client:Armor() or 100, function(text)
                                 if !tonumber(text) then return end
 
-                                runAction("setstats", client, "armor", math.Clamp(tonumber(text), 1, 1000))
+                                runAction("setstats", client, "armor", tonumber(text))
                             end)
                         end,
                         check = function()
@@ -599,7 +609,7 @@ local function getActionList(clientinfo)
                         name = "Установить голод",
                         icon = "icon16/cake.png",
                         data = function()
-                            Derma_StringRequest("Установить голод", "Введите количество голода которое вы хотите установить игроку", 100, function(text)
+                            Derma_StringRequest("Установить голод", "Введите количество голода которое вы хотите установить игроку", IsValid(client) and (Arbitrage.statistics.Get(client, "Hunger") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "hunger", math.Clamp(tonumber(text), 1, 100))
@@ -613,7 +623,7 @@ local function getActionList(clientinfo)
                         name = "Установить жажду",
                         icon = "icon16/cup.png",
                         data = function()
-                            Derma_StringRequest("Установить жажду", "Введите количество жажды которое вы хотите установить игроку", 100, function(text)
+                            Derma_StringRequest("Установить жажду", "Введите количество жажды которое вы хотите установить игроку", IsValid(client) and (Arbitrage.statistics.Get(client, "Thirst") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "thirst", math.Clamp(tonumber(text), 1, 100))
@@ -627,7 +637,7 @@ local function getActionList(clientinfo)
                         name = "Установить сон",
                         icon = "icon16/contrast_high.png",
                         data = function()
-                            Derma_StringRequest("Установить сон", "Введите количество сна которое вы хотите установить игроку", 100, function(text)
+                            Derma_StringRequest("Установить сон", "Введите количество сна которое вы хотите установить игроку", IsValid(client) and (Arbitrage.statistics.Get(client, "Sleep") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "sleep", math.Clamp(tonumber(text), 1, 100))
@@ -686,7 +696,7 @@ local function getActionList(clientinfo)
                         name = "Опрокинуть",
                         icon = "icon16/zoom_in.png",
                         data = function()
-                            Derma_StringRequest("Изменить регдулл статус", "Введите значение на которое вы хотите опрокинуть игрока.\n0 - дать ему возможность встать самому\n-1 - навсегда", 5, function(text)
+                            Derma_StringRequest("Изменить регдулл статус", "Введите значение на которое вы хотите опрокинуть игрока.\n0 - дать ему возможность встать самому\n-1 - навсегда", 0, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setfallover", client, tonumber(text))
@@ -709,31 +719,76 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Включить подсветку",
-                icon = "icon16/arrow_in.png",
-                data = function()
-                    for k, v in ipairs(PLUGIN.entityList) do
-                        if v == m_steamid then
-                            table.remove(PLUGIN.entityList, k)
-                            return
-                        end
-                    end
-
-                    table.insert(PLUGIN.entityList, m_steamid)
-                end,
-                check = function()
-                    return a_isvalid
-                end
-            },
-            {
-                name = "Включить слежку за чатом",
+                name = "Слежка за игроком",
                 icon = "icon16/arrow_inout.png",
-                data = function()
-                    netstream.Start("arb.StartSpectateCommand", m_steamid)
-                end,
-                check = function()
-                    return a_isvalid
-                end
+                data = {
+                    {
+                        name = "Включить подсветку",
+                        icon = "icon16/arrow_in.png",
+                        data = function()
+                            table.insert(PLUGIN.entityList, m_steamid)
+
+                            Arbitrage.notify.NotifyChat("Вы включили подсветку за игроком: " .. client:FullName())
+                        end,
+                        check = function()
+                            local bShow = false
+                            for k, v in ipairs(PLUGIN.entityList) do
+                                if v == m_steamid then
+                                    bShow = true
+                                end
+                            end
+
+                            return a_isvalid and !bShow
+                        end
+                    },
+                    {
+                        name = "Выключить подстветку",
+                        icon = "icon16/arrow_out.png",
+                        data = function()
+                            for k, v in ipairs(PLUGIN.entityList) do
+                                if v == m_steamid then
+                                    table.remove(PLUGIN.entityList, k)
+
+                                    Arbitrage.notify.NotifyChat("Вы выключили подсветку за игроком: " .. client:FullName())
+                                end
+                            end
+                        end,
+                        check = function()
+                            local bShow = false
+                            for k, v in ipairs(PLUGIN.entityList) do
+                                if v == m_steamid then
+                                    bShow = true
+                                end
+                            end
+
+                            return a_isvalid and bShow
+                        end
+                    },
+                    {
+                        name = "Включить слежку за чатом",
+                        icon = "icon16/arrow_in.png",
+                        data = function()
+                            netstream.Start("arb.StartSpectateCommand", m_steamid)
+                        end,
+                        check = function()
+                            local data = LocalPlayer():GetLocalVar("spectatescommand", {})
+
+                            return a_isvalid and !data[m_steamid]
+                        end
+                    },
+                    {
+                        name = "Выключить слежку за чатом",
+                        icon = "icon16/arrow_out.png",
+                        data = function()
+                            netstream.Start("arb.EndSpectateCommand", m_steamid)
+                        end,
+                        check = function()
+                            local data = LocalPlayer():GetLocalVar("spectatescommand", {})
+
+                            return a_isvalid and data[m_steamid]
+                        end
+                    }
+                }
             }
         },
         {

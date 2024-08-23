@@ -184,12 +184,24 @@ netstream.Hook("arb.StartSpectateCommand", function(client, steamid)
     if !data[steamid] then
         data[steamid] = true
         client:ChatNotify("Вы начали слежку за командами игрока: " .. target:FullName())
-    else
+
+        client:SetLocalVar("spectatescommand", data)
+    end
+end)
+
+netstream.Hook("arb.EndSpectateCommand", function(client, steamid)
+    if !client:IsAdmin() then return end
+
+    local target = player.GetBySteamID(steamid)
+    if !IsValid(target) then return end
+
+    local data = client:GetLocalVar("spectatescommand", {})
+    if data[steamid] then
         data[steamid] = nil
         client:ChatNotify("Вы перестали следить за командами игрока: " .. target:FullName())
-    end
 
-    client:SetLocalVar("spectatescommand", data)
+        client:SetLocalVar("spectatescommand", data)
+    end
 end)
 
 local actionList = {
@@ -461,6 +473,11 @@ local actionList = {
 
         local inventory = target:GetInventory()
         if !inventory then return Arbitrage.commands.Notify(client, "У данного игрока не инициализирован инвентарь!") end
+
+        x, y = tonumber(x), tonumber(y)
+
+        if !x then return end
+        if !y then return end
 
         inventory:SetSize(x, y)
         inventory:Sync()

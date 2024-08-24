@@ -160,8 +160,10 @@ function ENT:OnDuplicated(entTable)
 	local item, entity = ItemBase.CreateItemInWorld(uniqueID, pos, ang)
 	if !item then return end
 
-	for key, value in pairs(saveData or {}) do
-		item:SetData(key, value)
+	if saveData then
+		for key, value in pairs(saveData or {}) do
+			item:SetData(key, value)
+		end
 	end
 
 	if customData then
@@ -170,11 +172,13 @@ function ENT:OnDuplicated(entTable)
 
 	setItemProperties(item, entity, saveData)
 
-	local bMotion = propData.motion
-	if bMotion == false then
-		local physObject = entity:GetPhysicsObject()
-		if IsValid(physObject) then
-			physObject:EnableMotion(false)
+	if propData then
+		local bMotion = propData.motion
+		if bMotion == false then
+			local physObject = entity:GetPhysicsObject()
+			if IsValid(physObject) then
+				physObject:EnableMotion(false)
+			end
 		end
 	end
 end

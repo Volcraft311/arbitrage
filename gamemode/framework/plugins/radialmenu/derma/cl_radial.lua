@@ -298,31 +298,29 @@ function PANEL:Paint(w, h)
 
 	if !self.selected then return end
 
+	self.rotate = self.rotate or self.selected * segment_size
+	self.rotate = LerpA(self.rotate, self.selected * segment_size, FrameTime() * 20)
 	self.oldselected = self.oldselected or self.selected
 
 	asterionlib.DrawBlur(self, 6)
 
-	self.filled:SetRadius(self.m_r - self.size - 20)
 	self.background:SetRadius(self.m_r + self.size)
-
 	self.background:SetOutlineWidth(self.size * 2)
 	self.background()
 
-	self.rotate = self.rotate or self.selected * segment_size
-	self.rotate = LerpA(self.rotate, self.selected * segment_size, FrameTime() * 20)
+	self.outline1 = circles.New(CIRCLE_OUTLINED, self.m_r + self.size + self.selSize, self.m_x, self.m_y, self.size * 2 + self.selSize * 2)
+	self.outline1:SetColor(Color(255, 41, 76))
+	self.outline1:SetRotation(self.rotate)
+	self.outline1:SetEndAngle(360 / #self.options)
+	self.outline1()
 
-	local outline1 = circles.New(CIRCLE_OUTLINED, self.m_r + self.size + self.selSize, self.m_x, self.m_y, self.size * 2 + self.selSize * 2)
-	outline1:SetColor(Color(255, 41, 76))
-	outline1:SetRotation(self.rotate)
-	outline1:SetEndAngle(360 / #self.options)
-	outline1()
+	self.outline2 = circles.New(CIRCLE_OUTLINED, self.m_r + self.size, self.m_x, self.m_y, self.size * 2)
+	self.outline2:SetColor(color_black)
+	self.outline2:SetRotation(self.rotate)
+	self.outline2:SetEndAngle(360 / #self.options)
+	self.outline2()
 
-	local outline2 = circles.New(CIRCLE_OUTLINED, self.m_r + self.size, self.m_x, self.m_y, self.size * 2)
-	outline2:SetColor(color_black)
-	outline2:SetRotation(self.rotate)
-	outline2:SetEndAngle(360 / #self.options)
-	outline2()
-
+	self.filled:SetRadius(self.m_r - self.size - 20)
 	self.filled()
 
 	local data = asterionlib.data:Get("radialmenu_favorites", {})

@@ -175,7 +175,6 @@ function Arbitrage:HUDPaint()
     Arbitrage.hud.SpectateDraw()
     Arbitrage.hud.CrosshairDraw()
     Arbitrage.hud.PlayerInfoDraw()
-    Arbitrage.hud.ALTMenuDraw()
     Arbitrage.evidence.Draw()
 end
 
@@ -220,6 +219,10 @@ local ActionPressIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
         if bIsVisibleGUI then return end
         if client:IsHoldingSBoxTool() then return end
+
+        if IsValid(Arbitrage.gui.context) then
+            Arbitrage.gui.context:Remove()
+        end
 
         vgui.Create("arb.ContextMenu")
     end,
@@ -348,7 +351,12 @@ end
 local ActionReleaseIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.context) then
-            Arbitrage.gui.context:AlphaTo(0, 0.1, 0, function()
+            Arbitrage.gui.context:SetMouseInputEnabled(false)
+            Arbitrage.gui.context:SetKeyboardInputEnabled(false)
+
+            Arbitrage.gui.context.bClose = true
+
+            Arbitrage.gui.context:AlphaTo(0, 0.5, 0, function()
                 Arbitrage.gui.context:Remove()
             end)
         end

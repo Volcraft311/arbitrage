@@ -21,8 +21,22 @@ function PANEL:Init()
     self:MakePopup()
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
-
     self:SetKeyboardInputEnabled(false)
+
+    self.HUDElement = {}
+    self.bClose = false
+    self.alpha = 0
+    self.y = 0
+
+    self.client = LocalPlayer()
+    self.faction = Character.team:GetByID(self.client:Team())
+    self.icon = self.faction:GetAssets().hud
+    self.mat = Material(self.icon)
+
+    self.description = self.client:GetNetVar("description")
+    self.descriptionFont = "arb.Font_FuturaPTBook_6"
+    self.descriptionHeight = draw.GetFontHeight(self.descriptionFont)
+    self.descriptionData = self.description and asterionlib.WrapText(self.description, ScrW() * 0.3, self.descriptionFont, true) or {}
 
     local leftPanel = self:Add("Panel")
     leftPanel:SetWide(W(276))
@@ -189,6 +203,96 @@ function PANEL:Init()
 
 
     self:FixTall()
+end
+
+function PANEL:CreateCircle(index, x, status, color, png)
+    self.HUDElement[index] = self.HUDElement[index] or {progress = 0}
+
+    local position = ScrW() / 2 + x
+    local circle = Arbitrage.hud.GeneratePoly(position, ScrH() - 70, 36, 36)
+
+    surface.SetDrawColor( 22, 22, 22, self.alpha )
+    draw.NoTexture()
+    surface.DrawPoly(circle)
+
+    local element = self.HUDElement[index]
+    element.progress = Lerp(FrameTime() * 2, element.progress, status)
+
+    asterionlib.CircleCustom(position, ScrH() - 70, 5, 5, element.progress - 1, ColorAlpha(color, self.alpha / 2), 0, -35)
+
+    local size = 25
+
+    surface.SetDrawColor(255, 255, 255, self.alpha)
+    surface.SetMaterial(png)
+    surface.DrawTexturedRect(position - size / 2, ScrH() - 70 - size / 2, size, size )
+end
+
+function PANEL:Paint(w, h)
+    self.alpha = Lerp(FrameTime() * 7, self.alpha, self.bClose and 0 or 255)
+    self.y = 0
+
+    if self.alpha > 0.01 then
+        asterionlib.DrawBlurAt(0, 0, w, h, 5, nil, self.alpha)
+
+        surface.SetDrawColor(15, 6, 7, self.alpha * 0.9)
+        surface.DrawRect(0, 0, w, h)
+
+        if self.icon then
+            local size = h * 0.00047
+            local sizeW, sizeH = W(self.mat:Width() * size), H(self.mat:Height() * size)
+
+            surface.SetDrawColor(255, 255, 255, self.alpha * 0.6)
+            surface.SetMaterial(self.mat)
+            surface.DrawTexturedRect(w / 2 - sizeW / 2, h - sizeH, sizeW, sizeH)
+        end
+
+        draw.SimpleText(("%s | %s"):format(Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(self.faction:GetTitle(), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+
+        for k, v in ipairs(self.descriptionData) do
+            local padding = #self.descriptionData * self.descriptionHeight
+
+            draw.SimpleText(v, self.descriptionFont, w / 2, h - 200 - 80 - padding + (k - 1) * self.descriptionHeight, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+        end
+
+        local info = {}
+        for k, v in ipairs(Arbitrage.hud.CircleData or {}) do
+            local name = v[1]
+            local dataTable = v[2]
+
+            local statistics = Arbitrage.statistics.list[name]
+            if statistics then
+                if statistics.OnCanRun then
+                    local allow = statistics.OnCanRun(self.client, statistics)
+
+                    if allow == false then
+                        continue
+                    end
+                end
+
+                local vtime = statistics.time
+                local time = isfunction(vtime) and (tonumber(vtime(self.client)) or 40) or tonumber(vtime)
+                if time <= -1 then
+                    continue
+                end
+            end
+
+            info[#info + 1] = {
+                name,
+                math.Clamp(dataTable.value() * 3.6, 0, 360),
+                dataTable.color,
+                dataTable.image
+            }
+        end
+
+        local moved = (-#info * 120 + 120) / 2
+        for k, v in ipairs(info) do
+            self:CreateCircle(v[1], moved, v[2], v[3], v[4])
+
+            moved = moved + 120
+        end
+    end
 end
 
 function PANEL:FixTall()

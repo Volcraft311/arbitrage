@@ -25,10 +25,8 @@ local table_Count = table.Count
 local util_TraceLine = util.TraceLine
 local ents_FindInSphere = ents.FindInSphere
 local EyePos = EyePos
-local math_cos = math.cos
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
-local Format = Format
 local Arbitrage = Arbitrage
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
@@ -40,7 +38,6 @@ local tostring = tostring
 local IsValid = IsValid
 local Color = Color
 local math_Clamp = math.Clamp
-local pairs = pairs
 local math_Round = math.Round
 local Vector = Vector
 local surface_DrawCircle = surface.DrawCircle
@@ -60,15 +57,9 @@ local select = select
 local surface_SetFont = surface.SetFont
 local surface_GetTextSize = surface.GetTextSize
 
-
 Arbitrage.hud = Arbitrage.library.Add("hud")
-Arbitrage.hud.alpha = 0
-Arbitrage.hud.HUDElement = {}
-Arbitrage.hud.update = false
-Arbitrage.hud.path = "arcadehud/"
-Arbitrage.hud.y = 0
-
 Arbitrage.hud.CircleData = {}
+
 function Arbitrage.hud.AddCircle(name, data)
 	Arbitrage.hud.CircleData[#Arbitrage.hud.CircleData + 1] = {name, data}
 end
@@ -79,41 +70,15 @@ function Arbitrage.hud.GeneratePoly(x, y, radius, passes)
 	local info = {}
 
 	for i = 1, passes + 1 do
-	    local deg_in_rad = i * math.pi / (passes * 0.5)
+		local deg_in_rad = i * math.pi / (passes * 0.5)
 
-	    info[i] = {
-	        x = x + math_cos(deg_in_rad) * radius,
-	        y = y + math_sin(deg_in_rad) * radius
-	    }
+		info[i] = {
+			x = x + math.cos(deg_in_rad) * radius,
+			y = y + math.sin(deg_in_rad) * radius
+		}
 	end
 
 	return info
-end
-
-
-function Arbitrage.hud.CreateCircle(index, x, status, color, png)
-	Arbitrage.hud.HUDElement[index] = Arbitrage.hud.HUDElement[index] or {
-		progress = 0
-	}
-
-	local element = Arbitrage.hud.HUDElement[index]
-
-	local position = ScrW() / 2 + x
-	local circle = Arbitrage.hud.GeneratePoly(position, ScrH() - 70, 36, 36)
-
-	surface_SetDrawColor( 22, 22, 22, Arbitrage.hud.alpha )
-	draw_NoTexture()
-	surface_DrawPoly(circle)
-
-	element.progress = Lerp(FrameTime() * 2, element.progress, status)
-
-	asterionlib.CircleCustom(position, ScrH() - 70, 5, 5, element.progress - 1, ColorAlpha(color, Arbitrage.hud.alpha / 2), 0, -35)
-
-	local size = 25
-
-	surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
-	surface_SetMaterial(png)
-	surface_DrawTexturedRect(position - size / 2, ScrH() - 70 - size / 2, size, size )
 end
 
 do
@@ -158,104 +123,6 @@ do
 		surface_SetDrawColor(255, 255, 255)
 		surface_SetMaterial(spectate_r_mat)
 		surface_DrawTexturedRect(ScrW() / 2 + W(560) / 2 - W(62) - W(14), H(40) + H(11), W(62), H(24))
-	end
-end
-
-local descriptionFont = "arb.Font_FuturaPTBook_8"
-local descriptionHeight = draw_GetFontHeight(descriptionFont)
-function Arbitrage.hud.ALTMenuDraw()
-	if Arbitrage.lawEnable then return end
-
-	local client = LocalPlayer()
-	if !client:IsPlaying() then return end
-
-	Arbitrage.hud.alpha = Lerp(FrameTime() * 7, Arbitrage.hud.alpha, (IsValid(Arbitrage.gui.context)) and 255 or 0)
-	Arbitrage.hud.y = 0
-
-	if Arbitrage.hud.alpha > 0.01 then
-		surface_SetDrawColor(15, 6, 7, Arbitrage.hud.alpha * 0.9)
-		surface_DrawRect(0, 0, ScrW(), ScrH())
-
-		asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, Arbitrage.hud.alpha)
-
-		-- Arbitrage.hud.moved = 0
-
-		local faction = Character.team:GetByID(client:Team())
-		local icon = faction:GetAssets().hud
-
-		if icon then
-			local mat = Material(icon)
-			local size = 0.5
-			local sizeW, sizeH = W(mat:Width() * size), H(mat:Height() * size)
-
-			surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha * 0.6)
-			surface_SetMaterial(mat)
-			surface_DrawTexturedRect(ScrW() / 2 - sizeW / 2, ScrH() - sizeH, sizeW, sizeH)
-		end
-
-		local info = {}
-		for k, v in ipairs(Arbitrage.hud.CircleData or {}) do
-			local name = v[1]
-			local dataTable = v[2]
-
-			local statistics = Arbitrage.statistics.list[name]
-			if statistics then
-				if statistics.OnCanRun then
-					local allow = statistics.OnCanRun(client, statistics)
-					if allow == false then
-						continue
-					end
-				end
-
-				local vtime = statistics.time
-				local time = isfunction(vtime) and (tonumber(vtime(client)) or 40) or tonumber(vtime)
-	            if time <= -1 then
-	               continue
-	            end
-			end
-
-			info[#info + 1] = {
-				name,
-				math_Clamp(dataTable.value() * 3.6, 0, 360),
-				dataTable.color,
-				dataTable.image
-			}
-		end
-
-		Arbitrage.hud.moved = (-#info * 120 + 120) / 2
-
-		for k, v in ipairs(info) do
-			Arbitrage.hud.CreateCircle(v[1], Arbitrage.hud.moved, v[2], v[3], v[4])
-			Arbitrage.hud.moved = Arbitrage.hud.moved + 120
-		end
-
-
-		surface_SetDrawColor(255, 255, 255, Arbitrage.hud.alpha)
-		surface_DrawRect(ScrW() / 2 - 120 * 1.5, ScrH() - 200, 120 * 3, 2)
-
-		draw_SimpleText(client:Name(), "arb.Font_OpenSansLight_15", ScrW() / 2, ScrH() - 200 - 60, Color(255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-		draw_SimpleText(faction:GetTitle(), "arb.Font_OpenSansLight_8", ScrW() / 2, ScrH() - 200 + 20, Color(255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-
-		local description = client:GetNetVar("description")
-		if description then
-			local data = asterionlib.WrapText(description, ScrW() * 0.3, descriptionFont, true)
-
-			for k, v in ipairs(data) do
-				local padding = #data * descriptionHeight
-
-				draw_SimpleText(v, descriptionFont, ScrW() / 2, ScrH() - 200 - 80 - padding + (k - 1) * descriptionHeight, Color(255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-			end
-		end
-
-		draw_SimpleText(Format("%s | %s", Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255, Arbitrage.hud.alpha), TEXT_ALIGN_CENTER)
-	end
-
-	Arbitrage.hud.update = Arbitrage.hud.alpha > 0.01
-
-	if !Arbitrage.hud.update then
-		for k, v in pairs(Arbitrage.hud.HUDElement or {}) do
-			v.progress = 0
-		end
 	end
 end
 
@@ -365,7 +232,7 @@ do
 
 		local trace2D = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
 
-		surface_DrawCircle(trace2D.x, trace2D.y, curGap, ColorAlpha(drawColor, 255 - Arbitrage.hud.alpha))
+		surface_DrawCircle(trace2D.x, trace2D.y, curGap, drawColor)
 	end
 end
 

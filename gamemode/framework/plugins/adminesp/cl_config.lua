@@ -167,17 +167,6 @@ PLUGIN:AddEntityESPCustomization("class_en", {
     end
 })
 
-PLUGIN:AddEntityESPCustomization("hp_en", {
-    dist = 1000,
-    config = {
-        name = "Состояние энтити",
-        desc = "Включить показатель состояния энтити"
-    },
-    data = function(entity)
-        return entity:Health() .. "/" .. entity:GetMaxHealth()
-    end
-})
-
 PLUGIN:AddEntityESPCustomization("model_en", {
     dist = 200,
     config = {

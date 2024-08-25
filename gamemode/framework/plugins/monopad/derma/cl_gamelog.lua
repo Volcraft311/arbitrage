@@ -83,11 +83,11 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 	local inflictorFaction = Character.team:GetByID(inflictorID)
 	if inflictorFaction then
 		local emoji = Character.emoji:GetByUniqueID(inflictorFaction:GetUniqueID())
-		_, min = emoji:GetByIndex(1)
-	end
 
-	-- self.inflictorFaction = inflictorFaction
-	-- self.min = min
+		if emoji then
+			_, min = emoji:GetByIndex(1)
+		end
+	end
 
 	local stringTime = Arbitrage.FormatTime(time)
 

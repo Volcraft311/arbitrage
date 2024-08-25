@@ -25,21 +25,26 @@ local version_color = Color(255, 255, 255, 25)
 
 function PLUGIN:HUDPaint()
     if SETTINGS.options.Get("show_gamemode_info") then
-        local a = ScrW() - W(10)
+        local a = ScrW() - 10
+        local y = 8
 
         local title_color = Color(255, 255, 255, 40 + math_abs(math_sin(CurTime() * 2) * 30))
 
         do
-            local w, _ = draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", a, H(8), version_color, TEXT_ALIGN_RIGHT)
-            draw_SimpleText("Arbitrage Framework", "arb.Font_FuturaPTBook_6", a - w - 10, H(5), title_color, TEXT_ALIGN_RIGHT)
+            local w, h = draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", a, y, version_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw_SimpleText("Arbitrage Framework", "arb.Font_FuturaPTBook_6", a - w - 10, y, title_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+
+            y = y + h
         end
 
         do
-            local w, _ = draw_SimpleText("v" .. asterionlib.version, "arb.Font_FuturaPTBook_5", a, H(25), version_color, TEXT_ALIGN_RIGHT)
-            draw_SimpleText("AsterionLibrary", "arb.Font_FuturaPTBook_6", a - w - 10, H(22), title_color, TEXT_ALIGN_RIGHT)
+            local w, h = draw_SimpleText("v" .. asterionlib.version, "arb.Font_FuturaPTBook_5", a, y, version_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw_SimpleText("AsterionLibrary", "arb.Font_FuturaPTBook_6", a - w - 10, y, title_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+
+            y = y + h
         end
 
         local dev_color = Color(255, 255, 255, math_sin(CurTime()) * 20)
-        draw_SimpleText("❤ Made with love by Asterion", "arb.Font_FuturaPTBook_4", a, H(50), dev_color, TEXT_ALIGN_RIGHT)
+        draw_SimpleText("❤ Сделано с любовью командой Asterion", "arb.Font_FuturaPTBook_4", a, y + 3, dev_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
 end

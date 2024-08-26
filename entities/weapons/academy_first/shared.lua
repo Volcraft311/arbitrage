@@ -235,8 +235,6 @@ function SWEP:PickupObject(entity)
         self.holdEntity:SetPos(tracedEnt:GetBonePosition(tracedEnt:TranslatePhysBoneToBone(trace.PhysicsBone)))
     end
 
-    print(trace.PhysicsBone)
-
     self.constraint = constraint.Weld(self.holdEntity, self.heldEntity, 0, 0 or 0, 0, true, true)
 end
 

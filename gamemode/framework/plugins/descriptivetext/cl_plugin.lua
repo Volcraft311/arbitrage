@@ -48,7 +48,7 @@ function PLUGIN:HUDPaint()
 	for k, entity in ipairs(data) do
 		if !IsValid(entity) then continue end
 
-		local pos = entity:GetPos()
+		local pos = entity:GetPos() + entity:OBBCenter()
 
 		local data2D = pos:ToScreen()
 		if !data2D.visible then continue end
@@ -67,7 +67,7 @@ function PLUGIN:HUDPaint()
 
 		local wraptext = asterionlib.WrapText(text, wraptext_size, font, true)
 		for k2, v2 in ipairs(wraptext) do
-			draw_SimpleText(v2, font, x, y + fontHeight * k2 - (fontHeight * #data) / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)
+			draw_SimpleText(v2, font, x, y + (k2 - 1) * fontHeight, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 end

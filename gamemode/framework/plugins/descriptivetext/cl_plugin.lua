@@ -16,10 +16,8 @@ local PLUGIN = PLUGIN
 
 -- Localize Global Calls
 local draw_GetFontHeight = draw.GetFontHeight
-local timer_Create = timer.Create
 local EyePos = EyePos
 local ipairs = ipairs
-local ents_FindInSphere = ents.FindInSphere
 local ScrW = ScrW
 local IsValid = IsValid
 local draw_SimpleText = draw.SimpleText
@@ -36,7 +34,7 @@ asterionlib.entscollector:AddTrack("descriptivetext", {
 		if text then
 			return true
 		end
-	end, 
+	end,
 	onCanApply = function(entity)
 	    return entity:GetPos():DistToSqr(EyePos()) <= 200000
 	end
@@ -50,7 +48,7 @@ function PLUGIN:HUDPaint()
 	for k, entity in ipairs(data) do
 		if !IsValid(entity) then continue end
 
-		local pos = entity:LocalToWorld(entity:OBBCenter())
+		local pos = entity:GetPos()
 
 		local data2D = pos:ToScreen()
 		if !data2D.visible then continue end
@@ -66,7 +64,7 @@ function PLUGIN:HUDPaint()
 
 		local text = entity:GetNetVar("DescriptiveText")
 		if !text then continue end
-		
+
 		local wraptext = asterionlib.WrapText(text, wraptext_size, font, true)
 		for k2, v2 in ipairs(wraptext) do
 			draw_SimpleText(v2, font, x, y + fontHeight * k2 - (fontHeight * #data) / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER)

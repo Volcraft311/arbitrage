@@ -355,7 +355,16 @@ function PLUGIN:Think()
 				if !IsValid(entity) then return end
 			end
 
-			MonoMenu:OpenEntityMenu(entity, ScrW() / 2, ScrH() / 2)
+			return MonoMenu:OpenEntityMenu(entity, ScrW() / 2, ScrH() / 2)
+		end
+
+		local bIsItem = entity:GetClass() == "arb_item"
+		if bIsItem then
+			local itemID = entity:GetItemID()
+
+			if itemID then
+				return ItemBase:EditProperties(itemID)
+			end
 		end
 	end
 end

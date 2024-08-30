@@ -193,15 +193,14 @@ function Arbitrage:StartLaw()
 
     hook.Add("SetupPlayerVisibility", "LawCamera", function(pPlayer, pViewEntity)
         local entity = PLUGIN.talk_entity
-
-        if IsValid(entity) then
+        if IsValid(entity) and !client:TestPVS(entity) then
             AddOriginToPVS(entity:GetPos())
         end
 
         for k, v in ipairs({"camPosEnd"}) do
             local pos = Arbitrage[v]
 
-            if pos then
+            if pos and !client:TestPVS(pos) then
                 AddOriginToPVS(pos)
             end
         end

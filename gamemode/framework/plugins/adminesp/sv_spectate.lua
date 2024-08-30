@@ -27,12 +27,27 @@ local function create_hook()
 		ucmd:SetMouseY(0)
 		ucmd:SetMouseWheel(0)
 	end)
+
+	hook.Add("SetupPlayerVisibility", "AdminESP:SetupPlayerVisibility", function(client)
+		if !players_hook[client] then return end
+
+		local entity = client._CameraEntity
+		if IsValid(entity) and !client:TestPVS(entity) then
+			AddOriginToPVS(entity:GetPos())
+		end
+
+		local position = client._CameraPosition
+		if position and !client:TestPVS(position) then
+			AddOriginToPVS(position)
+		end
+	end)
 end
 
 local function remove_hook()
 	players_hook = {}
 
 	hook.Remove("StartCommand", "AdminESP:StartCommand")
+	hook.Remove("SetupPlayerVisibility", "AdminESP:SetupPlayerVisibility")
 end
 
 local function update_hook(client)
@@ -88,25 +103,6 @@ end)
 function PLUGIN:InitPostEntity()
 	if serverguard then
 	    serverguard.command:Remove("spectate")
-	end
-end
-
-function PLUGIN:SetupPlayerVisibility(client)
-	if !client:IsAdmin() then return end
-	if !client:IsSpectating() then return end
-
-	local entity = client._CameraEntity
-	if IsValid(entity) then
-		local position = entity:IsPlayer() and entity:GetShootPos() or entity:GetPos()
-
-		if position then
-			AddOriginToPVS(position)
-		end
-	end
-
-	local position = client._CameraPosition
-	if position then
-		AddOriginToPVS(position)
 	end
 end
 

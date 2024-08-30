@@ -31,7 +31,7 @@ net.Receive("VoiceDist:EndVoice", function(len, client)
     client.isTalkingGlobal = nil
 end)
 
-function PLUGIN:PlayerCanHearPlayersVoice(listener, talker)
+function Arbitrage.GM:PlayerCanHearPlayersVoice(listener, talker)
     if !talker.isTalking then return false end
 
     if Arbitrage.lawEnable or talker.isTalkingGlobal then

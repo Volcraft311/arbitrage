@@ -95,6 +95,8 @@ function meta:FallOver(delay)
     self:AddTemporaryStatusEffect("stun", 0)
     RagdollSystem:CreateSyncTime(self)
 
+    self.isTalking = nil
+
     entity._containerTime = 30
     entity._containerName = self:Name()
     entity._containerInventory = self:GetInventory()

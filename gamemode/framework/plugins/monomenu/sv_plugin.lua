@@ -363,6 +363,10 @@ local actionList = {
 
         target:SetNetVar("arb.MuteVoice", value)
 
+        if value then
+            target.isTalking = nil
+        end
+
         if client != target then
             Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "выключила" or "включила") .. " вам голосовой чат!")
         end

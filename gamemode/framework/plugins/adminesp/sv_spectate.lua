@@ -32,12 +32,12 @@ local function create_hook()
 		if !players_hook[client] then return end
 
 		local entity = client._CameraEntity
-		if IsValid(entity) and !client:TestPVS(entity) then
+		if IsValid(entity) then
 			AddOriginToPVS(entity:GetPos())
 		end
 
 		local position = client._CameraPosition
-		if position and !client:TestPVS(position) then
+		if position then
 			AddOriginToPVS(position)
 		end
 	end)

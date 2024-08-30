@@ -91,6 +91,11 @@ function PLUGIN:PlayerStartVoice(client)
 
     hook_Run("ArbitrageVoiceStart", client)
 
+    if client == LocalPlayer() then
+        net.Start("VoiceDist:StartVoice")
+        net.SendToServer()
+    end
+
     return true
 end
 
@@ -98,6 +103,11 @@ function PLUGIN:PlayerEndVoice(client)
     self.players[client] = nil
 
     hook_Run("ArbitrageVoiceEnd", client)
+
+    if client == LocalPlayer() then
+        net.Start("VoiceDist:EndVoice")
+        net.SendToServer()
+    end
 end
 
 function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)

@@ -63,6 +63,10 @@ function Arbitrage.Initialize()
 			end
 		end
 
+		Arbitrage.GM.SetupMove = zero
+		Arbitrage.GM.FinishMove = zero
+		Arbitrage.GM.Move = zero
+
 		Arbitrage.util.WriteMessage("The gamemode '" .. engine.ActiveGamemode() .. "' was started!")
 	end
 

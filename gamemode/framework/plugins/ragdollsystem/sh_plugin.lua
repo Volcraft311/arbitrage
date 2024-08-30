@@ -4,14 +4,20 @@ RagdollSystem = PLUGIN
 local meta = FindMetaTable("Player")
 
 function meta:IsRagdolling()
-    return IsValid(self:GetRagdoll())
+    local entity = self:GetRagdoll()
+    if entity == nil then return false end
+
+    return IsValid(entity)
 end
 
 function meta:GetRagdoll()
     local idx = self:GetNetVar("ragdoll")
-    local entity = idx and Entity(idx) or nil
+    if idx == nil then return end
 
-    return (idx and (IsValid(entity) and entity:GetClass() == "prop_ragdoll")) and entity or nil
+    local entity = Entity(idx)
+    if !IsValid(entity) then return end
+
+    return entity
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

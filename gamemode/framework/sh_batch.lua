@@ -67,6 +67,36 @@ function Arbitrage.Initialize()
 		Arbitrage.GM.FinishMove = zero
 		Arbitrage.GM.Move = zero
 
+		if serverguard then
+			timer.Simple(1, function()
+				local data = {
+					PlayerSpawnEffect = "restrictions.PlayerSpawnEffect",
+					PlayerSpawnNPC = "restrictions.PlayerSpawnNPC",
+					PlayerSpawnProp = "restrictions.PlayerSpawnProp",
+					PlayerSpawnRagdoll = "restrictions.PlayerSpawnRagdoll",
+					PlayerSpawnSENT = "restrictions.PlayerSpawnSENT",
+					PlayerSpawnSWEP = "restrictions.PlayerSpawnSWEP",
+					PlayerSpawnVehicle = "restrictions.PlayerSpawnVehicle",
+					PostGamemodeLoaded = "restrictions.PostGamemodeLoaded"
+				}
+
+				for k, v in ipairs(data) do
+					hook.Remove(k, v)
+				end
+
+				local meta = FindMetaTable("Player")
+				if meta.oldCheckLimit then
+					function meta:CheckLimit(str)
+						if self:IsAdmin() then
+							return true
+						end
+
+						return self:oldCheckLimit(str)
+					end
+				end
+			end)
+		end
+
 		Arbitrage.util.WriteMessage("The gamemode '" .. engine.ActiveGamemode() .. "' was started!")
 	end
 
@@ -85,11 +115,11 @@ function Arbitrage.Initialize()
 	function Arbitrage.GM:Initialize() end
 	function Arbitrage.GM:DoPlayerDeath() end
 	function Arbitrage.GM:PlayerDeath() end
+	function Arbitrage.GM:ShowHelp() end
 	function Arbitrage.GM:CanPlayerSuicide() return false end
 	function Arbitrage.GM:AllowPlayerPickup() return false end
 	function Arbitrage.GM:PlayerDeathThink() return false end
 	function Arbitrage.GM:PlayerDeathSound() return true end
-	function Arbitrage.GM:ShowHelp() end
 
 	function Arbitrage.GM:PlayerNoClip(client) return client:IsAdmin() end
 
@@ -101,8 +131,6 @@ function Arbitrage.Initialize()
 	end
 
 	if Arbitrage.util.IsClientSide() then
-		-- net.Receive("CopiedDupe", function(len, client) end)
-
 		-- delete sandbox shit :/
 		local funcData = {
 			"ScoreboardShow", "ScoreboardHide", "AddHint", "SuppressHint",
@@ -207,34 +235,5 @@ do
 		end
 
 		return hook.ArbitrageCall(name, gm, ...)
-	end
-end
-
-do
-	local think_delay = 1 * 0.125
-	local next_think = 0
-	local next_second = 0
-
-	function Arbitrage.GM:Tick()
-		local cur_time = CurTime()
-
-		if cur_time >= next_think then
-			local one_second_tick = (cur_time >= next_second)
-
-			for k, v in ipairs(player.GetAll()) do
-				hook.Call("PlayerThink", self, v, cur_time)
-
-				if one_second_tick then
-					hook.Call("PlayerOneSecond", self, v, cur_time)
-				end
-			end
-
-			next_think = cur_time + think_delay
-
-			if one_second_tick then
-				hook.Call("OneSecond", self, cur_time)
-				next_second = cur_time + 1
-			end
-		end
 	end
 end

@@ -13,7 +13,7 @@
 
 ENT.Type = "anim"
 ENT.Author = "Selenter"
-ENT.PrintName = "Ливнувший Игрок"
+ENT.PrintName = "Вышедший игрок"
 ENT.Category = "Asterion Academy"
 ENT.Spawnable = false
 ENT.AdminSpawnable = true

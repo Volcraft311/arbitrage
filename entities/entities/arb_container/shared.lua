@@ -13,7 +13,7 @@
 
 ENT.Type = "anim"
 ENT.Author = "Selenter"
-ENT.PrintName = "Container"
+ENT.PrintName = "Контейнер"
 ENT.Category = "Asterion Academy"
 ENT.Spawnable = false
 ENT.PhysgunDisable = true

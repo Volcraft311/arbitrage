@@ -152,7 +152,7 @@ PLUGIN:AddEntityESPCustomization("name_en", {
             end
         end
 
-        return "Неизвестно"
+        return entity.PrintName or (entity.GetName and entity:GetName()) or "Неизвестно"
     end
 })
 

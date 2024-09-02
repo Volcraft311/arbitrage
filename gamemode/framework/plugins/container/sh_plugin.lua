@@ -15,7 +15,7 @@
 local PLUGIN = PLUGIN
 Container = PLUGIN
 
-function PLUGIN:GetToolData(client)
+function Container:GetToolData(client)
     if !client:IsUsesTool("Container Tool") then return end
 
     local trace = client:GetEyeTrace()
@@ -38,6 +38,7 @@ function PLUGIN:GetToolData(client)
 
     local data = {
         name = containerName,
+        description = client.ContainerDescription or "Описание контейнера",
         w = containerW,
         h = containerH,
         entity = entity
@@ -46,5 +47,4 @@ function PLUGIN:GetToolData(client)
     return data
 end
 
-Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

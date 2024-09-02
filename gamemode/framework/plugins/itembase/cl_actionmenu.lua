@@ -108,6 +108,11 @@ function PLUGIN.actionMenu:Paint()
             continue
         end
 
+        local tooltip = Arbitrage.tooltip
+        if IsValid(tooltip) and tooltip.entity == entity then
+            tooltip:DoClose()
+        end
+
         local pos = entity:LocalToWorld(entity:OBBCenter())
         local data2D = pos:ToScreen()
         local x, y = data2D.x, data2D.y

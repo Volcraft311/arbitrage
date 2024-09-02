@@ -14,5 +14,11 @@
 include("shared.lua")
 
 function ENT:Draw()
-	self:DrawModel()
+    self:DrawModel()
+end
+
+function ENT:Tooltip(tooltip)
+    tooltip:SetTitle(self.GetContainerName and self:GetContainerName() or "Контейнер")
+    tooltip:SetDescription(self.GetContainerDescription and self:GetContainerDescription() or nil)
+    tooltip:SetIcon("asterion/academy/ui/tooltip/container.png")
 end

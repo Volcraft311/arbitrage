@@ -35,6 +35,12 @@ function ITEM:__eq(other)
     return self:GetID() == other:GetID()
 end
 
+function ITEM:Tooltip(tooltip)
+    tooltip:SetTitle(self:GetName())
+    tooltip:SetIcon("asterion/academy/ui/tooltip/puzzle.png")
+    tooltip:SetDescription(self:GetDescription())
+end
+
 function ITEM:GetID()
     return self.id
 end

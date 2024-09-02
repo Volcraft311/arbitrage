@@ -340,7 +340,6 @@ properties.Add("item_properties", {
     end
 })
 
-Arbitrage.base.Include("cl_infomenu.lua")
 Arbitrage.base.Include("cl_actionmenu.lua")
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("cl_itemlist.lua")

@@ -24,7 +24,7 @@ function Container:LeftClick(data)
     container:SetPos(entity:GetPos())
     container:SetAngles(entity:GetAngles())
 
-    container:SetContainer(entity:GetModel(), data.name, data.w, data.h)
+    container:SetContainer(entity:GetModel(), data.name, data.description, data.w, data.h)
     entity:Remove()
 
     return "Вы успешно создали контейнер у " .. tostring(entity) .. "."
@@ -86,3 +86,7 @@ function Container:PlayerUse(client, entity)
         client.containerCD = CurTime() + 2
     end
 end
+
+netstream.Hook("Container:SetDescription", function(client, data)
+    client.ContainerDescription = data or "Описание контейнера"
+end)

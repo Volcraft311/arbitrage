@@ -14,5 +14,20 @@
 include("shared.lua")
 
 function ENT:Draw()
-	self:DrawModel()
+    self:DrawModel()
+end
+
+function ENT:Tooltip(tooltip)
+    local item = self:GetItem()
+    if !item then return end
+
+    item:Tooltip(tooltip)
+end
+
+function ENT:OnCanTooltip()
+    local stored = ItemBase.actionMenu.stored
+
+    if stored[self] then
+        return false
+    end
 end

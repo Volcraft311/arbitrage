@@ -59,11 +59,18 @@ if CLIENT then
     end
 end
 
+function BASE:Tooltip(tooltip)
+    tooltip:SetTitle(self:GetName())
+    tooltip:SetDescription(self:GetDescription())
+    tooltip:SetIcon("asterion/academy/ui/tooltip/bag.png")
+    tooltip:AddSubMenu("Количество: " .. self:GetStack() .. "/" .. self:GetMaxStack())
+end
+
 function BASE:GetDescription()
     local stack = self:GetStack()
     local maxstack = self:GetMaxStack()
 
-    return self:GetData("m_description", self.description) .. " Количество: " .. stack .. "/" .. maxstack .. "."
+    return self:GetData("m_description", self.description) .. " Количество: " .. stack .. "/" .. maxstack
 end
 
 function BASE:GetMaxStack()

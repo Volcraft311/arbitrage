@@ -17,3 +17,9 @@ include("shared.lua")
 function ENT:Draw()
     self:DrawModel()
 end
+
+function ENT:Tooltip(tooltip)
+    tooltip:SetTitle("Гардероб")
+    tooltip:SetDescription("Шкаф с одеждой, можно попробовать сменить свою одежду.")
+    tooltip:SetIcon("asterion/academy/ui/tooltip/wardrobe.png")
+end

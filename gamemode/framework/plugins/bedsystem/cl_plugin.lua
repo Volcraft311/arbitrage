@@ -11,6 +11,22 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+function BedSystem:NetworkEntityCreated(entity)
+    if !IsValid(entity) then return end
+
+    local model = entity:GetModel()
+    if !model then return end
+
+    model = entity:GetModel():lower()
+    if !BedSystem.allowBed[model] then return end
+
+    entity.Tooltip = function(this, tooltip)
+        tooltip:SetTitle("Кровать")
+        tooltip:SetDescription("Уютная кровать, обитая мягким материалом. На ней вы можете расслабиться и отдохнуть.")
+        tooltip:SetIcon("asterion/academy/ui/tooltip/bed.png")
+    end
+end
+
 netstream.Hook("BedSystem:LayDownBed", function(entity, eyePos, eyeAng)
     if IsValid(BedSystem.panel) then
         BedSystem.panel:Remove()

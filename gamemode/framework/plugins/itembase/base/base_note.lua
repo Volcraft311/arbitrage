@@ -101,6 +101,12 @@ local function EditNote(item, client, page, bClose)
     OpenNote(item, client, page, true, bClose)
 end
 
+function BASE:Tooltip(tooltip)
+    tooltip:SetTitle(self:GetName())
+    tooltip:SetDescription(self:GetDescription())
+    tooltip:SetIcon("asterion/academy/ui/tooltip/pencil.png")
+end
+
 BASE:AddAction("Прочитать", {
     icon = "icon16/page.png",
     OnRun = function(item)

@@ -212,7 +212,7 @@ do
 		end
 
 		local tr = trace.Entity
-		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or Arbitrage.evidence.entities[tr:GetClass()] or tr:GetClass() == "arb_item") then
+		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or tr.Tooltip) then
 			drawColor = color_red
 		end
 

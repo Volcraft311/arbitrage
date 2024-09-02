@@ -46,6 +46,18 @@ BASE.propertiesInfo = {
 	end},
 }
 
+function BASE:Tooltip(tooltip)
+	tooltip:SetTitle(self:GetName())
+	tooltip:SetDescription(self:GetDescription())
+	tooltip:SetIcon("asterion/academy/ui/tooltip/melee.png")
+
+	local amount = tonumber(self:GetData("ammoClip", 0))
+
+	if amount > 0 then
+		tooltip:AddSubMenu("Количество патрон: " .. amount)
+	end
+end
+
 function BASE:GetClass()
 	return self:GetData("m_class", self.class)
 end
@@ -77,7 +89,7 @@ function BASE:GetDescription()
 	local amount = tonumber(self:GetData("ammoClip", 0))
 
 	if amount > 0 then
-		return description .. " Количество патрон: " .. amount .. "."
+		return description .. " Количество патрон: " .. amount
 	end
 
 	return description

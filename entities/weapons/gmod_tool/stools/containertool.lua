@@ -22,6 +22,7 @@ TOOL.Information = {
 }
 
 TOOL.ClientConVar.name = "Название"
+ContainerDescription = ContainerDescription or "Описание контейнера"
 TOOL.ClientConVar.w = 4
 TOOL.ClientConVar.h = 4
 
@@ -77,6 +78,24 @@ function TOOL.BuildCPanel(CPanel)
         Label = "Название контейнера",
         Command = l .. "name"
     })
+
+    local lableDesc = vgui.Create("DLabel")
+    lableDesc:SetText("Описание контейнера")
+    lableDesc:SetTextColor(color_black)
+    CPanel:AddPanel(lableDesc)
+
+    local dtextentryDesc = vgui.Create("DTextEntry")
+    dtextentryDesc:SetValue(ContainerDescription)
+    dtextentryDesc:SetTall(100)
+    dtextentryDesc:SetVerticalScrollbarEnabled(true)
+    dtextentryDesc:SetMultiline(true)
+    dtextentryDesc.OnChange = function(_)
+        local data = _:GetValue()
+
+        ContainerDescription = data
+        netstream.Start("Container:SetDescription", ContainerDescription)
+    end
+    CPanel:AddPanel(dtextentryDesc)
 
     CPanel:AddControl("Slider", {
         Label = "Размер в длину",

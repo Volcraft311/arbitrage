@@ -30,42 +30,6 @@ ARBITRAGE_JUMP_POWER = 200
 -- Длина видимости обычного сообщения в чате
 ARBITRAGE_SAY_LENGTH = 300
 
--- Стандартная модель игрока
-ARBITRAGE_STANDART_MODEL = "models/player/skeleton.mdl"
-
--- Кнопки в `C` менюшке
-ARBITRAGE_CONTEXT_DATA = {
-	dance = {
-		robot = "Робот",			muscle = "Стриптиз",		laugh = "Смех",				bow = "Поклон",
-		cheer = "Приветствие",		wave = "Помахать рукой",	becon = "Иди ко мне",		agree = "Палец вверх",
-		disagree = "Не согласен",	forward = "Вперед",			group = "Сгруппироваться",	zombie = "Зомби",
-		dance = "Танец",			pers = "Поза льва",			halt = "Стоять",			salute = "Отдать честь"
-	},
-	action = {
-		["Скрыть свое состояние"] = {"danganronpa/hud/action/drop.png", function(client)
-			local a = !client:GetNetVar("hideStatus", false)
-
-			netstream.Start("arb.HideState", a)
-		end},
-		["Открыть инвентарь"] = {"danganronpa/hud/action/charter.png", function(client)
-			local panel = Arbitrage.gui.inventory
-
-			if IsValid(panel) then
-				panel:Remove()
-			end
-
-			asterionlib.netgui:Create("InventoryBase:Menu")
-		end},
-		["Изменить внешний вид"] = {"danganronpa/hud/action/material.png", function(client)
-			local panel = vgui.Create("arb.OpenWardrobe")
-			panel:SetData(LocalPlayer():GetModel())
-		end},
-		["Изменить РП описание"] = {"danganronpa/hud/action/material.png", function(client)
-			vgui.Create("arb.OpenEditorDescription")
-		end}
-	}
-}
-
 -- Отключенные типы сообщений в чате
 ARBITRAGE_DISABLE_DATA = {
 	joinleave = true,

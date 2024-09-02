@@ -21,5 +21,7 @@ ENT.bNoPersist = true
 
 function ENT:SetupDataTables()
     self:NetworkVar("String", 0, "ContainerName")
+    self:NetworkVar("String", 1, "ContainerDescription")
+
     self:NetworkVar("Int", 0, "InventoryID")
 end

@@ -52,7 +52,7 @@ function ENT:Use(client, caller)
 	end)
 end
 
-function ENT:SetContainer(model, name, w, h)
+function ENT:SetContainer(model, name, description, w, h)
 	self:SetModel(model)
 	self:SetSolid(SOLID_VPHYSICS)
 	self:PhysicsInit(SOLID_VPHYSICS)
@@ -63,6 +63,7 @@ function ENT:SetContainer(model, name, w, h)
 	self.Inventory:SetOwner(self)
 
 	self:SetContainerName(name)
+	self:SetContainerDescription(description)
 	self:SetInventoryID(self.Inventory:GetID())
 
 	local physObj = self:GetPhysicsObject()

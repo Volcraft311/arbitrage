@@ -11,8 +11,14 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-include("shared.lua");
+include("shared.lua")
 
 function ENT:Draw()
-	self:DrawModel();
+    self:DrawModel()
+end
+
+function ENT:Tooltip(tooltip)
+    tooltip:SetTitle("Холодильник")
+    tooltip:SetDescription("Обычный холодильник, внутри находится огромное количество еды.")
+    tooltip:SetIcon("asterion/academy/ui/tooltip/fridge.png")
 end

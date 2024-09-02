@@ -60,6 +60,13 @@ if CLIENT then
     end
 end
 
+function BASE:Tooltip(tooltip)
+    tooltip:SetTitle(self:GetName())
+    tooltip:SetDescription(self:GetDescription())
+    tooltip:SetIcon("asterion/academy/ui/tooltip/ammo.png")
+    tooltip:AddSubMenu("Количество патрон: " .. self:GetAmount())
+end
+
 function BASE:GetAmmoClass()
     return tostring(self:GetData("m_ammoClass", self.ammoClass))
 end
@@ -75,7 +82,7 @@ end
 function BASE:GetDescription()
     local amount = self:GetAmount()
 
-    return self:GetData("m_description", self.description) .. " Количество патрон: " .. amount .. "."
+    return self:GetData("m_description", self.description) .. " Количество патрон: " .. amount
 end
 
 function BASE:Stack(item)

@@ -11,20 +11,26 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-include("shared.lua");
+include("shared.lua")
 
 function ENT:Draw()
-	self:DrawModel();
+    self:DrawModel()
 end
 
 function ENT:Think()
-	if ((self.nextAnimCheck or 0) < CurTime()) then
-		local anim = self:GetSequenceName(self:GetSequence())
+    if (self.nextAnimCheck or 0) < CurTime() then
+        local anim = self:GetSequenceName(self:GetSequence())
 
-		if anim != self.animation then
-			self:SetAnim(self.animation)
-		end
+        if anim != self.animation then
+            self:SetAnim(self.animation)
+        end
 
-		self.nextAnimCheck = CurTime() + 5
-	end
+        self.nextAnimCheck = CurTime() + 5
+    end
+end
+
+function ENT:Tooltip(tooltip)
+    tooltip:SetTitle("Спящий персонаж")
+    tooltip:SetDescription("Данный персонаж вышел с сервера.")
+    tooltip:SetIcon("asterion/academy/ui/tooltip/sleep.png")
 end

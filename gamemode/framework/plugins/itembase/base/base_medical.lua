@@ -81,7 +81,7 @@ function BASE:Tooltip(tooltip)
     tooltip:SetTitle(self:GetName())
     tooltip:SetDescription(self:GetDescription())
     tooltip:SetIcon("asterion/academy/ui/tooltip/medical.png")
-    tooltip:AddSubMenu("Осталось: " .. self:GetLeft() .. "/" .. self:GetMaxUse(), "err.png")
+    tooltip:AddSubMenu("Осталось: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
 end
 
 function BASE:GetSetHealth()

@@ -13,7 +13,6 @@
 
 include("shared.lua")
 
-
 AddCSLuaFile("cl_panel.lua")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
@@ -26,8 +25,8 @@ function ENT:Initialize()
 
 	local physObj = self:GetPhysicsObject()
 
-	if (IsValid(physObj)) then
-		physObj:EnableMotion(true)
+	if IsValid(physObj) then
+		physObj:EnableMotion(false)
 		physObj:Wake()
 	end
 end

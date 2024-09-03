@@ -11,16 +11,23 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-include("shared.lua");
+include("shared.lua")
 
-AddCSLuaFile("cl_init.lua");
-AddCSLuaFile("shared.lua");
+AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("shared.lua")
 
 function ENT:Initialize()
 	self:SetModel("models/props_wasteland/kitchen_fridge001a.mdl")
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:SetUseType( SIMPLE_USE )
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetUseType(SIMPLE_USE)
+
+	local physObj = self:GetPhysicsObject()
+
+	if IsValid(physObj) then
+		physObj:EnableMotion(false)
+		physObj:Wake()
+	end
 end
 
 function ENT:Use(client, caller)

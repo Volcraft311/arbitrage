@@ -190,7 +190,7 @@ function PANEL:Think()
 
     local entity = self.entity
 
-    local distance = IsValid(entity) and EyePos():DistToSqr(entity:GetPos()) or 999999 -- hm?
+    local distance = IsValid(entity) and LocalPlayer():GetPos():DistToSqr(entity:GetPos()) or 999999 -- hm?
     local trace = LocalPlayer():GetEyeTrace().Entity
     if (distance >= 30000 or trace != entity) and !self.bClose then
         if RealTime() >= self.noTrace then

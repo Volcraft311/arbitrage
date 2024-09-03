@@ -28,13 +28,10 @@ local EyePos = EyePos
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local Arbitrage = Arbitrage
-local draw_NoTexture = draw.NoTexture
-local surface_DrawPoly = surface.DrawPoly
 local Lerp = Lerp
 local FrameTime = FrameTime
 local ColorAlpha = ColorAlpha
 local draw_SimpleText = draw.SimpleText
-local tostring = tostring
 local IsValid = IsValid
 local Color = Color
 local math_Clamp = math.Clamp
@@ -50,8 +47,6 @@ local render_UpdateScreenEffectTexture = render.UpdateScreenEffectTexture
 local render_SetMaterial = render.SetMaterial
 local render_DrawScreenQuad = render.DrawScreenQuad
 local ipairs = ipairs
-local surface_DrawLine = surface.DrawLine
-local chat_AddText = chat.AddText
 local draw_GetFontHeight = draw.GetFontHeight
 local select = select
 local surface_SetFont = surface.SetFont
@@ -365,83 +360,6 @@ do
 			surface_DrawTexturedRect(x, y, w, h)
 		end
 	end
-end
-
-function Arbitrage.hud.SeeVector(a, b, _debug)
-	local client = LocalPlayer()
-	local zPos = client:GetPos()[3]
-
-	for i = 1, 4 do a[i] = Vector(a[i][1], a[i][2], zPos) end
-	b = Vector(b[1], b[2], zPos)
-
-	local r = {
-		A = {x = a[1]:ToScreen().x, y = a[1]:ToScreen().y},
-		B = {x = a[2]:ToScreen().x, y = a[2]:ToScreen().y},
-		C = {x = a[3]:ToScreen().x, y = a[3]:ToScreen().y},
-		D = {x = a[4]:ToScreen().x, y = a[4]:ToScreen().y}
-	}
-
-	local m = {x = b:ToScreen().x, y = b:ToScreen().y}
-
-	local conclusion = r.C.x <= m.x and r.D.x >= m.x and r.C.y <= m.y and r.A.y >= m.y
-
-	if _debug then
-		local seeRect = {
-			{x = a[4]:ToScreen().x, y = a[1]:ToScreen().y},
-			{x = a[3]:ToScreen().x, y = a[2]:ToScreen().y},
-			{x = a[3]:ToScreen().x, y = a[3]:ToScreen().y},
-			{x = a[4]:ToScreen().x, y = a[4]:ToScreen().y}
-		}
-
-		local linesRect = {
-			{x = a[1]:ToScreen().x, y = a[1]:ToScreen().y},
-			{x = a[2]:ToScreen().x, y = a[2]:ToScreen().y},
-			{x = a[3]:ToScreen().x, y = a[3]:ToScreen().y},
-			{x = a[4]:ToScreen().x, y = a[4]:ToScreen().y}
-		}
-
-		for k, v in ipairs(linesRect) do
-			local nextLine = k + 1
-
-			if nextLine > #linesRect then nextLine = 1 end
-
-			surface_SetDrawColor(0, 255, 0)
-			surface_DrawLine(v.x, v.y, linesRect[nextLine].x, linesRect[nextLine].y)
-
-			if k == 1 or k == 2 then
-				draw_SimpleText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-				draw_SimpleText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-				draw_SimpleText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(0, 255, 0, 255), TEXT_ALIGN_CENTER)
-			end
-		end
-
-		for k, v in ipairs(seeRect) do
-			local nextLine = k + 1
-
-			if nextLine > #seeRect then nextLine = 1 end
-
-			surface_SetDrawColor(199, 194, 194)
-			surface_DrawLine(v.x, v.y, seeRect[nextLine].x, seeRect[nextLine].y)
-
-			draw_SimpleText("Точка: " .. k, "DermaDefault", v.x, v.y - 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
-			draw_SimpleText("x: " .. math_Round(v.x), "DermaDefault", v.x, v.y, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
-			draw_SimpleText("y: " .. math_Round(v.y), "DermaDefault", v.x, v.y + 15, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
-		end
-
-		local circle = Arbitrage.hud.GeneratePoly(b:ToScreen().x, b:ToScreen().y, 5, 5)
-		surface_SetDrawColor(255, 255, 0, 255)
-		draw_NoTexture()
-		surface_DrawPoly(circle)
-
-		draw_SimpleText("x: " .. math_Round(m.x), "DermaDefault", b:ToScreen().x, b:ToScreen().y, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
-		draw_SimpleText("y: " .. math_Round(m.y), "DermaDefault", b:ToScreen().x, b:ToScreen().y + 15, Color(255, 255, 0, 255), TEXT_ALIGN_CENTER)
-
-		local pref = tostring(conclusion)
-		local st = conclusion and "Точка в прямоугольнике." or "Точка не в прямоугольнике."
-		chat_AddText("[" .. pref .. "] " .. st)
-	end
-
-	return conclusion
 end
 
 do

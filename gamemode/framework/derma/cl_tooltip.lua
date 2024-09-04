@@ -1,3 +1,17 @@
+--[[
+        © AsterionStaff 2024.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://discord.gg/Np5evb5ZsR
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
 local fontTitle = "arb.Font_FuturaPTDemi_8"
 local fontTitleHeight = draw.GetFontHeight(fontTitle)
 
@@ -189,10 +203,9 @@ function PANEL:Think()
     self:SetWide(self.pWidth)
 
     local entity = self.entity
-
     local distance = IsValid(entity) and LocalPlayer():GetPos():DistToSqr(entity:GetPos()) or 999999 -- hm?
     local trace = LocalPlayer():GetEyeTrace().Entity
-    if (distance >= 30000 or trace != entity) and !self.bClose then
+    if (distance >= 40000 or trace != entity) and !self.bClose then
         if RealTime() >= self.noTrace then
             self:DoClose()
         end
@@ -226,6 +239,8 @@ vgui.Register("arb.tooltip", PANEL, "DPanel")
 local oldEntity = nil
 local traceCount = 0
 timer.Create("Tooltip:Entity", 0.1, 0, function()
+    if Arbitrage.lawEnable then return end
+
     local entity = LocalTraceEntity()
         if IsValid(entity) and entity == oldEntity then
             traceCount = traceCount + 1
@@ -240,17 +255,46 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
     if traceCount >= 7 then
         traceCount = 0
 
-        local tooltip = entity.Tooltip
-        if tooltip then
+        local isPlayer = entity:IsPlayer()
+        local tooltip = entity.Tooltip or entity.TooltipMini
+        if tooltip or isPlayer then
             local onCanTooltip = entity.OnCanTooltip
             if onCanTooltip then
                 local onCan = onCanTooltip(entity)
                 if onCan == false then return end
             end
 
-            local panel = vgui.Create("arb.tooltip")
+            if isPlayer then
+                if entity:IsSpectate() then return end
+                if entity:IsNocliping() then return end
+            end
+
+            local panel = vgui.Create(entity.Tooltip and "arb.tooltip" or "arb.tooltipmini")
             panel:SetEntity(entity)
-                tooltip(entity, panel)
+                if isPlayer then
+                    panel:SetTitle(entity:Name())
+                    if !entity:GetNetVar("hideStatus") then
+                        local color = Color(61, 210, 101)
+                        local stText = "На вид в порядке"
+                        local health = entity:Health()
+
+                        if health <= 40 then
+                            color = Color(218, 52, 52)
+                            stText = "Выглядит неважно"
+                        elseif health <= 80 then
+                            color = Color(218, 162, 52)
+                            stText = "Слегка потрепанный"
+                        end
+
+                        panel:AddSubMenu(stText, function(this)
+                            this.title:SetTextColor(color)
+                        end)
+                    end
+
+                    panel:SetDescription(entity:GetNetVar("description"))
+                else
+                    tooltip(entity, panel)
+                end
             panel:Complete()
         end
     end

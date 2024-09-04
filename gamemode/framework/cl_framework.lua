@@ -174,7 +174,6 @@ end
 function Arbitrage:HUDPaint()
     Arbitrage.hud.SpectateDraw()
     Arbitrage.hud.CrosshairDraw()
-    Arbitrage.hud.PlayerInfoDraw()
 end
 
 function Arbitrage:RenderScreenspaceEffects()

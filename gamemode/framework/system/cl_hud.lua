@@ -23,14 +23,12 @@ local asterionlib = asterionlib
 local timer_Create = timer.Create
 local table_Count = table.Count
 local util_TraceLine = util.TraceLine
-local ents_FindInSphere = ents.FindInSphere
 local EyePos = EyePos
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local Arbitrage = Arbitrage
 local Lerp = Lerp
 local FrameTime = FrameTime
-local ColorAlpha = ColorAlpha
 local draw_SimpleText = draw.SimpleText
 local IsValid = IsValid
 local Color = Color
@@ -47,10 +45,8 @@ local render_UpdateScreenEffectTexture = render.UpdateScreenEffectTexture
 local render_SetMaterial = render.SetMaterial
 local render_DrawScreenQuad = render.DrawScreenQuad
 local ipairs = ipairs
-local draw_GetFontHeight = draw.GetFontHeight
 local select = select
-local surface_SetFont = surface.SetFont
-local surface_GetTextSize = surface.GetTextSize
+local math_cos = math.cos
 
 Arbitrage.hud = Arbitrage.library.Add("hud")
 Arbitrage.hud.CircleData = {}
@@ -68,8 +64,8 @@ function Arbitrage.hud.GeneratePoly(x, y, radius, passes)
 		local deg_in_rad = i * math.pi / (passes * 0.5)
 
 		info[i] = {
-			x = x + math.cos(deg_in_rad) * radius,
-			y = y + math.sin(deg_in_rad) * radius
+			x = x + math_cos(deg_in_rad) * radius,
+			y = y + math_sin(deg_in_rad) * radius
 		}
 	end
 
@@ -207,7 +203,7 @@ do
 		end
 
 		local tr = trace.Entity
-		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or tr.Tooltip) then
+		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or (tr.Tooltip or tr.TooltipMini)) then
 			drawColor = color_red
 		end
 
@@ -358,95 +354,6 @@ do
 		for k, v in ipairs({hunger, thirst}) do
 			surface_SetDrawColor(255, 255, 255, v / 2)
 			surface_DrawTexturedRect(x, y, w, h)
-		end
-	end
-end
-
-do
-	local genericFont = "arb.Font_FuturaPTBook_8"
-	local genericHeight = draw_GetFontHeight(genericFont)
-
-	local statusFont = "arb.Font_FuturaPTBook_5"
-	local statusHeight = draw_GetFontHeight(statusFont)
-
-	local descriptionFont = "arb.Font_FuturaPTBook_6"
-	local descriptionHeight = draw_GetFontHeight(descriptionFont)
-	local function createTextPlayer(client, textAlpha)
-		local position = select(1, client:GetBonePosition(client:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or client:LocalToWorld(client:OBBCenter())
-
-		local data2D = position:ToScreen()
-		if !data2D.visible then return end
-		local x, y = data2D.x, data2D.y
-
-		draw_SimpleText(client:Name(), genericFont, x, y - (genericHeight / 2) - 10, Color(255, 61, 96, textAlpha), TEXT_ALIGN_CENTER)
-
-		surface_SetFont(genericFont)
-		local width = surface_GetTextSize(client:Name()) * textAlpha / 255
-
-		surface_SetDrawColor(255, 61, 96, textAlpha)
-		surface_DrawRect(x - (width * 2 / 2) / 2, y + 2, width * 2 / 2, 1)
-
-		local newY = y + 4
-		if !client:GetNetVar("hideStatus") then
-			local color = Color(61, 210, 101)
-			local stText = "На вид в порядке"
-			local health = client:Health()
-
-			if health <= 40 then
-				color = Color(218, 52, 52)
-				stText = "Выглядит неважно"
-			elseif health <= 80 then
-				color = Color(218, 162, 52)
-				stText = "Слегка потрепанный"
-			end
-
-			draw_SimpleText(stText, statusFont, x, newY, ColorAlpha(color, textAlpha), TEXT_ALIGN_CENTER)
-			newY = newY + statusHeight
-		end
-
-		local description = client:GetNetVar("description")
-		if description then
-			local data = asterionlib.WrapText(description, ScrW() * 0.15, descriptionFont, true)
-
-			for k, v in ipairs(data) do
-				draw_SimpleText(v, descriptionFont, x, newY + (k - 1) * descriptionHeight, ColorAlpha(color_white, textAlpha), TEXT_ALIGN_CENTER)
-			end
-		end
-	end
-
-	local entities = {}
-	local ent = nil
-	timer_Create("PlayerInfoDraw:Update", 1, 0, function()
-		entities = {}
-		ent = LocalTraceEntity()
-
-		if Arbitrage.lawEnable then return end
-
-		local client = LocalPlayer()
-		if !IsValid(client) then return end
-		if client:IsSpectate() then return end
-
-		for k, v in ipairs(ents_FindInSphere(EyePos(), 500)) do
-			if v:IsPlayer() then
-				if v == client then continue end
-				if v:IsSpectate() then continue end
-				if v:IsNocliping() then continue end
-
-				v.textalpha = v.textalpha or 0
-
-				entities[#entities + 1] = v
-			end
-		end
-	end)
-
-	function Arbitrage.hud.PlayerInfoDraw()
-		for k, v in ipairs(entities) do
-			if !IsValid(v) then continue end
-			if ent != v and v.textalpha <= 0.1 then continue end
-
-			v.textalpha = Lerp(FrameTime() * 5, v.textalpha, ent == v and 256 or 0)
-
-			createTextPlayer(v, v.textalpha)
 		end
 	end
 end

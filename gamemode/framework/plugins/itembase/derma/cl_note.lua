@@ -547,7 +547,8 @@ end
 local h_indentation = {
     ["Маленький отсуп"] = "&nbsp;",
     ["Средний отступ"] = "&ensp;",
-    ["Большой отступ"] = "&emsp;"
+    ["Большой отступ"] = "&emsp;",
+    ["Отступ вниз"] = "<br>"
 }
 
 local editorIndentation = {}

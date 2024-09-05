@@ -544,6 +544,20 @@ for i = 1, 100 do
     }
 end
 
+local h_indentation = {
+    ["Маленький отсуп"] = "&nbsp;",
+    ["Средний отступ"] = "&ensp;",
+    ["Большой отступ"] = "&emsp;"
+}
+
+local editorIndentation = {}
+for k, v in pairs(h_indentation) do
+    editorIndentation[#editorIndentation + 1] = {
+        name = k,
+        insert = {v, ""}
+    }
+end
+
 local editorList = {
     {
         name = "Полужирный",
@@ -560,6 +574,10 @@ local editorList = {
     {
         name = "Зачеркнутый",
         insert = {"<s>", "</s>"}
+    },
+    {
+        name = "Отступ",
+        data = editorIndentation
     },
     {
         name = "Картинка",
@@ -724,6 +742,8 @@ function PANEL:SetData(data, bEdit)
                         for k2, v2 in ipairs(v.data) do
                             local option = Menu:AddOption(v2.name, function()
                                 insert(v2)
+
+                                self.text:OnChange()
                             end)
 
                             if v2.onPanel then

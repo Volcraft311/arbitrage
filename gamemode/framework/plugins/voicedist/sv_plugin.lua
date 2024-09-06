@@ -73,7 +73,7 @@ local function calcPlayerCanHearPlayersVoice(listener)
     listener.voiceHear = listener.voiceHear or {}
 
     local pos = listener:GetPos()
-    for _, talker in player.Iterator() do
+    for _, talker in ipairs(player.GetAll()) do
         if talker.isTalking then
             local talkerPos = talker:GetPos()
 

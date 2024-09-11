@@ -359,7 +359,7 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Хиёко Сайонджии",
+    name = "Хиёко Сайонджи",
     title = "Абсолютный Традиционный Танцор",
     color = Color(206, 184, 172),
     category = "goodbye_despair",

@@ -279,8 +279,9 @@ local function LerpA(a, b, t)
 	return a + delta * t
 end
 
-local lmbMat = Material("gui/lmb.png")
-local rmbMat = Material("gui/rmb.png")
+local ambMat = Material("asterion/academy/ui/icons/amb.png")
+local lmbMat = Material("asterion/academy/ui/icons/lmb.png")
+local rmbMat = Material("asterion/academy/ui/icons/rmb.png")
 local starMat = Material("icon16/star.png")
 
 function PANEL:Paint(w, h)
@@ -393,7 +394,7 @@ function PANEL:Paint(w, h)
 		local tall = H(105)
 		local width, height = draw_SimpleText("Добавить в избранное", "arb.Font_FuturaPTBook_8", w / 2, h - tall, color_white, TEXT_ALIGN_CENTER)
 		surface_SetDrawColor(255, 255, 255)
-		surface_SetMaterial(Material("err.png"))
+		surface_SetMaterial(ambMat)
 		surface_DrawTexturedRect(w / 2 - size / 2 - width / 2 - size / 2, h - tall - height * 0.25, size, size)
 	end
 

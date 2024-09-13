@@ -116,6 +116,35 @@ Medical:TemporaryStatusEffects("tunnel_vision", {
 	}
 })
 
+
+Medical:TemporaryStatusEffects("blackout", {
+	name = "Затемнение",
+	icon = "danganronpa/ui/medical/tunnel_vision.png",
+	description = "Затемнение видимости окружения.",
+	hooks = {
+		RenderScreenspaceEffects = function(stored, values)
+			stored.alpha = stored.alpha or 0
+
+			local client = LocalPlayer()
+			local time = client:GetTemporaryStatusEffectDelay("blackout") or 1
+			local delay = time - CurTime()
+			local ft = FrameTime()
+			local speed = time <= 0 and 10 or (delay <= 2 and 1 or 10)
+
+			stored.alpha = Lerp(ft * speed, stored.alpha, time <= 0 and 1 or (delay <= 2 and -0.1 or 1))
+
+			local alpha = math.max(0, stored.alpha)
+			local a = alpha * 230
+
+			surface.SetDrawColor(0, 0, 0, a)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+
+			surface.SetDrawColor(0, 0, 0, math.sin(RealTime() * 2) * 200 * alpha)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		end
+	}
+})
+
 Medical:TemporaryStatusEffects("pain", {
 	name = "Боль",
 	icon = "danganronpa/ui/medical/pain.png",

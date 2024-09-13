@@ -344,8 +344,8 @@ function SWEP:DealDamage()
             start = client:GetShootPos(),
             endpos = client:GetShootPos() + client:GetAimVector() * self.HitDistance,
             filter = client,
-            mins = Vector( -10, -10, -8 ),
-            maxs = Vector( 10, 10, 8 ),
+            mins = Vector(-10, -10, -8),
+            maxs = Vector(10, 10, 8),
             mask = MASK_SHOT_HULL
         })
     end
@@ -375,6 +375,21 @@ function SWEP:DealDamage()
 
         if tr.Entity:IsPlayer() then
             tr.Entity:ViewPunch(self.KnockViewPunchAngle)
+
+            tr.Entity:AddTemporaryStatusEffect("pain", 5)
+
+            local sizeEye = Vector(50, 50, 5)
+            local posEye = tr.Entity:EyePos()
+
+            local bHead = tr.HitPos:WithinAABox(posEye - sizeEye, posEye + sizeEye)
+            if bHead and (!tr.Entity.headDamage or CurTime() >= tr.Entity.headDamage) then
+                tr.Entity:AddTemporaryStatusEffect("stun", 5)
+                tr.Entity:AddTemporaryStatusEffect("pain", 20)
+                tr.Entity:AddTemporaryStatusEffect("blackout", 10)
+                tr.Entity:ViewPunch(self.KnockViewPunchAngle * 3)
+
+                tr.Entity.headDamage = CurTime() + 30
+            end
         end
 
         hit = true

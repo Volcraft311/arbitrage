@@ -235,6 +235,8 @@ local ActionPressIDList = {
     end,
     ["open_mainmenu_ui"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.menu) then
+            if IsValid(Arbitrage.menu.content) then return end
+
             Arbitrage.menu:AlphaTo(0, 0.3, 0, function()
                 Arbitrage.menu:Remove()
             end)
@@ -402,12 +404,7 @@ end
 
 function Arbitrage:OnSettingsLoad()
     local panel = asterionlib.netgui:Create("arb.MainRemake:UI")
-
-    if SETTINGS.options.Get("show_beta_test") then
-        panel:Menu()
-    else
-        panel:Intro()
-    end
+    panel:Content()
 
     RunConsoleCommand("stopsound")
 end

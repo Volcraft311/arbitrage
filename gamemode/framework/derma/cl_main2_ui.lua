@@ -171,6 +171,10 @@ function PANEL:Menu()
     self.menu = self:Add("arb.MainRemake:Menu")
 end
 
+function PANEL:Content()
+    self.content = self:Add("arb.MainRemake:Content")
+end
+
 function PANEL:Characters()
     self.characters = self:Add("arb.MainRemake:Characters")
 end

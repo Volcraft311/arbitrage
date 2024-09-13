@@ -17,7 +17,8 @@ function Medical:ScalePlayerDamage(target, hitgroup, dmginfo)
 
 	if hitgroup == HITGROUP_HEAD then
 		target:AddTemporaryStatusEffect("stun", 10)
-		target:AddTemporaryStatusEffect("pain", 20)
+		target:AddTemporaryStatusEffect("pain", 30)
+		target:AddTemporaryStatusEffect("blackout", 25)
 
 		target:ViewPunch(Angle(3.7, -3.5, 3.3))
 	elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then

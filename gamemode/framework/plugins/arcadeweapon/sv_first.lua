@@ -27,6 +27,16 @@ function PLUGIN:EntityTakeDamage(target, dmginfo)
         	if class != "academy_first" then return end
 
             dmginfo:SetDamage(target:Health() <= 5 and 0 or 2)
+
+            if target:Health() <= 5 then
+                target.fistDamageCount = (target.fistDamageCount or 0) + 1
+
+                if target.fistDamageCount >= 5 then
+                    target:FallOver(30)
+
+                    target.fistDamageCount = 0
+                end
+            end
         end
     end
 end

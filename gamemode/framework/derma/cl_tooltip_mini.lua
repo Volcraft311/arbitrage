@@ -52,6 +52,7 @@ function PANEL:Init()
     self.entity = nil
     self.subpanels = {}
     self.noTrace = RealTime() + 1
+    self.updateTime = RealTime() + 2
 end
 
 function PANEL:SetTitle(title)
@@ -168,6 +169,22 @@ end
 
 function PANEL:Paint(w, h)
     asterionlib.DrawBlur(self, 1, nil, 150)
+
+    local entity = self.entity
+    if !IsValid(entity) then return end
+
+    local padding = Vector(0, 0, 64 * 0.2)
+    padding = (entity:IsPlayer() and entity:Crouching()) and Vector(0, 0, 0) or padding
+
+    local point = entity:GetPos() + entity:OBBCenter() + padding
+    local data2D = point:ToScreen()
+
+    local x = data2D.x - self:GetWide() / 2
+    local y = data2D.y - self:GetTall() / 2
+
+    self:SetPos(x, y)
+
+    self.updateTime = RealTime() + 1
 end
 
 function PANEL:Think()
@@ -187,12 +204,11 @@ function PANEL:Think()
         self.noTrace = RealTime() + 0.7
     end
 
+    if RealTime() >= self.updateTime then
+        self:DoClose()
+    end
+
     if !IsValid(entity) then return end
-
-    local position = select(1, entity:GetBonePosition(entity:LookupBone("ValveBiped.Bip01_Spine4") or -1)) or entity:LocalToWorld(entity:OBBCenter())
-    position = position:ToScreen()
-
-    self:SetPos(position.x - self:GetWide() / 2, position.y - self:GetTall() / 2)
 
     if self.bOpen and !self.bClose then
         self:SetAlpha(255 - distance * 0.005 + 5)

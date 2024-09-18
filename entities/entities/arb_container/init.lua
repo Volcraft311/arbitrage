@@ -68,7 +68,7 @@ function ENT:SetContainer(model, name, description, w, h)
 
 	local physObj = self:GetPhysicsObject()
 
-	if (!IsValid(physObj)) then
+	if !IsValid(physObj) then
 		self:PhysicsInitBox(invalidBoundsMin, invalidBoundsMax)
 		self:SetCollisionBounds(invalidBoundsMin, invalidBoundsMax)
 	end
@@ -87,7 +87,7 @@ function ENT:OnDuplicated(entTable)
 	local container = ents.Create("arb_container")
 	container:SetPos(pos)
 	container:SetAngles(ang)
-	container:SetContainer(model, data.name, data.w, data.h)
+	container:SetContainer(model, data.name or "", data.description or "", data.w, data.h)
 
 	local inventory = container.Inventory
 	for _, v in ipairs(data.items) do
@@ -125,6 +125,7 @@ function ENT:PreEntityCopy()
 
 	self.BoneMods.saveData = {
 		name = self:GetContainerName(),
+		description = self:GetContainerDescription(),
 		w = inventory.w,
 		h = inventory.h,
 		items = items

@@ -140,9 +140,14 @@ end
 BASE:AddAction("Открыть", {
     icon = "icon16/package.png",
     OnRun = function(item)
+        local client = item.player
         local inventory = item:GetBagInventory()
 
         InventoryBase.Open(item.player, inventory:GetID(), item:GetName())
+
+        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            TypingDraw:SetTypingText(v, client, "Осматривает содержимое '" .. item:GetName()  .. "'", Color(255, 170, 23))
+        end
 
         return false
     end,

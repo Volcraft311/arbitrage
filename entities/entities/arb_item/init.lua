@@ -181,6 +181,10 @@ function ENT:OnDuplicated(entTable)
 			end
 		end
 	end
+
+	if item.OnDuplicatePaste then
+		item:OnDuplicatePaste(self)
+	end
 end
 
 function ENT:PreEntityCopy()
@@ -193,6 +197,10 @@ function ENT:PreEntityCopy()
 	local customData = item.data
 	if customData then
 		self.BoneMods.customData = customData
+	end
+
+	if item.OnDuplicateCopy then
+		item:OnDuplicateCopy(self)
 	end
 
 	local physObject = self:GetPhysicsObject()

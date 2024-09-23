@@ -167,7 +167,8 @@ ItemBase.converterBase = {
     base_note = {"База блокнотов", "converter_note"},
     base_picklock = {"База отмычек", "converter_picklock"},
     base_weapon = {"База оружий", "converter_weapon"},
-    base_stack = {"База Стакающихся Предметов", "converter_stack"},
+    base_stack = {"База стакающихся Предметов", "converter_stack"},
+    base_bag = {"База рюкзаков", "converter_bag"},
 }
 
 -- a - item
@@ -354,6 +355,7 @@ Arbitrage.base.Include("base/base_note.lua", "shared")
 Arbitrage.base.Include("base/base_picklock.lua", "shared")
 Arbitrage.base.Include("base/base_weapon.lua", "shared")
 Arbitrage.base.Include("base/base_stack.lua", "shared")
+Arbitrage.base.Include("base/base_bag.lua", "shared")
 
 Arbitrage.base.Include("items/sh_list.lua")
 Arbitrage.base.Include("items/sh_other.lua")

@@ -418,3 +418,13 @@ do
 
     ItemBase:RegisterItem("converter_stack", ITEM)
 end
+
+do
+    local ITEM = ItemBase.GetBase("base_bag")
+
+    ITEM.name = ""
+    ITEM.description = ""
+    ITEM.category = "Converter"
+
+    ItemBase:RegisterItem("converter_bag", ITEM)
+end

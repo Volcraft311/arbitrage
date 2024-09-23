@@ -91,7 +91,7 @@ function ENT:OnDuplicated(entTable)
 
 	local inventory = container.Inventory
 	for _, v in ipairs(data.items) do
-		local uniqueID, x, y, saveData, customData = v[1], v[2], v[3], v[4], v[5]
+		local uniqueID, x, y, saveData, customData, duplicateInfo = v[1], v[2], v[3], v[4], v[5], v[6]
 
 		local item = ItemBase.CreateItem(uniqueID)
 		if item then
@@ -101,6 +101,10 @@ function ENT:OnDuplicated(entTable)
 
 			if customData then
 				item.data = customData
+			end
+
+			if item.OnDuplicatePaste then
+				item:OnDuplicatePaste(self, duplicateInfo)
 			end
 
 			item:Transfer(inventory:GetID(), x, y)
@@ -118,7 +122,14 @@ function ENT:PreEntityCopy()
 			local item = inventory:GetItemAt(x, y)
 
 			if item then
-				items[#items + 1] = {item:GetUniqueID(), x, y, ItemBase.data[item:GetID()], item.data}
+				items[#items + 1] = {
+					[1] = item:GetUniqueID(),
+					[2] = x,
+					[3] = y,
+					[4] = ItemBase.data[item:GetID()],
+					[5] = item.data,
+					[6] = item.OnDuplicateCopy and item:OnDuplicateCopy(self)
+				}
 			end
 		end
 	end

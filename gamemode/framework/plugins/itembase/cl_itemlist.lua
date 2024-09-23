@@ -23,6 +23,7 @@ local icons = {
     ["Ингредиенты"] = "package_add",
     ["Литература"] = "book",
     ["Медикаменты"] = "heart_add",
+    ["Рюкзаки"] = "package",
     ["Остальное"] = "box",
     ["Библиотека"] = "report",
     ["Хранилище"] = "briefcase",
@@ -89,11 +90,10 @@ spawnmenu.AddContentType("Item", function(container, item)
         for k, v in ipairs(player.GetAll()) do
             if v == LocalPlayer() then continue end
 
-            local mat = Arbitrage.chat:GetIcon(v):GetName() .. ".png"
             local _ = subMenu:AddOption(v:FullName(), function()
                 netstream.Start("ItemBase:GiveItem", v, uniqueID)
             end)
-            _:SetIcon(mat)
+            _:SetIcon(Arbitrage.chat:GetIcon(v):GetName() .. ".png")
         end
 
         Menu:Open()

@@ -910,6 +910,15 @@ local data = {
 	        sleep = 100,
 	        sound = "eating_and_drinking/drinking.wav",
 	    },
+	},
+	base_bag = {
+		standart = {
+			name = "Стандартный рюкзак",
+			description = "Обычный рюкзак, отлично подходит для хранения вещей.",
+			model = "models/props_junk/garbage_bag001a.mdl",
+	        maxw = 4,
+	        maxh = 4,
+	    }
 	}
 }
 

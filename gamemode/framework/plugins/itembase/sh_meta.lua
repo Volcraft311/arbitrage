@@ -139,6 +139,14 @@ if SERVER then
 
             if !x or !y then return "Инвентарь заполнен!" end
 
+            local transfEvent = inventory.OnItemTransfer
+            if transfEvent then
+                local bAllow, message = transfEvent(inventory, self)
+                if bAllow == false then
+                    return message
+                end
+            end
+
             self:HookRun("transfer")
             self:Remove(true, true)
 

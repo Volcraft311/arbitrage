@@ -72,6 +72,9 @@ BASE.propertiesInfo = {
     {"sound", "Звук при использовании", function(a)
         return a:GetSound()
     end},
+    {"addstatuseffects", "Выдаются статус эффекты", function(a)
+        return a:GetRemoveStatusEffects()
+    end},
     {"removestatuseffects", "Удаляются статус эффекты", function(a)
         return a:GetRemoveStatusEffects()
     end},

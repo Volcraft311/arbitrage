@@ -68,6 +68,7 @@ AccessorFunc(PANEL, "fadeDuration", "FadeDuration", FORCE_NUMBER)
 function PANEL:Init()
 	self.text = ""
 	self.alpha = 1
+	self.animation = 0
 	self.fadeDelay = 15
 	self.fadeDuration = 5
 end
@@ -89,9 +90,7 @@ function PANEL:SetMarkup(text)
 	})
 
 	timer.Simple(self.fadeDelay, function()
-		if (not IsValid(self)) then
-			return
-		end
+		if !IsValid(self) then return end
 
 		self:CreateAnimation(self.fadeDuration, {
 			index = 3,
@@ -129,7 +128,7 @@ function PANEL:Paint(width, height)
 	self.animated = self.animated or -50
 
 	if self.animated < 0 then
-		self.animated = Lerp(FrameTime() * 10, self.animated + 0.1, 0)
+		self.animated = Lerp(FrameTime() * 4, self.animated + 0.1, 0)
 	end
 
 	surface.SetDrawColor(0, 0, 0, newAlpha * 0.6 - chatbox:GetAlpha() * 0.6)

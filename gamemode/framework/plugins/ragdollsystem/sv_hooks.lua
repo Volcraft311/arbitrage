@@ -35,6 +35,7 @@ function RagdollSystem:EntityTakeDamage(entity, dmginfo)
 end
 
 function RagdollSystem:DoPlayerDeath(client, attacker)
+    Persistent:ReDoPlayerDeath(client, attacker)
     netstream.Start(client, "RagdollSystem:ClosePanel")
 
     if Arbitrage.OffSpawnPersistent() or !client:InGame() then

@@ -82,7 +82,7 @@ function Persistent:SetPersistent(entity, client, attacker)
     entity:SetCorpse(corpseInfo)
 end
 
-function Persistent:DoPlayerDeath(client, attacker)
+function Persistent:ReDoPlayerDeath(client, attacker)
     self:ClearCompositeEntities(client)
 
     if Arbitrage.OffSpawnPersistent() then return end

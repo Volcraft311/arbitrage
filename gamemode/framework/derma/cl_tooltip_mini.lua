@@ -53,6 +53,7 @@ function PANEL:Init()
     self.subpanels = {}
     self.noTrace = RealTime() + 1
     self.updateTime = RealTime() + 2
+    self.player = nil
 end
 
 function PANEL:SetTitle(title)
@@ -66,8 +67,9 @@ function PANEL:SetTitle(title)
     local width = surface.GetTextSize(title)
     self.titleLineWidth = width
 
-    if self.entity:IsPlayer() then
-        local color = team.GetColor(self.entity:Team())
+    local entity = self.entity:IsPlayer() and self.entity or self.player
+    if IsValid(entity) then
+        local color = team.GetColor(entity:Team())
         if color then
             self.titleLabel:SetTextColor(color)
         end

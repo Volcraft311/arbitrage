@@ -12,8 +12,6 @@
 ]]--
 
 function BedSystem:NetworkEntityCreated(entity)
-    if !IsValid(entity) then return end
-
     local model = entity:GetModel()
     if !model then return end
 

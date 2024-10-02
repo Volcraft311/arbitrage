@@ -28,7 +28,7 @@ function PLUGIN:EntityTakeDamage(target, dmginfo)
 
             dmginfo:SetDamage(target:Health() <= 5 and 0 or 2)
 
-            if target:Health() <= 5 then
+            if target:IsPlayer() and target:Health() <= 5 then
                 target.fistDamageCount = (target.fistDamageCount or 0) + 1
 
                 if target.fistDamageCount >= 5 then

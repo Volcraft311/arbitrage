@@ -24,14 +24,6 @@ function Prone:Handle(client)
 	end
 end
 
-function Prone:KeyPressID(client, id, bIsVisibleGUI)
-	if bIsVisibleGUI then return end
-	if id != "prone" then return end
-	if !prone then return end
-
-	self:Handle(client)
-end
-
 netstream.Hook("Prone:Handle", function(client)
 	Prone:Handle(client)
 end)
@@ -39,7 +31,7 @@ end)
 hook.Add("prone.OnPlayerExitted", "Prone:OnPlayerExitted", function(client)
 	timer.Simple(0.1, function()
 		Character.team:EstablishHull(client)
-		client:UnStuck()
+		client:CheckStuck(0.1)
 	end)
 end)
 

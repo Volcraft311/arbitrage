@@ -208,8 +208,6 @@ function Arbitrage:HUDShouldDraw(name)
 end
 
 function Arbitrage:ContextMenuOpen()
-    gui.EnableScreenClicker(true)
-
     return LocalPlayer():IsHoldingSBoxTool()
 end
 

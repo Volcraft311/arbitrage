@@ -33,6 +33,49 @@ function Arbitrage.Initialize()
 		concommand.Add(v, zero)
 	end
 
+	properties.Add("setmodel", {
+		MenuLabel = "Изменить модель",
+		Order = 999,
+		MenuIcon = "icon16/contrast_high.png",
+		Filter = function(self, entity, client)
+			if !IsValid(entity) then return false end
+			if entity:IsPlayer() then return false end
+
+			return client:IsAdmin()
+		end,
+		Action = function(self, entity)
+			Derma_StringRequest("Изменить модель объекту", "Укажите путь до модели которую вы хотите установить объекту", IsValid(entity) and entity:GetModel() or "", function(text)
+				self:MsgStart()
+					net.WriteEntity(entity)
+					net.WriteString(text)
+				self:MsgEnd()
+			end)
+		end,
+		Receive = function(self, length, client)
+			local entity = net.ReadEntity()
+			local model = net.ReadString()
+
+			if !properties.CanBeTargeted(entity, client) then return end
+			if !self:Filter(entity, client) then return end
+
+			entity:SetModel(model)
+
+			if !entity:IsNPC() then
+				entity:PhysicsInit(SOLID_VPHYSICS)
+				entity:SetSolid(SOLID_VPHYSICS)
+
+				local physObj = entity:GetPhysicsObject()
+				if !IsValid(physObj) then
+					entity:PhysicsInitBox(invalidBoundsMin, invalidBoundsMax)
+					entity:SetCollisionBounds(invalidBoundsMin, invalidBoundsMax)
+				else
+					physObj:EnableMotion(true)
+					physObj:Wake()
+				end
+			end
+		end
+	} )
+
 	if Arbitrage.util.IsServerSide() then
 		-- permission
 		local function permissionFunc(_, client) return client:IsAdmin() end

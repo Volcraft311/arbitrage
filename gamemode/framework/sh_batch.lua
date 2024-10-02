@@ -148,6 +148,8 @@ function Arbitrage.Initialize()
 		Arbitrage.GM.HUDShouldDraw = function()
 			return true
 		end
+
+		properties.List.drive = nil
 	end
 
 	Arbitrage.util.WriteMessage("BATCH has been successfully loaded!")

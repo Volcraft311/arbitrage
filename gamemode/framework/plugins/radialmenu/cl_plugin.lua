@@ -215,7 +215,7 @@ function PLUGIN:ActionsOption()
 			name = "Упасть",
 			id = "fallover",
 			description = "Заставить вашего персонажа упасть на пол",
-			icon = Material("icon16/zoom.png"),
+			icon = Material("danganronpa/radialmenu/d_animation.png"),
 			action = function()
 				RunConsoleCommand("say", "/fallover")
 			end

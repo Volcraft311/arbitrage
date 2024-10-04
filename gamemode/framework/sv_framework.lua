@@ -74,6 +74,21 @@ Arbitrage.commands.Add("mel", {
     end
 })
 
+Arbitrage.commands.Add("meanon", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        Arbitrage.chat.SendCommand("meanon", client, text)
+    end
+})
+
 local function try(client, text, id)
     local rand = math.random(0, 100) >= 50 and true or false
 
@@ -208,6 +223,21 @@ Arbitrage.commands.Add("itl", {
         if client:IsSpectate() then return end
 
         Arbitrage.chat.SendCommand("itl", client, text)
+    end
+})
+
+Arbitrage.commands.Add("itanon", {
+    arguments = {
+        [1] = {
+            name = "Текст",
+            type = "text",
+            important = true
+        },
+    },
+    OnAction = function(client, text)
+        if client:IsSpectate() then return end
+
+        Arbitrage.chat.SendCommand("itanon", client, text)
     end
 })
 

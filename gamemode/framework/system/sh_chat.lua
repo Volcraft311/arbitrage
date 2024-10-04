@@ -16,7 +16,8 @@ Arbitrage.chat.Colors = {
     ["player"] = Color(240, 201, 73),
     ["other"] = Color(238, 220, 194),
     ["looc"] = Color(190, 62, 62),
-    ["ooc"] = Color(236, 62, 62)
+    ["ooc"] = Color(236, 62, 62),
+    ["anon"] = Color(0, 153, 255, 251)
 }
 
 function Arbitrage.chat:GetIcon(client)
@@ -165,6 +166,19 @@ Arbitrage.chat.List = {
 
             for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["meanon"] = {
+        Color = Color(44, 176, 247),
+        OnCreate = function(client, sender, data)
+            return chatColor("meanon"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.anon, "Анонимно", Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -333,6 +347,19 @@ Arbitrage.chat.List = {
 
             for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["itanon"] = {
+        Color = color_white,
+        OnCreate = function(client, sender, data)
+            return chatColor("itanon"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.anon, " (Анонимно)"
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end

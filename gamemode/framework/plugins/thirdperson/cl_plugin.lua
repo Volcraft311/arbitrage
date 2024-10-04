@@ -25,7 +25,7 @@ function Arbitrage.IsThirdPerson()
 	if Arbitrage.ThirdPerson then
 		local client = LocalPlayer()
 
-		if client:IsNocliping() or client:IsSpectating() then return false end
+		if client:IsNocliping() or client:IsSpectating() or client:IsSpectate() then return false end
 
 		if (client.GetSitting and client:GetSitting()) or select(3, client:GetAction()) then
 			return false

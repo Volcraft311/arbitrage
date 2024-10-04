@@ -252,6 +252,9 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
     if !IsValid(entity) then return end
     if IsValid(Arbitrage.tooltip) then return end
 
+    local client = LocalPlayer()
+    if client:IsSpectate() then return end
+
     if traceCount >= 7 then
         traceCount = 0
 

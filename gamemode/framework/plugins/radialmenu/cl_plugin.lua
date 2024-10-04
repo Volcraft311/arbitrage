@@ -579,6 +579,31 @@ function PLUGIN:PlayerOption()
 	return data
 end
 
+function PLUGIN:RagdollOption()
+	local data = {
+		{
+			name = "Обыскать",
+			id = "search",
+			description = "Посмотреть содержимое инвентаря данного игрока",
+			icon = Material("danganronpa/radialmenu/search.png"),
+			action = function()
+				netstream.Start("RadialMenu:SearchAction")
+			end
+		},
+		{
+			name = "Поднять",
+			id = "standup",
+			description = "Поднять игрока на ноги",
+			icon = Material("danganronpa/radialmenu/push.png"),
+			action = function()
+				netstream.Start("RadialMenu:StandUp")
+			end
+		}
+	}
+
+	return data
+end
+
 function PLUGIN:OpenRadialMenu()
 	if !IsValid(Arbitrage.gui.radialmenu) and !self.isClose and (!vgui_CursorVisible() or (Arbitrage.lawEnable and !Arbitrage.gui.chat:GetActive())) then
 		self.clampingTime = RealTime() + 0.5
@@ -658,17 +683,17 @@ function PLUGIN:KeyReleaseID(client, id)
 end
 
 function PLUGIN:KeyPress(client, key)
+	if client:IsSpectate() then return end
+
 	if key != IN_USE then return end
 	if !IsFirstTimePredicted() then return end
 
-	local entity = self:ReturnTracePlayer()
+	local entity, clientRagdoll = self:ReturnTracePlayer()
 	if !IsValid(entity) then return end
-
-	if client:IsSpectate() then return end
 
 	local radial = self:OpenRadialMenu()
 	if IsValid(radial) and #radial.options <= 0 then
-		radial.options = self:PlayerOption()
+		radial.options = clientRagdoll and self:RagdollOption() or self:PlayerOption()
 		radial.isPlayerOptions = true
 	end
 end

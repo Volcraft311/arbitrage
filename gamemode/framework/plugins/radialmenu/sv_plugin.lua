@@ -15,6 +15,32 @@ local PLUGIN = PLUGIN
 
 local KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 
+netstream.Hook("RadialMenu:StandUp", function(client)
+    if client:IsSpectate() then return end
+
+    local entity, target = PLUGIN:ReturnTracePlayer(client)
+    if !IsValid(target) then return end
+
+    local delay = target.fallOverDelay == nil and 10 or (target.fallOverDelay <= -1 and 60 or target.fallOverDelay)
+    local name = target:Name()
+
+    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
+    end
+
+    Arbitrage.action.ActionRun(client, "Поднимаем", delay, function()
+        if PLUGIN:ReturnTracePlayer(client) != entity then return true end
+
+        return false
+    end, function(activator)
+        target:StandUp()
+
+        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+            TypingDraw:SetTypingText(v, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
+        end
+    end)
+end)
+
 netstream.Hook("RadialMenu:PushAction", function(client)
     if client:IsSpectate() then return end
 
@@ -32,8 +58,10 @@ netstream.Hook("RadialMenu:PushAction", function(client)
         client:ViewPunch(KnockViewPunchAngle)
         target:ViewPunch(KnockViewPunchAngle)
 
+        local name = target:Name()
+
         for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Толкает '" .. target:Name() .. "'", Color(255, 170, 23))
+            TypingDraw:SetTypingText(v, client, "Толкает '" .. name .. "'", Color(255, 170, 23))
         end
 
         client.PushActionCD = CurTime() + 1
@@ -43,14 +71,16 @@ end)
 netstream.Hook("RadialMenu:SearchAction", function(client)
     if client:IsSpectate() then return end
 
-    local target = PLUGIN:ReturnTracePlayer(client)
+    local target, ragdollClient = PLUGIN:ReturnTracePlayer(client)
     if !IsValid(target) then return end
 
+    local name = IsValid(ragdollClient) and ragdollClient:Name() or target:Name()
+
     for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, "Обыскивает '" .. target:Name() .. "'", Color(255, 170, 23))
+        TypingDraw:SetTypingText(v, client, "Обыскивает '" .. name .. "'", Color(255, 170, 23))
     end
 
-    Arbitrage.action.ActionRun(client, "Обыскиваем", 15, function()
+    Arbitrage.action.ActionRun(client, "Обыскиваем", IsValid(ragdollClient) and 23 or 15, function()
         if PLUGIN:ReturnTracePlayer(client) != target then return true end
 
         if (!client.RMSearch or CurTime() >= client.RMSearch) then
@@ -60,11 +90,11 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
 
         return false
     end, function(activator)
-        local inventory = target:GetInventory()
-        InventoryBase.Open(client, inventory:GetID(), target:Name())
+        local inventory = IsValid(ragdollClient) and ragdollClient:GetInventory() or target:GetInventory()
+        InventoryBase.Open(client, inventory:GetID(), name)
 
         for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Осматривает '" .. target:Name() .. "'", Color(255, 170, 23))
+            TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
         end
     end)
 end)

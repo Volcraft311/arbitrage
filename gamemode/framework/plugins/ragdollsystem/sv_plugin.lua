@@ -97,10 +97,6 @@ function meta:FallOver(delay)
 
     self.isTalking = nil
 
-    entity._containerTime = 30
-    entity._containerName = self:Name()
-    entity._containerInventory = self:GetInventory()
-
     netstream.Start(self, "RagdollSystem:FallOver", entity:EntIndex(), delay)
 end
 

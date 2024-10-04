@@ -25,9 +25,25 @@ function PLUGIN:ReturnTracePlayer(client)
     data.filter = {client}
 
     local trace = util.TraceLine(data)
-    local entity = trace.Entity
 
-    if IsValid(entity) and entity:IsPlayer() then
+    local entity = trace.Entity
+    if !IsValid(entity) then return end
+
+    local class = entity:GetClass()
+    local bRagdoll = class == "prop_ragdoll"
+
+    if entity:IsPlayer() or bRagdoll then
+        if bRagdoll then
+            local steamid = entity:GetNetVar("sIsRagdoll")
+
+            local target = player.GetBySteamID(steamid)
+            if !IsValid(target) then return end
+
+            if target:GetRagdoll() != entity then return end
+
+            return entity, target
+        end
+
         return entity
     end
 end

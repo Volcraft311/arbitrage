@@ -334,18 +334,6 @@ function PLUGIN:ActionsOption()
 		end
 	end
 
-	if LocalPlayer():IsAdmin() then
-		data[#data + 1] = {
-			name = "Открыть Моно-Меню",
-			id = "monomenu",
-			description = "Открыть панель администратора",
-			icon = Material("danganronpa/hud/action/mono.png"),
-			action = function()
-				netstream.Start("arb.OpenMonoMenu")
-			end
-		}
-	end
-
 	if Arbitrage.OnThirdPerson() then
 		data[#data + 1] = {
 			name = "3-е лицо",

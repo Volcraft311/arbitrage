@@ -107,6 +107,8 @@ timer_Create("Hints:Update", 0.1, 0, function()
     if !SETTINGS.options.Get("interface_open_button") then return end
     if client.GetSitting and client:GetSitting() then return end
 
+    if client:IsSpectate() then return end
+
     local trace = client:GetEyeTrace()
     local sit_key = SETTINGS.binds.Get("sitting")
     if trace.HitPos:DistToSqr(EyePos()) < 5000 or input_IsKeyDown(sit_key) then

@@ -205,10 +205,12 @@ function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
 	if id != sitBindID then return end
 	if !SitAnywhere then return end
 
-	if client:IsNocliping() then return end
-	if client.GetSitting and client:GetSitting() then return end
-	if client.IsProne and client:IsProne() then return end
 	if Arbitrage.lawEnable then return end
+	if client.IsProne and client:IsProne() then return end
+	if client.GetSitting and client:GetSitting() then return end
+
+	if client:IsSpectate() then return end
+	if client:IsNocliping() then return end
 
 	self.Ang = nil
 	self.StartPos = nil

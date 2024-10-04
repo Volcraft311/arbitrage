@@ -17,7 +17,8 @@ Arbitrage.chat.Colors = {
     ["other"] = Color(238, 220, 194),
     ["looc"] = Color(190, 62, 62),
     ["ooc"] = Color(236, 62, 62),
-    ["anon"] = Color(0, 153, 255, 251)
+    ["anon"] = Color(0, 153, 255, 251),
+    ["spectate"] = Color(153, 153, 153)
 }
 
 function Arbitrage.chat:GetIcon(client)
@@ -246,7 +247,11 @@ Arbitrage.chat.List = {
     },
     ["looc"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.looc, "[Локальный НонРП чат] ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, ": ", "" .. data[1] .. ""
+            local bSpectate = sender:IsSpectate()
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
+
+            return Arbitrage.chat.Colors.looc, "[Локальный НонРП чат] ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -259,7 +264,11 @@ Arbitrage.chat.List = {
     },
     ["ooc"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.ooc, "[Глобальный НонРП чат] ", Arbitrage.chat.Colors.player, sender:SteamName(), Arbitrage.chat.Colors.other, ": ", "" .. data[1] .. ""
+            local bSpectate = sender:IsSpectate()
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
+
+            return Arbitrage.chat.Colors.ooc, "[Глобальный НонРП чат] ", c_player, sender:SteamName(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end

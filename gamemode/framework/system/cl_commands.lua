@@ -30,11 +30,14 @@ RegisterCommand("meanon", "Говорить анонимно от третьег
 RegisterCommand("try", "Возможное действие случая.", {"text"})
 RegisterCommand("tryc", "Возможное действие случая ближнего радиуса.", {"text"})
 RegisterCommand("tryl", "Возможное действие случая большого радиуса.", {"text"})
+RegisterCommand("tryanon", "Анонимное возможное действие случая.", {"text"})
 
-RegisterCommand("it", "Описать местное действие или событие.", {"text"})
-RegisterCommand("itc", "Описать местное действие или событие ближнего радиуса действия.", {"text"})
-RegisterCommand("itl", "Описать местное действие или событие на большом расстоянии.", {"text"})
-RegisterCommand("itanon", "Описать анонимно местное действие или событие.", {"text"})
+for _, command in ipairs({"it", "do"}) do
+    RegisterCommand(command, "Описать местное действие или событие.", {"text"})
+    RegisterCommand(command .. "c", "Описать местное действие или событие ближнего радиуса действия.", {"text"})
+    RegisterCommand(command .. "l", "Описать местное действие или событие на большом расстоянии.", {"text"})
+    RegisterCommand(command .. "anon", "Описать анонимно местное действие или событие.", {"text"})
+end
 
 RegisterCommand("w", "Шептать персонажам рядом с вами.", {"text"})
 RegisterCommand("y", "Крикнуть персонажам рядом с вами.", {"text"})
@@ -54,7 +57,7 @@ RegisterCommand("sitting", "Изменить анимацию при сиден�
 RegisterCommand("mood", "Изменить настроение.", {"number"})
 RegisterCommand("lookaround", "Осмотреться.")
 RegisterCommand("settimespeed", "Изменить скорость времени.", {"number"})
-RegisterCommand("fallover", "Заставь своего персонажа упасть на пол.", nil, {"number"})
+RegisterCommand("fallover", "Заставить своего персонажа упасть на пол.", nil, {"number"})
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

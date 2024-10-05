@@ -226,6 +226,19 @@ Arbitrage.chat.List = {
             end
         end
     },
+    ["tryanon"] = {
+        Color = Color(44, 247, 85),
+        OnCreate = function(client, sender, data)
+            return chatColor("tryanon"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.anon, "Анонимно", Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
     ["ic"] = {
         OnCreate = function(client, sender, data)
             return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " говорит: ", "'" .. format(data[1], true, true) .. "'"

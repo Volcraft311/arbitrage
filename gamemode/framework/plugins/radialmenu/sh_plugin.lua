@@ -35,6 +35,7 @@ function PLUGIN:ReturnTracePlayer(client)
     if entity:IsPlayer() or bRagdoll then
         if bRagdoll then
             local steamid = entity:GetNetVar("sIsRagdoll")
+            if !steamid then return end
 
             local target = player.GetBySteamID(steamid)
             if !IsValid(target) then return end

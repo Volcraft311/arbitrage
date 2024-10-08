@@ -23,7 +23,7 @@ function Emotes:OnPlayerSitting(client, vehicle)
 		local origin = data and data[2] or Vector(0, 0, 0)
 
 		local x, y, z = origin.x, origin.y, origin.z
-		local pos, ang = vehicle:GetPos(), client:GetAngles()
+		local pos, ang = vehicle:GetPos(), vehicle:GetAngles()
 
 		pos = pos + ang:Forward() * -y + ang:Right() * -x + ang:Up() * z
 

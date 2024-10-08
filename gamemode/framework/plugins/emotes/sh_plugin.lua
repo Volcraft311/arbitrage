@@ -148,16 +148,15 @@ Emotes.ActionList = {
 Emotes.SittingList = {
 	[0] = {"sit"},
 	[1] = {"d1_t02_Plaza_Sit01_Idle", Vector(0, 0, -19)},
-	[2] = {"silo_sit", Vector(9, 0, -20)},
-	[3] = {"Sit_Chair", Vector(20, 0, -17)},
-	[4] = {"Sit_Ground", Vector(8, 0, -5)},
-	[5] = {"sit_zen"},
-	[6] = {"sitccouchtv1", Vector(24, 0, -20)},
-	[7] = {"sitchair1", Vector(6, 0, -23)},
-	[8] = {"sitchairtable1", Vector(2, 0, -23)},
-	[9] = {"sitcouch1", Vector(18, 0, -17)},
-	[10] = {"sitcouchfeet1", Vector(20, 0, -20)},
-	[11] = {"sitcouchknees1", Vector(20, 0, -18)}
+	[2] = {"Sit_Chair", Vector(20, 0, -17)},
+	[3] = {"Sit_Ground", Vector(8, 0, -5)},
+	[4] = {"sit_zen"},
+	[5] = {"sitccouchtv1", Vector(24, 0, -20)},
+	[6] = {"sitchair1", Vector(6, 0, -23)},
+	[7] = {"sitchairtable1", Vector(2, 0, -23)},
+	[8] = {"sitcouch1", Vector(18, 0, -17)},
+	[9] = {"sitcouchfeet1", Vector(20, 0, -20)},
+	[10] = {"sitcouchknees1", Vector(20, 0, -18)}
 }
 
 Emotes.MoodList = {

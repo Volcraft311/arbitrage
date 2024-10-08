@@ -328,7 +328,6 @@ do
                 local checkList = {
                     sit = true,
                     d1_t02_plaza_sit01_idle = true,
-                    silo_sit = true,
                     sit_chair = true,
                     sit_ground = true,
                     sit_zen = true,

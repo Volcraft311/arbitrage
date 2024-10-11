@@ -322,7 +322,7 @@ do
         })
 
         -- LAST DOWNLOAD
-        workshop:Add("2982352247", { -- Asterion - Animations
+        workshop:Add("3347087744", { -- Asterion - Animations
             onCheck = function()
                 local bValid = true
                 local checkList = {

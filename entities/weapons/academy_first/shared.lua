@@ -383,9 +383,7 @@ function SWEP:DealDamage()
 
             local bHead = tr.HitPos:WithinAABox(posEye - sizeEye, posEye + sizeEye)
             if bHead and (!tr.Entity.headDamage or CurTime() >= tr.Entity.headDamage) then
-                tr.Entity:AddTemporaryStatusEffect("stun", 5)
                 tr.Entity:AddTemporaryStatusEffect("pain", 20)
-                tr.Entity:AddTemporaryStatusEffect("blackout", 10)
                 tr.Entity:ViewPunch(self.KnockViewPunchAngle * 3)
 
                 tr.Entity.headDamage = CurTime() + 30

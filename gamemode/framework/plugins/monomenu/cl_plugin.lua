@@ -1067,3 +1067,68 @@ end
 function PLUGIN:PreDrawHUD()
     dRender(0)
 end
+
+function PLUGIN:UpdateInvisibleTools()
+    local players = {}
+
+    for _, client in ipairs(player.GetAll()) do
+        local bHide = client:GetNetVar("bHideTools")
+        if !bHide then continue end
+
+        players[client] = true
+    end
+
+    for _, client in ipairs(player.GetAll()) do
+        local bHide = players[client]
+        local weaponList = client:GetWeapons()
+
+        for _, weapon in ipairs(weaponList) do
+            local class = weapon:GetClass()
+
+            if self.activityInfo[class] then
+                weapon:SetHoldType(bHide and "normal" or "revolver")
+                weapon:SetNoDraw(bHide and true or false)
+            end
+        end
+    end
+
+    if table.Count(players) <= 0 then
+        hook.Remove("CalcMainActivity", "InvisibleTools")
+    else
+        hook.Add("CalcMainActivity", "InvisibleTools", function(client)
+            if !players[client] then return end
+
+            local weapon = client:GetActiveWeapon()
+            if !weapon then return end
+
+            local class = weapon:GetClass()
+            if !class then return end
+
+            local data = self.activityInfo[class]
+            if !data then return end
+
+            weapon:SetHoldType("normal")
+            weapon:SetNoDraw(true)
+
+            local sequence = client:GetSequence()
+            local sequenceName = client:GetSequenceName(sequence)
+
+            local info = data[sequenceName]
+            if !info then return end
+
+            local lSequence = client:LookupSequence(info)
+
+            return -1, lSequence
+        end)
+    end
+end
+
+netstream.Hook("MonoMenu:InvisibleTools", function()
+    timer.Simple(0, function() -- wait netvars
+        PLUGIN:UpdateInvisibleTools()
+    end)
+end)
+
+timer.Simple(5, function()
+    PLUGIN:UpdateInvisibleTools()
+end)

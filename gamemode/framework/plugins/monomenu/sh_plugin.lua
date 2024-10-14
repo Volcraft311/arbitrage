@@ -21,6 +21,18 @@ PLUGIN.ClickSound = "garrysmod/content_downloaded.wav"
 PLUGIN.GameData = {}
 PLUGIN.AdminData = {}
 
+PLUGIN.activityInfo = {
+    -- Weapon:SetHoldType не работает на Physgun
+    weapon_physgun = {
+        idle_physgun = "idle_all_01",
+        walk_physgun = "walk_all",
+        run_physgun = "run_all_01",
+        jump_physgun = "jump_slam",
+        cidle_physgun = "cidle_all",
+    },
+    gmod_tool = {}
+}
+
 function PLUGIN:AddGameFunction(name, icon, data)
     data = data or {}
 
@@ -701,7 +713,7 @@ MonoMenu:AddAdminFunction("Зайти за администратора", "icon1
     end
 })
 
-MonoMenu:AddAdminFunction("PhysGun и ToolGun", "icon16/basket_put.png", {
+MonoMenu:AddAdminFunction("Выдать инструменты", "icon16/basket_put.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -717,6 +729,45 @@ MonoMenu:AddAdminFunction("PhysGun и ToolGun", "icon16/basket_put.png", {
     end,
     OnCheck = function(client)
         return client:HasWeapon("weapon_physgun") or client:HasWeapon("gmod_tool")
+    end
+})
+
+MonoMenu:AddAdminFunction("Невидимые инструменты", "icon16/monitor_delete.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        local weaponList = client:GetWeapons()
+        for _, weapon in ipairs(weaponList) do
+            local class = weapon:GetClass()
+
+            if MonoMenu.activityInfo[class] then
+                weapon:SetHoldType("normal")
+                weapon:SetNoDraw(true)
+            end
+        end
+
+        client:SetNetVar("bHideTools", true)
+        netstream.Start(nil, "MonoMenu:InvisibleTools")
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        local weaponList = client:GetWeapons()
+        for _, weapon in ipairs(weaponList) do
+            local class = weapon:GetClass()
+
+            if MonoMenu.activityInfo[class] then
+                weapon:SetHoldType("revolver")
+                weapon:SetNoDraw(false)
+            end
+        end
+
+        client:SetNetVar("bHideTools", false)
+        netstream.Start(nil, "MonoMenu:InvisibleTools")
+    end,
+    OnCheck = function(client)
+        return client:GetNetVar("bHideTools", false)
     end
 })
 

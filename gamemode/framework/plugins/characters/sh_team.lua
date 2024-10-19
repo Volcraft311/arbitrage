@@ -163,6 +163,7 @@ function Character.team:Join(client, data, bRespawn)
         client:SetSkin(0)
         client:SetMaterial("")
         client:SetColor(Color(255, 255, 255))
+        client:DrawShadow(false)
 
         local sm = client:GetMaterials()
         if sm then

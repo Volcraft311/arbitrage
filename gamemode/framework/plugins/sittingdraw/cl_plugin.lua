@@ -105,7 +105,7 @@ function PLUGIN:StartSit(trace)
 	local wantedAng = nil
 	local client = LocalPlayer()
 
-	timer_Create(uniqueID, FrameTime(), 0, function()
+	timer_Create(uniqueID, 0, 0, function()
 		if !IsValid(self.csEnt) then self:CreateCSEnt() end
 
 		if client.IsProne and client:IsProne() then

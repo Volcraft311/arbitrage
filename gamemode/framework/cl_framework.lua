@@ -257,7 +257,16 @@ local ActionPressIDList = {
         netstream.Start("arb.OpenMonoMenu")
     end,
     ["open_material_ui"] = function(client, id, bIsVisibleGUI)
-        if !Arbitrage.lawEnable and bIsVisibleGUI then return end
+        if !Arbitrage.lawEnable and bIsVisibleGUI then
+            local ui = MonoPad:GetUI()
+            if IsValid(ui) and ui.noWeapon then
+                ui:AlphaTo(0, 0.3, 0, function()
+                    ui:Remove()
+                end)
+            end
+
+            return
+        end
 
         local function findClass(class)
             for k, v in ipairs(LocalPlayer():GetWeapons()) do
@@ -297,10 +306,7 @@ local ActionPressIDList = {
             end
         end
 
-        if !monopad then
-            return chat.AddText("У вас нету монопада!")
-        end
-
+        if !monopad then return chat.AddText("У вас нету монопада!") end
 
         local weapon = findClass("academy_monopad")
         if weapon and !Arbitrage.lawEnable then

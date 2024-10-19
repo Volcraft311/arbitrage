@@ -1,7 +1,7 @@
 local function SetEntityVelocity(entity, client)
     local headIndex = entity:LookupBone("ValveBiped.Bip01_Head1")
 
-    for i = 1, entity:GetPhysicsObjectCount() do
+    for i = 0, entity:GetPhysicsObjectCount() - 1 do
         local physicsObject = entity:GetPhysicsObjectNum(i)
         if !IsValid(physicsObject) then continue end
 

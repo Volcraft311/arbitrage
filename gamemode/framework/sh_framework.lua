@@ -339,18 +339,35 @@ do
                     sitcouchknees1 = true
                 }
 
-                local entity = ClientsideModel("models/player/skeleton.mdl")
-                entity:SetPos(Vector(0, 0, 0))
+                do
+                    local entity = ClientsideModel("models/player/kleiner.mdl")
+                    entity:SetPos(Vector(0, 0, 0))
 
-                for checkID in pairs(checkList) do
-                    local sequence = entity:LookupSequence(checkID)
+                    for checkID in pairs(checkList) do
+                        local sequence = entity:LookupSequence(checkID)
 
-                    if sequence <= -1 then
-                        bValid = false
+                        if sequence <= -1 then
+                            bValid = false
+                        end
                     end
+
+                    entity:Remove()
                 end
 
-                entity:Remove()
+                do
+                    local entity = ClientsideModel("models/player/mossman.mdl")
+                    entity:SetPos(Vector(0, 0, 0))
+
+                    for checkID in pairs(checkList) do
+                        local sequence = entity:LookupSequence(checkID)
+
+                        if sequence <= -1 then
+                            bValid = false
+                        end
+                    end
+
+                    entity:Remove()
+                end
 
                 return bValid
             end

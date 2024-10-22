@@ -181,7 +181,7 @@ PANEL = {}
 function PANEL:Init()
 	self.buttons = self:Add("Panel")
 	self.buttons:Dock(TOP)
-	self.buttons:SetTall(H(35))
+	self.buttons:SetTall(draw.GetFontHeight("arb.Font_FuturaPTDemi_11"))
 	self.buttons:DockPadding(1, 1, 0, 0)
 	self.buttons.OnMousePressed = PLUGIN.Bind(Arbitrage.gui.chat, Arbitrage.gui.chat.OnMousePressed)
 	self.buttons.OnMouseReleased = PLUGIN.Bind(Arbitrage.gui.chat, Arbitrage.gui.chat.OnMouseReleased)
@@ -487,7 +487,7 @@ function PANEL:Init()
 
 	local entryPanel = self:Add("Panel")
 	entryPanel:SetZPos(1)
-	entryPanel:SetTall(H(30))
+	entryPanel:SetTall(draw.GetFontHeight("arb.Font_FuturaPTBook_7"))
 	entryPanel:Dock(BOTTOM)
 
 	local say_panel = entryPanel:Add("DLabel")
@@ -500,7 +500,8 @@ function PANEL:Init()
 		surface.SetDrawColor(color_black)
 		surface.DrawRect(0, 0, w, h)
 	end
-	say_panel:SetWide(say_panel:GetWide() + 10)
+	say_panel:SizeToContents()
+	say_panel:SetWide(say_panel:GetWide() + 20)
 
 	self.entry = entryPanel:Add("arbChatBoxFixed")
 	self.entry:SetText("")
@@ -521,7 +522,7 @@ function PANEL:Init()
 	self.commandsPanel = self:Add("DPanel")
 	self.commandsPanel:SetPos(0, 0)
 	self.commandsPanel:SetAlpha(0)
-	self.commandsPanel:SetSize(self:GetWide(), self:GetTall() - H(30))
+	self.commandsPanel:SetSize(self:GetWide(), self:GetTall() - draw.GetFontHeight("arb.Font_FuturaPTDemi_7"))
 	self.commandsPanel.stored = {}
 	self.commandsPanel.Paint = function(_, w, h)
 		surface.SetDrawColor(0, 0, 0, 240)
@@ -944,6 +945,8 @@ function PANEL:OnTextChanged(text)
 			end
 		end
 
+		local sizeCommand = draw.GetFontHeight("arb.Font_FuturaPTDemi_7")
+
 		for command, data in pairs(commands) do
 			local isSG = serverguard.command.stored[command:lower()] and true or false
 			local arguments = data[1]
@@ -954,7 +957,7 @@ function PANEL:OnTextChanged(text)
 				local panel = self.commandsPanel:Add("DPanel")
 				panel:SetTall(0)
 				panel:Dock(BOTTOM)
-				panel:SizeTo(0, H(20), 0.2)
+				panel:SizeTo(0, sizeCommand, 0.2)
 				panel.Paint = function(_, w, h)
 					local x = 10
 

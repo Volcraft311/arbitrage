@@ -89,6 +89,7 @@ ARBITRAGE_FONTS = {
 	{"Futura PT Cond Medium"}, -- arb.Font_FuturaPTCondMedium_25
 	{"Futura PT Cond Book Italic"}, -- arb.Font_FuturaPTCondBookItalic_25
 	{"Futura PT Heavy"}, -- arb.Font_FuturaPTHeavy_25
+	{"Futura PT Medium"}, -- arb.Font_FuturaPTMedium_25
 	{"Open Sans Light"}, -- arb.Font_OpenSansLight_25
 	{"Roboto"}, -- arb.Font_Roboto_25
 	{"Baskerville WGL4 BT", {weight = 1000}}, -- arb.Font_BaskervilleWGL4BT_25

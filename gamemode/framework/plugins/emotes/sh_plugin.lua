@@ -296,7 +296,7 @@ if CLIENT then
 		-- Настроение
 		do
 			local mood = client:GetMood()
-			if mood then
+			if mood and !client:InVehicle() and !client:Crouching() and client:OnGround() then
 				local weapon = client:GetActiveWeapon()
 				local holdType = "normal"
 				local class = nil
@@ -305,7 +305,7 @@ if CLIENT then
 					class = weapon:GetClass()
 				end
 
-				if !client:InVehicle() and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:Crouching() and client:OnGround() then
+				if (class == "academy_key" or class == "academy_first") and holdType == "normal" then
 					local sequence = nil
 					local data = mood.sequences or {}
 					local len2D = velocity:Length2D()

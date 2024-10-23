@@ -74,7 +74,7 @@ function Container:PlayerUse(client, entity)
             if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 
             if (!client.RMSearch or CurTime() >= client.RMSearch) then
-                client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+                client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
                 client.RMSearch = CurTime() + 1.5
             end
 

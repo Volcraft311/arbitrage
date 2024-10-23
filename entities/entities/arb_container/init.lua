@@ -32,7 +32,7 @@ function ENT:Initialize()
 end
 
 function ENT:Use(client, caller)
-	client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+	client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 
 	local name = self.GetContainerName and self:GetContainerName() or ""
 

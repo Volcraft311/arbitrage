@@ -34,7 +34,7 @@ function ItemBase.GetBase(base)
             if Arbitrage.lawEnable then return false end
 
             local client = item.player
-            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_DROP, true)
+            client:PlayGesture(ACT_GMOD_GESTURE_ITEM_DROP)
 
             item._oldInventory = client:GetInventory() -- нужно для получения старого инвентаря если запускается с контейнера
             item:Transfer(nil)
@@ -66,7 +66,7 @@ function ItemBase.GetBase(base)
             if dist > 30 then
                 client:SetAction("Pickup")
             else
-                client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
+                client:PlayGesture(ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND)
             end
 
             local entityPos = entity:GetPos()

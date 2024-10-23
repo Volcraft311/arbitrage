@@ -35,7 +35,8 @@ function ENT:Use(client, caller)
 	    TypingDraw:SetTypingText(v, client, "Обыскивает 'Холодильник'", Color(255, 170, 23))
 	end
 
-	client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+	client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
+
 	Arbitrage.action.ActionRun(client, "Берем еду", 10, function()
 		if client:GetEyeTrace().Entity != self then return true end
 		if client:GetPos():Distance(self:GetPos()) >= 110 then return true end

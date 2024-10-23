@@ -263,7 +263,7 @@ function SWEP:DropObject(bThrow)
                 physics:ApplyForceCenter(client:GetAimVector() * 2500)
 
                 client:ViewPunch(self.KnockViewPunchAngle)
-                client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND, true)
+                client:PlayGesture(ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND)
             end
         end)
     end

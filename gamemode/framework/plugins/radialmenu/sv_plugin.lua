@@ -54,7 +54,7 @@ netstream.Hook("RadialMenu:PushAction", function(client)
         target:SetVelocity(direction)
         client:EmitSound("Weapon_Crossbow.BoltHitBody")
 
-        client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_MELEE_SHOVE_2HAND, true)
+        client:PlayGesture(ACT_GMOD_GESTURE_MELEE_SHOVE_2HAND)
         client:ViewPunch(KnockViewPunchAngle)
         target:ViewPunch(KnockViewPunchAngle)
 
@@ -84,7 +84,7 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
         if PLUGIN:ReturnTracePlayer(client) != target then return true end
 
         if (!client.RMSearch or CurTime() >= client.RMSearch) then
-            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+            client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
             client.RMSearch = CurTime() + 1.5
         end
 

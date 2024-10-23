@@ -95,7 +95,7 @@ local function HackDoor(client, entity, time)
         if client:GetPos():Distance(entity:GetPos()) >= 130 then return true end
 
         if !client.keyAnim or CurTime() >= client.keyAnim then
-            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+            client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
             client.keyAnim = CurTime() + 2.1
 
             for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do

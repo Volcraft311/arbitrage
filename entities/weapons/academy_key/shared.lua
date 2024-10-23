@@ -52,7 +52,7 @@ SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = ""
 
 local function DoorAction(client, door, bClose)
-    client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+    client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 
     for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
         TypingDraw:SetTypingText(v, client, (bClose and "Закрывает" or "Открывает") .. " дверь", Color(255, 170, 23))

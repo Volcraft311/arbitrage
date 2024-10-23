@@ -270,7 +270,7 @@ local function cuff(item, ropeLength)
         if findTarget(client) != target then return true end
 
         if (!client.CuffindCD or CurTime() >= client.CuffindCD) then
-            client:PlayAnimation(GESTURE_SLOT_CUSTOM, ACT_GMOD_GESTURE_ITEM_PLACE, true)
+            client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
             client:EmitSound("physics/cardboard/cardboard_box_impact_soft" .. math.random(1, 6) .. ".wav")
             client.CuffindCD = CurTime() + 1.5
         end

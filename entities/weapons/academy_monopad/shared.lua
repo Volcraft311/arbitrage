@@ -27,8 +27,8 @@ SWEP.Instructions = ""
 SWEP.Contact = ""
 SWEP.Purpose = ""
 
-SWEP.WorldModel = "models/props_junk/shovel01a.mdl"
-SWEP.ViewModel = Model( "models/asterion/v_monopad.mdl" )
+SWEP.WorldModel = "models/asterion/academy/props/monopad/monopad.mdl"
+SWEP.ViewModel = Model("models/asterion/v_monopad.mdl")
 
 SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false
@@ -64,16 +64,26 @@ function SWEP:Initialize()
 end
 
 function SWEP:SecondaryAttack()
-    if SERVER then return end
     if !IsFirstTimePredicted() then return end
 
     self.Edit = !self.Edit
+
+    if SERVER then
+        local client = self:GetOwner()
+        client:PlaySequence(self.Edit and "monopad_in" or "monopad_out", true)
+    end
 end
 
 function SWEP:PrimaryAttack()
 end
 
 function SWEP:OnDrop()
+    local client = self:GetOwner()
+
+    if IsValid(client) then
+        client:PlaySequence(nil)
+    end
+
     self:Remove()
 end
 
@@ -82,6 +92,8 @@ function SWEP:Deploy()
     local client = self:GetOwner()
 
     if SERVER then
+        client:PlaySequence("monopad_out", true)
+
         self:CreateTablet()
 
         local vm = client:GetViewModel()
@@ -111,6 +123,21 @@ function SWEP:Deploy()
                 client.MonoPadEnable = true
             end)
         end)
+
+        local seqID = "MonopadSequenceFix_" .. client:EntIndex()
+        timer.Create(seqID, 1, 0, function()
+            if !IsValid(client) then return timer.Remove(seqID) end
+
+            local weapon = client:GetActiveWeapon()
+            if !IsValid(weapon) then return timer.Remove(seqID) end
+
+            local class = weapon:GetClass()
+
+            if class != "academy_monopad" then
+                client:PlaySequence(nil)
+                timer.Remove(seqID)
+            end
+        end)
     else
         self.WModel = nil
     end
@@ -127,6 +154,7 @@ function SWEP:Holster()
         local id = "TabletTimer_" .. client:EntIndex()
         timer.Remove(id)
 
+        client:PlaySequence(nil)
         self:DisableTablet()
     end
 
@@ -134,11 +162,11 @@ function SWEP:Holster()
 end
 
 if CLIENT then
-    SWEP.Pos = Vector(-7, 0, 40)
-    SWEP.Ang = Angle(90, 0, 0)
+    SWEP.Pos = Vector(1.2, 6.5, 1)
+    SWEP.Ang = Angle(10, 180, 42)
 
     function SWEP:CreateWorldModel()
-        self.WorldModel = "models/monopad/monopad.mdl"
+        self.WorldModel = "models/asterion/academy/props/monopad/monopad.mdl"
 
         if !self.WModel then
             self.WModel = ClientsideModel(self.WorldModel, RENDERGROUP_OPAQUE)
@@ -178,12 +206,12 @@ if CLIENT then
                 local vec, ang = owner:GetBonePosition(bone)
 
                 ang:RotateAroundAxis(ang:Right(), self.Ang.p)
-                ang:RotateAroundAxis(ang:Forward(), self.Ang.y + 60 - 180 + 30)
+                ang:RotateAroundAxis(ang:Forward(), self.Ang.y)
                 ang:RotateAroundAxis(ang:Up(), self.Ang.r)
 
-                wm:SetRenderOrigin(vec + ang:Right() * self.Pos.x * 0.8 + ang:Forward() * self.Pos.y * -0.3 + ang:Up() * self.Pos.z * .3)
+                wm:SetRenderOrigin(vec + ang:Right() * self.Pos.x * 1 + ang:Forward() * self.Pos.y * 1 + ang:Up() * self.Pos.z * 1)
                 wm:SetRenderAngles(ang)
-                wm:SetModelScale(0.8, 0)
+                wm:SetModelScale(1, 0)
 
                 if !owner:IsNocliping() then
                     wm:DrawModel()
@@ -195,7 +223,7 @@ if CLIENT then
     end
 
     function SWEP:Think()
-        if CLIENT and self.Owner != LocalPlayer() then return end
+        if CLIENT and self:GetOwner() != LocalPlayer() then return end
 
         self:UpdateLight(LocalPlayer():GetPos())
     end

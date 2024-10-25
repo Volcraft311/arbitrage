@@ -100,7 +100,7 @@ function Emotes:CalcView(client, origin)
 		local pos = hitPos + GROUND_PADDING + ang:Forward() * 4
 
 		local dist = endPosMax:Distance(traceHitPos3)
-		endPosShift = Lerp(FrameTime(), endPosShift, dist)
+		endPosShift = Lerp(FrameTime() * 2, endPosShift, dist)
 
 		lerpCameraShift = cameraShift - endPosShift
 
@@ -110,6 +110,8 @@ function Emotes:CalcView(client, origin)
 		view.filter = client
 
 		return view
+	else
+		endPosShift = 70
 	end
 
 	if client.GetSitting and client:GetSitting() then

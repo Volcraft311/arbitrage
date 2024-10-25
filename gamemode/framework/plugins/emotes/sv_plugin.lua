@@ -199,3 +199,19 @@ function playerMeta:ExitAction(bIsAction)
 		remove()
 	end
 end
+
+function Emotes:AcceptInput(entity, input, client, caller, value)
+	local parent = entity:GetParent()
+
+	if IsValid(parent) then
+		if !entity:IsDoor() and !parent:IsDoor() then return end
+	else
+		if !entity:IsDoor() then return end
+	end
+
+	if IsValid(client) and client:IsPlayer() and (!client.doorOpenCD or CurTime() >= client.doorOpenCD) then
+		client.doorOpenCD = CurTime() + 1.2
+
+		client:PlaySequence("new_open_door")
+	end
+end

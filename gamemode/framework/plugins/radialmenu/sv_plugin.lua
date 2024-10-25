@@ -97,27 +97,64 @@ end)
 netstream.Hook("RadialMenu:SearchAction", function(client)
     if client:IsSpectate() then return end
 
-    local target, ragdollClient = PLUGIN:ReturnTracePlayer(client)
-    if !IsValid(target) then return end
+    local entity, ragdollClient = PLUGIN:ReturnTracePlayer(client)
+    if !IsValid(entity) then return end
 
-    local name = IsValid(ragdollClient) and ragdollClient:Name() or target:Name()
+    local name = IsValid(ragdollClient) and ragdollClient:Name() or entity:Name()
+
+    local bSequenceAction = false
+    local eyePosZ = Arbitrage.player.GetEyesPos(client)
+    eyePosZ = eyePosZ + client:GetPos().z
+    local itemPosZ = entity:GetPos().z
+
+    local dist = eyePosZ - itemPosZ
+    if dist > 30 and client:IsOnGround() and IsValid(ragdollClient) then
+        bSequenceAction = true
+
+        if client:LookupSequence("d1_town05_Jacobs_Heal") > -1 then
+            client:SetAction("d1_town05_Jacobs_Heal", -1, true)
+        elseif client:LookupSequence("d1_town05_Daniels_Kneel_Idle") > -1 then
+            client:SetAction("d1_town05_Daniels_Kneel_Idle", -1, true)
+        else
+            bSequenceAction = false
+        end
+    end
 
     for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
         TypingDraw:SetTypingText(v, client, "Обыскивает '" .. name .. "'", Color(255, 170, 23))
     end
 
     Arbitrage.action.ActionRun(client, "Обыскиваем", IsValid(ragdollClient) and 23 or 15, function()
-        if PLUGIN:ReturnTracePlayer(client) != target then return true end
+        if !IsValid(entity) then return end
 
-        if (!client.RMSearch or CurTime() >= client.RMSearch) then
-            client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
-            client.RMSearch = CurTime() + 1.5
+        if bSequenceAction then
+            if entity:GetPos():DistToSqr(client:GetPos()) > 12000 then client:ExitAction(true) return true end
+
+            local seqName = client:GetAction()
+            if !seqName then return true end
+        else
+            if PLUGIN:ReturnTracePlayer(client) != entity then return true end
+
+            if (!client.RMSearch or CurTime() >= client.RMSearch) then
+                client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
+                client.RMSearch = CurTime() + 1.5
+            end
         end
 
         return false
     end, function(activator)
-        local inventory = IsValid(ragdollClient) and ragdollClient:GetInventory() or target:GetInventory()
-        InventoryBase.Open(client, inventory:GetID(), name)
+        local inventory = IsValid(ragdollClient) and ragdollClient:GetInventory() or entity:GetInventory()
+        local inventoryID = inventory:GetID()
+
+        InventoryBase.Open(client, inventoryID, name)
+        if bSequenceAction then
+            hook.Add("InventoryBase:StopReceiving", "SearchStopSequence_" .. client:SteamID(), function(_client, invID)
+                if _client == client and inventoryID == invID then
+                    client:ExitAction(true)
+                    hook.Remove("InventoryBase:StopReceiving", "SearchStopSequence_" .. client:SteamID())
+                end
+            end)
+        end
 
         for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
             TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))

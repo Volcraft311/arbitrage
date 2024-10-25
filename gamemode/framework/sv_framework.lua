@@ -192,13 +192,29 @@ Arbitrage.commands.Add("sg", {
             Arbitrage.commands.Notify(client, "Скриншот экрана: " .. url)
 
             client:SendLua([[
+                local image = nil
+
                 local frame = vgui.Create("DFrame")
-                frame:SetSize(ScrW(), ScrH())
+                frame:SetSize(ScrW() * 0.8, ScrH() * 0.8)
                 frame:SetTitle("]] .. url .. [[")
                 frame:MakePopup()
-                local html = vgui.Create("DHTML", frame)
-                html:Dock(FILL)
-                html:OpenURL("]] .. url .. [[")
+                frame:Center()
+                frame.Paint = function(this, w, h)
+                    surface.SetDrawColor(0, 0, 0, 200)
+                    surface.DrawRect(0, 0, w, h)
+
+                    asterionlib.downloader:Image("]] .. url .. [[", function(matPath)
+                        image = matPath
+                    end)
+
+                    if image then
+                        surface.SetDrawColor(255, 255, 255)
+                        surface.SetMaterial(image)
+                        surface.DrawTexturedRect(0, 0, w, h)
+                    else
+                        draw.SimpleText("Loading...", "Default", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    end
+                end
             ]])
         end)
     end

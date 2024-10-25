@@ -18,22 +18,48 @@ local KnockViewPunchAngle = Angle(-1.3, 1.8, 0)
 netstream.Hook("RadialMenu:StandUp", function(client)
     if client:IsSpectate() then return end
 
-    local entity, target = PLUGIN:ReturnTracePlayer(client)
-    if !IsValid(target) then return end
+    local entity, ragdollClient = PLUGIN:ReturnTracePlayer(client)
+    if !IsValid(ragdollClient) then return end
 
-    local delay = target.fallOverDelay == nil and 10 or (target.fallOverDelay <= -1 and 60 or target.fallOverDelay)
-    local name = target:Name()
+    local delay = ragdollClient.fallOverDelay == nil and 10 or (ragdollClient.fallOverDelay <= -1 and 60 or ragdollClient.fallOverDelay)
+    local name = ragdollClient:Name()
+
+    local bSequenceAction = false
+    local eyePosZ = Arbitrage.player.GetEyesPos(client)
+    eyePosZ = eyePosZ + client:GetPos().z
+    local itemPosZ = entity:GetPos().z
+
+    local dist = eyePosZ - itemPosZ
+    if dist > 30 and client:IsOnGround() then
+        bSequenceAction = true
+
+        if client:LookupSequence("checkmalepost") > -1 then
+            client:SetAction("checkmalepost", -1, true)
+        else
+            bSequenceAction = false
+        end
+    end
 
     for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
         TypingDraw:SetTypingText(v, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
     end
 
     Arbitrage.action.ActionRun(client, "Поднимаем", delay, function()
-        if PLUGIN:ReturnTracePlayer(client) != entity then return true end
+        if !IsValid(entity) then return end
+
+        if bSequenceAction then
+            if entity:GetPos():DistToSqr(client:GetPos()) > 12000 then client:ExitAction(true) return true end
+
+            local seqName = client:GetAction()
+            if !seqName then return true end
+        else
+            if PLUGIN:ReturnTracePlayer(client) != entity then return true end
+        end
 
         return false
     end, function(activator)
-        target:StandUp()
+        client:ExitAction(true)
+        ragdollClient:StandUp()
 
         for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
             TypingDraw:SetTypingText(v, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))

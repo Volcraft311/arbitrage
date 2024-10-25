@@ -125,6 +125,8 @@ local function RecoveryFunc(item, target)
     local text = "Использует '" .. item:GetName() .. "'"
     if target != client then
         text = text .. " на '" .. target:Name() .. "'"
+
+        client:SetAction("Heal")
     end
     for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
         TypingDraw:SetTypingText(v, client, text, Color(255, 170, 23))

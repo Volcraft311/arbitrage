@@ -67,6 +67,7 @@ local bKeyDown = false
 function Emotes:CalcView(client, origin)
 	if Arbitrage.lawEnable then return end
 	if client:IsSpectating() then return end
+	if Arbitrage.IsThirdPerson() then return end
 
 	local bThirdPerson = select(3, client:GetAction())
 	if bThirdPerson then

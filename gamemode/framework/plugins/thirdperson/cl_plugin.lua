@@ -27,7 +27,7 @@ function Arbitrage.IsThirdPerson()
 
 		if client:IsNocliping() or client:IsSpectating() or client:IsSpectate() then return false end
 
-		if (client.GetSitting and client:GetSitting()) or select(3, client:GetAction()) then
+		if client.GetSitting and client:GetSitting() then
 			return false
 		end
 

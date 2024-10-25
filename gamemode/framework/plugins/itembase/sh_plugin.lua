@@ -34,7 +34,7 @@ function ItemBase.GetBase(base)
             if Arbitrage.lawEnable then return false end
 
             local client = item.player
-            client:PlayGesture(ACT_GMOD_GESTURE_ITEM_DROP)
+            client:PlaySequence("new_throw_item")
 
             item._oldInventory = client:GetInventory() -- нужно для получения старого инвентаря если запускается с контейнера
             item:Transfer(nil)

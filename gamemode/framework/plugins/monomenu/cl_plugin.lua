@@ -995,16 +995,18 @@ local function OnScreenClick(eyepos, eyevec)
     local entity = GetHovered(eyepos, eyevec)
     if !IsValid(entity) then return end
 
-    local bIsRagdoll = entity:GetClass() == "prop_ragdoll"
-    if entity:IsPlayer() or bIsRagdoll then
+    if entity:IsPlayer() then
+        PLUGIN:OpenEntityMenu(entity)
+    elseif entity:GetClass() == "prop_ragdoll" then
         local ragdollSteamID = entity:GetNetVar("sIsRagdoll")
+
         if ragdollSteamID then
             entity = player.GetBySteamID(ragdollSteamID)
 
-            if !IsValid(entity) then return end
+            if IsValid(entity) then
+                PLUGIN:OpenEntityMenu(entity)
+            end
         end
-
-        PLUGIN:OpenEntityMenu(entity)
     end
 end
 

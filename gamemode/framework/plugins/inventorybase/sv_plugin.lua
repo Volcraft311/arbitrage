@@ -130,6 +130,12 @@ netstream.Hook("InventoryBase:TransferItem", function(client, itemID, invID, x, 
 
     if errNotify then
         return Arbitrage.commands.Notify(client, errNotify)
+    else
+        local inventoryPlayer = inventoryTransfer:GetOwner()
+
+        if IsValid(inventoryPlayer) and inventoryPlayer:IsPlayer() then
+            inventoryPlayer:PlaySequence("get_item")
+        end
     end
 end)
 

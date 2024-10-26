@@ -66,7 +66,7 @@ function ItemBase.GetBase(base)
             if dist > 30 then
                 client:SetAction("Pickup")
             else
-                client:PlayGesture(ACT_GMOD_GESTURE_MELEE_SHOVE_1HAND)
+                client:PlaySequence("grab_item")
             end
 
             local entityPos = entity:GetPos()

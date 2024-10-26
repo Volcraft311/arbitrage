@@ -45,3 +45,63 @@ netstream.Hook("BedSystem:GetUpBed", function()
         BedSystem.panel:Remove()
     end)
 end)
+
+spawnmenu.AddContentType("Bed", function(container, model)
+    local icon = vgui.Create("ContentIcon", container)
+    icon:SetName(model)
+    icon:SetContentType("Bed")
+    icon:SetSpawnName(model)
+    icon.DoClick = function()
+        RunConsoleCommand("gm_spawn", model)
+
+        surface.PlaySound("ui/buttonclickrelease.wav")
+    end
+
+    if IsValid(icon.Image) then
+        icon.Image:Remove()
+    end
+
+    icon.Image = icon:Add("DModelPanel")
+    icon.Image:SetPos(3, 3)
+    icon.Image:SetSize(128 - 6, 128 - 6 - 22)
+    icon.Image:SetModel(model)
+    icon.Image.DoClick = function()
+        RunConsoleCommand("gm_spawn", model)
+
+        surface.PlaySound("ui/buttonclickrelease.wav")
+    end
+
+    if IsValid(container) then
+        container:Add(icon)
+    end
+end)
+
+spawnmenu.AddCreationTab("Кровати", function()
+    local base = vgui.Create("SpawnmenuContentPanel")
+    local tree = base.ContentNavBar.Tree
+
+    local node = tree:AddNode("Все объекты", "icon16/brick.png")
+    node.DoPopulate = function(this)
+        if this.Container then return end
+
+        this.Container = vgui.Create("ContentContainer", base)
+        this.Container:SetVisible(false)
+        this.Container:SetTriggerSpawnlistChange(false)
+
+        for k, v in pairs(BedSystem.allowBed) do
+            spawnmenu.CreateContentIcon("Bed", this.Container, k)
+        end
+    end
+
+    node.DoClick = function(this)
+        this:DoPopulate()
+        base:SwitchPanel(this.Container)
+    end
+
+    local FirstNode = tree:Root():GetChildNode(0)
+    if IsValid(FirstNode) then
+        FirstNode:InternalDoClick()
+    end
+
+    return base
+end, "icon16/photo.png")

@@ -102,7 +102,7 @@ function PANEL:Paint(w, h)
     self:RenderPaint(client, w, h, entity)
     self:BlurPaint(w, h, entity)
 
-    if input.IsKeyDown(KEY_SPACE) and RealTime() >= self.bedColdDown then
+    if input.IsKeyDown(KEY_SPACE) and !vgui.CursorVisible() and RealTime() >= self.bedColdDown then
         netstream.Start("BedSystem:GetUpBed")
 
         self.bedColdDown = RealTime() + 10

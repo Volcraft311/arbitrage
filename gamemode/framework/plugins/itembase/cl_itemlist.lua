@@ -52,17 +52,12 @@ spawnmenu.AddContentType("Item", function(container, item)
     icon:SetMaterial(item.icon)
 
     local path = item.icon
-    local mat = nil
     if string.isURL(path) then
         asterionlib.downloader:Image(path, function(_, imagePath)
-            mat = imagePath
+            icon:SetMaterial(imagePath)
         end)
     else
-        mat = path
-    end
-
-    if mat then
-        icon:SetMaterial(mat)
+        icon:SetMaterial(path)
     end
 
     icon.DoClick = function()
@@ -116,7 +111,7 @@ spawnmenu.AddCreationTab("Предметы", function()
         local node = tree:AddNode(v:GetCategory(), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")
 
         node.DoPopulate = function(this)
-            if (this.Container) then return end
+            if this.Container then return end
 
             this.Container = vgui.Create("ContentContainer", base)
             this.Container:SetVisible(false)
@@ -138,7 +133,6 @@ spawnmenu.AddCreationTab("Предметы", function()
     end
 
     local FirstNode = tree:Root():GetChildNode(0)
-
     if IsValid(FirstNode) then
         FirstNode:InternalDoClick()
     end

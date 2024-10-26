@@ -59,13 +59,18 @@ spawnmenu.AddContentType("Bed", function(container, model)
 
     if IsValid(icon.Image) then
         icon.Image:Remove()
+
+        icon.Image = icon:Add("DPanel")
+        icon.Image:SetPos(0, 0)
+        icon.Image:SetSize(0, 0)
+        icon.Image.PaintAt = function() end
     end
 
-    icon.Image = icon:Add("DModelPanel")
-    icon.Image:SetPos(3, 3)
-    icon.Image:SetSize(128 - 6, 128 - 6 - 22)
-    icon.Image:SetModel(model)
-    icon.Image.DoClick = function()
+    icon.Image2 = icon:Add("DModelPanel")
+    icon.Image2:SetPos(3, 3)
+    icon.Image2:SetSize(128 - 6, 128 - 6 - 22)
+    icon.Image2:SetModel(model)
+    icon.Image2.DoClick = function()
         RunConsoleCommand("gm_spawn", model)
 
         surface.PlaySound("ui/buttonclickrelease.wav")

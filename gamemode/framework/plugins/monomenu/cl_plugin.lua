@@ -1101,7 +1101,7 @@ function PLUGIN:UpdateInvisibleTools()
             if !players[client] then return end
 
             local weapon = client:GetActiveWeapon()
-            if !weapon then return end
+            if !IsValid(weapon) then return end
 
             local class = weapon:GetClass()
             if !class then return end

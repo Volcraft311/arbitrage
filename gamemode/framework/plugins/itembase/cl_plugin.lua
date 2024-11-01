@@ -116,6 +116,13 @@ netstream.Hook("ItemBase:CreationSync", function(baseID, stored)
 	end
 end)
 
+netstream.Hook("ItemBase:SyncAllItems", function(info)
+	for id, data in pairs(info) do
+		ItemBase:New(data.uniqueID, id)
+		ItemBase.data[id] = data.data
+	end
+end)
+
 netstream.Hook("ItemBase.AnimTakeItem", function(target, pos, ang, model)
 	if !IsValid(target) then return end
 	if target:IsDormant() then return end

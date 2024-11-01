@@ -55,14 +55,21 @@ function ItemBase.AnimDropItem(target, idx, class)
     netstream.Start(players, "ItemBase.AnimDropItem", target, idx, class)
 end
 
-function ItemBase:PlayerInitialSpawn(client)
+function ItemBase:PlayerInitialSpawnForRealz(client)
+    -- Синхронизируем Creation предметы
     ItemBase.CreationSync(client)
 
+    -- Синхранизируем предметы
     timer.Simple(2, function()
-        -- Синхранизируем предметы
+        local info = {}
         for id, item in pairs(self.instances) do
-            item:Sync(client)
+            info[id] = {
+                uniqueID = item.uniqueID,
+                data = ItemBase.data[id] or {}
+            }
         end
+
+        netstream.Heavy(client, "ItemBase:SyncAllItems", info)
     end)
 end
 

@@ -284,6 +284,12 @@ function Evidence:HUDPaint()
     draw_player_evidences(client)
 end
 
+netstream.Hook("Evidence:RegisterAllEvidences", function(info)
+    for idx, data in pairs(info) do
+        Evidence.list[idx] = data
+    end
+end)
+
 netstream.Hook("Evidence:Register", function(idx, data)
     Evidence.list[idx] = data
 end)

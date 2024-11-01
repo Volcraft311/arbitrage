@@ -185,10 +185,13 @@ function Evidence:PlayerUse(client, entity)
     end
 end
 
-function Evidence:PlayerInitialSpawn(client)
-    for k, v in pairs(self.list) do
-        netstream.Start(client, "Evidence:Register", k, v)
+function Evidence:PlayerInitialSpawnForRealz(client)
+    local info = {}
+    for idx, data in pairs(self.list) do
+        info[idx] = data
     end
+
+    netstream.Heavy(client, "Evidence:RegisterAllEvidences", info)
 end
 
 

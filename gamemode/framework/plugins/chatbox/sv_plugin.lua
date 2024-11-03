@@ -6,11 +6,11 @@ util.AddNetworkString("arb.ChatIsTyping")
 net.Receive("arb.ChatMessage", function(length, client)
     local text = net.ReadString()
 
-    if ((client.ixNextChat or 0) < CurTime() and isstring(text) and text:find("%S")) then
+    if ((client.arbNextChat or 0) < CurTime() and isstring(text) and text:find("%S")) then
         hook.Run("PlayerSay", client, text)
 
         client:SetNetVar("arb.chattype", nil)
-        client.ixNextChat = CurTime() + 0.5
+        client.arbNextChat = CurTime() + 0.5
     end
 end)
 

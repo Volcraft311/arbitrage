@@ -66,11 +66,15 @@ AccessorFunc(PANEL, "fadeDelay", "FadeDelay", FORCE_NUMBER)
 AccessorFunc(PANEL, "fadeDuration", "FadeDuration", FORCE_NUMBER)
 
 function PANEL:Init()
+	self:SetText("")
+
 	self.text = ""
 	self.alpha = 1
 	self.animation = 0
 	self.fadeDelay = 15
 	self.fadeDuration = 5
+
+	self.copys = {}
 end
 
 local wide = 16
@@ -111,6 +115,7 @@ function PANEL:PerformLayout(width, height)
 end
 
 function PANEL:Paint(width, height)
+	local ft = FrameTime()
 	local chatbox = Arbitrage.gui.chat
 
 	local newAlpha
@@ -128,16 +133,71 @@ function PANEL:Paint(width, height)
 	self.animated = self.animated or -50
 
 	if self.animated < 0 then
-		self.animated = Lerp(FrameTime() * 4, self.animated + 0.1, 0)
+		self.animated = Lerp(ft * 4, self.animated + 0.1, 0)
 	end
 
 	surface.SetDrawColor(0, 0, 0, newAlpha * 0.6 - chatbox:GetAlpha() * 0.6)
 	surface.DrawRect(1, 1, self.markup:GetWidth() - 2 + wide, height - 2)
 
+	if Arbitrage.gui.chat:GetActive() and self:IsHovered() then
+		surface.SetDrawColor(0, 0, 0, 100)
+		surface.DrawRect(1, 1, width - 2, height - 2)
+	end
+
 	self.markup:draw(wide / 2, tall / 1.5 + self.animated, nil, nil, newAlpha)
+
+	local old = DisableClipping(true)
+		for k, v in ipairs(self.copys) do
+			v.y = v.y - ft * 25
+			v.alpha = Lerp(ft * 10, v.alpha, v.deadTime > RealTime() and 255 or 0)
+
+			if RealTime() - 2 > v.deadTime then
+				table.remove(self.copys, k)
+			end
+
+			draw.SimpleText("Скопировано!", "arb.Font_FuturaPTBook_6", v.x, v.y, Color(255, 255, 255, v.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
+	DisableClipping(old)
 end
 
-vgui.Register("arbChatMessage", PANEL, "Panel")
+function PANEL:CopyText()
+	local texts = ""
+	local blocks = self.markup.blocks
+	for i = 2, #blocks do
+		local block = blocks[i]
+
+		local text = block.text
+		if text then
+			texts = texts .. text
+		end
+	end
+
+	texts = string.Trim(texts)
+
+	SetClipboardText(texts)
+
+	local x, y = self:LocalCursorPos()
+	self.copys[#self.copys + 1] = {
+		x = x,
+		y = y,
+		alpha = 0,
+		deadTime = RealTime() + 1
+	}
+end
+
+function PANEL:DoClick()
+	if !Arbitrage.gui.chat:GetActive() then return end
+
+	self:CopyText()
+end
+
+function PANEL:DoRightClick()
+	if !Arbitrage.gui.chat:GetActive() then return end
+
+	self:CopyText()
+end
+
+vgui.Register("arbChatMessage", PANEL, "DButton")
 
 
 

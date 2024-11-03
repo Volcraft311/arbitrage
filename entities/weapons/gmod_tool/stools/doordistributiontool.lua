@@ -31,7 +31,6 @@ TOOL.ClientConVar.maximumcharacters = 1
 
 local AppList1 = nil
 local AppList2 = nil
-local MapCreationStored = {}
 local SelectedStored = {}
 
 local function updateAppList()
@@ -60,7 +59,6 @@ if CLIENT then
     language.Add("tool.doordistributiontool.reload", "Нажмите Перезарядку чтобы сбросить свойства двери")
 
     netstream.Hook("DoorDistribution:Receive", function(data)
-        MapCreationStored = data
         updateAppList()
     end)
 
@@ -85,25 +83,6 @@ if CLIENT then
         end)
     end)
 else
-    local function get(client)
-        local data = {}
-        for k, v in ipairs(ents.GetAll()) do
-            local id = v:MapCreationID()
-
-            if id != -1 and IsValid(v) and v:IsDoor() then
-                data[v:EntIndex()] = id
-            end
-        end
-
-        netstream.Heavy(client, "DoorDistribution:Receive", data)
-    end
-
-    netstream.Hook("DoorDistribution:Get", function(client)
-        if !client:IsAdmin() then return end
-
-        get(client)
-    end)
-
     netstream.Hook("DoorDistribution:Distribute", function(client, array)
         if !client:IsAdmin() then return end
 
@@ -185,12 +164,10 @@ else
 
     hook.Add("PlayerInitialSpawnForRealz", "DoorDistribution:Hook", function(client)
         sync(client)
-        get(client)
     end)
 
     hook.Add("PostCleanupMap", "DoorDistribution:Hook", function()
         sync(nil)
-        get(nil)
     end)
 end
 
@@ -275,13 +252,13 @@ function TOOL.BuildCPanel(CPanel)
                 SelectedStored = {}
                 updateAppList()
 
-                MapCreationStored = {}
-                netstream.Start("DoorDistribution:Get")
-
                 timer.Simple(0.5, function()
                     local info = {}
-                    for k2, v2 in pairs(MapCreationStored) do
-                        info[v2] = k2
+                    for k2, v2 in ipairs(ents.GetAll()) do
+                        local creationID = v2:MapCreationID()
+                        if creationID <= -1 then continue end
+
+                        info[creationID] = v2:EntIndex()
                     end
 
                     local data = {}

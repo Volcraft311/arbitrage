@@ -28,7 +28,6 @@ TOOL.ClientConVar.drawmapcreationstored = 1
 TOOL.ClientConVar.drawselectedstored = 1
 
 local AppList = nil
-local MapCreationStored = {}
 local SelectedStored = {}
 
 local function updateAppList()
@@ -37,7 +36,9 @@ local function updateAppList()
     AppList:Clear()
 
     for k, v in pairs(SelectedStored) do
-        AppList:AddLine(tostring(Entity(k)), k, v)
+        local entity = Entity(k)
+
+        AppList:AddLine(tostring(entity), k, v)
     end
 end
 
@@ -46,10 +47,6 @@ if CLIENT then
     language.Add("tool.mapentityremovertool.desc", "Позволяет вам удалять выбранные объекты с карты")
     language.Add("tool.mapentityremovertool.left", "Нажмите левую кнопку мышки чтобы добавить объект в список")
     language.Add("tool.mapentityremovertool.reload", "Нажмите Перезарядку чтобы удалить объект из списка")
-
-    netstream.Hook("MapEntityRemover:Receive", function(data)
-        MapCreationStored = data
-    end)
 
     netstream.Hook("MapEntityRemover:Add", function(idx, creationID)
         SelectedStored[idx] = creationID
@@ -61,25 +58,6 @@ if CLIENT then
         updateAppList()
     end)
 else
-    local function get(client)
-        local data = {}
-        for k, v in ipairs(ents.GetAll()) do
-            local id = v:MapCreationID()
-
-            if id != -1 and IsValid(v) then
-                data[v:EntIndex()] = id
-            end
-        end
-
-        netstream.Heavy(client, "MapEntityRemover:Receive", data)
-    end
-
-    netstream.Hook("MapEntityRemover:Get", function(client)
-        if !client:IsAdmin() then return end
-
-        get(client)
-    end)
-
     netstream.Hook("MapEntityRemover:Remove", function(client, data)
         if !client:IsAdmin() then return end
 
@@ -104,14 +82,6 @@ else
         if id == -1 then return end
 
         netstream.Start(client, "MapEntityRemover:Add", idx, id)
-    end)
-
-    hook.Add("PlayerInitialSpawnForRealz", "MapEntityRemover:Hook", function(client)
-        get(client)
-    end)
-
-    hook.Add("PostCleanupMap", "MapEntityRemover:Hook", function()
-        get(nil)
     end)
 end
 
@@ -171,13 +141,13 @@ function TOOL.BuildCPanel(CPanel)
                 SelectedStored = {}
                 updateAppList()
 
-                MapCreationStored = {}
-                netstream.Start("MapEntityRemover:Get")
-
                 timer.Simple(0.5, function()
                     local info = {}
-                    for k2, v2 in pairs(MapCreationStored) do
-                        info[v2] = k2
+                    for k2, v2 in ipairs(ents.GetAll()) do
+                        local creationID = v2:MapCreationID()
+                        if creationID <= -1 then continue end
+
+                        info[creationID] = v2:EntIndex()
                     end
 
                     local data = {}
@@ -253,12 +223,7 @@ function TOOL.BuildCPanel(CPanel)
     local UpdateButton = vgui.Create("DButton")
     UpdateButton:SetText("Обновить список объектов на карте")
     UpdateButton.DoClick = function()
-        MapCreationStored = {}
-        netstream.Start("MapEntityRemover:Get")
-
-        timer.Simple(0.5, function()
-            updateAppList()
-        end)
+        updateAppList()
     end
     CPanel:AddPanel(UpdateButton)
 
@@ -307,12 +272,14 @@ function TOOL:DrawHUD()
     local showSelectedStored = GetConVar(l .. "drawselectedstored"):GetBool()
 
     if showMapCreation then
-        for k, v in pairs(MapCreationStored) do
-            local isSel = SelectedStored[k]
+        for _, entity in ipairs(ents.GetAll()) do
+            local creationID = entity:MapCreationID()
+            if creationID <= -1 then continue end
+
+            local isSel = SelectedStored[creationID]
             if showSelectedStored and isSel then continue end
 
-            local entity, x, y, info = get(k, eyePos, true)
-            if !entity then continue end
+            local _, x, y, info = get(entity:EntIndex(), eyePos, true)
 
             draw.SimpleText(info, "Default", x, y, isSel and color_red or color_white, TEXT_ALIGN_CENTER)
         end

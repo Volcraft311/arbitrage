@@ -64,8 +64,10 @@ function PLUGIN:FacialEmotesOption()
 		}
 	}
 
-	if facialEmote and facialEmote.face.data[LocalPlayer():GetModel()] then
-		for k, v in pairs(facialEmote.face.data[LocalPlayer():GetModel()]) do
+	if facialEmote then
+		local info = facialEmote.face.data[LocalPlayer():GetModel()]
+
+		for k, v in pairs(info or {}) do
 			local name = v.name
 			local firstSymbol = string.utf8upper(utf8_sub(name, 1, 1))
 			name = firstSymbol .. utf8_sub(name, 2, utf8_len(name))
@@ -75,6 +77,9 @@ function PLUGIN:FacialEmotesOption()
 				id = "emotion_" .. LocalPlayer():Team() .. "_" .. k,
 				icon = facialEmote.interface.emojis[v.image],
 				description = "Изменить анимацию лица персонажа на: '" .. name .. "'",
+				sequence = "idle_all_01",
+				facial = v.data,
+				cameraBone = "ValveBiped.Bip01_Head1",
 				action = function()
 					facialEmote.network.sendCommand("applyEmotion", k)
 				end
@@ -123,6 +128,8 @@ function PLUGIN:MoodsOption()
 		data[#data + 1] = {
 			name = v.name,
 			id = "mood_" .. k,
+			icon = v.icon and Material(v.icon) or nil,
+			sequence = v.sequences and (LocalPlayer():LookupSequence(v.sequences.idle) >= 0 and v.sequences.idle) or "idle_all_01",
 			description = "Изменить настроение персонажа на: '" .. v.name .. "'",
 			action = function()
 				RunConsoleCommand("say", "/mood " .. k)
@@ -386,6 +393,8 @@ function PLUGIN:StaticAnimationsOption()
 					name = v2.name,
 					id = "saction_" .. sequnce,
 					description = "Установить анимацию персонажа на: '" .. v2.name .. "'",
+					icon = v2.icon and Material(v2.icon) or nil,
+					sequence = sequnce,
 					action = function()
 						RunConsoleCommand("say", "/action " .. sequnce)
 					end
@@ -398,6 +407,7 @@ function PLUGIN:StaticAnimationsOption()
 		data[#data + 1] = {
 			name = v.name,
 			description = "Выбрать анимацию из категории: '" .. v.name .. "'",
+			icon = v.icon and Material(v.icon) or nil,
 			iscategory = true,
 			action = stored
 		}
@@ -408,10 +418,22 @@ end
 
 function PLUGIN:DynamicAnimationsOption()
 	local info = {
-		robot = "Робот",			muscle = "Стриптиз",		laugh = "Смех",				bow = "Поклон",
-		cheer = "Приветствие",		wave = "Помахать рукой",	becon = "Иди ко мне",		agree = "Палец вверх",
-		disagree = "Не согласен",	forward = "Вперед",			group = "Сгруппироваться",	zombie = "Зомби",
-		dance = "Танец",			pers = "Поза льва",			halt = "Стоять",			salute = "Отдать честь"
+		robot = {"Робот", ACT_GMOD_TAUNT_ROBOT, "asterion/academy/ui/emotes/act_gmod_taunt_robot.png"},
+		muscle = {"Стриптиз", ACT_GMOD_TAUNT_MUSCLE, "asterion/academy/ui/emotes/act_gmod_taunt_muscle.png"},
+		laugh = {"Смех", ACT_GMOD_TAUNT_LAUGH, "asterion/academy/ui/emotes/act_gmod_taunt_laugh.png"},
+		bow = {"Поклон", ACT_GMOD_GESTURE_BOW, "asterion/academy/ui/emotes/act_gmod_gesture_bow.png"},
+		cheer = {"Приветствие", ACT_GMOD_TAUNT_CHEER, "asterion/academy/ui/emotes/act_gmod_taunt_cheer.png"},
+		wave = {"Помахать рукой", ACT_GMOD_GESTURE_WAVE, "asterion/academy/ui/emotes/act_gmod_gesture_wave.png"},
+		becon = {"Иди ко мне", ACT_GMOD_GESTURE_BECON, "asterion/academy/ui/emotes/act_gmod_gesture_becon.png"},
+		agree = {"Палец вверх", ACT_GMOD_GESTURE_AGREE, "asterion/academy/ui/emotes/act_gmod_gesture_agree.png"},
+		disagree = {"Не согласен", ACT_GMOD_GESTURE_DISAGREE, "asterion/academy/ui/emotes/act_gmod_gesture_disagree.png"},
+		forward = {"Вперед", ACT_SIGNAL_FORWARD, "asterion/academy/ui/emotes/act_signal_forward.png"},
+		group = {"Сгруппироваться", ACT_SIGNAL_GROUP, "asterion/academy/ui/emotes/act_signal_group.png"},
+		zombie = {"Зомби", ACT_GMOD_GESTURE_RANGE_ZOMBIE_SPECIAL, "asterion/academy/ui/emotes/act_gmod_gesture_range_zombie_special.png"},
+		dance = {"Танец", ACT_GMOD_TAUNT_DANCE, "asterion/academy/ui/emotes/act_gmod_taunt_dance.png"},
+		pers = {"Поза льва", ACT_GMOD_TAUNT_PERSISTENCE, "asterion/academy/ui/emotes/act_gmod_taunt_persistence.png"},
+		halt = {"Стоять", ACT_SIGNAL_HALT, "asterion/academy/ui/emotes/act_signal_halt.png"},
+		salute = {"Отдать честь", ACT_GMOD_TAUNT_SALUTE, "asterion/academy/ui/emotes/act_gmod_taunt_salute.png"}
 	}
 
 	local data = {
@@ -425,9 +447,12 @@ function PLUGIN:DynamicAnimationsOption()
 
 	for k, v in pairs(info) do
 		data[#data + 1] = {
-			name = v,
+			name = v[1],
 			id = "daction_" .. k,
-			description = "Проиграть анимацию '" .. v .. "'",
+			description = "Проиграть анимацию '" .. v[1] .. "'",
+			icon = v[3] and Material(v[3]) or nil,
+			-- sequence = "idle_all_01",
+			-- weightedSequence = v[2],
 			action = function()
 				RunConsoleCommand("act", k)
 			end

@@ -141,7 +141,7 @@ Emotes.ActionList = {
 		icon = nil,
 		data = {
 			{name = "Подобрать", icon = "asterion/academy/ui/emotes/pickup.png", info = {sequence = {"Pickup"}}},
-			{name = "Официально", icon = "asterion/academy/ui/emotes/menu_gman.png", info = {sequence = {"menu_gman"}}},
+			{name = "Официально", icon = "asterion/academy/ui/emotes/menu_gman.png", info = "menu_gman"},
 			{name = "Ожидание 1", icon = "asterion/academy/ui/emotes/stand_allbase.png", info = "stand_allbase"},
 		}
 	}

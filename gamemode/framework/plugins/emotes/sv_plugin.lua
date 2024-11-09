@@ -200,6 +200,46 @@ function playerMeta:ExitAction(bIsAction)
 	end
 end
 
+
+timer.Create("Emotes:StandAnimations", 0.4, 0, function()
+	local curTime = CurTime()
+
+	for _, client in ipairs(player.GetAll()) do
+		local velocity = client:GetVelocity()
+		local len2D = velocity:Length2D()
+
+		local weapon = client:GetActiveWeapon()
+		local holdType = "normal"
+		local class = nil
+		if IsValid(weapon) then
+			holdType = weapon.HoldType or weapon:GetHoldType()
+			class = weapon:GetClass()
+		end
+
+		if len2D <= 0 and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:GetAction() and !client:GetSitting() then
+			if client.delayStartAnimation == nil then
+				client.delayStartAnimation = curTime + 40 + math.random(1, 40)
+			else
+				if curTime >= client.delayStartAnimation then
+					local sequence = Emotes.StandList[math.random(1, #Emotes.StandList)]
+					local sequenceID, sequenceDelay = client:LookupSequence(sequence)
+					if sequenceID > -1 then
+						client:SetNetVar("stand_animation", {sequence, CurTime() + sequenceDelay})
+					end
+
+					client.delayStartAnimation = curTime + 70 + math.random(1, 40)
+				end
+			end
+		else
+			if client.delayStartAnimation and client:GetNetVar("stand_animation") then
+				client:SetNetVar("stand_animation", nil)
+			end
+
+			client.delayStartAnimation = nil
+		end
+	end
+end)
+
 function Emotes:AcceptInput(entity, input, client, caller, value)
 	local parent = entity:GetParent()
 

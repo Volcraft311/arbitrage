@@ -142,9 +142,19 @@ Emotes.ActionList = {
 		data = {
 			{name = "Подобрать", icon = "asterion/academy/ui/emotes/pickup.png", info = {sequence = {"Pickup"}}},
 			{name = "Официально", icon = "asterion/academy/ui/emotes/menu_gman.png", info = "menu_gman"},
-			{name = "Ожидание 1", icon = "asterion/academy/ui/emotes/stand_allbase.png", info = "stand_allbase"},
+			{name = "Ожидание 1", icon = "asterion/academy/ui/emotes/idle_afk_1.png", info = "idle_afk_1"},
+			{name = "Ожидание 2", icon = "asterion/academy/ui/emotes/idle_afk_2.png", info = "idle_afk_2"},
+			{name = "Ожидание 3", icon = "asterion/academy/ui/emotes/idle_afk_3.png", info = "idle_afk_3"},
+			{name = "Ожидание 4", icon = "asterion/academy/ui/emotes/stand_allbase.png", info = "stand_allbase"},
 		}
 	}
+}
+
+Emotes.StandList = {
+	"idle_afk_1",
+	"idle_afk_2",
+	"idle_afk_3",
+	"stand_allbase"
 }
 
 Emotes.SittingList = {
@@ -302,6 +312,31 @@ if CLIENT then
 			end
 		end
 
+		local len2D = velocity:Length2D()
+		-- Анимации ожидания
+		do
+			if len2D <= 0 then
+				local animationData = client:GetNetVar("stand_animation")
+				if animationData then
+					local seq = animationData[1]
+					local delay = animationData[2]
+
+					if delay >= CurTime() then
+						local seqID = client:LookupSequence(seq)
+
+						if seqID > -1 then
+							if client:GetSequence() != seqID then
+								client:SetCycle(0)
+								client:SetPlaybackRate(1)
+							end
+
+							return -1, seqID
+						end
+					end
+				end
+			end
+		end
+
 		-- Настроение
 		do
 			local mood = client:GetMood()
@@ -317,7 +352,6 @@ if CLIENT then
 				if (class == "academy_key" or class == "academy_first") and holdType == "normal" then
 					local sequence = nil
 					local data = mood.sequences or {}
-					local len2D = velocity:Length2D()
 
 					if len2D < 10 then
 						local sequenceID = getSequenceID(data, "idle", client)

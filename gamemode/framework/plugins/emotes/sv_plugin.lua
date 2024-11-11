@@ -224,7 +224,7 @@ timer.Create("Emotes:StandAnimations", 0.4, 0, function()
 					local sequence = Emotes.StandList[math.random(1, #Emotes.StandList)]
 					local sequenceID, sequenceDelay = client:LookupSequence(sequence)
 					if sequenceID > -1 then
-						client:SetNetVar("stand_animation", {sequence, CurTime() + sequenceDelay})
+						client:SetNetVar("stand_animation", {sequence, curTime + sequenceDelay})
 					end
 
 					client.delayStartAnimation = curTime + 70 + math.random(1, 40)

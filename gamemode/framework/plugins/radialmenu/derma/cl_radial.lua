@@ -55,6 +55,9 @@ local draw_SimpleText = draw.SimpleText
 local ColorAlpha = ColorAlpha
 local draw_GetFontHeight = draw.GetFontHeight
 local vgui_Register = vgui.Register
+local pairs = pairs
+local render_ResetModelLighting = render.ResetModelLighting
+local render_SetColorModulation = render.SetColorModulation
 
 local circles = asterionlib.Circles
 local color_black = Color(0, 0, 0)
@@ -219,8 +222,6 @@ function PANEL:Init()
 	self.background_blur = circles.New(CIRCLE_FILLED, self.panelWide + self.size, self.centerX, self.centerY, self.size * 2)
 	self.background_blur:SetMaterial(circle_blurMat)
 	self.background_blur:SetColor(color_white)
-
-	self.mask = BMASKS.CreateMask("character_mask", "asterion/academy/ui/radial/gradient_character.png")
 end
 
 function PANEL:FindSelected(segment_size)
@@ -425,6 +426,8 @@ end
 function PANEL:EntityLighting()
 	render_SuppressEngineLighting(true)
 	render_SetLightingOrigin(self.activeCharacter:GetPos())
+	render_ResetModelLighting(120 / 255, 120 / 255, 120 / 255)
+	render_SetColorModulation(1, 0.855, 0.855)
 
 	render_SetModelLighting(0, 1.5, 1.5, 1.5)
 

@@ -244,7 +244,6 @@ function playerMeta:GetAction()
 	local data = self:GetNetVar("action")
 	if !data then return end
 
-	data = table_Copy(data)
 	return data[1], data[2], data[3], data[4]
 end
 

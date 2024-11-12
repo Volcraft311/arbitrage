@@ -117,6 +117,7 @@ function PANEL:Init()
 	self.activeCharacter:SetNoDraw(true)
 	self.activeCharacter:SetAngles(Angle(0, -20, 0))
 	self.activeCharacter.upPosition = 0
+	self.activeCharacter.childrens = {}
 
 	for k, v in ipairs(client:GetBodyGroups() or {}) do
 		local bodygroup = client:GetBodygroup(v.id)
@@ -132,6 +133,84 @@ function PANEL:Init()
 		if mat and mat != "" then
 			self.activeCharacter:SetSubMaterial(k - 1, mat)
 		end
+	end
+
+	for k, v in ipairs(CompositeEntities and CompositeEntities.GetArrayEntitites(client) or {}) do
+		local composite = ClientsideModel(v.model)
+		composite:SetSkin(v.Skin)
+		composite:SetMaterial(v.Material)
+		composite:SetRenderMode(v.RenderMode)
+		composite:SetColor(v.Color)
+
+		for k2, v2 in pairs(v.BodyG) do
+		    composite:SetBodygroup(k2, v2)
+		end
+
+		for k2, v2 in pairs(v.SubMat) do
+		    composite:SetSubMaterial(k2, v2)
+		end
+
+		if v.BoneManip then
+			for i = 0, composite:GetBoneCount() do
+				local t = v.BoneManip[i]
+
+				if t then
+					local s = t.s
+					local a = t.a
+					local p = t.p
+
+					if s then
+						composite:ManipulateBoneScale(i, s)
+					end
+
+					if a then
+						composite:ManipulateBoneAngles(i, a)
+					end
+
+					if p then
+						composite:ManipulateBonePosition(i, p)
+					end
+				end
+			end
+		end
+
+		if v.mode == 0 or v.mode == nil then
+			if composite:IsEffectActive(EF_BONEMERGE) then
+				return composite:Remove()
+			end
+
+			composite:SetParent(self.activeCharacter)
+
+			composite:RemoveEffects(EF_FOLLOWBONE)
+			composite:RemoveEffects(EF_PARENT_ANIMATES)
+
+			composite:AddEffects(EF_BONEMERGE)
+		else
+			if v.boneName then
+				local boneID = self.activeCharacter:LookupBone(v.boneName)
+				if !boneID then
+					return composite:Remove()
+				end
+
+				if !composite:IsEffectActive(EF_BONEMERGE) and composite:GetParentAttachment() == boneID then
+					return composite:Remove()
+				end
+
+				composite:SetParent(self.activeCharacter, boneID)
+
+				composite:RemoveEffects(EF_BONEMERGE)
+
+				composite:AddEffects(EF_FOLLOWBONE)
+				composite:AddEffects(EF_PARENT_ANIMATES)
+			end
+		end
+
+		composite:SetLocalPos(v.localPos)
+		composite:SetLocalAngles(v.localAng)
+		composite:SetModelScale(v.modelScale)
+		composite:SetNoDraw(true)
+
+		self.activeCharacter.childrens[#self.activeCharacter.childrens + 1] = composite
 	end
 
 	self.boneCharacter = ClientsideModel(client:GetModel())
@@ -165,6 +244,12 @@ function PANEL:NewClose()
 	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math_random(1, 6) .. ".wav")
 
 	if IsValid(self.activeCharacter) then
+		for k, v in ipairs(self.activeCharacter.childrens) do
+			if IsValid(v) then
+				v:Remove()
+			end
+		end
+
 		self.activeCharacter:Remove()
 	end
 
@@ -372,6 +457,12 @@ function PANEL:OnEntityDraw()
 	self.activeCharacter:FrameAdvance()
 	self.activeCharacter:SetPos(Vector(0, 1.25, self.activeCharacter.upPosition))
 	self.activeCharacter:DrawModel()
+
+	for k, v in ipairs(self.activeCharacter.childrens) do
+		if IsValid(v) then
+			v:DrawModel()
+		end
+	end
 end
 
 function PANEL:OnChangeSequence(sequence)

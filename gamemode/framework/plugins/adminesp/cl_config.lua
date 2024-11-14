@@ -60,6 +60,17 @@ PLUGIN:AddPlayerESPCustomization("hp_armor_pl", {
     end
 })
 
+PLUGIN:AddPlayerESPCustomization("statistics_pl", {
+    dist = 1000,
+    config = {
+        name = "Статистика игрока",
+        desc = "Включить показатель статистики игрока"
+    },
+    data = function(entity)
+        return ("H: %s   T: %s   S: %s"):format(Arbitrage.statistics.Get(entity, "Hunger") or 100, Arbitrage.statistics.Get(entity, "Thirst") or 100, Arbitrage.statistics.Get(entity, "Sleep") or 100)
+    end
+})
+
 PLUGIN:AddPlayerESPCustomization("weapon_pl", {
     dist = 1000,
     config = {

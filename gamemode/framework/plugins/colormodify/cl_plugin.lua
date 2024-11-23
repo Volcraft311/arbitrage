@@ -29,7 +29,7 @@ function PLUGIN:RenderScreenspaceEffects()
     ColorModify["$pp_colour_colour"] = data.color
     ColorModify["$pp_colour_addr"] = data.addr * 0.025
     ColorModify["$pp_colour_addg"] = data.addg * 0.025
-    ColorModify["$pp_colour_addb"] = data.addg * 0.025
+    ColorModify["$pp_colour_addb"] = data.addb * 0.025
     ColorModify["$pp_colour_mulr"] = data.mulr * 0.1
     ColorModify["$pp_colour_mulg"] = data.mulg * 0.1
     ColorModify["$pp_colour_mulb"] = data.mulb * 0.1

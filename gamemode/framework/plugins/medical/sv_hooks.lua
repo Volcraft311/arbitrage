@@ -38,53 +38,78 @@ function Medical:EntityTakeDamage(client, dmginfo)
 end
 
 function Medical:OnMedicalHandler(client)
-	if client:Health() <= 10 then
-		if !client.healthHandler then
-			client:AddTemporaryStatusEffect("stun", 0)
-			client.healthHandler = true
-		end
-	else
-		if client.healthHandler then
-			client:RemoveTemporaryStatusEffect("stun")
-			client.healthHandler = nil
-		end
-	end
-
-	local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
-	if sleep <= 30 then
-		if !client.exhaustionHandler then
-			client:AddTemporaryStatusEffect("exhaustion", 0)
-			client.exhaustionHandler = true
-		end
-	else
-		if client.exhaustionHandler then
-			client:RemoveTemporaryStatusEffect("exhaustion")
-			client.exhaustionHandler = nil
+	-- health effect
+	do
+		if client:Health() <= 10 then
+			if !client.healthHandler then
+				client:AddTemporaryStatusEffect("stun", 0)
+				client.healthHandler = true
+			end
+		else
+			if client.healthHandler then
+				client:RemoveTemporaryStatusEffect("stun")
+				client.healthHandler = nil
+			end
 		end
 	end
 
-	if sleep <= 10 then
-		if !client.severeexhaustionHandler then
-			client:AddTemporaryStatusEffect("severe_exhaustion", 0)
-			client.severeexhaustionHandler = true
-		end
-	else
-		if client.severeexhaustionHandler then
-			client:RemoveTemporaryStatusEffect("severe_exhaustion")
-			client.severeexhaustionHandler = nil
+	-- hunger effect
+	do
+		local hunger = Arbitrage.statistics.Get(client, "Hunger") or 100
+		if hunger <= 15 then
+			if !client.starvationHandler then
+				client:AddTemporaryStatusEffect("starvation", 0)
+				client.starvationHandler = true
+			end
+		else
+			if client.starvationHandler then
+				client:RemoveTemporaryStatusEffect("starvation")
+				client.starvationHandler = nil
+			end
 		end
 	end
 
-	local thirst = Arbitrage.statistics.Get(client, "Thirst") or 100
-	if thirst <= 15 then
-		if !client.dehydrationHandler then
-			client:AddTemporaryStatusEffect("dehydration", 0)
-			client.dehydrationHandler = true
+	-- thirst effect
+	do
+		local thirst = Arbitrage.statistics.Get(client, "Thirst") or 100
+		if thirst <= 15 then
+			if !client.dehydrationHandler then
+				client:AddTemporaryStatusEffect("dehydration", 0)
+				client.dehydrationHandler = true
+			end
+		else
+			if client.dehydrationHandler then
+				client:RemoveTemporaryStatusEffect("dehydration")
+				client.dehydrationHandler = nil
+			end
 		end
-	else
-		if client.dehydrationHandler then
-			client:RemoveTemporaryStatusEffect("dehydration")
-			client.dehydrationHandler = nil
+	end
+
+	-- sleep effect
+	do
+		local sleep = Arbitrage.statistics.Get(client, "Sleep") or 100
+		if sleep <= 30 then
+			if !client.exhaustionHandler then
+				client:AddTemporaryStatusEffect("exhaustion", 0)
+				client.exhaustionHandler = true
+			end
+		else
+			if client.exhaustionHandler then
+				client:RemoveTemporaryStatusEffect("exhaustion")
+				client.exhaustionHandler = nil
+			end
+		end
+
+		if sleep <= 10 then
+			if !client.severeexhaustionHandler then
+				client:AddTemporaryStatusEffect("severe_exhaustion", 0)
+				client.severeexhaustionHandler = true
+			end
+		else
+			if client.severeexhaustionHandler then
+				client:RemoveTemporaryStatusEffect("severe_exhaustion")
+				client.severeexhaustionHandler = nil
+			end
 		end
 	end
 end

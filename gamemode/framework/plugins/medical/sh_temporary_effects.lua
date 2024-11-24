@@ -488,6 +488,18 @@ Medical:TemporaryStatusEffects("dehydration", {
 	noSave = true
 })
 
+Medical:TemporaryStatusEffects("starvation", {
+	name = "Голодание",
+	icon = "danganronpa/ui/medical/exhaustion.png",
+	description = "Этот статус может вызвать эффект боли.",
+	handler = function(client, stored, values)
+		if math.random(1, 40) == 1 then
+			client:AddTemporaryStatusEffect("pain", 5)
+		end
+	end,
+	noSave = true
+})
+
 Medical:TemporaryStatusEffects("painkillers", {
 	name = "На болеутоляющих",
 	icon = "danganronpa/ui/medical/painkillers.png",

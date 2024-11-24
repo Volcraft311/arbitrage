@@ -500,6 +500,13 @@ Medical:TemporaryStatusEffects("starvation", {
 	noSave = true
 })
 
+Medical:TemporaryStatusEffects("armor", {
+	name = "Защита",
+	icon = "danganronpa/ui/medical/tunnel_vision.png",
+	description = "Входящий урон поглащается вашей броней.",
+	noSave = true
+})
+
 Medical:TemporaryStatusEffects("painkillers", {
 	name = "На болеутоляющих",
 	icon = "danganronpa/ui/medical/painkillers.png",

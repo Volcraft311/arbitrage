@@ -53,6 +53,21 @@ function Medical:OnMedicalHandler(client)
 		end
 	end
 
+	-- armor effect
+	do
+		if client:Armor() > 0 then
+			if !client.armorHandler then
+				client:AddTemporaryStatusEffect("armor", 0)
+				client.armorHandler = true
+			end
+		else
+			if client.armorHandler then
+				client:RemoveTemporaryStatusEffect("armor")
+				client.armorHandler = nil
+			end
+		end
+	end
+
 	-- hunger effect
 	do
 		local hunger = Arbitrage.statistics.Get(client, "Hunger") or 100

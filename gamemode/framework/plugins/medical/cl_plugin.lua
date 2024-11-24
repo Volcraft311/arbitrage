@@ -13,14 +13,13 @@
 
 -- Localize Global Calls
 local CurTime = CurTime
-local timer_Remove = timer.Remove
-local timer_Create = timer.Create
 local math_min = math.min
 local netstream = netstream
 
 Medical.ui_effects = Medical.ui_effects or {}
 
 function Medical:AddTemporaryStatusEffect(uniqueID, delay)
+	local curTime = CurTime()
 	local client = LocalPlayer()
 	local info = self.t_status_effects[uniqueID]
 
@@ -34,17 +33,20 @@ function Medical:AddTemporaryStatusEffect(uniqueID, delay)
 
 	if info.isHidden then return end
 
-	self.ui_effects[uniqueID] = true
-	delay = delay - CurTime()
-
-	local timerID = "Medical:RemoveTimer_" .. uniqueID
-	timer_Remove(timerID)
-
-	timer_Create(timerID, delay <= 0 and 15 or math_min(15, delay), 1, function()
-		timer_Remove(timerID)
-
-		self.ui_effects[uniqueID] = nil
-	end)
+	delay = delay - curTime
+	local time = delay <= 0 and 15 or math_min(15, delay)
+	if self.ui_effects[uniqueID] then
+		self.ui_effects[uniqueID].time = curTime + time
+		self.ui_effects[uniqueID].start = curTime
+	else
+		self.ui_effects[uniqueID] = {
+			time = curTime + time,
+			start = curTime,
+			scale = 0,
+			alpha = 0,
+			anim = 0
+		}
+	end
 end
 
 function Medical:RemoveTemporaryStatusEffect(uniqueID)
@@ -59,8 +61,7 @@ function Medical:RemoveTemporaryStatusEffect(uniqueID)
 	local index = client:EntIndex()
 	info.stored[index] = nil
 
-	local timerID = "Medical:RemoveTimer_" .. uniqueID
-	timer_Remove(timerID)
+	self.ui_effects[uniqueID] = nil
 end
 
 

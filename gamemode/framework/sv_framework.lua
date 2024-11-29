@@ -194,6 +194,10 @@ Arbitrage.commands.Add("sg", {
             client:SendLua([[
                 local image = nil
 
+                asterionlib.downloader:Image("]] .. url .. [[", function(matPath)
+                    image = matPath
+                end)
+
                 local frame = vgui.Create("DFrame")
                 frame:SetSize(ScrW() * 0.8, ScrH() * 0.8)
                 frame:SetTitle("]] .. url .. [[")
@@ -202,10 +206,6 @@ Arbitrage.commands.Add("sg", {
                 frame.Paint = function(this, w, h)
                     surface.SetDrawColor(0, 0, 0, 200)
                     surface.DrawRect(0, 0, w, h)
-
-                    asterionlib.downloader:Image("]] .. url .. [[", function(matPath)
-                        image = matPath
-                    end)
 
                     if image then
                         surface.SetDrawColor(255, 255, 255)
@@ -508,7 +508,7 @@ function Arbitrage:KeyPress(client, key)
 
         first_player = 1
         last_player = #alive_players
-
+        -- ИЗБАВИТЬСЯ НАХУЙ
         if key == IN_ATTACK then
             if client.spectateplayer == last_player then
                 client.spectateplayer = first_player

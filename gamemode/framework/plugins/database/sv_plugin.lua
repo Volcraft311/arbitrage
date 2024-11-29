@@ -23,9 +23,16 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
 
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
-        if !IsValid(client) then continue end
+        if IsValid(client) then
+            if client:Alive() and client:InGame() then
+                local entity = PLUGIN.deathPlaques[k]
+                if IsValid(entity) then
+                    entity:Remove()
+                end
 
-        if client:Alive() and client:InGame() then continue end
+                continue
+            end
+        end
 
         local place = tonumber(v.place)
         if place == -1 then continue end -- Место неуказано

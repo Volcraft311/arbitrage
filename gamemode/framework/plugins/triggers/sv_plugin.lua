@@ -1,14 +1,14 @@
 PLUGIN.triggers = {}
-SetNetVar("Trigger:triggers",{}) 
+SetNetVar("Trigger:triggers",{})
 
 
 netstream.Hook("Trigger:New", function(_, vector)
     local oldT = GetNetVar("Trigger:triggers",{})
-    if #oldT > 29 then
+    if #oldT > 29 then -- ## ОГРАНИЧЕНИЕ НА КОЛИЧЕСТВО ТРИГГЕРОВ
         print("Слишком много триггеров")
         return false
     end
-    SetNetVar("Trigger:triggers",{}) 
+    SetNetVar("Trigger:triggers",{})
     table.Add(oldT,{points = {vector,vector + Vector(5,5,5)}})
     SetNetVar("Trigger:triggers",oldT)
 end)

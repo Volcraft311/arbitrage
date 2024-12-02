@@ -6,9 +6,10 @@ function Trigger:New(data, id)
     if self.instances[id] then
         return self.instances[id]
     end
-    local _points = {data.point,data.point + Vector(5,5,5)} or {Vector(0,0,0),Vector(5,5,5)}
+    local _points = data.points or {Vector(0,0,0),Vector(5,5,5)}
+    local _name = data.name or "Unnamed_" .. tostring(id)
 
-    local trigger = {id = id, points = _points }
+    local trigger = {id = id, points = _points, name = _name}
 
     setmetatable(trigger, Trigger.meta)
 
@@ -25,7 +26,6 @@ function Trigger:Create(data, id)
     end
     local trigger = self:New(data, id)
 
-    PrintTable(trigger)
     return trigger
 end
 
@@ -44,6 +44,10 @@ if SERVER then
         for k, v in pairs(Trigger.instances) do
             v:Sync(clients)
         end
+    end
+
+    function Trigger:SyncLast()
+        Trigger.GetLast():Sync(clients)
     end
 
     local function _check_client(client,id)

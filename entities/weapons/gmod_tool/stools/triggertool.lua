@@ -46,21 +46,29 @@ end
 -- Левая кнопка мыши
 function TOOL:LeftClick(trace)
     if !IsFirstTimePredicted() then return false end
-    Trigger:Create({point = trace.HitPos})
+    if SERVER then
+        Trigger:Create({points = {trace.HitPos,trace.HitPos + Vector(5,5,5)}})
+        Trigger:SyncLast()
+    end
+    Trigger.drawTriggers = true
 end
 
 -- Правая кнопка мыши
 function TOOL:RightClick(trace)
     if !IsFirstTimePredicted() then return false end
-
+    if SERVER then
+        Trigger:SyncLast()
+    end
+    Trigger.drawTriggers = true
 end
 
 -- Перезарядка
 function TOOL:Reload(trace)
     if !IsFirstTimePredicted() then return end
     if SERVER then
-        Trigger:SyncAll()
+        Trigger:SyncLast()
     end
+    Trigger.drawTriggers = true
     return true
 end
 
@@ -86,3 +94,19 @@ end
 --     draw.SimpleText("1","Trebuchet24",point1.x,point1.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 --     draw.SimpleText("2","Trebuchet24",point2.x,point2.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 -- end
+
+function TOOL.BuildCPanel(CPanel)
+    CPanel:AddControl("Header",{
+        Description = "Данный инструмент позволяет управлять триггерами."
+    })
+
+    local TriggerList = vgui.Create("DListView", CPanel)
+    TriggerList:Dock(TOP)
+    TriggerList:DockMargin(10, 20, 10, 40)
+    TriggerList:AddColumn( "Trigger" )
+    TriggerList:AddColumn( "Type" )
+    TriggerList:SetTall(500)
+
+
+    Trigger.TriggerList = TriggerList
+end

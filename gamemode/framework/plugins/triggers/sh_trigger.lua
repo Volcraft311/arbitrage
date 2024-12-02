@@ -2,14 +2,12 @@ Trigger.instances = {}
 Trigger.lastID = #Trigger.instances
 
 
-function Trigger:New(data, id)
+function Trigger:New(id)
     if self.instances[id] then
         return self.instances[id]
     end
-    local _points = data.points or {Vector(0,0,0),Vector(5,5,5)}
-    local _name = data.name or "Unnamed_" .. tostring(id)
 
-    local trigger = {id = id, points = _points, name = _name}
+    local trigger = {id = id}
 
     setmetatable(trigger, Trigger.meta)
 
@@ -24,7 +22,10 @@ function Trigger:Create(data, id)
 
         id = self.lastID
     end
-    local trigger = self:New(data, id)
+    local trigger = self:New(id)
+
+    trigger.points = data.points or {Vector(0,0,0),Vector(5,5,5)}
+    trigger.name = data.name or "Unnamed_" .. tostring(id)
 
     return trigger
 end
@@ -38,6 +39,7 @@ function Trigger:GetLast()
 end
 
 
+
 if SERVER then
 
     function Trigger:SyncAll(clients)
@@ -46,7 +48,11 @@ if SERVER then
         end
     end
 
-    function Trigger:SyncLast()
+    function Trigger:SyncByID(id, clients)
+        Trigger:GetByID(id):Sync(clients)
+    end
+
+    function Trigger:SyncLast(clients)
         Trigger.GetLast():Sync(clients)
     end
 
@@ -61,5 +67,19 @@ if SERVER then
 
     netstream.Hook("Trigger:PlayerExited",function(client,id)
         _check_client(client,id)
+    end)
+
+    netstream.Hook("Trigger:SetPos",function(client,data)
+        local id = data.id
+        local vector = data.vector
+        local point = data.point
+        Trigger:GetByID(id):SetPoint(point, vector)
+
+        Trigger:SyncAll()
+    end)
+
+
+    timer.Create("Trigger:SyncAll",5,0,function()
+        Trigger:SyncAll()
     end)
 end

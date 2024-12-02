@@ -30,11 +30,11 @@ local color_second_point = Color(0,255,0,150)
 -- Добавляем язык
 
 if CLIENT then
-    language.Add("tool.clientsidearea.name", "Trigger Tool")
-    language.Add("tool.clientsidearea.desc", "Позволяет управлять триггерами")
-    language.Add("tool.clientsidearea.left", "Устанавливает позицию первой точки.")
-    language.Add("tool.clientsidearea.right", "Устанавливает позицию второй точки.")
-    language.Add("tool.clientsidearea.reload", "Создаёт новый триггер.")
+    language.Add("tool.triggertool.name", "Trigger Tool")
+    language.Add("tool.triggertool.desc", "Позволяет управлять триггерами")
+    language.Add("tool.triggertool.left", "Устанавливает позицию первой точки.")
+    language.Add("tool.triggertool.right", "Устанавливает позицию второй точки.")
+    language.Add("tool.triggertool.reload", "Создаёт новый триггер.")
 
     function TOOL:Deploy()
         Trigger.drawTriggers = true
@@ -46,9 +46,12 @@ end
 -- Левая кнопка мыши
 function TOOL:LeftClick(trace)
     if !IsFirstTimePredicted() then return false end
-    if SERVER then
-        Trigger:Create({points = {trace.HitPos,trace.HitPos + Vector(5,5,5)}})
-        Trigger:SyncLast()
+    if CLIENT then
+        local id = Trigger.selectedID
+        local vector = trace.HitPos
+        local point = 1
+        Trigger:GetByID(id):SetPoint(point, vector)
+        netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
     end
     Trigger.drawTriggers = true
 end
@@ -56,8 +59,12 @@ end
 -- Правая кнопка мыши
 function TOOL:RightClick(trace)
     if !IsFirstTimePredicted() then return false end
-    if SERVER then
-        Trigger:SyncLast()
+    if CLIENT then
+        local id = Trigger.selectedID
+        local vector = trace.HitPos
+        local point = 2
+        Trigger:GetByID(id):SetPoint(point, vector)
+        netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
     end
     Trigger.drawTriggers = true
 end
@@ -66,9 +73,13 @@ end
 function TOOL:Reload(trace)
     if !IsFirstTimePredicted() then return end
     if SERVER then
+        Trigger:Create({points = {trace.HitPos,trace.HitPos + Vector(5,5,5)}})
         Trigger:SyncLast()
     end
     Trigger.drawTriggers = true
+    timer.Simple(0.4,function()
+        Trigger.selectedID = #Trigger.instances
+    end)
     return true
 end
 
@@ -96,6 +107,8 @@ end
 -- end
 
 function TOOL.BuildCPanel(CPanel)
+    Trigger.UpdateToolPanel()
+
     CPanel:AddControl("Header",{
         Description = "Данный инструмент позволяет управлять триггерами."
     })

@@ -7,8 +7,8 @@ TRIGGER.points = {Vector(0,0,0),Vector(5,5,5)}
 TRIGGER.isLocalPlayerInside = false
 
 
-local box_color1 = Color(225,146,29)
-local box_color2 = Color(255,176,6,10)
+local box_color1 = Color(0,255,55)
+local box_color2 = Color(1,63,23,105)
 
 function TRIGGER:__tostring()
     return "Trigger nmbr [" .. self.id .. "]"
@@ -40,11 +40,13 @@ end
 function TRIGGER:PlayerEntered(client)
     print("Player entered")
     netstream.Start("Trigger:PlayerEntered",self.id)
+    TRIGGER.isLocalPlayerInside = true
 end
 
 function TRIGGER:PlayerExited(client)
     print("Player exited")
     netstream.Start("Trigger:PlayerExited",self.id)
+    TRIGGER.isLocalPlayerInside = false
 end
 
 if SERVER then

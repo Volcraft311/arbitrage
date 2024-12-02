@@ -1,5 +1,6 @@
 Trigger.instances = {}
 Trigger.drawTriggers = false
+Trigger.selectedID = 1
 
 netstream.Hook("Trigger:Sync",function(data)
     local id = data.id
@@ -34,8 +35,11 @@ function Trigger:DrawAll()
     end
 end
 
+
 function Trigger.UpdateToolPanel()
-    local lines = Trigger.TriggerList:GetLines()
+    local tl = Trigger.TriggerList
+    if !tl:IsValid() then return end
+    local lines = tl:GetLines()
     local triggers = Trigger.instances
 
     for i, _ in ipairs(lines) do

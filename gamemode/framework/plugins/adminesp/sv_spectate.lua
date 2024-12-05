@@ -77,13 +77,18 @@ function PLUGIN:Spec(client, target)
 		players_hook[client] = true
 		create_hook()
 
-		if IsValid(target) then
+		local bValid = IsValid(target)
+		if bValid then
 			client._CameraEntity = target
 
 			netstream.Start(client, "AdminESP:CameraSetEntity", target)
 		end
+
+		hook.Run("OnSpectateEnter", client, bValid and target)
 	else
 		update_hook(client)
+
+		hook.Run("OnSpectateExit", client)
 	end
 end
 
@@ -137,6 +142,10 @@ netstream.Hook("AdminESP:CameraSetEntity", function(client, entity)
 
 	if client._CameraEntity != entity then
 		client._CameraEntity = entity
+
+		if IsValid(entity) then
+			hook.Run("OnSpectateEnter", client, entity)
+		end
 	end
 end)
 
@@ -154,4 +163,5 @@ netstream.Hook("AdminESP:CameraTeleportToPosition", function(client, vector, ang
 	end)
 
 	update_hook(client)
+	hook.Run("OnSpectateTeleport", client, vector, angles)
 end)

@@ -35,6 +35,7 @@ function PLUGIN:PlayerEnterNoclip(client)
     client:SetNoTarget(true)
 
     client:SetLocalVar("observer", true)
+    hook.Run("OnObServerEnter", client)
 end
 
 function PLUGIN:PlayerExitNoclip(client)
@@ -44,4 +45,5 @@ function PLUGIN:PlayerExitNoclip(client)
 
     client.observer_data = nil
     client:SetLocalVar("observer", nil)
+    hook.Run("OnObServerExit", client)
 end

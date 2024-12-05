@@ -12,18 +12,10 @@
 ]]--
 
 local PLUGIN = PLUGIN
-
-PLUGIN.name = "AdminNotify"
-
 Arbitrage.adminnotify = PLUGIN
 
+PLUGIN.name = "AdminNotify"
 PLUGIN.notifyList = {}
-
-function PLUGIN:HasAccess(client)
-    if !IsValid(client) then return end
-
-    return self.groupAccess[client:GetUserGroup()]
-end
 
 function PLUGIN:AddNewNotify(name, data)
     if !name then return end

@@ -17,7 +17,7 @@ function PLUGIN:SendNotify(notify, ...)
     if !self.notifyList[notify] then return end
 
     for k, v in ipairs(player.GetAll()) do
-        if self:HasAccess(v) then
+        if v:IsAdmin() then
             netstream.Start(v, "ixAdminNotify", notify, ...)
         end
     end

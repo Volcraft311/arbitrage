@@ -56,13 +56,6 @@ function Medical:TemporaryStatusEffectsValues(uniqueID)
 	return data
 end
 
-function Medical:GetRecivers(client)
-	local data = player.GetAdmins()
-	table.insert(data, client)
-
-	return data
-end
-
 function Medical:GetTemporaryStatusEffectsByName(name)
 	for uniqueID, info in pairs(self.t_status_effects) do
 		if info.name:utf8lower() == name:utf8lower() then
@@ -135,6 +128,7 @@ do
 					delay = delay
 				}
 			else
+				-- Удаление статус эффектов если delay прошел
 				if SERVER then
 					self:RemoveTemporaryStatusEffect(uniqueID)
 				end

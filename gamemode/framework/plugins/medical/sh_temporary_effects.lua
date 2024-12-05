@@ -39,7 +39,11 @@ Medical:TemporaryStatusEffects("light_bleeding", {
 		if client:HasTemporaryStatusEffect("heavy_bleeding") then
 			return false, "Игрок имеет статус эффект 'Сильное кровотечение'"
 		end
-	end
+	end,
+	tooltip = {
+		format = "От данного персонажа течет кровь",
+		color = Color(136, 37, 37)
+	}
 })
 
 Medical:TemporaryStatusEffects("heavy_bleeding", {
@@ -64,7 +68,7 @@ Medical:TemporaryStatusEffects("heavy_bleeding", {
 
 		client:TakeDamage(values[1])
 		stored.time = 0
-	end, 
+	end,
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.alpha = stored.alpha or 0
@@ -84,7 +88,11 @@ Medical:TemporaryStatusEffects("heavy_bleeding", {
 		if CLIENT then return end
 
 		client:RemoveTemporaryStatusEffect("light_bleeding")
-	end
+	end,
+	tooltip = {
+		format = "От данного персонажа сильно течет кровь",
+		color = Color(206, 33, 33)
+	}
 })
 
 local tunnelvision_square = Material("danganronpa/ui/medical/tunnelvision_square.png")
@@ -185,7 +193,11 @@ Medical:TemporaryStatusEffects("intoxication", {
 
 			DrawMotionBlur(stored.value, 1, 0.01)
 		end
-	}
+	},
+	tooltip = {
+		format = "Данный персонаж шатается на месте",
+		color = Color(122, 173, 63)
+	},
 })
 
 Medical:TemporaryStatusEffects("drug_intoxication", {
@@ -220,7 +232,11 @@ Medical:TemporaryStatusEffects("drug_intoxication", {
 				DrawColorModify(tab)
 			end
 		end
-	}
+	},
+	tooltip = {
+		format = "Данный персонаж сильно шатается на месте",
+		color = Color(141, 223, 48)
+	},
 })
 
 Medical:TemporaryStatusEffects("broken_leg", {
@@ -257,7 +273,11 @@ Medical:TemporaryStatusEffects("broken_leg", {
 			client:TakeDamage(1)
 			client:ViewPunch(Angle(0.7, -0.5, 0.3))
 		end
-	end
+	end,
+	tooltip = {
+		format = "Данный персонаж имеет перелом ноги",
+		color = Color(238, 92, 92)
+	},
 })
 
 Medical:TemporaryStatusEffects("adrenalin", {
@@ -456,6 +476,10 @@ Medical:TemporaryStatusEffects("exhaustion", {
 			return false, "Игрок имеет статус эффект 'Сильная усталость'"
 		end
 	end,
+	tooltip = {
+		format = "Персонаж выглядит уставшим",
+		color = Color(36, 84, 139)
+	},
 	noSave = true
 })
 
@@ -473,6 +497,10 @@ Medical:TemporaryStatusEffects("severe_exhaustion", {
 
 		client:RemoveTemporaryStatusEffect("exhaustion")
 	end,
+	tooltip = {
+		format = "Персонаж выглядит сильно уставшим",
+		color = Color(37, 70, 216)
+	},
 	noSave = true
 })
 
@@ -497,6 +525,10 @@ Medical:TemporaryStatusEffects("starvation", {
 			client:AddTemporaryStatusEffect("pain", 5)
 		end
 	end,
+	tooltip = {
+		format = "У данного персонажа урчит живот",
+		color = Color(207, 168, 39)
+	},
 	noSave = true
 })
 
@@ -504,6 +536,10 @@ Medical:TemporaryStatusEffects("armor", {
 	name = "Защита",
 	icon = "danganronpa/ui/medical/tunnel_vision.png",
 	description = "Входящий урон поглащается вашей броней.",
+	tooltip = {
+		format = "Данный персонаж явно имеет хорошую защиту",
+		color = Color(0, 119, 255)
+	},
 	noSave = true
 })
 
@@ -612,6 +648,10 @@ Medical:TemporaryStatusEffects("poisoning_effect", {
 			return false, "Игрок имеет статус эффект 'Отравление (мгновенная смерть)'"
 		end
 	end,
+	tooltip = {
+		format = "Данный персонаж шатается на месте",
+		color = Color(122, 173, 63)
+	},
 	isHidden = true
 })
 
@@ -673,6 +713,10 @@ Medical:TemporaryStatusEffects("poisoning_damage", {
 
 		client:RemoveTemporaryStatusEffect("poisoning_effect")
 	end,
+	tooltip = {
+		format = "Данный персонаж шатается на месте",
+		color = Color(122, 173, 63)
+	},
 	isHidden = true
 })
 
@@ -722,6 +766,10 @@ Medical:TemporaryStatusEffects("poisoning_dead", {
 		client:RemoveTemporaryStatusEffect("poisoning_effect")
 		client:RemoveTemporaryStatusEffect("poisoning_damage")
 	end,
+	tooltip = {
+		format = "Данный персонаж шатается на месте",
+		color = Color(122, 173, 63)
+	},
 	isHidden = true
 })
 

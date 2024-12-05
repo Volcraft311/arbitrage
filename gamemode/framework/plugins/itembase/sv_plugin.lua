@@ -122,6 +122,7 @@ netstream.Hook("ItemBase:SendAction", function(client, itemID, action)
             local actionRun = actionInfo.OnRun
 
             if actionRun then
+                hook.Run("OnItemAction", client, item, action)
                 local data = actionRun(item)
 
                 if data != false then

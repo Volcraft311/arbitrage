@@ -1,6 +1,6 @@
 Trigger.instances = {}
 Trigger.lastID = #Trigger.instances
-
+Trigger.typeList = {}
 
 function Trigger:New(id)
     if self.instances[id] then
@@ -26,7 +26,7 @@ function Trigger:Create(data, id)
 
     trigger.points = data.points or {Vector(0,0,0),Vector(5,5,5)}
     trigger.name = data.name or "Unnamed_" .. tostring(id)
-
+    trigger.type = data.type
     return trigger
 end
 
@@ -37,6 +37,19 @@ end
 function Trigger:GetLast()
     return Trigger.instances[Trigger.lastID]
 end
+
+function Trigger:GetSelected()
+    return Trigger:GetByID(Trigger.selectedID)
+end
+
+
+
+function Trigger:CreateType(data)
+    local triggertype = {name = data.name, OnEnter = data.OnEnter or zero, OnExit = data.OnExit or zero}
+    table.insert(Trigger.typeList,triggertype)
+    return triggertype
+end
+
 
 
 
@@ -75,11 +88,12 @@ if SERVER then
         local point = data.point
         Trigger:GetByID(id):SetPoint(point, vector)
 
-        Trigger:SyncAll()
+        Trigger:SyncByID(id,player.GetAll())
     end)
 
-
-    timer.Create("Trigger:SyncAll",5,0,function()
+    netstream.Hook("Trigger:SyncAll",function(client)
         Trigger:SyncAll()
     end)
 end
+
+

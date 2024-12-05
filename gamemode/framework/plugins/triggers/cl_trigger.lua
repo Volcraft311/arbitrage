@@ -10,13 +10,13 @@ end)
 
 timer.Create("Trigger:IsPlayerInside",0.3,0,function()
     for k,v in pairs(Trigger.instances) do
-        if v:IsPlayerInside() then
-            if v.isLocalPlayerInside == false then
-                v:PlayerEntered(LocalPlayer())
+        if v.isLocalPlayerInside == false then
+            if v:IsPlayerInside() then
+                v:PlayerEntered()
             end
-        else
-            if v.isLocalPlayerInside == true then
-                v:PlayerExited(LocalPlayer())
+        elseif v.isLocalPlayerInside == true then
+            if !v:IsPlayerInside() then
+                v:PlayerExited()
             end
         end
     end
@@ -38,7 +38,9 @@ end
 
 function Trigger.UpdateToolPanel()
     local tl = Trigger.TriggerList
-    if !tl:IsValid() then return end
+    if tl == nil or !tl:IsValid() then return false end
+    print(tl)
+    tl:ClearSelection()
     local lines = tl:GetLines()
     local triggers = Trigger.instances
 

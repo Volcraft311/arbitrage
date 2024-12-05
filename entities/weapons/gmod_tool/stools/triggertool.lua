@@ -52,6 +52,7 @@ function TOOL:LeftClick(trace)
         local point = 1
         Trigger:GetByID(id):SetPoint(point, vector)
         netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
+        Trigger.UpdateToolPanel()
     end
     Trigger.drawTriggers = true
 end
@@ -65,6 +66,7 @@ function TOOL:RightClick(trace)
         local point = 2
         Trigger:GetByID(id):SetPoint(point, vector)
         netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
+        Trigger.UpdateToolPanel()
     end
     Trigger.drawTriggers = true
 end
@@ -73,41 +75,41 @@ end
 function TOOL:Reload(trace)
     if !IsFirstTimePredicted() then return end
     if SERVER then
-        Trigger:Create({points = {trace.HitPos,trace.HitPos + Vector(5,5,5)}})
+        Trigger:Create({points = {trace.HitPos,trace.HitPos + Vector(5,5,5)},type = 1})
         Trigger:SyncLast()
+    else
+        timer.Simple(0.1,function()
+            Trigger.UpdateToolPanel()
+            Trigger.selectedID = #Trigger.instances
+        end)
     end
     Trigger.drawTriggers = true
-    timer.Simple(0.4,function()
-        Trigger.selectedID = #Trigger.instances
-    end)
     return true
 end
 
 
--- function TOOL:DrawHUD()
---     local triggers = Trigger:GetTriggers()
---     for k,v in pairs(triggers) do
---         -- Если передавать через NetVar таблицы, он не сохраняет текстовые индексы, я ебал
---         local vector = (v[1] + v[2])/2
---         local vScreen = vector:ToScreen()
---         draw.RoundedBox(1,vScreen.x - 20,vScreen.y - 20,40,40,color_text_background)
---         draw.SimpleText(k,"Trebuchet24",vScreen.x,vScreen.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
---     end
+function TOOL:DrawHUD()
+    local triggers = Trigger.instances
+    for k,v in pairs(triggers) do
+        local vector = (v.points[1] + v.points[2])/2
+        local vScreen = vector:ToScreen()
+        draw.RoundedBox(1,vScreen.x - 20,vScreen.y - 20,40,40,color_text_background)
+        draw.SimpleText(k,"Trebuchet24",vScreen.x,vScreen.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+    end
 
---     -- Точки триггера
---     local area = Trigger:GetSelected()
---     if area == nil then return end
---     local point1 = area[1]:ToScreen()
---     local point2 = area[2]:ToScreen()
---     draw.RoundedBox(1,point1.x - 10,point1.y - 10,20,20,color_first_point)
---     draw.RoundedBox(1,point2.x - 10,point2.y - 10,20,20,color_second_point)
+    -- Точки триггера
+    local trigger = Trigger:GetSelected()
+    if trigger == nil then return end
+    local point1 = trigger.points[1]:ToScreen()
+    local point2 = trigger.points[2]:ToScreen()
+    draw.RoundedBox(1,point1.x - 10,point1.y - 10,20,20,color_first_point)
+    draw.RoundedBox(1,point2.x - 10,point2.y - 10,20,20,color_second_point)
 
---     draw.SimpleText("1","Trebuchet24",point1.x,point1.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
---     draw.SimpleText("2","Trebuchet24",point2.x,point2.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
--- end
+    draw.SimpleText("1","Trebuchet24",point1.x,point1.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+    draw.SimpleText("2","Trebuchet24",point2.x,point2.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+end
 
 function TOOL.BuildCPanel(CPanel)
-    Trigger.UpdateToolPanel()
 
     CPanel:AddControl("Header",{
         Description = "Данный инструмент позволяет управлять триггерами."
@@ -121,5 +123,11 @@ function TOOL.BuildCPanel(CPanel)
     TriggerList:SetTall(500)
 
 
+    TriggerList.OnRowSelected = function(panel, index, row)
+        Trigger.selectedID = tonumber(row:GetValue(2))
+    end
+
     Trigger.TriggerList = TriggerList
+
+    Trigger.UpdateToolPanel()
 end

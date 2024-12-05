@@ -3,8 +3,11 @@ TRIGGER.__index = TRIGGER
 TRIGGER.id = 0
 TRIGGER.type = nil
 TRIGGER.name = "undefined_" .. TRIGGER.id
-TRIGGER.points = {Vector(0,0,0),Vector(5,5,5)}
+TRIGGER.points = {vector_origin,Vector(5,5,5)}
 TRIGGER.isLocalPlayerInside = false
+TRIGGER.actionList = {}
+
+TRIGGER.playerTriggerOffset = Vector(0,0,40)
 
 
 local box_color1 = Color(0,255,55)
@@ -34,20 +37,26 @@ function TRIGGER:IsPlayerInside(client)
     if CLIENT and !client then
         client = LocalPlayer()
     end
-    return client:GetPos():WithinAABox(self.points[1],self.points[2])
+    local _playerpos = client:GetPos() + TRIGGER.playerTriggerOffset
+    return _playerpos:WithinAABox(self.points[1],self.points[2])
 end
 
 function TRIGGER:PlayerEntered(client)
-    print("Player entered")
     netstream.Start("Trigger:PlayerEntered",self.id)
-    TRIGGER.isLocalPlayerInside = true
+    self.isLocalPlayerInside = true
+    print("Player entered")
+    Trigger.typeList[self.type].OnEnter(client)
+
 end
 
 function TRIGGER:PlayerExited(client)
-    print("Player exited")
     netstream.Start("Trigger:PlayerExited",self.id)
-    TRIGGER.isLocalPlayerInside = false
+    self.isLocalPlayerInside = false
+    print("Player exited")
+    Trigger.typeList[self.type].OnExit(client)
 end
+
+
 
 if SERVER then
     function TRIGGER:Sync(clients)
@@ -57,8 +66,9 @@ if SERVER then
 else
     function TRIGGER:Draw()
         render.SetColorMaterial()
-        render.DrawBox(Vector(0,0,0),Angle(0,0,0),self.points[1],self.points[2],box_color2)
-        render.DrawWireframeBox(Vector(0,0,0),Angle(0,0,0),self.points[1],self.points[2],box_color1)
+        render.DrawBox(vector_origin,angle_zero,self.points[1],self.points[2],box_color2)
+        render.DrawWireframeBox(Vector(0,0,0),angle_zero,self.points[1],self.points[2],box_color1)
+        --render.DrawBox(LocalPlayer():GetPos() + TRIGGER.playerTriggerOffset,angle_zero,Vector(5,5,5),Vector(-5,-5,-5),Color(255,255,255))
     end
 end
 

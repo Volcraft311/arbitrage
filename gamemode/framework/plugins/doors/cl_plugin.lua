@@ -417,7 +417,6 @@ function PLUGIN:CalculateDoorPosition(door, reversed)
 		if reverse then
 			traceData.start = traceData.endpos - (door:GetRight() * length)
 		else
-
 			traceData.start = traceData.endpos + (door:GetRight() * length)
 		end
 	end
@@ -522,14 +521,14 @@ asterionlib.entscollector:AddTrack("doors", {
 	delay_apply = 3,
 	onCanTrack = function(entity)
 		return entity:IsDoor()
-	end, 
+	end,
 	onCanApply = function(entity)
 		local distance = entity:GetPos():DistToSqr(EyePos())
-	    if distance > 1000000 then return false end
-	    
-	    local data = entity:GetNetVar("arb.image", {})
+		if distance > 1000000 then return false end
+
+		local data = entity:GetNetVar("arb.image", {})
 		if #data <= 0 then return false end
-		
+
 		local info = {}
 		for k, v in ipairs(data) do
 			local faction = Character.team:GetByID(v)
@@ -537,10 +536,10 @@ asterionlib.entscollector:AddTrack("doors", {
 
 			info[#info + 1] = Material(faction:GetAssets().pixel)
 		end
-		
+
 		doors_info[entity] = info
 
-	    return true
+		return true
 	end
 })
 
@@ -552,9 +551,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 	cam_Start3D(eyePos, eyeAngle)
 		for k, entity in ipairs(data) do
 		    if !IsValid(entity) then continue end
-		    
-			local data = doors_info[entity]
-			self:DrawDoorText(entity, eyePos, eyeAngles, data)
+
+			local info = doors_info[entity]
+			self:DrawDoorText(entity, eyePos, eyeAngles, info)
 		end
 	cam_End3D()
 end

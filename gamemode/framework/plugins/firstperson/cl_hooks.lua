@@ -104,6 +104,15 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 	if !self.isAllow then return end
 
+	local cameraPos = nil
+	local character = Character.team.instances[client:Team()]
+	if character then
+		local characterCameraPos = character.cameraPos
+		if characterCameraPos then
+			cameraPos = characterCameraPos
+		end
+	end
+
 	eyeAtt = client:GetAttachment(client:LookupAttachment("eyes"))
 	local forwardVec = client:GetAimVector()
 	local FT = RealFrameTime()
@@ -157,6 +166,10 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 		value = math_Clamp(value, -8, 8)
 		fovShift = Lerp(FrameTime() * 3, fovShift, value)
+
+		if cameraPos then
+			view.origin = view.origin + cameraPos
+		end
 
 		view.fov = fov + fovShift
 

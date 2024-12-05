@@ -199,7 +199,8 @@ Character.team:Create({
     scale = 1.008,
     hullscale = 1,
     hullduckscale = 1.292,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    cameraPos = Vector(0, 0, -5)
 })
 
 Character.team:Create({

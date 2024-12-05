@@ -74,10 +74,8 @@ local function allow()
 	local class = weapon:GetClass()
 	if !class then return true end
 
-	if class == "academy_first" then
-		if weapon:GetAttack() then
-			return false
-		end
+	if class == "academy_first" and weapon:GetAttack() then
+		return false
 	end
 
 	local bThirdPerson = select(3, client:GetAction())
@@ -152,7 +150,6 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		view.angles = CurView
 
 		local shift = client:GetVelocity():Length2D() * 0.02
-
 		local value = 0
 		if client:KeyDown(IN_FORWARD) then
 			value = shift
@@ -182,17 +179,6 @@ function PLUGIN:Think()
 	if !self.isAllow then return end
 
 	local client = LocalPlayer()
-	client.BuildBonePositions = function(client, numbon, numphysbon)
-		local bone = client:LookupBone("ValveBiped.Bip01_Head1")
-		local matrix = client:GetBoneMatrix(bone)
-
-		if matrix then
-			matrix:Scale(Vector(0.001, 0.001, 0.001))
-			matrix:Translate(Vector(0, 0, 0))
-			client:SetBoneMatrix(bone, matrix)
-		end
-	end
-
 	if eyeAtt then
 		local forwardVec = client:GetAimVector()
 
@@ -202,7 +188,6 @@ function PLUGIN:Think()
 		tr.filter = client
 
 		local trace = util_TraceLine(tr)
-
 		if trace.Hit then
 			traceHit = true
 		else

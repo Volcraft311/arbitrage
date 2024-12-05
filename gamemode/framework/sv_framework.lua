@@ -638,45 +638,6 @@ function Arbitrage:PlayerInitialSpawn(client)
     end)
 end
 
-function Arbitrage:ExtractArgs(text)
-    local skip = 0
-    local arguments = {}
-    local curString = ""
-
-    for i = 1, text:utf8len() do
-        if (i <= skip) then continue end
-
-        local c = text:utf8sub(i, i)
-
-        if (c == "\"") then
-            local match = text:utf8sub(i):match("%b\"\"")
-
-            if (match) then
-                curString = ""
-                skip = i + match:utf8len()
-                arguments[#arguments + 1] = match:utf8sub(2, -2)
-            else
-                curString = curString .. c
-            end
-        elseif (c == " " and curString != "") then
-            arguments[#arguments + 1] = curString
-            curString = ""
-        else
-            if (c == " " and curString == "") then
-                continue
-            end
-
-            curString = curString .. c
-        end
-    end
-
-    if (curString != "") then
-        arguments[#arguments + 1] = curString
-    end
-
-    return arguments
-end
-
 function Arbitrage:PlayerSay(client, data)
     hook.Run("ChatAddText", client, data)
 

@@ -91,4 +91,4 @@ RegisterCommand("guard", "Выдать права администрирован
 RegisterCommand("unguard", "Забрать права администратора указанного игрока.", {"player"})
 
 RegisterCommand("restartserver", "Перезапустить сервер через указанное время.", {"number"})
-RegisterCommand("unrestartserver", "Отменить перезапуск сервера.", {"number"})
+RegisterCommand("unrestartserver", "Отменить перезапуск сервера.")

@@ -516,9 +516,11 @@ timer.Simple(1, function()
         OnAction = function(client, target, delay)
             if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
 
-            delay = asterionlib.IsoDurationToSeconds(delay)
+            local time = asterionlib.IsoDurationToSeconds(delay)
+            target:SetDynamicUserGroup("guard", time)
 
-            target:SetDynamicUserGroup("guard", delay)
+            Arbitrage.commands.Notify(client, "Вы выдали админские права " .. target:FullName(true) .. " на " .. delay .. "!")
+            Arbitrage.commands.Notify(target, "Вам были выданы админские права на " .. delay .. "!")
         end
     })
 
@@ -535,6 +537,9 @@ timer.Simple(1, function()
             if !target:IsAdmin() then return Arbitrage.commands.Notify(client, "Данный пользователь не имеет прав администрирования!") end
 
             target:SetDynamicUserGroup("user")
+
+            Arbitrage.commands.Notify(client, "Вы сняли админские права с " .. target:FullName(true) .. "!")
+            Arbitrage.commands.Notify(target, "С вас были сняты админские права!")
         end
     })
 

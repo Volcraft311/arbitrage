@@ -75,9 +75,10 @@ end
 
 local groupData = {
     founder = "Владелец",
-    superadmin = "Супер администратор",
-    admin = "Администратор",
-    gamemaster = "Игровой мастер"
+    curator = "Куратор",
+    gamemaster = "Игровой мастер",
+    guard = "Администратор",
+    developer = "Разработчик"
 }
 
 local function getGroupName(name)

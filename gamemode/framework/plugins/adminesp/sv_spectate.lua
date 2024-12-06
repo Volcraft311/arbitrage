@@ -105,12 +105,6 @@ concommand.Add("spectate", function(client, cmd, args)
 	PLUGIN:Spec(client, target)
 end)
 
-function PLUGIN:InitPostEntity()
-	if serverguard then
-	    serverguard.command:Remove("spectate")
-	end
-end
-
 local dist = 325
 function PLUGIN:ChatAddText(client, message)
 	for k, v in ipairs(player.GetAdmins()) do

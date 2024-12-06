@@ -21,6 +21,9 @@ function Arbitrage.commands.RunCommand(client, command, data)
         local args = data
         table.insert(args, 1, client)
 
+        local newargs = {}
+        newargs[1] = args[1]
+
         if commandData.arguments and istable(commandData.arguments) and commandData.OnAction then
             local state = {false, "", 1}
 
@@ -30,7 +33,7 @@ function Arbitrage.commands.RunCommand(client, command, data)
 
                 if commandData.arguments[index] then
                     local _type = commandData.arguments[index].type
-                    local returnArgs = Arbitrage.commands.types[_type](dataArg, args)
+                    local returnArgs = Arbitrage.commands.types[_type](dataArg, args, i)
 
                     if !returnArgs then
                         local a = index .. "(" .. commandData.arguments[index].name .. ")"
@@ -39,17 +42,11 @@ function Arbitrage.commands.RunCommand(client, command, data)
                         break
                     end
 
-                    if _type == "text" then
-                        local newargs = {}
-
-                        newargs[1] = args[1]
-                        newargs[2] = returnArgs
-
-                        args = newargs
-                        break
-                    end
+                    newargs[i] = returnArgs
                 end
             end
+
+            args = newargs
 
             if !state[1] then
                 for i = 1, #commandData.arguments do
@@ -67,6 +64,12 @@ function Arbitrage.commands.RunCommand(client, command, data)
 
             if !state[1] then
                 commandData.OnAction(unpack(args))
+
+                if Arbitrage.commands.data[command] and Arbitrage.commands.data[command].bNoLog != true then
+                    table.remove(args, 1)
+
+                    hook.Run("OnCommandRun", client, command, args)
+                end
             else
                 Arbitrage.commands.Notify(client, Arbitrage.commands.fault[state[3]], " ", Color(216, 61, 61), state[2], color_white, "!")
             end
@@ -78,21 +81,21 @@ end
 
 function Arbitrage.commands.PlayerSay(client, data)
     local char = utf8.sub(data, 1, 1)
+    local bRusCommand = char == "."
 
-    if char == Arbitrage.commands.syntex then
+    if char == Arbitrage.commands.syntex or bRusCommand then
         data = utf8.sub(data, 2, utf8.len(data))
 
         local extra = Arbitrage:ExtractArgs(data)
 
-        local command = extra[1]
+        local command = extra[1]:utf8lower()
         table.remove(extra, 1)
 
-        if serverguard.command.stored[command:lower()] then
-            table.insert(extra, 1, command)
-            netstream.Start(client, "arb.SendCommand", "sg", extra)
-        else
-            Arbitrage.commands.RunCommand(client, command, extra)
+        if bRusCommand then
+            command = Arbitrage.commands.ConvertRusToEng(command)
         end
+
+        Arbitrage.commands.RunCommand(client, command, extra)
     else
         if !client:oldAlive() then return "" end
 

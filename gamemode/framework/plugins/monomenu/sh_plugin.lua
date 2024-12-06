@@ -57,23 +57,6 @@ end
 --[[
     ИГРОВЫЕ ФУНКЦИИ
 ]]--
-MonoMenu:AddGameFunction("Система авторизации", "icon16/key.png", {
-    isCheckBox = true,
-    onEnable = function(client)
-        if CLIENT then return end
-
-        AuthGenerateToken(client)
-    end,
-    onDisable = function(client)
-        if CLIENT then return end
-
-        AuthResetToken(client)
-    end,
-    OnCheck = function(client)
-        return GetNetVar("authenable")
-    end
-})
-
 MonoMenu:AddGameFunction("Игра запущена", "icon16/control_play_blue.png", {
     isCheckBox = true,
     onEnable = function(client)

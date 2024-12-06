@@ -32,7 +32,8 @@ for _, command in ipairs({"me"}) do
                 if client:IsSpectate() then return end
 
                 Arbitrage.chat.SendCommand("me" .. subcommand, client, text)
-            end
+            end,
+            bNoLog = true
         })
     end
 end
@@ -68,7 +69,8 @@ for _, command in ipairs({"try"}) do
                 if client:IsSpectate() then return end
 
                 try(client, text, command .. subcommand)
-            end
+            end,
+            bNoLog = true
         })
     end
 end
@@ -85,7 +87,8 @@ Arbitrage.commands.Add("w", {
         if client:IsSpectate() then return end
 
         Arbitrage.chat.SendCommand("whispers", client, text)
-    end
+    end,
+    bNoLog = true
 })
 
 Arbitrage.commands.Add("y", {
@@ -100,7 +103,8 @@ Arbitrage.commands.Add("y", {
         if client:IsSpectate() then return end
 
         Arbitrage.chat.SendCommand("yell", client, text)
-    end
+    end,
+    bNoLog = true
 })
 
 for _, command in ipairs({"it", "do"}) do
@@ -117,7 +121,8 @@ for _, command in ipairs({"it", "do"}) do
                 if client:IsSpectate() then return end
 
                 Arbitrage.chat.SendCommand("it" .. subcommand, client, text)
-            end
+            end,
+            bNoLog = true
         })
     end
 end
@@ -132,7 +137,8 @@ Arbitrage.commands.Add("looc", {
     },
     OnAction = function(client, text)
         Arbitrage.chat.SendCommand("looc", client, text)
-    end
+    end,
+    bNoLog = true
 })
 
 Arbitrage.commands.Add("ooc", {
@@ -149,37 +155,56 @@ Arbitrage.commands.Add("ooc", {
         end
 
         Arbitrage.chat.SendCommand("ooc", client, text)
-    end
+    end,
+    bNoLog = true
 })
 
-Arbitrage.commands.Add("broadcast", {
-    arguments = {
-        [1] = {
-            name = "Текст",
-            type = "text",
-            important = true
+for _, command in ipairs({"broadcast", "announce", "global"}) do
+    Arbitrage.commands.Add(command, {
+        arguments = {
+            [1] = {
+                name = "Текст",
+                type = "text",
+                important = true
+            },
         },
-    },
-    OnAction = function(client, text)
-        if !client:IsAdmin() then return end
+        OnAction = function(client, text)
+            if !client:IsAdmin() then return end
 
-        Arbitrage.chat.SendCommand("broadcast", client, text)
-    end
-})
+            Arbitrage.chat.SendCommand("broadcast", client, text)
+        end,
+        bNoLog = true
+    })
+end
+
+for _, command in ipairs({"event", "eventlocal"}) do
+    Arbitrage.commands.Add(command, {
+        arguments = {
+            [1] = {
+                name = "Текст",
+                type = "text",
+                important = true
+            },
+        },
+        OnAction = function(client, text)
+            if !client:IsAdmin() then return end
+
+            Arbitrage.chat.SendCommand(command, client, text)
+        end,
+        bNoLog = true
+    })
+end
 
 Arbitrage.commands.Add("sg", {
     arguments = {
         [1] = {
             name = "Игрок",
-            type = "string",
+            type = "player",
             important = true
         }
     },
     OnAction = function(client, target)
         if !client:IsAdmin() then return end
-
-        target = player.GetByIdentifier(target)
-        if !IsValid(target) then return end
 
         local client_name = client:SteamName()
         local client_steamid = client:SteamID()
@@ -264,7 +289,8 @@ Arbitrage.commands.Add("roll", {
         end
 
         Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из " .. maxRand .. ".")
-    end
+    end,
+    bNoLog = true
 })
 
 Arbitrage.commands.Add("editor", {
@@ -347,7 +373,8 @@ Arbitrage.commands.Add("sitting", {
                 end
             end
         end
-    end
+    end,
+    bNoLog = true
 })
 
 Arbitrage.commands.Add("mood", {
@@ -377,7 +404,8 @@ Arbitrage.commands.Add("mood", {
 
             Arbitrage.commands.Notify(client, "Вы успешно изменили себе настроение на: " .. name .. "(" .. id .. ")!")
         end
-    end
+    end,
+    bNoLog = true
 })
 
 Arbitrage.commands.Add("lookaround", {
@@ -434,7 +462,8 @@ Arbitrage.commands.Add("spectate", {
         end
 
         AdminESP:Spec(client, target)
-    end
+    end,
+    bNoLog = true
 })
 
 Arbitrage.commands.Add("fallover", {
@@ -641,36 +670,19 @@ end
 function Arbitrage:PlayerSay(client, data)
     hook.Run("ChatAddText", client, data)
 
-    if data:sub(1, 1) == "!" or data:sub(1, 1) == "~" or data:sub(1, 1) == "@" then
-        local message = utf8.sub(data, 2, utf8.len(data))
+    local command = data:utf8sub(1, 2):utf8lower()
+
+    if ((command == "//" or command == "..") or (command == "[[" or command == "хх") or (command == "./" or command == "ю.")) and data:utf8sub(1, 3) != "..." then
+        local message = utf8.sub(data, 3, utf8.len(data))
         local extra = Arbitrage:ExtractArgs(message)
 
-        if data:sub(1, 1) == "@" then
-            table.insert(extra, 1, client:IsAdmin() and "a" or "help")
-        end
+        local rep = (command == "//" or command == "..") and "ooc" or "looc"
 
-        local command = extra[1]
-        table.remove(extra, 1)
-
-        serverguard.command.Run(client, command, data:sub(1, 1) == "~", unpack(extra))
+        Arbitrage.commands.RunCommand(client, rep, extra)
         return ""
     end
 
-    if Arbitrage.commands then
-        local command = data:sub(1, 2)
-
-        if command == "//" or command == "[[" or command == "./" then
-            local message = utf8.sub(data, 3, utf8.len(data))
-            local extra = Arbitrage:ExtractArgs(message)
-
-            local rep = command == "//" and "ooc" or "looc"
-
-            Arbitrage.commands.RunCommand(client, rep, extra)
-            return ""
-        end
-
-        return Arbitrage.commands.PlayerSay(client, data)
-    end
+    return Arbitrage.commands.PlayerSay(client, data)
 end
 
 
@@ -992,13 +1004,13 @@ function CCGiveSWEP(client, command, arguments)
     if swep == nil then return end
 
     if ((!swep.Spawnable and !client:IsAdmin()) or (swep.AdminOnly and !client:IsAdmin())) then
-    	return
+        return
     end
 
     if (!gamemode.Call("PlayerGiveSWEP", client, arguments[1], swep)) then return end
 
     if (!client:HasWeapon(swep.ClassName)) then
-    	client:Give(swep.ClassName)
+        client:Give(swep.ClassName)
     end
 
     client:SelectWeapon(swep.ClassName)

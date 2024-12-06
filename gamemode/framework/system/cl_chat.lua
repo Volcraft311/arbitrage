@@ -16,11 +16,18 @@ Arbitrage.chat = Arbitrage.library.Add("chat")
 netstream.Hook("arb.chatCommandCreate", function(client, name, data)
     if !data then return end
 
-    if Arbitrage.chat.List[name] and Arbitrage.chat.List[name].UseIcon then
-        local mat = Arbitrage.chat:GetIcon(client)
+    local info = Arbitrage.chat.List[name]
+    if info then
+        if info.UseAvatar then
+            table.insert(data, 1, client:Avatar())
+        end
 
-        if mat then
-            table.insert(data, 1, mat)
+        if info.UseIcon then
+            local mat = Arbitrage.chat:GetIcon(client)
+
+            if mat then
+                table.insert(data, 1, mat)
+            end
         end
     end
 

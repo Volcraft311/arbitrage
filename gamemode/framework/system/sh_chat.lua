@@ -22,27 +22,11 @@ Arbitrage.chat.Colors = {
 }
 
 function Arbitrage.chat:GetIcon(client)
-    local mat = Material
+    local icon = client:GetIcon()
 
-    if IsValid(client) then
-        if client.SteamID and client:SteamID() == "STEAM_0:1:127526733" then
-            return mat("icon16/application_osx_terminal.png")
-        elseif client:GetUserGroup() == "founder" then
-            return mat("icon16/key.png")
-        elseif client:GetUserGroup() == "superadmin" then
-            return mat("icon16/award_star_gold_1.png")
-        elseif client:GetUserGroup() == "gamemaster" then
-            return mat("icon16/cog.png")
-        elseif client:GetUserGroup() == "tester" then
-            return mat("icon16/lock.png")
-        elseif client:IsSuperAdmin() then
-            return mat("icon16/award_star_gold_1.png")
-        elseif client:IsAdmin() then
-            return mat("icon16/medal_gold_2.png")
-        end
+    if icon then
+        return Material(icon)
     end
-
-    return mat("icon16/user.png")
 end
 
 local function getDist()
@@ -295,12 +279,38 @@ Arbitrage.chat.List = {
     ["broadcast"] = {
         Color = Color(216, 62, 62),
         OnCreate = function(client, sender, data)
-            return chatColor("broadcast"), "[Уведомление] ", Arbitrage.chat.Colors.other, format(data[1], true, nil)
+            return chatColor("broadcast"), "[Уведомление] ", Arbitrage.chat.Colors.other, format(data[1], true, true)
         end,
         OnSend = function(client, name, data)
             if !data then return end
 
             for k, v in ipairs(player.GetAll()) do
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["event"] = {
+        Color = Color(216, 131, 62),
+        OnCreate = function(client, sender, data)
+            return chatColor("event"), format(data[1], true, true)
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in ipairs(player.GetAll()) do
+                Arbitrage.chat.SendClient(v, client, name, data)
+            end
+        end
+    },
+    ["eventlocal"] = {
+        Color = Color(216, 193, 62),
+        OnCreate = function(client, sender, data)
+            return chatColor("eventlocal"), format(data[1], true, true)
+        end,
+        OnSend = function(client, name, data)
+            if !data then return end
+
+            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -398,7 +408,64 @@ Arbitrage.chat.List = {
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
-    }
+    },
+    ["pm"] = {
+        Color = Color(42, 151, 51),
+        OnCreate = function(client, sender, target, message)
+            local bSpectate = sender:IsSpectate()
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
+
+            print(message)
+
+            return chatColor("pm"), "[Личное сообщение] ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
+        end,
+        OnSend = function(client, name, data)
+            local target = data[1]
+            local message = data[2]
+
+            Arbitrage.chat.SendClient(target, client, "pm", target, message)
+            Arbitrage.chat.SendClient(client, client, "pm", target, message)
+        end,
+        UseIcon = true
+    },
+    ["admin"] = {
+        Color = Color(255, 0, 0),
+        OnCreate = function(client, sender, data)
+            local bSpectate = sender:IsSpectate()
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
+
+            return chatColor("admin"), "[Чат администрации] ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
+        end,
+        OnSend = function(client, name, data)
+            for k, v in ipairs(player.GetAll()) do
+                if v:IsAdmin() then
+                    Arbitrage.chat.SendClient(v, client, "admin", data)
+                end
+            end
+        end,
+        UseIcon = true
+    },
+    ["help"] = {
+        Color = Color(250, 208, 208),
+        OnCreate = function(client, sender, data)
+            local bSpectate = sender:IsSpectate()
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
+
+            return chatColor("help"), "[Помощь] ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
+        end,
+        OnSend = function(client, name, data)
+            for k, v in ipairs(player.GetAll()) do
+                if v:IsAdmin() and client != v then
+                    Arbitrage.chat.SendClient(v, client, "help", data)
+                end
+            end
+
+            Arbitrage.chat.SendClient(client, client, "help", data)
+        end
+    },
 }
 
 function Arbitrage.chat.SendCommand(name, client, ...)
@@ -408,7 +475,7 @@ function Arbitrage.chat.SendCommand(name, client, ...)
 
     local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, data))
 
-    if serverguard and tableData and istable(tableData) then
+    if tableData and istable(tableData) then
         local str = ""
         for k, v in ipairs(tableData) do
             if isstring(v) then
@@ -416,7 +483,7 @@ function Arbitrage.chat.SendCommand(name, client, ...)
             end
         end
 
-        serverguard.Log(("<%s> (%s) -> %s"):format(client:SteamID(), name, str))
+        hook.Run("OnChatSay", client, name, str)
     end
 end
 
@@ -427,11 +494,11 @@ function Arbitrage.chat.UnPackMessage(...)
     return data
 end
 
-function Arbitrage.chat.SendClient(client, sender, name, data)
+function Arbitrage.chat.SendClient(client, sender, name, ...)
     if !IsValid(client) then return end
     if !client:IsPlayer() then return end
 
-    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(client, sender, data))
+    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(client, sender, ...))
 
     if tableData and istable(tableData) then
         netstream.Start(client, "arb.chatCommandCreate", sender, name, tableData)

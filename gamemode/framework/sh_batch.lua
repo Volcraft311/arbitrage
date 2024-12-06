@@ -88,57 +88,40 @@ function Arbitrage.Initialize()
 			Arbitrage.GM[v] = permissionFunc
 		end
 
-		Arbitrage.GM.CanEditVariable = function(_, entity, client)
-			return client:IsAdmin()
-		end
-
-		Arbitrage.GM.PhysgunPickup = function(_, client, entity)
-			if entity.PhysgunDisabled then return false end
-
-			if client:IsAdmin() then
-				return true
-			end
-		end
-
-		Arbitrage.GM.CanTool = function(_, client)
-			if client:IsAdmin() then
-				return true
-			end
-		end
-
+		Arbitrage.GM.CanEditVariable = zero
+		Arbitrage.GM.PhysgunPickup = zero
+		Arbitrage.GM.CanTool = zero
 		Arbitrage.GM.SetupMove = zero
 		Arbitrage.GM.FinishMove = zero
 		Arbitrage.GM.Move = zero
 
-		if serverguard then
-			timer.Simple(1, function()
-				local data = {
-					PlayerSpawnEffect = "restrictions.PlayerSpawnEffect",
-					PlayerSpawnNPC = "restrictions.PlayerSpawnNPC",
-					PlayerSpawnProp = "restrictions.PlayerSpawnProp",
-					PlayerSpawnRagdoll = "restrictions.PlayerSpawnRagdoll",
-					PlayerSpawnSENT = "restrictions.PlayerSpawnSENT",
-					PlayerSpawnSWEP = "restrictions.PlayerSpawnSWEP",
-					PlayerSpawnVehicle = "restrictions.PlayerSpawnVehicle",
-					PostGamemodeLoaded = "restrictions.PostGamemodeLoaded"
-				}
+		timer.Simple(1, function()
+			local data = {
+				PlayerSpawnEffect = "restrictions.PlayerSpawnEffect",
+				PlayerSpawnNPC = "restrictions.PlayerSpawnNPC",
+				PlayerSpawnProp = "restrictions.PlayerSpawnProp",
+				PlayerSpawnRagdoll = "restrictions.PlayerSpawnRagdoll",
+				PlayerSpawnSENT = "restrictions.PlayerSpawnSENT",
+				PlayerSpawnSWEP = "restrictions.PlayerSpawnSWEP",
+				PlayerSpawnVehicle = "restrictions.PlayerSpawnVehicle",
+				PostGamemodeLoaded = "restrictions.PostGamemodeLoaded"
+			}
 
-				for k, v in ipairs(data) do
-					hook.Remove(k, v)
-				end
+			for k, v in ipairs(data) do
+				hook.Remove(k, v)
+			end
 
-				local meta = FindMetaTable("Player")
-				if meta.oldCheckLimit then
-					function meta:CheckLimit(str)
-						if self:IsAdmin() then
-							return true
-						end
-
-						return self:oldCheckLimit(str)
+			local meta = FindMetaTable("Player")
+			if meta.oldCheckLimit then
+				function meta:CheckLimit(str)
+					if self:IsAdmin() then
+						return true
 					end
+
+					return self:oldCheckLimit(str)
 				end
-			end)
-		end
+			end
+		end)
 
 		Arbitrage.util.WriteMessage("The gamemode '" .. engine.ActiveGamemode() .. "' was started!")
 	end

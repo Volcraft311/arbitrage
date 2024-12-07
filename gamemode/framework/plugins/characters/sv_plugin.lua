@@ -38,6 +38,7 @@ local function getInfoTeam(data)
 	    	walk = tonumber(data.speed_walk),
 	    	run = tonumber(data.speed_run)
 	    },
+	    color = data.color,
 	    needs = {
 	    	hunger = tonumber(data.needs_hunger),
 	    	thirst = tonumber(data.needs_thirst),

@@ -27,7 +27,7 @@ RegisterCommand("tp", "Телепортировать игрока туда ку
 RegisterCommand("pm", "Написать пользователю в личные сообщения.", {"player", "text"})
 RegisterCommand("return", "Вернуть игрока на прошлую точку до телепортации.", {"player"})
 
-for _, command in ipairs({"unanonymous", "unincognito", "returnrank"}) do
+for _, command in ipairs({"unanonymous", "unincognito", "returnrank", "rr"}) do
     RegisterCommand(command, "Вернуть себе права равные статическому рангу.", {})
 end
 

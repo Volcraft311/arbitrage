@@ -137,7 +137,7 @@ timer.Simple(1, function()
         end
     })
 
-    for _, command in ipairs({"unanonymous", "unincognito", "returnrank"}) do
+    for _, command in ipairs({"unanonymous", "unincognito", "returnrank", "rr"}) do
         Arbitrage.commands.Add(command, {
             arguments = {},
             OnAction = function(client)
@@ -555,7 +555,7 @@ timer.Simple(1, function()
             if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
             if bServerRestart then return Arbitrage.commands.Notify(client, "Сервер уже получил запрос на его перезапуск!") end
 
-            delay = delay or 10
+            delay = delay or 30
 
             local adminName = client:FullName(true)
 

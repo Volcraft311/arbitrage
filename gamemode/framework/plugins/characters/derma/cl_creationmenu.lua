@@ -396,27 +396,25 @@ function PANEL:Init()
 
 		for k, v in pairs(self.panels or {}) do
 			if IsValid(v) then
-				local text = v:GetValue(v)
-				if k != "uniqueID" and (string.Trim(text) == "") then
+				local text = v:GetValue()
+				if k != "uniqueID" and isstring(text) and (string.Trim(text) == "") then
 					local holder = v:GetPlaceholderText()
-
 					text = utf8.sub(holder, 0, utf8.len(holder) - 1)
 				end
 
 				if tonumber(text) then
 					text = tonumber(text)
 				end
-
 				data[k] = text
 			end
 		end
 
+
 		for k, v in pairs(data) do
-			if string.Trim(v) == "" then
+			if isstring(v) and string.Trim(v) == "" then
 				data[k] = nil
 			end
 		end
-
 		if !data.uniqueID then return end
 
 		netstream.Start(self.isedit and infoTable[1].net.edit or infoTable[1].net.add, data)
@@ -496,6 +494,14 @@ function PANEL:Init()
 			default = 33
 		},
 		{
+			variable = "color",
+			title = "Цвет персонажа",
+			default = Color(0,0,0),
+			get = function(char)
+				return char.color
+			end
+		},
+		{
 			variable = "needs_thirst",
 			get = function(char)
 				return char.needs.thirst
@@ -521,12 +527,16 @@ function PANEL:Init()
 	self.panels = {}
 	local indent = string.rep(" ", 3)
 
-	local _size = H(68)
+
+
+
+	local _size = H(60)
+
 	for k, v in ipairs(data) do
 		local panel = self.main:Add("Panel")
 		panel:SetTall(_size)
 		panel:Dock(TOP)
-		panel:DockMargin(0, H(5), 0, 0)
+		panel:DockMargin(0, H(2), 0, 0)
 
 		local title = panel:Add("DLabel")
 		title:SetText(indent .. v.title)
@@ -535,24 +545,56 @@ function PANEL:Init()
 		title:Dock(TOP)
 		title:SizeToContents()
 
-		local default = panel:Add("DLabel")
-		default:SetText(indent .. "Пример: " .. v.default)
-		default:SetFont("arb.Font_FuturaPTBook_7")
-		default:SetTextColor(Color(150, 150, 150))
-		default:Dock(TOP)
-		default:SizeToContents()
+		-- Мне пришлось это наговнокодить, ибо переписывать систему не особо горю желанием (c) Volcraft
+		if v.variable != "color" then
 
-		local entry = panel:Add("DTextEntry")
-		entry:Dock(FILL)
-		entry:DockMargin(5, 0, 5, 0)
-		entry:SetPlaceholderText(v.default .. " ")
-		entry:SetFont("arb.Font_FuturaPTBook_8")
+			local default = panel:Add("DLabel")
+			default:SetText(indent .. "Пример: " .. v.default)
+			default:SetFont("arb.Font_FuturaPTBook_7")
+			default:SetTextColor(Color(150, 150, 150))
+			default:Dock(TOP)
+			default:SizeToContents()
 
-		if v.get then
-			entry.get = v.get
+			local entry = panel:Add("DTextEntry")
+			entry:Dock(FILL)
+			entry:DockMargin(5, 0, 5, 0)
+			entry:SetPlaceholderText(v.default .. " ")
+			entry:SetFont("arb.Font_FuturaPTBook_8")
+			if v.get then
+				entry.get = v.get
+			end
+			self.panels[v.variable] = entry
+		else
+			local colorbutton = panel:Add("DButton")
+			colorbutton:Dock(FILL)
+			colorbutton:SetText("Выбрать цвет")
+			colorbutton:DockMargin(50, 0, 50, 0)
+
+			local DColorButton = colorbutton:Add( "DColorButton" )
+			DColorButton:Dock(LEFT)
+
+			DColorButton.SetValue = DColorButton.SetColor
+			DColorButton.GetPlaceholderText = DColorButton.GetColor
+			DColorButton.GetValue = DColorButton.GetColor
+
+			colorbutton.DoClick = function()
+				local _frame = vgui.Create("DFrame")
+				_frame:SetSize( 300, 300 )
+				_frame:Center()
+				_frame:MakePopup()
+
+				local DermaColorCombo = _frame:Add( "DColorCombo")
+				DermaColorCombo:SetPos( 5, 30 )
+				DermaColorCombo:SetColor( Color( 255, 255, 255 ) )
+
+				function DermaColorCombo:OnValueChanged( col )
+					DColorButton:SetValue( col )
+				end
+			end
+			self.panels["color"] = DColorButton
+
 		end
 
-		self.panels[v.variable] = entry
 	end
 
 	local tall = _size * #data + H(80) + (H(5) * #data)
@@ -571,7 +613,6 @@ function PANEL:SetUniqueID(uniqueID)
 
 		for var, panel in pairs(self.panels or {}) do
 			local value = panel.get and panel.get(faction) or faction[var]
-
 			panel:SetValue(value)
 		end
 

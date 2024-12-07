@@ -28,6 +28,8 @@ function InventoryBase.Open(client, id, name)
 
     inventory:Sync(client)
     netstream.Start(client, "InventoryBase:OpenInventory", id, name)
+
+    hook.Run("OnInventoryOpen", client, inventory)
 end
 
 function InventoryBase:PlayerDeath(client)

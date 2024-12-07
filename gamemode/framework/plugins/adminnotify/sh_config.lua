@@ -12,21 +12,7 @@
 ]]--
 
 local PLUGIN = PLUGIN
-
 PLUGIN.guiTime = 30
-
-PLUGIN.groupAccess = {
-    ["owner"] = true,
-    ["founder"] = true,
-    ["superadmin"] = true,
-    ["admin"] = true,
-    ["senior_administrator"] = true,
-    ["regular_administrator"] = true,
-    ["junior_administrator"] = true,
-    ["gamemaster"] = true,
-    ["game_master"] = true,
-    ["guard"] = true
-}
 
 PLUGIN:AddNewNotify("killed", function(client, target, weapon)
     return Color(223, 66, 66), client, color_white, " убил игрока ", Color(74, 114, 202), target, color_white, weapon and (" при помощи " .. weapon) or ""

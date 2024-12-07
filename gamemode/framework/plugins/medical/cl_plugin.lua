@@ -70,5 +70,5 @@ netstream.Hook("Medical:AddTemporaryStatusEffect", function(uniqueID, delay)
 end)
 
 netstream.Hook("Medical:RemoveTemporaryStatusEffect", function(uniqueID)
-	Medical:RemoveTemporaryStatusEffect(uniqueID, delay)
+	Medical:RemoveTemporaryStatusEffect(uniqueID)
 end)

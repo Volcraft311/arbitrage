@@ -77,7 +77,7 @@ do
 			end
 		end
 
-		self:SetNetVar("t_status_effects", {}, Medical:GetRecivers(self))
+		self:SetNetVar("t_status_effects", {})
 
 		return ("Вы успешно удалили все статус эффекты с игрока '%s'!"):format(self:FullName())
 	end
@@ -126,7 +126,7 @@ do
 		info.stored[index] = {}
 
 		data[uniqueID] = delay
-		self:SetNetVar("t_status_effects", data, Medical:GetRecivers(self))
+		self:SetNetVar("t_status_effects", data)
 		netstream.Start(self, "Medical:AddTemporaryStatusEffect", uniqueID, delay)
 
 		local onAdd = info.onAdd
@@ -148,7 +148,7 @@ do
 		info.stored[index] = nil
 
 		data[uniqueID] = nil
-		self:SetNetVar("t_status_effects", data, Medical:GetRecivers(self))
+		self:SetNetVar("t_status_effects", data)
 		netstream.Start(self, "Medical:RemoveTemporaryStatusEffect", uniqueID)
 
 		local onRemove = info.onRemove

@@ -128,6 +128,7 @@ function ENT:OnTakeDamage(damageInfo)
 			self:Remove()
 		end
 
+		hook.Run("OnItemDestroy", damageInfo:GetAttacker(), item)
 		self.IsDestroying = true
 	end
 end

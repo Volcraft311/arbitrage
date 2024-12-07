@@ -209,7 +209,7 @@ function Character.team:Join(client, data, bRespawn)
         netstream.Start(nil, "Character:Caching")
     end)
 
-    hook.Run("SelectCharacter", client, id)
+    hook.Run("OnCharacterJoin", client, info)
 end
 
 function Character.team:Fetch(callback)

@@ -25,9 +25,18 @@ Arbitrage.commands.types = {
     ["bool"] = function(data)
         return tostring(data) == "true" or tostring(data) == "false"
     end,
-    ["text"] = function(data, args)
-        return table.concat(args, " ", 2)
+    ["text"] = function(data, args, startArgs)
+        local text = ""
+
+        for i = startArgs, #args do
+            text = text .. args[i] .. " "
+        end
+
+        return text:Trim()
     end,
+    ["player"] = function(data)
+        return player.GetByIdentifier(data)
+    end
 }
 
 Arbitrage.commands.keyList = {

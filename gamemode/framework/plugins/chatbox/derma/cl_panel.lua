@@ -2,7 +2,6 @@ local function getFontSize()
 	return SETTINGS.options.Get("chatbox_size")
 end
 
-
 local PLUGIN = PLUGIN
 
 local PANEL = {}
@@ -18,6 +17,8 @@ function PANEL:AllowInput(char)
 
 	if text and text ~= "" then
 		if self:get_limit() ~= 0 and utf8.len(text) >= self:get_limit() then
+			surface.PlaySound("common/talk.wav")
+
 			return true
 		end
 	end
@@ -33,14 +34,10 @@ end
 
 vgui.Register("arbChatBoxFixed", PANEL, "DTextEntry")
 
-
-
-
 local animationTime = 0.5
 local chatBorder = 32
 local sizingBorder = 20
 local maxChatEntries = 100
-
 
 local function PaintMarkupOverride(text, font, x, y, color, alignX, alignY, alpha)
 	alpha = alpha or 255
@@ -56,11 +53,7 @@ local function PaintMarkupOverride(text, font, x, y, color, alignX, alignY, alph
 	surface.DrawText(text)
 end
 
-
-
-
-
-local PANEL = {}
+PANEL = {}
 
 AccessorFunc(PANEL, "fadeDelay", "FadeDelay", FORCE_NUMBER)
 AccessorFunc(PANEL, "fadeDuration", "FadeDuration", FORCE_NUMBER)
@@ -104,7 +97,7 @@ function PANEL:SetMarkup(text)
 end
 
 function PANEL:PerformLayout(width, height)
-	if ((IsValid(Arbitrage.gui.chat) and Arbitrage.gui.chat.bSizing) or width == self.markup:GetWidth()) then
+	if (IsValid(Arbitrage.gui.chat) and Arbitrage.gui.chat.bSizing) or width == self.markup:GetWidth() then
 		return
 	end
 
@@ -114,19 +107,31 @@ function PANEL:PerformLayout(width, height)
 	self:SetTall(self.markup:GetHeight() + tall)
 end
 
+local copyTextStored = {
+	[1] = "Двойное копирование!",
+	[2] = "Тройное копирование!",
+	[3] = "Доминирование!",
+	[4] = "Безумие!",
+	[5] = "Мегакопирование!",
+	[6] = "Вас не остановить!",
+	[7] = "Полный улет!",
+	[8] = "Феноменально!",
+	[9] = "Божественно!",
+	[10] = "ПРОСТО КОСМОС!"
+}
+
 function PANEL:Paint(width, height)
 	local ft = FrameTime()
 	local chatbox = Arbitrage.gui.chat
 
 	local newAlpha
-
-	if (Arbitrage.gui.chat:GetActive()) then
+	if Arbitrage.gui.chat:GetActive() then
 		newAlpha = math.max(Arbitrage.gui.chat.alpha, self.alpha)
 	else
 		newAlpha = self.alpha
 	end
 
-	if (newAlpha < 1) then
+	if newAlpha < 1 then
 		return
 	end
 
@@ -155,11 +160,13 @@ function PANEL:Paint(width, height)
 				table.remove(self.copys, k)
 			end
 
-			draw.SimpleText("Скопировано!", "arb.Font_FuturaPTBook_6", v.x, v.y, Color(255, 255, 255, v.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(copyTextStored[v.copyNum] or "Скопировано!", "arb.Font_FuturaPTBook_6", v.x, v.y, Color(255, 255, 255, v.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	DisableClipping(old)
 end
 
+local copyText = ""
+local copyID = -1
 function PANEL:CopyText()
 	local texts = ""
 	local blocks = self.markup.blocks
@@ -174,14 +181,22 @@ function PANEL:CopyText()
 
 	texts = string.Trim(texts)
 
+	if copyText == texts then
+		copyID = copyID + 1
+	else
+		copyID = 0
+	end
+
 	SetClipboardText(texts)
+	copyText = texts
 
 	local x, y = self:LocalCursorPos()
 	self.copys[#self.copys + 1] = {
 		x = x,
 		y = y,
 		alpha = 0,
-		deadTime = RealTime() + 1
+		deadTime = RealTime() + 1,
+		copyNum = copyID
 	}
 end
 
@@ -198,11 +213,6 @@ function PANEL:DoRightClick()
 end
 
 vgui.Register("arbChatMessage", PANEL, "DButton")
-
-
-
-
-
 
 PANEL = {}
 
@@ -337,13 +347,6 @@ end
 
 vgui.Register("arbChatboxTabs", PANEL, "EditablePanel")
 
-
-
-
-
-
-
-
 PANEL = {}
 
 AccessorFunc(PANEL, "filter", "Filter")
@@ -431,6 +434,18 @@ function PANEL:AddLine(elements, bShouldScroll)
 
 		            a2 = _w * a
 		            b2 = _h * a
+		        elseif string.find(texture, "asterion/academy/ui/icons/rank_") then
+		        	local height = draw.GetFontHeight("arb.Font_FuturaPTBook_" .. getFontSize())
+					local maxW = height * 0.9
+		            local maxH = height * 0.9
+
+		            local _w = v:Width()
+		            local _h = v:Height()
+
+		            local a = _h < _w and maxW / _w or maxH / _h
+
+		            a2 = _w * a
+		            b2 = _h * a
 	        	end
 
 				buffer[#buffer + 1] = string.format("<img=%s,%dx%d> ", texture, a2, b2)
@@ -469,10 +484,10 @@ function PANEL:AddLine(elements, bShouldScroll)
 	panel:InvalidateParent(true)
 	panel:SetMarkup(table.concat(buffer))
 
-	if (#self.entries >= maxChatEntries) then
+	if #self.entries >= maxChatEntries then
 		local oldPanel = table.remove(self.entries, 1)
 
-		if (IsValid(oldPanel)) then
+		if IsValid(oldPanel) then
 			oldPanel:Remove()
 		end
 	end
@@ -482,57 +497,6 @@ function PANEL:AddLine(elements, bShouldScroll)
 end
 
 vgui.Register("arbChatboxHistory", PANEL, "DScrollPanel")
-
-PANEL = {}
-DEFINE_BASECLASS("DTextEntry")
-
-function PANEL:Init()
-	self:SetFont("arb.Font_FuturaPTBook_" .. getFontSize())
-	self:SetUpdateOnType(true)
-	self:SetHistoryEnabled(true)
-
-	self.History = PLUGIN.chat.history
-	self.m_bLoseFocusOnClickAway = false
-end
-
-function PANEL:SetFont(font)
-	BaseClass.SetFont(self, font)
-
-	surface.SetFont(font)
-	local _, height = surface.GetTextSize("W@")
-
-	self:SetTall(height + 8)
-end
-
-function PANEL:AllowInput(newCharacter)
-	local text = self:GetText()
-	local maxLength = 1024
-
-	if (string.len(text .. newCharacter) > maxLength) then
-		surface.PlaySound("common/talk.wav")
-		return true
-	end
-end
-
-function PANEL:Think()
-	local text = self:GetText()
-	local maxLength = 1024
-
-	if (utf8.len(text) > maxLength) then
-		local newText = utf8.sub(text, 0, maxLength)
-
-		self:SetText(newText)
-		self:SetCaretPos(utf8.len(newText))
-	end
-end
-
-vgui.Register("arbChatboxEntry", PANEL, "DTextEntry")
-
-
-
-
-
-
 
 PANEL = {}
 
@@ -675,7 +639,6 @@ function PANEL:SetAlpha(amount, duration)
 		index = 1,
 		target = {alpha = amount},
 		easing = "outQuint",
-
 		Think = function(animation, panel)
 			BaseClass.SetAlpha(panel, panel.alpha)
 		end
@@ -697,7 +660,7 @@ function PANEL:DraggingInBounds()
 end
 
 function PANEL:SetActive(bActive)
-	if (bActive) then
+	if bActive then
 		self:SetAlpha(255)
 		self:MakePopup()
 		self.entry:RequestFocus()
@@ -706,7 +669,7 @@ function PANEL:SetActive(bActive)
 
 		hook.Run("StartChat")
 	else
-		if (self.bSizing or self.DragOffset) then
+		if self.bSizing or self.DragOffset then
 			self:OnMouseReleased(MOUSE_LEFT)
 		end
 
@@ -714,7 +677,6 @@ function PANEL:SetActive(bActive)
 		self:SetMouseInputEnabled(false)
 		self:SetKeyboardInputEnabled(false)
 
-		--self.entry:SetText("")
 		self.entry.last_index = 0
 
 		CloseDermaMenus()
@@ -724,8 +686,7 @@ function PANEL:SetActive(bActive)
 	end
 
 	local tab = self.tabs:GetActiveTab()
-
-	if (tab) then
+	if tab then
 		tab:ScrollToBottom()
 	end
 
@@ -739,16 +700,13 @@ function PANEL:SetupTabs(tabs)
 	self.tabs:AddTab("РП", {})
 	self.tabs:AddTab("НонРП", {})
 	self.tabs:AddTab("Личные", {})
-
-	if LocalPlayer():IsAdmin() then
-		self.tabs:AddTab("Админские", {})
-	end
+	self.tabs:AddTab("Админские", {})
 end
 
 function PANEL:SetupPosition(info)
 	local x, y, width, height
 
-	if (!istable(info)) then
+	if !istable(info) then
 		x, y = self:GetDefaultPosition()
 		width, height = self:GetDefaultSize()
 	else
@@ -763,10 +721,10 @@ function PANEL:SetupPosition(info)
 end
 
 function PANEL:OnMousePressed(key)
-	if (self:SizingInBounds()) then
+	if self:SizingInBounds() then
 		self.bSizing = true
 		self:MouseCapture(true)
-	elseif (self:DraggingInBounds()) then
+	elseif self:DraggingInBounds() then
 		local mouseX, mouseY = self:ScreenToLocal(gui.MousePos())
 
 		self.DragOffset = {mouseX, mouseY}
@@ -778,7 +736,7 @@ function PANEL:OnMouseReleased()
 	self:MouseCapture(false)
 	self:SetCursor("arrow")
 
-	if (self.bSizing or self.DragOffset) then
+	if self.bSizing or self.DragOffset then
 		self.bSizing = nil
 		self.DragOffset = nil
 
@@ -793,15 +751,20 @@ function PANEL:OnMouseReleased()
 end
 
 function PANEL:Think()
-	if (!self.bActive) then
+	if !self.bActive then
 		return
 	end
 
-	if (gui.IsGameUIVisible()) then
+	if gui.IsGameUIVisible() then
 		self:SetActive(input.IsKeyDown(KEY_BACKQUOTE))
 		gui.HideGameUI()
 
 		return
+	end
+
+	if input.IsKeyDown(KEY_ESCAPE) then
+		self:SetActive(false)
+		self.closeCD = RealTime() + 0.25
 	end
 
 	local mouseX = math.Clamp(gui.MouseX(), 0, ScrW())
@@ -809,12 +772,12 @@ function PANEL:Think()
 
 	self:MouseCapture(false)
 
-	if (self.DragOffset) then
+	if self.DragOffset then
 		local x = math.Clamp(mouseX - self.DragOffset[1], 0, ScrW() - self:GetWide())
 		local y = math.Clamp(mouseY - self.DragOffset[2], 0, ScrH() - self:GetTall())
 
 		self:SetPos(x, y)
-	elseif (self:SizingInBounds() or self.bSizing) then
+	elseif self:SizingInBounds() or self.bSizing then
 		self:SetCursor("sizenwse")
 		self:MouseCapture(true)
 
@@ -828,7 +791,7 @@ function PANEL:Think()
 			self:SetCursor("sizenwse")
 			self.bSizing = true
 		end
-	elseif (self:DraggingInBounds()) then
+	elseif self:DraggingInBounds() then
 		self.tabs.buttons:SetCursor("sizeall")
 	else
 		self:SetCursor("arrow")
@@ -857,10 +820,14 @@ function PANEL:Paint(width, height)
 	end
 end
 
-local function GetAllCommands(text, onlySG, originalText)
+function utf8_left(str, num)
+	return string.utf8sub(str, 1, num)
+end
+
+local function GetAllCommands(text, originalText)
 	local data = {}
 
-	for command, stored in pairs(serverguard.command.stored) do
+	for command, stored in pairs(Arbitrage.commands.stored) do
 		if string.find(command:lower(), text:lower(), nil, true) then
 			data[command] = {
 				stored.arguments or {},
@@ -870,38 +837,26 @@ local function GetAllCommands(text, onlySG, originalText)
 		end
 	end
 
-	if !onlySG then
-		for command, stored in pairs(Arbitrage.commands.stored) do
-			if string.find(command:lower(), text:lower(), nil, true) then
-				data[command] = {
-					stored.arguments or {},
-					stored.optionalArguments or {},
-					stored.help
-				}
-			end
-		end
+	if (utf8_left(originalText, 2) == "[[" or utf8_left(originalText, 2) == "хх") or (utf8_left(originalText, 2) == "./" or utf8_left(originalText, 2) == "ю.") then
+		local command = "looc"
+		local stored = Arbitrage.commands.stored[command]
 
-		if string.Left(originalText, 2) == "[[" or string.Left(originalText, 2) == "./" then
-			local command = "looc"
-			local stored = Arbitrage.commands.stored[command]
+			data[command] = {
+			stored.arguments or {},
+			stored.optionalArguments or {},
+			stored.help
+		}
+	end
 
-			 data[command] = {
-				stored.arguments or {},
-				stored.optionalArguments or {},
-				stored.help
-			}
-		end
+	if (utf8_left(originalText, 2) == "//" or utf8_left(originalText, 2) == "..") and utf8_left(originalText, 2) != "..." then
+		local command = "ooc"
+		local stored = Arbitrage.commands.stored[command]
 
-		if string.Left(originalText, 2) == "//" then
-			local command = "ooc"
-			local stored = Arbitrage.commands.stored[command]
-
-			 data[command] = {
-				stored.arguments or {},
-				stored.optionalArguments or {},
-				stored.help
-			}
-		end
+			data[command] = {
+			stored.arguments or {},
+			stored.optionalArguments or {},
+			stored.help
+		}
 	end
 
 	return data
@@ -921,20 +876,29 @@ end
 
 local function GetChatType(value)
 	for k, v in ipairs(PLUGIN.typesData) do
-		if "/" .. v:lower() .. " " == string.Left(value:lower(), v:len() + 2) then
-			return k
+		local message = utf8_left(value:utf8lower(), v:utf8len() + 2)
+		local prefix = message:utf8sub(1, 1)
+		if prefix == "/" or prefix == "." then
+			local command = message:utf8sub(2, message:utf8len())
+			if prefix == "." then
+				command = Arbitrage.commands.ConvertRusToEng(command)
+			end
+
+			if v:utf8lower() .. " " == command:utf8lower() then
+				return k
+			end
 		end
 	end
 
-	if string.Left(value, 2) == "[[" or string.Left(value, 2) == "./" then
+	if (utf8_left(value, 2) == "[[" or utf8_left(value, 2) == "хх") or (utf8_left(value, 2) == "./" or utf8_left(value, 2) == "ю.") then
 		return 10
 	end
 
-	if string.Left(value, 2) == "//" then
+	if (utf8_left(value, 2) == "//" or utf8_left(value, 2) == "..") and utf8_left(value, 2) != "..." then
 		return 11
 	end
 
-	if (string.Left(value, 1) == "/" or string.Left(value, 1) == "!") and value:len() > 1 then
+	if (utf8_left(value, 1) == "/" or utf8_left(value, 1) == ".") and value:len() > 1 then
 		local explode = string.Explode(" ", value)
 
 		if #explode > 1 then
@@ -947,18 +911,25 @@ end
 
 local padding = 5
 function PANEL:OnTextChanged(text)
+	self.inputExplode = Arbitrage:ExtractArgs(text)
+
 	hook.Run("ChatTextChanged", text)
 
-	local abbreviatedCommand = string.Left(text, 2) == "[[" or string.Left(text, 2) == "./" or string.Left(text, 2) == "//"
+	local abbreviatedCommand = (utf8_left(text, 2) == "[[" or utf8_left(text, 2) == "хх") or (utf8_left(text, 2) == "./" or utf8_left(text, 2) == "ю.") or (utf8_left(text, 2) == "//" or utf8_left(text, 2) == "..")
 
-	local prefix = string.sub(text, 1, 1)
-	if prefix == "!" or prefix == "/" or abbreviatedCommand then
+	local prefix = text:utf8sub(1, 1)
+	if (prefix == "." or prefix == "/" or abbreviatedCommand) and text:utf8sub(1, 3) != "..." then
 		local inputCommand = text:utf8sub(2, text:utf8len())
+
+		if prefix == "." then
+			inputCommand = Arbitrage.commands.ConvertRusToEng(inputCommand)
+		end
+
 		local explode = string.Explode(" ", inputCommand)
 		inputCommand = explode[1]
 		self._numEx = #explode
 
-		local commands = GetAllCommands(inputCommand, prefix == "!", text)
+		local commands = GetAllCommands(inputCommand, text)
 
 		local useCommand = nil
 		if #explode > 1 then
@@ -1008,7 +979,7 @@ function PANEL:OnTextChanged(text)
 		local sizeCommand = draw.GetFontHeight("arb.Font_FuturaPTDemi_7")
 
 		for command, data in pairs(commands) do
-			local isSG = serverguard.command.stored[command:lower()] and true or false
+			local isSG = false
 			local arguments = data[1]
 			local optionalArguments = data[2]
 			local description = data[3]
@@ -1028,9 +999,20 @@ function PANEL:OnTextChanged(text)
 
 					do
 						for k, v in ipairs(arguments) do
-							local col = isSelect(#arguments, k + 1, self._numEx, #optionalArguments > 0) and Color(255, 61, 96) or Color(255, 234, 238)
+							local bSelect = isSelect(#arguments, k + 1, self._numEx, #optionalArguments > 0)
+							local col = bSelect and Color(255, 61, 96) or Color(255, 234, 238)
 
-							local _x, _ = draw.SimpleText("<" .. v .. ">", "arb.Font_FuturaPTBook_7", x, 0, col, TEXT_ALIGN_LEFT)
+							local _x, _w = draw.SimpleText("<" .. v .. ">", "arb.Font_FuturaPTBook_7", x, 0, col, TEXT_ALIGN_LEFT)
+
+							if self._numEx > 1 and v == "player" then
+								local argument = self.inputExplode[k + 1]
+								local target = argument and player.GetByIdentifier(argument)
+
+								local old = DisableClipping(true)
+									draw.SimpleText(IsValid(target) and target:FullName(true) or "Неизвестный игрок", "arb.Font_FuturaPTBook_7", x, -_w, color_white, TEXT_ALIGN_LEFT)
+								DisableClipping(old)
+							end
+
 							x = x + _x + padding
 						end
 					end
@@ -1080,10 +1062,10 @@ DEFINE_BASECLASS("DTextEntry")
 function PANEL:OnMessageSent()
 	local text = self.entry:GetText()
 
-	if (text:find("%S")) then
+	if text:find("%S") then
 		local lastEntry = PLUGIN.chat.history[#PLUGIN.chat.history]
 
-		if (lastEntry != text) then
+		if lastEntry != text then
 			if (#PLUGIN.chat.history >= 20) then
 				table.remove(PLUGIN.chat.history, 1)
 			end
@@ -1121,19 +1103,20 @@ end
 function PANEL:OnTabUpdated(id, filter, newID)
 	local tab = self.tabs:GetTabs()[id]
 
-	if (!tab) then
+	if !tab then
 		return
 	end
 
 	tab:SetFilter(filter)
+
 	self.tabs:RenameTab(id, newID)
 end
 
 local loocSyntax = "[Локальный НонРП чат]"
 local oocSyntax = "[Глобальный НонРП чат]"
-local pmSyntax = "[PM]"
-local helpSyntax = "[HELP]"
-local adminsSyntex = "[Admins]"
+local pmSyntax = "[Личное сообщение]"
+local helpSyntax = "[Помощь]"
+local adminsSyntex = "[Чат администрации]"
 local listAction = {
 	["Общий"] = function(data)
 		return true
@@ -1141,7 +1124,7 @@ local listAction = {
 	["РП"] = function(data)
 		local chatType = data[3]
 
-		if chatType != loocSyntax .. " " and chatType != oocSyntax .. " " and data[2] != pmSyntax .. " " and data[2] != helpSyntax .. " " and data[2] != adminsSyntex .. " " then
+		if chatType != loocSyntax .. " " and chatType != oocSyntax .. " " and chatType != pmSyntax .. " " and data[2] != helpSyntax .. " " and chatType != adminsSyntex .. " " then
 			return true
 		end
 	end,
@@ -1153,16 +1136,12 @@ local listAction = {
 		end
 	end,
 	["Личные"] = function(data)
-		local chatType = data[2]
-
-		if chatType == pmSyntax .. " " then
+		if data[3] == pmSyntax .. " " then
 			return true
 		end
 	end,
 	["Админские"] = function(data)
-		local chatType = data[2]
-
-		if chatType == helpSyntax .. " " or chatType == adminsSyntex .. " " then
+		if data[2] == helpSyntax .. " " or data[3] == adminsSyntex .. " " then
 			return true
 		end
 	end

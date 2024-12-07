@@ -292,6 +292,19 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
                         panel:AddSubMenu(stText, function(this)
                             this.title:SetTextColor(color)
                         end)
+
+                        for _, v in ipairs(entity:GetTemporaryStatusEffects()) do
+                            local uniqueID = v.uniqueID
+                            local status = Medical.t_status_effects[uniqueID]
+                            if !status then continue end
+
+                            local tooltip = status.tooltip
+                            if !tooltip then continue end
+
+                            panel:AddSubMenu(tooltip.format, function(this)
+                                this.title:SetTextColor(tooltip.color)
+                            end)
+                        end
                     end
 
                     panel:SetDescription(entity:GetNetVar("description"))

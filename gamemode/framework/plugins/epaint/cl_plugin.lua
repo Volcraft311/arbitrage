@@ -117,28 +117,26 @@ function EPaint:Drawing(array)
 	end
 end
 
-local cache = {}
-timer_Create("EPaint:Update", 1, 0, function()
-	cache = {}
+asterionlib.entscollector:AddTrack("epaint", {
+	delay_apply = 3,
+	onCanTrack = function(entity)
+		return EPaint:AllowEntity(entity)
+	end,
+	onCanApply = function(entity)
+		local distance = entity:GetPos():DistToSqr(EyePos())
+		if distance > EPaint.Distance * EPaint.Distance then return false end
 
-	local client = LocalPlayer()
-	if !IsValid(client) then return end
-
-	local pos = client:GetPos()
-	local dist = EPaint.Distance
-
-	for k, v in ipairs(ents_FindInSphere(pos, dist)) do
-		if EPaint:AllowEntity(v) then
-			cache[#cache + 1] = v
-		end
+		return true
 	end
-end)
+})
 
 local shift_pos = Vector(0.7, 118.35, 91.9)
 function EPaint:PostDrawOpaqueRenderables()
-	local w, h = self.Width, self.Height
+	local data = asterionlib.entscollector:GetApply("epaint")
+	if #data <= 0 then return end
 
-	for k, v in ipairs(cache) do
+	local w, h = self.Width, self.Height
+	for k, v in ipairs(data) do
 		if !IsValid(v) then continue end
 
 		local pos, ang = v:GetPos(), v:GetAngles()

@@ -147,21 +147,18 @@ if SERVER then
                 end
             end
 
+            local inventoryItem = self.inventory
+            local transmitEntity = inventoryItem and inventoryItem:GetOwner()
+            local receiverEntity = inventory:GetOwner()
+
+            hook.Run("OnItemTransfer", transmitEntity, self, inventory)
             self:HookRun("transfer")
             self:Remove(true, true)
 
             inventory.slots[x][y] = self
 
-            if !self.bNoAnim then
-                local inventoryItem = self.inventory
-                if inventoryItem and inventory and inventoryItem != inventory then
-                    local transmitEntity = inventoryItem:GetOwner()
-                    local receiverEntity = inventory:GetOwner()
-
-                    if IsValid(transmitEntity) and IsValid(receiverEntity) then
-                        ItemBase.AnimTakeItem(transmitEntity, receiverEntity, transmitEntity:GetPos(), transmitEntity:GetAngles(), self:GetModel())
-                    end
-                end
+            if !self.bNoAnim and inventoryItem and inventory and inventoryItem != inventory and IsValid(transmitEntity) and IsValid(receiverEntity) then
+                ItemBase.AnimTakeItem(transmitEntity, receiverEntity, transmitEntity:GetPos(), transmitEntity:GetAngles(), self:GetModel())
             end
         else
             inventory = self:GetInventory()
@@ -200,7 +197,7 @@ if SERVER then
                     tr = owner:GetPos() + owner:GetAngles():Forward() * dist
                 end
 
-
+                hook.Run("OnItemDrop", owner, self)
                 self:HookRun("drop")
                 self:Remove(true, true)
 

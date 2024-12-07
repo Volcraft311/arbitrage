@@ -28,7 +28,7 @@ function Character.Caching()
 	local function caching(path, time)
 		time = time or 0.2
 
-		if !Material.cache[path] then
+		if !MaterialIsCached(path) then
 			timer_Simple(i, function()
 				Material(path)
 			end)

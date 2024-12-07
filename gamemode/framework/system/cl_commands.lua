@@ -14,7 +14,7 @@
 Arbitrage.commands = Arbitrage.library.Add("commands")
 Arbitrage.commands.stored = {}
 
-local function RegisterCommand(command, help, arguments, optionalArguments)
+function RegisterCommand(command, help, arguments, optionalArguments)
     Arbitrage.commands.stored[command] = {
         help = help,
         arguments = arguments,
@@ -44,11 +44,17 @@ RegisterCommand("y", "Крикнуть персонажам рядом с вам
 
 RegisterCommand("looc", "Написать в локальный НонРП чат.", {"text"})
 RegisterCommand("ooc", "Написать в глобальный НонРП чат.", {"text"})
-RegisterCommand("broadcast", "Написать уведомление в общий чат.", {"text"})
+
+for _, command in ipairs({"broadcast", "announce", "global"}) do
+    RegisterCommand(command, "Написать уведомление в общий чат.", {"text"})
+end
+
+RegisterCommand("event", "Написать RP уведомление в общий чат.", {"text"})
+RegisterCommand("eventlocal", "Написать RP уведомление игрокам возле вас.", {"text"})
+
 RegisterCommand("sg", "Получить изображение экрана игрока.", {"player"})
 RegisterCommand("settime", "Установить время на сервере.", {"time"})
 RegisterCommand("roll", "Крутить число от 0 до указанного числа.", nil, {"number"})
-RegisterCommand("freezeprops", "Заморозить все физические пропы.")
 RegisterCommand("editor", "Зайти в режим редактирования.")
 RegisterCommand("unstuck", "Телепортироваться на ближайшую позицию.")
 RegisterCommand("exitaction", "Выйти из анимации.")
@@ -58,6 +64,7 @@ RegisterCommand("mood", "Изменить настроение.", {"number"})
 RegisterCommand("lookaround", "Осмотреться.")
 RegisterCommand("settimespeed", "Изменить скорость времени.", {"number"})
 RegisterCommand("fallover", "Заставить своего персонажа упасть на пол.", nil, {"number"})
+RegisterCommand("spectate", "Зайти в наблюдение.", nil, {"player"})
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

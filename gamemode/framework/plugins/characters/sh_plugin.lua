@@ -27,15 +27,23 @@ local keyData = {
         reg = function(uniqueID, info)
             info.isCreation = true
 
+            if istable(info.color) and !IsColor(info.color) then
+                info.color = Color(info.color.r,info.color.g,info.color.b,info.color.a or 255)
+            end
+            
             Character.team:Create(info)
-
+        
             if SERVER then
                 netstream.Start(nil, "Character:CreationRegisterKeys", "team", uniqueID, info)
             end
         end,
         edit = function(uniqueID, info)
             info.isCreation = true
-
+            
+            if istable(info.color) and !IsColor(info.color) then
+                info.color = Color(info.color.r,info.color.g,info.color.b,info.color.a or 255)
+            end
+            
             local faction = Character.team:GetByUniqueID(uniqueID)
             if !faction then return end
 

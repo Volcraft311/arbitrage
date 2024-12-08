@@ -1,6 +1,9 @@
-Trigger.instances = {}
+Trigger.instances = Trigger.instances or {}
 Trigger.lastID = #Trigger.instances
 Trigger.typeList = {}
+
+
+
 
 function Trigger:New(id)
     if self.instances[id] then
@@ -55,9 +58,15 @@ end
 
 if SERVER then
 
+    function PLUGIN:PlayerInitialSpawnForRealz(client)
+        Trigger:SyncAll(client)
+    end
+
     function Trigger:SyncAll(clients)
         for k, v in pairs(Trigger.instances) do
-            v:Sync(clients)
+            timer.Simple(k * 0.3, function()
+                v:Sync(clients)
+            end)
         end
     end
 
@@ -76,10 +85,16 @@ if SERVER then
 
     netstream.Hook("Trigger:PlayerEntered",function(client,id)
         _check_client(client,id)
+
+        local trigger = Trigger:GetByID(id)
+        Trigger.typeList[trigger.type].OnEnter(client)
     end)
 
     netstream.Hook("Trigger:PlayerExited",function(client,id)
         _check_client(client,id)
+
+        local trigger = Trigger:GetByID(id)
+        Trigger.typeList[trigger.type].OnExit(client)
     end)
 
     netstream.Hook("Trigger:SetPos",function(client,data)
@@ -89,10 +104,6 @@ if SERVER then
         Trigger:GetByID(id):SetPoint(point, vector)
 
         Trigger:SyncByID(id,player.GetAll())
-    end)
-
-    netstream.Hook("Trigger:SyncAll",function(client)
-        Trigger:SyncAll()
     end)
 end
 

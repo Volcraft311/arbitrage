@@ -7,7 +7,6 @@ TRIGGER.points = {vector_origin,Vector(5,5,5)}
 TRIGGER.isLocalPlayerInside = false
 TRIGGER.actionList = {}
 
-TRIGGER.playerTriggerOffset = Vector(0,0,40)
 
 
 local box_color1 = Color(0,255,55)
@@ -37,22 +36,25 @@ function TRIGGER:IsPlayerInside(client)
     if CLIENT and !client then
         client = LocalPlayer()
     end
-    local _playerpos = client:GetPos() + TRIGGER.playerTriggerOffset
+    local _, _max = client:GetHull()
+
+    local _playerpos = client:GetPos()
+    _playerpos.z = _playerpos.z + _max.z / 2
     return _playerpos:WithinAABox(self.points[1],self.points[2])
 end
 
 function TRIGGER:PlayerEntered(client)
+    client = client or LocalPlayer()
     netstream.Start("Trigger:PlayerEntered",self.id)
     self.isLocalPlayerInside = true
-    print("Player entered")
     Trigger.typeList[self.type].OnEnter(client)
 
 end
 
 function TRIGGER:PlayerExited(client)
+    client = client or LocalPlayer()
     netstream.Start("Trigger:PlayerExited",self.id)
     self.isLocalPlayerInside = false
-    print("Player exited")
     Trigger.typeList[self.type].OnExit(client)
 end
 

@@ -8,7 +8,7 @@ netstream.Hook("Trigger:Sync",function(data)
     Trigger:UpdateToolPanel()
 end)
 
-timer.Create("Trigger:IsPlayerInside",0.3,0,function()
+timer.Create("Trigger:IsPlayerInside",0.1,0,function()
     for k,v in pairs(Trigger.instances) do
         if v.isLocalPlayerInside == false then
             if v:IsPlayerInside() then
@@ -39,7 +39,6 @@ end
 function Trigger.UpdateToolPanel()
     local tl = Trigger.TriggerList
     if tl == nil or !tl:IsValid() then return false end
-    print(tl)
     tl:ClearSelection()
     local lines = tl:GetLines()
     local triggers = Trigger.instances

@@ -27,8 +27,18 @@
 Trigger:CreateType({
     name = "Тест",
     OnEnter = function(client)
-        if CLIENT then
-            print("Hello World")
+        if SERVER then
+            client:FallOver(2)
+            Arbitrage.commands.PlayerSay(client, "/me упала с обрыва")
+            timer.Simple(1,function()
+                timer.Create("TriggerTest:IsOnGround",0.2,400,function()
+                    if client:IsOnGround() then
+                        Arbitrage.commands.PlayerSay(client, "/me сломала свою ногу")
+                        client:AddTemporaryStatusEffect("broken_leg",20)
+                        timer.Remove("TriggerTest:IsOnGround")
+                    end
+                end)
+            end)
         end
     end
 })

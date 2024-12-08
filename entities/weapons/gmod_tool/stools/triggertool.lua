@@ -36,14 +36,21 @@ if CLIENT then
     language.Add("tool.triggertool.right", "Устанавливает позицию второй точки.")
     language.Add("tool.triggertool.reload", "Создаёт новый триггер.")
 
-    function TOOL:Deploy()
-        Trigger.drawTriggers = true
-    end
     function TOOL:Holster()
         Trigger.drawTriggers = false
     end
 end
 -- Левая кнопка мыши
+
+function TOOL:Deploy()
+    if CLIENT then
+        Trigger.drawTriggers = true
+    else
+        Trigger:SyncAll()
+    end
+end
+
+
 function TOOL:LeftClick(trace)
     if !IsFirstTimePredicted() then return false end
     if CLIENT then
@@ -91,7 +98,7 @@ end
 function TOOL:DrawHUD()
     local triggers = Trigger.instances
     for k,v in pairs(triggers) do
-        local vector = (v.points[1] + v.points[2])/2
+        local vector = (v.points[1] + v.points[2]) / 2
         local vScreen = vector:ToScreen()
         draw.RoundedBox(1,vScreen.x - 20,vScreen.y - 20,40,40,color_text_background)
         draw.SimpleText(k,"Trebuchet24",vScreen.x,vScreen.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)

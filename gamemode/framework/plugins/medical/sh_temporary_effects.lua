@@ -242,7 +242,7 @@ Medical:TemporaryStatusEffects("drug_intoxication", {
 Medical:TemporaryStatusEffects("broken_leg", {
 	name = "Перелом ноги",
 	icon = "danganronpa/ui/medical/fracture.png",
-	description = "Вы не можете больше бегать, выносливость не восстанавливается.\nКамера покачивается при хотьбе, а скорость передвижения уменьшена на {1}%",
+	description = "Вы не можете больше бегать, выносливость не восстанавливается.\nКамера покачивается при ходьбе, а скорость передвижения уменьшена на {1}%",
 	values = {
 		[1] = {
 			description = "На сколько % будет уменьшена скорость передвижения",

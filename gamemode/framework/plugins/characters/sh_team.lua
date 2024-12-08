@@ -15,6 +15,14 @@ Character.team = Character.team or {}
 Character.team.instances = {}
 Character.team.lastID = 0
 
+
+local meta = FindMetaTable("Player")
+
+function meta:GetCharacter()
+    return Character.team.instances[self:Team()]
+end
+
+
 function Character.team:New(id)
     if self.instances[id] then
         return self.instances[id]

@@ -138,7 +138,8 @@ function SWEP:InteractionDoor(bClose)
         local doorData = FindDoorData(door)
 
         local bHaveKeys = FindKey(client, doorData, door)
-        if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас отсутствуют ключи от данной двери!") end
+        -- "Вы настолько беспомощны, что у вас даже нет возможности открыть дверь без ключей, бездарь ебанный"
+        if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас нет ключей от двери!") end 
 
         if !bClose and !door:GetNWBool(doorVar) then
             return Arbitrage.commands.Notify(client, doorText .. " открыта!")

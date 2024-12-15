@@ -14,6 +14,18 @@
 local PLUGIN = PLUGIN
 PLUGIN.guiTime = 30
 
+PLUGIN:AddNewNotify("triggerchanged", function(client, trigger)
+    return Color(223, 66, 66), client, color_white, " изменил триггер ", Color(235, 255, 54), trigger
+end)
+
+PLUGIN:AddNewNotify("triggercreated", function(client, trigger)
+    return Color(223, 66, 66), client, color_white, " создал триггер ", Color(235, 255, 54), trigger
+end)
+
+PLUGIN:AddNewNotify("triggerremoved", function(client, trigger)
+    return Color(223, 66, 66), client, color_white, " удалил триггер ", Color(235, 255, 54), trigger
+end)
+
 PLUGIN:AddNewNotify("killed", function(client, target, weapon)
     return Color(223, 66, 66), client, color_white, " убил игрока ", Color(74, 114, 202), target, color_white, weapon and (" при помощи " .. weapon) or ""
 end)

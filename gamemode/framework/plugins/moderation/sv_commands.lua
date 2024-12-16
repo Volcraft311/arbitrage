@@ -384,7 +384,7 @@ timer.Simple(1, function()
     for _, command in ipairs({"getmaps", "maps"}) do
         Arbitrage.commands.Add(command, {
             arguments = {},
-            OnAction = function(client, map)
+            OnAction = function(client)
                 if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
 
                 Arbitrage.commands.Notify(client, "Список всех доступных карт на сервере:")
@@ -664,4 +664,24 @@ timer.Simple(1, function()
             target:Freeze(false)
         end
     })
+
+    for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
+        Arbitrage.commands.Add(command, {
+            arguments = {
+                [1] = {
+                    name = "Игрок",
+                    type = "player",
+                    important = true
+                }
+            },
+            OnAction = function(client, target)
+                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+                target:StripWeapons()
+                target:Give("academy_first")
+                target:Give("academy_key")
+                target:SelectWeapon("academy_key")
+            end
+        })
+    end
 end)

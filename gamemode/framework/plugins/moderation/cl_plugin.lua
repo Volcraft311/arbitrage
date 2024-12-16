@@ -95,3 +95,7 @@ RegisterCommand("unrestartserver", "Отменить перезапуск сер
 
 RegisterCommand("freeze", "Заморозить указанного пользователя.", {"player"})
 RegisterCommand("unfreeze", "Разморозить указанного пользователя.", {"player"})
+
+for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
+    RegisterCommand(command, "Забрать оружие у указанного пользователя.", {"player"})
+end

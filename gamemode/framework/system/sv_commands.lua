@@ -98,7 +98,7 @@ function Arbitrage.commands.PlayerSay(client, data)
 
         Arbitrage.commands.RunCommand(client, command, extra)
     else
-        if !client:oldAlive() then return "" end
+        if !client:oldAlive() then return end
 
         if client:IsSpectate() then
             Arbitrage.chat.SendCommand("looc", client, data)
@@ -106,8 +106,6 @@ function Arbitrage.commands.PlayerSay(client, data)
             Arbitrage.chat.SendCommand("ic", client, data)
         end
     end
-
-    return ""
 end
 
 function Arbitrage.commands.Notify(client, ...)

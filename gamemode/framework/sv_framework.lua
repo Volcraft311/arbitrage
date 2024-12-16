@@ -670,19 +670,32 @@ end
 function Arbitrage:PlayerSay(client, data)
     hook.Run("ChatAddText", client, data)
 
-    local command = data:utf8sub(1, 2):utf8lower()
+    local helpCommand = data:sub(1, 1)
+    if helpCommand == "@" then
+        local message = data:utf8sub(2, data:utf8len())
 
-    if ((command == "//" or command == "..") or (command == "[[" or command == "хх") or (command == "./" or command == "ю.")) and data:utf8sub(1, 3) != "..." then
-        local message = utf8.sub(data, 3, utf8.len(data))
-        local extra = Arbitrage:ExtractArgs(message)
+        if client:IsAdmin() then
+            Arbitrage.commands.RunCommand(client, "admin", {message})
+            return ""
+        else
+            Arbitrage.commands.RunCommand(client, "help", {message})
+            return ""
+        end
+    else
+        local command = data:utf8sub(1, 2):utf8lower()
+        if ((command == "//" or command == "..") or (command == "[[" or command == "хх") or (command == "./" or command == "ю.")) and data:utf8sub(1, 3) != "..." then
+            local message = data:utf8sub(3, data:utf8len())
+            local extra = Arbitrage:ExtractArgs(message)
 
-        local rep = (command == "//" or command == "..") and "ooc" or "looc"
+            local rep = (command == "//" or command == "..") and "ooc" or "looc"
 
-        Arbitrage.commands.RunCommand(client, rep, extra)
-        return ""
+            Arbitrage.commands.RunCommand(client, rep, extra)
+            return ""
+        end
     end
 
-    return Arbitrage.commands.PlayerSay(client, data)
+    Arbitrage.commands.PlayerSay(client, data)
+    return ""
 end
 
 

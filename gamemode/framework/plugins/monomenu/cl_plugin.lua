@@ -789,6 +789,52 @@ local function getActionList(clientinfo)
                         end
                     }
                 }
+            },
+            {
+                name = "Модерация",
+                icon = "icon16/plugin.png",
+                data = {
+                    {
+                        name = "Убить",
+                        icon = "icon16/cross.png",
+                        data = function()
+                            RunConsoleCommand("say", "/slay " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Телепортироваться",
+                        icon = "icon16/control_play_blue.png",
+                        data = function()
+                            RunConsoleCommand("say", "/goto " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Телепортировать",
+                        icon = "icon16/control_repeat_blue.png",
+                        data = function()
+                            RunConsoleCommand("say", "/bring " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Пнуть",
+                        icon = "icon16/ipod_cast.png",
+                        data = function()
+                            RunConsoleCommand("say", "/slap " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    }
+                }
             }
         }
     }

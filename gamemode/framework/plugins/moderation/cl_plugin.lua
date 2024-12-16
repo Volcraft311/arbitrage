@@ -92,3 +92,6 @@ RegisterCommand("unguard", "Забрать права администратор
 
 RegisterCommand("restartserver", "Перезапустить сервер через указанное время.", {"number"})
 RegisterCommand("unrestartserver", "Отменить перезапуск сервера.")
+
+RegisterCommand("freeze", "Заморозить указанного пользователя.", {"player"})
+RegisterCommand("unfreeze", "Разморозить указанного пользователя.", {"player"})

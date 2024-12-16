@@ -634,4 +634,34 @@ timer.Simple(1, function()
             notifyAll("Администратор " .. client:FullName(true) .. " отменил перезапуск сервера!")
         end
     })
+
+    Arbitrage.commands.Add("freeze", {
+        arguments = {
+            [1] = {
+                name = "Игрок",
+                type = "player",
+                important = true
+            }
+        },
+        OnAction = function(client, target)
+            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+            target:Freeze(true)
+        end
+    })
+
+    Arbitrage.commands.Add("unfreeze", {
+        arguments = {
+            [1] = {
+                name = "Игрок",
+                type = "player",
+                important = true
+            }
+        },
+        OnAction = function(client, target)
+            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+            target:Freeze(false)
+        end
+    })
 end)

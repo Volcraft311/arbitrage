@@ -63,7 +63,7 @@ for _, command in ipairs({"unignite", "unfire", "extinguish"}) do
 end
 
 for _, command in ipairs({"ignite", "fire"}) do
-    RegisterCommand(command, "Поджечь указанного пользователя.", {"player", "number"})
+    RegisterCommand(command, "Поджечь указанного пользователя.", {"player"}, {"number"})
 end
 
 for _, command in ipairs({"kill", "slay"}) do

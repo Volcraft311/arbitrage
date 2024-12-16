@@ -669,6 +669,7 @@ end
 
 function Arbitrage:PlayerSay(client, data)
     hook.Run("ChatAddText", client, data)
+    data = data:Trim()
 
     local helpCommand = data:sub(1, 1)
     if helpCommand == "@" then

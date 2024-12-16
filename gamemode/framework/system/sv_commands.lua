@@ -82,8 +82,9 @@ end
 function Arbitrage.commands.PlayerSay(client, data)
     local char = utf8.sub(data, 1, 1)
     local bRusCommand = char == "."
+    local bSGCommand = char == "!"
 
-    if char == Arbitrage.commands.syntex or bRusCommand then
+    if char == Arbitrage.commands.syntex or bSGCommand or bRusCommand then
         data = utf8.sub(data, 2, utf8.len(data))
 
         local extra = Arbitrage:ExtractArgs(data)

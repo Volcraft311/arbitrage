@@ -15,12 +15,10 @@ end
 function PANEL:AllowInput(char)
 	local text = self:GetValue()
 
-	if text and text ~= "" then
-		if self:get_limit() ~= 0 and utf8.len(text) >= self:get_limit() then
-			surface.PlaySound("common/talk.wav")
+	if text and text != "" and self:get_limit() != 0 and utf8.len(text) >= self:get_limit() then
+		surface.PlaySound("common/talk.wav")
 
-			return true
-		end
+		return true
 	end
 end
 
@@ -555,7 +553,7 @@ function PANEL:Init()
 
 	self.entry.OnEnter = function(entry)
 		local value = entry:GetValue()
-		if entry.history[1] ~= value then
+		if entry.history[1] != value then
 			table.insert(entry.history, 1, value)
 			entry.last_index = 1
 		end
@@ -587,7 +585,7 @@ function PANEL:Init()
 
 		local history_entry = entry.history[entry.last_index]
 
-		if history_entry and history_entry ~= "" and should_set then
+		if history_entry and history_entry != "" and should_set then
 			entry:SetText(history_entry)
 			entry:SetCaretPos(utf8.len(history_entry))
 			entry:OnValueChange(history_entry)
@@ -837,7 +835,9 @@ local function GetAllCommands(text, originalText)
 		end
 	end
 
-	if (utf8_left(originalText, 2) == "[[" or utf8_left(originalText, 2) == "хх") or (utf8_left(originalText, 2) == "./" or utf8_left(originalText, 2) == "ю.") then
+	local commandPrefix = utf8_left(originalText, 2):utf8lower()
+
+	if (commandPrefix == "[[" or commandPrefix == "хх") or (commandPrefix == "./" or commandPrefix == "ю.") then
 		local command = "looc"
 		local stored = Arbitrage.commands.stored[command]
 
@@ -848,7 +848,7 @@ local function GetAllCommands(text, originalText)
 		}
 	end
 
-	if (utf8_left(originalText, 2) == "//" or utf8_left(originalText, 2) == "..") and utf8_left(originalText, 2) != "..." then
+	if (commandPrefix == "//" or commandPrefix == "..") and utf8_left(originalText, 3) != "..." then
 		local command = "ooc"
 		local stored = Arbitrage.commands.stored[command]
 
@@ -878,7 +878,7 @@ local function GetChatType(value)
 	for k, v in ipairs(PLUGIN.typesData) do
 		local message = utf8_left(value:utf8lower(), v:utf8len() + 2)
 		local prefix = message:utf8sub(1, 1)
-		if prefix == "/" or prefix == "." then
+		if prefix == "/" or prefix == "!" or prefix == "." then
 			local command = message:utf8sub(2, message:utf8len())
 			if prefix == "." then
 				command = Arbitrage.commands.ConvertRusToEng(command)
@@ -890,15 +890,19 @@ local function GetChatType(value)
 		end
 	end
 
-	if (utf8_left(value, 2) == "[[" or utf8_left(value, 2) == "хх") or (utf8_left(value, 2) == "./" or utf8_left(value, 2) == "ю.") then
+	local utf1sum = utf8_left(value, 1)
+	local utf2sum = utf8_left(value, 2):utf8lower()
+	local utf3sum = utf8_left(value, 3)
+
+	if (utf2sum == "[[" or utf2sum == "хх") or (utf2sum == "./" or utf2sum == "ю.") then
 		return 10
 	end
 
-	if (utf8_left(value, 2) == "//" or utf8_left(value, 2) == "..") and utf8_left(value, 2) != "..." then
+	if (utf2sum == "//" or utf2sum == "..") and utf3sum != "..." then
 		return 11
 	end
 
-	if (utf8_left(value, 1) == "/" or utf8_left(value, 1) == ".") and value:len() > 1 then
+	if (utf1sum == "/" or utf1sum == "!" or utf1sum == ".") and value:len() > 1 then
 		local explode = string.Explode(" ", value)
 
 		if #explode > 1 then
@@ -915,10 +919,11 @@ function PANEL:OnTextChanged(text)
 
 	hook.Run("ChatTextChanged", text)
 
-	local abbreviatedCommand = (utf8_left(text, 2) == "[[" or utf8_left(text, 2) == "хх") or (utf8_left(text, 2) == "./" or utf8_left(text, 2) == "ю.") or (utf8_left(text, 2) == "//" or utf8_left(text, 2) == "..")
+	local commandPrefix = utf8_left(text, 2):utf8lower()
+	local abbreviatedCommand = (commandPrefix == "[[" or commandPrefix == "хх") or (commandPrefix == "./" or commandPrefix == "ю.") or (commandPrefix == "//" or commandPrefix == "..")
 
 	local prefix = text:utf8sub(1, 1)
-	if (prefix == "." or prefix == "/" or abbreviatedCommand) and text:utf8sub(1, 3) != "..." then
+	if (prefix == "/" or prefix == "!" or prefix == "." or abbreviatedCommand) and text:utf8sub(1, 3) != "..." then
 		local inputCommand = text:utf8sub(2, text:utf8len())
 
 		if prefix == "." then
@@ -932,10 +937,8 @@ function PANEL:OnTextChanged(text)
 		local commands = GetAllCommands(inputCommand, text)
 
 		local useCommand = nil
-		if #explode > 1 then
-			if !abbreviatedCommand then
-				useCommand = explode[1]
-			end
+		if #explode > 1 and !abbreviatedCommand then
+			useCommand = explode[1]
 		end
 
 		if useCommand then
@@ -979,7 +982,6 @@ function PANEL:OnTextChanged(text)
 		local sizeCommand = draw.GetFontHeight("arb.Font_FuturaPTDemi_7")
 
 		for command, data in pairs(commands) do
-			local isSG = false
 			local arguments = data[1]
 			local optionalArguments = data[2]
 			local description = data[3]
@@ -993,7 +995,7 @@ function PANEL:OnTextChanged(text)
 					local x = 10
 
 					do
-						local _x, _ = draw.SimpleText((isSG and "!" or "/") .. command, "arb.Font_FuturaPTDemi_7", x, 0, Color(255, 61, 96), TEXT_ALIGN_LEFT)
+						local _x, _ = draw.SimpleText("/" .. command, "arb.Font_FuturaPTDemi_7", x, 0, Color(255, 61, 96), TEXT_ALIGN_LEFT)
 						x = x + _x + padding
 					end
 

@@ -188,6 +188,7 @@ do
         })
 
         workshop:Add("1784911999") -- LED screens
+        workshop:Add("329174479") -- Extended Emitter
 
         workshop:Add("1161268544", { -- Pink Blood
             onCheck = function()

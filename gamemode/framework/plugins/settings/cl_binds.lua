@@ -20,7 +20,17 @@ local allKeys = {
     [KEY_F1] = "F1", [KEY_F2] = "F2", [KEY_F3] = "F3", [KEY_F4] = "F4", [KEY_F5] = "F5", [KEY_F6] = "F6", [KEY_F7] = "F7", [KEY_F8] = "F8", [KEY_F9] = "F9", [KEY_F10] = "F10", [KEY_F11] = "F11", [KEY_F12] = "F12",
     [KEY_1] = "1", [KEY_2] = "2", [KEY_3] = "3", [KEY_4] = "4", [KEY_5] = "5", [KEY_6] = "6", [KEY_7] = "7", [KEY_8] = "8", [KEY_9] = "9", [KEY_0] = "0", [KEY_MINUS] = "-", [KEY_EQUAL] = "=",
 
-    [KEY_BACKSLASH] = "\\", [KEY_TAB] = "TAB", [KEY_CAPSLOCK] = "CAPS", [KEY_LSHIFT] = "LSHIFT", [KEY_RSHIFT] = "RSHIFT", [KEY_LCONTROL] = "LCTRL", [KEY_RCONTROL] = "RCTRL"
+    [KEY_BACKSLASH] = "\\", [KEY_TAB] = "TAB", [KEY_CAPSLOCK] = "CAPS", [KEY_LSHIFT] = "LSHIFT", [KEY_RSHIFT] = "RSHIFT", [KEY_LCONTROL] = "LCTRL", [KEY_RCONTROL] = "RCTRL",
+
+    [MOUSE_LEFT] = "MOUSE LEFT", [MOUSE_RIGHT] = "MOUSE RIGHT", [MOUSE_MIDDLE] = "MOUSE MIDDLE", [MOUSE_4] = "MOUSE 4", [MOUSE_5] = "MOUSE 5"
+}
+
+SETTINGS.binds.MouseList = {
+    [MOUSE_LEFT] = true,
+    [MOUSE_RIGHT] = true,
+    [MOUSE_MIDDLE] = true,
+    [MOUSE_4] = true,
+    [MOUSE_5] = true
 }
 
 for key, value in pairs(allKeys) do

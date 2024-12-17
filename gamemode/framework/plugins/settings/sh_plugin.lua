@@ -17,9 +17,8 @@ SETTINGS = PLUGIN
 -- Localize Global Calls
 local pairs = pairs
 local input_IsKeyDown = CLIENT and input.IsKeyDown
-local gui_IsConsoleVisible = CLIENT and gui.IsConsoleVisible
-local gui_IsGameUIVisible = CLIENT and gui.IsGameUIVisible
-local IsValid = IsValid
+local input_IsMouseDown = CLIENT and input.IsMouseDown
+local vgui_CursorVisible = CLIENT and vgui.CursorVisible
 local hook_Run = hook.Run
 local ipairs = ipairs
 
@@ -158,7 +157,7 @@ end
 
 function PLUGIN.binds.GetClampedKey()
     for key, value in pairs(PLUGIN.keys) do
-        local info = input_IsKeyDown(key)
+        local info = SETTINGS.binds.MouseList[key] and input_IsMouseDown(key) or input_IsKeyDown(key)
 
         if info == true then
             return key, value
@@ -167,14 +166,14 @@ function PLUGIN.binds.GetClampedKey()
 end
 
 local function IsVisibleGUI()
-    return vgui.CursorVisible()
+    return vgui_CursorVisible()
 end
 
 function PLUGIN.binds.IsClampedID(id, bCallHooks)
     local data = SETTINGS.binds.Get(id)
 
     if data then
-        local info = input_IsKeyDown(data)
+        local info = SETTINGS.binds.MouseList[data] and input_IsMouseDown(data) or input_IsKeyDown(data)
 
         if info and bCallHooks then
             hook_Run("KeyClampID", LocalPlayer(), id, IsVisibleGUI())
@@ -188,7 +187,7 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
     local data = SETTINGS.binds.Get(id)
 
     if data then
-        local info = input_IsKeyDown(data)
+        local info = SETTINGS.binds.MouseList[data] and input_IsMouseDown(data) or input_IsKeyDown(data)
 
         if PLUGIN.pressed[id] then
             if info == false then

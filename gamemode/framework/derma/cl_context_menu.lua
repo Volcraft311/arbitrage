@@ -250,7 +250,7 @@ function PANEL:Paint(w, h)
         draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(self.faction:GetTitle(), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 
-        for k, v in ipairs(self.descriptionData) do
+        for k, v in ipairs(self.descriptionData or {}) do
             local padding = #self.descriptionData * self.descriptionHeight
 
             draw.SimpleText(v, self.descriptionFont, w / 2, h - 200 - 80 - padding + (k - 1) * self.descriptionHeight, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)

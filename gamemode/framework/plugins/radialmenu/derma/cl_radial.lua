@@ -490,7 +490,7 @@ end
 local ambMat = Material("asterion/academy/ui/radial/m_mouse.png")
 local lmbMat = Material("asterion/academy/ui/radial/l_mouse.png")
 local rmbMat = Material("asterion/academy/ui/radial/r_mouse.png")
-local starMat = Material("icon16/star.png")
+local starMat = Material("asterion/academy/ui/radial/favorite.png")
 
 function PANEL:Paint(w, h)
 	local ft = FrameTime()

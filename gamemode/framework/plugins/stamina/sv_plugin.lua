@@ -95,6 +95,10 @@ function Stamina:GetMaxWalkSpeed(client)
 		speed = speed * (value * decrease)
 	end
 
+	if client.bDragPlayer then
+		speed = speed * 0.5
+	end
+
 	return speed
 end
 

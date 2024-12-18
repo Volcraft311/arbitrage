@@ -228,3 +228,48 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
         end
     end)
 end)
+
+netstream.Hook("RadialMenu:DragPlayerAction", function(client)
+    if client:IsSpectate() then return end
+
+    local target = PLUGIN:ReturnTracePlayer(client)
+    if !IsValid(target) then return end
+
+    local uniqueID = "RadialMenu:DragPlayer_" .. client:SteamID()
+    local function remove()
+        if IsValid(client) then
+            client.bDragPlayer = nil
+        end
+
+        hook.Remove("Think", uniqueID)
+    end
+
+    if hook.GetTable().Think[uniqueID] then
+        return remove()
+    end
+
+    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
+        TypingDraw:SetTypingText(v, client, "Тянет за собой '" .. target:Name() .. "'", Color(255, 170, 23))
+    end
+
+    client.bDragPlayer = true
+
+    hook.Add("Think", uniqueID, function()
+        if !IsValid(client) then return remove() end
+        if !IsValid(target) then return remove() end
+
+        local pullerPos = client:GetPos()
+        local targetPos = target:GetPos()
+        local dist = pullerPos:DistToSqr(targetPos)
+
+        if dist >= 15000 then
+            return remove()
+        else
+            if dist > 1500 then
+                local pullDirection = (pullerPos - targetPos):GetNormalized()
+
+                target:SetVelocity(pullDirection * 6)
+            end
+        end
+    end)
+end)

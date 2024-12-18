@@ -537,6 +537,15 @@ function PLUGIN:PlayerOption()
 				netstream.Start("RadialMenu:PushAction")
 			end
 		},
+		{
+			name = "Тянуть за собой",
+			id = "drag",
+			description = "Тянуть за собой данного игрока",
+			icon = Material("asterion/academy/ui/radial/action/drag.png"),
+			action = function()
+				netstream.Start("RadialMenu:DragPlayerAction")
+			end
+		},
 	}
 
 	local inventory = LocalPlayer():GetInventory()

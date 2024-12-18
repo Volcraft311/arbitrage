@@ -40,9 +40,7 @@ netstream.Hook("RadialMenu:StandUp", function(client)
         end
     end
 
-    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
-    end
+    TypingDraw:SendSphere(0.5, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
 
     Arbitrage.action.ActionRun(client, "Поднимаем", delay, function()
         if !IsValid(entity) then return end
@@ -61,9 +59,7 @@ netstream.Hook("RadialMenu:StandUp", function(client)
         client:ExitAction(true)
         ragdollClient:StandUp()
 
-        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
-        end
+        TypingDraw:SendSphere(0.5, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
     end)
 end)
 
@@ -84,11 +80,7 @@ netstream.Hook("RadialMenu:PushAction", function(client)
         client:ViewPunch(KnockViewPunchAngle)
         target:ViewPunch(KnockViewPunchAngle)
 
-        local name = target:Name()
-
-        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Толкает '" .. name .. "'", Color(255, 170, 23))
-        end
+        TypingDraw:SendSphere(0.5, client, "Толкает '" .. target:Name() .. "'", Color(255, 170, 23))
 
         client.PushActionCD = CurTime() + 1
     end
@@ -120,9 +112,7 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
         end
     end
 
-    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, "Обыскивает '" .. name .. "'", Color(255, 170, 23))
-    end
+    TypingDraw:SendSphere(0.5, client, "Обыскивает '" .. name .. "'", Color(255, 170, 23))
 
     Arbitrage.action.ActionRun(client, "Обыскиваем", IsValid(ragdollClient) and 23 or 15, function()
         if !IsValid(entity) then return end
@@ -156,9 +146,7 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
             end)
         end
 
-        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
-        end
+        TypingDraw:SendSphere(0.5, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
     end)
 end)
 
@@ -248,9 +236,7 @@ netstream.Hook("RadialMenu:DragPlayerAction", function(client)
         return remove()
     end
 
-    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, "Тянет за собой '" .. target:Name() .. "'", Color(255, 170, 23))
-    end
+    TypingDraw:SendSphere(0.5, client, "Тянет за собой '" .. target:Name() .. "'", Color(255, 170, 23))
 
     client.bDragPlayer = true
 
@@ -267,8 +253,9 @@ netstream.Hook("RadialMenu:DragPlayerAction", function(client)
         else
             if dist > 1500 then
                 local pullDirection = (pullerPos - targetPos):GetNormalized()
+                local scale = 10 -- scale зависит очень сильно от тикрейта сервера потому что обрабатывается в Think. На академии тикрейт 32
 
-                target:SetVelocity(pullDirection * 10)
+                target:SetVelocity(pullDirection * scale)
             end
         end
     end)

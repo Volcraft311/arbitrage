@@ -40,9 +40,7 @@ function ItemBase.GetBase(base)
             item:Transfer(nil)
             item._oldInventory = nil
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-                TypingDraw:SetTypingText(v, client, "Выкидывает '" .. item:GetName() .. "'", Color(255, 170, 23))
-            end
+            TypingDraw:SendSphere(0.5, client, "Выкидывает '" .. item:GetName() .. "'", Color(255, 170, 23))
 
             return false
         end,
@@ -82,9 +80,7 @@ function ItemBase.GetBase(base)
                 end
             end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-                TypingDraw:SetTypingText(v, client, "Поднимает '" .. item:GetName() .. "'", Color(255, 170, 23))
-            end
+            TypingDraw:SendSphere(0.5, client, "Поднимает '" .. item:GetName() .. "'", Color(255, 170, 23))
 
             return false
         end,

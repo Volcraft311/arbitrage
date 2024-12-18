@@ -86,9 +86,7 @@ local function OpenNote(item, client, page, bEdit, bClose)
         end
     end)
 
-    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, (bEdit and "Изменяет" or "Читает") .. " " .. "'" .. item:GetName() .. "'", Color(255, 170, 23))
-    end
+    TypingDraw:SendSphere(0.5, client, (bEdit and "Изменяет" or "Читает") .. " " .. "'" .. item:GetName() .. "'", Color(255, 170, 23))
 end
 
 local function ReadNote(item, client, page, bClose)

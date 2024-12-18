@@ -145,9 +145,7 @@ BASE:AddAction("Открыть", {
 
         InventoryBase.Open(item.player, inventory:GetID(), item:GetName())
 
-        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Осматривает содержимое '" .. item:GetName()  .. "'", Color(255, 170, 23))
-        end
+        TypingDraw:SendSphere(0.5, client, "Осматривает содержимое '" .. item:GetName()  .. "'", Color(255, 170, 23))
 
         return false
     end,

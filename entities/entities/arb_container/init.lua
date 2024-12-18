@@ -35,11 +35,10 @@ function ENT:Use(client, caller)
 	client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 
 	local name = self.GetContainerName and self:GetContainerName() or ""
+	name = name:Trim()
 
 	if name != "" and name != " " then
-		for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-		    TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
-		end
+		TypingDraw:SendSphere(0.5, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
 	end
 
 	Arbitrage.action.ActionRun(client, "Обыскиваем", 1, function()

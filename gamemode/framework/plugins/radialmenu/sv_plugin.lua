@@ -268,7 +268,7 @@ netstream.Hook("RadialMenu:DragPlayerAction", function(client)
             if dist > 1500 then
                 local pullDirection = (pullerPos - targetPos):GetNormalized()
 
-                target:SetVelocity(pullDirection * 8)
+                target:SetVelocity(pullDirection * 9)
             end
         end
     end)

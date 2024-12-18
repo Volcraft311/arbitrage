@@ -15,7 +15,6 @@
 -- Localize Global Calls
 local IsValid = IsValid
 local ipairs = ipairs
-local ents_FindInSphere = ents.FindInSphere
 
 local PLUGIN = PLUGIN
 
@@ -29,9 +28,8 @@ function TypingDraw:SetTypingText(client, target, data, color)
     netstream.Start(client, "TypingDraw:SetTypingText", target, data, color)
 end
 
--- ents.FindInSphere очень требовательный метод. В будущем как нить заменить его нужно будет
 function TypingDraw:SendSphere(radius, client, data, color)
-    for k, v in ipairs(ents_FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * radius)) do
+    for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * radius)) do
         -- вся проверка происходит в методе SetTypingText()
 
         TypingDraw:SetTypingText(v, client, data, color)

@@ -32,3 +32,6 @@ RunConsoleCommand("cl_tfa_fx_impact_ricochet_sparks", 0)
 RunConsoleCommand("cl_tfa_fx_impact_ricochet_sparklife", 0)
 RunConsoleCommand("cl_tfa_ballistics_fx_bullet", 0)
 RunConsoleCommand("cl_tfa_ballistics_fx_tracers_adv", 0)
+
+hook.Remove("PrePlayerDraw", "TFACleanupProjectedTextures")
+hook.Remove("PreDrawOpaqueRenderables", "tfaweaponspredrawopaque")

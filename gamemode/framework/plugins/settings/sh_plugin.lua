@@ -169,32 +169,24 @@ local function IsVisibleGUI()
     return vgui_CursorVisible()
 end
 
-function PLUGIN.binds.IsClampedID(id, bCallHooks)
-    local data = SETTINGS.binds.Get(id)
-
-    if data then
-        local info = SETTINGS.binds.MouseList[data] and input_IsMouseDown(data) or input_IsKeyDown(data)
-
-        if info and bCallHooks then
-            hook_Run("KeyClampID", LocalPlayer(), id, IsVisibleGUI())
-        end
-
-        return info
-    end
-end
-
 function PLUGIN.binds.IsPressedID(id, bCallHooks)
     local data = SETTINGS.binds.Get(id)
 
     if data then
         local info = SETTINGS.binds.MouseList[data] and input_IsMouseDown(data) or input_IsKeyDown(data)
+        local client = LocalPlayer()
+        local bVisibleGUI = IsVisibleGUI()
+
+        if info and bCallHooks then
+            hook_Run("KeyClampID", client, id, bVisibleGUI)
+        end
 
         if PLUGIN.pressed[id] then
             if info == false then
                 PLUGIN.pressed[id] = false
 
                 if bCallHooks then
-                    hook_Run("KeyReleaseID", LocalPlayer(), id, IsVisibleGUI())
+                    hook_Run("KeyReleaseID", client, id, bVisibleGUI)
                 end
             end
 
@@ -204,7 +196,7 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
                 PLUGIN.pressed[id] = true
 
                 if bCallHooks then
-                    hook_Run("KeyPressID", LocalPlayer(), id, IsVisibleGUI())
+                    hook_Run("KeyPressID", client, id, bVisibleGUI)
                 end
 
                 return true

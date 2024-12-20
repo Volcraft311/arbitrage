@@ -31,7 +31,9 @@ function PANEL:Init()
     self.client = LocalPlayer()
     self.faction = Character.team:GetByID(self.client:Team())
     self.icon = self.faction:GetAssets().hud
-    self.mat = Material(self.icon)
+    if self.icon then
+        self.mat = Material(self.icon)
+    end
 
     self.description = self.client:GetNetVar("description")
     self.descriptionFont = "arb.Font_FuturaPTBook_6"

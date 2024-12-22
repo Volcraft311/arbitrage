@@ -62,6 +62,7 @@ function Character.team:Create(data)
         info.assets.white = Format(assetPath, "white")
         info.assets.splash = Format(assetPath, "splash")
         info.assets.argue = Format(assetPath, "argue")
+        info.assets.greeting = Format(assetPath, "greeting")
     end
 
     team.SetUp(id, info:GetName(), info:GetColor())

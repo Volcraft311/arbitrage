@@ -18,6 +18,7 @@ TEAM.uniqueID = nil
 
 TEAM.name = "Название команды"
 TEAM.title = "Описание таланта"
+TEAM.description = ""
 TEAM.category = "Остальные"
 TEAM.model = "models/player/skeleton.mdl"
 TEAM.color = Color(240, 201, 73)
@@ -92,6 +93,10 @@ end
 
 function TEAM:GetTitle()
     return self.title
+end
+
+function TEAM:GetDescription()
+    return self.description
 end
 
 function TEAM:GetCategory()

@@ -31,7 +31,7 @@ for _, command in ipairs({"unanonymous", "unincognito", "returnrank", "rr"}) do
     RegisterCommand(command, "Вернуть себе права равные статическому рангу.", {})
 end
 
-for _, command in ipairs({"anonymous", "incognito", "takerank"}) do
+for _, command in ipairs({"anonymous", "incognito", "takerank", "tr"}) do
     RegisterCommand(command, "Временно снять с себя привилегии статического ранга.", {})
 end
 

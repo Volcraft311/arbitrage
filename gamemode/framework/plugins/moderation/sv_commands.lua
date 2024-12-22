@@ -145,12 +145,12 @@ timer.Simple(1, function()
                 if client:GetStaticUserGroup() == client:GetDynamicUserGroup() then return Arbitrage.commands.Notify(client, "Вам уже выданы данные права!") end
 
                 client:SetDynamicToStaticUserGroup()
-                Arbitrage.commands.Notify(client, "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/anonymous\"!")
+                Arbitrage.commands.Notify(client, "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/tr\"!")
             end
         })
     end
 
-    for _, command in ipairs({"anonymous", "incognito", "takerank"}) do
+    for _, command in ipairs({"anonymous", "incognito", "takerank", "tr"}) do
         Arbitrage.commands.Add(command, {
             arguments = {},
             OnAction = function(client)
@@ -158,7 +158,7 @@ timer.Simple(1, function()
                 if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "У вас отсутствует статический ранг и вы не можете снять с себя права данной командой!") end
 
                 client:SetDynamicUserGroup("user")
-                Arbitrage.commands.Notify(client, "Вы успешно сняли с себя права. Чтобы их вернуть, используйте команду \"/unanonymous\"!")
+                Arbitrage.commands.Notify(client, "Вы успешно сняли с себя права. Чтобы их вернуть, используйте команду \"/rr\"!")
             end
         })
     end

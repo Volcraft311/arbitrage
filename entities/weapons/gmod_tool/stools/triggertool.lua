@@ -331,7 +331,7 @@ function TOOL.BuildCPanel(CPanel)
                         str_arg:SetSize(500, 400)
                         str_arg:Center()
                         label:Dock(TOP)
-                        label:SetText(tostring(trigger_args[k]))
+                        label:SetColor(trigger_args[k])
                         function label:OnValueChanged( col )
                             color = col
                         end

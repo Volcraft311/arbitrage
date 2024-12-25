@@ -121,6 +121,27 @@ function Moderation:PlayerInitialSpawnForRealz(client)
     end)
 end
 
+function Moderation:OnCheckPassword(steamid)
+    -- Dynamic rank
+    do
+        local data = asterionlib.data:Get("moderation_dynamicusergroup", {})
+
+        local info = data[steamid]
+        if info then
+            return true
+        end
+    end
+
+    -- Static rank
+    do
+        local rank = self.static_usergroups[steamid]
+
+        if rank then
+            return true
+        end
+    end
+end
+
 function Moderation:AddLog(uniqueID, data)
     self.logs[uniqueID] = data
     self.logs[uniqueID].id = uniqueID

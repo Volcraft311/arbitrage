@@ -631,26 +631,28 @@ local function initPlayer(client)
     end)
 end
 
-timer.Create("Arbitrage:AutoUnStuckThink", 0.5, 0, function()
-    for _, client in ipairs(player.GetAll()) do
-        if client:IsSpectate() then continue end
-        if client:IsNocliping() then continue end
-        if client.GetSitting and client:GetSitting() then continue end
+timer.Simple(math.random(), function()
+    timer.Create("Arbitrage:AutoUnStuckThink", 0.5, 0, function()
+        for _, client in ipairs(player.GetAll()) do
+            if client:IsSpectate() then continue end
+            if client:IsNocliping() then continue end
+            if client.GetSitting and client:GetSitting() then continue end
 
-        local isStuck = client:IsStuck()
-        if isStuck then
-            client._stuck_count = (client._stuck_count or 0) + 1
+            local isStuck = client:IsStuck()
+            if isStuck then
+                client._stuck_count = (client._stuck_count or 0) + 1
 
-            if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
-                client:UnStuck()
+                if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
+                    client:UnStuck()
 
-                client._stuck_cd = CurTime() + 10
+                    client._stuck_cd = CurTime() + 10
+                end
+            else
+                client._stuck_count = nil
+                client._stuck_cd = nil
             end
-        else
-            client._stuck_count = nil
-            client._stuck_cd = nil
         end
-    end
+    end)
 end)
 
 function Arbitrage:PlayerInitialSpawn(client)
@@ -936,36 +938,40 @@ function Arbitrage:StopGame()
     end
 end
 
-timer.Create("Arbitrage:RegenerationHealth", 60, 0, function()
-    for k, v in ipairs(player.GetAll()) do
-        if !v:IsPlaying() then continue end
+timer.Simple(math.random(), function()
+    timer.Create("Arbitrage:RegenerationHealth", 60, 0, function()
+        for k, v in ipairs(player.GetAll()) do
+            if !v:IsPlaying() then continue end
 
-        local health = v:Health()
-        if health >= 100 or health <= 0 then continue end
+            local health = v:Health()
+            if health >= 100 or health <= 0 then continue end
 
-        v:SetHealth(math.Clamp(health + 1, 0, 100))
-    end
+            v:SetHealth(math.Clamp(health + 1, 0, 100))
+        end
+    end)
 end)
 
-timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
-    for k, v in ipairs(player.GetAll()) do
-        if !v:IsSpectate() then continue end
+timer.Simple(math.random(), function()
+    timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
+        for k, v in ipairs(player.GetAll()) do
+            if !v:IsSpectate() then continue end
 
-        local spectate = v.spectateent
+            local spectate = v.spectateent
 
-        if IsValid(spectate) then
-            v:SetPos(spectate:GetPos())
+            if IsValid(spectate) then
+                v:SetPos(spectate:GetPos())
+            end
+
+            v:DrawHide()
+
+            v:GodEnable()
+            v:SetNoTarget(true)
+            v:StripWeapons()
+            v:StripAmmo()
+            v:Spectate(OBS_MODE_CHASE)
+            v:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
         end
-
-        v:DrawHide()
-
-        v:GodEnable()
-        v:SetNoTarget(true)
-        v:StripWeapons()
-        v:StripAmmo()
-        v:Spectate(OBS_MODE_CHASE)
-        v:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
-    end
+    end)
 end)
 
 function Arbitrage:PlayerCanPickupWeapon(client, entity)

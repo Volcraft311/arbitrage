@@ -629,30 +629,29 @@ local function initPlayer(client)
 
         Arbitrage.statistics.PlayerPostThink(client)
     end)
+end
 
-    local unstuckID = "Arbitrage:AutoUnStuckThink_" .. client:EntIndex()
-    timer.Create(unstuckID, 0.5, 0, function()
-        if !IsValid(client) then return timer.Remove(unstuckID) end
-
-        if client:IsSpectate() then return end
-        if client.GetSitting and client:GetSitting() then return end
-        if client:IsNocliping() then return end
+timer.Create("Arbitrage:AutoUnStuckThink", 0.5, 0, function()
+    for _, client in ipairs(player.GetAll()) do
+        if client:IsSpectate() then continue end
+        if client:IsNocliping() then continue end
+        if client.GetSitting and client:GetSitting() then continue end
 
         local isStuck = client:IsStuck()
         if isStuck then
             client._stuck_count = (client._stuck_count or 0) + 1
+
+            if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
+                client:UnStuck()
+
+                client._stuck_cd = CurTime() + 10
+            end
         else
-            client._stuck_count = 0
+            client._stuck_count = nil
             client._stuck_cd = nil
         end
-
-        if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
-            client:UnStuck()
-
-            client._stuck_cd = CurTime() + 10
-        end
-    end)
-end
+    end
+end)
 
 function Arbitrage:PlayerInitialSpawn(client)
     local indx = client:EntIndex()

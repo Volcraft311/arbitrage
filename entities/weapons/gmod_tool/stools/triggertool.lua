@@ -6,7 +6,7 @@
             Discord - https://discord.gg/CtfS8r5W3M
         
         developer(s):
-            Selenter - https://steamcommunity.com/id/selenter
+            Volcraft31
 
         ——— Chop your own wood and it will warm you twice.
 ]]--
@@ -26,6 +26,10 @@ local color_text = Color(255,255,255)
 local color_text_background = Color(0,0,0,100)
 local color_first_point = Color(0,0,255,150)
 local color_second_point = Color(0,255,0,150)
+
+
+local ActionType = ACTION_ENTER
+
 
 -- Добавляем язык
 
@@ -117,18 +121,39 @@ function TOOL:DrawHUD()
     draw.SimpleText("2","Trebuchet24",point2.x,point2.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 end
 
+
+
+local trigger_actions = {
+    {
+        type = ACTION_ENTER,
+        desc = "Событие при входе в триггер"
+    },
+    {
+        type = ACTION_EXIT,
+        desc = "Событие при выходе из триггера"
+    }
+}
+
 function TOOL.BuildCPanel(CPanel)
 
     CPanel:AddControl("Header",{
         Description = "Данный инструмент позволяет управлять триггерами."
     })
 
+    local text = vgui.Create("DLabel",CPanel)
+    text:SetText("Список Триггеров")
+    text:Dock(TOP)
+    text:SetFont("arb.Font_FuturaPTBook_6")
+    text:DockMargin(0, 0, 0, 10)
+    text:SetTextColor(color_black)
+    CPanel:AddPanel(text)
+
     local TriggerList = vgui.Create("DListView", CPanel)
     TriggerList:Dock(TOP)
-    TriggerList:DockMargin(10, 20, 10, 40)
+    TriggerList:DockMargin(10, 5, 10, 20)
     TriggerList:AddColumn( "Trigger" )
     TriggerList:AddColumn( "Type" )
-    TriggerList:SetTall(500)
+    TriggerList:SetTall(300)
 
 
 
@@ -137,31 +162,35 @@ function TOOL.BuildCPanel(CPanel)
     Trigger.UpdateToolPanel()
 
 
-    local ActionList = vgui.Create("DListView", CPanel)
-    ActionList:Dock(TOP)
-    ActionList:DockMargin(10, 20, 10, 40)
-    ActionList:AddColumn( "ActionID" )
-    ActionList:AddColumn( "Action" )
-    ActionList:AddColumn( "Args" )
-    ActionList:SetTall(500)
-    Trigger.ActionList = ActionList
-
-
-
     TriggerList.OnRowSelected = function(panel, index, row)
         Trigger.selectedID = tonumber(row:GetValue(2))
-        Trigger.UpdateActionList()
+        Trigger.UpdateActionLists()
     end
 
     TriggerList.OnRowRightClick = function(panel, index, row)
         local Menu = DermaMenu()
         local thisTrigger = Trigger:GetSelected()
-        Menu:AddOption( "Добавить пустое действие на вход", function()
-            netstream.Start("Trigger:AddEnterAction",{id = Trigger.selectedID,actionid = 1, args = {"say","/me test message"}})
-            timer.Simple(0.1,function()
-                Trigger.UpdateActionList()
+        local EnterAct = Menu:AddSubMenu( "Добавить действие на вход")
+        for k, v in pairs(Trigger.ActionTypes) do
+            local _opt = EnterAct:AddOption(v.name,function()
+                netstream.Start("Trigger:AddAction",{type = ACTION_ENTER, id = Trigger.selectedID,actionid = k, args = v.default})
+                timer.Simple(0.1,function()
+                    Trigger.UpdateActionLists()
+                end)
             end)
-        end)
+            _opt:SetIcon(v.icon or "icon16/bug.png")
+        end
+        local ExitAct = Menu:AddSubMenu( "Добавить действие на выход")
+        for k, v in pairs(Trigger.ActionTypes) do
+            local _opt = ExitAct:AddOption(v.name,function()
+                netstream.Start("Trigger:AddAction",{type = ACTION_EXIT, id = Trigger.selectedID,actionid = k, args = v.default})
+                timer.Simple(0.1,function()
+                    Trigger.UpdateActionLists()
+                end)
+            end)
+            _opt:SetIcon(v.icon or "icon16/bug.png")
+
+        end
         Menu:AddSpacer()
 
         Menu:AddOption( "Изменить имя", function()
@@ -183,77 +212,144 @@ function TOOL.BuildCPanel(CPanel)
 
             str_button.DoClick = function()
                 thisTrigger.name = label:GetText()
-                print(thisTrigger.name)
                 netstream.Start("Trigger:ChangeName",{id = thisTrigger.id,name = thisTrigger.name})
                 str_arg:Remove()
             end
             timer.Simple(0.1,function()
-                Trigger.UpdateActionList()
+                Trigger.UpdateActionLists()
             end)
         end)
 
         Menu:AddOption( "Удалить триггер", function()
             netstream.Start("Trigger:Remove",{id = Trigger.selectedID})
             timer.Simple(0.1,function()
-                Trigger.UpdateActionList()
+                Trigger.UpdateActionLists()
             end)
         end)
 
         Menu:Open()
     end
 
-    ActionList.OnRowRightClick = function(panel, index, row)
-        local Menu = DermaMenu()
-        Menu:AddOption( "Удалить Действие", function()
-            netstream.Start("Trigger:RemoveEnterAction",{id = Trigger.selectedID,number = index})
-            timer.Simple(0.1,function()
-                Trigger.UpdateActionList()
+
+    for k, v in pairs(trigger_actions) do
+        local text = vgui.Create("DLabel",CPanel)
+        text:SetText(v.desc)
+        text:Dock(TOP)
+        text:SetFont("arb.Font_FuturaPTBook_6")
+        text:SetTextColor(color_black)
+        CPanel:AddPanel(text)
+
+        local _list = vgui.Create("DListView", CPanel)
+        _list:Dock(TOP)
+        _list:DockMargin(10, 20, 10, 40)
+        _list:AddColumn( "Action" )
+        _list:SetTall(300)
+        _list.act_type = v.type
+
+        _list.OnRowRightClick = function(panel, index, row)
+            ActionType = panel.act_type
+            local Menu = DermaMenu()
+            Menu:AddOption( "Удалить Действие", function()
+                netstream.Start("Trigger:RemoveAction",{type = ActionType, id = Trigger.selectedID,number = index})
+                timer.Simple(0.1,function()
+                    Trigger.UpdateActionLists()
+                end)
             end)
-        end)
 
 
-        Menu:AddSpacer()
+            Menu:AddSpacer()
+            -- Почему это сделано через if/else? Я позволю себе 30 секунд или одну минуту, маленькую историческую справку.
+            -- Так вот. Для создания нового действия, ты указываешь, какие типы данных он принимает, 'args = {"string","string","number"}'
+            -- И основываясь на опыте Селентера, когда я пытался изъебнуться, лишь бы впихнуть изменение цвета персонажа в текстовое окошко меню кастомных персонажей,
+            -- Я и решил, что ГОРАЗДО легче продумать это заранее. А гороздить ебейшую кучу РАЗНЫХ интерфейсов - пустая трата времени.
+            -- Потому тут и сделано подобное развлетвление, чтобы в случае, если тебе нужен прям особый интерфейс, ты без лишних проблем вписал elseif
+            -- Можно было сделать как-то лучше? - Не знаю. Оно работает нормально - да. Потому, если тебя сюда привела подсветка синтаксиса Visual Studio Code, можешь слать его НАХУЙ
+            local SubMenu = Menu:AddSubMenu( "Изменить Аргументы" )
+            local thisTrigger = Trigger:GetSelected()
+            local thisAction = Trigger:ActionByID(row.thisActionID)
 
-        local SubMenu = Menu:AddSubMenu( "Изменить Аргументы" )
-        local thisAction = Trigger:ActionByID(tonumber(row:GetValue(1)))
-        local thisTrigger = Trigger:GetSelected()
-        for k, v in pairs(thisAction.args) do
-            local arg = SubMenu:AddOption(thisAction.args_desc[k], function()
-                local str_arg = vgui.Create("DFrame")
-                str_arg:SetSize(500, 100)
-                str_arg:Center()
-                str_arg:MakePopup()
-                str_arg:SetTitle("Указать Аргумент " .. k)
+            for k, v in pairs(thisAction.args) do
+                local trigger_args = thisTrigger.ActionList[ActionType][index].args
+                local arg = SubMenu:AddOption(thisAction.args_desc[k], function()
+                    local str_arg = vgui.Create("DFrame")
+                    str_arg:SetSize(500, 100)
+                    str_arg:Center()
+                    str_arg:MakePopup()
+                    str_arg:SetTitle("Указать Аргумент " .. k)
 
-                local str_button = vgui.Create("DButton",str_arg)
-                str_button:SetText("Применить изменения")
-                str_button:Dock(BOTTOM)
-                str_button:SetWidth(20)
+                    local str_button = vgui.Create("DButton",str_arg)
+                    str_button:SetText("Применить изменения")
+                    str_button:Dock(BOTTOM)
+                    str_button:SetWidth(20)
+                    if v == "string" then
+                        local label = str_arg:Add("DTextEntry")
+                        label:Dock(TOP)
+                        print("a", trigger_args[k])
+                        label:SetText(trigger_args[k])
 
-                if v == "string" then
-                    local label = str_arg:Add("DTextEntry")
-                    label:Dock(TOP)
-                    label:SetText(thisTrigger.EnterActionList[index].args[k])
+                        str_button.DoClick = function()
+                            trigger_args[k] = label:GetText()
+                            netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
+                            str_arg:Remove()
+                        end
 
-                    str_button.DoClick = function()
-                        thisTrigger.EnterActionList[index].args[k] = label:GetText()
-                        netstream.Start("Trigger:EditEnterAction",{id = Trigger.selectedID,number = index,args = thisTrigger.EnterActionList[index].args})
-                        str_arg:Remove()
+                    elseif v == "number" then
+                        local label = str_arg:Add("DTextEntry")
+                        label:Dock(TOP)
+                        label:SetText(tostring(trigger_args[k]))
+
+                        str_button.DoClick = function()
+                            trigger_args[k] = tonumber(label:GetText())
+                            netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
+                            str_arg:Remove()
+                        end
+
+                    elseif v == "bool" then
+                        local label = str_arg:Add("DCheckBox")
+                        str_arg:SetSize(150, 150)
+                        label:SetSize(32,32)
+                        local _value = trigger_args[k]
+                        label:SetValue(_value)
+                        label:Center()
+                        label:SetValue(_value)
+
+
+                        function label:OnChange(bVal)
+                            _value = bVal
+                        end
+
+                        str_button.DoClick = function()
+                            trigger_args[k] = tobool(_value)
+                            print(trigger_args[k])
+                            netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
+                            str_arg:Remove()
+                        end
+
+                    elseif v == "color" then
+                        local color = Color(0,0,0)
+                        local label = str_arg:Add("DColorCombo")
+                        str_arg:SetSize(500, 400)
+                        str_arg:Center()
+                        label:Dock(TOP)
+                        label:SetText(tostring(trigger_args[k]))
+                        function label:OnValueChanged( col )
+                            color = col
+                        end
+
+                        str_button.DoClick = function()
+                            trigger_args[k] = color
+                            netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
+                            str_arg:Remove()
+                        end
+                    -- Тут (если очень захотеть) можно добавить новый тип данных.  
                     end
-                elseif v == "number" then
-                    local label = str_arg:Add("DTextEntry")
-                    label:Dock(TOP)
-                    label:SetText(tostring(thisTrigger.EnterActionList[index].args[k]))
 
-                    str_button.DoClick = function()
-                        thisTrigger.EnterActionList[index].args[k] = tonumber(label:GetText())
-                        netstream.Start("Trigger:EditEnterAction",{id = Trigger.selectedID,number = index,args = thisTrigger.EnterActionList[index].args})
-                        str_arg:Remove()
-                    end
-                end
-            end)
-            arg:SetIcon( "icon16/group.png" )
+                end)
+                arg:SetIcon( "icon16/application_edit.png" )
+            end
+            Menu:Open()
         end
-        Menu:Open()
+
+        Trigger.ActionLists[v.type] = _list
     end
 end

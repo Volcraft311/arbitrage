@@ -4,9 +4,18 @@ TRIGGER.id = 0
 TRIGGER.name = "undefined_" .. TRIGGER.id
 TRIGGER.points = {vector_origin,Vector(5,5,5)}
 TRIGGER.isLocalPlayerInside = false
-TRIGGER.EnterActionList = {}
-TRIGGER.ExitActionList = {}
 TRIGGER.delay = 0.5
+
+
+TRIGGER.ActionList = {
+    Enter = {},
+    Exit = {}
+}
+
+
+-- Энумираторы
+ACTION_ENTER = "Enter"
+ACTION_EXIT = "Exit"
 
 
 local box_color1 = Color(0,255,55)
@@ -35,27 +44,19 @@ function TRIGGER:GetPoints()
     return self.points
 end
 
-
-function TRIGGER:AddEnterAction(actionID,args)
-    table.insert(self.EnterActionList, {action = actionID,args = args})
+function TRIGGER:AddAction(actionEnum, actionID, args)
+    table.insert(self.ActionList[actionEnum], {action = actionID,args = args})
 end
 
-function TRIGGER:RemoveEnterAction(number)
-    table.remove(self.EnterActionList,number)
-end
-
-function TRIGGER:EditEnterAction(number, args)
-    self.EnterActionList[number].args = args
+function TRIGGER:RemoveAction(actionEnum, number)
+    table.remove(self.ActionList[actionEnum], number)
 end
 
 
-function TRIGGER:AddExitAction(actionID,args)
-    table.insert(self.ExitActionList, {action = actionID,args = args})
+function TRIGGER:EditAction(actionEnum, number, args)
+    self.ActionList[actionEnum][number].args = args
 end
 
-function TRIGGER:RemoveExitAction(number)
-    table.remove(self.ExitActionList,number)
-end
 
 function TRIGGER:IsPlayerInside(client)
     if CLIENT and !client then
@@ -70,18 +71,26 @@ end
 
 function TRIGGER:PlayerEntered(client)
     client = client or LocalPlayer()
-    netstream.Start("Trigger:PlayerEntered",self.id)
-    self.isLocalPlayerInside = true
-    for k, v in pairs(self.EnterActionList) do
-        Trigger:ActionByID(v.action).run(self, v.args)
+    if CLIENT then
+        netstream.Start("Trigger:PlayerEntered",self.id)
+        self.isLocalPlayerInside = true
+        Trigger.PlayerInside[self] = true
+    end
+    for k, v in pairs(self.ActionList.Enter) do
+        Trigger:ActionByID(v.action).run(self, v.args, client)
     end
 end
 
 function TRIGGER:PlayerExited(client)
     client = client or LocalPlayer()
-    netstream.Start("Trigger:PlayerExited",self.id)
-    self.isLocalPlayerInside = false
-    --Trigger.typeList[self.type].OnExit(client)
+    if CLIENT then
+        netstream.Start("Trigger:PlayerExited",self.id)
+        self.isLocalPlayerInside = false
+        Trigger.PlayerInside[self] = nil
+    end
+    for k, v in pairs(self.ActionList.Exit) do
+        Trigger:ActionByID(v.action).run(self,v.args, client)
+    end
 end
 
 

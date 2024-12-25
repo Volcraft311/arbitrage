@@ -15,14 +15,20 @@ file.CreateDir("academy_colormodify_configs")
 
 local PLUGIN = PLUGIN
 
+PLUGIN.TriggerColor = nil
+
 function PLUGIN:RenderScreenspaceEffects()
-    local data = self:Get()
-    if !data.enabled then return end
+    local data
+    if PLUGIN.TriggerColor == nil then
+        data = self:Get()
+        if !data.enabled then return end
 
-    if data.players and !data.playersList[LocalPlayer():SteamID()] then
-        return
+        if data.players and !data.playersList[LocalPlayer():SteamID()] then
+            return
+        end
+    else
+        data = PLUGIN.TriggerColor
     end
-
     local ColorModify = {}
     ColorModify["$pp_colour_brightness"] = data.brightness
     ColorModify["$pp_colour_contrast"] = data.contrast

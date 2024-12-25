@@ -13,6 +13,7 @@
 
 
 local PLUGIN = PLUGIN
+ColorModify = PLUGIN
 
 PLUGIN.colorMod = {
     brightness = 0,

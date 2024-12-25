@@ -1,7 +1,8 @@
 Trigger.instances = Trigger.instances or {}
 Trigger.drawTriggers = false
 Trigger.selectedID = 0
-
+Trigger.ActionLists = {}
+Trigger.PlayerInside = {}
 
 local selected_trigger_color = Color(0,255,100,100)
 
@@ -23,11 +24,16 @@ timer.Create("Trigger:IsPlayerInside",0.1,0,function()
     for k,v in pairs(Trigger.instances) do
         if v.isLocalPlayerInside == false then
             if v:IsPlayerInside() then
+                Trigger.PlayerInside[v] = true
+                Print("a")
+                Print(Trigger.PlayerInside)
                 v:PlayerEntered()
             end
         elseif v.isLocalPlayerInside == true then
             if !v:IsPlayerInside() then
+                Print("b")
                 v:PlayerExited()
+                Trigger.PlayerInside[v] = nil
             end
         end
     end
@@ -50,25 +56,25 @@ function Trigger:DrawAll()
     end
 end
 
--- Обновление интерфейса (Ебал его куда только можно) 
-
-function Trigger.UpdateActionList()
-    local trigger = Trigger.GetSelected()
-    if trigger == nil then return false end
-    local tl = Trigger.ActionList
-    if tl == nil or !tl:IsValid() then return false end
-    tl:ClearSelection()
-    local lines = tl:GetLines()
-    local actions = trigger.EnterActionList
+-- Обновление интерфейса (Ебал его куда только можно, хуйня ебанная. Я НА НЕГО БЛЯТЬ ТРАЧУ БОЛЬШЕ ВРЕМЕНИ, ЧЕМ НА ВСЁ ОСТАЛЬНОЕ.) - volcraft31
 
 
-    for i, _ in ipairs(lines) do
-        Trigger.ActionList:RemoveLine(i)
-    end
+function Trigger.UpdateActionLists()
+    local tr = Trigger.GetSelected()
+    if tr == nil then return end
 
-    for _, v in pairs(actions) do
-        local act = Trigger:ActionByID(v.action)
-        Trigger.ActionList:AddLine(tostring(v.action),tostring(act.name),tostring(table.concat(v.args," ") or 0))
+    for _act, _list in pairs(Trigger.ActionLists) do
+        local lines = _list:GetLines()
+
+        for i, _ in ipairs(lines) do
+            _list:RemoveLine(i)
+        end
+
+        for k, v in pairs(tr.ActionList[_act]) do
+            local act = Trigger:ActionByID(v.action)
+            local _line = _list:AddLine(tostring(act.name))
+            _line.thisActionID = v.action 
+        end
     end
 end
 

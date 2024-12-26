@@ -1,5 +1,7 @@
 local PLUGIN = PLUGIN
 
+ChatBox = PLUGIN 
+
 PLUGIN.chat.history = PLUGIN.chat.history or {}
 
 function PLUGIN:CreateChat()

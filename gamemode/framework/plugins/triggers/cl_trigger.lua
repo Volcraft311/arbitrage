@@ -25,13 +25,10 @@ timer.Create("Trigger:IsPlayerInside",0.1,0,function()
         if v.isLocalPlayerInside == false then
             if v:IsPlayerInside() then
                 Trigger.PlayerInside[v] = true
-                Print("a")
-                Print(Trigger.PlayerInside)
                 v:PlayerEntered()
             end
         elseif v.isLocalPlayerInside == true then
             if !v:IsPlayerInside() then
-                Print("b")
                 v:PlayerExited()
                 Trigger.PlayerInside[v] = nil
             end

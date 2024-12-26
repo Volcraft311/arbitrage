@@ -70,6 +70,7 @@ function TRIGGER:IsPlayerInside(client)
 end
 
 function TRIGGER:PlayerEntered(client)
+    print("Player Ent")
     client = client or LocalPlayer()
     if CLIENT then
         netstream.Start("Trigger:PlayerEntered",self.id)
@@ -82,6 +83,7 @@ function TRIGGER:PlayerEntered(client)
 end
 
 function TRIGGER:PlayerExited(client)
+    print("Player Ext")
     client = client or LocalPlayer()
     if CLIENT then
         netstream.Start("Trigger:PlayerExited",self.id)

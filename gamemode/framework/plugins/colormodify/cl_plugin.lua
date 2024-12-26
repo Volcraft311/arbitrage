@@ -15,20 +15,32 @@ file.CreateDir("academy_colormodify_configs")
 
 local PLUGIN = PLUGIN
 
-PLUGIN.TriggerColor = nil
+PLUGIN.CurrentTColor = {
+    brightness = 0,
+    contrast = 1,
+    color = 1,
+    mulr = 0,
+    mulg = 0,
+    mulb = 0,
+    addr = 0,
+    addg = 0,
+    addb = 0,
+}
 
-function PLUGIN:RenderScreenspaceEffects()
-    local data
-    if PLUGIN.TriggerColor == nil then
-        data = self:Get()
-        if !data.enabled then return end
+PLUGIN.AllTweens = {}
 
-        if data.players and !data.playersList[LocalPlayer():SteamID()] then
-            return
-        end
-    else
-        data = PLUGIN.TriggerColor
-    end
+
+for k, v in pairs(PLUGIN.CurrentTColor) do
+    local tween = Tween(v, v, 1, TWEEN_EASE_LINEAR)
+    PLUGIN.AllTweens[k] = tween
+end
+
+PLUGIN.TargetTColor = nil
+PLUGIN.DefaultTColor = table.Copy(PLUGIN.CurrentTColor)
+
+
+
+local function _createColorModify(data)
     local ColorModify = {}
     ColorModify["$pp_colour_brightness"] = data.brightness
     ColorModify["$pp_colour_contrast"] = data.contrast
@@ -39,11 +51,25 @@ function PLUGIN:RenderScreenspaceEffects()
     ColorModify["$pp_colour_mulr"] = data.mulr * 0.1
     ColorModify["$pp_colour_mulg"] = data.mulg * 0.1
     ColorModify["$pp_colour_mulb"] = data.mulb * 0.1
+    return ColorModify
+end
 
-    if system.IsOSX() then
-        ColorModify["$pp_colour_brightness"] = 0
-        ColorModify["$pp_colour_contrast"] = 1
+
+function PLUGIN:RenderScreenspaceEffects()
+    if PLUGIN.TargetTColor == nil then
+        local data = self:Get()
+        if !data.enabled then return end
+
+        if data.players and !data.playersList[LocalPlayer():SteamID()] then return end
+        local ColorModify = _createColorModify(data)
+        if system.IsOSX() then
+            ColorModify["$pp_colour_brightness"] = 0
+            ColorModify["$pp_colour_contrast"] = 1
+        end
+        DrawColorModify(ColorModify)
+
+    else
+        local ColorModify = _createColorModify(self.CurrentTColor)
+        DrawColorModify(ColorModify)
     end
-
-    DrawColorModify(ColorModify)
 end

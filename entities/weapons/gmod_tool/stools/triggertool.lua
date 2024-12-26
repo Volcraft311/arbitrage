@@ -268,6 +268,8 @@ function TOOL.BuildCPanel(CPanel)
             local thisTrigger = Trigger:GetSelected()
             local thisAction = Trigger:ActionByID(row.thisActionID)
 
+            local icon
+
             for k, v in pairs(thisAction.args) do
                 local trigger_args = thisTrigger.ActionList[ActionType][index].args
                 local arg = SubMenu:AddOption(thisAction.args_desc[k], function()
@@ -284,7 +286,6 @@ function TOOL.BuildCPanel(CPanel)
                     if v == "string" then
                         local label = str_arg:Add("DTextEntry")
                         label:Dock(TOP)
-                        print("a", trigger_args[k])
                         label:SetText(trigger_args[k])
 
                         str_button.DoClick = function()
@@ -305,25 +306,9 @@ function TOOL.BuildCPanel(CPanel)
                         end
 
                     elseif v == "bool" then
-                        local label = str_arg:Add("DCheckBox")
-                        str_arg:SetSize(150, 150)
-                        label:SetSize(32,32)
-                        local _value = trigger_args[k]
-                        label:SetValue(_value)
-                        label:Center()
-                        label:SetValue(_value)
-
-
-                        function label:OnChange(bVal)
-                            _value = bVal
-                        end
-
-                        str_button.DoClick = function()
-                            trigger_args[k] = tobool(_value)
-                            print(trigger_args[k])
-                            netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
-                            str_arg:Remove()
-                        end
+                        trigger_args[k] = tobool(!trigger_args[k])
+                        netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
+                        str_arg:Remove()
 
                     elseif v == "color" then
                         local color = Color(0,0,0)
@@ -345,7 +330,20 @@ function TOOL.BuildCPanel(CPanel)
                     end
 
                 end)
-                arg:SetIcon( "icon16/application_edit.png" )
+                if v == "bool" then
+                    if trigger_args[k] == true then
+                        icon = "accept"
+                    else
+                        icon = "cancel"
+                    end
+                elseif v == "string" then
+                    icon = "text_replace"
+                elseif v == "number" then
+                    icon = "calendar_add"
+                elseif v == "color" then
+                    icon = "color_wheel"
+                end
+                arg:SetIcon("icon16/" .. (icon or "bug_add") .. ".png")
             end
             Menu:Open()
         end

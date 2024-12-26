@@ -2,7 +2,6 @@
 
 local function _force(value)
     local a = !value and next(Trigger.PlayerInside) != nil
-    print(a)
     return a
 end
 
@@ -30,34 +29,48 @@ Trigger.ActionTypes = {
         name = "Изменить цветокор",
         run = function(trigger, args, client)
             local delay = args[6]
-            local force = args[7]
+            local force = args[8]
             timer.Simple(delay or 0,function()
                 if CLIENT then
                     if _force(force) then return false end
-                    local color_add = args[1]
-                    local color_mul = args[2]
+                    timer.Remove("Trigger:ColorModify")
+                    local color_add = args[2]
+                    local color_mul = args[1]
                     local brightness = args[3]
                     local contrast = args[4]
                     local saturation  = args[5]
-                    ColorModify.TriggerColor = {
+                    ColorModify.TargetTColor = {
                         brightness = brightness,
                         contrast = contrast,
-                        enabled = true,
                         color = saturation,
                         mulr = color_mul.r,
                         mulg = color_mul.g,
                         mulb = color_mul.b,
-                        addr = color_add.r,
-                        addg = color_add.g,
-                        addb = color_add.b,
+                        addr = color_add.r * 0.1,
+                        addg = color_add.g * 0.1,
+                        addb = color_add.b * 0.1,
                     }
+                    for k, v in pairs(ColorModify.CurrentTColor) do
+                        ColorModify.AllTweens[k]:SetTo(ColorModify.TargetTColor[k])
+                        ColorModify.AllTweens[k]:SetFrom(v)
+                        ColorModify.AllTweens[k]:SetDuration(args[7])
+                        ColorModify.AllTweens[k]:Start()
+                    end
+                    timer.Create("Trigger:ColorModify",0,0,function()
+                        for k, v in pairs(ColorModify.CurrentTColor) do
+                            ColorModify.CurrentTColor[k] = ColorModify.AllTweens[k]:GetValue()
+                        end
+                        if ColorModify.AllTweens["color"]:TimeLeft() <= 0 then
+                            timer.Remove("Trigger:ColorModify")
+                        end
+                    end)
                 end
             end)
         end,
-        args = {"color","color","number","number","number","number","bool"},
-        args_desc = {"Умножить цвет","Добавить цвет","Яркость", "Контрасность","Насыщенность", "Задержка до выполнения", "Неизбежный"},
+        args = {"color","color","number","number","number","number","number","bool"},
+        args_desc = {"Умножить цвет","Добавить цвет","Яркость", "Контрасность","Насыщенность", "Задержка до выполнения","Скорость", "Неизбежный"},
         hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {Color(0,0,0),Color(0,0,0),0,1,1,0,true},
+        default = {Color(0,0,0),Color(0,0,0),0,1,1,0,1,true},
         icon = "icon16/image.png"
     },
     {
@@ -68,7 +81,8 @@ Trigger.ActionTypes = {
             timer.Simple(delay or 0,function()
                 if CLIENT then
                     if _force(force) then return false end
-                    ColorModify.TriggerColor = nil
+                    timer.Remove("Trigger:ColorModify")
+                    ColorModify.CurrentTColor = table.Copy(ColorModify.DefaultTColor)
                 end
             end)
         end,
@@ -92,6 +106,76 @@ Trigger.ActionTypes = {
         args_desc = {"Величина", "Задержка до выполнения","Неизбежный"},
         hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
         default = {0,0,true},
-        icon = "icon16/application_osx_terminal.png"
+        icon = "icon16/controller.png"
     },
+    {
+        name = "Написать в чат",
+        run = function(trigger, args, client)
+            local delay = args[2]
+            timer.Simple(delay or 0,function()
+                if CLIENT then
+                    ChatBox.panel:AddMessage(args[1])
+                end
+            end)
+        end,
+        args = {"string","number","bool"},
+        args_desc = {"Сообщение", "Задержка до выполнения","Неизбежный"},
+        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+        default = {0,0,true},
+        icon = "icon16/email_edit.png"
+    },
+    {
+        name = "Воспроизвести звук по URL",
+        run = function(trigger, args, client)
+            local delay = args[2]
+            timer.Simple(delay or 0,function()
+                if CLIENT then
+                    local g_station = nil
+                    sound.PlayURL ( args[1], "3d", function( station )
+                        if ( IsValid( station ) ) then
+
+                            station:SetPos( LocalPlayer():GetPos() )
+
+                            station:Play()
+
+                            g_station = station
+
+                        else
+
+                            LocalPlayer():ChatPrint( "Invalid URL!" )
+
+                        end
+                    end )
+                end
+            end)
+        end,
+        args = {"string","number","bool"},
+        args_desc = {"URL", "Задержка до выполнения","Неизбежный"},
+        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+        default = {"https://audio.jukehost.co.uk/sI7Q85iVfHnQ9SksLELgKFEhTGzK8YNV",0,true},
+        icon = "icon16/music.png",
+    },
+    {
+        name = "Оттолкнуть",
+        run = function(trigger, args, client)
+            local delay = args[4]
+            timer.Simple(delay or 0,function()
+                if SERVER then
+                    timer.Create("Trigger:Push",0,0,function()
+                        if trigger:IsPlayerInside(client) then
+                            local vel = Vector(args[1],args[2],args[3])
+                            client:SetVelocity(vel)
+                        else
+                            timer.Remove("Trigger:Push")
+                        end
+                    end)
+                end
+            end)
+        end,
+        args = {"number","number","number","number","bool"},
+        args_desc = {"X","Y","Z", "Задержка до выполнения","Неизбежный"},
+        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+        default = {0,0,0,0,true},
+        icon = "icon16/music.png"
+    }
 }

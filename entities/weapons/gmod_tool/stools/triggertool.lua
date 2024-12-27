@@ -61,7 +61,9 @@ function TOOL:LeftClick(trace)
         local id = Trigger.selectedID
         local vector = trace.HitPos
         local point = 1
-        Trigger:GetByID(id):SetPoint(point, vector)
+        local trigger = Trigger:GetByID(id)
+        if !IsValid(trigger) then return false end
+        trigger:SetPoint(point, vector)
         netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
         Trigger.UpdateToolPanel()
         Trigger.drawTriggers = true
@@ -75,7 +77,9 @@ function TOOL:RightClick(trace)
         local id = Trigger.selectedID
         local vector = trace.HitPos
         local point = 2
-        Trigger:GetByID(id):SetPoint(point, vector)
+        local trigger = Trigger:GetByID(id)
+        if !IsValid(trigger) then return false end
+        trigger:SetPoint(point, vector)
         netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
         Trigger.UpdateToolPanel()
         Trigger.drawTriggers = true

@@ -20,7 +20,7 @@ netstream.Hook("Trigger:Remove",function(data)
 end)
 
 
-timer.Create("Trigger:IsPlayerInside",0.1,0,function()
+timer.Create("Trigger:IsPlayerInside",0.05,0,function()
     for k,v in pairs(Trigger.instances) do
         if v.isLocalPlayerInside == false then
             if v:IsPlayerInside() then

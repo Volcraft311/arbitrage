@@ -70,7 +70,6 @@ function meta:FallOver(delay)
     if self.IsHandcuffed and self:IsHandcuffed() then return end
 
     local entity = RagdollSystem:CreateRagdoll(self)
-
     -- convent delay number
     if delay != nil then
         delay = tonumber(delay)

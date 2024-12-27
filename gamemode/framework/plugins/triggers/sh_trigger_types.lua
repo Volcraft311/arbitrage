@@ -131,7 +131,7 @@ Trigger.ActionTypes = {
             timer.Simple(delay or 0,function()
                 if CLIENT then
                     local g_station = nil
-                    sound.PlayURL ( args[1], "3d", function( station )
+                    sound.PlayURL ( args[1], "", function( station )
                         if ( IsValid( station ) ) then
 
                             station:SetPos( LocalPlayer():GetPos() )
@@ -161,12 +161,20 @@ Trigger.ActionTypes = {
             local delay = args[4]
             timer.Simple(delay or 0,function()
                 if SERVER then
-                    timer.Create("Trigger:Push",0,0,function()
-                        if trigger:IsPlayerInside(client) then
+                    local firstTime = true
+                    timer.Create("Trigger:Push" .. tostring(client),0,0,function()
+                        if trigger:IsPlayerInside(client) or firstTime then
+                            firstTime = false
                             local vel = Vector(args[1],args[2],args[3])
-                            client:SetVelocity(vel)
+                            local dummy = client
+                            -- if client:IsRagdolling() then
+                            --     dummy = client:GetRagdoll()
+                            -- end
+                            -- Print(dummy)
+
+                            dummy:SetVelocity(vel)
                         else
-                            timer.Remove("Trigger:Push")
+                            timer.Remove("Trigger:Push" .. tostring(trigger))
                         end
                     end)
                 end
@@ -176,6 +184,22 @@ Trigger.ActionTypes = {
         args_desc = {"X","Y","Z", "Задержка до выполнения","Неизбежный"},
         hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
         default = {0,0,0,0,true},
-        icon = "icon16/music.png"
-    }
+        icon = "icon16/lightning_go.png"
+    },
+    {
+        name = "Опрокинуть",
+        run = function(trigger, args, client)
+            local delay = args[2]
+            timer.Simple(delay or 0,function()
+                if SERVER then
+                    client:FallOver(args[1])
+                end
+            end)
+        end,
+        args = {"number","number","bool"},
+        args_desc = {"Время", "Задержка до выполнения","Неизбежный"},
+        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+        default = {1,0,true},
+        icon = "icon16/music.png",
+    },
 }

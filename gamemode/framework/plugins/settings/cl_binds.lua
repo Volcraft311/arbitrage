@@ -112,3 +112,9 @@ SETTINGS.binds.Add("prone", KEY_SLASH, {
     title = "Лечь на землю",
     description = "Кнопка, которая отвечает за вход/выход из режима ползания"
 })
+
+SETTINGS.binds.Add("closerlook", KEY_LALT, {
+    name = "Присмотреться",
+    title = "Присмотреться",
+    description = "Возможность приблизить изображение когда вы держите ключи или руки"
+})

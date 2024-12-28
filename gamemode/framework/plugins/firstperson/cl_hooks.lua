@@ -33,6 +33,11 @@ local util_TraceLine = util.TraceLine
 local select = select
 local concommand_Add = concommand.Add
 local timer_Simple = timer.Simple
+local surface_GetTextureID = surface.GetTextureID
+local FrameTime = FrameTime
+local surface_SetTexture = surface.SetTexture
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawTexturedRect = surface.DrawTexturedRect
 
 local IsNocliping = PLAYER.IsNocliping
 local oldAlive = PLAYER.oldAlive
@@ -136,8 +141,10 @@ function PLUGIN:ShouldDrawLocalPlayer()
 	end
 end
 
+local bCloserLook = false
 local fovShift = 0
 function PLUGIN:CalcView(client, pos, angles, fov)
+	bCloserLook = false
 	Flashlight:FlashlightDraw(client)
 
 	if !self.isAllow then return end
@@ -184,7 +191,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		view.origin = eyeAtt.Pos + (Vector(forwardVec.x * (ViewOffsetForward + ViewOffsetForward2), forwardVec.y * (ViewOffsetForward + ViewOffsetForward2 - 0.3), 0)) + Vector(0, 0, ViewOffsetUp) + GetRight(client) * ViewOffsetLeftRight
 		view.angles = CurView
 
-		local shift = Length2D(GetVelocity(client)) * 0.02
+		local shift = Length2D(GetVelocity(client)) * 0.035
 		local value = 0
 		if KeyDown(client, IN_FORWARD) then
 			value = shift
@@ -197,7 +204,13 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 		end
 
 		value = math_Clamp(value, -8, 8)
-		fovShift = Lerp(FT * 3, fovShift, value)
+
+		if SETTINGS.binds.IsClampedID("closerlook") then
+			value = value - 35
+			bCloserLook = true
+		end
+
+		fovShift = Lerp(FT * (bCloserLook and 5 or 3), fovShift, value)
 
 		if cameraPos then
 			view.origin = view.origin + cameraPos
@@ -229,6 +242,20 @@ function PLUGIN:Think()
 			traceHit = false
 		end
 	end
+end
+
+local vignitte_a = 0
+local vignitte = surface_GetTextureID("vgui/vignette")
+function PLUGIN:HUDPaint()
+	if (bCloserLook and vignitte_a < 254) or (!bCloserLook and vignitte_a > 0.1) then
+		vignitte_a = Lerp(FrameTime() * 4, vignitte_a, bCloserLook and 255 or 0)
+	end
+
+	if vignitte_a <= 0.5 then return end
+
+	surface_SetTexture(vignitte)
+	surface_SetDrawColor(255, 255, 255, vignitte_a)
+	surface_DrawTexturedRect(0, 0, ScrW(), ScrH())
 end
 
 

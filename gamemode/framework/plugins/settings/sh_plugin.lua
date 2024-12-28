@@ -165,6 +165,11 @@ function PLUGIN.binds.GetClampedKey()
     end
 end
 
+PLUGIN.binds.clampedID = {}
+function PLUGIN.binds.IsClampedID(id)
+    return PLUGIN.binds.clampedID[id] or false
+end
+
 local function IsVisibleGUI()
     return vgui_CursorVisible()
 end
@@ -177,8 +182,14 @@ function PLUGIN.binds.IsPressedID(id, bCallHooks)
         local client = LocalPlayer()
         local bVisibleGUI = IsVisibleGUI()
 
-        if info and bCallHooks then
-            hook_Run("KeyClampID", client, id, bVisibleGUI)
+        if info then
+            if bCallHooks then
+                hook_Run("KeyClampID", client, id, bVisibleGUI)
+            end
+
+            PLUGIN.binds.clampedID[id] = true
+        else
+            PLUGIN.binds.clampedID[id] = nil
         end
 
         if PLUGIN.pressed[id] then

@@ -130,7 +130,6 @@ Trigger.ActionTypes = {
             local delay = args[2]
             timer.Simple(delay or 0,function()
                 if CLIENT then
-                    local g_station = nil
                     sound.PlayURL ( args[1], "", function( station )
                         if ( IsValid( station ) ) then
 

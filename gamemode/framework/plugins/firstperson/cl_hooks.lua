@@ -205,7 +205,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 		value = math_Clamp(value, -8, 8)
 
-		if SETTINGS.binds.IsClampedID("closerlook") then
+		if !vgui.CursorVisible() and SETTINGS.binds.IsClampedID("closerlook") then
 			value = value - 35
 			bCloserLook = true
 		end

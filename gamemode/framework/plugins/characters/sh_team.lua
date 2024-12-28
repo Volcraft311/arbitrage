@@ -151,6 +151,7 @@ function Character.team:Join(client, data, bRespawn)
         return Arbitrage.player.Respawn(client)
     end
 
+    client:SetCanZoom(false)
     client:SetTeam(id)
     client:SetModel(info:GetModel())
     client:SetNoCollideWithTeammates(false)

@@ -13,6 +13,14 @@
 
 
 AddCSLuaFile()
+local file_name = {
+    tool = "academy_triggertool",
+    config = "academy_triggertool_configs",
+    map = "academy_triggertool_configs/" .. game.GetMap()
+}
+
+file.CreateDir(file_name.config)
+file.CreateDir(file_name.map)
 
 TOOL.Name = "Trigger Tool" -- Название
 TOOL.Category = "Asterion Tools" -- Категория
@@ -62,10 +70,10 @@ function TOOL:LeftClick(trace)
         local vector = trace.HitPos
         local point = 1
         local trigger = Trigger:GetByID(id)
-        if !IsValid(trigger) then return false end
+        if trigger == nil then return false end
         trigger:SetPoint(point, vector)
         netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
-        Trigger.UpdateToolPanel()
+        Trigger.UpdateTriggerList()
         Trigger.drawTriggers = true
     end
 end
@@ -78,10 +86,10 @@ function TOOL:RightClick(trace)
         local vector = trace.HitPos
         local point = 2
         local trigger = Trigger:GetByID(id)
-        if !IsValid(trigger) then return false end
+        if trigger == nil then return false end
         trigger:SetPoint(point, vector)
         netstream.Start("Trigger:SetPos",{id = id, point = point, vector = vector})
-        Trigger.UpdateToolPanel()
+        Trigger.UpdateTriggerList()
         Trigger.drawTriggers = true
     end
 end
@@ -95,7 +103,7 @@ function TOOL:Reload(trace)
         Arbitrage.adminnotify:SendNotify("triggercreated", self:GetOwner():FullName(), Trigger:GetLast().name)
     else
         timer.Simple(0.1,function()
-            Trigger.UpdateToolPanel()
+            Trigger.UpdateTriggerList()
             Trigger.selectedID = #Trigger.instances
         end)
         Trigger.drawTriggers = true
@@ -143,6 +151,43 @@ function TOOL.BuildCPanel(CPanel)
     CPanel:AddControl("Header",{
         Description = "Данный инструмент позволяет управлять триггерами."
     })
+    local saveButton = vgui.Create("DButton")
+    saveButton:SetText("Сохранения")
+    saveButton:Dock(BOTTOM)
+    saveButton.DoClick = function()
+        local Menu = DermaMenu()
+        Menu:AddOption("Сохранить список", function()
+            Derma_StringRequest("Сохранить Триггеры", "Введите название документа в который вы хотите сохранить триггеры", "", function(text)
+                local data = {}
+                for k, v in pairs(Trigger.instances) do
+                    data[#data + 1] = {v.name, v.points, v.ActionList}
+                end
+
+                file.Write(file_name.map .. "/" .. text .. ".txt", util.TableToJSON(data))
+            end, nil, "Сохранить", "Отменить")
+        end):SetIcon("icon16/add.png")
+
+        local Child, Parent = Menu:AddSubMenu("Загрузить список")
+        Parent:SetIcon("icon16/arrow_down.png")
+
+        local files = file.Find(file_name.map .. "/*", "DATA")
+        for k, v in ipairs(files) do
+            Child:AddOption(v, function()
+                netstream.Start("Trigger:RemoveAll")
+
+                for k2, v2 in ipairs(util.JSONToTable(file.Read(file_name.map .. "/" .. v, "DATA"))) do
+                    netstream.Start("Trigger:CreateTrigger", {points = v2[2], name = v2[1], ActionList = v2[3]})
+                end
+
+                timer.Simple(0.5, function()
+                    Trigger.UpdateTriggerList()
+                end)
+            end)
+        end
+
+        Menu:Open()
+    end
+    CPanel:AddPanel(saveButton)
 
     local text = vgui.Create("DLabel",CPanel)
     text:SetText("Список Триггеров")
@@ -163,7 +208,7 @@ function TOOL.BuildCPanel(CPanel)
 
     Trigger.TriggerList = TriggerList
 
-    Trigger.UpdateToolPanel()
+    Trigger.UpdateTriggerList()
 
 
     TriggerList.OnRowSelected = function(panel, index, row)
@@ -327,6 +372,40 @@ function TOOL.BuildCPanel(CPanel)
 
                         str_button.DoClick = function()
                             trigger_args[k] = color
+                            netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
+                            str_arg:Remove()
+                        end
+
+                    elseif v == "vector" then
+                        local vector = trigger_args[k]
+                        local answer = {}
+                        str_arg:SetSize(300, 250)
+                        str_arg:Center()
+                        str_arg:DockMargin(0, 10, 0, 0)
+
+                        for k2,i2 in ipairs({"x","y","z"}) do
+                            local text = str_arg:Add("DLabel")
+                            local label = str_arg:Add("DTextEntry")
+
+                            text:SetText(i2:upper())
+                            text:Dock(TOP)
+                            label:SetText(vector[i2])
+                            label:Dock(TOP)
+                            answer[k2] = label
+                        end
+                        current_pos = str_arg:Add("DButton")
+                        current_pos:SetText("Текущая позиция")
+                        current_pos:Dock(BOTTOM)
+                        current_pos:DockMargin(0, 10, 0, 10)
+                        current_pos.DoClick = function()
+                            local pos = LocalPlayer():GetPos()
+                            for k2,v2 in pairs(answer) do
+                                v2:SetText(pos[k2])
+                            end
+                        end
+
+                        str_button.DoClick = function()
+                            trigger_args[k] = Vector(answer[1]:GetText(),answer[2]:GetText(),answer[3]:GetText())
                             netstream.Start("Trigger:EditAction",{type = ActionType, id = Trigger.selectedID,number = index,args = trigger_args})
                             str_arg:Remove()
                         end

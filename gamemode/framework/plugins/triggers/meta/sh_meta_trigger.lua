@@ -21,6 +21,7 @@ ACTION_EXIT = "Exit"
 local box_color1 = Color(0,255,55)
 local box_color2 = Color(1,63,23,105)
 
+
 function TRIGGER:__tostring()
     return "Trigger nmbr [" .. self.id .. "]"
 end
@@ -104,7 +105,7 @@ else
     function TRIGGER:Draw(color)
         render.SetColorMaterial()
         render.DrawBox(vector_origin,angle_zero,self.points[1],self.points[2],color or box_color2)
-        render.DrawWireframeBox(Vector(0,0,0),angle_zero,self.points[1],self.points[2],box_color1)
+        render.DrawWireframeBox(Vector(0,0,0),angle_zero,self.points[1],self.points[2],color or box_color1)
         --render.DrawBox(LocalPlayer():GetPos() + TRIGGER.playerTriggerOffset,angle_zero,Vector(5,5,5),Vector(-5,-5,-5),Color(255,255,255))
     end
 end

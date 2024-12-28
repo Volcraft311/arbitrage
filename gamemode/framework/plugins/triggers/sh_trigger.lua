@@ -61,6 +61,11 @@ function Trigger:GetLast()
     return Trigger.instances[Trigger.lastID]
 end
 
+function Trigger:RemoveAll()
+    Trigger.instances = {}
+    Trigger.lastID = 0
+end
+
 function Trigger:GetSelected()
     return Trigger:GetByID(Trigger.selectedID)
 end

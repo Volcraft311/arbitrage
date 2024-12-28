@@ -167,11 +167,6 @@ Trigger.ActionTypes = {
                             firstTime = false
                             local vel = Vector(args[1],args[2],args[3])
                             local dummy = client
-                            -- if client:IsRagdolling() then
-                            --     dummy = client:GetRagdoll()
-                            -- end
-                            -- Print(dummy)
-
                             dummy:SetVelocity(vel)
                         else
                             timer.Remove("Trigger:Push" .. tostring(trigger))
@@ -202,4 +197,60 @@ Trigger.ActionTypes = {
         default = {1,0,true},
         icon = "icon16/music.png",
     },
+    {
+        name = "Телепортировать",
+        run = function(trigger, args, client)
+            local delay = args[2]
+            timer.Simple(delay or 0,function()
+                if SERVER then
+                    local force = args[3]
+                    if _force(force) then return false end
+                    local pos = args[1]
+                    Print(pos)
+                    client:SetPos(pos)
+                    client:CheckStuck(0.3)
+                end
+            end)
+        end,
+        args = {"vector","number","bool"},
+        args_desc = {"Позиция", "Задержка до выполнения","Неизбежный"},
+        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+        default = {Vector(0,0,0),0,true},
+        icon = "icon16/arrow_in.png"
+    },
+    {
+        name = "Изменить здоровье",
+        run = function(trigger, args, client)
+            local delay = args[3]
+            timer.Simple(delay or 0,function()
+                if SERVER then
+                    local force = args[4]
+                    if _force(force) then return false end
+                    client:SetHealth(args[1])
+                end
+            end)
+        end,
+        args = {"number","number","bool"},
+        args_desc = {"Здоровье","Задержка до выполнения","Неизбежный"},
+        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+        default = {100,0,0,true},
+        icon = "icon16/heart.png"
+    },
+    {
+        name = "Изменить броню",
+        run = function(trigger, args, client)
+            local delay = args[2]
+            timer.Simple(delay or 0,function()
+                if SERVER then
+                    local force = args[3]
+                    if _force(force) then return false end
+                    client:SetArmor(args[1])
+                end
+            end)
+        end,
+        args = {"number","number","bool"},
+        args_desc = {"Броня","Задержка до выполнения","Неизбежный"},
+        default = {100,0,true},
+        icon = "icon16/heart.png"
+    }
 }

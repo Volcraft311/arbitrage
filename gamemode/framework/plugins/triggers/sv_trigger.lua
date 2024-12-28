@@ -102,3 +102,21 @@ netstream.Hook("Trigger:RemoveAction",function(client,data)
 
     Trigger:SyncByID(id,player.GetAll())
 end)
+
+netstream.Hook("Trigger:RemoveAll",function(client)
+    if !client:IsAdmin() then return false end
+
+    Trigger:RemoveAll()
+
+    netstream.Start(player.GetAll(),"Trigger:RemoveAll")
+end)
+
+netstream.Hook("Trigger:CreateTrigger",function(client,data)
+    if !client:IsAdmin() then return false end
+
+    local ActionList = data.ActionList
+    local points = data.points
+    local name = data.name
+    local trigger = Trigger:Create({ActionList = ActionList, points = points, name = name})
+    Trigger:SyncByID(trigger.id,player.GetAll())
+end)

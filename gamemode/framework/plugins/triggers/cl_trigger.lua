@@ -4,21 +4,23 @@ Trigger.selectedID = 0
 Trigger.ActionLists = {}
 Trigger.PlayerInside = {}
 
-local selected_trigger_color = Color(0,255,100,100)
+local selected_trigger_color = Color(255,247,0,100)
 
 netstream.Hook("Trigger:Sync",function(data)
     local id = data.id
     Trigger:Create(data,id)
-    Trigger:UpdateToolPanel()
+    Trigger:UpdateTriggerList()
 end)
 
 netstream.Hook("Trigger:Remove",function(data)
     local id = data.id
     Trigger:Remove(id)
     Trigger.selectedID = 0
-    Trigger:UpdateToolPanel()
+    Trigger:UpdateTriggerList()
 end)
-
+netstream.Hook("Trigger:RemoveAll",function(data)
+    Trigger:RemoveAll()
+end)
 
 timer.Create("Trigger:IsPlayerInside",0.05,0,function()
     for k,v in pairs(Trigger.instances) do
@@ -70,12 +72,12 @@ function Trigger.UpdateActionLists()
         for k, v in pairs(tr.ActionList[_act]) do
             local act = Trigger:ActionByID(v.action)
             local _line = _list:AddLine(tostring(act.name))
-            _line.thisActionID = v.action 
+            _line.thisActionID = v.action
         end
     end
 end
 
-function Trigger.UpdateToolPanel()
+function Trigger.UpdateTriggerList()
     local tl = Trigger.TriggerList
     if tl == nil or !tl:IsValid() then return false end
     tl:ClearSelection()

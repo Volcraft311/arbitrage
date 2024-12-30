@@ -144,6 +144,9 @@ timer.Simple(1, function()
                 if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "У вас отсутствует статический ранг и вы не можете выдать себе права!") end
                 if client:GetStaticUserGroup() == client:GetDynamicUserGroup() then return Arbitrage.commands.Notify(client, "Вам уже выданы данные права!") end
 
+                client:Give("weapon_physgun")
+                client:Give("gmod_tool")
+
                 client:SetDynamicToStaticUserGroup()
                 Arbitrage.commands.Notify(client, "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/tr\"!")
             end
@@ -156,6 +159,9 @@ timer.Simple(1, function()
             OnAction = function(client)
                 if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
                 if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "У вас отсутствует статический ранг и вы не можете снять с себя права данной командой!") end
+
+                client:StripWeapon("weapon_physgun")
+                client:StripWeapon("gmod_tool")
 
                 client:SetDynamicUserGroup("user")
                 Arbitrage.commands.Notify(client, "Вы успешно сняли с себя права. Чтобы их вернуть, используйте команду \"/rr\"!")

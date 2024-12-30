@@ -147,6 +147,10 @@ timer.Simple(1, function()
                 client:Give("weapon_physgun")
                 client:Give("gmod_tool")
 
+                for k, v in ipairs(player.GetAdmins()) do
+                    Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " вернул себе админские права!")
+                end
+
                 client:SetDynamicToStaticUserGroup()
                 Arbitrage.commands.Notify(client, "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/tr\"!")
             end
@@ -164,6 +168,11 @@ timer.Simple(1, function()
                 client:StripWeapon("gmod_tool")
 
                 client:SetDynamicUserGroup("user")
+
+                for k, v in ipairs(player.GetAdmins()) do
+                    Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " забрал у себя админские права!")
+                end
+
                 Arbitrage.commands.Notify(client, "Вы успешно сняли с себя права. Чтобы их вернуть, используйте команду \"/rr\"!")
             end
         })
@@ -522,10 +531,13 @@ timer.Simple(1, function()
         OnAction = function(client, target, delay)
             if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
 
+            for k, v in ipairs(player.GetAdmins()) do
+                Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " выдал админские права " .. target:FullName(true) .. " на " .. delay .. "!")
+            end
+
             local time = asterionlib.IsoDurationToSeconds(delay)
             target:SetDynamicUserGroup("guard", time)
 
-            Arbitrage.commands.Notify(client, "Вы выдали админские права " .. target:FullName(true) .. " на " .. delay .. "!")
             Arbitrage.commands.Notify(target, "Вам были выданы админские права на " .. delay .. "!")
         end
     })
@@ -544,7 +556,10 @@ timer.Simple(1, function()
 
             target:SetDynamicUserGroup("user")
 
-            Arbitrage.commands.Notify(client, "Вы сняли админские права с " .. target:FullName(true) .. "!")
+            for k, v in ipairs(player.GetAdmins()) do
+                Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " забрал админские права у " .. target:FullName(true) .. "!")
+            end
+
             Arbitrage.commands.Notify(target, "С вас были сняты админские права!")
         end
     })

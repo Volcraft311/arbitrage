@@ -59,7 +59,7 @@ function Arbitrage.player.SetupWeapons(client)
 
     if !Arbitrage.OffGiveWeapons() then
         for k, v in ipairs(faction:GetWeapons() or {}) do
-            client:Give(v)
+            client:Give(v, true)
         end
     end
 end

@@ -158,7 +158,7 @@ function PLUGIN:PlayerInitial(client)
 
     client:StripWeapons()
     for k, v in pairs(data.weapons) do
-        client:Give(v)
+        client:Give(v, true)
     end
 
     client:StripAmmo()

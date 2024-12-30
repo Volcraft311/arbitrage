@@ -31,7 +31,7 @@ function BedSystem:LayDownBed(client, entity)
     client:AddTemporaryStatusEffect("sleep", 0)
     client:AddTemporaryStatusEffect("health_bed", 0)
 
-    netstream.Start(client, "BedSystem:LayDownBed", entity, eyePos, eyeAng)
+    netstream.Start(nil, "BedSystem:LayDownBed", client, entity, eyePos, eyeAng)
     hook.Run("OnBedEnter", client, entity)
 
     client.inBed = true
@@ -48,7 +48,7 @@ function BedSystem:GetUpBed(client)
     client:RemoveTemporaryStatusEffect("sleep")
     client:RemoveTemporaryStatusEffect("health_bed")
 
-    netstream.Start(client, "BedSystem:GetUpBed")
+    netstream.Start(nil, "BedSystem:GetUpBed", client)
     hook.Run("OnBedExit", client)
 
     client.inBed = nil

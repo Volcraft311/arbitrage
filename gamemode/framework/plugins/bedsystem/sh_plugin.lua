@@ -100,11 +100,5 @@ BedSystem.allowBed = {
     },
 }
 
-function BedSystem:CalcMainActivity(client, vector)
-    if client:GetNetVar("inbed") then
-        return -1, client:LookupSequence(self.animation)
-    end
-end
-
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

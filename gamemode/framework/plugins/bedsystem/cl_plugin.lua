@@ -25,24 +25,64 @@ function BedSystem:NetworkEntityCreated(entity)
     end
 end
 
-netstream.Hook("BedSystem:LayDownBed", function(entity, eyePos, eyeAng)
-    if IsValid(BedSystem.panel) then
-        BedSystem.panel:Remove()
+local players_hook = {}
+local function create_hook()
+    hook.Add("CalcMainActivity", "BedSystem:CalcMainActivity", function(client)
+        if !players_hook[client] then return end
+
+        return -1, client:LookupSequence(BedSystem.animation)
+    end)
+end
+
+local function remove_hook()
+    players_hook = {}
+
+    hook.Remove("CalcMainActivity", "BedSystem:CalcMainActivity")
+end
+
+local function update_hook()
+    local count = 0
+    for client in pairs(players_hook) do
+        if IsValid(client) then
+            count = count + 1
+        end
     end
 
-    local panel = vgui.Create("BedSystem:Menu")
-    panel:SetBedData(entity, eyePos, eyeAng)
+    if count <= 0 then
+        remove_hook()
+    end
+end
 
-    BedSystem.panel = panel
+netstream.Hook("BedSystem:LayDownBed", function(client, entity, eyePos, eyeAng)
+    if client == LocalPlayer() then
+        if IsValid(BedSystem.panel) then
+            BedSystem.panel:Remove()
+        end
+
+        local panel = vgui.Create("BedSystem:Menu")
+        panel:SetBedData(entity, eyePos, eyeAng)
+
+        BedSystem.panel = panel
+    end
+
+    players_hook[client] = true
+    create_hook()
 end)
 
-netstream.Hook("BedSystem:GetUpBed", function()
-    if !IsValid(BedSystem.panel) then return end
+netstream.Hook("BedSystem:GetUpBed", function(client)
+    if client == LocalPlayer() and IsValid(BedSystem.panel) then
+        BedSystem.panel.bClose = true
+        BedSystem.panel:SetBedData(nil)
+        BedSystem.panel:AlphaTo(0, 5, 0, function()
+            BedSystem.panel:Remove()
+        end)
+    end
 
-    BedSystem.panel.bClose = true
-    BedSystem.panel:SetBedData(nil)
-    BedSystem.panel:AlphaTo(0, 5, 0, function()
-        BedSystem.panel:Remove()
+    players_hook[client] = nil
+    update_hook()
+
+    timer.Simple(1, function()
+        RunConsoleCommand("arb_camerafix") -- исправление ломание позиции камеры (может возникнуть из-за кривого положения кровати)
     end)
 end)
 

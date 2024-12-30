@@ -25,14 +25,12 @@ end)
 timer.Create("Trigger:IsPlayerInside",0.05,0,function()
     for k,v in pairs(Trigger.instances) do
         if v.isLocalPlayerInside == false then
-            if v:IsPlayerInside() then
-                Trigger.PlayerInside[v] = true
-                v:PlayerEntered()
+            if v:IsPlayerInside(LocalPlayer()) then
+                v:PlayerEntered(LocalPlayer())
             end
         elseif v.isLocalPlayerInside == true then
-            if !v:IsPlayerInside() then
-                v:PlayerExited()
-                Trigger.PlayerInside[v] = nil
+            if !v:IsPlayerInside(LocalPlayer()) then
+                v:PlayerExited(LocalPlayer())
             end
         end
     end
@@ -65,9 +63,7 @@ function Trigger.UpdateActionLists()
     for _act, _list in pairs(Trigger.ActionLists) do
         local lines = _list:GetLines()
 
-        for i, _ in ipairs(lines) do
-            _list:RemoveLine(i)
-        end
+        _list:Clear()
 
         for k, v in pairs(tr.ActionList[_act]) do
             local act = Trigger:ActionByID(v.action)
@@ -84,9 +80,7 @@ function Trigger.UpdateTriggerList()
     local lines = tl:GetLines()
     local triggers = Trigger.instances
 
-    for i, _ in ipairs(lines) do
-        Trigger.TriggerList:RemoveLine(i)
-    end
+    Trigger.TriggerList:Clear()
 
     for _, v in pairs(triggers) do
         Trigger.TriggerList:AddLine(tostring(v.name),tostring(v.id))

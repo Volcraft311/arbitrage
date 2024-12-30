@@ -1,5 +1,6 @@
 -- Иконки https://heyter.github.io/js-famfamfam-search/
-
+-- ГРИЗЛИ СОСЁТ ХУЙ
+-- Тару солнышко
 local function _force(value)
     local a = !value and next(Trigger.PlayerInside) != nil
     return a
@@ -161,14 +162,14 @@ Trigger.ActionTypes = {
             timer.Simple(delay or 0,function()
                 if SERVER then
                     local firstTime = true
-                    timer.Create("Trigger:Push" .. tostring(client),0,0,function()
+                    timer.Create("Trigger:Push" .. tostring(trigger) .. tostring(client),0,0,function()
                         if trigger:IsPlayerInside(client) or firstTime then
                             firstTime = false
                             local vel = Vector(args[1],args[2],args[3])
                             local dummy = client
                             dummy:SetVelocity(vel)
                         else
-                            timer.Remove("Trigger:Push" .. tostring(trigger))
+                            timer.Remove("Trigger:Push" .. tostring(trigger) .. tostring(client))
                         end
                     end)
                 end
@@ -205,9 +206,18 @@ Trigger.ActionTypes = {
                     local force = args[3]
                     if _force(force) then return false end
                     local pos = args[1]
-                    Print(pos)
-                    client:SetPos(pos)
-                    client:CheckStuck(0.3)
+                    if client:IsRagdoll() or client:IsRagdolling() then
+                        timer.Create("Trigger:TeleportwhileRagdolling",0.1,0,function()
+                            print("Teleporting")
+                            if client:IsRagdoll() or client:IsRagdolling() then return end
+                            client:SetPos(pos)
+                            client:CheckStuck(0.3)
+                            timer.Remove("Trigger:TeleportwhileRagdolling")
+                        end)
+                    else
+                        client:SetPos(pos)
+                        client:CheckStuck(0.3)
+                    end
                 end
             end)
         end,

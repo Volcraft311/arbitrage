@@ -57,8 +57,6 @@ end
 function TOOL:Deploy()
     if CLIENT then
         Trigger.drawTriggers = true
-    else
-        Trigger:SyncAll()
     end
 end
 
@@ -131,6 +129,14 @@ function TOOL:DrawHUD()
 
     draw.SimpleText("1","Trebuchet24",point1.x,point1.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
     draw.SimpleText("2","Trebuchet24",point2.x,point2.y,color_text,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+
+    for k, v in pairs(player.GetAll()) do
+        local _, _max = v:GetHull()
+        local _playerpos = v:GetPos()
+        _playerpos.z = _playerpos.z + _max.z / 2
+        local _vector = _playerpos:ToScreen()
+        draw.RoundedBox(1,_vector.x,_vector.y,20,20,color_first_point)
+    end
 end
 
 

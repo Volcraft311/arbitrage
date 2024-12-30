@@ -63,11 +63,13 @@ function TRIGGER:IsPlayerInside(client)
     if CLIENT and !client then
         client = LocalPlayer()
     end
+    if client:GetMoveType() == MOVETYPE_NOCLIP or client:IsRagdoll() or client:IsRagdolling() then return false end
     local _, _max = client:GetHull()
 
     local _playerpos = client:GetPos()
     _playerpos.z = _playerpos.z + _max.z / 2
-    return _playerpos:WithinAABox(self.points[1],self.points[2])
+    local answer = _playerpos:WithinAABox(self.points[1],self.points[2])
+    return answer
 end
 
 function TRIGGER:PlayerEntered(client)

@@ -271,7 +271,7 @@ end
 
 
 concommand_Add("arb_camerafix", function(client, cmd, args)
-	local ang = EyeAngles()
+	local ang = EyeAngles(client)
 
 	SetEyeAngles(client, Angle(ang.p, ang.y, 0))
 end)

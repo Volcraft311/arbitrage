@@ -62,7 +62,6 @@ local function isAllow()
 	if client:IsPlayingTaunt() then return false end
 	if client.GetSitting and client:GetSitting() then return false end
 	if client:IsSpectate() then return false end
-	if client:GetNetVar("inbed") then return false end
 	if client:InVehicle() then return false end
 
 	return true

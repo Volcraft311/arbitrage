@@ -53,7 +53,6 @@ local KeyDown = PLAYER.KeyDown
 local HasTemporaryStatusEffect = PLAYER.HasTemporaryStatusEffect
 local SetEyeAngles = PLAYER.SetEyeAngles
 
-local GetNetVar = ENTITY.GetNetVar
 local GetClass = ENTITY.GetClass
 local GetAttachment = ENTITY.GetAttachment
 local LookupAttachment = ENTITY.LookupAttachment
@@ -105,7 +104,6 @@ local function allow()
 	if Arbitrage.IsThirdPerson() then return false end
 	if Arbitrage.lawEnable then return false end
 	if IsNocliping(client) then return false end
-	if GetNetVar(client, "inbed") then return false end
 
 	if !IsValid(client) then return true end
 	if !oldAlive(client) then return false end

@@ -494,7 +494,6 @@ Arbitrage.commands.Add("fallover", {
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
-    if client:GetNetVar("inbed") then return false end
     if client.GetSitting and client:GetSitting() then return false end
 
     return true

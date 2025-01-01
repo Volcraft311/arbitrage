@@ -72,7 +72,7 @@ function PANEL:InitSlot(panel)
             local hasItem = panel.item
             local color = hasItem and Color(255, 0, 0) or Color(255, 234, 238)
 
-            surface.SetDrawColor(ColorAlpha(color, 10))
+            surface.SetDrawColor(color.r, color.g, color.b, 10)
             surface.DrawRect(0, 0, w, h)
         end
     end

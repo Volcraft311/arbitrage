@@ -651,7 +651,7 @@ function PANEL:Paint(w, h)
 		if icon and !option.sequence then
 			local size = self:GetTall() * 0.1
 
-			surface_SetDrawColor(ColorAlpha(color_red, self.textAlpha))
+			surface_SetDrawColor(color_red.r, color_red.g, color_red.b, self.textAlpha)
 			surface_SetMaterial(icon)
 			surface_DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
 		end

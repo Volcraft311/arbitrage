@@ -77,10 +77,10 @@ function Stamina:HUDPaint()
 	
 	if alphastamina <= 0.1 then return end
 
-	surface_SetDrawColor(ColorAlpha(color, alphastamina * (10 / 255)))
+	surface_SetDrawColor(color.r, color.g, color.b, alphastamina * (10 / 255))
 	surface_DrawRect(scrW / 2 - staminaMax, scrH - 30, staminaMax * 2, 4)
 
-	surface_SetDrawColor(ColorAlpha(color, alphastamina))
+	surface_SetDrawColor(color.r, color.g, color.b, alphastamina)
 	surface_DrawRect(scrW / 2 - stamina * size, scrH - 30, stamina * size * 2, 4)
 	surface_DrawRect(scrW / 2 - staminaMax - 4, scrH - 30, 4, 4)
 	surface_DrawRect(scrW / 2 + staminaMax - 1, scrH - 30, 4, 4)

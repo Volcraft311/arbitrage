@@ -218,7 +218,7 @@ timer.Create("Emotes:StandAnimations", 0.4, 0, function()
 
 		if len2D <= 0 and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:GetAction() and !client:GetSitting() then
 			if client.delayStartAnimation == nil then
-				client.delayStartAnimation = curTime + 40 + math.random(1, 40)
+				client.delayStartAnimation = curTime + 100 + math.random(1, 60)
 			else
 				if curTime >= client.delayStartAnimation then
 					local sequence = Emotes.StandList[math.random(1, #Emotes.StandList)]
@@ -227,7 +227,7 @@ timer.Create("Emotes:StandAnimations", 0.4, 0, function()
 						client:SetNetVar("stand_animation", {sequence, curTime + sequenceDelay})
 					end
 
-					client.delayStartAnimation = curTime + 70 + math.random(1, 40)
+					client.delayStartAnimation = curTime + 100 + math.random(1, 60) + 30
 				end
 			end
 		else

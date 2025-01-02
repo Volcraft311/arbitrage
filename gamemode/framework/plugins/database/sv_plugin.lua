@@ -221,6 +221,7 @@ function meta:SaveSaverInfo(bDelay)
 
         self._saver = {}
 
+        self._saver.Model = self:GetModel()
         self._saver.Skin = self:GetSkin()
         self._saver.RenderMode = self:GetRenderMode()
         self._saver.Color = self:GetColor()
@@ -259,6 +260,10 @@ function meta:LoadSaverInfo(saver, bDelay)
 
     timer.Simple(bDelay and 0.4 or 0, function()
         if !IsValid(self) then return end
+
+        if saver.Model then
+            self:SetModel(saver.Model)
+        end
 
         if saver.Skin then
             self:SetSkin(saver.Skin)

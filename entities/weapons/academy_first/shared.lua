@@ -45,7 +45,6 @@ SWEP.holdDistance = 64
 SWEP.maxHoldDistance = 150
 SWEP.maxHoldStress = 4000
 
-local SoundList = {"knocking.wav", "loud_knocking.wav"}
 local SwingSound = Sound("WeaponFrag.Throw")
 local HitSound = Sound("Flesh.ImpactHard")
 
@@ -137,8 +136,7 @@ function SWEP:PrimaryAttack()
                 if (!client.doorSpam or CurTime() >= client.doorSpam) then
                     client.doorSpam = CurTime() + 2
 
-                    local s, _ = table.Random(SoundList)
-                    client:EmitSound(s)
+                    client:EmitSound("knocking.wav", SNDLVL_55dB, 100, 0.8, CHAN_BODY)
                 end
             else
                 if self:CanHoldObject(entity) then

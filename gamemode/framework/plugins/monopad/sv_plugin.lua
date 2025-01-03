@@ -15,13 +15,13 @@
 local classData = {
 	["chats"] = function(client, chatID)
 		local monopad = MonoPad:GetObject(client)
-		if !monopad then return end
+		if !monopad then return false end
 
-		local data = monopad.mutedChats
-
-		if data[chatID] then
+		if monopad.mutedChats[chatID] then
 			return false
 		end
+
+		return true
 	end
 }
 
@@ -39,14 +39,13 @@ function MonoPad:SendNotify(client, class, ...)
 
 		timer.Simple(math.random() * 3, function()
 			if !IsValid(client) then return end
+			if !self:FindMonoPad(client) then return end
 
-			if self:FindMonoPad(client) then
-				if !client:IsNocliping() and allow == true then
-					client:EmitSound(self.sounds.notification)
-				end
-
-				netstream.Start(client, "MonoPad:Notify")
+			if !client:IsNocliping() and allow == true then
+				client:EmitSound(self.sounds.notification, SNDLVL_45dB, 100, 0.7, CHAN_ITEM)
 			end
+
+			netstream.Start(client, "MonoPad:Notify")
 		end)
 	end
 end

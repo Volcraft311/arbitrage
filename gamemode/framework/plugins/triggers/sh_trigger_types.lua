@@ -207,13 +207,13 @@ Trigger.ActionTypes = {
                     if _force(force) then return false end
                     local pos = args[1]
                     if client:IsRagdoll() or client:IsRagdolling() then
-                        timer.Create("Trigger:TeleportwhileRagdolling",0.1,0,function()
-                            print("Teleporting")
-                            if client:IsRagdoll() or client:IsRagdolling() then return end
-                            client:SetPos(pos)
-                            client:CheckStuck(0.3)
-                            timer.Remove("Trigger:TeleportwhileRagdolling")
-                        end)
+                        local ent = client:GetRagdoll()
+                        local VecOffset = pos - ent:GetPos()
+                        for i = 0, ent:GetPhysicsObjectCount() - 1 do
+                            local phys = ent:GetPhysicsObjectNum( i )
+                            phys:SetPos( phys:GetPos() + VecOffset )
+                            phys:SetVelocity(Vector(0, 0, 0))
+                        end
                     else
                         client:SetPos(pos)
                         client:CheckStuck(0.3)

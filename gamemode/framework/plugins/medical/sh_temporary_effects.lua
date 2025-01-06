@@ -872,7 +872,7 @@ Medical:TemporaryStatusEffects("flashbang", {
 
 -- Для Селестии
 Medical:TemporaryStatusEffects("luck", {
-	name = "Удача",
+	name = "Абсолютный Азарт",
 	icon = "asterion/academy/ui/health/luck_1.png",
 	description = "Вам очень часто везет.",
 	hooks = {

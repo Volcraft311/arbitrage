@@ -511,7 +511,7 @@ function PANEL:Paint(w, h)
 	self.rotate = LerpA(self.rotate, self.selected * segment_size, ft * 20)
 	self.oldselected = self.oldselected or self.selected
 
-	asterionlib.DrawBlur(self, 2)
+	asterionlib.DrawBlur(self, 1)
 
 	surface_SetDrawColor(0, 0, 0, 50)
 	surface_DrawRect(0, 0, w, h)

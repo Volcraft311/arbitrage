@@ -800,7 +800,7 @@ Medical:TemporaryStatusEffects("overheal", {
 Medical:TemporaryStatusEffects("berserk", {
 	name = "Берсерк",
 	icon = "asterion/academy/ui/health/hydration_3.png",
-	description = "Увеличивает скорость передвижения на {1}% и уменьшает трату выносливости.\nТак же увеличивает ваш fov.",
+	description = "Увеличивает скорость передвижения на {1}% и уменьшает трату выносливости.",
 	values = {
 		[1] = {
 			description = "На сколько % будет увеличина скорость передвижения",
@@ -874,7 +874,7 @@ Medical:TemporaryStatusEffects("flashbang", {
 Medical:TemporaryStatusEffects("luck", {
 	name = "Удача",
 	icon = "asterion/academy/ui/health/luck_1.png",
-	description = "Вам очень часто везет",
+	description = "Вам очень часто везет.",
 	hooks = {
 		OnCommandTry = function(client, rand)
 			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
@@ -905,7 +905,7 @@ local emoteList = {
 Medical:TemporaryStatusEffects("increased_luck", {
 	name = "Повышенная удача",
 	icon = "asterion/academy/ui/health/luck_2.png",
-	description = "Вы имеете повышенную удачу",
+	description = "Вы имеете повышенную удачу.",
 	hooks = {
 		OnCommandTry = function(client, rand)
 			if rand == false then
@@ -942,7 +942,7 @@ Medical:TemporaryStatusEffects("increased_luck", {
 Medical:TemporaryStatusEffects("absolute_luck", {
 	name = "Абсолютная удача",
 	icon = "asterion/academy/ui/health/luck_3.png",
-	description = "Вы обладаете абсолютной удачей",
+	description = "Вы обладаете абсолютной удачей.",
 	hooks = {
 		OnCommandTry = function(client, rand)
 			local bSucc = math.random(1, 2) == 1 -- 50% на то, что повезет

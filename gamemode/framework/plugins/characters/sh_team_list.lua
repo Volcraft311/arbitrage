@@ -64,7 +64,8 @@ Character.team:Create({
     scale = 1,
     hullscale = 0.9,
     hullduckscale = 1.123,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    status_effects = {"luck"}
 })
 
 Character.team:Create({
@@ -192,7 +193,8 @@ Character.team:Create({
     scale = 0.984,
     hullscale = 0.89,
     hullduckscale = 1.097,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    status_effects = {"increased_luck"}
 })
 
 Character.team:Create({
@@ -486,7 +488,8 @@ Character.team:Create({
     scale = 1.133,
     hullscale = 0.872,
     hullduckscale = 1.05,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    status_effects = {"absolute_luck"}
 })
 
 Character.team:Create({

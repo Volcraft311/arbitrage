@@ -207,6 +207,11 @@ function Character.team:Join(client, data, bRespawn)
 
     client:ClearTemporaryStatusEffects()
 
+    local status_effects = info.status_effects
+    for _, effect in ipairs(status_effects or {}) do
+        client:AddTemporaryStatusEffect(effect, 0)
+    end
+
     timer.Simple(1, function()
         netstream.Start(nil, "Character:Caching")
     end)

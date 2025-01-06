@@ -808,4 +808,63 @@ Medical:TemporaryStatusEffects("berserk", {
 			default = 15,
 		}
 	}
+
+Medical:TemporaryStatusEffects("flashbang", {
+	name = "Световая вспышка",
+	icon = "asterion/academy/ui/health/eye_blindness_2.png",
+	description = "Вы ослеплены от сильного света",
+	hooks = {
+		RenderScreenspaceEffects = function(stored, values)
+			local ft = FrameTime()
+
+			stored.st = stored.st or 1
+
+			stored.alpha_black1 = stored.alpha_black1 or 255
+			stored.alpha_white = stored.alpha_white or 255
+			stored.alpha_black2 = stored.alpha_black2 or 255
+
+			if stored.st == 1 then
+				stored.alpha_black1 = Lerp(ft * 10, stored.alpha_black1, -100)
+
+				if stored.alpha_black1 <= 0 then
+					stored.st = 2
+				end
+			elseif stored.st == 2 then
+				stored.alpha_white = Lerp(ft * 10, stored.alpha_white, -10)
+
+				if stored.alpha_white <= 0 then
+					stored.st = 3
+				end
+			elseif stored.st == 3 then
+				local client = LocalPlayer()
+				local time = client:GetTemporaryStatusEffectDelay("flashbang") or 1
+				local delay = time - CurTime()
+
+				if delay <= 4 then
+					stored.alpha_black2 = Lerp(ft * 0.8, stored.alpha_black2, -8)
+
+					if stored.alpha_black2 <= 0 then
+						stored.st = 4
+					end
+				end
+			end
+
+
+			surface.SetDrawColor(0, 0, 0, stored.alpha_black2)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+
+			asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, stored.alpha_black2)
+			DrawMotionBlur(stored.alpha_black2, stored.alpha_black2, 0.01)
+
+			surface.SetDrawColor(255, 255, 255, stored.alpha_white)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+			surface.SetDrawColor(0, 0, 0, stored.alpha_black1)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		end
+	},
+	onAdd = function(client, delay)
+		if CLIENT then return end
+
+		client:ViewPunch(Angle(-50, -50, -50))
+	end
 })

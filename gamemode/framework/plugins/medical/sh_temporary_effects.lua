@@ -903,7 +903,7 @@ local emoteList = {
 	"заметил паука на полу и, испугавшись, отпрыгнул в сторону"
 }
 Medical:TemporaryStatusEffects("increased_luck", {
-	name = "Повышенная удача",
+	name = "Счастливчик",
 	icon = "asterion/academy/ui/health/luck_2.png",
 	description = "Вы имеете повышенную удачу.",
 	hooks = {

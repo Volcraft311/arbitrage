@@ -23,15 +23,13 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
 
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
-        if IsValid(client) then
-            if client:Alive() and client:InGame() then
-                local entity = PLUGIN.deathPlaques[k]
-                if IsValid(entity) then
-                    entity:Remove()
-                end
-
-                continue
+        if IsValid(client) and client:Alive() and client:InGame() then
+            local entity = PLUGIN.deathPlaques[k]
+            if IsValid(entity) then
+                entity:Remove()
             end
+
+            continue
         end
 
         local place = tonumber(v.place)
@@ -96,6 +94,7 @@ function PLUGIN:PlayerDisconnected(client)
             hullduckscale = {hullduckMin, hullduckMax},
             speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
             t_status_effects = {},
+            t_remove_status_effects = {},
 
             saver = client:GetSaverInfo()
         }
@@ -112,6 +111,19 @@ function PLUGIN:PlayerDisconnected(client)
             if info.noSave then continue end
 
             entity.data.t_status_effects[uniqueID] = delay <= 0 and 0 or delay - CurTime()
+        end
+
+        local character = Character.team:GetByID(entity.data.faction)
+        if character then
+            local t_remove_status_effects = {}
+
+            for _, effect in ipairs(character.status_effects or {}) do
+                if !entity.data.t_status_effects[effect] then
+                    t_remove_status_effects[#t_remove_status_effects + 1] = effect
+                end
+            end
+
+            entity.data.t_remove_status_effects = t_remove_status_effects
         end
 
         entity:LoadSaverInfo(entity.data.saver)
@@ -200,9 +212,13 @@ function PLUGIN:PlayerInitialSpawnForRealz(client)
         end
     end
 
-    timer.Simple(0.1, function()
+    timer.Simple(1, function()
         for k, v in pairs(data.t_status_effects) do
             client:SetTemporaryStatusEffect(k, v)
+        end
+
+        for _, effect in ipairs(data.t_remove_status_effects) do
+            client:RemoveTemporaryStatusEffect(effect)
         end
     end)
 

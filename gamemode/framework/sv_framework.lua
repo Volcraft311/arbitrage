@@ -42,15 +42,9 @@ for _, command in ipairs({"try"}) do
     local function try(client, text, id)
         local rand = math.random(0, 100) >= 50 and true or false
 
-        local character = Character.team:GetByID(client:Team())
-        if character then
-            if character:GetUniqueID() == "nagito" then
-                rand = math.random(1, 2) == 1
-            elseif character:GetUniqueID() == "makoto" and !rand then
-                if math.random(1, 5) == 5 then -- 20% на то, что повезет
-                    rand = true
-                end
-            end
+        local bSucc, newRand = hook.Run("OnCommandTry", client, rand)
+        if bSucc == true then
+            rand = newRand
         end
 
         Arbitrage.chat.SendCommand(id, client, text, rand)
@@ -277,15 +271,9 @@ Arbitrage.commands.Add("roll", {
         maxRand = maxRand or 100
         local rand = math.random(1, maxRand)
 
-        local character = Character.team:GetByID(client:Team())
-        if character then
-            if character:GetUniqueID() == "nagito" then
-                rand = math.random(1, 2) == 1 and maxRand or 0
-            elseif character:GetUniqueID() == "makoto" and rand < maxRand / 2 then
-                if math.random(1, 5) == 5 then -- 20% на то, что повезет
-                    rand = maxRand
-                end
-            end
+        local bSucc, newRand = hook.Run("OnCommandRoll", client, rand, maxRand)
+        if bSucc == true then
+            rand = newRand
         end
 
         Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из " .. maxRand .. ".")
@@ -497,28 +485,6 @@ function Arbitrage:PlayerShouldTaunt(client, act)
     if client.GetSitting and client:GetSitting() then return false end
 
     return true
-end
-
-local emoteList = {
-    "споткнулся",
-    "сильно чихнул, отклонив голову вперёд",
-    "заметил на полу монетку и, наклонившись, подбирает",
-    "заметил развязанные шнурки и, наклонившись, завязывает",
-    "заметил паука на полу и, испугавшись, отпрыгнул в сторону"
-}
-function Arbitrage:ScalePlayerDamage(client, hitgroup, dmginfo)
-    if !IsValid(client) then return end
-
-    local character = Character.team:GetByID(client:Team())
-    if !character then return end
-
-    local uniqueID = character:GetUniqueID()
-    if uniqueID == "makoto" then
-        if math.random(1, 5) == 5 then -- 20% на то, что повезет
-            dmginfo:ScaleDamage(0)
-            Arbitrage.chat.SendCommand("me", client, emoteList[math.random(1, #emoteList)])
-        end
-    end
 end
 
 function Arbitrage:KeyPress(client, key)

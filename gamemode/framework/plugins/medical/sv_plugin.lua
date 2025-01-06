@@ -11,6 +11,68 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+function Medical:OnCommandTry(client, rand)
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.OnCommandTry
+		if !_hook then continue end
+
+		local bSucc, newRand = _hook(client, rand)
+		-- уведомление
+		if bSucc == true then
+			netstream.Start(client, "Medical:AddTemporaryStatusEffect", uniqueID, 15)
+		end
+
+		-- обработчик
+		if bSucc != nil then
+			return bSucc, newRand
+		end
+	end
+end
+
+function Medical:OnCommandRoll(client, rand, maxRand)
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.OnCommandRoll
+		if !_hook then continue end
+
+		local bSucc, newRand = _hook(client, rand, maxRand)
+		-- уведомление
+		if bSucc == true then
+			netstream.Start(client, "Medical:AddTemporaryStatusEffect", uniqueID, 15)
+		end
+
+		-- обработчик
+		if bSucc != nil then
+			return bSucc, newRand
+		end
+	end
+end
+
+function Medical:ScalePlayerDamage(client, hitgroup, dmginfo)
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.ScalePlayerDamage
+		if !_hook then continue end
+
+		local bSucc = _hook(client, hitgroup, dmginfo)
+		-- уведомление
+		if bSucc == true then
+			netstream.Start(client, "Medical:AddTemporaryStatusEffect", uniqueID, 15)
+		end
+
+		-- все действия происходят в самом хуке, не требует возвращения
+	end
+end
 
 function Medical:PlayerInitialSpawn(client)
 	local handlerID = "Medical:Handler_" .. client:EntIndex()

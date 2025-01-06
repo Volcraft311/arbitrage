@@ -874,19 +874,93 @@ Medical:TemporaryStatusEffects("flashbang", {
 Medical:TemporaryStatusEffects("luck", {
 	name = "Удача",
 	icon = "asterion/academy/ui/health/luck_1.png",
-	description = "Вам очень часто везет"
+	description = "Вам очень часто везет",
+	hooks = {
+		OnCommandTry = function(client, rand)
+			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+			if bSucc then
+				return true, true
+			end
+		end,
+		OnCommandRoll = function(client, rand, maxRand)
+			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+			if bSucc then
+				local newRand = math.Clamp(rand + math.random(10, 30), 0, maxRand)
+				return true, newRand
+			end
+		end
+	}
 })
 
 -- Для Макото
+local emoteList = {
+	"споткнулся",
+	"сильно чихнул, отклонив голову вперёд",
+	"заметил на полу монетку и, наклонившись, подбирает",
+	"заметил развязанные шнурки и, наклонившись, завязывает",
+	"заметил паука на полу и, испугавшись, отпрыгнул в сторону"
+}
 Medical:TemporaryStatusEffects("increased_luck", {
 	name = "Повышенная удача",
 	icon = "asterion/academy/ui/health/luck_2.png",
-	description = "Вы имеете повышенную удачу"
+	description = "Вы имеете повышенную удачу",
+	hooks = {
+		OnCommandTry = function(client, rand)
+			if rand == false then
+				local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+				if bSucc then
+					return true, true
+				end
+			end
+		end,
+		OnCommandRoll = function(client, rand, maxRand)
+			if rand < maxRand / 2 then
+				local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+				if bSucc then
+					return true, maxRand
+				end
+			end
+		end,
+		ScalePlayerDamage = function(client, hitgroup, dmginfo)
+			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+			if bSucc then
+				dmginfo:ScaleDamage(0)
+				Arbitrage.chat.SendCommand("me", client, emoteList[math.random(1, #emoteList)])
+
+				return true
+			end
+		end
+	}
 })
 
 -- Для Нагито
 Medical:TemporaryStatusEffects("absolute_luck", {
 	name = "Абсолютная удача",
 	icon = "asterion/academy/ui/health/luck_3.png",
-	description = "Вы обладаете абсолютной удачей"
+	description = "Вы обладаете абсолютной удачей",
+	hooks = {
+		OnCommandTry = function(client, rand)
+			local bSucc = math.random(1, 2) == 1 -- 50% на то, что повезет
+
+			if bSucc then
+				return true, true
+			else
+				return true, false
+			end
+		end,
+		OnCommandRoll = function(client, rand, maxRand)
+			local bSucc = math.random(1, 2) == 1 -- 50% на то, что повезет
+
+			if bSucc then
+				return true, maxRand
+			else
+				return true, 0
+			end
+		end
+	}
 })

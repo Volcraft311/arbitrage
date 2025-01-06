@@ -869,3 +869,24 @@ Medical:TemporaryStatusEffects("flashbang", {
 		client:ViewPunch(Angle(-50, -50, -50))
 	end
 })
+
+-- Для Селестии
+Medical:TemporaryStatusEffects("luck", {
+	name = "Удача",
+	icon = "asterion/academy/ui/health/luck_1.png",
+	description = "Вам очень часто везет"
+})
+
+-- Для Макото
+Medical:TemporaryStatusEffects("increased_luck", {
+	name = "Повышенная удача",
+	icon = "asterion/academy/ui/health/luck_2.png",
+	description = "Вы имеете повышенную удачу"
+})
+
+-- Для Нагито
+Medical:TemporaryStatusEffects("absolute_luck", {
+	name = "Абсолютная удача",
+	icon = "asterion/academy/ui/health/luck_3.png",
+	description = "Вы обладаете абсолютной удачей"
+})

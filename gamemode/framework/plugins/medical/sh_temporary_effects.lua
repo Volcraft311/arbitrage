@@ -964,3 +964,29 @@ Medical:TemporaryStatusEffects("absolute_luck", {
 		end
 	}
 })
+
+-- Для Химико и Чиаки (спят где хотят)
+Medical:TemporaryStatusEffects("gifted_sleeper", {
+	name = "Одаренный соня",
+	icon = function(client)
+		if IsValid(client) then
+			local character = Character.team:GetByID(client:Team())
+
+			if character then
+				local icons = character.status_effects_icons
+
+				if icons and icons.gifted_sleeper then
+					return icons.gifted_sleeper
+				end
+			end
+		end
+
+		return "asterion/academy/ui/health/sleep_4.png"
+	end,
+	description = "Возможность спать где угодно.",
+	hooks = {
+		OnCanSleep = function(client)
+			return true
+		end
+	}
+})

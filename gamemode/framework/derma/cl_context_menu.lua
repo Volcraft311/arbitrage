@@ -62,13 +62,14 @@ function PANEL:Init()
     local padding = W(40)
     local size = H(25)
     local i = 0
-    for k, v in SortedPairsByMemberValue(LocalPlayer():GetTemporaryStatusEffects(), "delay") do
+    for k, v in SortedPairsByMemberValue(self.client:GetTemporaryStatusEffects(), "delay") do
         local uniqueID = v.uniqueID
         local info = Medical.t_status_effects[uniqueID]
 
         if info.isHidden then continue end
 
-        local material = Material(info.icon or "err.png")
+        local material = isfunction(info.icon) and info.icon(self.client) or info.icon
+        material = Material(material)
 
         local isHover = false
         local tooltip = self:Add("DLabel")
@@ -165,7 +166,7 @@ function PANEL:Init()
         draw.SimpleText("Избранное", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
-    if !LocalPlayer():IsSpectate() then
+    if !self.client:IsSpectate() then
         local data = asterionlib.data:Get("radialmenu_favorites", {})
 
         local actions = RadialMenu:GetActionsList()

@@ -324,7 +324,11 @@ Character.team:Create({
     scale = 1, -- 0.974,
     hullscale = 0.895,
     hullduckscale = 1.142,
-    inventory = {w = 4, h = 3}
+    inventory = {w = 4, h = 3},
+    status_effects = {"gifted_sleeper"},
+    status_effects_icons = {
+        gifted_sleeper = "asterion/academy/ui/health/sleep_chiaki.png"
+    }
 })
 
 Character.team:Create({
@@ -636,7 +640,11 @@ Character.team:Create({
     scale = 1,
     hullscale = 0.811,
     hullduckscale = 0.963,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    status_effects = {"gifted_sleeper"},
+    status_effects_icons = {
+        gifted_sleeper = "asterion/academy/ui/health/sleep_himiko.png"
+    }
 })
 
 Character.team:Create({

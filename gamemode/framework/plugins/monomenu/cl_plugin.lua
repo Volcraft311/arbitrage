@@ -116,7 +116,7 @@ local function getAllTemporaryStatusEffects(client)
     for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
         all_effects[#all_effects + 1] = {
             name = v.name,
-            icon = v.icon,
+            icon = isfunction(v.icon) and v.icon(client) or v.icon,
             data = function()
                 Derma_StringRequest("Выдать статус эфект", "Введите время, насколько вы хотите выдать игроку данный эффект\n(Если вы хотите установить его навсегда, то введите 0)", "", function(text)
                     text = tonumber(text)
@@ -140,7 +140,7 @@ local function getAllTemporaryStatusEffects(client)
 
             client_effects[#client_effects + 1] = {
                 name = info.name .. " (" .. delay .. " sec)",
-                icon = info.icon,
+                icon = isfunction(info.icon) and info.icon(client) or info.icon,
                 data = function()
                     runAction("removetemporarystatuseffect", client, uniqueID)
                 end
@@ -924,7 +924,10 @@ local function CreateMenu(info, parent, drawline)
     end
 
     paintOption(panel, drawline)
-    panel:SetImage(info.icon)
+
+    if info.icon then
+        panel:SetImage(info.icon)
+    end
 
     for k2, v2 in ipairs(panel:GetChildren()) do
         if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then

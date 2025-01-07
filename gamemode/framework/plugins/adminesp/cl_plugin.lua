@@ -89,7 +89,8 @@ local function drawing(entity, info, eyePos)
 			local uniqueID = v.uniqueID
 	    	local status = Medical.t_status_effects[uniqueID]
 
-	    	local material = Material(status.icon or "err.png")
+			local material = isfunction(status.icon) and status.icon(entity) or status.icon
+			material = Material(material)
 
 	    	surface_SetDrawColor(255, 255, 255)
 	    	surface_SetMaterial(material)

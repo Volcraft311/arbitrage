@@ -985,7 +985,7 @@ Medical:TemporaryStatusEffects("gifted_sleeper", {
 	end,
 	description = "Возможность спать где угодно.",
 	hooks = {
-		OnCanSleep = function(client)
+		OnCanGiftedSleeper = function(client)
 			return true
 		end
 	}

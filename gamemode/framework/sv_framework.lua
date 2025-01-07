@@ -1123,74 +1123,86 @@ netstream.Hook("arb.TokoSneezing", function(client)
 end)
 
 netstream.Hook("arb.Sleeping", function(client)
-    local character = Character.team:GetByID(client:Team())
-    if !character then return end
-
     if client.inBed then return end
 
-    local uniqueID = character:GetUniqueID()
-    if uniqueID == "chiaki" or uniqueID == "himiko" then
-        local isSleeping = client:GetLocalVar("sleeping", false)
+    local bSucc = false
+    local t_status_effects = client:GetTemporaryStatusEffects()
+    for _, array in ipairs(t_status_effects) do
+        local uniqueID = array.uniqueID
+        local info = Medical.t_status_effects[uniqueID]
 
-        client:SetLocalVar("sleeping", !isSleeping)
-        client:ChatNotify(isSleeping and "Вы начали просыпаться!" or "Вы уснули!")
+        local _hook = info.hooks.OnCanGiftedSleeper
+        if !_hook then continue end
 
-        local hookID = "arb.Sleeping_" .. client:SteamID()
-        local function clear()
-            hook.Remove("StartCommand", hookID)
-            hook.Remove("PostPlayerDeath", hookID)
-
-            if IsValid(client) then
-                client:SetLocalVar("sleeping", false)
-                client:RemoveTemporaryStatusEffect("sleep", 0)
-
-                netstream.Start(client, "BedSystem:GetUpBed", true)
-            end
+        local onCan = _hook(client)
+        if onCan == true then
+            bSucc = true
+            break
         end
+    end
 
-        local function create()
-            local eyeAng = client:GetAngles()
+    if !bSucc then return end
 
-            hook.Add("StartCommand", hookID, function(target, ucmd)
-                if target != client then return end
-                if !IsValid(client) then return clear() end
+    local isSleeping = client:GetLocalVar("sleeping", false)
 
-                ucmd:RemoveKey(IN_JUMP)
-                ucmd:RemoveKey(IN_DUCK)
-                ucmd:RemoveKey(IN_ATTACK)
-                ucmd:RemoveKey(IN_USE)
+    client:SetLocalVar("sleeping", !isSleeping)
+    client:ChatNotify(isSleeping and "Вы начали просыпаться!" or "Вы уснули!")
 
-                ucmd:RemoveKey(IN_LEFT)
-                ucmd:RemoveKey(IN_RIGHT)
+    local hookID = "arb.Sleeping_" .. client:SteamID()
+    local function clear()
+        hook.Remove("StartCommand", hookID)
+        hook.Remove("PostPlayerDeath", hookID)
 
-                ucmd:ClearMovement()
+        if IsValid(client) then
+            client:SetLocalVar("sleeping", false)
+            client:RemoveTemporaryStatusEffect("sleep", 0)
 
-                ucmd:SetForwardMove(0)
-                ucmd:SetUpMove(0)
-                ucmd:SetSideMove(0)
-
-                ucmd:SetMouseX(0)
-                ucmd:SetMouseY(0)
-                ucmd:SetMouseWheel(0)
-
-                client:SetEyeAngles(eyeAng)
-            end)
-
-            hook.Add("PostPlayerDeath", hookID, function(target)
-                if target != client then return end
-                if !IsValid(client) then return clear() end
-
-                clear()
-            end)
-
-            client:AddTemporaryStatusEffect("sleep", 0)
-            netstream.Start(client, "BedSystem:LayDownBed", true)
+            netstream.Start(client, "BedSystem:GetUpBed", true)
         end
+    end
 
-        if !isSleeping then
-            create()
-        else
+    local function create()
+        local eyeAng = client:GetAngles()
+
+        hook.Add("StartCommand", hookID, function(target, ucmd)
+            if target != client then return end
+            if !IsValid(client) then return clear() end
+
+            ucmd:RemoveKey(IN_JUMP)
+            ucmd:RemoveKey(IN_DUCK)
+            ucmd:RemoveKey(IN_ATTACK)
+            ucmd:RemoveKey(IN_USE)
+
+            ucmd:RemoveKey(IN_LEFT)
+            ucmd:RemoveKey(IN_RIGHT)
+
+            ucmd:ClearMovement()
+
+            ucmd:SetForwardMove(0)
+            ucmd:SetUpMove(0)
+            ucmd:SetSideMove(0)
+
+            ucmd:SetMouseX(0)
+            ucmd:SetMouseY(0)
+            ucmd:SetMouseWheel(0)
+
+            client:SetEyeAngles(eyeAng)
+        end)
+
+        hook.Add("PostPlayerDeath", hookID, function(target)
+            if target != client then return end
+            if !IsValid(client) then return clear() end
+
             clear()
-        end
+        end)
+
+        client:AddTemporaryStatusEffect("sleep", 0)
+        netstream.Start(client, "BedSystem:LayDownBed", true)
+    end
+
+    if !isSleeping then
+        create()
+    else
+        clear()
     end
 end)

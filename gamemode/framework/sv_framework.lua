@@ -1144,7 +1144,7 @@ netstream.Hook("arb.Sleeping", function(client)
                 client:SetLocalVar("sleeping", false)
                 client:RemoveTemporaryStatusEffect("sleep", 0)
 
-                netstream.Start(client, "BedSystem:GetUpBed")
+                netstream.Start(client, "BedSystem:GetUpBed", true)
             end
         end
 
@@ -1184,7 +1184,7 @@ netstream.Hook("arb.Sleeping", function(client)
             end)
 
             client:AddTemporaryStatusEffect("sleep", 0)
-            netstream.Start(client, "BedSystem:LayDownBed")
+            netstream.Start(client, "BedSystem:LayDownBed", true)
         end
 
         if !isSleeping then

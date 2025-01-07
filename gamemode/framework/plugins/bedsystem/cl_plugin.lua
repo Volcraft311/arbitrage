@@ -54,7 +54,7 @@ local function update_hook()
 end
 
 netstream.Hook("BedSystem:LayDownBed", function(client, entity, eyePos, eyeAng)
-    if client == LocalPlayer() then
+    if client == true or client == LocalPlayer() then
         if IsValid(BedSystem.panel) then
             BedSystem.panel:Remove()
         end
@@ -65,12 +65,14 @@ netstream.Hook("BedSystem:LayDownBed", function(client, entity, eyePos, eyeAng)
         BedSystem.panel = panel
     end
 
-    players_hook[client] = true
-    create_hook()
+    if !isbool(client) and IsValid(client) then
+        players_hook[client] = true
+        create_hook()
+    end
 end)
 
 netstream.Hook("BedSystem:GetUpBed", function(client)
-    if client == LocalPlayer() and IsValid(BedSystem.panel) then
+    if (client == true or client == LocalPlayer()) and IsValid(BedSystem.panel) then
         BedSystem.panel.bClose = true
         BedSystem.panel:SetBedData(nil)
         BedSystem.panel:AlphaTo(0, 5, 0, function()
@@ -78,8 +80,10 @@ netstream.Hook("BedSystem:GetUpBed", function(client)
         end)
     end
 
-    players_hook[client] = nil
-    update_hook()
+    if !isbool(client) and IsValid(client) then
+        players_hook[client] = nil
+        update_hook()
+    end
 
     timer.Simple(1, function()
         RunConsoleCommand("arb_camerafix") -- исправление ломание позиции камеры (может возникнуть из-за кривого положения кровати)

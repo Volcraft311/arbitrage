@@ -361,7 +361,7 @@ Medical:TemporaryStatusEffects("thirst_a", {
 
 Medical:TemporaryStatusEffects("sleep", {
 	name = "Сон",
-	icon = "asterion/academy/ui/health/sleep_1.png",
+	icon = "asterion/academy/ui/health/sleep_2.png",
 	description = "Ваш сон восстанавливается.",
 	handler = function(client, stored, values)
 		stored.time = (stored.time or 0) + 1
@@ -446,7 +446,7 @@ Medical:TemporaryStatusEffects("health_bed", {
 
 Medical:TemporaryStatusEffects("sleep_action", {
 	name = "Сон (анимация)",
-	icon = "asterion/academy/ui/health/sleep_1.png",
+	icon = "asterion/academy/ui/health/sleep_3.png",
 	description = "Ваш сон очень медленно восстанавливается.",
 	handler = function(client, stored, values)
 		stored.time = (stored.time or 0) + 1

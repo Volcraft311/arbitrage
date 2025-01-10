@@ -216,7 +216,7 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 		view.fov = fov + fovShift
 
-		return view
+		return GAMEMODE:CalcView(client, view.origin, view.angles, view.fov)
 	end
 end
 

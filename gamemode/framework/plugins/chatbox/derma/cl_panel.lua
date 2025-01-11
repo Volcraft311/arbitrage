@@ -1124,26 +1124,30 @@ local listAction = {
 		return true
 	end,
 	["РП"] = function(data)
-		local chatType = data[3]
+		if data[2] != loocSyntax .. " " and data[2] != oocSyntax .. " " and data[2] != pmSyntax .. " " and data[2] != helpSyntax .. " " and data[2] != adminsSyntex .. " " and
+			data[3] != loocSyntax .. " " and data[3] != oocSyntax .. " " and data[3] != pmSyntax .. " " and data[3] != helpSyntax .. " " and data[3] != adminsSyntex .. " " then
 
-		if chatType != loocSyntax .. " " and chatType != oocSyntax .. " " and chatType != pmSyntax .. " " and data[2] != helpSyntax .. " " and chatType != adminsSyntex .. " " then
 			return true
 		end
 	end,
 	["НонРП"] = function(data)
-		local chatType = data[3]
+		if data[2] == loocSyntax .. " " or data[2] == oocSyntax .. " " or
+			data[3] == loocSyntax .. " " or data[3] == oocSyntax .. " " then
 
-		if chatType == loocSyntax .. " " or chatType == oocSyntax .. " " then
 			return true
 		end
 	end,
 	["Личные"] = function(data)
-		if data[3] == pmSyntax .. " " then
+		if data[2] == pmSyntax .. " " or
+			data[3] == pmSyntax .. " " then
+
 			return true
 		end
 	end,
 	["Админские"] = function(data)
-		if data[2] == helpSyntax .. " " or data[3] == adminsSyntex .. " " then
+		if data[2] == helpSyntax .. " " or
+			data[3] == adminsSyntex .. " " then
+
 			return true
 		end
 	end

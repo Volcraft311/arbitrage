@@ -83,7 +83,8 @@ timer.Simple(1, function()
             if client == target then return Arbitrage.commands.Notify(client, "Вы не можете отправить сообщение самому себе!") end
 
             Arbitrage.chat.SendCommand("pm", client, target, message)
-        end
+        end,
+        bNoLog = true
     })
 
     for _, command in ipairs({"a", "admin"}) do

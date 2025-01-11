@@ -1145,8 +1145,8 @@ local listAction = {
 		end
 	end,
 	["Админские"] = function(data)
-		if data[2] == helpSyntax .. " " or
-			data[3] == adminsSyntex .. " " then
+		if data[2] == helpSyntax .. " " or data[2] == adminsSyntex .. " " or
+			data[3] == helpSyntax .. " " or data[3] == adminsSyntex .. " " then
 
 			return true
 		end

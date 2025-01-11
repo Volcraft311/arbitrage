@@ -416,8 +416,6 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            print(message)
-
             return chatColor("pm"), "[Личное сообщение] ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
         end,
         OnSend = function(client, name, data)
@@ -473,7 +471,7 @@ function Arbitrage.chat.SendCommand(name, client, ...)
 
     Arbitrage.chat.List[name].OnSend(client, name, data)
 
-    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, data))
+    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, ...))
 
     if tableData and istable(tableData) then
         local str = ""

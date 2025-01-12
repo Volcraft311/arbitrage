@@ -11,6 +11,9 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
+Moderation.helpTargets = Moderation.helpTargets or {}
+
 local color_green = Color(86, 253, 9)
 local color_red = Color(245, 35, 35)
 local color_white = Color(255, 255, 255)
@@ -99,3 +102,39 @@ RegisterCommand("unfreeze", "Разморозить указанного пол�
 for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
     RegisterCommand(command, "Забрать оружие у указанного пользователя.", {"player"})
 end
+
+
+function Moderation:HUDPaint()
+    local client = LocalPlayer()
+    if !client:IsAdmin() then return end
+
+    local curTime = CurTime()
+
+    for steamID, data in pairs(Moderation.helpTargets) do
+        if data.endTime > curTime then
+            if !IsValid(data.target) then
+                data.target = player.GetBySteamID(steamID)
+            end
+
+            local progress = (curTime - data.startTime) / (data.endTime - data.startTime)
+            if progress > 1 then progress = 1 end
+
+            local r = progress * 255
+            local g = 255 - (progress * 255)
+            local b = 0
+
+            outline.Add({data.target}, Color(r, g, b), 0)
+        else
+            Moderation.helpTargets[steamID] = nil
+        end
+    end
+end
+
+
+netstream.Hook("Moderation:HelpTarget", function(steamID)
+    Moderation.helpTargets[steamID] = {
+        target = nil,
+        startTime = CurTime(),
+        endTime = CurTime() + 60
+    }
+end)

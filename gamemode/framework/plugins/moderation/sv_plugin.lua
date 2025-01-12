@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 Moderation.static_usergroups = Moderation.static_usergroups or {}
 Moderation.dynamic_usergroups = Moderation.dynamic_usergroups or {}
 

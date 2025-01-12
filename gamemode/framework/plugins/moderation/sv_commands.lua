@@ -117,6 +117,7 @@ timer.Simple(1, function()
                 if client:IsAdmin() then return Arbitrage.commands.Notify(client, "Вы являетесь администратором и не можете запросить помощь!") end
 
                 Arbitrage.chat.SendCommand("help", client, message)
+                netstream.Start(player.GetAdmins(), "Moderation:HelpTarget", client:SteamID())
             end
         })
     end

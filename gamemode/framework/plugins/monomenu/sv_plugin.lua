@@ -723,6 +723,10 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
 
     ScriptMusic:ChangeTheme("splashscreen", true)
 
+    if data[4] == true then
+        SetNetVar("arb.Chapter", data[1])
+    end
+
     for k, v in ipairs(player.GetAll()) do
         asterionlib.netgui:Create(v, "arb.SplashScreen", nil, "SetData", el)
     end

@@ -119,6 +119,7 @@ function PANEL:Init()
 	self.activeCharacter:SetMaterial(client:GetMaterial())
 	self.activeCharacter:SetNoDraw(true)
 	self.activeCharacter:SetAngles(Angle(0, -20, 0))
+	self.activeCharacter:SetFlexScale(client:GetFlexScale())
 	self.activeCharacter.upPosition = 0
 	self.activeCharacter.childrens = {}
 
@@ -447,8 +448,16 @@ end
 function PANEL:OnEntityDraw()
 	local ft = FrameTime()
 
-	for i = 0, self.activeCharacter:GetFlexNum() - 1 do
-		self.activeCharacter:SetFlexWeight(i, self.facial and self.facial[i] or 0)
+	if self.facial then
+		for i = 0, self.activeCharacter:GetFlexNum() - 1 do
+			self.activeCharacter:SetFlexWeight(i, self.facial and self.facial[i] or 0)
+		end
+	else
+		for i = 0, self.activeCharacter:GetFlexNum() - 1 do
+			local weight = LocalPlayer():GetFlexWeight(i)
+
+			self.activeCharacter:SetFlexWeight(i, weight)
+		end
 	end
 
 	local boneIdx = self.boneCharacter:LookupBone(self.cameraBone or "ValveBiped.Bip01_Spine")

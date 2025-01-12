@@ -252,6 +252,7 @@ Arbitrage.chat.List = {
         end,
         OnSend = function(client, name, data)
             if !data then return end
+            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "Администрация запретила вам писать в NonRP чат!") end
 
             for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
@@ -269,6 +270,7 @@ Arbitrage.chat.List = {
         end,
         OnSend = function(client, name, data)
             if !data then return end
+            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "Администрация запретила вам писать в NonRP чат!") end
 
             for k, v in ipairs(player.GetAll()) do
                 Arbitrage.chat.SendClient(v, client, name, data)

@@ -140,6 +140,10 @@ PLUGIN:AddNewNotify("mutevoice", function(client, target, value)
     return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " выключил" or " включил", color_white, " голосовой чат игроку ", Color(197, 181, 60), target
 end)
 
+PLUGIN:AddNewNotify("mutenonrpchat", function(client, target, value)
+    return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " запретил" or " разрешил", color_white, " писать в NonRP чат игроку ", Color(197, 181, 60), target
+end)
+
 PLUGIN:AddNewNotify("addhost", function(client, target)
     return Color(63, 162, 184), client, color_white, " сделал ведущим игрока ", Color(197, 181, 60), target
 end)

@@ -373,6 +373,19 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
     end,
+    ["mutenonrpchat"] = function(client, target, value)
+        if !IsValid(target) then return end
+
+        value = value and true or nil
+
+        target:SetNetVar("arb.MuteNonRPChat", value)
+
+        if client != target then
+            Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "запретила" or "разрешила") .. " вам писать в NonRP чат!")
+        end
+
+        Arbitrage.adminnotify:SendNotify("mutenonrpchat", client:FullName(), target:FullName(), value)
+    end,
     ["setdescription"] = function(client, target, data)
         if !IsValid(target) then return end
 

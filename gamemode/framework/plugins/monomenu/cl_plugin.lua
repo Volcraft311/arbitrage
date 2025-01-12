@@ -395,7 +395,7 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Голосовой чат",
+                name = "Чат",
                 icon = "icon16/sound.png",
                 data = {
                     {
@@ -436,6 +436,26 @@ local function getActionList(clientinfo)
                         end,
                         check = function()
                             return a_isvalid and !client:GetNetVar("arb.MuteVoice")
+                        end
+                    },
+                    {
+                        name = "Включить NonRP чат",
+                        icon = "icon16/comment.png",
+                        data = function()
+                            runAction("mutenonrpchat", client, false)
+                        end,
+                        check = function()
+                            return a_isvalid and client:GetNetVar("arb.MuteNonRPChat")
+                        end
+                    },
+                    {
+                        name = "Выключить NonRP чат",
+                        icon = "icon16/comment_delete.png",
+                        data = function()
+                            runAction("mutenonrpchat", client, true)
+                        end,
+                        check = function()
+                            return a_isvalid and !client:GetNetVar("arb.MuteNonRPChat")
                         end
                     }
                 }

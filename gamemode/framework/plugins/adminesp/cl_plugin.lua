@@ -118,7 +118,7 @@ end
 local allow = false
 local cache = {}
 asterionlib.entscollector:AddTrack("adminesp", {
-	delay_apply = 1,
+	delay_apply = 2,
 	onCanTrack = function(entity)
 		local object = PLUGIN.entslist[entity:GetClass()]
 

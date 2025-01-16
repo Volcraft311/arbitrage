@@ -439,10 +439,8 @@ Arbitrage.chat.List = {
             return chatColor("admin"), "[Чат администрации] ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
-            for k, v in ipairs(player.GetAll()) do
-                if v:IsAdmin() then
-                    Arbitrage.chat.SendClient(v, client, "admin", data)
-                end
+            for k, v in ipairs(player.GetAdmins()) do
+                Arbitrage.chat.SendClient(v, client, "admin", data)
             end
         end,
         UseIcon = true
@@ -457,8 +455,8 @@ Arbitrage.chat.List = {
             return chatColor("help"), "[Помощь] ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
-            for k, v in ipairs(player.GetAll()) do
-                if v:IsAdmin() and client != v then
+            for k, v in ipairs(player.GetAdmins()) do
+                if client != v then
                     Arbitrage.chat.SendClient(v, client, "help", data)
                 end
             end

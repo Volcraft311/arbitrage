@@ -307,7 +307,20 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
                         end
                     end
 
-                    panel:SetDescription(entity:GetNetVar("description"))
+                    local description = entity:GetNetVar("description")
+                    if description then
+                        panel:SetDescription(description)
+                    end
+
+                    local forced_description = entity:GetNetVar("forced_description")
+                    if forced_description then
+                        local wrapData = asterionlib.WrapText(forced_description, panel:GetWide(), "arb.Font_FuturaPTBook_7")
+                        for k, v in ipairs(wrapData or {}) do
+                            panel:AddSubMenu(v, function(this)
+                                this.title:SetTextColor(Color(245, 206, 206))
+                            end)
+                        end
+                    end
                 else
                     tooltip(entity, panel)
                 end

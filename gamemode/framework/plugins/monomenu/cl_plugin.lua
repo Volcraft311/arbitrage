@@ -559,15 +559,33 @@ local function getActionList(clientinfo)
             },
             {
                 name = "Изменить описание персонажа",
-                icon = "icon16/page_white_edit.png",
-                data = function()
-                    Derma_StringRequest("Изменить описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
-                        runAction("setdescription", client, text)
-                    end)
-                end,
-                check = function()
-                    return a_isvalid
-                end
+                icon = "icon16/page_white_copy.png",
+                data = {
+                    {
+                        name = "Обычное описание",
+                        icon = "icon16/page_white_edit.png",
+                        data = function()
+                            Derma_StringRequest("Изменить обычно описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
+                                runAction("setdescription", client, text)
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Принудительное описание",
+                        icon = "icon16/page_white_zip.png",
+                        data = function()
+                            Derma_StringRequest("Изменить принудительное описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("forced_description", "") or "", function(text)
+                                runAction("setforceddescription", client, text)
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    }
+                }
             },
             {
                 name = "Изменить размер персонажа",

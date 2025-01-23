@@ -94,6 +94,7 @@ function PLUGIN:PlayerDisconnected(client)
             hullduckscale = {hullduckMin, hullduckMax},
             speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
             description = client:GetNetVar("description"),
+            forced_description = client:GetNetVar("forced_description"),
             t_status_effects = {},
             t_remove_status_effects = {},
 
@@ -169,6 +170,10 @@ function PLUGIN:PlayerInitial(client)
 
     if data.description then
         client:SetNetVar("description", data.description)
+    end
+
+    if data.forced_description then
+        client:SetNetVar("forced_description", data.forced_description)
     end
 
     client:LoadSaverInfo(data.saver, true)

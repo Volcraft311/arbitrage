@@ -153,7 +153,11 @@ PLUGIN:AddNewNotify("removehost", function(client, target)
 end)
 
 PLUGIN:AddNewNotify("setdescription", function(client, target)
-    return Color(63, 162, 184), client, color_white, " изменил описание игроку ", Color(197, 181, 60), target
+    return Color(63, 162, 184), client, color_white, " изменил обычное описание игроку ", Color(197, 181, 60), target
+end)
+
+PLUGIN:AddNewNotify("setforceddescription", function(client, target)
+    return Color(63, 162, 184), client, color_white, " изменил принудительное описание игроку ", Color(197, 181, 60), target
 end)
 
 PLUGIN:AddNewNotify("registeritem", function(client, uniqueID)

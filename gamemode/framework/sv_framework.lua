@@ -1054,7 +1054,9 @@ netstream.Hook("arb.EditDescription", function(client, data)
     data = tostring(data)
     if !data then return end
 
-    if string.Trim(data) == "" then
+    data = string.Trim(data)
+
+    if data == "" then
         data = nil
     else
         if utf8.len(data) > 200 then

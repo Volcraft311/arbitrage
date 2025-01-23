@@ -90,6 +90,13 @@ function PANEL:Init()
     self.descEntry:SetPlaceholderText("Продолжение следует")
     self.descEntry:SetFont("arb.Font_FuturaPTBook_8")
 
+    self.changeChapter = self.main:Add("DCheckBoxLabel")
+    self.changeChapter:SetText("Автоматически изменить название главы")
+    self.changeChapter:SetPos(W(5), H(270))
+    self.changeChapter:SetSize(self.main:GetWide() - W(10), H(25))
+    self.changeChapter:SetFont("arb.Font_FuturaPTBook_8")
+    self.changeChapter:SetValue(true)
+
     local submitButton = self.main:Add("DButton")
     submitButton:DockMargin(0, H(5), 0, H(5))
     submitButton:SetText("")
@@ -105,7 +112,7 @@ function PANEL:Init()
     end
 
     submitButton.DoClick = function()
-        local a, b, c = self.nameEntry:GetValue(), self.idEntry:GetValue(), self.descEntry:GetValue()
+        local a, b, c, d = self.nameEntry:GetValue(), self.idEntry:GetValue(), self.descEntry:GetValue(), self.changeChapter:GetChecked()
         if a == "" or b == "" or c == "" then return end
 
         self:AlphaTo(0, 0.3, 0, function()
@@ -113,7 +120,7 @@ function PANEL:Init()
         end)
 
         netstream.Start("arb.MonoSplashScreen", {
-            a, b, c
+            a, b, c, d
         })
     end
 end

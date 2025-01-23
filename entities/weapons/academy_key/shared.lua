@@ -54,9 +54,7 @@ SWEP.Secondary.Ammo = ""
 local function DoorAction(client, door, bClose)
     client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 
-    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, (bClose and "Закрывает" or "Открывает") .. " дверь", Color(255, 170, 23))
-    end
+    TypingDraw:SendSphere(0.5, client, (bClose and "Закрывает" or "Открывает") .. " дверь", Color(255, 170, 23))
 
     Arbitrage.action.ActionRun(client, bClose and "Закрываем дверь" or "Открываем дверь", 2, function()
         if client:GetEyeTrace().Entity != door then return true end
@@ -138,7 +136,8 @@ function SWEP:InteractionDoor(bClose)
         local doorData = FindDoorData(door)
 
         local bHaveKeys = FindKey(client, doorData, door)
-        if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас нету ключей от данной двери!") end
+        -- "Вы настолько беспомощны, что у вас даже нет возможности открыть дверь без ключей, бездарь ебанный"
+        if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас нет ключей от двери!") end 
 
         if !bClose and !door:GetNWBool(doorVar) then
             return Arbitrage.commands.Notify(client, doorText .. " открыта!")

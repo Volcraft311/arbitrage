@@ -197,7 +197,7 @@ PLUGIN.type = {
 
                 if key then
                     PLUGIN.ClearTimers()
-                    
+
                     if IsValid(buttonKey) then
                         buttonKey.isEdit = false
                     end
@@ -209,7 +209,7 @@ PLUGIN.type = {
 
             timer_Create("SETTINGS:ChangeKeyDelay", 50, 1, function()
                 PLUGIN.ClearTimers()
-                
+
                 if IsValid(buttonKey) then
                     buttonKey.isEdit = false
                 end

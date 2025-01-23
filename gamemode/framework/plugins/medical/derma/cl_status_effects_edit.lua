@@ -108,13 +108,15 @@ function PANEL:Main()
 	    end
 	end
 
+	local client = LocalPlayer()
 	local disable = GetNetVar("medical:statuseffects_disable", {})
 
 	for k, v in pairs(Medical.t_status_effects) do
 		local bIsOpen = false
 		local bIsAnimation = false
 		local alpha = 0
-		local material = Material(v.icon or "err.png")
+		local material = isfunction(v.icon) and v.icon(client) or v.icon
+		material = Material(material)
 
 		local panel = scrollPanel:Add("Panel")
 		panel:Dock(TOP)

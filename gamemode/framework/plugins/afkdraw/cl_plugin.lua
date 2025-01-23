@@ -1,10 +1,6 @@
-local PLUGIN = PLUGIN
-
 -- Localize Global Calls
 local Vector = Vector
 local Color = Color
-local string_find = string.find
-local timer_Create = timer.Create
 local EyePos = EyePos
 local ipairs = ipairs
 local player_GetAll = player.GetAll
@@ -22,7 +18,11 @@ local cam_Start3D2D = cam.Start3D2D
 local draw_SimpleTextOutlined = draw.SimpleTextOutlined
 local ColorAlpha = ColorAlpha
 local cam_End3D2D = cam.End3D2D
-local netstream = netstream
+local timer_Create = timer.Create
+local system_HasFocus = system.HasFocus
+local hook_Run = hook.Run
+
+local PLUGIN = PLUGIN
 
 local standingOffset = Vector(0, 0, 72)
 local crouchingOffset = Vector(0, 0, 38)
@@ -36,7 +36,7 @@ function PLUGIN:GetTypingIndicatorPosition(client)
 	for i = 1, client:GetBoneCount() do
 	    local name = client:GetBoneName(i)
 
-	    if (string_find(name:lower(), "head")) then
+	    if name:lower():find("head") then
 	        head = i
 	        break
 	    end
@@ -73,20 +73,20 @@ local textWidth, textHeight = surface_GetTextSize("A")
 function PLUGIN:PostDrawTranslucentRenderables()
 	if Arbitrage.lawEnable then return end
 	if #cache <= 0 then return end
-	
+
 	local players = {}
 	for k, v in ipairs(cache) do
-	    if IsValid(v) then
-	        players[#players + 1] = v
-	    end
+		if IsValid(v) then
+			players[#players + 1] = v
+		end
 	end
-	
+
 	if #players <= 0 then return end
-	
+
 	local angle = EyeAngles()
 	angle:RotateAroundAxis(angle:Forward(), 90)
 	angle:RotateAroundAxis(angle:Right(), 90)
-	
+
 	local frametime = FrameTime() * 3
 	local realtime = RealTime()
 
@@ -94,9 +94,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 		v.arbAfkTextAlpha = Lerp(frametime, v.arbAfkTextAlpha, v:IsAFK() and 1 or 0)
 
 		local fraction = v.arbAfkTextAlpha
-	    if fraction <= 0.01 then continue end
+		if fraction <= 0.01 then continue end
 
-	    local distance = v:GetPos():DistToSqr(EyePos())
+		local distance = v:GetPos():DistToSqr(EyePos())
 		local alpha = (1 - math_min(distance, d) / d) * 255 * fraction
 
 		local pos = PLUGIN:GetTypingIndicatorPosition(v)
@@ -115,6 +115,23 @@ function PLUGIN:PostDrawTranslucentRenderables()
 		end
 	end
 end
+
+local bFocus = true
+timer_Create("UpdateFocusGame", 1, 0, function()
+	if system_HasFocus() then
+		if !bFocus then
+			hook_Run("UnHideGame")
+
+			bFocus = true
+		end
+	else
+		if bFocus then
+			hook_Run("HideGame")
+
+			bFocus = false
+		end
+	end
+end)
 
 function PLUGIN:HideGame()
 	netstream.Start("AfkDraw:HideGame")

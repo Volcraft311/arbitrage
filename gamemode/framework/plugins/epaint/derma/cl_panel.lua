@@ -221,7 +221,7 @@ function PANEL:Init()
 			local size = self.sizeSlider:GetValue()
 
 			draw.NoTexture()
-			surface.SetDrawColor(ColorAlpha(self.color, 100))
+			surface.SetDrawColor(self.color.r, self.color.g, self.color.b, 100)
 
 			local drawing = EPaint.DrawingTypes[self.type]
 			this:SetCursor(drawing.cursor or "blank")

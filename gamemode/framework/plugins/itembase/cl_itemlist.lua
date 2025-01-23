@@ -88,7 +88,11 @@ spawnmenu.AddContentType("Item", function(container, item)
             local _ = subMenu:AddOption(v:FullName(), function()
                 netstream.Start("ItemBase:GiveItem", v, uniqueID)
             end)
-            _:SetIcon(Arbitrage.chat:GetIcon(v):GetName() .. ".png")
+
+            local iconC = Arbitrage.chat:GetIcon(v)
+            if iconC then
+                _:SetIcon(iconC:GetName() .. ".png")
+            end
         end
 
         Menu:Open()

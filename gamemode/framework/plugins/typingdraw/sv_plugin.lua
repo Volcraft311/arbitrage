@@ -11,15 +11,14 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-
 local PLUGIN = PLUGIN
 
 function TypingDraw:SetTypingText(client, target, data, color)
-	if !IsValid(client) then return end
-	if !client:IsPlayer() then return end
+    netstream.Start(client, "TypingDraw:SetTypingText", target, data, color)
+end
 
-	if !IsValid(target) then return end
-	if !target:IsPlayer() then return end
-
-	netstream.Start(client, "TypingDraw:SetTypingText", target, data, color)
+function TypingDraw:SendSphere(radius, client, data, color)
+    for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * radius)) do
+        TypingDraw:SetTypingText(v, client, data, color)
+    end
 end

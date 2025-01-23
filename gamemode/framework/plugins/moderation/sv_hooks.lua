@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 Moderation:AddLog("spawnProp", {
     name = "Создание пропа",
     color = 1752220,

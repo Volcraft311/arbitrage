@@ -12,15 +12,11 @@
 ]]--
 
 -- Localize Global Calls
+local FindMetaTable = FindMetaTable
 local string_lower = string.lower
 local Vector = Vector
 local ipairs = ipairs
 local istable = istable
-local FindMetaTable = FindMetaTable
-local table_Copy = table.Copy
-local CurTime = CurTime
-local IsValid = IsValid
-local select = select
 
 
 local PLUGIN = PLUGIN
@@ -265,135 +261,11 @@ function playerMeta:GetMood()
 	return Emotes.MoodList[moodID]
 end
 
-local function getSequenceID(array, id, client)
-	local sequence = array[id]
-	local sequenceID = sequence and client:LookupSequence(sequence)
-
-	if sequenceID and sequenceID > -1 then
-		return sequenceID
-	end
-end
-
-if CLIENT then
-	function Emotes:CalcMainActivity(client, velocity)
-		local isProne = client.IsProne and client:IsProne()
-		if isProne then return end
-
-		-- Акты
-		do
-			local seq, seqTime = client:GetAction()
-			if seq then
-				local seqID = client:LookupSequence(seq)
-
-				if seqID > -1 and (seqTime <= -1 or seqTime > CurTime()) then
-					if client:GetSequence() != seqID then
-						client:SetCycle(0)
-						client:SetPlaybackRate(1)
-					end
-
-					return -1, seqID
-				end
-			end
-		end
-
-		-- Сидение
-		do
-			if client.GetSitting and client:GetSitting() then
-				local sitID = client:GetNetVar("sitting")
-				if sitID then
-					local seq = client:GetSittingSequence()
-					local seqID = client:LookupSequence(seq)
-
-					if seqID > -1 then
-						return -1, seqID
-					end
-				end
-			end
-		end
-
-		local len2D = velocity:Length2D()
-		-- Анимации ожидания
-		do
-			if len2D <= 0 then
-				local animationData = client:GetNetVar("stand_animation")
-				if animationData then
-					local seq = animationData[1]
-					local delay = animationData[2]
-
-					if delay >= CurTime() then
-						local seqID = client:LookupSequence(seq)
-
-						if seqID > -1 then
-							if client:GetSequence() != seqID then
-								client:SetCycle(0)
-								client:SetPlaybackRate(1)
-							end
-
-							return -1, seqID
-						end
-					end
-				end
-			end
-		end
-
-		-- Настроение
-		do
-			local mood = client:GetMood()
-			if mood and !client:InVehicle() and !client:Crouching() and client:OnGround() then
-				local weapon = client:GetActiveWeapon()
-				local holdType = "normal"
-				local class = nil
-				if IsValid(weapon) then
-					holdType = weapon.HoldType or weapon:GetHoldType()
-					class = weapon:GetClass()
-				end
-
-				if (class == "academy_key" or class == "academy_first") and holdType == "normal" then
-					local sequence = nil
-					local data = mood.sequences or {}
-
-					if len2D < 10 then
-						local sequenceID = getSequenceID(data, "idle", client)
-						if sequenceID then
-							sequence = sequenceID
-						end
-					elseif len2D >= 140 then
-						local sequenceID = getSequenceID(data, "run", client)
-						if sequenceID then
-							sequence = sequenceID
-						end
-					else
-						local sequenceID = getSequenceID(data, "walk", client)
-						if sequenceID then
-							sequence = sequenceID
-						end
-					end
-
-					if sequence then
-						client.CalcIdeal = ACT_MP_STAND_IDLE
-						client.CalcSeqOverride = sequence
-
-						return client.CalcIdeal, client.CalcSeqOverride
-					end
-				end
-			end
-		end
-	end
-end
-
 function Emotes:UpdateAnimation(client, moveData)
 	local _, _, bThirdPerson, seqAngle = client:GetAction()
 
 	if bThirdPerson and seqAngle then
 		client:SetRenderAngles(seqAngle)
-	end
-end
-
-local keyBlacklist = IN_ATTACK + IN_ATTACK2 + IN_JUMP + IN_DUCK
-function Emotes:StartCommand(client, command)
-	if select(3, client:GetAction()) then
-		command:RemoveKey(keyBlacklist)
-		command:ClearMovement()
 	end
 end
 

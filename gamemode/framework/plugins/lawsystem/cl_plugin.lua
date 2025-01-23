@@ -171,11 +171,11 @@ function PLUGIN:SendIntroText()
 
     hook.Add("RenderScreenspaceEffects", "arb.LawIntroText", function()
         for k, v in SortedPairs(textTable) do
-            surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
+            surface.SetDrawColor(v.color.r, v.color.g, v.color.b, v.alpha)
             surface.SetMaterial(v[1])
             surface.DrawTexturedRect(v.x + rightMove - 450, ScrH() / 2 - size / 2 + v[4], size, size)
 
-            surface.SetDrawColor(ColorAlpha(color_white, v.alpha * 2))
+            surface.SetDrawColor(color_white.r, color_white.g, color_white.b, v.alpha * 2)
             surface.SetMaterial(v[5])
             surface.DrawTexturedRect(v.x + rightMove - 450, ScrH() / 2 - size / 2 + v[4], size, size)
 
@@ -431,7 +431,7 @@ hook.Add("HUDPaint", "arb.DrawBullets", function()
         surface.SetMaterial(bulletMat)
         surface.DrawTexturedRect(-ScrW() * 2 + v.x + ScrW() * 2 - 5, v.y + size * 0.7 - (v.size / 2) + 2, v.size * 2.5, v.size)
 
-        surface.SetDrawColor(ColorAlpha(v.color, v.alphato))
+        surface.SetDrawColor(v.color.r, v.color.g, v.color.b, v.alphato)
         surface.SetMaterial(bulletMatL)
         surface.DrawTexturedRect(-ScrW() * 2 + v.x + ScrW() * 2, v.y + size * 0.7 - (v.size / 2), v.size * 2.5, v.size)
 

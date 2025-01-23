@@ -31,7 +31,9 @@ function PANEL:Init()
     self.client = LocalPlayer()
     self.faction = Character.team:GetByID(self.client:Team())
     self.icon = self.faction:GetAssets().hud
-    self.mat = Material(self.icon)
+    if self.icon then
+        self.mat = Material(self.icon)
+    end
 
     self.description = self.client:GetNetVar("description")
     self.descriptionFont = "arb.Font_FuturaPTBook_6"
@@ -60,13 +62,14 @@ function PANEL:Init()
     local padding = W(40)
     local size = H(25)
     local i = 0
-    for k, v in SortedPairsByMemberValue(LocalPlayer():GetTemporaryStatusEffects(), "delay") do
+    for k, v in SortedPairsByMemberValue(self.client:GetTemporaryStatusEffects(), "delay") do
         local uniqueID = v.uniqueID
         local info = Medical.t_status_effects[uniqueID]
 
         if info.isHidden then continue end
 
-        local material = Material(info.icon or "err.png")
+        local material = isfunction(info.icon) and info.icon(self.client) or info.icon
+        material = Material(material)
 
         local isHover = false
         local tooltip = self:Add("DLabel")
@@ -163,7 +166,7 @@ function PANEL:Init()
         draw.SimpleText("Избранное", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
-    if !LocalPlayer():IsSpectate() then
+    if !self.client:IsSpectate() then
         local data = asterionlib.data:Get("radialmenu_favorites", {})
 
         local actions = RadialMenu:GetActionsList()
@@ -250,7 +253,7 @@ function PANEL:Paint(w, h)
         draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(self.faction:GetTitle(), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 
-        for k, v in ipairs(self.descriptionData) do
+        for k, v in ipairs(self.descriptionData or {}) do
             local padding = #self.descriptionData * self.descriptionHeight
 
             draw.SimpleText(v, self.descriptionFont, w / 2, h - 200 - 80 - padding + (k - 1) * self.descriptionHeight, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)

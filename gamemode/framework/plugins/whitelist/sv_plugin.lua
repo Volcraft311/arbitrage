@@ -25,6 +25,11 @@ function PLUGIN:CheckPassword(steamID64)
 	local data = asterionlib.data:Get("whitelist", {}, true)
 
 	if !data[steamid] and !self:IsPublic() then
+		local bSucc = hook.Run("OnCheckPassword", steamid)
+		if bSucc == true then
+			return true
+		end
+
 		return false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь в тех. поддержку нашего сервера.\n\nПодробная информация: https://asterion.games"
 	end
 end

@@ -50,7 +50,7 @@ function PANEL:Paint(w, h)
     surface.DrawRect(self.disappearance, 0, w, h)
 
     surface.SetTexture(gradientLeft)
-    surface.SetDrawColor(ColorAlpha(color, self.alpha))
+    surface.SetDrawColor(color.r, color.g, color.b, self.alpha)
     surface.DrawTexturedRect(self.timer, 0, w, h)
 
     surface.DrawRect(self.disappearance, 0, self.lines[1], 2)

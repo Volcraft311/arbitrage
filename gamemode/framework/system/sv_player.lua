@@ -52,6 +52,11 @@ function Arbitrage.player.SetupWeapons(client)
     client:Give("academy_first")
     client:Give("academy_key")
 
+    if client:IsAdmin() then
+        client:Give("weapon_physgun")
+        client:Give("gmod_tool")
+    end
+
     client:SelectWeapon("academy_key")
 
     local faction = Character.team:GetByID(client:Team())
@@ -59,7 +64,7 @@ function Arbitrage.player.SetupWeapons(client)
 
     if !Arbitrage.OffGiveWeapons() then
         for k, v in ipairs(faction:GetWeapons() or {}) do
-            client:Give(v)
+            client:Give(v, true)
         end
     end
 end

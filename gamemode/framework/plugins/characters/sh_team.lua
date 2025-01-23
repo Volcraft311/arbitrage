@@ -70,6 +70,7 @@ function Character.team:Create(data)
         info.assets.white = Format(assetPath, "white")
         info.assets.splash = Format(assetPath, "splash")
         info.assets.argue = Format(assetPath, "argue")
+        info.assets.greeting = Format(assetPath, "greeting")
     end
 
     team.SetUp(id, info:GetName(), info:GetColor())
@@ -158,6 +159,7 @@ function Character.team:Join(client, data, bRespawn)
         return Arbitrage.player.Respawn(client)
     end
 
+    client:SetCanZoom(false)
     client:SetTeam(id)
     client:SetModel(info:GetModel())
     client:SetNoCollideWithTeammates(false)
@@ -212,6 +214,11 @@ function Character.team:Join(client, data, bRespawn)
     Arbitrage.player.SetupInventory(client)
 
     client:ClearTemporaryStatusEffects()
+
+    local status_effects = info.status_effects
+    for _, effect in ipairs(status_effects or {}) do
+        client:AddTemporaryStatusEffect(effect, 0)
+    end
 
     timer.Simple(1, function()
         netstream.Start(nil, "Character:Caching")

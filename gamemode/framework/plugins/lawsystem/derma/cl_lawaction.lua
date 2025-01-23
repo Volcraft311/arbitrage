@@ -486,7 +486,7 @@ function PANEL:Init()
             end
         end
 
-        surface.SetDrawColor(ColorAlpha(c, 255 / 2))
+        surface.SetDrawColor(c.r, c.g, c.b, 127.5)
         surface.DrawRect(0, 0, t * (w / self.interruptionSizeMax), h)
 
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)

@@ -128,9 +128,8 @@ local function RecoveryFunc(item, target)
 
         client:SetAction("Heal")
     end
-    for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-        TypingDraw:SetTypingText(v, client, text, Color(255, 170, 23))
-    end
+
+    TypingDraw:SendSphere(0.5, client, text, Color(255, 170, 23))
 
     local value = tonumber(item:GetSetHealth())
     if value > 0 then

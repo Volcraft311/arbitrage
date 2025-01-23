@@ -12,20 +12,37 @@
 ]]--
 
 
-function Medical:ScalePlayerDamage(target, hitgroup, dmginfo)
-	if !target:IsPlayer() then return end
+function Medical:ScalePlayerDamage(client, hitgroup, dmginfo)
+	if !client:IsPlayer() then return end
 
 	if hitgroup == HITGROUP_HEAD then
-		target:AddTemporaryStatusEffect("stun", 10)
-		target:AddTemporaryStatusEffect("pain", 30)
-		target:AddTemporaryStatusEffect("blackout", 25)
+		client:AddTemporaryStatusEffect("stun", 10)
+		client:AddTemporaryStatusEffect("pain", 30)
+		client:AddTemporaryStatusEffect("blackout", 25)
 
-		target:ViewPunch(Angle(3.7, -3.5, 3.3))
+		client:ViewPunch(Angle(3.7, -3.5, 3.3))
 	elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
-		target:AddTemporaryStatusEffect("broken_leg", 20)
-		target:AddTemporaryStatusEffect("pain", 2)
+		client:AddTemporaryStatusEffect("broken_leg", 20)
+		client:AddTemporaryStatusEffect("pain", 2)
 	else
-		target:AddTemporaryStatusEffect("pain", 5)
+		client:AddTemporaryStatusEffect("pain", 5)
+	end
+
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.ScalePlayerDamage
+		if !_hook then continue end
+
+		local bSucc = _hook(client, hitgroup, dmginfo)
+		-- уведомление
+		if bSucc == true then
+			netstream.Start(client, "Medical:AddTemporaryStatusEffect", uniqueID, 15)
+		end
+
+		-- все действия происходят в самом хуке, не требует возвращения
 	end
 end
 
@@ -35,6 +52,73 @@ function Medical:EntityTakeDamage(client, dmginfo)
 	if dmginfo:IsFallDamage() then
 		client:AddTemporaryStatusEffect("broken_leg", 20)
 	end
+end
+
+function Medical:OnCommandTry(client, rand)
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.OnCommandTry
+		if !_hook then continue end
+
+		local bSucc, newRand = _hook(client, rand)
+		-- уведомление
+		if bSucc == true then
+			netstream.Start(client, "Medical:AddTemporaryStatusEffect", uniqueID, 15)
+		end
+
+		-- обработчик
+		if bSucc != nil then
+			return bSucc, newRand
+		end
+	end
+end
+
+function Medical:OnCommandRoll(client, rand, maxRand)
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.OnCommandRoll
+		if !_hook then continue end
+
+		local bSucc, newRand = _hook(client, rand, maxRand)
+		-- уведомление
+		if bSucc == true then
+			netstream.Start(client, "Medical:AddTemporaryStatusEffect", uniqueID, 15)
+		end
+
+		-- обработчик
+		if bSucc != nil then
+			return bSucc, newRand
+		end
+	end
+end
+
+function Medical:PlayerInitialSpawn(client)
+	local handlerID = "Medical:Handler_" .. client:EntIndex()
+	timer.Create(handlerID, 1, 0, function()
+	    if !IsValid(client) then return timer.Remove(handlerID) end
+
+	    local t_status_effects = client:GetTemporaryStatusEffects()
+	    for _, array in ipairs(t_status_effects) do
+	    	local uniqueID = array.uniqueID
+	    	local info = self.t_status_effects[uniqueID]
+
+	    	local handler = info.handler
+	    	if !handler then continue end
+
+	    	local stored = self:TemporaryStatusEffectsStored(client, uniqueID)
+	    	local values = self:TemporaryStatusEffectsValues(uniqueID)
+
+	    	handler(client, stored, values)
+	    end
+
+	    hook.Run("OnMedicalHandler", client)
+	end)
 end
 
 function Medical:OnMedicalHandler(client)
@@ -130,3 +214,29 @@ function Medical:OnMedicalHandler(client)
 		end
 	end
 end
+
+
+netstream.Hook("Medical:DisableStatusEffect", function(client, uniqueID, bStatus)
+	if !client:IsAdmin() then return end
+
+	local info = Medical.t_status_effects[uniqueID]
+	if !info then return end
+
+	local disable = GetNetVar("medical:statuseffects_disable", {})
+	disable[uniqueID] = bStatus == false and true or nil
+
+	SetNetVar("medical:statuseffects_disable", disable)
+end)
+
+netstream.Hook("Medical:EditStatusEffect", function(client, uniqueID, id, value)
+	if !client:IsAdmin() then return end
+
+	local info = Medical.t_status_effects[uniqueID]
+	if !info then return end
+
+	local edits = GetNetVar("medical:statuseffects_edits", {})
+	edits[uniqueID] = edits[uniqueID] or {}
+	edits[uniqueID][id] = value
+
+	SetNetVar("medical:statuseffects_edits", edits)
+end)

@@ -31,9 +31,7 @@ function ENT:Initialize()
 end
 
 function ENT:Use(client, caller)
-	for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-	    TypingDraw:SetTypingText(v, client, "Обыскивает 'Холодильник'", Color(255, 170, 23))
-	end
+	TypingDraw:SendSphere(0.5, client, "Обыскивает 'Холодильник'", Color(255, 170, 23))
 
 	client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 

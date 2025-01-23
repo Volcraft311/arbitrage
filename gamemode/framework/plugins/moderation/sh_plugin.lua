@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "Moderation"
@@ -52,6 +53,11 @@ function Moderation:PhysgunDrop(client, entity)
 end
 
 function Moderation:CanTool(client, tr, toolname, tool, button)
+    local bSucc, preCanTool = hook.Run("PreCanTool", client, tr, toolname, tool, button)
+    if bSucc == true and preCanTool then
+        return preCanTool
+    end
+
     return client:IsAdmin()
 end
 

@@ -50,14 +50,10 @@ local function remove_hook()
 	hook.Remove("SetupPlayerVisibility", "AdminESP:SetupPlayerVisibility")
 end
 
-local function update_hook(client)
-	if IsValid(client) then
-		players_hook[client] = nil
-	end
-
+local function update_hook()
 	local count = 0
-	for k in pairs(players_hook) do
-		if IsValid(k) then
+	for client in pairs(players_hook) do
+		if IsValid(client) then
 			count = count + 1
 		end
 	end
@@ -86,7 +82,8 @@ function PLUGIN:Spec(client, target)
 
 		hook.Run("OnSpectateEnter", client, bValid and target)
 	else
-		update_hook(client)
+		players_hook[client] = nil
+		update_hook()
 
 		hook.Run("OnSpectateExit", client)
 	end
@@ -156,6 +153,8 @@ netstream.Hook("AdminESP:CameraTeleportToPosition", function(client, vector, ang
 		client:SetEyeAngles(angles)
 	end)
 
-	update_hook(client)
+	players_hook[client] = nil
+	update_hook()
+
 	hook.Run("OnSpectateTeleport", client, vector, angles)
 end)

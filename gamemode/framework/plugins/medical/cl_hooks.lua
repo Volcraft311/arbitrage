@@ -91,7 +91,8 @@ function Medical:HUDPaint(...)
 		end
 
 		local info = self.t_status_effects[uniqueID]
-		local material = Material(info.icon)
+		local material = isfunction(info.icon) and info.icon(client) or info.icon
+		material = Material(material)
 
 		local scaleTarget = 1.35
 		if storage.anim == 0 then

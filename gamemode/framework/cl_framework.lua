@@ -306,7 +306,7 @@ local ActionPressIDList = {
             end
         end
 
-        if !monopad then return chat.AddText("У вас нету монопада!") end
+        if !monopad then return chat.AddText("У вас нет монопада!") end
 
         local weapon = findClass("academy_monopad")
         if weapon and !Arbitrage.lawEnable then

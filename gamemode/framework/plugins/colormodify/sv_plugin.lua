@@ -43,6 +43,7 @@ netstream.Hook("ColorModify:AddPlayer", function(client, steamid)
 end)
 
 netstream.Hook("ColorModify:LoadConfig", function(client, array)
+    if !client:IsAdmin() then return end
     local data = PLUGIN:Get()
 
     for k, v in pairs(array) do

@@ -26,8 +26,10 @@ local function getReceivers()
 end
 
 local receivers = {}
-timer.Create("AdminESP:UpdateReceivers", 2, 0, function()
-    receivers = getReceivers()
+timer.Simple(math.random(), function()
+    timer.Create("AdminESP:UpdateReceivers", 2, 0, function()
+        receivers = getReceivers()
+    end)
 end)
 
 timer.Create("AdminESP:UpdatePlayersPosition", 0.35, 0, function()

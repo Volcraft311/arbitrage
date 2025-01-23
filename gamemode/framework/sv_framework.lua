@@ -42,15 +42,9 @@ for _, command in ipairs({"try"}) do
     local function try(client, text, id)
         local rand = math.random(0, 100) >= 50 and true or false
 
-        local character = Character.team:GetByID(client:Team())
-        if character then
-            if character:GetUniqueID() == "nagito" then
-                rand = math.random(1, 2) == 1
-            elseif character:GetUniqueID() == "makoto" and !rand then
-                if math.random(1, 5) == 5 then -- 20% на то, что повезет
-                    rand = true
-                end
-            end
+        local bSucc, newRand = hook.Run("OnCommandTry", client, rand)
+        if bSucc == true then
+            rand = newRand
         end
 
         Arbitrage.chat.SendCommand(id, client, text, rand)
@@ -277,15 +271,9 @@ Arbitrage.commands.Add("roll", {
         maxRand = maxRand or 100
         local rand = math.random(1, maxRand)
 
-        local character = Character.team:GetByID(client:Team())
-        if character then
-            if character:GetUniqueID() == "nagito" then
-                rand = math.random(1, 2) == 1 and maxRand or 0
-            elseif character:GetUniqueID() == "makoto" and rand < maxRand / 2 then
-                if math.random(1, 5) == 5 then -- 20% на то, что повезет
-                    rand = maxRand
-                end
-            end
+        local bSucc, newRand = hook.Run("OnCommandRoll", client, rand, maxRand)
+        if bSucc == true then
+            rand = newRand
         end
 
         Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из " .. maxRand .. ".")
@@ -494,32 +482,9 @@ Arbitrage.commands.Add("fallover", {
 function Arbitrage:PlayerShouldTaunt(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
-    if client:GetNetVar("inbed") then return false end
     if client.GetSitting and client:GetSitting() then return false end
 
     return true
-end
-
-local emoteList = {
-    "споткнулся",
-    "сильно чихнул, отклонив голову вперёд",
-    "заметил на полу монетку и, наклонившись, подбирает",
-    "заметил развязанные шнурки и, наклонившись, завязывает",
-    "заметил паука на полу и, испугавшись, отпрыгнул в сторону"
-}
-function Arbitrage:ScalePlayerDamage(client, hitgroup, dmginfo)
-    if !IsValid(client) then return end
-
-    local character = Character.team:GetByID(client:Team())
-    if !character then return end
-
-    local uniqueID = character:GetUniqueID()
-    if uniqueID == "makoto" then
-        if math.random(1, 5) == 5 then -- 20% на то, что повезет
-            dmginfo:ScaleDamage(0)
-            Arbitrage.chat.SendCommand("me", client, emoteList[math.random(1, #emoteList)])
-        end
-    end
 end
 
 function Arbitrage:KeyPress(client, key)
@@ -629,30 +594,31 @@ local function initPlayer(client)
 
         Arbitrage.statistics.PlayerPostThink(client)
     end)
+end
 
-    local unstuckID = "Arbitrage:AutoUnStuckThink_" .. client:EntIndex()
-    timer.Create(unstuckID, 0.5, 0, function()
-        if !IsValid(client) then return timer.Remove(unstuckID) end
+timer.Simple(math.random(), function()
+    timer.Create("Arbitrage:AutoUnStuckThink", 0.5, 0, function()
+        for _, client in ipairs(player.GetAll()) do
+            if client:IsSpectate() then continue end
+            if client:IsNocliping() then continue end
+            if client.GetSitting and client:GetSitting() then continue end
 
-        if client:IsSpectate() then return end
-        if client.GetSitting and client:GetSitting() then return end
-        if client:IsNocliping() then return end
+            local isStuck = client:IsStuck()
+            if isStuck then
+                client._stuck_count = (client._stuck_count or 0) + 1
 
-        local isStuck = client:IsStuck()
-        if isStuck then
-            client._stuck_count = (client._stuck_count or 0) + 1
-        else
-            client._stuck_count = 0
-            client._stuck_cd = nil
-        end
+                if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
+                    client:UnStuck()
 
-        if client._stuck_count >= 3 and (!client._stuck_cd or CurTime() >= client._stuck_cd) then
-            client:UnStuck()
-
-            client._stuck_cd = CurTime() + 10
+                    client._stuck_cd = CurTime() + 10
+                end
+            else
+                client._stuck_count = nil
+                client._stuck_cd = nil
+            end
         end
     end)
-end
+end)
 
 function Arbitrage:PlayerInitialSpawn(client)
     local indx = client:EntIndex()
@@ -669,20 +635,34 @@ end
 
 function Arbitrage:PlayerSay(client, data)
     hook.Run("ChatAddText", client, data)
+    data = data:Trim()
 
-    local command = data:utf8sub(1, 2):utf8lower()
+    local helpCommand = data:sub(1, 1)
+    if helpCommand == "@" then
+        local message = data:utf8sub(2, data:utf8len())
 
-    if ((command == "//" or command == "..") or (command == "[[" or command == "хх") or (command == "./" or command == "ю.")) and data:utf8sub(1, 3) != "..." then
-        local message = utf8.sub(data, 3, utf8.len(data))
-        local extra = Arbitrage:ExtractArgs(message)
+        if client:IsAdmin() then
+            Arbitrage.commands.RunCommand(client, "admin", {message})
+            return ""
+        else
+            Arbitrage.commands.RunCommand(client, "help", {message})
+            return ""
+        end
+    else
+        local command = data:utf8sub(1, 2):utf8lower()
+        if ((command == "//" or command == "..") or (command == "[[" or command == "хх") or (command == "./" or command == "ю.")) and data:utf8sub(1, 3) != "..." then
+            local message = data:utf8sub(3, data:utf8len())
+            local extra = Arbitrage:ExtractArgs(message)
 
-        local rep = (command == "//" or command == "..") and "ooc" or "looc"
+            local rep = (command == "//" or command == "..") and "ooc" or "looc"
 
-        Arbitrage.commands.RunCommand(client, rep, extra)
-        return ""
+            Arbitrage.commands.RunCommand(client, rep, extra)
+            return ""
+        end
     end
 
-    return Arbitrage.commands.PlayerSay(client, data)
+    Arbitrage.commands.PlayerSay(client, data)
+    return ""
 end
 
 
@@ -923,36 +903,40 @@ function Arbitrage:StopGame()
     end
 end
 
-timer.Create("Arbitrage:RegenerationHealth", 60, 0, function()
-    for k, v in ipairs(player.GetAll()) do
-        if !v:IsPlaying() then continue end
+timer.Simple(math.random(), function()
+    timer.Create("Arbitrage:RegenerationHealth", 60, 0, function()
+        for k, v in ipairs(player.GetAll()) do
+            if !v:IsPlaying() then continue end
 
-        local health = v:Health()
-        if health >= 100 or health <= 0 then continue end
+            local health = v:Health()
+            if health >= 100 or health <= 0 then continue end
 
-        v:SetHealth(math.Clamp(health + 1, 0, 100))
-    end
+            v:SetHealth(math.Clamp(health + 1, 0, 100))
+        end
+    end)
 end)
 
-timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
-    for k, v in ipairs(player.GetAll()) do
-        if !v:IsSpectate() then continue end
+timer.Simple(math.random(), function()
+    timer.Create("Arbitrage:UpdateSpectate", 0.5, 0, function()
+        for k, v in ipairs(player.GetAll()) do
+            if !v:IsSpectate() then continue end
 
-        local spectate = v.spectateent
+            local spectate = v.spectateent
 
-        if IsValid(spectate) then
-            v:SetPos(spectate:GetPos())
+            if IsValid(spectate) then
+                v:SetPos(spectate:GetPos())
+            end
+
+            v:DrawHide()
+
+            v:GodEnable()
+            v:SetNoTarget(true)
+            v:StripWeapons()
+            v:StripAmmo()
+            v:Spectate(OBS_MODE_CHASE)
+            v:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
         end
-
-        v:DrawHide()
-
-        v:GodEnable()
-        v:SetNoTarget(true)
-        v:StripWeapons()
-        v:StripAmmo()
-        v:Spectate(OBS_MODE_CHASE)
-        v:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
-    end
+    end)
 end)
 
 function Arbitrage:PlayerCanPickupWeapon(client, entity)
@@ -1070,7 +1054,9 @@ netstream.Hook("arb.EditDescription", function(client, data)
     data = tostring(data)
     if !data then return end
 
-    if string.Trim(data) == "" then
+    data = string.Trim(data)
+
+    if data == "" then
         data = nil
     else
         if utf8.len(data) > 200 then
@@ -1139,74 +1125,86 @@ netstream.Hook("arb.TokoSneezing", function(client)
 end)
 
 netstream.Hook("arb.Sleeping", function(client)
-    local character = Character.team:GetByID(client:Team())
-    if !character then return end
-
     if client.inBed then return end
 
-    local uniqueID = character:GetUniqueID()
-    if uniqueID == "chiaki" or uniqueID == "himiko" then
-        local isSleeping = client:GetLocalVar("sleeping", false)
+    local bSucc = false
+    local t_status_effects = client:GetTemporaryStatusEffects()
+    for _, array in ipairs(t_status_effects) do
+        local uniqueID = array.uniqueID
+        local info = Medical.t_status_effects[uniqueID]
 
-        client:SetLocalVar("sleeping", !isSleeping)
-        client:ChatNotify(isSleeping and "Вы начали просыпаться!" or "Вы уснули!")
+        local _hook = info.hooks.OnCanGiftedSleeper
+        if !_hook then continue end
 
-        local hookID = "arb.Sleeping_" .. client:SteamID()
-        local function clear()
-            hook.Remove("StartCommand", hookID)
-            hook.Remove("PostPlayerDeath", hookID)
-
-            if IsValid(client) then
-                client:SetLocalVar("sleeping", false)
-                client:RemoveTemporaryStatusEffect("sleep", 0)
-
-                netstream.Start(client, "BedSystem:GetUpBed")
-            end
+        local onCan = _hook(client)
+        if onCan == true then
+            bSucc = true
+            break
         end
+    end
 
-        local function create()
-            local eyeAng = client:GetAngles()
+    if !bSucc then return end
 
-            hook.Add("StartCommand", hookID, function(target, ucmd)
-                if target != client then return end
-                if !IsValid(client) then return clear() end
+    local isSleeping = client:GetLocalVar("sleeping", false)
 
-                ucmd:RemoveKey(IN_JUMP)
-                ucmd:RemoveKey(IN_DUCK)
-                ucmd:RemoveKey(IN_ATTACK)
-                ucmd:RemoveKey(IN_USE)
+    client:SetLocalVar("sleeping", !isSleeping)
+    client:ChatNotify(isSleeping and "Вы начали просыпаться!" or "Вы уснули!")
 
-                ucmd:RemoveKey(IN_LEFT)
-                ucmd:RemoveKey(IN_RIGHT)
+    local hookID = "arb.Sleeping_" .. client:SteamID()
+    local function clear()
+        hook.Remove("StartCommand", hookID)
+        hook.Remove("PostPlayerDeath", hookID)
 
-                ucmd:ClearMovement()
+        if IsValid(client) then
+            client:SetLocalVar("sleeping", false)
+            client:RemoveTemporaryStatusEffect("sleep", 0)
 
-                ucmd:SetForwardMove(0)
-                ucmd:SetUpMove(0)
-                ucmd:SetSideMove(0)
-
-                ucmd:SetMouseX(0)
-                ucmd:SetMouseY(0)
-                ucmd:SetMouseWheel(0)
-
-                client:SetEyeAngles(eyeAng)
-            end)
-
-            hook.Add("PostPlayerDeath", hookID, function(target)
-                if target != client then return end
-                if !IsValid(client) then return clear() end
-
-                clear()
-            end)
-
-            client:AddTemporaryStatusEffect("sleep", 0)
-            netstream.Start(client, "BedSystem:LayDownBed")
+            netstream.Start(client, "BedSystem:GetUpBed", true)
         end
+    end
 
-        if !isSleeping then
-            create()
-        else
+    local function create()
+        local eyeAng = client:GetAngles()
+
+        hook.Add("StartCommand", hookID, function(target, ucmd)
+            if target != client then return end
+            if !IsValid(client) then return clear() end
+
+            ucmd:RemoveKey(IN_JUMP)
+            ucmd:RemoveKey(IN_DUCK)
+            ucmd:RemoveKey(IN_ATTACK)
+            ucmd:RemoveKey(IN_USE)
+
+            ucmd:RemoveKey(IN_LEFT)
+            ucmd:RemoveKey(IN_RIGHT)
+
+            ucmd:ClearMovement()
+
+            ucmd:SetForwardMove(0)
+            ucmd:SetUpMove(0)
+            ucmd:SetSideMove(0)
+
+            ucmd:SetMouseX(0)
+            ucmd:SetMouseY(0)
+            ucmd:SetMouseWheel(0)
+
+            client:SetEyeAngles(eyeAng)
+        end)
+
+        hook.Add("PostPlayerDeath", hookID, function(target)
+            if target != client then return end
+            if !IsValid(client) then return clear() end
+
             clear()
-        end
+        end)
+
+        client:AddTemporaryStatusEffect("sleep", 0)
+        netstream.Start(client, "BedSystem:LayDownBed", true)
+    end
+
+    if !isSleeping then
+        create()
+    else
+        clear()
     end
 end)

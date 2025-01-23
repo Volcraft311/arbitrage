@@ -119,6 +119,7 @@ function PANEL:Init()
 	self.activeCharacter:SetMaterial(client:GetMaterial())
 	self.activeCharacter:SetNoDraw(true)
 	self.activeCharacter:SetAngles(Angle(0, -20, 0))
+	self.activeCharacter:SetFlexScale(client:GetFlexScale())
 	self.activeCharacter.upPosition = 0
 	self.activeCharacter.childrens = {}
 
@@ -447,8 +448,16 @@ end
 function PANEL:OnEntityDraw()
 	local ft = FrameTime()
 
-	for i = 0, self.activeCharacter:GetFlexNum() - 1 do
-		self.activeCharacter:SetFlexWeight(i, self.facial and self.facial[i] or 0)
+	if self.facial then
+		for i = 0, self.activeCharacter:GetFlexNum() - 1 do
+			self.activeCharacter:SetFlexWeight(i, self.facial and self.facial[i] or 0)
+		end
+	else
+		for i = 0, self.activeCharacter:GetFlexNum() - 1 do
+			local weight = LocalPlayer():GetFlexWeight(i)
+
+			self.activeCharacter:SetFlexWeight(i, weight)
+		end
 	end
 
 	local boneIdx = self.boneCharacter:LookupBone(self.cameraBone or "ValveBiped.Bip01_Spine")
@@ -490,7 +499,7 @@ end
 local ambMat = Material("asterion/academy/ui/radial/m_mouse.png")
 local lmbMat = Material("asterion/academy/ui/radial/l_mouse.png")
 local rmbMat = Material("asterion/academy/ui/radial/r_mouse.png")
-local starMat = Material("icon16/star.png")
+local starMat = Material("asterion/academy/ui/radial/favorite.png")
 
 function PANEL:Paint(w, h)
 	local ft = FrameTime()
@@ -511,7 +520,7 @@ function PANEL:Paint(w, h)
 	self.rotate = LerpA(self.rotate, self.selected * segment_size, ft * 20)
 	self.oldselected = self.oldselected or self.selected
 
-	asterionlib.DrawBlur(self, 2)
+	asterionlib.DrawBlur(self, 1)
 
 	surface_SetDrawColor(0, 0, 0, 50)
 	surface_DrawRect(0, 0, w, h)
@@ -651,7 +660,7 @@ function PANEL:Paint(w, h)
 		if icon and !option.sequence then
 			local size = self:GetTall() * 0.1
 
-			surface_SetDrawColor(ColorAlpha(color_red, self.textAlpha))
+			surface_SetDrawColor(color_red.r, color_red.g, color_red.b, self.textAlpha)
 			surface_SetMaterial(icon)
 			surface_DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
 		end

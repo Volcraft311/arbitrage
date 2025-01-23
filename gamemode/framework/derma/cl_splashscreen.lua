@@ -224,7 +224,7 @@ function PANEL:ShowSurvival()
             local sizeW, sizeH = size, size * 1.7
             local shift = sizeW * 0.55
 
-            surface.SetDrawColor(ColorAlpha(v.color, v.alpha))
+            surface.SetDrawColor(v.color.r, v.color.g, v.color.b, v.alpha)
             surface.SetMaterial(v.material)
             surface.DrawTexturedRect((ScrW() / 2 - sizeW / 2 + shift * num) - (table.Count(_.List) * shift / 2) + shift / 2, ScrH() - self.Block2 - sizeH + 10, sizeW, sizeH)
             num = num + 1

@@ -15,7 +15,7 @@ net.Receive("arb.ChatMessage", function(length, client)
 end)
 
 net.Receive("arb.ChatIsTyping", function(len, client)
-    client:SetNWBool("IsTyping", net.ReadBool())
+    client:SetNetVar("IsTyping", net.ReadBool())
 end)
 
 netstream.Hook("arb.SetChatType", function(client, data)

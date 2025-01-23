@@ -83,7 +83,8 @@ timer.Simple(1, function()
             if client == target then return Arbitrage.commands.Notify(client, "Вы не можете отправить сообщение самому себе!") end
 
             Arbitrage.chat.SendCommand("pm", client, target, message)
-        end
+        end,
+        bNoLog = true
     })
 
     for _, command in ipairs({"a", "admin"}) do
@@ -116,6 +117,7 @@ timer.Simple(1, function()
                 if client:IsAdmin() then return Arbitrage.commands.Notify(client, "Вы являетесь администратором и не можете запросить помощь!") end
 
                 Arbitrage.chat.SendCommand("help", client, message)
+                netstream.Start(player.GetAdmins(), "Moderation:HelpTarget", client:SteamID())
             end
         })
     end
@@ -144,21 +146,36 @@ timer.Simple(1, function()
                 if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "У вас отсутствует статический ранг и вы не можете выдать себе права!") end
                 if client:GetStaticUserGroup() == client:GetDynamicUserGroup() then return Arbitrage.commands.Notify(client, "Вам уже выданы данные права!") end
 
+                client:Give("weapon_physgun")
+                client:Give("gmod_tool")
+
+                for k, v in ipairs(player.GetAdmins()) do
+                    Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " вернул себе админские права!")
+                end
+
                 client:SetDynamicToStaticUserGroup()
-                Arbitrage.commands.Notify(client, "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/anonymous\"!")
+                Arbitrage.commands.Notify(client, "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/tr\"!")
             end
         })
     end
 
-    for _, command in ipairs({"anonymous", "incognito", "takerank"}) do
+    for _, command in ipairs({"anonymous", "incognito", "takerank", "tr"}) do
         Arbitrage.commands.Add(command, {
             arguments = {},
             OnAction = function(client)
                 if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
                 if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "У вас отсутствует статический ранг и вы не можете снять с себя права данной командой!") end
 
+                client:StripWeapon("weapon_physgun")
+                client:StripWeapon("gmod_tool")
+
                 client:SetDynamicUserGroup("user")
-                Arbitrage.commands.Notify(client, "Вы успешно сняли с себя права. Чтобы их вернуть, используйте команду \"/unanonymous\"!")
+
+                for k, v in ipairs(player.GetAdmins()) do
+                    Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " забрал у себя админские права!")
+                end
+
+                Arbitrage.commands.Notify(client, "Вы успешно сняли с себя права. Чтобы их вернуть, используйте команду \"/rr\"!")
             end
         })
     end
@@ -384,7 +401,7 @@ timer.Simple(1, function()
     for _, command in ipairs({"getmaps", "maps"}) do
         Arbitrage.commands.Add(command, {
             arguments = {},
-            OnAction = function(client, map)
+            OnAction = function(client)
                 if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
 
                 Arbitrage.commands.Notify(client, "Список всех доступных карт на сервере:")
@@ -516,10 +533,13 @@ timer.Simple(1, function()
         OnAction = function(client, target, delay)
             if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
 
+            for k, v in ipairs(player.GetAdmins()) do
+                Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " выдал админские права " .. target:FullName(true) .. " на " .. delay .. "!")
+            end
+
             local time = asterionlib.IsoDurationToSeconds(delay)
             target:SetDynamicUserGroup("guard", time)
 
-            Arbitrage.commands.Notify(client, "Вы выдали админские права " .. target:FullName(true) .. " на " .. delay .. "!")
             Arbitrage.commands.Notify(target, "Вам были выданы админские права на " .. delay .. "!")
         end
     })
@@ -538,7 +558,10 @@ timer.Simple(1, function()
 
             target:SetDynamicUserGroup("user")
 
-            Arbitrage.commands.Notify(client, "Вы сняли админские права с " .. target:FullName(true) .. "!")
+            for k, v in ipairs(player.GetAdmins()) do
+                Arbitrage.commands.Notify(v, "Администратор " .. client:FullName() .. " забрал админские права у " .. target:FullName(true) .. "!")
+            end
+
             Arbitrage.commands.Notify(target, "С вас были сняты админские права!")
         end
     })
@@ -634,4 +657,54 @@ timer.Simple(1, function()
             notifyAll("Администратор " .. client:FullName(true) .. " отменил перезапуск сервера!")
         end
     })
+
+    Arbitrage.commands.Add("freeze", {
+        arguments = {
+            [1] = {
+                name = "Игрок",
+                type = "player",
+                important = true
+            }
+        },
+        OnAction = function(client, target)
+            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+            target:Freeze(true)
+        end
+    })
+
+    Arbitrage.commands.Add("unfreeze", {
+        arguments = {
+            [1] = {
+                name = "Игрок",
+                type = "player",
+                important = true
+            }
+        },
+        OnAction = function(client, target)
+            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+            target:Freeze(false)
+        end
+    })
+
+    for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
+        Arbitrage.commands.Add(command, {
+            arguments = {
+                [1] = {
+                    name = "Игрок",
+                    type = "player",
+                    important = true
+                }
+            },
+            OnAction = function(client, target)
+                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+                target:StripWeapons()
+                target:Give("academy_first")
+                target:Give("academy_key")
+                target:SelectWeapon("academy_key")
+            end
+        })
+    end
 end)

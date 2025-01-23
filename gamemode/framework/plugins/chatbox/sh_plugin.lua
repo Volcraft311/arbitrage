@@ -31,7 +31,7 @@ end
 local meta = FindMetaTable("Player")
 
 function meta:IsTyping()
-    return self:GetNWBool("IsTyping")
+    return self:GetNetVar("IsTyping")
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

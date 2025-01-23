@@ -53,9 +53,6 @@ function PLUGIN:PlayerSpawn(client)
     self:SendNotify("spawn", client:FullName())
 end
 
-function PLUGIN:SelectCharacter(client, data)
-    local factionData = Character.team:GetByID(data)
-    local faction = factionData and factionData:GetName() or "НЕИЗВЕСТНО"
-
-    self:SendNotify("joincharacter", client:FullName(), faction .. "(" .. data .. ")")
+function PLUGIN:OnCharacterJoin(client, character)
+    self:SendNotify("joincharacter", client:FullName(), character:GetName() .. "(" .. character:GetID() .. ")")
 end

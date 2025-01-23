@@ -373,19 +373,52 @@ local actionList = {
 
         Arbitrage.adminnotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
     end,
+    ["mutenonrpchat"] = function(client, target, value)
+        if !IsValid(target) then return end
+
+        value = value and true or nil
+
+        target:SetNetVar("arb.MuteNonRPChat", value)
+
+        if client != target then
+            Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "запретила" or "разрешила") .. " вам писать в NonRP чат!")
+        end
+
+        Arbitrage.adminnotify:SendNotify("mutenonrpchat", client:FullName(), target:FullName(), value)
+    end,
     ["setdescription"] = function(client, target, data)
         if !IsValid(target) then return end
 
         data = tostring(data)
         if !data then return end
 
-        target:SetNetVar("description", (data != "" and data != " ") and data or nil)
+        data = string.Trim(data)
+        if data == "" then
+            data = nil
+        end
+
+        target:SetNetVar("description", data)
 
         if client != target then
             Arbitrage.commands.Notify(target, "Администрация сервера изменила вам описание!")
         end
 
         Arbitrage.adminnotify:SendNotify("setdescription", client:FullName(), target:FullName())
+    end,
+    ["setforceddescription"] = function(client, target, data)
+        if !IsValid(target) then return end
+
+        data = tostring(data)
+        if !data then return end
+
+        data = string.Trim(data)
+        if data == "" then
+            data = nil
+        end
+
+        target:SetNetVar("forced_description", data)
+
+        Arbitrage.adminnotify:SendNotify("setforceddescription", client:FullName(), target:FullName())
     end,
     ["setscale"] = function(client, target, data)
         if !IsValid(target) then return end
@@ -722,6 +755,10 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
     end
 
     ScriptMusic:ChangeTheme("splashscreen", true)
+
+    if data[4] == true then
+        SetNetVar("arb.Chapter", data[1])
+    end
 
     for k, v in ipairs(player.GetAll()) do
         asterionlib.netgui:Create(v, "arb.SplashScreen", nil, "SetData", el)

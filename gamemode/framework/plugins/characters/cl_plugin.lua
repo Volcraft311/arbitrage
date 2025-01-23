@@ -18,8 +18,12 @@ local ipairs = ipairs
 local player_GetAll = player.GetAll
 local pairs = pairs
 local FrameTime = FrameTime
-local netstream = netstream
 local SortedPairs = SortedPairs
+
+asterionlib.loading:AddType("char_assets", {
+	name = "Загружаем ассеты персонажей",
+	color = Color(194, 55, 55)
+})
 
 function Character.Caching()
 	local client = LocalPlayer()
@@ -31,8 +35,10 @@ function Character.Caching()
 		if !MaterialIsCached(path) then
 			timer_Simple(i, function()
 				Material(path)
+				asterionlib.loading:Start("char_assets", path)
 			end)
 
+			asterionlib.loading:AddAsset("char_assets")
 			i = i + time
 		end
 	end

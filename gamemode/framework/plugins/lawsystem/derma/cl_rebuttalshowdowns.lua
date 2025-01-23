@@ -328,7 +328,7 @@ local function drawMaterial(mat, matBlur, matOutline, size, alpha, padding, colo
 	surface.SetMaterial(matBlur)
 	surface.DrawTexturedRect(x, y, w, h)
 
-	surface.SetDrawColor(ColorAlpha(color, alpha))
+	surface.SetDrawColor(color.r, color.g, color.b, alpha)
 	surface.SetMaterial(mat)
 	surface.DrawTexturedRect(x, y, w, h)
 

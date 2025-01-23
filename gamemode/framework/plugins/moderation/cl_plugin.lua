@@ -11,6 +11,9 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
+Moderation.helpTargets = Moderation.helpTargets or {}
+
 local color_green = Color(86, 253, 9)
 local color_red = Color(245, 35, 35)
 local color_white = Color(255, 255, 255)
@@ -31,7 +34,7 @@ for _, command in ipairs({"unanonymous", "unincognito", "returnrank", "rr"}) do
     RegisterCommand(command, "Вернуть себе права равные статическому рангу.", {})
 end
 
-for _, command in ipairs({"anonymous", "incognito", "takerank"}) do
+for _, command in ipairs({"anonymous", "incognito", "takerank", "tr"}) do
     RegisterCommand(command, "Временно снять с себя привилегии статического ранга.", {})
 end
 
@@ -63,7 +66,7 @@ for _, command in ipairs({"unignite", "unfire", "extinguish"}) do
 end
 
 for _, command in ipairs({"ignite", "fire"}) do
-    RegisterCommand(command, "Поджечь указанного пользователя.", {"player", "number"})
+    RegisterCommand(command, "Поджечь указанного пользователя.", {"player"}, {"number"})
 end
 
 for _, command in ipairs({"kill", "slay"}) do
@@ -92,3 +95,46 @@ RegisterCommand("unguard", "Забрать права администратор
 
 RegisterCommand("restartserver", "Перезапустить сервер через указанное время.", {"number"})
 RegisterCommand("unrestartserver", "Отменить перезапуск сервера.")
+
+RegisterCommand("freeze", "Заморозить указанного пользователя.", {"player"})
+RegisterCommand("unfreeze", "Разморозить указанного пользователя.", {"player"})
+
+for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
+    RegisterCommand(command, "Забрать оружие у указанного пользователя.", {"player"})
+end
+
+
+function Moderation:HUDPaint()
+    local client = LocalPlayer()
+    if !client:IsAdmin() then return end
+
+    local curTime = CurTime()
+
+    for steamID, data in pairs(Moderation.helpTargets) do
+        if data.endTime > curTime then
+            if !IsValid(data.target) then
+                data.target = player.GetBySteamID(steamID)
+            end
+
+            local progress = (curTime - data.startTime) / (data.endTime - data.startTime)
+            if progress > 1 then progress = 1 end
+
+            local r = progress * 255
+            local g = 255 - (progress * 255)
+            local b = 0
+
+            outline.Add({data.target}, Color(r, g, b), 0)
+        else
+            Moderation.helpTargets[steamID] = nil
+        end
+    end
+end
+
+
+netstream.Hook("Moderation:HelpTarget", function(steamID)
+    Moderation.helpTargets[steamID] = {
+        target = nil,
+        startTime = CurTime(),
+        endTime = CurTime() + 60
+    }
+end)

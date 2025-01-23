@@ -121,7 +121,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -135,7 +135,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -149,7 +149,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("me"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -163,7 +163,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -176,7 +176,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -190,7 +190,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -204,7 +204,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], data[2] and Color(59, 238, 133) or Color(225, 73, 73))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -218,7 +218,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -235,7 +235,7 @@ Arbitrage.chat.List = {
             if emojiAction then
                 Arbitrage.chat.SendCommand("me", client, emojiAction)
             else
-                for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+                for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                     TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                     Arbitrage.chat.SendClient(v, client, name, data)
                 end
@@ -252,8 +252,9 @@ Arbitrage.chat.List = {
         end,
         OnSend = function(client, name, data)
             if !data then return end
+            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "Администрация запретила вам писать в NonRP чат!") end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end,
@@ -269,6 +270,7 @@ Arbitrage.chat.List = {
         end,
         OnSend = function(client, name, data)
             if !data then return end
+            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "Администрация запретила вам писать в NonRP чат!") end
 
             for k, v in ipairs(player.GetAll()) do
                 Arbitrage.chat.SendClient(v, client, name, data)
@@ -310,7 +312,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -322,7 +324,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -335,7 +337,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], Arbitrage.chat.Colors.other)
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -349,7 +351,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -363,7 +365,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.3)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -377,7 +379,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 2)) do
                 TypingDraw:SetTypingText(v, client, data[1], chatColor("it"))
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
@@ -391,7 +393,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -404,7 +406,7 @@ Arbitrage.chat.List = {
         OnSend = function(client, name, data)
             if !data then return end
 
-            for k, v in ipairs(ents.FindInSphere(client:GetPos(), getDist())) do
+            for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
             end
         end
@@ -415,8 +417,6 @@ Arbitrage.chat.List = {
             local bSpectate = sender:IsSpectate()
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
-
-            print(message)
 
             return chatColor("pm"), "[Личное сообщение] ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
         end,
@@ -439,10 +439,8 @@ Arbitrage.chat.List = {
             return chatColor("admin"), "[Чат администрации] ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
-            for k, v in ipairs(player.GetAll()) do
-                if v:IsAdmin() then
-                    Arbitrage.chat.SendClient(v, client, "admin", data)
-                end
+            for k, v in ipairs(player.GetAdmins()) do
+                Arbitrage.chat.SendClient(v, client, "admin", data)
             end
         end,
         UseIcon = true
@@ -457,8 +455,8 @@ Arbitrage.chat.List = {
             return chatColor("help"), "[Помощь] ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
-            for k, v in ipairs(player.GetAll()) do
-                if v:IsAdmin() and client != v then
+            for k, v in ipairs(player.GetAdmins()) do
+                if client != v then
                     Arbitrage.chat.SendClient(v, client, "help", data)
                 end
             end
@@ -473,7 +471,7 @@ function Arbitrage.chat.SendCommand(name, client, ...)
 
     Arbitrage.chat.List[name].OnSend(client, name, data)
 
-    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, data))
+    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, ...))
 
     if tableData and istable(tableData) then
         local str = ""

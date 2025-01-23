@@ -17,7 +17,6 @@ function PLUGIN:Think()
     -- логируем все нажатия на кнопки биндов
     for value in pairs(SETTINGS:GetStored().binds) do
         self.binds.IsPressedID(value, true)
-        self.binds.IsClampedID(value, true)
     end
 
     -- print(PLUGIN.binds.GetClampedKey())

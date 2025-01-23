@@ -31,7 +31,7 @@ function BedSystem:LayDownBed(client, entity)
     client:AddTemporaryStatusEffect("sleep", 0)
     client:AddTemporaryStatusEffect("health_bed", 0)
 
-    netstream.Start(client, "BedSystem:LayDownBed", entity, eyePos, eyeAng)
+    netstream.Start(nil, "BedSystem:LayDownBed", client, entity, eyePos, eyeAng)
     hook.Run("OnBedEnter", client, entity)
 
     client.inBed = true
@@ -48,7 +48,7 @@ function BedSystem:GetUpBed(client)
     client:RemoveTemporaryStatusEffect("sleep")
     client:RemoveTemporaryStatusEffect("health_bed")
 
-    netstream.Start(client, "BedSystem:GetUpBed")
+    netstream.Start(nil, "BedSystem:GetUpBed", client)
     hook.Run("OnBedExit", client)
 
     client.inBed = nil
@@ -58,9 +58,7 @@ function BedSystem:PlayerUse(client, entity)
     local allow = self.allowBed[string.lower(tostring(entity:GetModel() or ""))]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
-        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Ложится на кровать", Color(255, 170, 23))
-        end
+        TypingDraw:SendSphere(0.5, client, "Ложится на кровать", Color(255, 170, 23))
 
         Arbitrage.action.ActionRun(client, "Ложимся на кровать", 5, function()
             if client:GetEyeTrace().Entity != entity then return true end

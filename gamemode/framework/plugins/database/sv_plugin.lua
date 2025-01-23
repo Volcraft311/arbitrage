@@ -23,15 +23,13 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
 
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
-        if IsValid(client) then
-            if client:Alive() and client:InGame() then
-                local entity = PLUGIN.deathPlaques[k]
-                if IsValid(entity) then
-                    entity:Remove()
-                end
-
-                continue
+        if IsValid(client) and client:Alive() and client:InGame() then
+            local entity = PLUGIN.deathPlaques[k]
+            if IsValid(entity) then
+                entity:Remove()
             end
+
+            continue
         end
 
         local place = tonumber(v.place)
@@ -95,7 +93,10 @@ function PLUGIN:PlayerDisconnected(client)
             hullscale = {hullMin, hullMax},
             hullduckscale = {hullduckMin, hullduckMax},
             speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
+            description = client:GetNetVar("description"),
+            forced_description = client:GetNetVar("forced_description"),
             t_status_effects = {},
+            t_remove_status_effects = {},
 
             saver = client:GetSaverInfo()
         }
@@ -112,6 +113,19 @@ function PLUGIN:PlayerDisconnected(client)
             if info.noSave then continue end
 
             entity.data.t_status_effects[uniqueID] = delay <= 0 and 0 or delay - CurTime()
+        end
+
+        local character = Character.team:GetByID(entity.data.faction)
+        if character then
+            local t_remove_status_effects = {}
+
+            for _, effect in ipairs(character.status_effects or {}) do
+                if !entity.data.t_status_effects[effect] then
+                    t_remove_status_effects[#t_remove_status_effects + 1] = effect
+                end
+            end
+
+            entity.data.t_remove_status_effects = t_remove_status_effects
         end
 
         entity:LoadSaverInfo(entity.data.saver)
@@ -154,11 +168,19 @@ function PLUGIN:PlayerInitial(client)
     client.arb_walkSpeed = data.speed[1]
     client.arb_runSpeed = data.speed[2]
 
+    if data.description then
+        client:SetNetVar("description", data.description)
+    end
+
+    if data.forced_description then
+        client:SetNetVar("forced_description", data.forced_description)
+    end
+
     client:LoadSaverInfo(data.saver, true)
 
     client:StripWeapons()
     for k, v in pairs(data.weapons) do
-        client:Give(v)
+        client:Give(v, true)
     end
 
     client:StripAmmo()
@@ -200,9 +222,13 @@ function PLUGIN:PlayerInitialSpawnForRealz(client)
         end
     end
 
-    timer.Simple(0.1, function()
+    timer.Simple(1, function()
         for k, v in pairs(data.t_status_effects) do
             client:SetTemporaryStatusEffect(k, v)
+        end
+
+        for _, effect in ipairs(data.t_remove_status_effects) do
+            client:RemoveTemporaryStatusEffect(effect)
         end
     end)
 
@@ -221,6 +247,8 @@ function meta:SaveSaverInfo(bDelay)
 
         self._saver = {}
 
+        self._saver.Model = self:GetModel()
+        self._saver.Scale = self:GetModelScale()
         self._saver.Skin = self:GetSkin()
         self._saver.RenderMode = self:GetRenderMode()
         self._saver.Color = self:GetColor()
@@ -259,6 +287,14 @@ function meta:LoadSaverInfo(saver, bDelay)
 
     timer.Simple(bDelay and 0.4 or 0, function()
         if !IsValid(self) then return end
+
+        if saver.Model then
+            self:SetModel(saver.Model)
+        end
+
+        if saver.Scale then
+            self:SetModelScale(saver.Scale)
+        end
 
         if saver.Skin then
             self:SetSkin(saver.Skin)

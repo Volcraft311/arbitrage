@@ -116,7 +116,7 @@ local function getAllTemporaryStatusEffects(client)
     for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
         all_effects[#all_effects + 1] = {
             name = v.name,
-            icon = v.icon,
+            icon = isfunction(v.icon) and v.icon(client) or v.icon,
             data = function()
                 Derma_StringRequest("Выдать статус эфект", "Введите время, насколько вы хотите выдать игроку данный эффект\n(Если вы хотите установить его навсегда, то введите 0)", "", function(text)
                     text = tonumber(text)
@@ -140,7 +140,7 @@ local function getAllTemporaryStatusEffects(client)
 
             client_effects[#client_effects + 1] = {
                 name = info.name .. " (" .. delay .. " sec)",
-                icon = info.icon,
+                icon = isfunction(info.icon) and info.icon(client) or info.icon,
                 data = function()
                     runAction("removetemporarystatuseffect", client, uniqueID)
                 end
@@ -395,7 +395,7 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Голосовой чат",
+                name = "Чат",
                 icon = "icon16/sound.png",
                 data = {
                     {
@@ -436,6 +436,26 @@ local function getActionList(clientinfo)
                         end,
                         check = function()
                             return a_isvalid and !client:GetNetVar("arb.MuteVoice")
+                        end
+                    },
+                    {
+                        name = "Включить NonRP чат",
+                        icon = "icon16/comment.png",
+                        data = function()
+                            runAction("mutenonrpchat", client, false)
+                        end,
+                        check = function()
+                            return a_isvalid and client:GetNetVar("arb.MuteNonRPChat")
+                        end
+                    },
+                    {
+                        name = "Выключить NonRP чат",
+                        icon = "icon16/comment_delete.png",
+                        data = function()
+                            runAction("mutenonrpchat", client, true)
+                        end,
+                        check = function()
+                            return a_isvalid and !client:GetNetVar("arb.MuteNonRPChat")
                         end
                     }
                 }
@@ -539,15 +559,33 @@ local function getActionList(clientinfo)
             },
             {
                 name = "Изменить описание персонажа",
-                icon = "icon16/page_white_edit.png",
-                data = function()
-                    Derma_StringRequest("Изменить описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
-                        runAction("setdescription", client, text)
-                    end)
-                end,
-                check = function()
-                    return a_isvalid
-                end
+                icon = "icon16/page_white_copy.png",
+                data = {
+                    {
+                        name = "Обычное описание",
+                        icon = "icon16/page_white_edit.png",
+                        data = function()
+                            Derma_StringRequest("Изменить обычно описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
+                                runAction("setdescription", client, text)
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Принудительное описание",
+                        icon = "icon16/page_white_zip.png",
+                        data = function()
+                            Derma_StringRequest("Изменить принудительное описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("forced_description", "") or "", function(text)
+                                runAction("setforceddescription", client, text)
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    }
+                }
             },
             {
                 name = "Изменить размер персонажа",
@@ -789,6 +827,52 @@ local function getActionList(clientinfo)
                         end
                     }
                 }
+            },
+            {
+                name = "Модерация",
+                icon = "icon16/plugin.png",
+                data = {
+                    {
+                        name = "Убить",
+                        icon = "icon16/cross.png",
+                        data = function()
+                            RunConsoleCommand("say", "/slay " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Телепортироваться",
+                        icon = "icon16/control_play_blue.png",
+                        data = function()
+                            RunConsoleCommand("say", "/goto " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Телепортировать",
+                        icon = "icon16/control_repeat_blue.png",
+                        data = function()
+                            RunConsoleCommand("say", "/bring " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Пнуть",
+                        icon = "icon16/ipod_cast.png",
+                        data = function()
+                            RunConsoleCommand("say", "/slap " .. m_steamid)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    }
+                }
             }
         }
     }
@@ -878,7 +962,10 @@ local function CreateMenu(info, parent, drawline)
     end
 
     paintOption(panel, drawline)
-    panel:SetImage(info.icon)
+
+    if info.icon then
+        panel:SetImage(info.icon)
+    end
 
     for k2, v2 in ipairs(panel:GetChildren()) do
         if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then

@@ -35,6 +35,10 @@ Arbitrage.commands.types = {
         return text:Trim()
     end,
     ["player"] = function(data)
+        if IsValid(data) and data:IsPlayer() then
+            return data
+        end
+
         return player.GetByIdentifier(data)
     end
 }

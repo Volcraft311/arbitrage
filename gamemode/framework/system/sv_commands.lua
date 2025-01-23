@@ -82,8 +82,9 @@ end
 function Arbitrage.commands.PlayerSay(client, data)
     local char = utf8.sub(data, 1, 1)
     local bRusCommand = char == "."
+    local bSGCommand = char == "!"
 
-    if char == Arbitrage.commands.syntex or bRusCommand then
+    if char == Arbitrage.commands.syntex or bSGCommand or bRusCommand then
         data = utf8.sub(data, 2, utf8.len(data))
 
         local extra = Arbitrage:ExtractArgs(data)
@@ -97,7 +98,7 @@ function Arbitrage.commands.PlayerSay(client, data)
 
         Arbitrage.commands.RunCommand(client, command, extra)
     else
-        if !client:oldAlive() then return "" end
+        if !client:oldAlive() then return end
 
         if client:IsSpectate() then
             Arbitrage.chat.SendCommand("looc", client, data)
@@ -105,8 +106,6 @@ function Arbitrage.commands.PlayerSay(client, data)
             Arbitrage.chat.SendCommand("ic", client, data)
         end
     end
-
-    return ""
 end
 
 function Arbitrage.commands.Notify(client, ...)

@@ -178,7 +178,7 @@ local function draw_evidence_circle(x, y, b, a, evidence, curalpha, alpha, color
 
     local circle = Arbitrage.hud.GeneratePoly(x, y, size, math_Clamp(curalpha - alpha, 0, max_alpha))
 
-    surface_SetDrawColor(ColorAlpha(color, a))
+    surface_SetDrawColor(color.r, color.g, color.b, a)
     draw_NoTexture()
     surface_DrawPoly(circle)
 end

@@ -324,21 +324,32 @@ function PLUGIN:ActionsOption()
 		}
 	end
 
-	local character = Character.team:GetByID(LocalPlayer():Team())
-	if character then
-		local uniqueID = character:GetUniqueID()
+	local bSucc = false
+	local t_status_effects = LocalPlayer():GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
 
-		if uniqueID == "chiaki" or uniqueID == "himiko" then
-			data[#data + 1] = {
-				name = "Уснуть",
-				id = "sleep",
-				description = "Погрузить вашего персонажа в глубокий сон",
-				icon = Material("danganronpa/radialmenu/sleep.png"),
-				action = function()
-					netstream.Start("arb.Sleeping")
-				end
-			}
+		local _hook = info.hooks.OnCanGiftedSleeper
+		if !_hook then continue end
+
+		local onCan = _hook(LocalPlayer())
+		if onCan == true then
+			bSucc = true
+			break
 		end
+	end
+
+	if bSucc then
+		data[#data + 1] = {
+			name = "Уснуть",
+			id = "sleep",
+			description = "Погрузить вашего персонажа в глубокий сон",
+			icon = Material("danganronpa/radialmenu/sleep.png"),
+			action = function()
+				netstream.Start("arb.Sleeping")
+			end
+		}
 	end
 
 	if Arbitrage.OnThirdPerson() then
@@ -535,6 +546,15 @@ function PLUGIN:PlayerOption()
 			icon = Material("danganronpa/radialmenu/push.png"),
 			action = function()
 				netstream.Start("RadialMenu:PushAction")
+			end
+		},
+		{
+			name = "Тянуть за собой",
+			id = "drag",
+			description = "Тянуть за собой данного игрока",
+			icon = Material("asterion/academy/ui/radial/action/drag.png"),
+			action = function()
+				netstream.Start("RadialMenu:DragPlayerAction")
 			end
 		},
 	}

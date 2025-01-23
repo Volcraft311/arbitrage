@@ -1,3 +1,19 @@
+-- Localize Global Calls
+local IsValid = IsValid
+local timer_Create = timer.Create
+local cam_Start3D = CLIENT and cam.Start3D
+local EyePos = EyePos
+local EyeAngles = EyeAngles
+local RealTime = RealTime
+local math_rad = math.rad
+local math_cos = math.cos
+local math_sin = math.sin
+local cam_End3D = CLIENT and cam.End3D
+local Vector = Vector
+local ClientsideModel = ClientsideModel
+local pairs = pairs
+
+
 local PLUGIN = PLUGIN
 PLUGIN.name = "Legs"
 
@@ -62,13 +78,12 @@ local function isAllow()
 	if client:IsPlayingTaunt() then return false end
 	if client.GetSitting and client:GetSitting() then return false end
 	if client:IsSpectate() then return false end
-	if client:GetNetVar("inbed") then return false end
 	if client:InVehicle() then return false end
 
 	return true
 end
 
-timer.Create("Legs:Allow", 0.1, 0, function()
+timer_Create("Legs:Allow", 0.1, 0, function()
 	allow = isAllow()
 end)
 
@@ -80,7 +95,7 @@ function PLUGIN:RenderScreenspaceEffects()
 	local angs = client:EyeAngles()
 	if angs.p < 0 then return end
 
-	cam.Start3D(EyePos(), EyeAngles())
+	cam_Start3D(EyePos(), EyeAngles())
 		if !IsValid(client.legs) then
 			self:SpawnLegs(client)
 		end
@@ -91,12 +106,12 @@ function PLUGIN:RenderScreenspaceEffects()
 		angs.p = 0
 		angs.r = 0
 
-		local radAngle = math.rad(angs.y)
+		local radAngle = math_rad(angs.y)
 		local offset = -20
 		local origin = client:GetPos()
 
-		origin.x = origin.x + math.cos(radAngle) * offset
-		origin.y = origin.y + math.sin(radAngle) * offset
+		origin.x = origin.x + math_cos(radAngle) * offset
+		origin.y = origin.y + math_sin(radAngle) * offset
 
 		legs:SetPoseParameter("move_yaw", 360 * client:GetPoseParameter("move_yaw") - 180)
 		legs:SetPoseParameter("move_x", client:GetPoseParameter("move_x") * 2 - 1)
@@ -115,7 +130,7 @@ function PLUGIN:RenderScreenspaceEffects()
 		legs:DrawModel()
 
 		legs.last_draw = real_time
-	cam.End3D()
+	cam_End3D()
 end
 
 local offset = Vector(0, -100, 0)
@@ -145,7 +160,7 @@ function PLUGIN:SpawnLegs(client)
 	end
 end
 
-timer.Create("Legs:Update", 3, 0, function()
+timer_Create("Legs:Update", 3, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 

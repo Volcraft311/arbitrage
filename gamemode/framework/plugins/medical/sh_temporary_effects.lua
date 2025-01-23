@@ -14,7 +14,7 @@
 
 Medical:TemporaryStatusEffects("light_bleeding", {
 	name = "Кровотечение",
-	icon = "danganronpa/ui/medical/bleeding.png",
+	icon = "asterion/academy/ui/health/tremor_2.png",
 	description = "Вы теряете {1} HP каждые {2} секунд.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
 	values = {
 		[1] = {
@@ -48,7 +48,7 @@ Medical:TemporaryStatusEffects("light_bleeding", {
 
 Medical:TemporaryStatusEffects("heavy_bleeding", {
 	name = "Сильное кровотечение",
-	icon = "danganronpa/ui/medical/heavy_bleeding.png",
+	icon = "asterion/academy/ui/health/tremor_2.png",
 	description = "Вы теряете {1} HP каждые {2} секунд.\nВы оставляете брызги крови, а так же снижается максимальное количество выносливости.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
 	values = {
 		[1] = {
@@ -98,7 +98,7 @@ Medical:TemporaryStatusEffects("heavy_bleeding", {
 local tunnelvision_square = Material("danganronpa/ui/medical/tunnelvision_square.png")
 Medical:TemporaryStatusEffects("tunnel_vision", {
 	name = "Туннельное зрение",
-	icon = "danganronpa/ui/medical/tunnel_vision.png",
+	icon = "asterion/academy/ui/health/tunnel_1.png",
 	description = "Потеря периферического обзора.",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
@@ -127,7 +127,7 @@ Medical:TemporaryStatusEffects("tunnel_vision", {
 
 Medical:TemporaryStatusEffects("blackout", {
 	name = "Затемнение",
-	icon = "danganronpa/ui/medical/tunnel_vision.png",
+	icon = "asterion/academy/ui/health/tunnel_2.png",
 	description = "Затемнение видимости окружения.",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
@@ -155,7 +155,7 @@ Medical:TemporaryStatusEffects("blackout", {
 
 Medical:TemporaryStatusEffects("pain", {
 	name = "Боль",
-	icon = "danganronpa/ui/medical/pain.png",
+	icon = "asterion/academy/ui/health/tremor_3.png",
 	description = "Размытие изображения.",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
@@ -179,7 +179,7 @@ Medical:TemporaryStatusEffects("pain", {
 
 Medical:TemporaryStatusEffects("intoxication", {
 	name = "Опьянение",
-	icon = "danganronpa/ui/medical/debuff.png",
+	icon = "asterion/academy/ui/health/intoxication_drugs_2.png",
 	description = "Сильно размытие изображения.",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
@@ -202,7 +202,7 @@ Medical:TemporaryStatusEffects("intoxication", {
 
 Medical:TemporaryStatusEffects("drug_intoxication", {
 	name = "Наркотическое опьянение",
-	icon = "danganronpa/ui/medical/debuff.png",
+	icon = "asterion/academy/ui/health/intoxication_drugs_2.png",
 	description = "Очень сильно размытие изображения.\nВаша цветовая коррекция меняется спустя время, вы видите то, чего нету перед вами.",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
@@ -282,7 +282,7 @@ Medical:TemporaryStatusEffects("broken_leg", {
 
 Medical:TemporaryStatusEffects("adrenalin", {
 	name = "Адреналин",
-	icon = "danganronpa/ui/medical/berserk.png",
+	icon = "asterion/academy/ui/health/adrenaline.png",
 	description = "Ваша скорость бега увеличина на {1}%",
 	values = {
 		[1] = {
@@ -300,7 +300,7 @@ Medical:TemporaryStatusEffects("adrenalin", {
 
 Medical:TemporaryStatusEffects("stun", {
 	name = "Оглушение",
-	icon = "danganronpa/ui/medical/contusion.png",
+	icon = "asterion/academy/ui/health/stun_2.png",
 	description = "Все звуки заглушены.",
 	values = {
 		[1] = {
@@ -325,7 +325,7 @@ Medical:TemporaryStatusEffects("stun", {
 
 Medical:TemporaryStatusEffects("hunger", {
 	name = "Восстановление голода",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/nutrition_1.png",
 	description = "Ваш голод восстанавливается.",
 	handler = function(client, stored, values)
 		local key = "Hunger"
@@ -337,13 +337,13 @@ Medical:TemporaryStatusEffects("hunger", {
 
 Medical:TemporaryStatusEffects("hunger_a", {
 	name = "Сытость",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/nutrition_1.png",
 	description = "Ваш голод больше не тратится."
 })
 
 Medical:TemporaryStatusEffects("thirst", {
 	name = "Восстановление жажды",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/hydration_1.png",
 	description = "Ваша жажда восстанавливается.",
 	handler = function(client, stored, values)
 		local key = "Thirst"
@@ -355,13 +355,13 @@ Medical:TemporaryStatusEffects("thirst", {
 
 Medical:TemporaryStatusEffects("thirst_a", {
 	name = "Насыщенность",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/hydration_1.png",
 	description = "Ваша жажда больше не тратится."
 })
 
 Medical:TemporaryStatusEffects("sleep", {
-	name = "Восстановление энергии",
-	icon = "danganronpa/ui/medical/buff.png",
+	name = "Сон",
+	icon = "asterion/academy/ui/health/sleep_2.png",
 	description = "Ваш сон восстанавливается.",
 	handler = function(client, stored, values)
 		stored.time = (stored.time or 0) + 1
@@ -379,13 +379,13 @@ Medical:TemporaryStatusEffects("sleep", {
 
 Medical:TemporaryStatusEffects("sleep_a", {
 	name = "Бессонница",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/sleep_1.png",
 	description = "Ваш сон больше не тратится."
 })
 
 Medical:TemporaryStatusEffects("stamina", {
 	name = "Восстановление сил",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/adrenaline_2.png",
 	description = "Ваша выносливость восстанавливается.",
 	handler = function(client, stored, values)
 		local info = Stamina:GetStamina(client)
@@ -398,7 +398,7 @@ Medical:TemporaryStatusEffects("stamina", {
 
 Medical:TemporaryStatusEffects("health", {
 	name = "Регенерация здоровья",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/health_1.png",
 	description = "Ваше здоровье восстанавливается.",
 	handler = function(client, stored, values)
 		local info = client:Health()
@@ -416,7 +416,7 @@ Medical:TemporaryStatusEffects("health", {
 
 Medical:TemporaryStatusEffects("health_bed", {
 	name = "Регенерация здоровья (сон)",
-	icon = "danganronpa/ui/medical/buff.png",
+	icon = "asterion/academy/ui/health/health_2.png",
 	description = "Ваше здоровье восстанавливается.",
 	handler = function(client, stored, values)
 		-- на самом деле не знаю, почему это находится тут (но просто лень еще одно место создавать)...
@@ -445,8 +445,8 @@ Medical:TemporaryStatusEffects("health_bed", {
 })
 
 Medical:TemporaryStatusEffects("sleep_action", {
-	name = "Восстановление энергии (анимация)",
-	icon = "danganronpa/ui/medical/buff.png",
+	name = "Сон (анимация)",
+	icon = "asterion/academy/ui/health/sleep_3.png",
 	description = "Ваш сон очень медленно восстанавливается.",
 	handler = function(client, stored, values)
 		stored.time = (stored.time or 0) + 1
@@ -464,7 +464,7 @@ Medical:TemporaryStatusEffects("sleep_action", {
 
 Medical:TemporaryStatusEffects("exhaustion", {
 	name = "Усталость",
-	icon = "danganronpa/ui/medical/exhaustion.png",
+	icon = "asterion/academy/ui/health/energy_2.png",
 	description = "Скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
 		if math.random(1, 90) == 1 then
@@ -485,7 +485,7 @@ Medical:TemporaryStatusEffects("exhaustion", {
 
 Medical:TemporaryStatusEffects("severe_exhaustion", {
 	name = "Сильная усталость",
-	icon = "danganronpa/ui/medical/exhaustion.png",
+	icon = "asterion/academy/ui/health/eye_drowsiness_1.png",
 	description = "Вы больше не можете бегать, а скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
 		if math.random(1, 50) == 1 then
@@ -506,7 +506,7 @@ Medical:TemporaryStatusEffects("severe_exhaustion", {
 
 Medical:TemporaryStatusEffects("dehydration", {
 	name = "Обезвоживание",
-	icon = "danganronpa/ui/medical/dehydration.png",
+	icon = "asterion/academy/ui/health/thirst_2.png",
 	description = "Ваша выносливость больше не восстанавливается.\nЭтот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
 		if math.random(1, 40) == 1 then
@@ -518,7 +518,7 @@ Medical:TemporaryStatusEffects("dehydration", {
 
 Medical:TemporaryStatusEffects("starvation", {
 	name = "Голодание",
-	icon = "danganronpa/ui/medical/exhaustion.png",
+	icon = "asterion/academy/ui/health/nutrition_2.png",
 	description = "Этот статус может вызвать эффект боли.",
 	handler = function(client, stored, values)
 		if math.random(1, 40) == 1 then
@@ -534,7 +534,7 @@ Medical:TemporaryStatusEffects("starvation", {
 
 Medical:TemporaryStatusEffects("armor", {
 	name = "Защита",
-	icon = "danganronpa/ui/medical/tunnel_vision.png",
+	icon = "asterion/academy/ui/health/shield_1.png",
 	description = "Входящий урон поглащается вашей броней.",
 	tooltip = {
 		format = "Данный персонаж явно имеет хорошую защиту",
@@ -545,7 +545,7 @@ Medical:TemporaryStatusEffects("armor", {
 
 Medical:TemporaryStatusEffects("painkillers", {
 	name = "На болеутоляющих",
-	icon = "danganronpa/ui/medical/painkillers.png",
+	icon = "asterion/academy/ui/health/painkiller_1.png",
 	description = "Немного увеличивает контраст и снимает эффект боли.\n(При переломе) Позволяет идти с нормальной скоростью или бежать, но вы можете получить урон.",
 	handler = function(client, stored, values)
         -- eh...
@@ -625,7 +625,7 @@ end
 
 Medical:TemporaryStatusEffects("poisoning_effect", {
 	name = "Отравление",
-	icon = "danganronpa/ui/medical/toxin.png",
+	icon = "asterion/academy/ui/health/poison_2.png",
 	description = "Спустя некоторые время вы получаете эффекты на своем экране, которые усиливаются.",
 	values = {
 		[1] = {
@@ -657,7 +657,7 @@ Medical:TemporaryStatusEffects("poisoning_effect", {
 
 Medical:TemporaryStatusEffects("poisoning_damage", {
 	name = "Отравление (постоянный урон)",
-	icon = "danganronpa/ui/medical/toxin.png",
+	icon = "asterion/academy/ui/health/poison_1.png",
 	description = "Спустя некоторые время вы получаете эффекты на своем экране, которые усиливаются.\nВы получаете {3} урона каждые {4} секунд.",
 	values = {
 		[1] = {
@@ -722,7 +722,7 @@ Medical:TemporaryStatusEffects("poisoning_damage", {
 
 Medical:TemporaryStatusEffects("poisoning_dead", {
 	name = "Отравление (мгновенная смерть)",
-	icon = "danganronpa/ui/medical/toxin.png",
+	icon = "asterion/academy/ui/health/poison_1.png",
 	description = "Спустя некоторые время вы получаете эффекты на своем экране, которые усиливаются.\nВы умрете через некоторое время.",
 	values = {
 		[1] = {
@@ -774,8 +774,8 @@ Medical:TemporaryStatusEffects("poisoning_dead", {
 })
 
 Medical:TemporaryStatusEffects("overheal", {
-	name = "Overheal",
-	icon = "danganronpa/ui/medical/buff.png",
+	name = "Сверхлечение",
+	icon = "asterion/academy/ui/health/shield_1.png",
 	description = "Дает регенерацию здоровья, а так же увеличивает максимальное здоровье персонажа на +{1}.",
 	values = {
 		[1] = {
@@ -799,13 +799,194 @@ Medical:TemporaryStatusEffects("overheal", {
 
 Medical:TemporaryStatusEffects("berserk", {
 	name = "Берсерк",
-	icon = "danganronpa/ui/medical/berserk.png",
-	description = "Увеличивает скорость передвижения на {1}% и уменьшает трату выносливости.\nТак же увеличивает ваш fov.",
+	icon = "asterion/academy/ui/health/hydration_3.png",
+	description = "Увеличивает скорость передвижения на {1}% и уменьшает трату выносливости.",
 	values = {
 		[1] = {
 			description = "На сколько % будет увеличина скорость передвижения",
 			type = Medical.types.number,
 			default = 15,
 		}
+	}
+})
+
+Medical:TemporaryStatusEffects("flashbang", {
+	name = "Световая вспышка",
+	icon = "asterion/academy/ui/health/eye_blindness_2.png",
+	description = "Вы ослеплены от сильного света",
+	hooks = {
+		RenderScreenspaceEffects = function(stored, values)
+			local ft = FrameTime()
+
+			stored.st = stored.st or 1
+
+			stored.alpha_black1 = stored.alpha_black1 or 255
+			stored.alpha_white = stored.alpha_white or 255
+			stored.alpha_black2 = stored.alpha_black2 or 255
+
+			if stored.st == 1 then
+				stored.alpha_black1 = Lerp(ft * 10, stored.alpha_black1, -100)
+
+				if stored.alpha_black1 <= 0 then
+					stored.st = 2
+				end
+			elseif stored.st == 2 then
+				stored.alpha_white = Lerp(ft * 10, stored.alpha_white, -10)
+
+				if stored.alpha_white <= 0 then
+					stored.st = 3
+				end
+			elseif stored.st == 3 then
+				local client = LocalPlayer()
+				local time = client:GetTemporaryStatusEffectDelay("flashbang") or 1
+				local delay = time - CurTime()
+
+				if delay <= 4 then
+					stored.alpha_black2 = Lerp(ft * 0.8, stored.alpha_black2, -8)
+
+					if stored.alpha_black2 <= 0 then
+						stored.st = 4
+					end
+				end
+			end
+
+
+			surface.SetDrawColor(0, 0, 0, stored.alpha_black2)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+
+			asterionlib.DrawBlurAt(-1, -1, ScrW() + 2, ScrH() + 2, 10, nil, stored.alpha_black2)
+			DrawMotionBlur(stored.alpha_black2, stored.alpha_black2, 0.01)
+
+			surface.SetDrawColor(255, 255, 255, stored.alpha_white)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+			surface.SetDrawColor(0, 0, 0, stored.alpha_black1)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		end
+	},
+	onAdd = function(client, delay)
+		if CLIENT then return end
+
+		client:ViewPunch(Angle(-50, -50, -50))
+	end
+})
+
+-- Для Селестии
+Medical:TemporaryStatusEffects("luck", {
+	name = "Абсолютный Азарт",
+	icon = "asterion/academy/ui/health/luck_1.png",
+	description = "Вам очень часто везет.",
+	hooks = {
+		OnCommandTry = function(client, rand)
+			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+			if bSucc then
+				return true, true
+			end
+		end,
+		OnCommandRoll = function(client, rand, maxRand)
+			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+			if bSucc then
+				local newRand = math.Clamp(rand + math.random(10, 30), 0, maxRand)
+				return true, newRand
+			end
+		end
+	}
+})
+
+-- Для Макото
+local emoteList = {
+	"споткнулся",
+	"сильно чихнул, отклонив голову вперёд",
+	"заметил на полу монетку и, наклонившись, подбирает",
+	"заметил развязанные шнурки и, наклонившись, завязывает",
+	"заметил паука на полу и, испугавшись, отпрыгнул в сторону"
+}
+Medical:TemporaryStatusEffects("increased_luck", {
+	name = "Счастливчик",
+	icon = "asterion/academy/ui/health/luck_2.png",
+	description = "Вы имеете повышенную удачу.",
+	hooks = {
+		OnCommandTry = function(client, rand)
+			if rand == false then
+				local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+				if bSucc then
+					return true, true
+				end
+			end
+		end,
+		OnCommandRoll = function(client, rand, maxRand)
+			if rand < maxRand / 2 then
+				local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+				if bSucc then
+					return true, maxRand
+				end
+			end
+		end,
+		ScalePlayerDamage = function(client, hitgroup, dmginfo)
+			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
+
+			if bSucc then
+				dmginfo:ScaleDamage(0)
+				Arbitrage.chat.SendCommand("me", client, emoteList[math.random(1, #emoteList)])
+
+				return true
+			end
+		end
+	}
+})
+
+-- Для Нагито
+Medical:TemporaryStatusEffects("absolute_luck", {
+	name = "Абсолютная удача",
+	icon = "asterion/academy/ui/health/luck_3.png",
+	description = "Вы обладаете абсолютной удачей.",
+	hooks = {
+		OnCommandTry = function(client, rand)
+			local bSucc = math.random(1, 2) == 1 -- 50% на то, что повезет
+
+			if bSucc then
+				return true, true
+			else
+				return true, false
+			end
+		end,
+		OnCommandRoll = function(client, rand, maxRand)
+			local bSucc = math.random(1, 2) == 1 -- 50% на то, что повезет
+
+			if bSucc then
+				return true, maxRand
+			else
+				return true, 0
+			end
+		end
+	}
+})
+
+-- Для Химико и Чиаки (спят где хотят)
+Medical:TemporaryStatusEffects("gifted_sleeper", {
+	name = "Одаренный соня",
+	icon = function(client)
+		if IsValid(client) then
+			local character = Character.team:GetByID(client:Team())
+
+			if character then
+				local icons = character.status_effects_icons
+
+				if icons and icons.gifted_sleeper then
+					return icons.gifted_sleeper
+				end
+			end
+		end
+
+		return "asterion/academy/ui/health/sleep_4.png"
+	end,
+	description = "Возможность спать где угодно.",
+	hooks = {
+		OnCanGiftedSleeper = function(client)
+			return true
+		end
 	}
 })

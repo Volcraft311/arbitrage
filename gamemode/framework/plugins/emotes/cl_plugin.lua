@@ -12,46 +12,70 @@
 ]]--
 
 -- Localize Global Calls
+local PLAYER = FindMetaTable("Player")
+local ENTITY = FindMetaTable("Entity")
+local CUSERCMD = FindMetaTable("CUserCmd")
+local VECTOR = FindMetaTable("Vector")
+
 local select = select
 local RunConsoleCommand = RunConsoleCommand
-local string_find = string.find
 local Vector = Vector
 local util_TraceHull = util.TraceHull
 local util_TraceLine = util.TraceLine
 local Lerp = Lerp
 local FrameTime = FrameTime
 local timer_Simple = timer.Simple
+local CurTime = CurTime
+local IsValid = IsValid
+
+local GetAction = PLAYER.GetAction
+local InVehicle = PLAYER.InVehicle
+local Crouching = PLAYER.Crouching
+local GetActiveWeapon = PLAYER.GetActiveWeapon
+
+local GetBoneCount = ENTITY.GetBoneCount
+local GetBoneName = ENTITY.GetBoneName
+local LookupSequence = ENTITY.LookupSequence
+local GetSequence = ENTITY.GetSequence
+local SetCycle = ENTITY.SetCycle
+local SetPlaybackRate = ENTITY.SetPlaybackRate
+local GetNetVar = ENTITY.GetNetVar
+local OnGround = ENTITY.OnGround
+local GetClass = ENTITY.GetClass
+
+local RemoveKey = CUSERCMD.RemoveKey
+local ClearMovement = CUSERCMD.ClearMovement
+
+local Length2D = VECTOR.Length2D
+
 
 function Emotes:PlayerBindPress(client, bind, bPressed)
-	local bThirdPerson = select(3, client:GetAction())
+	local bThirdPerson = select(3, GetAction(client))
 	if !bThirdPerson then return end
 
 	if bind:find("+jump") and bPressed then
 		RunConsoleCommand("say", "/exitaction")
+
 		return true
 	end
 end
 
 function Emotes:ShouldDrawLocalPlayer(client)
-	local bThirdPerson = select(3, client:GetAction())
+	local bThirdPerson = select(3, GetAction(client))
+
 	if bThirdPerson then
 		return true
 	end
 end
 
 local function GetHeadBone(client)
-	local head
+	for i = 1, GetBoneCount(client) do
+		local name = GetBoneName(client, i)
 
-	for i = 1, client:GetBoneCount() do
-		local name = client:GetBoneName(i)
-
-		if (string_find(name:lower(), "head")) then
-			head = i
-			break
+		if name:lower():find("head") then
+			return i
 		end
 	end
-
-	return head
 end
 
 local endPosShift = 0
@@ -69,7 +93,7 @@ function Emotes:CalcView(client, origin)
 	if client:IsSpectating() then return end
 	if Arbitrage.IsThirdPerson() then return end
 
-	local bThirdPerson = select(3, client:GetAction())
+	local bThirdPerson = select(3, GetAction(client))
 	if bThirdPerson then
 		Hints:AddKeyDraw("Выйти из анимации", "+jump")
 
@@ -144,7 +168,7 @@ function Emotes:CalcView(client, origin)
 			bKeyDown = false
 		end
 
-		local sitID = client:GetNetVar("sitting")
+		local sitID = GetNetVar(client, "sitting")
 		if sitID then
 			local data = Emotes.SittingList[sitID]
 			local campos = data and data[2] or Vector(0, 0, 0)
@@ -200,31 +224,117 @@ function Emotes:CalcView(client, origin)
 	end
 end
 
--- На меня накричал Нито, по этому я это удалил :(  (может когда то пригодится ¯\_(ツ)_/¯)
---[[
-local rectAlpha = 0
-local rectDist = 1000
-local rectSize = 10000
-function Emotes:PostDrawTranslucentRenderables()
-	local client = LocalPlayer()
-	local _, _, bThirdPerson, seqAngle = client:GetAction()
-	if bThirdPerson or (client.GetSitting and client:GetSitting()) then
-		local time = FrameTime() * 5
-		rectAlpha = Lerp(time, rectAlpha, 257)
-		rectDist = Lerp(time, rectDist, 80)
+local function getSequenceID(array, id, client)
+	local sequence = array[id]
+	local sequenceID = sequence and LookupSequence(client, sequence)
 
-		local sAng = seqAngle or client:GetAngles()
-		local pos, ang = client:GetPos(), Angle(sAng.p, sAng.y, sAng.r)
-		pos = pos + ang:Forward() * -rectDist
-		ang:RotateAroundAxis(ang:Right(), 90)
-
-		cam.Start3D2D(pos, ang, 1)
-			surface.SetDrawColor(20, 20, 20, rectAlpha)
-			surface.DrawRect(-rectSize, -rectSize, rectSize * 2, rectSize * 2)
-		cam.End3D2D()
-	else
-		rectAlpha = 0
-		rectDist = 1000
+	if sequenceID and sequenceID > -1 then
+		return sequenceID
 	end
 end
-]]--
+
+function Emotes:CalcMainActivity(client, velocity)
+	local isProne = client.IsProne and client:IsProne()
+	if isProne then return end
+
+	-- Акты
+	do
+		local seq, seqTime = GetAction(client)
+		if seq then
+			local seqID = LookupSequence(client, seq)
+
+			if seqID > -1 and (seqTime <= -1 or seqTime > CurTime()) then
+				if GetSequence(client) != seqID then
+					SetCycle(client, 0)
+					SetPlaybackRate(client, 1)
+				end
+
+				return -1, seqID
+			end
+		end
+	end
+
+	-- Сидение
+	do
+		if client.GetSitting and client:GetSitting() then
+			local sitID = GetNetVar(client, "sitting")
+			if sitID then
+				local seq = client:GetSittingSequence()
+				local seqID = LookupSequence(client, seq)
+
+				if seqID > -1 then
+					return -1, seqID
+				end
+			end
+		end
+	end
+
+	local len2D = Length2D(velocity)
+	-- Анимации ожидания
+	do
+		if len2D <= 0 then
+			local animationData = GetNetVar(client, "stand_animation")
+			if animationData then
+				local seq = animationData[1]
+				local delay = animationData[2]
+
+				if delay >= CurTime() then
+					local seqID = LookupSequence(client, seq)
+
+					if seqID > -1 then
+						return -1, seqID
+					end
+				end
+			end
+		end
+	end
+
+	-- Настроение
+	do
+		local mood = client:GetMood()
+		if mood and !InVehicle(client) and !Crouching(client) and OnGround(client) then
+			local weapon = GetActiveWeapon(client)
+
+			local holdType = "normal"
+			local class = nil
+			if IsValid(weapon) then
+				holdType = weapon.HoldType or weapon:GetHoldType()
+				class = GetClass(weapon)
+			end
+
+			if (class == "academy_key" or class == "academy_first") and holdType == "normal" then
+				local sequence = nil
+				local data = mood.sequences or {}
+
+				if len2D < 10 then
+					local sequenceID = getSequenceID(data, "idle", client)
+					if sequenceID then
+						sequence = sequenceID
+					end
+				elseif len2D >= 140 then
+					local sequenceID = getSequenceID(data, "run", client)
+					if sequenceID then
+						sequence = sequenceID
+					end
+				else
+					local sequenceID = getSequenceID(data, "walk", client)
+					if sequenceID then
+						sequence = sequenceID
+					end
+				end
+
+				if sequence then
+					return ACT_MP_STAND_IDLE, sequence
+				end
+			end
+		end
+	end
+end
+
+local keyBlacklist = IN_ATTACK + IN_ATTACK2 + IN_JUMP + IN_DUCK
+function Emotes:StartCommand(client, command)
+	if select(3, GetAction(client)) then
+		RemoveKey(command, keyBlacklist)
+		ClearMovement(command)
+	end
+end

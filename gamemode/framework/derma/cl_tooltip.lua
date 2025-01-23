@@ -298,16 +298,29 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
                             local status = Medical.t_status_effects[uniqueID]
                             if !status then continue end
 
-                            local tooltip = status.tooltip
-                            if !tooltip then continue end
+                            local status_tooltip = status.tooltip
+                            if !status_tooltip then continue end
 
-                            panel:AddSubMenu(tooltip.format, function(this)
-                                this.title:SetTextColor(tooltip.color)
+                            panel:AddSubMenu(status_tooltip.format, function(this)
+                                this.title:SetTextColor(status_tooltip.color)
                             end)
                         end
                     end
 
-                    panel:SetDescription(entity:GetNetVar("description"))
+                    local description = entity:GetNetVar("description")
+                    if description then
+                        panel:SetDescription(description)
+                    end
+
+                    local forced_description = entity:GetNetVar("forced_description")
+                    if forced_description then
+                        local wrapData = asterionlib.WrapText(forced_description, panel:GetWide(), "arb.Font_FuturaPTBook_7")
+                        for k, v in ipairs(wrapData or {}) do
+                            panel:AddSubMenu(v, function(this)
+                                this.title:SetTextColor(Color(245, 206, 206))
+                            end)
+                        end
+                    end
                 else
                     tooltip(entity, panel)
                 end

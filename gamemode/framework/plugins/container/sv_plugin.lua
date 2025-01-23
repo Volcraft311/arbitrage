@@ -65,9 +65,7 @@ function Container:PlayerUse(client, entity)
 
     if !client.containerCD or CurTime() >= client.containerCD then
         local name = entity._containerName or ""
-        for k, v in ipairs(ents.FindInSphere(client:GetPos(), ARBITRAGE_SAY_LENGTH * 0.5)) do
-            TypingDraw:SetTypingText(v, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
-        end
+        TypingDraw:SendSphere(0.5, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
 
         Arbitrage.action.ActionRun(client, "Обыскиваем", entity._containerTime or 1, function()
             if client:GetEyeTrace().Entity != entity then return true end

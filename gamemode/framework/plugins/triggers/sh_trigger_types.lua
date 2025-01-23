@@ -1,6 +1,4 @@
 -- Иконки https://heyter.github.io/js-famfamfam-search/
--- ГРИЗЛИ СОСЁТ ХУЙ
--- Тару солнышко
 local function _force(value)
     local a = !value and next(Trigger.PlayerInside) != nil
     return a

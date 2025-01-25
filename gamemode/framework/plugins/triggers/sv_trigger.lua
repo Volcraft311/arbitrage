@@ -136,6 +136,8 @@ netstream.Hook("Trigger:RemoveAll", function(client)
     if !client:IsAdmin() then return end
 
     Trigger:RemoveAll()
+
+    Arbitrage.adminnotify:SendNotify("triggerremoveall", client:FullName())
 end)
 
 netstream.Hook("Trigger:LoadConfig", function(client, info)

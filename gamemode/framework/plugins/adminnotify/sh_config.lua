@@ -232,3 +232,7 @@ end)
 PLUGIN:AddNewNotify("triggerloadconfig", function(client)
     return client_color, client, color_white, " загрузил новую конфигурацию для триггеров"
 end)
+
+PLUGIN:AddNewNotify("triggerremoveall", function(client)
+    return client_color, client, color_white, " удалил все существующие триггеры"
+end)

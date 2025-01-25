@@ -1,263 +1,385 @@
--- Иконки https://heyter.github.io/js-famfamfam-search/
+--[[
+        © AsterionStaff 2025.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://asterion.games/chancery
+        
+        developer(s):
+            Volcraft - https://steamcommunity.com/id/boobsgunner
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
+Trigger.ActionTypes = {}
+
 local function _force(value)
-    local a = !value and next(Trigger.PlayerInside) != nil
+    local a = !value and table.Count(Trigger.PlayerInside) > 0
+
     return a
 end
 
+function Trigger:AddActionType(data)
+    data.args = {}
+    data.args_desc = {}
+    data.default = {}
 
-Trigger.ActionTypes = {
-    {
-        name = "Написать в консоль",
-        run = function(trigger, args, client)
-            local delay = args[3]
-            local force = args[4]
-            timer.Simple(delay or 0,function()
-                if CLIENT then
-                    if _force(force) then return false end
-                    RunConsoleCommand(args[1],args[2])
-                end
-            end)
-        end,
-        args = {"string","string","number","bool"},
-        args_desc = {"Консольная Команда", "Аргументы команды", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ", -- Не используется, но в планах.
-        default = {"say","/me test message",0,true},
-        icon = "icon16/application_osx_terminal.png"
-    },
-    {
-        name = "Изменить цветокор",
-        run = function(trigger, args, client)
-            local delay = args[6]
-            local force = args[8]
-            timer.Simple(delay or 0,function()
-                if CLIENT then
-                    if _force(force) then return false end
-                    timer.Remove("Trigger:ColorModify")
-                    local color_add = args[2]
-                    local color_mul = args[1]
-                    local brightness = args[3]
-                    local contrast = args[4]
-                    local saturation  = args[5]
-                    ColorModify.TargetTColor = {
-                        brightness = brightness,
-                        contrast = contrast,
-                        color = saturation,
-                        mulr = color_mul.r,
-                        mulg = color_mul.g,
-                        mulb = color_mul.b,
-                        addr = color_add.r * 0.1,
-                        addg = color_add.g * 0.1,
-                        addb = color_add.b * 0.1,
-                    }
-                    for k, v in pairs(ColorModify.CurrentTColor) do
-                        ColorModify.AllTweens[k]:SetTo(ColorModify.TargetTColor[k])
-                        ColorModify.AllTweens[k]:SetFrom(v)
-                        ColorModify.AllTweens[k]:SetDuration(args[7])
-                        ColorModify.AllTweens[k]:Start()
-                    end
-                    timer.Create("Trigger:ColorModify",0,0,function()
-                        for k, v in pairs(ColorModify.CurrentTColor) do
-                            ColorModify.CurrentTColor[k] = ColorModify.AllTweens[k]:GetValue()
-                        end
-                        if ColorModify.AllTweens["color"]:TimeLeft() <= 0 then
-                            timer.Remove("Trigger:ColorModify")
-                        end
-                    end)
-                end
-            end)
-        end,
-        args = {"color","color","number","number","number","number","number","bool"},
-        args_desc = {"Умножить цвет","Добавить цвет","Яркость", "Контрасность","Насыщенность", "Задержка до выполнения","Скорость", "Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {Color(0,0,0),Color(0,0,0),0,1,1,0,1,true},
-        icon = "icon16/image.png"
-    },
-    {
-        name = "Удалить цветокор",
-        run = function(trigger, args, client)
-            local delay = args[1]
-            local force = args[2]
-            timer.Simple(delay or 0,function()
-                if CLIENT then
-                    if _force(force) then return false end
-                    timer.Remove("Trigger:ColorModify")
-                    ColorModify.CurrentTColor = table.Copy(ColorModify.DefaultTColor)
-                end
-            end)
-        end,
-        args = {"number","bool"},
-        args_desc = {"Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {0, true},
-        icon = "icon16/image_delete.png"
-    },
-    {
-        name = "Изменить Гравитацию",
-        run = function(trigger, args, client)
-            local delay = args[2]
-            timer.Simple(delay or 0,function()
-                if SERVER then
-                    client:SetGravity(args[1])
-                end
-            end)
-        end,
-        args = {"number","number","bool"},
-        args_desc = {"Величина", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {0,0,true},
-        icon = "icon16/controller.png"
-    },
-    {
-        name = "Написать в чат",
-        run = function(trigger, args, client)
-            local delay = args[2]
-            timer.Simple(delay or 0,function()
-                if CLIENT then
-                    ChatBox.panel:AddMessage(args[1])
-                end
-            end)
-        end,
-        args = {"string","number","bool"},
-        args_desc = {"Сообщение", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {0,0,true},
-        icon = "icon16/email_edit.png"
-    },
-    {
-        name = "Воспроизвести звук по URL",
-        run = function(trigger, args, client)
-            local delay = args[2]
-            timer.Simple(delay or 0,function()
-                if CLIENT then
-                    sound.PlayURL ( args[1], "", function( station )
-                        if ( IsValid( station ) ) then
+    for k, v in pairs(data.arguments or {}) do
+        data.args[k] = v.type
+        data.args_desc[k] = v.tooltip
+        data.default[k] = v.default
+    end
 
-                            station:SetPos( LocalPlayer():GetPos() )
+    data.arguments = nil
 
-                            station:Play()
+    table.insert(self.ActionTypes, data)
+end
 
-                            g_station = station
+Trigger:AddActionType({
+    name = "Написать в консоль",
+    icon = "icon16/application_osx_terminal.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Консольная Команда", type = "string", default = "say"},
+        [2] = {tooltip = "Аргументы команды", type = "string", default = "/me test message"},
+        [3] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+        [4] = {tooltip = "Неизбежный", type = "bool", default = true}
+    },
+    run = function(trigger, args, client)
+        if SERVER then return end
 
-                        else
+        local command = args[1]
+        local argument = args[2]
+        local delay = args[3]
+        local force = args[4]
 
-                            LocalPlayer():ChatPrint( "Invalid URL!" )
+        timer.Simple(delay or 0, function()
+            if _force(force) then return end
 
-                        end
-                    end )
-                end
-            end)
-        end,
-        args = {"string","number","bool"},
-        args_desc = {"URL", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {"https://audio.jukehost.co.uk/sI7Q85iVfHnQ9SksLELgKFEhTGzK8YNV",0,true},
-        icon = "icon16/music.png",
+            RunConsoleCommand(command, argument)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Изменить цветокор",
+    icon = "icon16/image.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Умножить цвет", type = "color", default = Color(0, 0, 0)},
+        [2] = {tooltip = "Добавить цвет", type = "color", default = Color(0, 0, 0)},
+        [3] = {tooltip = "Яркость", type = "number", default = 0},
+        [4] = {tooltip = "Контрасность", type = "number", default = 1},
+        [5] = {tooltip = "Насыщенность", type = "number", default = 1},
+        [6] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+        [7] = {tooltip = "Скорость", type = "number", default = 1},
+        [8] = {tooltip = "Неизбежный", type = "bool", default = true}
     },
-    {
-        name = "Оттолкнуть",
-        run = function(trigger, args, client)
-            local delay = args[4]
-            timer.Simple(delay or 0,function()
-                if SERVER then
-                    local firstTime = true
-                    timer.Create("Trigger:Push" .. tostring(trigger) .. tostring(client),0,0,function()
-                        if trigger:IsPlayerInside(client) or firstTime then
-                            firstTime = false
-                            local vel = Vector(args[1],args[2],args[3])
-                            local dummy = client
-                            dummy:SetVelocity(vel)
-                        else
-                            timer.Remove("Trigger:Push" .. tostring(trigger) .. tostring(client))
-                        end
-                    end)
+    run = function(trigger, args, client)
+        if SERVER then return end
+
+        local color_mul = args[1]
+        local color_add = args[2]
+        local brightness = args[3]
+        local contrast = args[4]
+        local saturation = args[5]
+        local delay = args[6]
+        local duration = args[7]
+        local force = args[8]
+
+        timer.Simple(delay or 0, function()
+            if _force(force) then return end
+
+            timer.Remove("Trigger:ColorModify")
+
+            ColorModify.TargetTColor = {
+                brightness = brightness,
+                contrast = contrast,
+                color = saturation,
+                mulr = color_mul.r,
+                mulg = color_mul.g,
+                mulb = color_mul.b,
+                addr = color_add.r * 0.1,
+                addg = color_add.g * 0.1,
+                addb = color_add.b * 0.1,
+            }
+
+            for k, v in pairs(ColorModify.CurrentTColor) do
+                ColorModify.AllTweens[k]:SetTo(ColorModify.TargetTColor[k])
+                ColorModify.AllTweens[k]:SetFrom(v)
+                ColorModify.AllTweens[k]:SetDuration(duration)
+                ColorModify.AllTweens[k]:Start()
+            end
+
+            timer.Create("Trigger:ColorModify", 0, 0, function()
+                for k, v in pairs(ColorModify.CurrentTColor) do
+                    ColorModify.CurrentTColor[k] = ColorModify.AllTweens[k]:GetValue()
                 end
+
+                if ColorModify.AllTweens["color"]:TimeLeft() <= 0 then timer.Remove("Trigger:ColorModify") end
             end)
-        end,
-        args = {"number","number","number","number","bool"},
-        args_desc = {"X","Y","Z", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {0,0,0,0,true},
-        icon = "icon16/lightning_go.png"
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Удалить цветокор",
+    icon = "icon16/image_delete.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {name = "Задержка до выполнения", type = "number", default = 0},
+        [2] = {name = "Неизбежный", type = "bool", default = true}
     },
-    {
-        name = "Опрокинуть",
-        run = function(trigger, args, client)
-            local delay = args[2]
-            timer.Simple(delay or 0,function()
-                if SERVER then
-                    client:FallOver(args[1])
-                end
-            end)
-        end,
-        args = {"number","number","bool"},
-        args_desc = {"Время", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {1,0,true},
-        icon = "icon16/music.png",
+    run = function(trigger, args, client)
+        if SERVER then return end
+
+        local delay = args[1]
+        local force = args[2]
+
+        timer.Simple(delay or 0, function()
+            if _force(force) then return end
+
+            ColorModify.CurrentTColor = table.Copy(ColorModify.DefaultTColor)
+            timer.Remove("Trigger:ColorModify")
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Изменить Гравитацию",
+    icon = "icon16/controller.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Величина", type = "number", default = 1},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
     },
-    {
-        name = "Телепортировать",
-        run = function(trigger, args, client)
-            local delay = args[2]
-            timer.Simple(delay or 0,function()
-                if SERVER then
-                    local force = args[3]
-                    if _force(force) then return false end
-                    local pos = args[1]
-                    if client:IsRagdoll() or client:IsRagdolling() then
-                        local ent = client:GetRagdoll()
-                        local VecOffset = pos - ent:GetPos()
-                        for i = 0, ent:GetPhysicsObjectCount() - 1 do
-                            local phys = ent:GetPhysicsObjectNum( i )
-                            phys:SetPos( phys:GetPos() + VecOffset )
-                            phys:SetVelocity(Vector(0, 0, 0))
-                        end
-                    else
-                        client:SetPos(pos)
-                        client:CheckStuck(0.3)
-                    end
-                end
-            end)
-        end,
-        args = {"vector","number","bool"},
-        args_desc = {"Позиция", "Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {Vector(0,0,0),0,true},
-        icon = "icon16/arrow_in.png"
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local gravity = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            client:SetGravity(gravity)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Написать в чат",
+    icon = "icon16/email_edit.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Сообщение", type = "string", default = "Текст"},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
     },
-    {
-        name = "Изменить здоровье",
-        run = function(trigger, args, client)
-            local delay = args[3]
-            timer.Simple(delay or 0,function()
-                if SERVER then
-                    local force = args[4]
-                    if _force(force) then return false end
-                    client:SetHealth(args[1])
-                end
-            end)
-        end,
-        args = {"number","number","bool"},
-        args_desc = {"Здоровье","Задержка до выполнения","Неизбежный"},
-        hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
-        default = {100,0,0,true},
-        icon = "icon16/heart.png"
+    run = function(trigger, args, client)
+        if SERVER then return end
+
+        local message = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            chat.AddText(message)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Воспроизвести звук по URL",
+    icon = "icon16/music.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "URL", type = "string", default = "https://audio.jukehost.co.uk/sI7Q85iVfHnQ9SksLELgKFEhTGzK8YNV"},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
     },
-    {
-        name = "Изменить броню",
-        run = function(trigger, args, client)
-            local delay = args[2]
-            timer.Simple(delay or 0,function()
-                if SERVER then
-                    local force = args[3]
-                    if _force(force) then return false end
-                    client:SetArmor(args[1])
+    run = function(trigger, args, client)
+        if SERVER then return end
+
+        local url = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            sound.PlayURL(url, "", function(station)
+                if IsValid(station) then
+                    station:SetPos(LocalPlayer():GetPos())
+                    station:Play()
+                    g_station = station
+                else
+                    LocalPlayer():ChatPrint("Invalid URL!")
                 end
             end)
-        end,
-        args = {"number","number","bool"},
-        args_desc = {"Броня","Задержка до выполнения","Неизбежный"},
-        default = {100,0,true},
-        icon = "icon16/heart.png"
-    }
-}
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Оттолкнуть",
+    icon = "icon16/lightning_go.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "X", type = "number", default = 0},
+        [2] = {tooltip = "Y", type = "number", default = 0},
+        [3] = {tooltip = "Z", type = "number", default = 0},
+        [4] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        local x = args[1]
+        local y = args[2]
+        local z = args[3]
+        local delay = args[4]
+
+        timer.Simple(delay or 0, function()
+            if CLIENT then return end
+
+            local firstTime = true
+            timer.Create("Trigger:Push" .. tostring(trigger) .. tostring(client), 0, 0, function()
+                if trigger:IsPlayerInside(client) or firstTime then
+                    firstTime = false
+
+                    local vel = Vector(x, y, z)
+                    client:SetVelocity(vel)
+                else
+                    timer.Remove("Trigger:Push" .. tostring(trigger) .. tostring(client))
+                end
+            end)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Опрокинуть",
+    icon = "icon16/music.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Время", type = "number", default = 1},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local time = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            client:FallOver(time)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Телепортировать",
+    icon = "icon16/arrow_in.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Позиция", type = "vector", default = Vector(0, 0, 0)},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local pos = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            if client:IsRagdoll() or client:IsRagdolling() then
+                local ent = client:GetRagdoll()
+                local offset = pos - ent:GetPos()
+
+                for i = 0, ent:GetPhysicsObjectCount() - 1 do
+                    local phys = ent:GetPhysicsObjectNum(i)
+
+                    phys:SetPos(phys:GetPos() + offset)
+                    phys:SetVelocity(Vector(0, 0, 0))
+                end
+            else
+                client:SetPos(pos)
+                client:CheckStuck(0.3)
+            end
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Изменить здоровье",
+    icon = "icon16/heart.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Здоровье", type = "number", default = 100},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local health = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            client:SetHealth(health)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Изменить броню",
+    icon = "icon16/heart.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Броня", type = "number", default = 100},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local armor = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            client:SetArmor(armor)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Выключить триггер",
+    icon = "icon16/cross.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local delay = args[1]
+
+        timer.Simple(delay or 0, function()
+            if !trigger:GetActive() then return end
+
+            trigger:SetActive(false)
+            trigger:Sync()
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Включить триггер",
+    icon = "icon16/tick.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local delay = args[1]
+
+        timer.Simple(delay or 0, function()
+            if trigger:GetActive() then return end
+
+            trigger:SetActive(true)
+            trigger:Sync()
+        end)
+    end
+})

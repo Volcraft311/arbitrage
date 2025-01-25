@@ -1,122 +1,155 @@
-function PLUGIN:PlayerInitialSpawnForRealz(client)
-    Trigger:SyncAll(client)
-end
+--[[
+        © AsterionStaff 2025.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://asterion.games/chancery
+        
+        developer(s):
+            Volcraft - https://steamcommunity.com/id/boobsgunner
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
 
 function Trigger:SyncAll(clients)
-    for k, v in pairs(Trigger.instances) do
-        timer.Simple(k * 0.1, function()
-            v:Sync(clients)
-        end)
+    local info = {}
+    for id, trigger in pairs(Trigger.instances) do
+        info[id] = trigger:GetSyncData()
     end
+
+    netstream.Heavy("Trigger:SyncAll", info)
 end
 
 
-function Trigger:SyncByID(id, clients)
-    Trigger:GetByID(id):Sync(clients)
+function Trigger:PlayerInitialSpawnForRealz(client)
+    self:SyncAll(client)
 end
 
-function Trigger:SyncLast(clients)
-    Trigger.GetLast():Sync(clients)
-end
 
-function Trigger:SyncRemove(id,clients)
-    netstream.Start(clients,"Trigger:Remove",{id = id})
-end
-
-local function _check_client(client,id)
+netstream.Hook("Trigger:PlayerEntered", function(client, id)
     local trigger = Trigger:GetByID(id)
-    return trigger:IsPlayerInside(client)
-end
+    if !trigger then return end
 
-netstream.Hook("Trigger:PlayerEntered",function(client,id)
-    if !_check_client(client,id) then return false end
+    if trigger:IsPlayerInside(client) then
+        trigger:PlayerEntered(client)
+    end
+end)
+
+netstream.Hook("Trigger:PlayerExited", function(client, id)
     local trigger = Trigger:GetByID(id)
-    trigger:PlayerEntered(client)
+    if !trigger then return end
+
+    if !trigger:IsPlayerInside(client) then
+        trigger:PlayerExited(client)
+    end
 end)
 
-netstream.Hook("Trigger:PlayerExited",function(client,id)
-    if _check_client(client,id) then return false end
+netstream.Hook("Trigger:SetPos", function(client, id, point, vector)
+    if !client:IsAdmin() then return end
+
     local trigger = Trigger:GetByID(id)
-    trigger:PlayerExited(client)
+    if !trigger then return end
+
+    trigger:SetPoint(point, vector)
+    trigger:Sync()
 end)
 
-netstream.Hook("Trigger:SetPos",function(client,data)
-    if !client:IsAdmin() then return false end
-    local id = data.id
-    local vector = data.vector
-    local point = data.point
-    Trigger:GetByID(id):SetPoint(point, vector)
+netstream.Hook("Trigger:Remove", function(client, id)
+    if !client:IsAdmin() then return end
 
-    Trigger:SyncByID(id,player.GetAll())
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:Remove()
+
+    Arbitrage.adminnotify:SendNotify("triggerremoved", client:FullName(), trigger.name)
 end)
 
-netstream.Hook("Trigger:Remove",function(client,data)
-    if !client:IsAdmin() then return false end
-    local id = data.id
-    Arbitrage.adminnotify:SendNotify("triggerremoved", client:FullName(), Trigger:GetByID(id).name)
-    Trigger:Remove(id)
-    Trigger:SyncRemove(id,player.GetAll())
+netstream.Hook("Trigger:ChangeName", function(client, id, name)
+    if !client:IsAdmin() then return end
+
+    name = tostring(name)
+    if !name then return end
+
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:SetName(name)
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
-netstream.Hook("Trigger:ChangeName",function(client,data)
-    if !client:IsAdmin() then return false end
-    local id = data.id
-    local name = data.name
-    Trigger:GetByID(id).name = name
-    Trigger:SyncByID(id,player.GetAll())
+netstream.Hook("Trigger:SetActive", function(client, id)
+    if !client:IsAdmin() then return end
+
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    local bIsActive = !trigger:GetActive()
+
+    trigger:SetActive(bIsActive)
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
-netstream.Hook("Trigger:AddAction",function(client,data)
-    if !client:IsAdmin() then return false end
-    local id = data.id
-    local actionid = data.actionid
-    local args = data.args
-    local acttype = data.type
-    Trigger:GetByID(id):AddAction(acttype, actionid, args)
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), Trigger:GetByID(id).name)
+netstream.Hook("Trigger:AddAction", function(client, id, data)
+    if !client:IsAdmin() then return end
 
-    Trigger:SyncByID(id,player.GetAll())
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:AddAction(data.type, data.actionid, data.args)
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
+netstream.Hook("Trigger:EditAction", function(client, id, data)
+    if !client:IsAdmin() then return end
 
-netstream.Hook("Trigger:EditAction",function(client,data)
-    if !client:IsAdmin() then return false end
-    local id = data.id
-    local args = data.args
-    local number = data.number
-    local acttype = data.type
-    Trigger:GetByID(id):EditAction(acttype,number, args)
-    Arbitrage.commands.Notify(client, "Вы изменили аргументы триггера")
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), Trigger:GetByID(id).name)
-    Trigger:SyncByID(id,player.GetAll())
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:EditAction(data.type, data.number, data.args)
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
+netstream.Hook("Trigger:RemoveAction", function(client, id, data)
+    if !client:IsAdmin() then return end
 
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
 
-netstream.Hook("Trigger:RemoveAction",function(client,data)
-    if !client:IsAdmin() then return false end
-    local id = data.id
-    local number = data.number
-    local acttype = data.type
-    Trigger:GetByID(id):RemoveAction(acttype,number)
+    trigger:RemoveAction(data.type, data.number)
+    trigger:Sync()
 
-    Trigger:SyncByID(id,player.GetAll())
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
-netstream.Hook("Trigger:RemoveAll",function(client)
-    if !client:IsAdmin() then return false end
+netstream.Hook("Trigger:RemoveAll", function(client)
+    if !client:IsAdmin() then return end
 
     Trigger:RemoveAll()
-
-    netstream.Start(player.GetAll(),"Trigger:RemoveAll")
 end)
 
-netstream.Hook("Trigger:CreateTrigger",function(client,data)
-    if !client:IsAdmin() then return false end
+netstream.Hook("Trigger:LoadConfig", function(client, info)
+    if !client:IsAdmin() then return end
 
-    local ActionList = data.ActionList
-    local points = data.points
-    local name = data.name
-    local trigger = Trigger:Create({ActionList = ActionList, points = points, name = name})
-    Trigger:SyncByID(trigger.id,player.GetAll())
+    for _, data in ipairs(info) do
+        local trigger = Trigger:Create({
+            name = data[1],
+            points = data[2],
+            ActionList = data[3],
+        })
+
+        trigger:Sync()
+    end
+
+    Arbitrage.adminnotify:SendNotify("triggerloadconfig", client:FullName())
 end)

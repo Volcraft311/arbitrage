@@ -1,21 +1,37 @@
-Trigger.instances = Trigger.instances or {}
-Trigger.lastID = #Trigger.instances
-Trigger.ActionTypes = {}
+--[[
+        © AsterionStaff 2025.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://asterion.games/chancery
+        
+        developer(s):
+            Volcraft - https://steamcommunity.com/id/boobsgunner
+            Selenter - https://steamcommunity.com/id/selenter
 
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
+Trigger.ActionTypes = {}
 
 function Trigger:New(id)
     if self.instances[id] then
         return self.instances[id]
     end
 
-    local trigger = {id = id}
+    local trigger = {
+        name = "undefined_" .. id,
+        id = id,
+        points = {Vector(0, 0, 0), Vector(5, 5, 5)},
+        ActionList = {Enter = {}, Exit = {}}
+    }
 
-    setmetatable(trigger, Trigger.meta)
+    setmetatable(trigger, self.meta)
 
     self.instances[id] = trigger
     return trigger
 end
-
 
 function Trigger:Create(data, id)
     if !id then
@@ -23,56 +39,43 @@ function Trigger:Create(data, id)
 
         id = self.lastID
     end
+
     local trigger = self:New(id)
 
-    trigger.points = data.points or {Vector(0,0,0),Vector(5,5,5)}
-    trigger.name = data.name or "Unnamed_" .. tostring(id)
-    trigger.isLocalPlayerInside = false
-    trigger.ActionList = data.ActionList or {
-        Enter = {},
-        Exit = {}
-    }
-    if CLIENT then
-        Trigger.UpdateActionLists()
+    for k, v in pairs(data or {}) do
+        trigger[k] = v
     end
+
     return trigger
 end
 
-function Trigger:Remove(id)
-    for k, v in pairs(Trigger.instances) do
-        if v.id == id then
-            Trigger.instances[k] = nil
-        end
-    end
-end
-
 function Trigger:GetByID(id)
-    --return Trigger.instances[id]
-    if Trigger.instances[id] != nil then return Trigger.instances[id] end
-    for k, v in pairs(Trigger.instances) do
-        if v.id == id then
-            return v
-        end
-    end
-    return nil
+    return self.instances[id]
 end
 
 function Trigger:GetLast()
-    return Trigger.instances[Trigger.lastID]
+    local id = self.lastID
+
+    return self.instances[id]
 end
 
 function Trigger:RemoveAll()
-    Trigger.instances = {}
-    Trigger.lastID = 0
+    self.instances = {}
+    self.lastID = 0
+
+    if SERVER then
+        netstream.Start(nil, "Trigger:RemoveAll")
+    end
 end
 
 function Trigger:GetSelected()
-    return Trigger:GetByID(Trigger.selectedID)
+    local trigger = self:GetByID(self.selectedID)
+
+    return trigger
 end
 
 function Trigger:ActionByID(actionID)
-    return Trigger.ActionTypes[actionID] or nil
+    local action = self.ActionTypes[actionID]
+
+    return action
 end
-
-
-

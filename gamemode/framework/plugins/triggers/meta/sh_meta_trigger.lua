@@ -1,26 +1,30 @@
+--[[
+        © AsterionStaff 2025.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://asterion.games/chancery
+        
+        developer(s):
+            Volcraft - https://steamcommunity.com/id/boobsgunner
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
 local TRIGGER = {}
 TRIGGER.__index = TRIGGER
 TRIGGER.id = 0
-TRIGGER.name = "undefined_" .. TRIGGER.id
-TRIGGER.points = {vector_origin,Vector(5,5,5)}
+TRIGGER.name = "undefined"
+TRIGGER.points = {Vector(0, 0, 0), Vector(5, 5, 5)}
 TRIGGER.isLocalPlayerInside = false
-TRIGGER.delay = 0.5
-
-
-TRIGGER.ActionList = {
-    Enter = {},
-    Exit = {}
-}
-
+TRIGGER.bIsActive = true
+TRIGGER.ActionList = {Enter = {}, Exit = {}}
 
 -- Энумираторы
 ACTION_ENTER = "Enter"
 ACTION_EXIT = "Exit"
-
-
-local box_color1 = Color(0,255,55)
-local box_color2 = Color(1,63,23,105)
-
 
 function TRIGGER:__tostring()
     return "Trigger nmbr [" .. self.id .. "]"
@@ -34,85 +38,148 @@ function TRIGGER:GetID()
     return self.id
 end
 
-function TRIGGER:SetPoint(point,vector)
+function TRIGGER:SetName(name)
+    self.name = name
+end
+
+function TRIGGER:GetName()
+    return self.name
+end
+
+function TRIGGER:SetPoint(point, vector)
     self.points[point] = vector
-    if SERVER then
-        Trigger:SyncByID(self.id,player.GetAll())
-    end
 end
 
 function TRIGGER:GetPoints()
     return self.points
 end
 
+function TRIGGER:SetActive(bActive)
+    self.bIsActive = bActive
+end
+
+function TRIGGER:GetActive()
+    return self.bIsActive
+end
+
 function TRIGGER:AddAction(actionEnum, actionID, args)
-    table.insert(self.ActionList[actionEnum], {action = actionID,args = args})
+    table.insert(self.ActionList[actionEnum], {
+        action = actionID,
+        args = args
+    })
 end
 
 function TRIGGER:RemoveAction(actionEnum, number)
     table.remove(self.ActionList[actionEnum], number)
 end
 
-
 function TRIGGER:EditAction(actionEnum, number, args)
     self.ActionList[actionEnum][number].args = args
 end
 
-
 function TRIGGER:IsPlayerInside(client)
-    if CLIENT and !client then
-        client = LocalPlayer()
-    end
-    if client:GetMoveType() == MOVETYPE_NOCLIP or client:IsRagdoll() or client:IsRagdolling() then return false end
-    local _, _max = client:GetHull()
+    client = client or LocalPlayer()
 
-    local _playerpos = client:GetPos()
-    _playerpos.z = _playerpos.z + _max.z / 2
-    local answer = _playerpos:WithinAABox(self.points[1],self.points[2])
-    return answer
+    if client:GetMoveType() == MOVETYPE_NOCLIP or client:IsRagdoll() or client:IsRagdolling() then
+        return false
+    end
+
+    local _, max = client:GetHull()
+    local pos = client:GetPos()
+    pos.z = pos.z + max.z / 2
+
+    return pos:WithinAABox(self.points[1], self.points[2])
 end
 
 function TRIGGER:PlayerEntered(client)
+    if !self:GetActive() then return end
+
     client = client or LocalPlayer()
+
     if CLIENT then
-        netstream.Start("Trigger:PlayerEntered",self.id)
         self.isLocalPlayerInside = true
         Trigger.PlayerInside[self] = true
+
+        netstream.Start("Trigger:PlayerEntered", self.id)
     end
-    for k, v in pairs(self.ActionList.Enter) do
-        Trigger:ActionByID(v.action).run(self, v.args, client)
+
+    for _, v in pairs(self.ActionList.Enter) do
+        local action = Trigger:ActionByID(v.action)
+        action.run(self, v.args, client)
     end
 end
 
 function TRIGGER:PlayerExited(client)
+    if !self:GetActive() then return end
+
     client = client or LocalPlayer()
+
     if CLIENT then
-        netstream.Start("Trigger:PlayerExited",self.id)
         self.isLocalPlayerInside = false
         Trigger.PlayerInside[self] = nil
+
+        netstream.Start("Trigger:PlayerExited", self.id)
     end
-    for k, v in pairs(self.ActionList.Exit) do
-        Trigger:ActionByID(v.action).run(self,v.args, client)
+
+    for _, v in pairs(self.ActionList.Exit) do
+        local action = Trigger:ActionByID(v.action)
+        action.run(self, v.args, client)
     end
 end
 
+function TRIGGER:Remove()
+    local id = self.id
 
+    Trigger.instances[id] = nil
+
+    if SERVER then
+        netstream.Start(nil, "Trigger:Remove", id)
+    end
+end
+
+function TRIGGER:SelectTool(receivers)
+    if SERVER then
+        netstream.Start(receivers, "Trigger:SelectTool", self.id)
+    else
+        Trigger.selectedID = self.id
+    end
+end
+
+function TRIGGER:GetSyncData()
+    return {
+        name = self.name,
+        points = self.points,
+        ActionList = self.ActionList,
+        bIsActive = self.bIsActive
+    }
+end
 
 if SERVER then
-    function TRIGGER:Sync(clients)
-        netstream.Start(clients,"Trigger:Sync",self)
-    end
+    function TRIGGER:Sync(receivers)
+        local data = self:GetSyncData()
 
+        netstream.Start(receivers, "Trigger:Sync", self.id, data)
+    end
 else
+    local box_color1 = Color(0, 255, 55)
+    local box_color2 = Color(1, 63, 23, 105)
+    local box_color3 = Color(224, 24, 24, 176)
+
     function TRIGGER:Draw(color)
+        local min = self.points[1]
+        local max = self.points[2]
+
         render.SetColorMaterial()
-        render.DrawBox(vector_origin,angle_zero,self.points[1],self.points[2],color or box_color2)
-        render.DrawWireframeBox(Vector(0,0,0),angle_zero,self.points[1],self.points[2],color or box_color1)
-        --render.DrawBox(LocalPlayer():GetPos() + TRIGGER.playerTriggerOffset,angle_zero,Vector(5,5,5),Vector(-5,-5,-5),Color(255,255,255))
+
+        if self:GetActive() then
+            render.DrawBox(vector_origin, angle_zero, min, max, color or box_color2)
+        else
+            render.DrawBox(vector_origin, angle_zero, min, max, box_color3)
+        end
+
+        render.DrawWireframeBox(Vector(0, 0, 0), angle_zero, min, max, color or box_color1)
     end
 end
 
 
 Trigger.meta = TRIGGER
-
-

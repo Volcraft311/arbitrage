@@ -14,28 +14,21 @@
 local PLUGIN = PLUGIN
 PLUGIN.guiTime = 30
 
-PLUGIN:AddNewNotify("triggerchanged", function(client, trigger)
-    return Color(223, 66, 66), client, color_white, " изменил триггер ", Color(235, 255, 54), trigger
-end)
-
-PLUGIN:AddNewNotify("triggercreated", function(client, trigger)
-    return Color(223, 66, 66), client, color_white, " создал триггер ", Color(235, 255, 54), trigger
-end)
-
-PLUGIN:AddNewNotify("triggerremoved", function(client, trigger)
-    return Color(223, 66, 66), client, color_white, " удалил триггер ", Color(235, 255, 54), trigger
-end)
+local client_color = Color(63, 162, 184)
+local danger_color = Color(223, 66, 66)
+local info_color = Color(197, 181, 60)
+local info2_color = Color(48, 218, 187)
 
 PLUGIN:AddNewNotify("killed", function(client, target, weapon)
-    return Color(223, 66, 66), client, color_white, " убил игрока ", Color(74, 114, 202), target, color_white, weapon and (" при помощи " .. weapon) or ""
+    return danger_color, client, color_white, " убил игрока ", client_color, target, color_white, weapon and (" при помощи " .. weapon) or ""
 end)
 
 PLUGIN:AddNewNotify("joincharacter", function(clientSt, character)
-    return Color(74, 114, 202), clientSt, color_white, " зашел за персонажа ", Color(216, 204, 34), character
+    return client_color, clientSt, color_white, " зашел за персонажа ", info_color, character
 end)
 
 PLUGIN:AddNewNotify("spawn", function(client)
-    return Color(74, 114, 202), client, color_white, " возродился"
+    return client_color, client, color_white, " возродился"
 end)
 
 PLUGIN:AddNewNotify("join", function(client)
@@ -47,179 +40,195 @@ PLUGIN:AddNewNotify("connect", function(name, steamid)
 end)
 
 PLUGIN:AddNewNotify("disconnect", function(client)
-    return Color(202, 74, 74), client, color_white, " отключился от сервера"
+    return danger_color, client, color_white, " отключился от сервера"
 end)
 
 PLUGIN:AddNewNotify("transfercharacter", function(client, target, faction)
-    local factionData = Character.team:GetByID(faction)
+    local character = Character.team:GetByID(faction)
 
-    return Color(63, 162, 184), client, color_white, " перенес игрока ", Color(197, 181, 60), target, color_white, " во фракцию ", Color(48, 218, 187), factionData.name .. " (" .. faction .. ")"
+    return client_color, client, color_white, " перенес игрока ", info_color, target, color_white, " во фракцию ", info2_color, character.name .. " (" .. faction .. ")"
 end)
 
 PLUGIN:AddNewNotify("monocommand", function(client, command, target)
-    return Color(63, 162, 184), client, color_white, " выполнил команду ", Color(48, 218, 187), command, color_white, " на игроке ", Color(197, 181, 60), target
+    return client_color, client, color_white, " выполнил команду ", info2_color, command, color_white, " на игроке ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("monocommandc", function(client, command, target)
-    return Color(63, 162, 184), client, color_white, " выполнил команду ", Color(48, 218, 187), command
+    return client_color, client, color_white, " выполнил команду ", info2_color, command
 end)
 
 PLUGIN:AddNewNotify("setstats", function(client, data, target, amount)
-    return Color(63, 162, 184), client, color_white, " установил ", Color(48, 218, 187), data, color_white, " игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), amount
+    return client_color, client, color_white, " установил ", info2_color, data, color_white, " игроку ", info_color, target, color_white, " на ", info2_color, amount
 end)
 
 PLUGIN:AddNewNotify("setspeed", function(client, data, target, speed)
-    return Color(63, 162, 184), client, color_white, " изменил скорость ", Color(48, 218, 187), data, color_white, " игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), speed or 1
+    return client_color, client, color_white, " изменил скорость ", info2_color, data, color_white, " игроку ", info_color, target, color_white, " на ", info2_color, speed or 1
 end)
 
 PLUGIN:AddNewNotify("setplace", function(client, data, target)
-    return Color(63, 162, 184), client, color_white, " установил место в суде игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), data
+    return client_color, client, color_white, " установил место в суде игроку ", info_color, target, color_white, " на ", info2_color, data
 end)
 
 PLUGIN:AddNewNotify("giveweapon", function(client, target, data)
-    return Color(63, 162, 184), client, color_white, " выдал игроку ", Color(197, 181, 60), target, color_white, " оружие ", Color(48, 218, 187), data
+    return client_color, client, color_white, " выдал игроку ", info_color, target, color_white, " оружие ", info2_color, data
 end)
 
 PLUGIN:AddNewNotify("setfakename", function(client, target, data)
-    return Color(63, 162, 184), client, color_white, " изменил имя игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), data
+    return client_color, client, color_white, " изменил имя игроку ", info_color, target, color_white, " на ", info2_color, data
 end)
 
 PLUGIN:AddNewNotify("setchapter", function(client, data)
-    return Color(63, 162, 184), client, color_white, " установил главу ", Color(48, 218, 187), data
+    return client_color, client, color_white, " установил главу ", info2_color, data
 end)
 
 PLUGIN:AddNewNotify("removewhitelist", function(client, data)
-    return Color(63, 162, 184), client, color_white, " удалил из WhiteList-а ", Color(197, 181, 60), data
+    return client_color, client, color_white, " удалил из WhiteList-а ", info_color, data
 end)
 
 PLUGIN:AddNewNotify("addwhitelist", function(client, data)
-    return Color(63, 162, 184), client, color_white, " добавил в WhiteList ", Color(197, 181, 60), data
+    return client_color, client, color_white, " добавил в WhiteList ", info_color, data
 end)
 
 PLUGIN:AddNewNotify("settingswhitelist", function(client, data)
-    return Color(63, 162, 184), client, color_white, " сделал сервер ", Color(48, 218, 187), data and "Общедоступным" or "Приватным"
+    return client_color, client, color_white, " сделал сервер ", info2_color, data and "Общедоступным" or "Приватным"
 end)
 
 PLUGIN:AddNewNotify("setmodel", function(client, target, data)
-    return Color(63, 162, 184), client, color_white, " изменил игроку ", Color(197, 181, 60), target, color_white, " модель на ", Color(48, 218, 187), data
+    return client_color, client, color_white, " изменил игроку ", info_color, target, color_white, " модель на ", info2_color, data
 end)
 
 PLUGIN:AddNewNotify("changecolormodify", function(client, key, data)
-    return Color(63, 162, 184), client, color_white, " изменил значение цветокоррекции ", Color(197, 181, 60), key, color_white, " на ", Color(48, 218, 187), data
+    return client_color, client, color_white, " изменил значение цветокоррекции ", info_color, key, color_white, " на ", info2_color, data
 end)
 
 PLUGIN:AddNewNotify("standartcolormodify", function(client)
-    return Color(63, 162, 184), client, color_white, " вернул стандартную цветокоррекцию"
+    return client_color, client, color_white, " вернул стандартную цветокоррекцию"
 end)
 
 PLUGIN:AddNewNotify("resetstats", function(client, target)
-    return Color(63, 162, 184), client, color_white, " обнулил характеристики игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, " обнулил характеристики игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("changestatus", function(client, target, state)
-    return Color(63, 162, 184), client, color_white, " изменил игровой статус игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), state
+    return client_color, client, color_white, " изменил игровой статус игроку ", info_color, target, color_white, " на ", info2_color, state
 end)
 
 PLUGIN:AddNewNotify("returngame", function(client, target)
-    return Color(63, 162, 184), client, color_white, " вернул в игру игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " вернул в игру игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("removegame", function(client, target)
-    return Color(63, 162, 184), client, color_white, " убрал из игры игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " убрал из игры игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("addgame", function(client, target)
-    return Color(63, 162, 184), client, color_white, " добавил в игру игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " добавил в игру игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("claerinventory", function(client, target)
-    return Color(63, 162, 184), client, color_white, " очистил инвентарь игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, " очистил инвентарь игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("openinventory", function(client, target)
-    return Color(63, 162, 184), client, color_white, " открыл инвентарь игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " открыл инвентарь игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("scaleinventory", function(client, target, x, y)
-    return Color(63, 162, 184), client, color_white, " изменил размер инвентаря игрока ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), x, color_white, " и ", Color(48, 218, 187), y
+    return client_color, client, color_white, " изменил размер инвентаря игрока ", info_color, target, color_white, " на ", info2_color, x, color_white, " и ", info2_color, y
 end)
 
 PLUGIN:AddNewNotify("globalvoice", function(client, target, value)
-    return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " включил" or " выключил", color_white, " глобальный голосовой чат игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, info2_color, value and " включил" or " выключил", color_white, " глобальный голосовой чат игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("mutevoice", function(client, target, value)
-    return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " выключил" or " включил", color_white, " голосовой чат игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, info2_color, value and " выключил" or " включил", color_white, " голосовой чат игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("mutenonrpchat", function(client, target, value)
-    return Color(63, 162, 184), client, color_white, Color(48, 218, 187), value and " запретил" or " разрешил", color_white, " писать в NonRP чат игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, info2_color, value and " запретил" or " разрешил", color_white, " писать в NonRP чат игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("addhost", function(client, target)
-    return Color(63, 162, 184), client, color_white, " сделал ведущим игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " сделал ведущим игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("removehost", function(client, target)
-    return Color(63, 162, 184), client, color_white, " убрал из ведущих игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " убрал из ведущих игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("setdescription", function(client, target)
-    return Color(63, 162, 184), client, color_white, " изменил обычное описание игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, " изменил обычное описание игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("setforceddescription", function(client, target)
-    return Color(63, 162, 184), client, color_white, " изменил принудительное описание игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, " изменил принудительное описание игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("registeritem", function(client, uniqueID)
-    return Color(63, 162, 184), client, color_white, " создал предмет с ID ", Color(48, 218, 187), uniqueID
+    return client_color, client, color_white, " создал предмет с ID ", info2_color, uniqueID
 end)
 
 PLUGIN:AddNewNotify("edititem", function(client, uniqueID)
-    return Color(63, 162, 184), client, color_white, " изменил предмет с ID ", Color(48, 218, 187), uniqueID
+    return client_color, client, color_white, " изменил предмет с ID ", info2_color, uniqueID
 end)
 
 PLUGIN:AddNewNotify("removeitem", function(client, uniqueID)
-    return Color(63, 162, 184), client, color_white, " удалил предмет с ID ", Color(48, 218, 187), uniqueID
+    return client_color, client, color_white, " удалил предмет с ID ", info2_color, uniqueID
 end)
 
 PLUGIN:AddNewNotify("protectitem", function(client, uniqueID)
-    return Color(63, 162, 184), client, color_white, " снял/установил защиту на предмет с ID ", Color(48, 218, 187), uniqueID
+    return client_color, client, color_white, " снял/установил защиту на предмет с ID ", info2_color, uniqueID
 end)
 
 PLUGIN:AddNewNotify("changecharter", function(client)
-    return Color(63, 162, 184), client, color_white, " изменил устав академии"
+    return client_color, client, color_white, " изменил устав академии"
 end)
 
 PLUGIN:AddNewNotify("startsplashscreen", function(client)
-    return Color(63, 162, 184), client, color_white, " запустил заставку (глава)"
+    return client_color, client, color_white, " запустил заставку (глава)"
 end)
 
 PLUGIN:AddNewNotify("startendgame", function(client)
-    return Color(63, 162, 184), client, color_white, " запустил заставку (endgame)"
+    return client_color, client, color_white, " запустил заставку (endgame)"
 end)
 
 PLUGIN:AddNewNotify("setfallover", function(client, target, delay)
-    return Color(63, 162, 184), client, color_white, " опрокинул игрока ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), delay or 1, color_white, " секунд"
+    return client_color, client, color_white, " опрокинул игрока ", info_color, target, color_white, " на ", info2_color, delay or 1, color_white, " секунд"
 end)
 
 PLUGIN:AddNewNotify("setstandup", function(client, target, delay)
-    return Color(63, 162, 184), client, color_white, " поднял игрока ", Color(197, 181, 60), target
+    return client_color, client, color_white, " поднял игрока ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("addstatuseffect", function(client, target, uniqueID, delay)
-    return Color(63, 162, 184), client, color_white, " выдал статус эффект ", Color(48, 218, 187), uniqueID, color_white, " игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), delay
+    return client_color, client, color_white, " выдал статус эффект ", info2_color, uniqueID, color_white, " игроку ", info_color, target, color_white, " на ", info2_color, delay
 end)
 
 PLUGIN:AddNewNotify("removestatuseffect", function(client, target, uniqueID)
-    return Color(63, 162, 184), client, color_white, " убрал статус эффект ", Color(48, 218, 187), uniqueID, color_white, " игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, " убрал статус эффект ", info2_color, uniqueID, color_white, " игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("clearstatuseffect", function(client, target)
-    return Color(63, 162, 184), client, color_white, " убрал все статус эффекты игроку ", Color(197, 181, 60), target
+    return client_color, client, color_white, " убрал все статус эффекты игроку ", info_color, target
 end)
 
 PLUGIN:AddNewNotify("setscale", function(client, target, delay)
-    return Color(63, 162, 184), client, color_white, " изменил размер модели игроку ", Color(197, 181, 60), target, color_white, " на ", Color(48, 218, 187), delay
+    return client_color, client, color_white, " изменил размер модели игроку ", info_color, target, color_white, " на ", info2_color, delay
+end)
+
+PLUGIN:AddNewNotify("triggercreated", function(client, trigger)
+    return client_color, client, color_white, " создал триггер ", info_color, trigger
+end)
+
+PLUGIN:AddNewNotify("triggerremoved", function(client, trigger)
+    return client_color, client, color_white, " удалил триггер ", info_color, trigger
+end)
+
+PLUGIN:AddNewNotify("triggerchanged", function(client, name)
+    return client_color, client, color_white, " изменил триггер ", info_color, name
+end)
+
+PLUGIN:AddNewNotify("triggerloadconfig", function(client)
+    return client_color, client, color_white, " загрузил новую конфигурацию для триггеров"
 end)

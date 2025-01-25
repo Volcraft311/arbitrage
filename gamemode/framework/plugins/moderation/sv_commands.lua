@@ -688,6 +688,27 @@ timer.Simple(1, function()
         end
     })
 
+    Arbitrage.commands.Add("removesoundscape", {
+        arguments = {},
+        OnAction = function(client, target)
+            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
+
+            for k, v in ipairs(ents.GetAll()) do
+                if v:GetClass() == "env_soundscape" then
+                    v:Remove()
+                end
+            end
+
+            BroadcastLua([=[RunConsoleCommand("stopsound") RunConsoleCommand("stopsoundscape") RunConsoleCommand("snd_restart")]=])
+
+            hook.Add("PlayerInitialSpawnForRealz", "Arbitrage:RemoveSoundScape", function(client)
+                timer.Simple(1, function()
+                    client:SendLua([=[RunConsoleCommand("stopsound") RunConsoleCommand("stopsoundscape") RunConsoleCommand("snd_restart")]=])
+                end)
+            end)
+        end
+    })
+
     for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
         Arbitrage.commands.Add(command, {
             arguments = {

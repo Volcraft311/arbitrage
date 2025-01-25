@@ -103,6 +103,8 @@ for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) d
     RegisterCommand(command, "Забрать оружие у указанного пользователя.", {"player"})
 end
 
+RegisterCommand("removesoundscape", "Удалить все объекты связанные со звуком на карте.")
+
 
 function Moderation:HUDPaint()
     local client = LocalPlayer()

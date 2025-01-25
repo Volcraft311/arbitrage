@@ -13,13 +13,13 @@
 ]]--
 
 
-function Trigger:SyncAll(clients)
+function Trigger:SyncAll(receivers)
     local info = {}
     for id, trigger in pairs(Trigger.instances) do
         info[id] = trigger:GetSyncData()
     end
 
-    netstream.Heavy("Trigger:SyncAll", info)
+    netstream.Heavy(receivers, "Trigger:SyncAll", info)
 end
 
 

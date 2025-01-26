@@ -361,6 +361,24 @@ Trigger:AddActionType({
 })
 
 Trigger:AddActionType({
+    name = "Заморозить",
+    icon = "icon16/shape_square_delete.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local delay = args[1]
+
+        timer.Simple(delay or 0, function()
+            client:Freeze(true)
+        end)
+    end
+})
+
+Trigger:AddActionType({
     name = "Выключить триггер",
     icon = "icon16/cross.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",

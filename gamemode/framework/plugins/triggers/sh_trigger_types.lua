@@ -251,7 +251,7 @@ Trigger:AddActionType({
 
 Trigger:AddActionType({
     name = "Опрокинуть",
-    icon = "icon16/music.png",
+    icon = "icon16/status_away.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
     arguments = {
         [1] = {tooltip = "Время", type = "number", default = 1},

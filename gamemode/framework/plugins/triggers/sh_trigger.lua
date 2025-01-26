@@ -46,6 +46,15 @@ function Trigger:Create(data, id)
         trigger[k] = v
     end
 
+    -- save AdvDupe2
+    if SERVER then
+        local entity = ents.Create("arb_trigger")
+        entity:SetPos(trigger.points[1])
+        entity:Spawn()
+
+        trigger:SetEntity(entity)
+    end
+
     return trigger
 end
 
@@ -64,6 +73,10 @@ function Trigger:RemoveAll()
     self.lastID = 0
 
     if SERVER then
+        for k, v in ipairs(ents.FindByClass("arb_trigger")) do
+            v:Remove()
+        end
+
         netstream.Start(nil, "Trigger:RemoveAll")
     end
 end

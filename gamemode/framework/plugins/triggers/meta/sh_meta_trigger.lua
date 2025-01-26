@@ -20,6 +20,7 @@ TRIGGER.name = "undefined"
 TRIGGER.points = {Vector(0, 0, 0), Vector(5, 5, 5)}
 TRIGGER.isLocalPlayerInside = false
 TRIGGER.bIsActive = true
+TRIGGER.entity = nil
 TRIGGER.ActionList = {Enter = {}, Exit = {}}
 
 -- Энумираторы
@@ -48,6 +49,13 @@ end
 
 function TRIGGER:SetPoint(point, vector)
     self.points[point] = vector
+
+    if SERVER then
+        local entity = self:GetEntity()
+        if IsValid(entity) then
+            entity:SetPos(self.points[1])
+        end
+    end
 end
 
 function TRIGGER:GetPoints()
@@ -60,6 +68,16 @@ end
 
 function TRIGGER:GetActive()
     return self.bIsActive
+end
+
+function TRIGGER:SetEntity(entity)
+    entity.trigger = self
+
+    self.entity = entity
+end
+
+function TRIGGER:GetEntity()
+    return self.entity
 end
 
 function TRIGGER:AddAction(actionEnum, actionID, args)
@@ -80,7 +98,7 @@ end
 function TRIGGER:IsPlayerInside(client)
     client = client or LocalPlayer()
 
-    if client:GetMoveType() == MOVETYPE_NOCLIP or client:IsRagdoll() or client:IsRagdolling() then
+    if client:GetMoveType() == MOVETYPE_NOCLIP or client:IsRagdolling() then
         return false
     end
 
@@ -133,6 +151,12 @@ function TRIGGER:Remove()
     Trigger.instances[id] = nil
 
     if SERVER then
+        local entity = self:GetEntity()
+        if IsValid(entity) then
+            entity.bOnNetSend = true
+            entity:Remove()
+        end
+
         netstream.Start(nil, "Trigger:Remove", id)
     end
 end

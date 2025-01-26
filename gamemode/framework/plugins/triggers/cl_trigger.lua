@@ -49,6 +49,8 @@ netstream.Hook("Trigger:Remove", function(id)
     Trigger.selectedID = 0
 
     local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
     trigger:Remove()
 
     Trigger:UpdateActionLists()

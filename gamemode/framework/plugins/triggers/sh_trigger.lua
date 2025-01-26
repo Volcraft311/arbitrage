@@ -24,7 +24,10 @@ function Trigger:New(id)
         name = "undefined_" .. id,
         id = id,
         points = {Vector(0, 0, 0), Vector(5, 5, 5)},
-        ActionList = {Enter = {}, Exit = {}}
+        ActionList = {Enter = {}, Exit = {}},
+        EnteredList = {},
+        ExitedList = {},
+        isOneShot = false
     }
 
     setmetatable(trigger, self.meta)

@@ -22,6 +22,9 @@ TRIGGER.isLocalPlayerInside = false
 TRIGGER.bIsActive = true
 TRIGGER.entity = nil
 TRIGGER.ActionList = {Enter = {}, Exit = {}}
+TRIGGER.EnteredList = {}
+TRIGGER.ExitedList = {}
+TRIGGER.isOneShot = false
 
 -- Энумираторы
 ACTION_ENTER = "Enter"
@@ -87,6 +90,10 @@ function TRIGGER:AddAction(actionEnum, actionID, args)
     })
 end
 
+function TRIGGER:IsOneShot()
+    return self.isOneShot
+end
+
 function TRIGGER:RemoveAction(actionEnum, number)
     table.remove(self.ActionList[actionEnum], number)
 end
@@ -111,13 +118,15 @@ end
 
 function TRIGGER:PlayerEntered(client)
     if !self:GetActive() then return end
-
     client = client or LocalPlayer()
-
+    if self.isOneShot and table.HasValue(self.EnteredList, client) then
+        return
+    else
+        table.insert(self.EnteredList, client)
+    end
     if CLIENT then
         self.isLocalPlayerInside = true
         Trigger.PlayerInside[self] = true
-
         netstream.Start("Trigger:PlayerEntered", self.id)
     end
 
@@ -129,13 +138,17 @@ end
 
 function TRIGGER:PlayerExited(client)
     if !self:GetActive() then return end
-
     client = client or LocalPlayer()
+
+    if self.isOneShot and table.HasValue(self.ExitedList, client) then
+        return
+    else
+        table.insert(self.ExitedList, client)
+    end
 
     if CLIENT then
         self.isLocalPlayerInside = false
         Trigger.PlayerInside[self] = nil
-
         netstream.Start("Trigger:PlayerExited", self.id)
     end
 
@@ -174,8 +187,23 @@ function TRIGGER:GetSyncData()
         name = self.name,
         points = self.points,
         ActionList = self.ActionList,
-        bIsActive = self.bIsActive
+        bIsActive = self.bIsActive,
+        isOneShot = self.isOneShot,
+        EnteredList = self.EnteredList,
+        ExitedList = self.ExitedList
     }
+end
+
+function TRIGGER:SetOneShot(bool)
+    self.isOneShot = bool
+end
+
+function TRIGGER:ResetEnteredList()
+    self.EnteredList = {}
+end
+
+function TRIGGER:ResetExitedList()
+    self.ExitedList = {}
 end
 
 if SERVER then

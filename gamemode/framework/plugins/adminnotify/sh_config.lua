@@ -230,9 +230,14 @@ PLUGIN:AddNewNotify("triggerchanged", function(client, name)
 end)
 
 PLUGIN:AddNewNotify("triggerloadconfig", function(client)
-    return client_color, client, color_white, " загрузил новую конфигурацию для триггеров"
+    return client_color, client, color_white, " загрузил конфигурацию для триггеров"
 end)
 
 PLUGIN:AddNewNotify("triggerremoveall", function(client)
-    return client_color, client, color_white, " удалил все существующие триггеры"
+    return client_color, client, color_white, " удалил все триггеры"
 end)
+
+PLUGIN:AddNewNotify("triggerlistsreset", function(client)
+    return client_color, client, color_white, " перезарядил триггер"
+end)
+

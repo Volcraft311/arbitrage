@@ -155,3 +155,29 @@ netstream.Hook("Trigger:LoadConfig", function(client, info)
 
     Arbitrage.adminnotify:SendNotify("triggerloadconfig", client:FullName())
 end)
+
+netstream.Hook("Trigger:SetOneShot", function(client, id, bool)
+    if !client:IsAdmin() then return end
+
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:SetOneShot(bool)
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+end)
+
+
+netstream.Hook("Trigger:ReloadOneShot", function(client, id)
+    if !client:IsAdmin() then return end
+
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:ResetExitedList()
+    trigger:ResetEnteredList()
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerlistsreset", client:FullName(), trigger.name)
+end)

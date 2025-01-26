@@ -224,6 +224,7 @@ function TOOL.BuildCPanel(CPanel)
         Trigger.selectedID = value
         Trigger:UpdateActionLists()
     end
+    -- Меню триггеров
     TriggerList.OnRowRightClick = function(panel, index, row)
         local thisTrigger = Trigger:GetSelected()
 
@@ -253,14 +254,20 @@ function TOOL.BuildCPanel(CPanel)
             end
         end):SetIcon("icon16/page_edit.png")
 
-        Menu:AddSpacer()
 
         local bIsActive = thisTrigger:GetActive()
-        Menu:AddOption(bIsActive and "Выключить" or "Включить", function()
+        Menu:AddOption(bIsActive and "Включён" or "Выключен", function()
             netstream.Start("Trigger:SetActive", Trigger.selectedID)
-        end):SetIcon(bIsActive and "icon16/cross.png" or "icon16/tick.png")
+        end):SetIcon(bIsActive and "icon16/tick.png" or "icon16/cross.png")
 
-        local EnterAct, EnterActOption = Menu:AddSubMenu("Добавить действие на вход")
+
+        local isOneShot = thisTrigger:IsOneShot()
+        local _opt = Menu:AddOption(isOneShot and "Одноразовый" or "Многоразовый", function()
+            netstream.Start("Trigger:SetOneShot", Trigger.selectedID, !isOneShot)
+        end):SetIcon(isOneShot and "icon16/status_online.png" or "icon16/arrow_refresh_small.png")
+
+        Menu:AddSpacer()
+        local EnterAct, EnterActOption = Menu:AddSubMenu("Действие на вход")
         for k, v in pairs(Trigger.ActionTypes) do
             local _opt = EnterAct:AddOption(v.name, function()
                 netstream.Start("Trigger:AddAction", Trigger.selectedID, {
@@ -274,7 +281,7 @@ function TOOL.BuildCPanel(CPanel)
         end
         EnterActOption:SetIcon("icon16/script_code.png")
 
-        local ExitAct, ExitActOption = Menu:AddSubMenu("Добавить действие на выход")
+        local ExitAct, ExitActOption = Menu:AddSubMenu("Действие на выход")
         for k, v in pairs(Trigger.ActionTypes) do
             local _opt = ExitAct:AddOption(v.name, function()
                 netstream.Start("Trigger:AddAction", Trigger.selectedID, {
@@ -287,6 +294,33 @@ function TOOL.BuildCPanel(CPanel)
             _opt:SetIcon(v.icon or "icon16/bug.png")
         end
         ExitActOption:SetIcon("icon16/script_code_red.png")
+
+
+        Menu:AddSpacer()
+
+        local pos1ToPlayer = Menu:AddOption("Первую точку к игроку", function()
+            netstream.Start("Trigger:SetPos", Trigger.selectedID, 1, LocalPlayer():GetPos())
+        end)
+
+        pos1ToPlayer:SetIcon("icon16/arrow_in.png")
+
+        local pos2ToPlayer = Menu:AddOption("Вторую точку к игроку", function()
+            netstream.Start("Trigger:SetPos", Trigger.selectedID, 2, LocalPlayer():GetPos())
+        end)
+
+        pos2ToPlayer:SetIcon("icon16/arrow_in.png")
+        local isOneShot = thisTrigger:IsOneShot()
+
+        if isOneShot then
+            Menu:AddSpacer()
+
+            Menu:AddOption("Перезарядить", function()
+                netstream.Start("Trigger:ReloadOneShot", Trigger.selectedID)
+            end):SetIcon("icon16/arrow_refresh_small.png")
+
+        end
+
+        Menu:AddSpacer()
 
         Menu:AddOption("Удалить триггер", function()
             netstream.Start("Trigger:Remove", Trigger.selectedID)

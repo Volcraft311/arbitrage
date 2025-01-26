@@ -19,3 +19,4 @@ ENT.Spawnable = false
 ENT.AdminSpawnable = false
 ENT.PhysgunDisable = true
 ENT.bNoPersist = true
+ENT.bNoStuck = true

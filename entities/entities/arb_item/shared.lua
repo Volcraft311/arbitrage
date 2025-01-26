@@ -18,6 +18,7 @@ ENT.Category = "Asterion Academy"
 ENT.Spawnable = false
 ENT.PhysgunDisable = true
 ENT.bNoPersist = true
+ENT.bNoStuck = true
 
 function ENT:SetupDataTables()
     self:NetworkVar("String", 0, "UniqueID")

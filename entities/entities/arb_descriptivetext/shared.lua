@@ -18,3 +18,4 @@ ENT.Category = "Asterion Academy"
 ENT.Spawnable = false
 ENT.PhysgunDisable = true
 ENT.bNoPersist = true
+ENT.bNoStuck = true

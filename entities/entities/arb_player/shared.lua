@@ -19,6 +19,7 @@ ENT.Spawnable = false
 ENT.AdminSpawnable = true
 ENT.PhysgunDisable = true
 ENT.bNoPersist = true
+ENT.bNoStuck = true
 ENT.animation = "zombie_slump_idle_01"
 
 function ENT:SetAnim(animation)

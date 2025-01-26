@@ -100,7 +100,6 @@ function TRIGGER:RemoveAction(actionEnum, number)
 end
 
 function TRIGGER:EditAction(actionEnum, number, args, name)
-    print(args)
     self.ActionList[actionEnum][number].args = args
     self.ActionList[actionEnum][number].name = name
 end
@@ -122,10 +121,10 @@ end
 function TRIGGER:PlayerEntered(client)
     if !self:GetActive() then return end
     client = client or LocalPlayer()
-    if self.isOneShot and table.HasValue(self.EnteredList, client) then
+    if self.isOneShot and self.EnteredList[client] then
         return
     else
-        table.insert(self.EnteredList, client)
+        self.EnteredList[client] = true
     end
     if CLIENT then
         self.isLocalPlayerInside = true
@@ -142,11 +141,10 @@ end
 function TRIGGER:PlayerExited(client)
     if !self:GetActive() then return end
     client = client or LocalPlayer()
-
-    if self.isOneShot and table.HasValue(self.ExitedList, client) then
+    if self.isOneShot and self.ExitedList[client] then
         return
     else
-        table.insert(self.ExitedList, client)
+        self.ExitedList[client] = true
     end
 
     if CLIENT then

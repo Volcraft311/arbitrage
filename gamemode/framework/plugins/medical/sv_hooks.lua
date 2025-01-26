@@ -20,7 +20,8 @@ function Medical:ScalePlayerDamage(client, hitgroup, dmginfo)
 		client:AddTemporaryStatusEffect("pain", 30)
 		client:AddTemporaryStatusEffect("blackout", 25)
 
-		client:ViewPunch(Angle(3.7, -3.5, 3.3))
+		client:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 255), 2, 0)
+		client:ViewPunch(Angle(3.7 * 3, -3.5 * 3, 3.3 * 3))
 	elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 		client:AddTemporaryStatusEffect("broken_leg", 20)
 		client:AddTemporaryStatusEffect("pain", 2)
@@ -52,6 +53,11 @@ function Medical:EntityTakeDamage(client, dmginfo)
 	if dmginfo:IsFallDamage() then
 		client:AddTemporaryStatusEffect("broken_leg", 20)
 	end
+
+	client:ScreenFade(SCREENFADE.IN, Color(255, 0, 0, 128 * 0.75), 0.5, 0)
+
+	local amount = dmginfo:GetDamage()
+	client:ViewPunch(Angle(math.random(-amount, amount), math.random(-amount, amount), math.random(-amount, amount)))
 end
 
 function Medical:OnCommandTry(client, rand)

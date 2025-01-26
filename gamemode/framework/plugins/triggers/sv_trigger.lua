@@ -46,6 +46,13 @@ netstream.Hook("Trigger:PlayerExited", function(client, id)
     end
 end)
 
+netstream.Hook("Trigger:PlayerInteracted", function(client, id)
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+    
+    trigger:PlayerInteracted(client)
+end)
+
 netstream.Hook("Trigger:SetPos", function(client, id, point, vector)
     if !client:IsAdmin() then return end
 
@@ -101,7 +108,6 @@ netstream.Hook("Trigger:AddAction", function(client, id, data)
 
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
-
     trigger:AddAction(data.type, data.actionid, data.args, data.name)
     trigger:Sync()
 

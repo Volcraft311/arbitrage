@@ -119,11 +119,13 @@ function TOOL:Reload(trace)
 end
 
 function TOOL:DrawHUD()
+
     for id, trigger in pairs(Trigger.instances) do
         local point = (trigger.points[1] + trigger.points[2]) / 2
 
         local data2D = point:ToScreen()
         if !data2D.visible then continue end
+
 
         draw.RoundedBox(1, data2D.x - 20, data2D.y - 20, 40, 40, color_text_background)
         draw.SimpleText(trigger.name .. "(" .. id .. ")", "Trebuchet24", data2D.x, data2D.y, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -167,6 +169,10 @@ local trigger_actions = {
     [2] = {
         type = ACTION_EXIT,
         desc = "Событие при выходе из триггера"
+    },
+    [3] = {
+        type = ACTION_INTERACT,
+        desc = "Событие при нажатии на триггер"
     }
 }
 
@@ -227,6 +233,7 @@ function TOOL.BuildCPanel(CPanel)
     -- Меню триггеров
     TriggerList.OnRowRightClick = function(panel, index, row)
         local thisTrigger = Trigger:GetSelected()
+        local isOneShot = thisTrigger:IsOneShot()
 
         local Menu = DermaMenu()
 
@@ -261,12 +268,12 @@ function TOOL.BuildCPanel(CPanel)
         end):SetIcon(bIsActive and "icon16/tick.png" or "icon16/cross.png")
 
 
-        local isOneShot = thisTrigger:IsOneShot()
         local _opt = Menu:AddOption(isOneShot and "Одноразовый" or "Многоразовый", function()
             netstream.Start("Trigger:SetOneShot", Trigger.selectedID, !isOneShot)
         end):SetIcon(isOneShot and "icon16/status_online.png" or "icon16/arrow_refresh_small.png")
 
         Menu:AddSpacer()
+
         local EnterAct, EnterActOption = Menu:AddSubMenu("Действие на вход")
         for k, v in pairs(Trigger.ActionTypes) do
             local _opt = EnterAct:AddOption(v.name, function()
@@ -281,6 +288,21 @@ function TOOL.BuildCPanel(CPanel)
             _opt:SetIcon(v.icon or "icon16/bug.png")
         end
         EnterActOption:SetIcon("icon16/script_code.png")
+
+        local IntAct, IntActOption = Menu:AddSubMenu("Действие на нажатие")
+        for k, v in pairs(Trigger.ActionTypes) do
+            local _opt = IntAct:AddOption(v.name, function()
+                netstream.Start("Trigger:AddAction", Trigger.selectedID, {
+                    type = ACTION_INTERACT,
+                    actionid = k,
+                    args = v.default,
+                    name = "Действие"
+                })
+            end)
+
+            _opt:SetIcon(v.icon or "icon16/bug.png")
+        end
+        IntActOption:SetIcon("icon16/script_code_red.png")
 
         local ExitAct, ExitActOption = Menu:AddSubMenu("Действие на выход")
         for k, v in pairs(Trigger.ActionTypes) do
@@ -298,6 +320,7 @@ function TOOL.BuildCPanel(CPanel)
         ExitActOption:SetIcon("icon16/script_code_red.png")
 
 
+
         Menu:AddSpacer()
 
         local pos1ToPlayer = Menu:AddOption("Первую точку к игроку", function()
@@ -311,7 +334,6 @@ function TOOL.BuildCPanel(CPanel)
         end)
 
         pos2ToPlayer:SetIcon("icon16/arrow_in.png")
-        local isOneShot = thisTrigger:IsOneShot()
 
         if isOneShot then
             Menu:AddSpacer()
@@ -361,7 +383,7 @@ function TOOL.BuildCPanel(CPanel)
             if !thisTrigger then return end
 
             local thisAction = Trigger:ActionByID(row.thisActionID)
-            
+
             local Menu = DermaMenu()
             local SubMenu, SubMenuOption = Menu:AddSubMenu("Изменить Аргументы")
             local trigger_args = thisTrigger.ActionList[ActionType][index].args
@@ -372,28 +394,28 @@ function TOOL.BuildCPanel(CPanel)
                 str_arg:Center()
                 str_arg:MakePopup()
                 str_arg:SetTitle("Указать имя")
-    
+
                 local str_button = vgui.Create("DButton", str_arg)
                 str_button:SetText("Применить изменения")
                 str_button:Dock(BOTTOM)
                 str_button:SetWidth(20)
-    
+
                 local label = str_arg:Add("DTextEntry")
                 label:Dock(TOP)
                 label:SetText(row.thisActionName)
                 str_button.DoClick = function()
                     row.thisActionName = label:GetText()
-    
+
                     netstream.Start("Trigger:EditAction", Trigger.selectedID, {
                         type = ActionType,
                         number = index,
                         args = trigger_args,
                         name = row.thisActionName
                     })
-    
+
                     str_arg:Remove()
                 end
-            end):SetIcon("icon16/page_edit.png")    
+            end):SetIcon("icon16/page_edit.png") 
 
 
             for k2, v2 in pairs(thisAction.args) do
@@ -578,7 +600,6 @@ function TOOL.BuildCPanel(CPanel)
             Menu:Open()
         end
         CPanel:AddPanel(_list)
-
         Trigger.ActionLists[v.type] = _list
     end
 

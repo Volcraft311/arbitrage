@@ -21,14 +21,15 @@ TRIGGER.points = {Vector(0, 0, 0), Vector(5, 5, 5)}
 TRIGGER.isLocalPlayerInside = false
 TRIGGER.bIsActive = true
 TRIGGER.entity = nil
-TRIGGER.ActionList = {Enter = {}, Exit = {}}
+TRIGGER.ActionList = {Enter = {}, Exit = {}, Interact = {}}
 TRIGGER.EnteredList = {}
 TRIGGER.ExitedList = {}
+TRIGGER.InteractedList = {}
 TRIGGER.isOneShot = false
-
 -- Энумираторы
 ACTION_ENTER = "Enter"
 ACTION_EXIT = "Exit"
+ACTION_INTERACT = "Interact"
 
 function TRIGGER:__tostring()
     return "Trigger nmbr [" .. self.id .. "]"
@@ -115,7 +116,11 @@ function TRIGGER:IsPlayerInside(client)
     local pos = client:GetPos()
     pos.z = pos.z + max.z / 2
 
-    return pos:WithinAABox(self.points[1], self.points[2])
+    return self:IsVectorInside(pos)
+end
+
+function TRIGGER:IsVectorInside(vector) -- Используется в проверках - нажатия, нахождения игрока внутри.
+    return vector:WithinAABox(self.points[1], self.points[2])
 end
 
 function TRIGGER:PlayerEntered(client)
@@ -133,6 +138,24 @@ function TRIGGER:PlayerEntered(client)
     end
 
     for _, v in pairs(self.ActionList.Enter) do
+        local action = Trigger:ActionByID(v.action)
+        action.run(self, v.args, client)
+    end
+end
+
+function TRIGGER:PlayerInteracted(client)
+    if !self:GetActive() then return end
+    client = client or LocalPlayer()
+    if self.isOneShot and self.InteractedList[client] then
+        return
+    else
+        self.InteractedList[client] = true
+    end
+    if CLIENT then
+        netstream.Start("Trigger:PlayerInteracted", self.id)
+    end
+
+    for _, v in pairs(self.ActionList.Interact) do
         local action = Trigger:ActionByID(v.action)
         action.run(self, v.args, client)
     end
@@ -191,7 +214,8 @@ function TRIGGER:GetSyncData()
         bIsActive = self.bIsActive,
         isOneShot = self.isOneShot,
         EnteredList = self.EnteredList,
-        ExitedList = self.ExitedList
+        ExitedList = self.ExitedList,
+        isClickable = self.isClickable
     }
 end
 

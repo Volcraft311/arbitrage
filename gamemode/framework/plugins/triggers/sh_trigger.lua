@@ -24,9 +24,10 @@ function Trigger:New(id)
         name = "undefined_" .. id,
         id = id,
         points = {Vector(0, 0, 0), Vector(5, 5, 5)},
-        ActionList = {Enter = {}, Exit = {}},
+        ActionList = {Enter = {}, Exit = {}, Interact = {}},
         EnteredList = {},
         ExitedList = {},
+        InteractedList = {},
         isOneShot = false
     }
 
@@ -69,6 +70,14 @@ function Trigger:GetLast()
     local id = self.lastID
 
     return self.instances[id]
+end
+
+function Trigger:FindInPos(pos)
+    for _, trigger in pairs(Trigger.instances) do
+        if trigger:IsVectorInside(pos) then
+            return trigger
+        end
+    end
 end
 
 function Trigger:RemoveAll()

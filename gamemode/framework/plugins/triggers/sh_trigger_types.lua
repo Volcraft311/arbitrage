@@ -279,7 +279,6 @@ Trigger:AddActionType({
     },
     run = function(trigger, args, client)
         if CLIENT then return end
-
         local pos = args[1]
         local delay = args[2]
 

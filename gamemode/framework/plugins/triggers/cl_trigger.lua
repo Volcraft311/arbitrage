@@ -17,6 +17,8 @@ Trigger.drawTriggers = Trigger.drawTriggers or false
 Trigger.selectedID = 0
 Trigger.ActionLists = {}
 Trigger.PlayerInside = {}
+Trigger.InteractDistance = 128
+Trigger.Precision = 10
 
 netstream.Hook("Trigger:Sync", function(id, data)
     Trigger:Create(data, id)
@@ -91,6 +93,35 @@ function Trigger:PostDrawTranslucentRenderables()
 
     trigger:Draw(selected_trigger_color)
 end
+
+
+function Trigger:PlayerBindPress(ply, bind, pressed)
+    if bind != "+use" then return end
+    local start = ply:EyePos() + EyeAngles():Forward() * 16
+    local tl = util.TraceLine( {
+        start = start,
+        endpos = ply:EyePos() + EyeAngles():Forward() * self.InteractDistance,
+        filter = function( ent )
+            return true
+        end
+    } )
+    local hit = tl.HitPos
+    local points = {}
+    local step = (hit - start) / Trigger.Precision
+
+    for i = 1, Trigger.Precision do
+        points[i] = start + step * i
+    end
+    local trigger
+    for _, p in ipairs(points) do
+        trigger = Trigger:FindInPos(p)
+        if trigger then
+            trigger:PlayerInteracted()
+            break
+        end
+    end
+end
+
 
 function Trigger:DrawAll()
     for _, trigger in pairs(Trigger.instances) do

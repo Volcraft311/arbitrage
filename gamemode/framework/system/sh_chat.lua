@@ -413,7 +413,10 @@ Arbitrage.chat.List = {
     },
     ["pm"] = {
         Color = Color(42, 151, 51),
-        OnCreate = function(client, sender, target, message)
+        OnCreate = function(client, sender, data)
+            local target = data[1]
+            local message = data[2]
+
             local bSpectate = sender:IsSpectate()
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
@@ -422,10 +425,9 @@ Arbitrage.chat.List = {
         end,
         OnSend = function(client, name, data)
             local target = data[1]
-            local message = data[2]
 
-            Arbitrage.chat.SendClient(target, client, "pm", target, message)
-            Arbitrage.chat.SendClient(client, client, "pm", target, message)
+            Arbitrage.chat.SendClient(target, client, "pm", data)
+            Arbitrage.chat.SendClient(client, client, "pm", data)
         end,
         UseIcon = true
     },
@@ -471,7 +473,7 @@ function Arbitrage.chat.SendCommand(name, client, ...)
 
     Arbitrage.chat.List[name].OnSend(client, name, data)
 
-    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, ...))
+    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(nil, client, data))
 
     if tableData and istable(tableData) then
         local str = ""
@@ -492,11 +494,11 @@ function Arbitrage.chat.UnPackMessage(...)
     return data
 end
 
-function Arbitrage.chat.SendClient(client, sender, name, ...)
+function Arbitrage.chat.SendClient(client, sender, name, data)
     if !IsValid(client) then return end
     if !client:IsPlayer() then return end
 
-    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(client, sender, ...))
+    local tableData = Arbitrage.chat.UnPackMessage(Arbitrage.chat.List[name].OnCreate(client, sender, data))
 
     if tableData and istable(tableData) then
         netstream.Start(client, "arb.chatCommandCreate", sender, name, tableData)

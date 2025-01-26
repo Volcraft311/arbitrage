@@ -302,7 +302,7 @@ function TOOL.BuildCPanel(CPanel)
 
             _opt:SetIcon(v.icon or "icon16/bug.png")
         end
-        IntActOption:SetIcon("icon16/script_code_red.png")
+        IntActOption:SetIcon("icon16/script_go.png")
 
         local ExitAct, ExitActOption = Menu:AddSubMenu("Действие на выход")
         for k, v in pairs(Trigger.ActionTypes) do

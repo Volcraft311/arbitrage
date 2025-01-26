@@ -109,9 +109,10 @@ function Trigger:UpdateActionLists()
 
         for k, v in pairs(tr.ActionList[_act]) do
             local act = Trigger:ActionByID(v.action)
-            local _line = _list:AddLine(tostring(act.name))
+            local _line = _list:AddLine(tostring(act.name), tostring(v.name))
 
             _line.thisActionID = v.action
+            _line.thisActionName = v.name
         end
     end
 end

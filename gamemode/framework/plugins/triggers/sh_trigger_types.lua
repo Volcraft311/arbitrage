@@ -129,8 +129,8 @@ Trigger:AddActionType({
     icon = "icon16/image_delete.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
     arguments = {
-        [1] = {name = "Задержка до выполнения", type = "number", default = 0},
-        [2] = {name = "Неизбежный", type = "bool", default = true}
+        [1] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+        [2] = {tooltip = "Неизбежный", type = "bool", default = true}
     },
     run = function(trigger, args, client)
         if SERVER then return end

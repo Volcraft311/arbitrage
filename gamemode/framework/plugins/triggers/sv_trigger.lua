@@ -102,7 +102,7 @@ netstream.Hook("Trigger:AddAction", function(client, id, data)
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
 
-    trigger:AddAction(data.type, data.actionid, data.args)
+    trigger:AddAction(data.type, data.actionid, data.args, data.name)
     trigger:Sync()
 
     Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
@@ -114,7 +114,7 @@ netstream.Hook("Trigger:EditAction", function(client, id, data)
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
 
-    trigger:EditAction(data.type, data.number, data.args)
+    trigger:EditAction(data.type, data.number, data.args, data.name)
     trigger:Sync()
 
     Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
@@ -168,7 +168,6 @@ netstream.Hook("Trigger:SetOneShot", function(client, id, bool)
     Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
-
 netstream.Hook("Trigger:ReloadOneShot", function(client, id)
     if !client:IsAdmin() then return end
 
@@ -180,4 +179,16 @@ netstream.Hook("Trigger:ReloadOneShot", function(client, id)
     trigger:Sync()
 
     Arbitrage.adminnotify:SendNotify("triggerlistsreset", client:FullName(), trigger.name)
+end)
+
+netstream.Hook("Trigger:MoveAction", function(client, id, data)
+    if !client:IsAdmin() then return end
+
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+    Print(data)
+    trigger:MoveAction(data.type, data.number, data.direction)
+    trigger:Sync()
+
+    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)

@@ -83,10 +83,11 @@ function TRIGGER:GetEntity()
     return self.entity
 end
 
-function TRIGGER:AddAction(actionEnum, actionID, args)
+function TRIGGER:AddAction(actionEnum, actionID, args, name)
     table.insert(self.ActionList[actionEnum], {
         action = actionID,
-        args = args
+        args = args,
+        name = name
     })
 end
 
@@ -98,8 +99,10 @@ function TRIGGER:RemoveAction(actionEnum, number)
     table.remove(self.ActionList[actionEnum], number)
 end
 
-function TRIGGER:EditAction(actionEnum, number, args)
+function TRIGGER:EditAction(actionEnum, number, args, name)
+    print(args)
     self.ActionList[actionEnum][number].args = args
+    self.ActionList[actionEnum][number].name = name
 end
 
 function TRIGGER:IsPlayerInside(client)
@@ -205,6 +208,24 @@ end
 function TRIGGER:ResetExitedList()
     self.ExitedList = {}
 end
+
+function TRIGGER:MoveAction(actionEnum, number, direction)
+    local actionList = self.ActionList[actionEnum]
+    local action = actionList[number]
+    local newIndex = number + direction
+
+    if newIndex > 0 and newIndex <= #actionList then
+        if direction < 0 then
+            table.remove(actionList, number)
+            table.insert(actionList, newIndex, action)
+        else
+            table.remove(actionList, number)
+            table.insert(actionList, newIndex, action)
+        end
+    end
+end
+
+
 
 if SERVER then
     function TRIGGER:Sync(receivers)

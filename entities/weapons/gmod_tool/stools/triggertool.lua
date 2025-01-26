@@ -273,7 +273,8 @@ function TOOL.BuildCPanel(CPanel)
                 netstream.Start("Trigger:AddAction", Trigger.selectedID, {
                     type = ACTION_ENTER,
                     actionid = k,
-                    args = v.default
+                    args = v.default,
+                    name = "Действие"
                 })
             end)
 
@@ -287,7 +288,8 @@ function TOOL.BuildCPanel(CPanel)
                 netstream.Start("Trigger:AddAction", Trigger.selectedID, {
                     type = ACTION_EXIT,
                     actionid = k,
-                    args = v.default
+                    args = v.default,
+                    name = "Действие"
                 })
             end)
 
@@ -342,6 +344,7 @@ function TOOL.BuildCPanel(CPanel)
         local _list = vgui.Create("DListView")
         _list:Dock(TOP)
         _list:AddColumn("Действия")
+        _list:AddColumn("Имя")
         _list:SetTall(200)
         _list.act_type = v.type
         _list.OnRowRightClick = function(panel, index, row)
@@ -358,13 +361,44 @@ function TOOL.BuildCPanel(CPanel)
             if !thisTrigger then return end
 
             local thisAction = Trigger:ActionByID(row.thisActionID)
-
+            
             local Menu = DermaMenu()
             local SubMenu, SubMenuOption = Menu:AddSubMenu("Изменить Аргументы")
-            for k2, v2 in pairs(thisAction.args) do
-                local trigger_args = thisTrigger.ActionList[ActionType][index].args
+            local trigger_args = thisTrigger.ActionList[ActionType][index].args
 
-                local arg = SubMenu:AddOption(thisAction.args_desc[k2], function()
+            Menu:AddOption("Изменить имя", function()
+                local str_arg = vgui.Create("DFrame")
+                str_arg:SetSize(500, 100)
+                str_arg:Center()
+                str_arg:MakePopup()
+                str_arg:SetTitle("Указать имя")
+    
+                local str_button = vgui.Create("DButton", str_arg)
+                str_button:SetText("Применить изменения")
+                str_button:Dock(BOTTOM)
+                str_button:SetWidth(20)
+    
+                local label = str_arg:Add("DTextEntry")
+                label:Dock(TOP)
+                label:SetText(row.thisActionName)
+                str_button.DoClick = function()
+                    row.thisActionName = label:GetText()
+    
+                    netstream.Start("Trigger:EditAction", Trigger.selectedID, {
+                        type = ActionType,
+                        number = index,
+                        args = trigger_args,
+                        name = row.thisActionName
+                    })
+    
+                    str_arg:Remove()
+                end
+            end):SetIcon("icon16/page_edit.png")    
+
+
+            for k2, v2 in pairs(thisAction.args) do
+
+                local arg = SubMenu:AddOption(thisAction.args_desc[k2] or "missing", function()
                     local str_arg = vgui.Create("DFrame")
                     str_arg:SetSize(500, 100)
                     str_arg:Center()
@@ -387,7 +421,8 @@ function TOOL.BuildCPanel(CPanel)
                             netstream.Start("Trigger:EditAction", Trigger.selectedID, {
                                 type = ActionType,
                                 number = index,
-                                args = trigger_args
+                                args = trigger_args,
+                                name = row.thisActionName
                             })
 
                             str_arg:Remove()
@@ -403,7 +438,8 @@ function TOOL.BuildCPanel(CPanel)
                             netstream.Start("Trigger:EditAction", Trigger.selectedID, {
                                 type = ActionType,
                                 number = index,
-                                args = trigger_args
+                                args = trigger_args,
+                                name = row.thisActionName
                             })
 
                             str_arg:Remove()
@@ -414,7 +450,8 @@ function TOOL.BuildCPanel(CPanel)
                         netstream.Start("Trigger:EditAction", Trigger.selectedID, {
                             type = ActionType,
                             number = index,
-                            args = trigger_args
+                            args = trigger_args,
+                            name = row.thisActionName
                         })
 
                         str_arg:Remove()
@@ -437,7 +474,8 @@ function TOOL.BuildCPanel(CPanel)
                             netstream.Start("Trigger:EditAction", Trigger.selectedID, {
                                 type = ActionType,
                                 number = index,
-                                args = trigger_args
+                                args = trigger_args,
+                                name = row.thisActionName
                             })
 
                             str_arg:Remove()
@@ -482,7 +520,8 @@ function TOOL.BuildCPanel(CPanel)
                             netstream.Start("Trigger:EditAction", Trigger.selectedID, {
                                 type = ActionType,
                                 number = index,
-                                args = trigger_args
+                                args = trigger_args,
+                                name = thisAction.name
                             })
 
                             str_arg:Remove()
@@ -510,6 +549,24 @@ function TOOL.BuildCPanel(CPanel)
             SubMenuOption:SetIcon("icon16/script_gear.png")
 
             Menu:AddSpacer()
+            if index > 1 then
+                Menu:AddOption("Перместить наверх", function()
+                    netstream.Start("Trigger:MoveAction", Trigger.selectedID, {
+                        type = ActionType,
+                        number = index,
+                        direction = -1 -- наверх
+                    })
+                end):SetIcon("icon16/arrow_up.png")
+            end
+            if index < #thisTrigger.ActionList[ActionType] then
+                Menu:AddOption("Перместить вниз", function()
+                    netstream.Start("Trigger:MoveAction", Trigger.selectedID, {
+                        type = ActionType,
+                        number = index,
+                        direction = 1 -- вниз
+                    })
+                end):SetIcon("icon16/arrow_down.png")
+            end
 
             Menu:AddOption("Удалить Действие", function()
                 netstream.Start("Trigger:RemoveAction", Trigger.selectedID, {

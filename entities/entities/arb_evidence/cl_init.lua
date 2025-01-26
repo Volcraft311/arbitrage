@@ -11,8 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-include("shared.lua");
+include("shared.lua")
 
 function ENT:Draw()
-	self:DrawModel();
 end

@@ -396,6 +396,27 @@ Trigger:AddActionType({
 })
 
 Trigger:AddActionType({
+    name = "Поджечь",
+    icon = "icon16/transmit.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Длина", type = "number", default = 5},
+        [2] = {tooltip = "Радиус", type = "number", default = 0},
+        [3] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local length = args[1]
+        local radius = args[2]
+        local delay = args[3]
+
+        timer.Simple(delay or 0, function()
+            client:Ignite(length, radius)
+        end)
+    end
+})
+Trigger:AddActionType({
     name = "Выключить триггер",
     icon = "icon16/cross.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",

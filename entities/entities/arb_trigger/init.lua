@@ -35,7 +35,7 @@ function ENT:Initialize()
 end
 
 function ENT:OnRemove()
-	if self.bOnNetSend then return end
+	if self.bNoNetSend then return end
 
 	local trigger = self.trigger
 	if !trigger then return end

@@ -126,7 +126,6 @@ function TOOL:DrawHUD()
         local data2D = point:ToScreen()
         if !data2D.visible then continue end
 
-
         draw.RoundedBox(1, data2D.x - 20, data2D.y - 20, 40, 40, color_text_background)
         draw.SimpleText(trigger.name .. "(" .. id .. ")", "Trebuchet24", data2D.x, data2D.y, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
@@ -190,7 +189,13 @@ function TOOL.BuildCPanel(CPanel)
             Derma_StringRequest("Сохранить Триггеры", "Введите название документа в который вы хотите сохранить триггеры", "", function(text)
                 local data = {}
                 for k, v in pairs(Trigger.instances) do
-                    data[#data + 1] = {v.name, v.points, v.ActionList}
+                    data[#data + 1] = {
+                        [1] = v.name,
+                        [2] = v.points,
+                        [3] = v.ActionList,
+                        [4] = v.bIsActive,
+                        [5] = v.bOneShot
+                    }
                 end
 
                 file.Write(file_name.map .. "/" .. text .. ".txt", util.TableToJSON(data))
@@ -233,7 +238,6 @@ function TOOL.BuildCPanel(CPanel)
     -- Меню триггеров
     TriggerList.OnRowRightClick = function(panel, index, row)
         local thisTrigger = Trigger:GetSelected()
-        local isOneShot = thisTrigger:IsOneShot()
 
         local Menu = DermaMenu()
 
@@ -261,22 +265,21 @@ function TOOL.BuildCPanel(CPanel)
             end
         end):SetIcon("icon16/page_edit.png")
 
-
         local bIsActive = thisTrigger:GetActive()
         Menu:AddOption(bIsActive and "Включён" or "Выключен", function()
             netstream.Start("Trigger:SetActive", Trigger.selectedID)
         end):SetIcon(bIsActive and "icon16/tick.png" or "icon16/cross.png")
 
-
-        local _opt = Menu:AddOption(isOneShot and "Одноразовый" or "Многоразовый", function()
-            netstream.Start("Trigger:SetOneShot", Trigger.selectedID, !isOneShot)
-        end):SetIcon(isOneShot and "icon16/status_online.png" or "icon16/arrow_refresh_small.png")
+        local bOneShot = thisTrigger:GetOneShot()
+        local _opt = Menu:AddOption(bOneShot and "Одноразовый" or "Многоразовый", function()
+            netstream.Start("Trigger:SetOneShot", Trigger.selectedID, !bOneShot)
+        end):SetIcon(bOneShot and "icon16/status_online.png" or "icon16/arrow_refresh_small.png")
 
         Menu:AddSpacer()
 
         local EnterAct, EnterActOption = Menu:AddSubMenu("Действие на вход")
         for k, v in pairs(Trigger.ActionTypes) do
-            local _opt = EnterAct:AddOption(v.name, function()
+            local dMenu = EnterAct:AddOption(v.name, function()
                 netstream.Start("Trigger:AddAction", Trigger.selectedID, {
                     type = ACTION_ENTER,
                     actionid = k,
@@ -285,28 +288,13 @@ function TOOL.BuildCPanel(CPanel)
                 })
             end)
 
-            _opt:SetIcon(v.icon or "icon16/bug.png")
+            dMenu:SetIcon(v.icon or "icon16/bug.png")
         end
         EnterActOption:SetIcon("icon16/script_code.png")
 
-        local IntAct, IntActOption = Menu:AddSubMenu("Действие на нажатие")
-        for k, v in pairs(Trigger.ActionTypes) do
-            local _opt = IntAct:AddOption(v.name, function()
-                netstream.Start("Trigger:AddAction", Trigger.selectedID, {
-                    type = ACTION_INTERACT,
-                    actionid = k,
-                    args = v.default,
-                    name = "Действие"
-                })
-            end)
-
-            _opt:SetIcon(v.icon or "icon16/bug.png")
-        end
-        IntActOption:SetIcon("icon16/script_go.png")
-
         local ExitAct, ExitActOption = Menu:AddSubMenu("Действие на выход")
         for k, v in pairs(Trigger.ActionTypes) do
-            local _opt = ExitAct:AddOption(v.name, function()
+            local dMenu = ExitAct:AddOption(v.name, function()
                 netstream.Start("Trigger:AddAction", Trigger.selectedID, {
                     type = ACTION_EXIT,
                     actionid = k,
@@ -315,11 +303,24 @@ function TOOL.BuildCPanel(CPanel)
                 })
             end)
 
-            _opt:SetIcon(v.icon or "icon16/bug.png")
+            dMenu:SetIcon(v.icon or "icon16/bug.png")
         end
         ExitActOption:SetIcon("icon16/script_code_red.png")
 
+        local IntAct, IntActOption = Menu:AddSubMenu("Действие на нажатие")
+        for k, v in pairs(Trigger.ActionTypes) do
+            local dMenu = IntAct:AddOption(v.name, function()
+                netstream.Start("Trigger:AddAction", Trigger.selectedID, {
+                    type = ACTION_INTERACT,
+                    actionid = k,
+                    args = v.default,
+                    name = "Действие"
+                })
+            end)
 
+            dMenu:SetIcon(v.icon or "icon16/bug.png")
+        end
+        IntActOption:SetIcon("icon16/script_go.png")
 
         Menu:AddSpacer()
 
@@ -335,7 +336,7 @@ function TOOL.BuildCPanel(CPanel)
 
         pos2ToPlayer:SetIcon("icon16/arrow_in.png")
 
-        if isOneShot then
+        if bOneShot then
             Menu:AddSpacer()
 
             Menu:AddOption("Перезарядить", function()
@@ -419,7 +420,6 @@ function TOOL.BuildCPanel(CPanel)
 
 
             for k2, v2 in pairs(thisAction.args) do
-
                 local arg = SubMenu:AddOption(thisAction.args_desc[k2] or "missing", function()
                     local str_arg = vgui.Create("DFrame")
                     str_arg:SetSize(500, 100)
@@ -571,8 +571,9 @@ function TOOL.BuildCPanel(CPanel)
             SubMenuOption:SetIcon("icon16/script_gear.png")
 
             Menu:AddSpacer()
+
             if index > 1 then
-                Menu:AddOption("Перместить наверх", function()
+                Menu:AddOption("Переместить наверх", function()
                     netstream.Start("Trigger:MoveAction", Trigger.selectedID, {
                         type = ActionType,
                         number = index,
@@ -580,8 +581,9 @@ function TOOL.BuildCPanel(CPanel)
                     })
                 end):SetIcon("icon16/arrow_up.png")
             end
+
             if index < #thisTrigger.ActionList[ActionType] then
-                Menu:AddOption("Перместить вниз", function()
+                Menu:AddOption("Переместить вниз", function()
                     netstream.Start("Trigger:MoveAction", Trigger.selectedID, {
                         type = ActionType,
                         number = index,

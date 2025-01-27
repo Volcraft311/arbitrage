@@ -27,8 +27,7 @@ function Trigger:New(id)
         ActionList = {Enter = {}, Exit = {}, Interact = {}},
         EnteredList = {},
         ExitedList = {},
-        InteractedList = {},
-        isOneShot = false
+        InteractedList = {}
     }
 
     setmetatable(trigger, self.meta)
@@ -80,13 +79,43 @@ function Trigger:FindInPos(pos)
     end
 end
 
+function Trigger:FindInTraceLine(client)
+    local eyePos = client:EyePos()
+    local eyeAngles = client:EyeAngles()
+
+    local start = eyePos + eyeAngles:Forward() * 16
+    local trace = util.TraceLine({
+        start = start,
+        endpos = eyePos + eyeAngles:Forward() * self.InteractDistance,
+        filter = function(entity)
+            return true
+        end
+    })
+
+    local hitPos = trace.HitPos
+    local step = (hitPos - start) / self.Precision
+
+    local points = {}
+    for i = 1, self.Precision do
+        points[i] = start + step * i
+    end
+
+    for _, point in ipairs(points) do
+        local trigger = self:FindInPos(point)
+        if !trigger then continue end
+
+        return trigger
+    end
+end
+
 function Trigger:RemoveAll()
     self.instances = {}
     self.lastID = 0
 
     if SERVER then
-        for k, v in ipairs(ents.FindByClass("arb_trigger")) do
-            v:Remove()
+        for _, entity in ipairs(ents.FindByClass("arb_trigger")) do
+            entity.bNoNetSend = true
+            entity:Remove()
         end
 
         netstream.Start(nil, "Trigger:RemoveAll")

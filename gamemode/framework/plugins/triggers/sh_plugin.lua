@@ -22,6 +22,8 @@ Trigger.meta = Trigger.meta or {}
 Trigger.instances = Trigger.instances or {}
 Trigger.lastID = Trigger.lastID or 0
 
+Trigger.InteractDistance = 128
+Trigger.Precision = 10
 
 Arbitrage.base.Include("meta/sh_meta_trigger.lua")
 Arbitrage.base.Include("cl_trigger.lua")

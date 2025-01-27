@@ -17,8 +17,6 @@ Trigger.drawTriggers = Trigger.drawTriggers or false
 Trigger.selectedID = 0
 Trigger.ActionLists = {}
 Trigger.PlayerInside = {}
-Trigger.InteractDistance = 128
-Trigger.Precision = 10
 
 netstream.Hook("Trigger:Sync", function(id, data)
     Trigger:Create(data, id)
@@ -84,62 +82,44 @@ end)
 
 local selected_trigger_color = Color(255, 247, 0, 100)
 function Trigger:PostDrawTranslucentRenderables()
-    if !Trigger.drawTriggers then return end
+    if !self.drawTriggers then return end
 
-    Trigger:DrawAll()
+    self:DrawAll()
 
-    local trigger = Trigger:GetSelected()
+    local trigger = self:GetSelected()
     if !trigger then return end
 
     trigger:Draw(selected_trigger_color)
 end
 
 
-function Trigger:PlayerBindPress(ply, bind, pressed)
+function Trigger:PlayerBindPress(client, bind, pressed)
     if bind != "+use" then return end
-    local start = ply:EyePos() + EyeAngles():Forward() * 16
-    local tl = util.TraceLine( {
-        start = start,
-        endpos = ply:EyePos() + EyeAngles():Forward() * self.InteractDistance,
-        filter = function( ent )
-            return true
-        end
-    } )
-    local hit = tl.HitPos
-    local points = {}
-    local step = (hit - start) / Trigger.Precision
 
-    for i = 1, Trigger.Precision do
-        points[i] = start + step * i
-    end
-    local trigger
-    for _, p in ipairs(points) do
-        trigger = Trigger:FindInPos(p)
-        if trigger then
-            trigger:PlayerInteracted()
-            break
-        end
-    end
+    local trigger = self:FindInTraceLine(client)
+    if !trigger then return end
+
+    trigger:PlayerInteracted()
 end
 
 
 function Trigger:DrawAll()
-    for _, trigger in pairs(Trigger.instances) do
+    for _, trigger in pairs(self.instances) do
         trigger:Draw()
     end
 end
 
 function Trigger:UpdateActionLists()
-    local tr = Trigger:GetSelected()
+    local tr = self:GetSelected()
     if !tr then return end
 
-    for _act, _list in pairs(Trigger.ActionLists) do
+    for _act, _list in pairs(self.ActionLists) do
         if !IsValid(_list) then continue end
 
         _list:Clear()
 
         for k, v in pairs(tr.ActionList[_act]) do
-            local act = Trigger:ActionByID(v.action)
+            local act = self:ActionByID(v.action)
             local _line = _list:AddLine(tostring(act.name), tostring(v.name))
 
             _line.thisActionID = v.action
@@ -149,13 +129,13 @@ function Trigger:UpdateActionLists()
 end
 
 function Trigger:UpdateTriggerList()
-    local tl = Trigger.TriggerList
+    local tl = self.TriggerList
     if !IsValid(tl) then return end
 
     tl:ClearSelection()
     tl:Clear()
 
-    local triggers = Trigger.instances
+    local triggers = self.instances
     for id, data in pairs(triggers) do
         tl:AddLine(tostring(data.name), tostring(id))
     end

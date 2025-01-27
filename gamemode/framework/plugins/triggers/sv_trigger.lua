@@ -49,7 +49,10 @@ end)
 netstream.Hook("Trigger:PlayerInteracted", function(client, id)
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
-    
+
+    local traceTrigger = Trigger:FindInTraceLine(client)
+    if traceTrigger != trigger then return end
+
     trigger:PlayerInteracted(client)
 end)
 
@@ -146,22 +149,6 @@ netstream.Hook("Trigger:RemoveAll", function(client)
     Arbitrage.adminnotify:SendNotify("triggerremoveall", client:FullName())
 end)
 
-netstream.Hook("Trigger:LoadConfig", function(client, info)
-    if !client:IsAdmin() then return end
-
-    for _, data in ipairs(info) do
-        local trigger = Trigger:Create({
-            name = data[1],
-            points = data[2],
-            ActionList = data[3],
-        })
-
-        trigger:Sync()
-    end
-
-    Arbitrage.adminnotify:SendNotify("triggerloadconfig", client:FullName())
-end)
-
 netstream.Hook("Trigger:SetOneShot", function(client, id, bool)
     if !client:IsAdmin() then return end
 
@@ -182,6 +169,7 @@ netstream.Hook("Trigger:ReloadOneShot", function(client, id)
 
     trigger:ResetExitedList()
     trigger:ResetEnteredList()
+    trigger:ResetInteractedList()
     trigger:Sync()
 
     Arbitrage.adminnotify:SendNotify("triggerlistsreset", client:FullName(), trigger.name)
@@ -192,9 +180,27 @@ netstream.Hook("Trigger:MoveAction", function(client, id, data)
 
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
-    Print(data)
+
     trigger:MoveAction(data.type, data.number, data.direction)
     trigger:Sync()
 
     Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+end)
+
+netstream.Hook("Trigger:LoadConfig", function(client, info)
+    if !client:IsAdmin() then return end
+
+    for _, data in ipairs(info) do
+        local trigger = Trigger:Create({
+            name = data[1],
+            points = data[2],
+            ActionList = data[3],
+            bIsActive = data[4],
+            bOneShot = data[5]
+        })
+
+        trigger:Sync()
+    end
+
+    Arbitrage.adminnotify:SendNotify("triggerloadconfig", client:FullName())
 end)

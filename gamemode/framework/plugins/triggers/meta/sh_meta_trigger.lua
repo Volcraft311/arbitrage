@@ -20,12 +20,13 @@ TRIGGER.name = "undefined"
 TRIGGER.points = {Vector(0, 0, 0), Vector(5, 5, 5)}
 TRIGGER.isLocalPlayerInside = false
 TRIGGER.bIsActive = true
+TRIGGER.bOneShot = false
 TRIGGER.entity = nil
 TRIGGER.ActionList = {Enter = {}, Exit = {}, Interact = {}}
 TRIGGER.EnteredList = {}
 TRIGGER.ExitedList = {}
 TRIGGER.InteractedList = {}
-TRIGGER.isOneShot = false
+
 -- Энумираторы
 ACTION_ENTER = "Enter"
 ACTION_EXIT = "Exit"
@@ -56,6 +57,7 @@ function TRIGGER:SetPoint(point, vector)
 
     if SERVER then
         local entity = self:GetEntity()
+
         if IsValid(entity) then
             entity:SetPos(self.points[1])
         end
@@ -92,17 +94,21 @@ function TRIGGER:AddAction(actionEnum, actionID, args, name)
     })
 end
 
-function TRIGGER:IsOneShot()
-    return self.isOneShot
+function TRIGGER:EditAction(actionEnum, number, args, name)
+    self.ActionList[actionEnum][number].args = args
+    self.ActionList[actionEnum][number].name = name
 end
 
 function TRIGGER:RemoveAction(actionEnum, number)
     table.remove(self.ActionList[actionEnum], number)
 end
 
-function TRIGGER:EditAction(actionEnum, number, args, name)
-    self.ActionList[actionEnum][number].args = args
-    self.ActionList[actionEnum][number].name = name
+function TRIGGER:SetOneShot(bOneShot)
+    self.bOneShot = bOneShot
+end
+
+function TRIGGER:GetOneShot()
+    return self.bOneShot
 end
 
 function TRIGGER:IsPlayerInside(client)
@@ -125,15 +131,19 @@ end
 
 function TRIGGER:PlayerEntered(client)
     if !self:GetActive() then return end
+
     client = client or LocalPlayer()
-    if self.isOneShot and self.EnteredList[client] then
+
+    if self.bOneShot and self.EnteredList[client] then
         return
     else
         self.EnteredList[client] = true
     end
+
     if CLIENT then
         self.isLocalPlayerInside = true
         Trigger.PlayerInside[self] = true
+
         netstream.Start("Trigger:PlayerEntered", self.id)
     end
 
@@ -143,28 +153,12 @@ function TRIGGER:PlayerEntered(client)
     end
 end
 
-function TRIGGER:PlayerInteracted(client)
-    if !self:GetActive() then return end
-    client = client or LocalPlayer()
-    if self.isOneShot and self.InteractedList[client] then
-        return
-    else
-        self.InteractedList[client] = true
-    end
-    if CLIENT then
-        netstream.Start("Trigger:PlayerInteracted", self.id)
-    end
-
-    for _, v in pairs(self.ActionList.Interact) do
-        local action = Trigger:ActionByID(v.action)
-        action.run(self, v.args, client)
-    end
-end
-
 function TRIGGER:PlayerExited(client)
     if !self:GetActive() then return end
+
     client = client or LocalPlayer()
-    if self.isOneShot and self.ExitedList[client] then
+
+    if self.bOneShot and self.ExitedList[client] then
         return
     else
         self.ExitedList[client] = true
@@ -173,10 +167,32 @@ function TRIGGER:PlayerExited(client)
     if CLIENT then
         self.isLocalPlayerInside = false
         Trigger.PlayerInside[self] = nil
+
         netstream.Start("Trigger:PlayerExited", self.id)
     end
 
     for _, v in pairs(self.ActionList.Exit) do
+        local action = Trigger:ActionByID(v.action)
+        action.run(self, v.args, client)
+    end
+end
+
+function TRIGGER:PlayerInteracted(client)
+    if !self:GetActive() then return end
+
+    client = client or LocalPlayer()
+
+    if self.bOneShot and self.InteractedList[client] then
+        return
+    else
+        self.InteractedList[client] = true
+    end
+
+    if CLIENT then
+        netstream.Start("Trigger:PlayerInteracted", self.id)
+    end
+
+    for _, v in pairs(self.ActionList.Interact) do
         local action = Trigger:ActionByID(v.action)
         action.run(self, v.args, client)
     end
@@ -190,7 +206,7 @@ function TRIGGER:Remove()
     if SERVER then
         local entity = self:GetEntity()
         if IsValid(entity) then
-            entity.bOnNetSend = true
+            entity.bNoNetSend = true
             entity:Remove()
         end
 
@@ -212,15 +228,12 @@ function TRIGGER:GetSyncData()
         points = self.points,
         ActionList = self.ActionList,
         bIsActive = self.bIsActive,
-        isOneShot = self.isOneShot,
+        bOneShot = self.bOneShot,
         EnteredList = self.EnteredList,
         ExitedList = self.ExitedList,
+        InteractedList = self.InteractedList,
         isClickable = self.isClickable
     }
-end
-
-function TRIGGER:SetOneShot(bool)
-    self.isOneShot = bool
 end
 
 function TRIGGER:ResetEnteredList()
@@ -231,18 +244,22 @@ function TRIGGER:ResetExitedList()
     self.ExitedList = {}
 end
 
+function TRIGGER:ResetInteractedList()
+    self.InteractedList = {}
+end
+
 function TRIGGER:MoveAction(actionEnum, number, direction)
     local actionList = self.ActionList[actionEnum]
     local action = actionList[number]
-    local newIndex = number + direction
 
-    if newIndex > 0 and newIndex <= #actionList then
+    local idx = number + direction
+    if idx > 0 and idx <= #actionList then
         if direction < 0 then
             table.remove(actionList, number)
-            table.insert(actionList, newIndex, action)
+            table.insert(actionList, idx, action)
         else
             table.remove(actionList, number)
-            table.insert(actionList, newIndex, action)
+            table.insert(actionList, idx, action)
         end
     end
 end

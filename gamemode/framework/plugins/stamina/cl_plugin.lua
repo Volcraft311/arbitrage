@@ -74,7 +74,7 @@ function Stamina:HUDPaint()
 	if a != 0 or alphastamina > 0.05 then 
 		alphastamina = Lerp(frametime * 10, alphastamina, a)
 	end
-	
+
 	if alphastamina <= 0.1 then return end
 
 	surface_SetDrawColor(color.r, color.g, color.b, alphastamina * (10 / 255))

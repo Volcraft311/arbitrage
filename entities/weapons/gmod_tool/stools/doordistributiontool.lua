@@ -392,6 +392,9 @@ if CLIENT then
         isAllowDraw = false
     end)
 
+    local color_green = Color(0, 255, 0)
+    local color_blue = Color(0, 0, 255)
+
     function TOOL:DrawHUD()
         isAllowDraw = true
 

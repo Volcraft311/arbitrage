@@ -416,6 +416,24 @@ Trigger:AddActionType({
         end)
     end
 })
+
+Trigger:AddActionType({
+    name = "Потушить",
+    icon = "icon16/transmit_blue.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local delay = args[1]
+
+        timer.Simple(delay or 0, function()
+            client:Extinguish()
+        end)
+    end
+})
 Trigger:AddActionType({
     name = "Выключить триггер",
     icon = "icon16/cross.png",

@@ -134,9 +134,11 @@ function TRIGGER:PlayerEntered(client)
 
     client = client or LocalPlayer()
 
-    if self.bOneShot and self.EnteredList[client] then
-        return
-    else
+    if self.bOneShot then
+        if self.EnteredList[client] then
+            return
+        end
+
         self.EnteredList[client] = true
     end
 
@@ -158,9 +160,11 @@ function TRIGGER:PlayerExited(client)
 
     client = client or LocalPlayer()
 
-    if self.bOneShot and self.ExitedList[client] then
-        return
-    else
+    if self.bOneShot then
+        if self.ExitedList[client] then
+            return
+        end
+
         self.ExitedList[client] = true
     end
 
@@ -182,9 +186,11 @@ function TRIGGER:PlayerInteracted(client)
 
     client = client or LocalPlayer()
 
-    if self.bOneShot and self.InteractedList[client] then
-        return
-    else
+    if self.bOneShot then
+        if self.InteractedList[client] then
+            return
+        end
+
         self.InteractedList[client] = true
     end
 
@@ -231,8 +237,7 @@ function TRIGGER:GetSyncData()
         bOneShot = self.bOneShot,
         EnteredList = self.EnteredList,
         ExitedList = self.ExitedList,
-        InteractedList = self.InteractedList,
-        isClickable = self.isClickable
+        InteractedList = self.InteractedList
     }
 end
 

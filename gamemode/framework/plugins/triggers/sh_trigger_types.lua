@@ -434,6 +434,27 @@ Trigger:AddActionType({
         end)
     end
 })
+
+Trigger:AddActionType({
+    name = "Нанести урон",
+    icon = "icon16/chart_line.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Количество", type = "number", default = 1},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0},
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local amount = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            client:TakeDamage(amount)
+        end)
+    end
+})
+
 Trigger:AddActionType({
     name = "Выключить триггер",
     icon = "icon16/cross.png",

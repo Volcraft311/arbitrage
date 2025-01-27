@@ -265,32 +265,36 @@ local function get(id, eyePos, checkDist)
     return entity, x, y, info
 end
 
-function TOOL:DrawHUD()
-    local eyePos = EyePos()
+if CLIENT then
+    local color_red = Color(255, 0, 0)
 
-    local showMapCreation = GetConVar(l .. "drawmapcreationstored"):GetBool()
-    local showSelectedStored = GetConVar(l .. "drawselectedstored"):GetBool()
+    function TOOL:DrawHUD()
+        local eyePos = EyePos()
 
-    if showMapCreation then
-        for _, entity in ipairs(ents.GetAll()) do
-            local creationID = entity:MapCreationID()
-            if creationID <= -1 then continue end
+        local showMapCreation = GetConVar(l .. "drawmapcreationstored"):GetBool()
+        local showSelectedStored = GetConVar(l .. "drawselectedstored"):GetBool()
 
-            local isSel = SelectedStored[creationID]
-            if showSelectedStored and isSel then continue end
+        if showMapCreation then
+            for _, entity in ipairs(ents.GetAll()) do
+                local creationID = entity:MapCreationID()
+                if creationID <= -1 then continue end
 
-            local _, x, y, info = get(entity:EntIndex(), eyePos, true)
+                local isSel = SelectedStored[creationID]
+                if showSelectedStored and isSel then continue end
 
-            draw.SimpleText(info, "Default", x, y, isSel and color_red or color_white, TEXT_ALIGN_CENTER)
+                local _, x, y, info = get(entity:EntIndex(), eyePos, true)
+
+                draw.SimpleText(info, "Default", x, y, isSel and color_red or color_white, TEXT_ALIGN_CENTER)
+            end
         end
-    end
 
-    if showSelectedStored then
-        for k, v in pairs(SelectedStored) do
-            local entity, x, y, info = get(k, eyePos)
-            if !entity then continue end
+        if showSelectedStored then
+            for k, v in pairs(SelectedStored) do
+                local entity, x, y, info = get(k, eyePos)
+                if !entity then continue end
 
-            draw.SimpleText(info, "Default", x, y, color_red, TEXT_ALIGN_CENTER)
+                draw.SimpleText(info, "Default", x, y, color_red, TEXT_ALIGN_CENTER)
+            end
         end
     end
 end

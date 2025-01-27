@@ -30,7 +30,7 @@ function PLUGIN:CheckPassword(steamID64)
 			return true
 		end
 
-		return false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь в тех. поддержку нашего сервера.\n\nПодробная информация: https://asterion.games"
+		return false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь к игровому мастеру проводившему игру.\n\nПодробная информация: https://asterion.games/academy"
 	end
 end
 

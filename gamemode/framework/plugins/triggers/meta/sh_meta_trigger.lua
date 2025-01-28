@@ -59,7 +59,7 @@ function TRIGGER:SetPoint(point, vector)
         local entity = self:GetEntity()
 
         if IsValid(entity) then
-            entity:SetPos(self.points[1])
+            entity:SetPos(vector)
         end
     end
 end

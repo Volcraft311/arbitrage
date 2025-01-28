@@ -168,7 +168,7 @@ Trigger:AddActionType({
 })
 
 Trigger:AddActionType({
-    name = "Написать в чат",
+    name = "Написать в чат(Локально)",
     icon = "icon16/email_edit.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
     arguments = {
@@ -183,6 +183,25 @@ Trigger:AddActionType({
 
         timer.Simple(delay or 0, function()
             chat.AddText(message)
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Написать в чат(Глобально)",
+    icon = "icon16/email_open.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Сообщение", type = "string", default = "Текст"},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+
+        local message = args[1]
+        local delay = args[2]
+        timer.Simple(delay or 0, function()
+            Arbitrage.commands.Notify(nil, message)
         end)
     end
 })
@@ -297,6 +316,25 @@ Trigger:AddActionType({
                 client:SetPos(pos)
                 client:CheckStuck(0.3)
             end
+        end)
+    end
+})
+
+Trigger:AddActionType({
+    name = "Повернуть",
+    icon = "icon16/camera_edit.png",
+    hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
+    arguments = {
+        [1] = {tooltip = "Угол", type = "angle", default = Angle(0, 0, 0)},
+        [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
+    },
+    run = function(trigger, args, client)
+        if CLIENT then return end
+        local angle = args[1]
+        local delay = args[2]
+
+        timer.Simple(delay or 0, function()
+            client:SetEyeAngles(angle)
         end)
     end
 })

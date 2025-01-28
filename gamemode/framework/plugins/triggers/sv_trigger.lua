@@ -189,18 +189,15 @@ end)
 
 netstream.Hook("Trigger:LoadConfig", function(client, info)
     if !client:IsAdmin() then return end
-
     for _, data in ipairs(info) do
-        local trigger = Trigger:Create({
-            name = data[1],
-            points = data[2],
-            ActionList = data[3],
-            bIsActive = data[4],
-            bOneShot = data[5]
-        })
-
-        trigger:Sync()
+        local base = Trigger:Sample()
+        for k in pairs(base) do
+            base[k] = data[k]
+        end
+        Trigger:Create(base)
     end
+
+    Trigger:SyncAll()
 
     Arbitrage.adminnotify:SendNotify("triggerloadconfig", client:FullName())
 end)

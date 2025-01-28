@@ -14,14 +14,7 @@
 --
 AddCSLuaFile()
 
-local file_name = {
-    tool = "academy_triggertool",
-    config = "academy_triggertool_configs",
-    map = "academy_triggertool_configs/" .. game.GetMap()
-}
 
-file.CreateDir(file_name.config)
-file.CreateDir(file_name.map)
 
 TOOL.Name = "Trigger Tool"
 TOOL.Category = "Asterion Tools"
@@ -187,29 +180,17 @@ function TOOL.BuildCPanel(CPanel)
         local Menu = DermaMenu()
         Menu:AddOption("Сохранить список", function()
             Derma_StringRequest("Сохранить Триггеры", "Введите название документа в который вы хотите сохранить триггеры", "", function(text)
-                local data = {}
-                for k, v in pairs(Trigger.instances) do
-                    data[#data + 1] = {
-                        [1] = v.name,
-                        [2] = v.points,
-                        [3] = v.ActionList,
-                        [4] = v.bIsActive,
-                        [5] = v.bOneShot
-                    }
-                end
-
-                file.Write(file_name.map .. "/" .. text .. ".txt", util.TableToJSON(data))
+                Trigger:Save(text)
             end, nil, "Сохранить", "Отменить")
         end):SetIcon("icon16/add.png")
 
         local Child, Parent = Menu:AddSubMenu("Загрузить список")
         Parent:SetIcon("icon16/arrow_down.png")
-        local files = file.Find(file_name.map .. "/*", "DATA")
-        for k, v in ipairs(files) do
-            Child:AddOption(v, function()
-                local data = util.JSONToTable(file.Read(file_name.map .. "/" .. v, "DATA"))
-
-                netstream.Heavy("Trigger:LoadConfig", data)
+        local path = Trigger.files.map .. "/"
+        local files = file.Find(path .. "*", "DATA")
+        for _, fname in ipairs(files) do
+            Child:AddOption(fname, function()
+                Trigger:Load(fname)
             end)
         end
 
@@ -416,7 +397,7 @@ function TOOL.BuildCPanel(CPanel)
 
                     str_arg:Remove()
                 end
-            end):SetIcon("icon16/page_edit.png") 
+            end):SetIcon("icon16/page_edit.png")
 
 
             for k2, v2 in pairs(thisAction.args) do
@@ -548,6 +529,52 @@ function TOOL.BuildCPanel(CPanel)
 
                             str_arg:Remove()
                         end
+                    elseif v2 == "angle" then
+                        local angle = trigger_args[k2]
+                        local answer = {}
+
+                        str_arg:SetSize(300, 250)
+                        str_arg:Center()
+
+                        for k3, v3 in ipairs({"pitch", "yaw", "roll"}) do
+                            local text = str_arg:Add("DLabel")
+                            text:SetText(v3:upper())
+                            text:Dock(TOP)
+
+                            local label = str_arg:Add("DTextEntry")
+                            label:SetText(angle[v3])
+                            label:Dock(TOP)
+
+                            answer[k3] = label
+                        end
+
+                        local current_pos = str_arg:Add("DButton")
+                        current_pos:SetText("Текущий угол")
+                        current_pos:Dock(BOTTOM)
+                        current_pos.DoClick = function()
+                            local pos = LocalPlayer():GetAngles()
+
+                            for k3, v3 in pairs(answer) do
+                                v3:SetText(pos[k3])
+                            end
+                        end
+
+                        str_button.DoClick = function()
+                            local pitch = tonumber(answer[1]:GetText())
+                            local yaw = tonumber(answer[2]:GetText())
+                            local roll = tonumber(answer[3]:GetText())
+
+                            trigger_args[k2] = Angle(pitch, yaw, roll)
+
+                            netstream.Start("Trigger:EditAction", Trigger.selectedID, {
+                                type = ActionType,
+                                number = index,
+                                args = trigger_args,
+                                name = thisAction.name
+                            })
+
+                            str_arg:Remove()
+                        end
                     end
                 end)
 
@@ -564,6 +591,8 @@ function TOOL.BuildCPanel(CPanel)
                     icon = "calendar_add"
                 elseif v2 == "color" then
                     icon = "color_wheel"
+                elseif v2 == "angle" then
+                    icon = "camera"
                 end
 
                 arg:SetIcon("icon16/" .. icon .. ".png")

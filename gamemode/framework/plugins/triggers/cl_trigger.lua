@@ -18,51 +18,16 @@ Trigger.selectedID = 0
 Trigger.ActionLists = {}
 Trigger.PlayerInside = {}
 
-netstream.Hook("Trigger:Sync", function(id, data)
-    Trigger:Create(data, id)
 
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
-end)
+Trigger.files = {
+    tool = "academy_triggertool",
+    config = "academy_triggertool_configs",
+    map = "academy_triggertool_configs/" .. game.GetMap()
+}
 
-netstream.Hook("Trigger:SyncAll", function(info)
-    Trigger:RemoveAll()
+file.CreateDir(Trigger.files.config)
+file.CreateDir(Trigger.files.map)
 
-    for id, data in pairs(info) do
-        Trigger:Create(data, id)
-    end
-
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
-end)
-
-netstream.Hook("Trigger:SelectTool", function(id)
-    timer.Simple(0, function() -- sync create...
-        local trigger = Trigger:GetByID(id)
-        if !trigger then return end
-
-        trigger:SelectTool()
-    end)
-end)
-
-netstream.Hook("Trigger:Remove", function(id)
-    Trigger.selectedID = 0
-
-    local trigger = Trigger:GetByID(id)
-    if !trigger then return end
-
-    trigger:Remove()
-
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
-end)
-
-netstream.Hook("Trigger:RemoveAll", function()
-    Trigger:RemoveAll()
-
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
-end)
 
 timer.Create("Trigger:IsPlayerInside", 0.05, 0, function()
     local client = LocalPlayer()
@@ -140,3 +105,82 @@ function Trigger:UpdateTriggerList()
         tl:AddLine(tostring(data.name), tostring(id))
     end
 end
+
+function Trigger:Save(name)
+    local save_data = {}
+    for k, v in pairs(Trigger.instances) do
+        save_data[#save_data + 1] = v:GetSaveData()
+    end
+    file.Write(self.files.map .. "/" .. name .. ".txt", util.TableToJSON(save_data))
+end
+
+function Trigger:Load(name)
+    local data = util.JSONToTable(file.Read(self.files.map .. "/" .. name, "DATA"))
+    if !data then
+        chat.AddText("Файл сохранения повреждён.")
+        return
+    end
+    -------- Вырезать позже
+    if Trigger:IsOutdated(data) then
+        file.Delete(self.files.map .. "/" .. name, "DATA")
+        return chat.AddText("Файл сохранения устарел и был удалён.")
+    end
+    --------
+    netstream.Heavy("Trigger:LoadConfig", data)
+end
+
+
+---------------------------------------------------------------------------------- Старый формат(Вырезать позже)
+
+function Trigger:IsOutdated(data)
+    if data[1][1] then return true end
+    return false
+end
+----------------------------------------------------------------------------------
+
+
+netstream.Hook("Trigger:Sync", function(id, data)
+    Trigger:Create(data, id)
+
+    Trigger:UpdateActionLists()
+    Trigger:UpdateTriggerList()
+end)
+
+netstream.Hook("Trigger:SyncAll", function(info)
+    Trigger:RemoveAll()
+
+    for id, data in pairs(info) do
+        Trigger:Create(data, id)
+    end
+
+    Trigger:UpdateActionLists()
+    Trigger:UpdateTriggerList()
+end)
+
+netstream.Hook("Trigger:SelectTool", function(id)
+    timer.Simple(0, function() -- sync create...
+        local trigger = Trigger:GetByID(id)
+        if !trigger then return end
+
+        trigger:SelectTool()
+    end)
+end)
+
+netstream.Hook("Trigger:Remove", function(id)
+    Trigger.selectedID = 0
+
+    local trigger = Trigger:GetByID(id)
+    if !trigger then return end
+
+    trigger:Remove()
+
+    Trigger:UpdateActionLists()
+    Trigger:UpdateTriggerList()
+end)
+
+netstream.Hook("Trigger:RemoveAll", function()
+    Trigger:RemoveAll()
+
+    Trigger:UpdateActionLists()
+    Trigger:UpdateTriggerList()
+end)

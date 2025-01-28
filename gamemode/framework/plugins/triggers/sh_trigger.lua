@@ -20,15 +20,8 @@ function Trigger:New(id)
         return self.instances[id]
     end
 
-    local trigger = {
-        name = "undefined_" .. id,
-        id = id,
-        points = {Vector(0, 0, 0), Vector(5, 5, 5)},
-        ActionList = {Enter = {}, Exit = {}, Interact = {}},
-        EnteredList = {},
-        ExitedList = {},
-        InteractedList = {}
-    }
+    local trigger = Trigger:Sample()
+    trigger.id = id
 
     setmetatable(trigger, self.meta)
 
@@ -59,6 +52,18 @@ function Trigger:Create(data, id)
     end
 
     return trigger
+end
+
+function Trigger:Sample()
+    return {
+        name = "Unnamed",
+        id = -1,
+        points = {Vector(0, 0, 0), Vector(5, 5, 5)},
+        ActionList = {Enter = {}, Exit = {}, Interact = {}},
+        EnteredList = {},
+        ExitedList = {},
+        InteractedList = {}
+    }
 end
 
 function Trigger:GetByID(id)
@@ -133,3 +138,4 @@ function Trigger:ActionByID(actionID)
 
     return action
 end
+

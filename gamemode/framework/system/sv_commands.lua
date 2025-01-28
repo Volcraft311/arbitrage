@@ -111,8 +111,6 @@ end
 function Arbitrage.commands.Notify(client, ...)
     local dataTable = {...}
 
-    if !IsValid(client) then return end
-
     netstream.Start(client, "arb.ChatNotify", dataTable)
 end
 

@@ -228,17 +228,23 @@ function TRIGGER:SelectTool(receivers)
     end
 end
 
-function TRIGGER:GetSyncData()
+function TRIGGER:GetSaveData()
     return {
         name = self.name,
         points = self.points,
         ActionList = self.ActionList,
         bIsActive = self.bIsActive,
         bOneShot = self.bOneShot,
-        EnteredList = self.EnteredList,
-        ExitedList = self.ExitedList,
-        InteractedList = self.InteractedList
     }
+end
+
+function TRIGGER:GetSyncData()
+    local data = self:GetSaveData()
+    data.EnteredList = self.EnteredList
+    data.ExitedList = self.ExitedList
+    data.InteractedList = self.InteractedList
+
+    return data
 end
 
 function TRIGGER:ResetEnteredList()

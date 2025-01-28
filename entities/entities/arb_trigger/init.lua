@@ -58,13 +58,7 @@ function ENT:PreEntityCopy()
 	local trigger = self.trigger
 	if !trigger then return end
 
-	local data = trigger:GetSyncData()
-
-	data.EnteredList = nil
-	data.ExitedList = nil
-	data.InteractedList = nil
-
-	self.BoneMods.triggerData = data
+	self.BoneMods.triggerData = trigger:GetSaveData()
 end
 
 function ENT:UpdateTransmitState()

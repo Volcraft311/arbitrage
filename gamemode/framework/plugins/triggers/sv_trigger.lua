@@ -15,7 +15,7 @@
 
 function Trigger:SyncAll(receivers)
     local info = {}
-    for id, trigger in pairs(Trigger.instances) do
+    for id, trigger in pairs(self.instances) do
         info[id] = trigger:GetSyncData()
     end
 
@@ -99,7 +99,6 @@ netstream.Hook("Trigger:SetActive", function(client, id)
     if !trigger then return end
 
     local bIsActive = !trigger:GetActive()
-
     trigger:SetActive(bIsActive)
     trigger:Sync()
 
@@ -111,6 +110,7 @@ netstream.Hook("Trigger:AddAction", function(client, id, data)
 
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
+
     trigger:AddAction(data.type, data.actionid, data.args, data.name)
     trigger:Sync()
 
@@ -194,6 +194,7 @@ netstream.Hook("Trigger:LoadConfig", function(client, info)
         for k in pairs(base) do
             base[k] = data[k]
         end
+
         Trigger:Create(base)
     end
 

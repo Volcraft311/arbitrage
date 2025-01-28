@@ -118,7 +118,9 @@ Trigger:AddActionType({
                     ColorModify.CurrentTColor[k] = ColorModify.AllTweens[k]:GetValue()
                 end
 
-                if ColorModify.AllTweens["color"]:TimeLeft() <= 0 then timer.Remove("Trigger:ColorModify") end
+                if ColorModify.AllTweens["color"]:TimeLeft() <= 0 then
+                    timer.Remove("Trigger:ColorModify")
+                end
             end)
         end)
     end
@@ -168,7 +170,7 @@ Trigger:AddActionType({
 })
 
 Trigger:AddActionType({
-    name = "Написать в чат(Локально)",
+    name = "Написать в чат (Локально)",
     icon = "icon16/email_edit.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
     arguments = {
@@ -176,19 +178,19 @@ Trigger:AddActionType({
         [2] = {tooltip = "Задержка до выполнения", type = "number", default = 0}
     },
     run = function(trigger, args, client)
-        if SERVER then return end
+        if CLIENT then return end
 
         local message = args[1]
         local delay = args[2]
 
         timer.Simple(delay or 0, function()
-            chat.AddText(message)
+            Arbitrage.commands.Notify(client, message)
         end)
     end
 })
 
 Trigger:AddActionType({
-    name = "Написать в чат(Глобально)",
+    name = "Написать в чат (Глобально)",
     icon = "icon16/email_open.png",
     hint = "ПОМОЩИ НЕ БУДЕТ, МОЛИСЬ",
     arguments = {
@@ -200,6 +202,7 @@ Trigger:AddActionType({
 
         local message = args[1]
         local delay = args[2]
+
         timer.Simple(delay or 0, function()
             Arbitrage.commands.Notify(nil, message)
         end)
@@ -330,6 +333,7 @@ Trigger:AddActionType({
     },
     run = function(trigger, args, client)
         if CLIENT then return end
+
         local angle = args[1]
         local delay = args[2]
 

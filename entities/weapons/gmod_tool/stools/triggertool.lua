@@ -112,7 +112,6 @@ function TOOL:Reload(trace)
 end
 
 function TOOL:DrawHUD()
-
     for id, trigger in pairs(Trigger.instances) do
         local point = (trigger.points[1] + trigger.points[2]) / 2
 
@@ -178,21 +177,22 @@ function TOOL.BuildCPanel(CPanel)
     saveButton:Dock(BOTTOM)
     saveButton.DoClick = function()
         local Menu = DermaMenu()
+
         Menu:AddOption("Сохранить список", function()
             Derma_StringRequest("Сохранить Триггеры", "Введите название документа в который вы хотите сохранить триггеры", "", function(text)
                 Trigger:Save(text)
             end, nil, "Сохранить", "Отменить")
         end):SetIcon("icon16/add.png")
 
-        local Child, Parent = Menu:AddSubMenu("Загрузить список")
-        Parent:SetIcon("icon16/arrow_down.png")
+        local SubMenu, SubMenuOption = Menu:AddSubMenu("Загрузить список")
         local path = Trigger.files.map .. "/"
         local files = file.Find(path .. "*", "DATA")
         for _, fname in ipairs(files) do
-            Child:AddOption(fname, function()
+            SubMenu:AddOption(fname, function()
                 Trigger:Load(fname)
             end)
         end
+        SubMenuOption:SetIcon("icon16/arrow_down.png")
 
         Menu:Open()
     end
@@ -252,7 +252,7 @@ function TOOL.BuildCPanel(CPanel)
         end):SetIcon(bIsActive and "icon16/tick.png" or "icon16/cross.png")
 
         local bOneShot = thisTrigger:GetOneShot()
-        local _opt = Menu:AddOption(bOneShot and "Одноразовый" or "Многоразовый", function()
+        Menu:AddOption(bOneShot and "Одноразовый" or "Многоразовый", function()
             netstream.Start("Trigger:SetOneShot", Trigger.selectedID, !bOneShot)
         end):SetIcon(bOneShot and "icon16/status_online.png" or "icon16/arrow_refresh_small.png")
 
@@ -305,17 +305,13 @@ function TOOL.BuildCPanel(CPanel)
 
         Menu:AddSpacer()
 
-        local pos1ToPlayer = Menu:AddOption("Первую точку к игроку", function()
+        Menu:AddOption("Первую точку к игроку", function()
             netstream.Start("Trigger:SetPos", Trigger.selectedID, 1, LocalPlayer():GetPos())
-        end)
+        end):SetIcon("icon16/arrow_in.png")
 
-        pos1ToPlayer:SetIcon("icon16/arrow_in.png")
-
-        local pos2ToPlayer = Menu:AddOption("Вторую точку к игроку", function()
+        Menu:AddOption("Вторую точку к игроку", function()
             netstream.Start("Trigger:SetPos", Trigger.selectedID, 2, LocalPlayer():GetPos())
-        end)
-
-        pos2ToPlayer:SetIcon("icon16/arrow_in.png")
+        end):SetIcon("icon16/arrow_in.png")
 
         if bOneShot then
             Menu:AddSpacer()
@@ -323,7 +319,6 @@ function TOOL.BuildCPanel(CPanel)
             Menu:AddOption("Перезарядить", function()
                 netstream.Start("Trigger:ReloadOneShot", Trigger.selectedID)
             end):SetIcon("icon16/arrow_refresh_small.png")
-
         end
 
         Menu:AddSpacer()
@@ -398,7 +393,6 @@ function TOOL.BuildCPanel(CPanel)
                     str_arg:Remove()
                 end
             end):SetIcon("icon16/page_edit.png")
-
 
             for k2, v2 in pairs(thisAction.args) do
                 local arg = SubMenu:AddOption(thisAction.args_desc[k2] or "missing", function()

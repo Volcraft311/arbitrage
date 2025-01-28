@@ -275,8 +275,6 @@ function TRIGGER:MoveAction(actionEnum, number, direction)
     end
 end
 
-
-
 if SERVER then
     function TRIGGER:Sync(receivers)
         local data = self:GetSyncData()

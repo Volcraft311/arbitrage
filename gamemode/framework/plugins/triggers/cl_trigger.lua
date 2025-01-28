@@ -17,8 +17,6 @@ Trigger.drawTriggers = Trigger.drawTriggers or false
 Trigger.selectedID = 0
 Trigger.ActionLists = {}
 Trigger.PlayerInside = {}
-
-
 Trigger.files = {
     tool = "academy_triggertool",
     config = "academy_triggertool_configs",
@@ -27,46 +25,6 @@ Trigger.files = {
 
 file.CreateDir(Trigger.files.config)
 file.CreateDir(Trigger.files.map)
-
-
-timer.Create("Trigger:IsPlayerInside", 0.05, 0, function()
-    local client = LocalPlayer()
-
-    for _, trigger in pairs(Trigger.instances) do
-        if trigger.isLocalPlayerInside then
-            if !trigger:IsPlayerInside(client) then
-                trigger:PlayerExited(client)
-            end
-        else
-            if trigger:IsPlayerInside(client) then
-                trigger:PlayerEntered(client)
-            end
-        end
-    end
-end)
-
-local selected_trigger_color = Color(255, 247, 0, 100)
-function Trigger:PostDrawTranslucentRenderables()
-    if !self.drawTriggers then return end
-
-    self:DrawAll()
-
-    local trigger = self:GetSelected()
-    if !trigger then return end
-
-    trigger:Draw(selected_trigger_color)
-end
-
-
-function Trigger:PlayerBindPress(client, bind, pressed)
-    if bind != "+use" then return end
-
-    local trigger = self:FindInTraceLine(client)
-    if !trigger then return end
-
-    trigger:PlayerInteracted()
-end
-
 
 function Trigger:DrawAll()
     for _, trigger in pairs(self.instances) do
@@ -129,14 +87,51 @@ function Trigger:Load(name)
     netstream.Heavy("Trigger:LoadConfig", data)
 end
 
-
 ---------------------------------------------------------------------------------- Старый формат(Вырезать позже)
-
 function Trigger:IsOutdated(data)
     if data[1][1] then return true end
     return false
 end
 ----------------------------------------------------------------------------------
+
+
+local selected_trigger_color = Color(255, 247, 0, 100)
+function Trigger:PostDrawTranslucentRenderables()
+    if !self.drawTriggers then return end
+
+    self:DrawAll()
+
+    local trigger = self:GetSelected()
+    if !trigger then return end
+
+    trigger:Draw(selected_trigger_color)
+end
+
+function Trigger:PlayerBindPress(client, bind, pressed)
+    if bind != "+use" then return end
+
+    local trigger = self:FindInTraceLine(client)
+    if !trigger then return end
+
+    trigger:PlayerInteracted()
+end
+
+
+timer.Create("Trigger:IsPlayerInside", 0.05, 0, function()
+    local client = LocalPlayer()
+
+    for _, trigger in pairs(Trigger.instances) do
+        if trigger.isLocalPlayerInside then
+            if !trigger:IsPlayerInside(client) then
+                trigger:PlayerExited(client)
+            end
+        else
+            if trigger:IsPlayerInside(client) then
+                trigger:PlayerEntered(client)
+            end
+        end
+    end
+end)
 
 
 netstream.Hook("Trigger:Sync", function(id, data)

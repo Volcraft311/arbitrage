@@ -15,6 +15,18 @@
 
 Trigger.ActionTypes = {}
 
+function Trigger:Sample()
+    return {
+        name = "Unnamed",
+        id = -1,
+        points = {Vector(0, 0, 0), Vector(5, 5, 5)},
+        ActionList = {Enter = {}, Exit = {}, Interact = {}},
+        EnteredList = {},
+        ExitedList = {},
+        InteractedList = {}
+    }
+end
+
 function Trigger:New(id)
     if self.instances[id] then
         return self.instances[id]
@@ -52,18 +64,6 @@ function Trigger:Create(data, id)
     end
 
     return trigger
-end
-
-function Trigger:Sample()
-    return {
-        name = "Unnamed",
-        id = -1,
-        points = {Vector(0, 0, 0), Vector(5, 5, 5)},
-        ActionList = {Enter = {}, Exit = {}, Interact = {}},
-        EnteredList = {},
-        ExitedList = {},
-        InteractedList = {}
-    }
 end
 
 function Trigger:GetByID(id)
@@ -138,4 +138,3 @@ function Trigger:ActionByID(actionID)
 
     return action
 end
-

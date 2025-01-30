@@ -31,7 +31,8 @@ net.Receive("VoiceDist:EndVoice", function(len, client)
     client.isTalkingGlobal = nil
 end)
 
-function Arbitrage.GM:PlayerCanHearPlayersVoice(listener, talker)
+Arbitrage.GM.PlayerCanHearPlayersVoice = nil
+hook("PlayerCanHearPlayersVoice", function(listener, talker)
     if !talker.isTalking then return false end
 
     if Arbitrage.lawEnable or talker.isTalkingGlobal then
@@ -65,7 +66,7 @@ function Arbitrage.GM:PlayerCanHearPlayersVoice(listener, talker)
 
     local bCanHear = listener.voiceHear and listener.voiceHear[talker]
     return bCanHear, true
-end
+end)
 
 local function calcPlayerCanHearPlayersVoice(listener)
     if !IsValid(listener) then return end

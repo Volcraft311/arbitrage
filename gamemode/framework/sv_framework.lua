@@ -11,13 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-Arbitrage.commands.Add("discord", {
-    arguments = {},
-    OnAction = function(client)
-        netstream.Start(client, "arb.OpenURL", "https://google.com")
-    end
-})
-
 for _, command in ipairs({"me"}) do
     for _, subcommand in ipairs({"", "c", "l", "anon"}) do
         Arbitrage.commands.Add(command .. subcommand, {
@@ -479,15 +472,15 @@ Arbitrage.commands.Add("fallover", {
     end
 })
 
-function Arbitrage:PlayerShouldTaunt(client, act)
+hook("PlayerShouldTaunt", function(client, act)
     if !client:Alive() then return false end
     if !client:IsPlaying() then return false end
     if client.GetSitting and client:GetSitting() then return false end
 
     return true
-end
+end)
 
-function Arbitrage:KeyPress(client, key)
+hook("KeyPress", function(client, key)
     client.spectateplayer = client.spectateplayer or 0
     if client:IsSpectate() and (key == IN_ATTACK or key == IN_ATTACK2) then
         local first_player = 0
@@ -546,9 +539,9 @@ function Arbitrage:KeyPress(client, key)
             client.spectateplayer = 0
         end
     end
-end
+end)
 
-function Arbitrage:PlayerDeath(client, inflictor, attacker)
+hook("PlayerDeath", function(client, inflictor, attacker)
     asterionlib.netgui:Create(client, "arb.DeathMenu")
 
     if client:InGame() then -- чтобы можно было вернуть в игру
@@ -563,11 +556,11 @@ function Arbitrage:PlayerDeath(client, inflictor, attacker)
 
         Character.team:Join(client, TEAM_NOTCHARACTER, true)
     end)
-end
+end)
 
-function Arbitrage:GetFallDamage(client, speed)
+hook("GetFallDamage", function(client, speed)
     return (speed - 580) * (100 / 444)
-end
+end)
 
 local function initPlayer(client)
     client:StripWeapons()
@@ -620,7 +613,7 @@ timer.Simple(math.random(), function()
     end)
 end)
 
-function Arbitrage:PlayerInitialSpawn(client)
+hook("PlayerInitialSpawn", function(client)
     local indx = client:EntIndex()
 
     local id = "initClient_" .. indx
@@ -631,9 +624,9 @@ function Arbitrage:PlayerInitialSpawn(client)
             initPlayer(client)
         end
     end)
-end
+end)
 
-function Arbitrage:PlayerSay(client, data)
+hook("PlayerSay", function(client, data)
     hook.Run("ChatAddText", client, data)
     data = data:Trim()
 
@@ -663,7 +656,7 @@ function Arbitrage:PlayerSay(client, data)
 
     Arbitrage.commands.PlayerSay(client, data)
     return ""
-end
+end)
 
 
 
@@ -939,7 +932,7 @@ timer.Simple(math.random(), function()
     end)
 end)
 
-function Arbitrage:PlayerCanPickupWeapon(client, entity)
+hook("PlayerCanPickupWeapon", function(client, entity)
     if client:IsSpectate() then return false end
 
     if CurTime() - entity:GetCreationTime() < 0.5 then
@@ -951,9 +944,10 @@ function Arbitrage:PlayerCanPickupWeapon(client, entity)
     end
 
     return false
-end
+end)
 
-function Arbitrage.GM:PlayerSpawn(client, transiton)
+Arbitrage.GM.PlayerSpawn = nil
+hook("PlayerSpawn", function(client, transiton)
     client:DrawUnHide()
 
     client:SetMoveType(MOVETYPE_WALK)
@@ -974,11 +968,11 @@ function Arbitrage.GM:PlayerSpawn(client, transiton)
     end
 
     hook.Call("PlayerSetModel", GAMEMODE, client)
-end
+end)
 
-function Arbitrage:PlayerSpray(client)
+hook("PlayerSpray", function(client)
     return true
-end
+end)
 
 function CCGiveSWEP(client, command, arguments)
     if !IsValid(client) then return end

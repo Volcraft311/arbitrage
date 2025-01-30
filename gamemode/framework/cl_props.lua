@@ -489,7 +489,7 @@ local data = {
     },
 }
 
-function Arbitrage:PopulatePropMenu()
+hook("PopulatePropMenu", function()
     local contents = {}
 
     for k, v in pairs(data) do
@@ -507,4 +507,4 @@ function Arbitrage:PopulatePropMenu()
     end
 
     spawnmenu.AddPropCategory("NewSpawn", "Список пропов", contents, "icon16/box.png")
-end
+end)

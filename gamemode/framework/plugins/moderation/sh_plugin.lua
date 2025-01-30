@@ -20,6 +20,7 @@ Moderation = PLUGIN
 Moderation.instances = Moderation.instances or {}
 Moderation.logs = Moderation.logs or {}
 
+Arbitrage.GM.PhysgunPickup = nil
 function Moderation:PhysgunPickup(client, entity)
     if !client:IsAdmin() then return false end
 
@@ -35,6 +36,7 @@ function Moderation:PhysgunPickup(client, entity)
     return true
 end
 
+Arbitrage.GM.PhysgunDrop = nil
 function Moderation:PhysgunDrop(client, entity)
     if !client:IsAdmin() then return end
 
@@ -52,6 +54,7 @@ function Moderation:PhysgunDrop(client, entity)
     end
 end
 
+Arbitrage.GM.CanTool = nil
 function Moderation:CanTool(client, tr, toolname, tool, button)
     local bSucc, preCanTool = hook.Run("PreCanTool", client, tr, toolname, tool, button)
     if bSucc == true and preCanTool then
@@ -61,7 +64,13 @@ function Moderation:CanTool(client, tr, toolname, tool, button)
     return client:IsAdmin()
 end
 
+Arbitrage.GM.CanEditVariable = nil
 function Moderation:CanEditVariable(entity, client, key, val, editor)
+    return client:IsAdmin()
+end
+
+Arbitrage.GM.PlayerNoClip = nil
+function Moderation:PlayerNoClip(client)
     return client:IsAdmin()
 end
 

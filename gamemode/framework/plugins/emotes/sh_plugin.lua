@@ -27,8 +27,6 @@ Emotes.name = "Emotes"
 Emotes.action = {}
 Emotes.action.stored = {}
 
-Arbitrage.GM.HandlePlayerLanding = zero
-
 function Emotes.action:Register(uniqueID, data)
 	Emotes.action.stored[string_lower(uniqueID)] = data
 end

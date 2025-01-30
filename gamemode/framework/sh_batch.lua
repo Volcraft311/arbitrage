@@ -88,9 +88,6 @@ function Arbitrage.Initialize()
 			Arbitrage.GM[v] = permissionFunc
 		end
 
-		Arbitrage.GM.CanEditVariable = zero
-		Arbitrage.GM.PhysgunPickup = zero
-		Arbitrage.GM.CanTool = zero
 		Arbitrage.GM.SetupMove = zero
 		Arbitrage.GM.FinishMove = zero
 		Arbitrage.GM.Move = zero
@@ -146,9 +143,6 @@ function Arbitrage.Initialize()
 	function Arbitrage.GM:AllowPlayerPickup() return false end
 	function Arbitrage.GM:PlayerDeathThink() return false end
 	function Arbitrage.GM:PlayerDeathSound() return true end
-
-	function Arbitrage.GM:PlayerNoClip(client) return client:IsAdmin() end
-
 	function Arbitrage.GM:OnReloaded()
 		if Arbitrage.plugin then
 			Arbitrage.plugin.updates = false
@@ -169,10 +163,6 @@ function Arbitrage.Initialize()
 
 		for k, v in ipairs({"EditingSpawnlistsSave", "ContextClick", "EditingSpawnlists", "OpeningContext", "Annoy2", "Annoy1", "OpeningMenu"}) do
 			timer.Remove("HintSystem_" .. v)
-		end
-
-		Arbitrage.GM.HUDShouldDraw = function()
-			return true
 		end
 
 		properties.List.drive = nil
@@ -243,25 +233,4 @@ if Arbitrage.util.IsServerSide() then
 	local time = Arbitrage.GamemodeCompletion - Arbitrage.GamemodeStart
 
 	Arbitrage.util.WriteMessage(Color(0, 255, 0), "Arbitrage gamemode was successfully loaded for '" .. math.Round(time, 3) .. "s'. You are using version '" .. Arbitrage.version .. "'")
-end
-
-
-
-
-do
-	hook.ArbitrageCall = hook.ArbitrageCall or hook.Call
-
-	function hook.Call(name, gm, ...)
-		local _hook = Arbitrage[name]
-
-		if _hook and isfunction(_hook) then
-			local a, b, c, d, e, f = _hook(name, ...)
-
-			if (a != nil) then
-				return a, b, c, d, e, f
-			end
-		end
-
-		return hook.ArbitrageCall(name, gm, ...)
-	end
 end

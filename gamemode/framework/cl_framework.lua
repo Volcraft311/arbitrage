@@ -171,6 +171,84 @@ do
     end)
 end
 
+do
+    hook.Add("asterionlib.loading:Initialize", "asterionlib.loading", function()
+        local loading = asterionlib.loading
+        local instances = loading.instances
+
+        instances.image.material = Material("asterion/academy/ui/loading/image.png")
+        instances.char_assets.material = Material("asterion/academy/ui/loading/char_assets.png")
+
+        local titleFont = "arb.Font_FuturaPTMedium_9"
+        local titleHeight = draw.GetFontHeight(titleFont)
+        local titleColor = Color(255, 255, 255)
+
+        local descriptionFont = "arb.Font_FuturaPTBook_5"
+        local descriptionHeight = draw.GetFontHeight(descriptionFont)
+        local descriptionColor = Color(255, 255, 255, 60)
+
+        local progressFont = "arb.Font_FuturaPTHeavy_5"
+        local progressHeight = 3
+        local progressColor = Color(218, 19, 40)
+
+        local padding = 20
+        local sizeH = titleHeight + descriptionHeight + progressHeight + padding * 2
+        function loading:Paint()
+            if !self:GetConVar() then return end
+
+            local realTime = RealTime()
+            local ft = FrameTime()
+
+            local i = 1
+            for uniqueID, data in pairs(self.instances) do
+                if data.maxID <= 0 then continue end
+
+                if data.delay < realTime and data.currentID >= data.maxID then
+                    self:Clear(uniqueID)
+
+                    continue
+                end
+
+                if data.delayDelete < realTime and data.delayDelete > 0 then
+                    self:Clear(uniqueID)
+
+                    continue
+                end
+
+                local x, y = padding, padding + (i - 1) * sizeH + (i - 1) * padding + (i - 1) * 20
+                local w, h = titleHeight * 20, sizeH
+
+                asterionlib.DrawBlurAt(x, y, w, h, 2)
+
+                surface.SetDrawColor(0, 0, 0, 180)
+                surface.DrawRect(x, y, w, h)
+
+                surface.SetDrawColor(255, 255, 255, 60)
+                surface.SetMaterial(data.material)
+                surface.DrawTexturedRect(x, y, h, h)
+
+                draw.SimpleText(data.name .. ":", titleFont, padding + x, y + padding - titleHeight * 0.25, titleColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                draw.SimpleText(data.information, descriptionFont, padding + x, y + padding + titleHeight - descriptionHeight * 0.4, descriptionColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                draw.SimpleText(data.currentID .. "/" .. data.maxID, progressFont, x + w - padding, y + padding + titleHeight - descriptionHeight * 0.4, progressColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+
+                local mp_c = data.maxID
+                local mp_mc = data.currentID
+                local mp_interest = mp_mc / mp_c
+
+                data.interest = Lerp(ft * 10, data.interest, mp_interest)
+
+                surface.SetDrawColor(255, 255, 255, 25)
+                surface.DrawRect(x + padding, y + padding + titleHeight + descriptionHeight, w - padding * 2, progressHeight)
+
+                surface.SetDrawColor(progressColor.r, progressColor.g, progressColor.b)
+                surface.DrawRect(x + padding, y + padding + titleHeight + descriptionHeight, w * data.interest - padding * 2, progressHeight)
+
+                i = i + 1
+            end
+        end
+    end)
+end
+
 function Arbitrage:HUDPaint()
     Arbitrage.hud.SpectateDraw()
     Arbitrage.hud.CrosshairDraw()

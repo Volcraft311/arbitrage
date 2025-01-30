@@ -89,9 +89,9 @@ Moderation:AddLog("itemDestroy", {
     end
 })
 
-function Moderation:OnItemDestroy(client, item)
-    self:SendLog(client, "itemDestroy", item)
-end
+hook("OnItemDestroy", function(client, item)
+    Moderation:SendLog(client, "itemDestroy", item)
+end)
 
 Moderation:AddLog("itemDrop", {
     name = "Выбрасывание предмета",
@@ -104,9 +104,9 @@ Moderation:AddLog("itemDrop", {
     end
 })
 
-function Moderation:OnItemDrop(client, item)
-    self:SendLog(client, "itemDrop", item)
-end
+hook("OnItemDrop", function(client, item)
+    Moderation:SendLog(client, "itemDrop", item)
+end)
 
 Moderation:AddLog("itemGave", {
     name = "Отдавание предмета",
@@ -143,23 +143,23 @@ Moderation:AddLog("itemTake", {
     end
 })
 
-function Moderation:OnItemTransfer(client, item, inventory)
+hook("OnItemTransfer", function(client, item, inventory)
     local inventoryOwner = inventory:GetOwner()
 
     if client == nil then -- поднятие предмета
         if IsValid(inventoryOwner) and inventoryOwner:IsPlayer() then
             client = inventoryOwner
 
-            self:SendLog(client, "itemTake", item)
+            Moderation:SendLog(client, "itemTake", item)
         end
     elseif IsValid(client) then -- передача предмета
         if client:IsPlayer() then -- отдал
-            self:SendLog(client, "itemGave", item, inventoryOwner)
+            Moderation:SendLog(client, "itemGave", item, inventoryOwner)
         elseif inventoryOwner:IsPlayer() then -- забрал
-            self:SendLog(inventoryOwner, "itemTook", item, client)
+            Moderation:SendLog(inventoryOwner, "itemTook", item, client)
         end
     end
-end
+end)
 
 Moderation:AddLog("itemAction", {
     name = "Действие с предметом",
@@ -173,9 +173,9 @@ Moderation:AddLog("itemAction", {
     end
 })
 
-function Moderation:OnItemAction(client, item, action)
-    self:SendLog(client, "itemAction", item, action)
-end
+hook("OnItemAction", function(client, item, action)
+    Moderation:SendLog(client, "itemAction", item, action)
+end)
 
 Moderation:AddLog("runCommand", {
     name = "Запуск команды",
@@ -212,9 +212,9 @@ Moderation:AddLog("runCommand", {
     end
 })
 
-function Moderation:OnCommandRun(client, command, args)
-    self:SendLog(client, "runCommand", command, args)
-end
+hook("OnCommandRun", function(client, command, args)
+    Moderation:SendLog(client, "runCommand", command, args)
+end)
 
 Moderation:AddLog("chatSay", {
     name = "Сообщение в чате",
@@ -228,9 +228,9 @@ Moderation:AddLog("chatSay", {
     end
 })
 
-function Moderation:OnChatSay(client, chatType, text)
-    self:SendLog(client, "chatSay", chatType, text)
-end
+hook("OnChatSay", function(client, chatType, text)
+    Moderation:SendLog(client, "chatSay", chatType, text)
+end)
 
 Moderation:AddLog("obServerEnter", {
     name = "Вход в Noclip",
@@ -242,9 +242,9 @@ Moderation:AddLog("obServerEnter", {
     end
 })
 
-function Moderation:OnObServerEnter(client)
-    self:SendLog(client, "obServerEnter")
-end
+hook("OnObServerEnter", function(client)
+    Moderation:SendLog(client, "obServerEnter")
+end)
 
 Moderation:AddLog("obServerExit", {
     name = "Выход из Noclip",
@@ -256,9 +256,9 @@ Moderation:AddLog("obServerExit", {
     end
 })
 
-function Moderation:OnObServerExit(client)
-    self:SendLog(client, "obServerExit")
-end
+hook("OnObServerExit", function(client)
+    Moderation:SendLog(client, "obServerExit")
+end)
 
 Moderation:AddLog("inventoryOpen", {
     name = "Открытие инвентаря",
@@ -273,9 +273,9 @@ Moderation:AddLog("inventoryOpen", {
     end
 })
 
-function Moderation:OnInventoryOpen(client, inventory)
-    self:SendLog(client, "inventoryOpen", inventory)
-end
+hook("OnInventoryOpen", function(client, inventory)
+    Moderation:SendLog(client, "inventoryOpen", inventory)
+end)
 
 Moderation:AddLog("characterJoin", {
     name = "Заход за персонажа",
@@ -288,9 +288,9 @@ Moderation:AddLog("characterJoin", {
     end
 })
 
-function Moderation:OnCharacterJoin(client, character)
-    self:SendLog(client, "characterJoin", character)
-end
+hook("OnCharacterJoin", function(client, character)
+    Moderation:SendLog(client, "characterJoin", character)
+end)
 
 Moderation:AddLog("bedEnter", {
     name = "Лег на кровать",
@@ -303,9 +303,9 @@ Moderation:AddLog("bedEnter", {
     end
 })
 
-function Moderation:OnBedEnter(client, entity)
-    self:SendLog(client, "bedEnter", entity)
-end
+hook("OnBedEnter", function(client, entity)
+    Moderation:SendLog(client, "bedEnter", entity)
+end)
 
 Moderation:AddLog("bedExit", {
     name = "Встал с кровати",
@@ -317,9 +317,9 @@ Moderation:AddLog("bedExit", {
     end
 })
 
-function Moderation:OnBedExit(client)
-    self:SendLog(client, "bedExit")
-end
+hook("OnBedExit", function(client)
+    Moderation:SendLog(client, "bedExit")
+end)
 
 Moderation:AddLog("spectateEnter", {
     name = "Заход в Spectate",
@@ -338,9 +338,9 @@ Moderation:AddLog("spectateEnter", {
     end
 })
 
-function Moderation:OnSpectateEnter(client, target)
-    self:SendLog(client, "spectateEnter", target)
-end
+hook("OnSpectateEnter", function(client, target)
+    Moderation:SendLog(client, "spectateEnter", target)
+end)
 
 Moderation:AddLog("spectateExit", {
     name = "Выход из Spectate",
@@ -352,9 +352,9 @@ Moderation:AddLog("spectateExit", {
     end
 })
 
-function Moderation:OnSpectateExit(client)
-    self:SendLog(client, "spectateExit")
-end
+hook("OnSpectateExit", function(client)
+    Moderation:SendLog(client, "spectateExit")
+end)
 
 Moderation:AddLog("spectateSetPos", {
     name = "Телепорт через Spectate",
@@ -366,9 +366,9 @@ Moderation:AddLog("spectateSetPos", {
     end
 })
 
-function Moderation:OnSpectateTeleport(client, vector, angles)
-    self:SendLog(client, "spectateSetPos", vector, angles)
-end
+hook("OnSpectateTeleport", function(client, vector, angles)
+    Moderation:SendLog(client, "spectateSetPos", vector, angles)
+end)
 
 Moderation:AddLog("playerDeath", {
     name = "Смерть игрока",

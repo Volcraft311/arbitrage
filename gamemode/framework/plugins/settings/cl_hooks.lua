@@ -14,26 +14,19 @@
 local PLUGIN = PLUGIN
 
 function PLUGIN:Think()
-    -- логируем все нажатия на кнопки биндов
     for value in pairs(SETTINGS:GetStored().binds) do
         self.binds.IsPressedID(value, true)
     end
-
-    -- print(PLUGIN.binds.GetClampedKey())
 end
 
-function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
     netstream.Start("SETTINGS:KeyPressID", id, bIsVisibleGUI)
+end)
 
-    -- print(tostring(client) .. " нажал " .. id)
-end
-
-function PLUGIN:KeyReleaseID(client, id, bIsVisibleGUI)
+hook("KeyReleaseID", function(client, id, bIsVisibleGUI)
     netstream.Start("SETTINGS:KeyReleaseID", id, bIsVisibleGUI)
+end)
 
-    -- print(tostring(client) .. " отпустил " .. id)
-end
-
--- function PLUGIN:KeyClampID(client, id)
+-- hook("KeyClampID", function(client, id)
     -- print(tostring(client) .. " зажал " .. id)
--- end
+-- end)

@@ -20,18 +20,9 @@ function Arbitrage.library.Add(data)
 		Arbitrage.library.LibraryLoaded[data] = true
 	end
 
-	hook.Run("CreateLibrary", data)
 	return Arbitrage[data] or {}
 end
 
-function Arbitrage.library.Remove(data)
-	-- когда нить я возьмусь за это...
-
-	hook.Run("RemoveLibrary", data)
-end
-
 function Arbitrage.library.Get(data)
-	hook.Run("GetLibrary", data)
-
 	return Arbitrage[data]
 end

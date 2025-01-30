@@ -156,7 +156,7 @@ netstream.Hook("arb.OpenMonoMenu", function(client)
     PLUGIN:OpenMonoMenu(client)
 end)
 
-function PLUGIN:ChatAddText(client, message)
+hook("ChatAddText", function(client, message)
     for k, v in ipairs(player.GetAdmins()) do
         local data = v:GetLocalVar("spectatescommand", {})
 
@@ -164,7 +164,7 @@ function PLUGIN:ChatAddText(client, message)
             netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Слежка] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "'", message, "'")
         end
     end
-end
+end)
 
 netstream.Hook("arb.StartSpectateCommand", function(client, steamid)
     if !client:IsAdmin() then return end

@@ -83,7 +83,7 @@ function InventoryBase:PlayerDeath(client)
     end
 end
 
-function InventoryBase:OnCreateDisconnectEntity(client)
+hook("OnCreateDisconnectEntity", function(client)
     local inventory = client:GetInventory()
     if !inventory then return end
 
@@ -94,7 +94,7 @@ function InventoryBase:OnCreateDisconnectEntity(client)
             v:UnEquip(client, v)
         end
     end
-end
+end)
 
 netstream.Hook("InventoryBase:GetActions", function(client, itemID)
     if client:IsSpectate() then return end

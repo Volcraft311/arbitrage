@@ -110,14 +110,14 @@ function PLUGIN:PlayerEndVoice(client)
     end
 end
 
-function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
     if bIsVisibleGUI then return end
     if id != "voice_up" and id != "voice_down" then return end
     if Arbitrage.gui.chat:GetActive() then return end
 
-    self.realtime = RealTime() + 2
+    PLUGIN.realtime = RealTime() + 2
     netstream.Start("VOICEDIST:ChangeVoiceVolume", id == "voice_up" and true or false)
-end
+end)
 
 do
     function surface.draw_circle_outline(x, y, radius, thickness, passes)

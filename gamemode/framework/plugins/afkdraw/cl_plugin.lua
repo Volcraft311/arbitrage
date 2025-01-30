@@ -133,10 +133,10 @@ timer_Create("UpdateFocusGame", 1, 0, function()
 	end
 end)
 
-function PLUGIN:HideGame()
+hook("HideGame", function()
 	netstream.Start("AfkDraw:HideGame")
-end
+end)
 
-function PLUGIN:UnHideGame()
+hook("UnHideGame", function()
 	netstream.Start("AfkDraw:UnHideGame")
-end
+end)

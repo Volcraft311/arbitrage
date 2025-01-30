@@ -12,8 +12,6 @@ function PLUGIN:CreateChat()
     self.panel = vgui.Create("arbChatbox")
     self.panel:SetupTabs("")
     self.panel:SetupPosition("")
-
-    hook.Run("ChatboxCreated")
 end
 
 function PLUGIN:TabExists(id)
@@ -52,17 +50,17 @@ function PLUGIN:ChatText(index, name, text, messageType)
     end
 end
 
-function PLUGIN:StartChat()
+hook("StartChat", function()
     net.Start("arb.ChatIsTyping")
         net.WriteBool(true)
     net.SendToServer()
-end
+end)
 
-function PLUGIN:FinishChat()
+hook("FinishChat", function()
     net.Start("arb.ChatIsTyping")
         net.WriteBool(false)
     net.SendToServer()
-end
+end)
 
 chat.arbAddText = chat.arbAddText or chat.AddText
 

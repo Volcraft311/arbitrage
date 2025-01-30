@@ -31,9 +31,9 @@ function PLUGIN:player_connect(data)
     self:SendNotify("connect", name, steamid)
 end
 
-function PLUGIN:PlayerInitial(client)
-    self:SendNotify("join", client:FullName(true))
-end
+hook("OnPlayerInitialize", function(client)
+    PLUGIN:SendNotify("join", client:FullName(true))
+end)
 
 function PLUGIN:PlayerDisconnected(client)
     self:SendNotify("disconnect", client:FullName(true))
@@ -53,6 +53,6 @@ function PLUGIN:PlayerSpawn(client)
     self:SendNotify("spawn", client:FullName())
 end
 
-function PLUGIN:OnCharacterJoin(client, character)
-    self:SendNotify("joincharacter", client:FullName(), character:GetName() .. "(" .. character:GetID() .. ")")
-end
+hook("OnCharacterJoin", function(client, character)
+    PLUGIN:SendNotify("joincharacter", client:FullName(), character:GetName() .. "(" .. character:GetID() .. ")")
+end)

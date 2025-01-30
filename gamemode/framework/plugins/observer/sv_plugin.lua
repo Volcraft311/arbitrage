@@ -29,21 +29,20 @@ function PLUGIN:PlayerNoClip(client, state)
     return true
 end
 
-function PLUGIN:PlayerEnterNoclip(client)
+hook("PlayerEnterNoclip", function(client)
     client:DrawHide()
     client:GodEnable()
     client:SetNoTarget(true)
 
     client:SetLocalVar("observer", true)
     hook.Run("OnObServerEnter", client)
-end
+end)
 
-function PLUGIN:PlayerExitNoclip(client)
+hook("PlayerExitNoclip", function(client)
     client:DrawUnHide()
     client:GodDisable()
     client:SetNoTarget(false)
 
-    client.observer_data = nil
     client:SetLocalVar("observer", nil)
     hook.Run("OnObServerExit", client)
-end
+end)

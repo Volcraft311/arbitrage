@@ -573,7 +573,7 @@ local function initPlayer(client)
     client:SendLua([[RunConsoleCommand("stopsound")]])
     client:SetNetVar("connectedTime", CurTime())
 
-    hook.Run("PlayerInitial", client)
+    hook.Run("OnPlayerInitialize", client)
 
     local thinkID = "Arbitrage:StatisticsThink_" .. client:EntIndex()
     timer.Create(thinkID, 2, 0, function()
@@ -628,6 +628,7 @@ end)
 
 hook("PlayerSay", function(client, data)
     hook.Run("ChatAddText", client, data)
+
     data = data:Trim()
 
     local helpCommand = data:sub(1, 1)

@@ -143,10 +143,10 @@ timer.Create("DataBase:Saver", 60, 0, function()
     end
 end)
 
-function PLUGIN:PlayerInitial(client)
+hook("OnPlayerInitialize", function(client)
     local steamid = client:SteamID()
 
-    local leaveEntity = self.disconnectPlayers[steamid]
+    local leaveEntity = PLUGIN.disconnectPlayers[steamid]
     if !IsValid(leaveEntity) then return end
 
     local data = leaveEntity.data
@@ -191,8 +191,8 @@ function PLUGIN:PlayerInitial(client)
     client.saveData = data
 
     leaveEntity:Remove()
-    self.disconnectPlayers[steamid] = nil
-end
+    PLUGIN.disconnectPlayers[steamid] = nil
+end)
 
 function PLUGIN:PlayerInitialSpawnForRealz(client)
     local data = client.saveData

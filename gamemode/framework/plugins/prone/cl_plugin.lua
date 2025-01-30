@@ -6,13 +6,13 @@ function Prone:PlayerBindPress(client, bind, pressed)
 	end
 end
 
-function Prone:KeyPressID(client, id, bIsVisibleGUI)
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
 	if bIsVisibleGUI then return end
 	if id != "prone" then return end
 	if !prone then return end
 
 	netstream.Start("Prone:Handle")
-end
+end)
 
 function Prone:HUDPaint()
 	local client = LocalPlayer()

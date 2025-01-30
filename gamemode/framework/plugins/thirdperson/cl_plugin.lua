@@ -265,7 +265,7 @@ function PLUGIN:ShouldDrawLocalPlayer()
 end
 
 
-hook_Add("SETTINGS:OnOptionChange", "ThirdPerson:OnOptionChange", function(id, value)
+hook("SETTINGS:OnOptionChange", function(id, value)
 	if id != "alpha_localplayer" then return end
 	if value != false then return end
 

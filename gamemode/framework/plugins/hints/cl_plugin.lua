@@ -77,14 +77,14 @@ function Hints:Select(id)
     end)
 end
 
-function Hints:OnSettingsLoad()
-    self:Add("Вы всегда можете настроить игру под себя в настройках главного меню.")
-    self:Add("Для большего погружения, не забывайте использовать RP-команды (/me, /try, /it).")
-    self:Add("При наличии ошибок с моделями или текстурами, проверьте статус скачанных аддонов во вкладке 'Контент' игровых настроек.")
+hook("OnSettingsLoad", function()
+    Hints:Add("Вы всегда можете настроить игру под себя в настройках главного меню.")
+    Hints:Add("Для большего погружения, не забывайте использовать RP-команды (/me, /try, /it).")
+    Hints:Add("При наличии ошибок с моделями или текстурами, проверьте статус скачанных аддонов во вкладке 'Контент' игровых настроек.")
 
-    self:Add("Открыть главное меню можно нажатием клавиши '" .. input_GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
-    self:Add("При помощи клавиш '" .. input_GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' и '" .. input_GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', вы можете регулировать дальность слышимости вашего микрофона.")
-end
+    Hints:Add("Открыть главное меню можно нажатием клавиши '" .. input_GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
+    Hints:Add("При помощи клавиш '" .. input_GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' и '" .. input_GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', вы можете регулировать дальность слышимости вашего микрофона.")
+end)
 
 timer_Create("Hints:Random", 150, 0, function()
     local id = math_random(1, #Hints.stored)

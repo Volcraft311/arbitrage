@@ -25,7 +25,6 @@ function Arbitrage.util.WriteMessage(...)
 		data[#data] = a .. "\n"
 	end
 
-	hook.Run("WriteMessage", ...)
 	MsgC(Color(0, 255, 0), "[GM-ARBITRAGE] ", color_white, unpack(data))
 end
 

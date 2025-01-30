@@ -169,7 +169,6 @@ function Arbitrage.Initialize()
 	end
 
 	Arbitrage.util.WriteMessage("BATCH has been successfully loaded!")
-	hook.Run("InitializeArbitrage")
 end
 
 function Arbitrage.base.Include(fileName, realm)
@@ -189,8 +188,6 @@ function Arbitrage.base.Include(fileName, realm)
 			return include(fileName)
 		end
 	end
-
-	hook.Run("IncludeFile", fileName)
 end
 
 function Arbitrage.base.IncludeDir(directory, bFromLua)

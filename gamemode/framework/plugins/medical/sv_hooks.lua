@@ -60,7 +60,7 @@ function Medical:EntityTakeDamage(client, dmginfo)
 	client:ViewPunch(Angle(math.random(-amount, amount), math.random(-amount, amount), math.random(-amount, amount)))
 end
 
-function Medical:OnCommandTry(client, rand)
+hook("OnCommandTry", function(client, rand)
 	local t_status_effects = client:GetTemporaryStatusEffects()
 	for _, array in ipairs(t_status_effects) do
 		local uniqueID = array.uniqueID
@@ -80,9 +80,9 @@ function Medical:OnCommandTry(client, rand)
 			return bSucc, newRand
 		end
 	end
-end
+end)
 
-function Medical:OnCommandRoll(client, rand, maxRand)
+hook("OnCommandRoll", function(client, rand, maxRand)
 	local t_status_effects = client:GetTemporaryStatusEffects()
 	for _, array in ipairs(t_status_effects) do
 		local uniqueID = array.uniqueID
@@ -102,7 +102,7 @@ function Medical:OnCommandRoll(client, rand, maxRand)
 			return bSucc, newRand
 		end
 	end
-end
+end)
 
 function Medical:PlayerInitialSpawn(client)
 	local handlerID = "Medical:Handler_" .. client:EntIndex()
@@ -127,7 +127,7 @@ function Medical:PlayerInitialSpawn(client)
 	end)
 end
 
-function Medical:OnMedicalHandler(client)
+hook("OnMedicalHandler", function(client)
 	-- health effect
 	do
 		if client:Health() <= 10 then
@@ -219,7 +219,7 @@ function Medical:OnMedicalHandler(client)
 			end
 		end
 	end
-end
+end)
 
 
 netstream.Hook("Medical:DisableStatusEffect", function(client, uniqueID, bStatus)

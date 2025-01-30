@@ -200,7 +200,7 @@ function PLUGIN:DoSit(trace)
 	self:StartSit(trace)
 end
 
-function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
 	if bIsVisibleGUI then return end
 	if id != sitBindID then return end
 	if !SitAnywhere then return end
@@ -212,37 +212,37 @@ function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
 	if client:IsSpectate() then return end
 	if client:IsNocliping() then return end
 
-	self.Ang = nil
-	self.StartPos = nil
-	self.Normal = nil
+	PLUGIN.Ang = nil
+	PLUGIN.StartPos = nil
+	PLUGIN.Normal = nil
 
-	self:CreateCSEnt()
-	self:DoSit(client:GetEyeTrace())
-end
+	PLUGIN:CreateCSEnt()
+	PLUGIN:DoSit(client:GetEyeTrace())
+end)
 
-function PLUGIN:KeyReleaseID(client, id)
+hook("KeyReleaseID", function(client, id)
 	if id != sitBindID then return end
 	if !SitAnywhere then return end
 
 	timer_Remove(uniqueID)
-	self:RemoveCSEnt()
+	PLUGIN:RemoveCSEnt()
 
 	if client:IsNocliping() then return end
 	if client.GetSitting and client:GetSitting() then return end
 
-	if self.Ang and self.StartPos and self.Normal then
+	if PLUGIN.Ang and PLUGIN.StartPos and PLUGIN.Normal then
 		net_Start("SitAnywhere")
 			net_WriteInt(0, 4)
-			net_WriteFloat(self.Ang.y - fixAng)
-			net_WriteVector(self.StartPos)
-			net_WriteVector(self.Normal)
+			net_WriteFloat(PLUGIN.Ang.y - fixAng)
+			net_WriteVector(PLUGIN.StartPos)
+			net_WriteVector(PLUGIN.Normal)
 		net_SendToServer()
 	end
 
-	self.Ang = nil
-	self.StartPos = nil
-	self.Normal = nil
-end
+	PLUGIN.Ang = nil
+	PLUGIN.StartPos = nil
+	PLUGIN.Normal = nil
+end)
 
 function PLUGIN:CreateCSEnt()
 	local client = LocalPlayer()

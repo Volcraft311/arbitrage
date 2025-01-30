@@ -86,7 +86,7 @@ local bedActionList = {
     d1_town05_wounded_idle_1 = true,
 }
 
-function BedSystem:ActionStart(client, name)
+hook("ActionStart", function(client, name)
     if !name then return end
 
     name = name:lower()
@@ -95,17 +95,17 @@ function BedSystem:ActionStart(client, name)
     if client.inBed then return end
 
     client:AddTemporaryStatusEffect("sleep_action", 0)
-end
+end)
 
-function BedSystem:ActionEnd(client, name)
-    if !isstring(name) then return end -- exitaction /lookaround
+hook("ActionEnd", function(client, name)
+    if !isstring(name) then return end -- exitaction command '/lookaround'
 
     name = name:lower()
 
     if !bedActionList[name] then return end
 
     client:RemoveTemporaryStatusEffect("sleep_action")
-end
+end)
 
 netstream.Hook("BedSystem:GetUpBed", function(client)
     if !client.inBed then return end

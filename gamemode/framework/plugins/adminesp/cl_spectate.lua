@@ -320,7 +320,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 	cameraAngles.y = cameraAngles.y - (Arbitrage.OnMapReversion() and -yaw or yaw)
 end
 
-function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
 	if Arbitrage.lawEnable then return end
 	if bIsVisibleGUI then return end
 
@@ -330,7 +330,7 @@ function PLUGIN:KeyPressID(client, id, bIsVisibleGUI)
 		fixCameraRoll()
 		fixEyeRoll()
 	end
-end
+end)
 
 
 netstream.Hook("AdminESP:CameraSetEntity", function(target)

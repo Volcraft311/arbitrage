@@ -698,22 +698,22 @@ concommand_Add("arb_radialmenu_action", function(client, cmd, args)
 	end
 end)
 
-function PLUGIN:KeyPressID(client, id)
+hook("KeyPressID", function(client, id)
 	if id != "radialmenu" then return end
 
 	if client:IsSpectate() then return end
 
-	local radial = self:OpenRadialMenu()
+	local radial = PLUGIN:OpenRadialMenu()
 	if IsValid(radial) and #radial.options <= 0 then
-		radial.options = self:MainOption()
+		radial.options = PLUGIN:MainOption()
 	end
-end
+end)
 
-function PLUGIN:KeyReleaseID(client, id)
+hook("KeyReleaseID", function(client, id)
 	if id != "radialmenu" then return end
 
-	self:CloseRadialMenu()
-end
+	PLUGIN:CloseRadialMenu()
+end)
 
 function PLUGIN:KeyPress(client, key)
 	if client:IsSpectate() then return end

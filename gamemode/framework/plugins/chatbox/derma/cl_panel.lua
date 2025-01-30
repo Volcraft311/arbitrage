@@ -812,10 +812,6 @@ function PANEL:Paint(width, height)
 			tab:PaintManual()
 		surface.SetAlphaMultiplier(alpha / 255)
 	end
-
-	if alpha > 0 then
-		hook.Run("PostChatboxDraw", width, height, self:GetAlpha())
-	end
 end
 
 function utf8_left(str, num)

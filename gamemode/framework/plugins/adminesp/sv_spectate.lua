@@ -103,7 +103,9 @@ concommand.Add("spectate", function(client, cmd, args)
 end)
 
 local dist = 325
-function PLUGIN:ChatAddText(client, message)
+hook("ChatAddText", function(client, message)
+	local pos = client:GetPos()
+
 	for k, v in ipairs(player.GetAdmins()) do
 	    if !v:IsSpectating() then continue end
 	    if client == v then continue end
@@ -111,11 +113,11 @@ function PLUGIN:ChatAddText(client, message)
 	    local data = v:GetLocalVar("spectatescommand", {})
 	    if data[client:SteamID()] then continue end
 
-	    if v._CameraPosition:Distance(client:GetPos()) <= dist or (IsValid(v._CameraEntity) and v._CameraEntity:GetPos():Distance(client:GetPos()) <= dist) then
+	    if v._CameraPosition:Distance(pos) <= dist or (IsValid(v._CameraEntity) and v._CameraEntity:GetPos():Distance(pos) <= dist) then
 	    	netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Наблюдение] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "'", message, "'")
 	    end
 	end
-end
+end)
 
 
 netstream.Hook("AdminESP:CameraUpdatePosition", function(client, vector)

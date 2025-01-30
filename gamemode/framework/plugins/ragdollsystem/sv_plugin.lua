@@ -36,7 +36,12 @@ function RagdollSystem:CreateRagdoll(client)
     entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
     entity:Activate()
 
-    entity:LoadSaverInfo(client:GetSaverInfo())
+    client:SaveSaverInfo()
+    timer.Simple(0.15, function()
+        local saver = client:GetSaverInfo()
+
+        entity:LoadSaverInfo(saver)
+    end)
 
     SetEntityVelocity(entity, client)
 

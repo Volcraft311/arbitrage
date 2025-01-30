@@ -81,6 +81,19 @@ function Arbitrage.AddDisableElement(data)
 end
 
 do
+    Arbitrage.AddDisableElement("CHudHealth")
+    Arbitrage.AddDisableElement("CHudBattery")
+    Arbitrage.AddDisableElement("CHudAmmo")
+    Arbitrage.AddDisableElement("CHudCrosshair")
+    Arbitrage.AddDisableElement("CHudDeathNotice")
+    Arbitrage.AddDisableElement("CTargetID")
+    Arbitrage.AddDisableElement("CHudHintDisplay")
+    Arbitrage.AddDisableElement("CHudSuitPower")
+    Arbitrage.AddDisableElement("CHudHistoryResource")
+    Arbitrage.AddDisableElement("CHudZoom")
+end
+
+do
     Arbitrage.hud.AddCircle("health", {
         value = function()
             return LocalPlayer():Health() or 100
@@ -249,45 +262,28 @@ do
     end)
 end
 
-function Arbitrage:HUDPaint()
+hook("HUDPaint", function()
     Arbitrage.hud.SpectateDraw()
     Arbitrage.hud.CrosshairDraw()
-end
+end)
 
-function Arbitrage:RenderScreenspaceEffects()
+hook("RenderScreenspaceEffects", function()
     MapReversion:Render()
 
     Arbitrage.hud.GrayCorrect()
     Arbitrage.hud.VignetteDraw()
     Arbitrage.hud.LowHealthDraw()
-end
-
-netstream.Hook("arb.OpenURL", function(data)
-    if !data then return end
-
-    gui.OpenURL(tostring(data))
 end)
 
-Arbitrage.AddDisableElement("CHudHealth")
-Arbitrage.AddDisableElement("CHudBattery")
-Arbitrage.AddDisableElement("CHudAmmo")
-Arbitrage.AddDisableElement("CHudCrosshair")
-Arbitrage.AddDisableElement("CHudDeathNotice")
-Arbitrage.AddDisableElement("CTargetID")
-Arbitrage.AddDisableElement("CHudHintDisplay")
-Arbitrage.AddDisableElement("CHudSuitPower")
-Arbitrage.AddDisableElement("CHudHistoryResource")
-Arbitrage.AddDisableElement("CHudZoom")
-
-function Arbitrage:HUDShouldDraw(name)
+hook("HUDShouldDraw", function(name)
     if Arbitrage.DisableElements[name] then
         return false
     end
-end
+end)
 
-function Arbitrage:ContextMenuOpen()
+hook("ContextMenuOpen", function()
     return LocalPlayer():IsHoldingSBoxTool()
-end
+end)
 
 local ActionPressIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
@@ -424,11 +420,11 @@ local ActionPressIDList = {
     end
 }
 
-function Arbitrage:KeyPressID(client, id, bIsVisibleGUI)
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
     if ActionPressIDList[id] then
         ActionPressIDList[id](client, id, bIsVisibleGUI)
     end
-end
+end)
 
 local ActionReleaseIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
@@ -455,18 +451,17 @@ local ActionReleaseIDList = {
     end
 }
 
-function Arbitrage:KeyReleaseID(client, id, bIsVisibleGUI)
+hook("KeyReleaseID", function(client, id, bIsVisibleGUI)
     if ActionReleaseIDList[id] then
         ActionReleaseIDList[id](client, id, bIsVisibleGUI)
     end
-end
+end)
 
-
-function Arbitrage:OnContextMenuClose()
+hook("OnContextMenuClose", function()
     gui.EnableScreenClicker(false)
-end
+end)
 
-function Arbitrage:SpawnMenuOpen()
+hook("SpawnMenuOpen", function()
     local client = LocalPlayer()
     local weapon = client:GetActiveWeapon()
 
@@ -478,30 +473,38 @@ function Arbitrage:SpawnMenuOpen()
     end
 
     return false
-end
+end)
 
-function Arbitrage:ChatText(index, name, text, type)
+hook("ChatText", function(index, name, text, type)
     return ARBITRAGE_DISABLE_DATA[type]
-end
+end)
 
-function Arbitrage:OnSettingsLoad()
+hook("OnSettingsLoad", function()
     local panel = asterionlib.netgui:Create("arb.MainRemake:UI")
     panel:Content()
 
+    -- new menu...
+    --[[
+    local panel = vgui.Create("arb.mainmenu:Primary")
+    panel.content = panel:Add("arb.mainmenu:Content")
+    panel.content:Dock(FILL)
+    ]]--
+
     RunConsoleCommand("stopsound")
-end
+end)
 
-function Arbitrage:PreDrawViewModel(vm, client, weapon)
+hook("PreDrawViewModel", function(vm, client, weapon)
     if client:IsSpectate() then
         return true
     end
-end
+end)
 
-function Arbitrage:PrePlayerDraw(client, flags)
+hook("PrePlayerDraw", function(client, flags)
     if client:IsSpectate() then
         return true
     end
-end
+end)
+
 
 local function DingDongBingBong()
     timer.Simple(2, function() -- Исправление проблемы с текстом
@@ -513,7 +516,6 @@ local function DingDongBingBong()
         end
     end)
 end
-
 
 local oldType = Arbitrage.IsDay()
 timer.Create("arb.DayChangeNotifications", 1, 0, function()
@@ -550,16 +552,11 @@ timer.Create("arb.BillSound", 1, 1, function()
     end
 end)
 
-function Arbitrage:GetPos(client)
-    local pos, ang = client:GetPos() + Vector(0, 0, 64), client:GetAngles()
-
-    return pos, ang
-end
 
 concommand.Add("arb_getpos", function(client, cmd, args)
     local r = math.Round
     local m_r = 3
-    local pos, ang = Arbitrage:GetPos(client)
+    local pos, ang = client:GetPos() + Vector(0, 0, 64), client:GetAngles()
     local text = Format("Vector(%s, %s, %s), Angle(%s, %s, %s)",
         r(pos.x, m_r), r(pos.y, m_r), r(pos.z, m_r),
         r(ang[1], m_r), r(ang[2], m_r), r(ang[3], m_r))

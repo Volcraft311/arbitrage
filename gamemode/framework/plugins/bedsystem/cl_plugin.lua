@@ -11,7 +11,8 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-function BedSystem:NetworkEntityCreated(entity)
+
+hook("NetworkEntityCreated", function(entity)
     local model = entity:GetModel()
     if !model then return end
 
@@ -23,7 +24,8 @@ function BedSystem:NetworkEntityCreated(entity)
         tooltip:SetDescription("Уютная кровать, обитая мягким материалом. На ней вы можете расслабиться и отдохнуть.")
         tooltip:SetIcon("asterion/academy/ui/tooltip/bed.png")
     end
-end
+end)
+
 
 local players_hook = {}
 local function create_hook()
@@ -89,68 +91,3 @@ netstream.Hook("BedSystem:GetUpBed", function(client)
         RunConsoleCommand("arb_camerafix") -- исправление ломание позиции камеры (может возникнуть из-за кривого положения кровати)
     end)
 end)
-
-spawnmenu.AddContentType("Bed", function(container, model)
-    local icon = vgui.Create("ContentIcon", container)
-    icon:SetName(model)
-    icon:SetContentType("Bed")
-    icon:SetSpawnName(model)
-    icon.DoClick = function()
-        RunConsoleCommand("gm_spawn", model)
-
-        surface.PlaySound("ui/buttonclickrelease.wav")
-    end
-
-    if IsValid(icon.Image) then
-        icon.Image:Remove()
-
-        icon.Image = icon:Add("DPanel")
-        icon.Image:SetPos(0, 0)
-        icon.Image:SetSize(0, 0)
-        icon.Image.PaintAt = function() end
-    end
-
-    icon.Image2 = icon:Add("DModelPanel")
-    icon.Image2:SetPos(3, 3)
-    icon.Image2:SetSize(128 - 6, 128 - 6 - 22)
-    icon.Image2:SetModel(model)
-    icon.Image2.DoClick = function()
-        RunConsoleCommand("gm_spawn", model)
-
-        surface.PlaySound("ui/buttonclickrelease.wav")
-    end
-
-    if IsValid(container) then
-        container:Add(icon)
-    end
-end)
-
-spawnmenu.AddCreationTab("Кровати", function()
-    local base = vgui.Create("SpawnmenuContentPanel")
-    local tree = base.ContentNavBar.Tree
-
-    local node = tree:AddNode("Все объекты", "icon16/brick.png")
-    node.DoPopulate = function(this)
-        if this.Container then return end
-
-        this.Container = vgui.Create("ContentContainer", base)
-        this.Container:SetVisible(false)
-        this.Container:SetTriggerSpawnlistChange(false)
-
-        for k, v in pairs(BedSystem.allowBed) do
-            spawnmenu.CreateContentIcon("Bed", this.Container, k)
-        end
-    end
-
-    node.DoClick = function(this)
-        this:DoPopulate()
-        base:SwitchPanel(this.Container)
-    end
-
-    local FirstNode = tree:Root():GetChildNode(0)
-    if IsValid(FirstNode) then
-        FirstNode:InternalDoClick()
-    end
-
-    return base
-end, "icon16/photo.png")

@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 function BedSystem:LayDownBed(client, entity)
     if !IsValid(client) then return end
 
@@ -54,8 +55,9 @@ function BedSystem:GetUpBed(client)
     client.inBed = nil
 end
 
-function BedSystem:PlayerUse(client, entity)
-    local allow = self.allowBed[string.lower(tostring(entity:GetModel() or ""))]
+
+hook("PlayerUse", function(client, entity)
+    local allow = BedSystem.allowBed[string.lower(tostring(entity:GetModel() or ""))]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
         TypingDraw:SendSphere(0.5, client, "Ложится на кровать", Color(255, 170, 23))
@@ -66,12 +68,12 @@ function BedSystem:PlayerUse(client, entity)
 
             return false
         end, function(activator)
-            self:LayDownBed(client, entity)
+            BedSystem:LayDownBed(client, entity)
         end)
 
         client.BedCD = CurTime() + 1
     end
-end
+end)
 
 local bedActionList = {
     arrestidle = true,
@@ -87,7 +89,7 @@ local bedActionList = {
 }
 
 hook("ActionStart", function(client, name)
-    if !name then return end
+    if !isstring(name) then return end -- startaction command '/lookaround'
 
     name = name:lower()
 
@@ -106,6 +108,7 @@ hook("ActionEnd", function(client, name)
 
     client:RemoveTemporaryStatusEffect("sleep_action")
 end)
+
 
 netstream.Hook("BedSystem:GetUpBed", function(client)
     if !client.inBed then return end

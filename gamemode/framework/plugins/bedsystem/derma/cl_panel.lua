@@ -1,3 +1,17 @@
+--[[
+        © AsterionStaff 2025.
+        This script was created from the developers of the Asterion Staff.
+        You can get more information from one of the links below:
+            Site - https://asterion.games
+            Discord - https://discord.gg/Np5evb5ZsR
+        
+        developer(s):
+            Selenter - https://steamcommunity.com/id/selenter
+
+        ——— Chop your own wood and it will warm you twice.
+]]--
+
+
 local PANEL = {}
 
 function PANEL:Init()
@@ -13,8 +27,8 @@ function PANEL:Init()
     self.darkLowerAlpha = 0
     self.bedColdDown = RealTime()
 
-    self.eyePos = Vector(0, 0, 0)
-    self.eyeAng = Angle(0, 0, 0)
+    self.eyePos = EyePos()
+    self.eyeAng = EyeAngles()
 end
 
 function PANEL:SetBedData(entity, eyePos, eyeAng)
@@ -25,7 +39,6 @@ function PANEL:SetBedData(entity, eyePos, eyeAng)
         local client = LocalPlayer()
 
         client:DrawHide()
-
         timer.Simple(5, function()
             client:ReDraw()
         end)

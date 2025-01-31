@@ -11,11 +11,11 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 local PLUGIN = PLUGIN
 BedSystem = PLUGIN
 
 BedSystem.name = "BedSystem"
-
 BedSystem.animation = "d1_town05_Wounded_Idle_1"
 BedSystem.allowBed = {
     ["models/props_downtown/bed_motel01.mdl"] = {
@@ -101,4 +101,5 @@ BedSystem.allowBed = {
 }
 
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("cl_bedlist.lua")
 Arbitrage.base.Include("sv_plugin.lua")

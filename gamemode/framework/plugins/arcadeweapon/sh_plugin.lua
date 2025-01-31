@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 local PLUGIN = PLUGIN
 PLUGIN.name = "Arcade Weapon"
 

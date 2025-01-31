@@ -11,13 +11,12 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 local function getReceivers()
     local admins = {}
 
-    for k, v in ipairs(player.GetAll()) do
-        if v:IsAdmin() and (v:IsNocliping() or v:IsSpectating()) then
+    for k, v in ipairs(player.GetAdmins()) do
+        if v:IsNocliping() or v:IsSpectating() then
             admins[#admins + 1] = v
         end
     end
@@ -32,10 +31,12 @@ timer.Simple(math.random(), function()
     end)
 end)
 
-timer.Create("AdminESP:UpdatePlayersPosition", 0.35, 0, function()
-    if #receivers <= 0 then return end
+timer.Simple(math.random(), function()
+    timer.Create("AdminESP:UpdatePlayersPosition", 0.35, 0, function()
+        if #receivers <= 0 then return end
 
-    for k, v in ipairs(player.GetAll()) do
-        v:SetNetVar("esp.position", v:GetPos(), receivers)
-    end
+        for k, v in ipairs(player.GetAll()) do
+            v:SetNetVar("esp.position", v:GetPos(), receivers)
+        end
+    end)
 end)

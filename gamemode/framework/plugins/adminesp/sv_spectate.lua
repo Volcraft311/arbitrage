@@ -11,7 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 local players_hook = {}
 local function create_hook()
@@ -63,7 +62,7 @@ local function update_hook()
 	end
 end
 
-function PLUGIN:Spec(client, target)
+function AdminESP:Spec(client, target)
 	client._CameraEntity = nil
 
 	local var = client:GetLocalVar("spectating", false)
@@ -89,6 +88,7 @@ function PLUGIN:Spec(client, target)
 	end
 end
 
+
 concommand.Add("spectate", function(client, cmd, args)
 	if !client:IsAdmin() then return end
 
@@ -99,8 +99,9 @@ concommand.Add("spectate", function(client, cmd, args)
 		target = player.GetByIdentifier(text)
 	end
 
-	PLUGIN:Spec(client, target)
+	AdminESP:Spec(client, target)
 end)
+
 
 local dist = 325
 hook("ChatAddText", function(client, message)

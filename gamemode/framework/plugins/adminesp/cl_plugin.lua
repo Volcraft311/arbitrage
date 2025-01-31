@@ -11,7 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 -- Localize Global Calls
 local surface_CreateFont = surface.CreateFont
@@ -66,7 +65,7 @@ local function drawing(entity, info, eyePos)
 	if !headPos.visible then return end
 
 	local distance = eyePos:Distance(entityPos)
-	local col = (isPlayer and team_GetColor(entity:Team()) or PLUGIN.entslist[entity:GetClass()][1]) or color_white
+	local col = (isPlayer and team_GetColor(entity:Team()) or AdminESP.entslist[entity:GetClass()][1]) or color_white
 
 	local f = math_abs(350 / distance)
 	local size = 52 * f
@@ -120,7 +119,7 @@ local cache = {}
 asterionlib.entscollector:AddTrack("adminesp", {
 	delay_apply = 2,
 	onCanTrack = function(entity)
-		local object = PLUGIN.entslist[entity:GetClass()]
+		local object = AdminESP.entslist[entity:GetClass()]
 
 		if entity:IsPlayer() or object then
 			local func = object and object[2]
@@ -168,7 +167,7 @@ local function caching(entity)
 
 	for k, v in ipairs(entity:ESPInfo()) do
 		if !v[1] then continue end
-		if !PLUGIN:DistanceFits(eyePos, entityPos, v[2]) then continue end
+		if !AdminESP:DistanceFits(eyePos, entityPos, v[2]) then continue end
 
 		cache[entity][#cache[entity] + 1] = v[1]
 	end
@@ -198,16 +197,16 @@ local function thread()
 end
 
 local co
-function PLUGIN:Think()
+hook("Think", function()
 	if !allow then return end
 
 	if !co or !coroutine_resume(co) then
 		co = coroutine_create(thread)
 		coroutine_resume(co)
 	end
-end
+end)
 
-function PLUGIN:HUDPaint()
+hook("HUDPaint", function()
 	if !allow then return end
 
 	local eyePos = EyePos()
@@ -217,6 +216,6 @@ function PLUGIN:HUDPaint()
 
 	local client = LocalPlayer()
 	if client:IsSpectating() then
-		self:SpectatePaint()
+		AdminESP:SpectatePaint()
 	end
-end
+end)

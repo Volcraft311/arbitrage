@@ -11,12 +11,11 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 --[[
     Players
 ]]--
-PLUGIN:AddPlayerESPCustomization("name_pl", {
+AdminESP:AddPlayerESPCustomization("name_pl", {
     dist = 0,
     config = {
         name = "Имя персонажа",
@@ -27,7 +26,7 @@ PLUGIN:AddPlayerESPCustomization("name_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("steamname_pl", {
+AdminESP:AddPlayerESPCustomization("steamname_pl", {
     dist = 0,
     config = {
         name = "STEAM Имя персонажа",
@@ -38,7 +37,7 @@ PLUGIN:AddPlayerESPCustomization("steamname_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("rank_pl", {
+AdminESP:AddPlayerESPCustomization("rank_pl", {
     dist = 1500,
     config = {
         name = "Ранг игрока",
@@ -49,7 +48,7 @@ PLUGIN:AddPlayerESPCustomization("rank_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("hp_armor_pl", {
+AdminESP:AddPlayerESPCustomization("hp_armor_pl", {
     dist = 1000,
     config = {
         name = "Состояние игрока",
@@ -60,7 +59,7 @@ PLUGIN:AddPlayerESPCustomization("hp_armor_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("statistics_pl", {
+AdminESP:AddPlayerESPCustomization("statistics_pl", {
     dist = 1000,
     config = {
         name = "Статистика игрока",
@@ -71,7 +70,7 @@ PLUGIN:AddPlayerESPCustomization("statistics_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("weapon_pl", {
+AdminESP:AddPlayerESPCustomization("weapon_pl", {
     dist = 1000,
     config = {
         name = "Оружие игрока",
@@ -85,7 +84,7 @@ PLUGIN:AddPlayerESPCustomization("weapon_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("trace_pl", {
+AdminESP:AddPlayerESPCustomization("trace_pl", {
     dist = 1000,
     config = {
         name = "Прицел игрока",
@@ -117,7 +116,7 @@ PLUGIN:AddPlayerESPCustomization("trace_pl", {
     isfunc = true
 })
 
-PLUGIN:AddPlayerESPCustomization("observer_pl", {
+AdminESP:AddPlayerESPCustomization("observer_pl", {
     dist = 0,
     config = {
         name = "ОбСервер статус",
@@ -130,7 +129,7 @@ PLUGIN:AddPlayerESPCustomization("observer_pl", {
     end
 })
 
-PLUGIN:AddPlayerESPCustomization("fallover_pl", {
+AdminESP:AddPlayerESPCustomization("fallover_pl", {
     dist = 0,
     config = {
         name = "Fallover статус",
@@ -148,7 +147,7 @@ PLUGIN:AddPlayerESPCustomization("fallover_pl", {
 --[[
     Entity
 ]]--
-PLUGIN:AddEntityESPCustomization("name_en", {
+AdminESP:AddEntityESPCustomization("name_en", {
     dist = 3000,
     config = {
         name = "Название энтити",
@@ -167,7 +166,7 @@ PLUGIN:AddEntityESPCustomization("name_en", {
     end
 })
 
-PLUGIN:AddEntityESPCustomization("class_en", {
+AdminESP:AddEntityESPCustomization("class_en", {
     dist = 1000,
     config = {
         name = "Класс энтити",
@@ -178,7 +177,7 @@ PLUGIN:AddEntityESPCustomization("class_en", {
     end
 })
 
-PLUGIN:AddEntityESPCustomization("model_en", {
+AdminESP:AddEntityESPCustomization("model_en", {
     dist = 200,
     config = {
         name = "Модель энтити",

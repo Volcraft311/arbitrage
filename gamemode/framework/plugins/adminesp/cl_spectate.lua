@@ -11,7 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 -- Localize Global Calls
 local Vector = Vector
@@ -44,7 +43,7 @@ local cameraAngles = Vector(0, 0, 0)
 local eyeAng = Angle(0, 0, 0)
 local cameraThirdPerson = true
 local thirdPersonDistance = 100
-
+local cameraSpeed = 1250
 
 local function fixCameraRoll(bFixEye)
 	cameraAngles.r = 0
@@ -102,6 +101,38 @@ local function syncCameraPosition()
 	end
 end
 
+function AdminESP:SpectatePaint()
+	if Arbitrage.lawEnable then return end
+
+	local entity = returnEntity()
+
+	if IsValid(entity) then
+		outline.Add({entity}, Color(0, 255, 0), 0)
+
+		Hints:AddKeyDraw("Прикрепиться к объекту", {MOUSE_LEFT})
+	end
+
+	cameraTraceEntity = entity
+
+	Hints:AddKeyDraw("Выйти из наблюдения", SETTINGS.binds.Get("spectating"))
+	Hints:AddKeyDraw("Телепортироваться на место камеры", {"+reload"})
+
+	if IsValid(cameraEntity) then
+		Hints:AddKeyDraw("Открепиться от объекта", {MOUSE_LEFT})
+	end
+
+	Hints:AddKeyDraw(IsValid(cameraEntity) and "Изменить положение камеры" or "Переместиться вперед", {MOUSE_RIGHT})
+
+	if IsValid(cameraEntity) and cameraEntity:IsPlayer() then
+		Hints:AddKeyDraw("Получить изображение экрана", {"+use"})
+	end
+
+	if IsValid(entity) and ((entity:IsPlayer() and entity != LocalPlayer()) or entity:IsDoor()) then
+		Hints:AddKeyDraw("Меню свойств объекта", {KEY_F2})
+	end
+end
+
+
 local isSpectating = false
 timer_Create("AdminESP:UpdateAllow", 0.1, 0, function()
 	local client = LocalPlayer()
@@ -121,8 +152,8 @@ timer_Create("AdminESP:UpdateAllow", 0.1, 0, function()
 	end
 end)
 
-local cameraSpeed = 1250
-function PLUGIN:CalcView(client, pos, angles, fov)
+
+hook("CalcView", function(client, pos, angles, fov)
 	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
@@ -170,48 +201,15 @@ function PLUGIN:CalcView(client, pos, angles, fov)
 
 	syncCameraPosition()
 
-	local view = {
+	return {
 		origin = cameraPosition,
 		angles = cameraAngles,
 		fov = fov,
 		drawviewer = true
 	}
+end)
 
-	return view
-end
-
-function PLUGIN:SpectatePaint()
-	if Arbitrage.lawEnable then return end
-
-	local entity = returnEntity()
-
-	if IsValid(entity) then
-		outline.Add({entity}, Color(0, 255, 0), 0)
-
-		Hints:AddKeyDraw("Прикрепиться к объекту", {MOUSE_LEFT})
-	end
-
-	cameraTraceEntity = entity
-
-	Hints:AddKeyDraw("Выйти из наблюдения", SETTINGS.binds.Get("spectating"))
-	Hints:AddKeyDraw("Телепортироваться на место камеры", {"+reload"})
-
-	if IsValid(cameraEntity) then
-		Hints:AddKeyDraw("Открепиться от объекта", {MOUSE_LEFT})
-	end
-
-	Hints:AddKeyDraw(IsValid(cameraEntity) and "Изменить положение камеры" or "Переместиться вперед", {MOUSE_RIGHT})
-
-	if IsValid(cameraEntity) and cameraEntity:IsPlayer() then
-		Hints:AddKeyDraw("Получить изображение экрана", {"+use"})
-	end
-
-	if IsValid(entity) and ((entity:IsPlayer() and entity != LocalPlayer()) or entity:IsDoor()) then
-		Hints:AddKeyDraw("Меню свойств объекта", {KEY_F2})
-	end
-end
-
-function PLUGIN:PlayerBindPress(client, bind, pressed)
+hook("PlayerBindPress", function(client, bind, pressed)
 	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
@@ -297,9 +295,9 @@ function PLUGIN:PlayerBindPress(client, bind, pressed)
 			return true
 		end
 	end
-end
+end)
 
-function PLUGIN:CreateMove(cmd)
+hook("CreateMove", function(cmd)
 	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
@@ -307,9 +305,9 @@ function PLUGIN:CreateMove(cmd)
 	cmd:SetSideMove(0)
 
 	return false
-end
+end)
 
-function PLUGIN:InputMouseApply(cmd, x, y, ang)
+hook("InputMouseApply", function(cmd, x, y, ang)
 	if Arbitrage.lawEnable then return end
 	if !isSpectating then return end
 
@@ -318,7 +316,7 @@ function PLUGIN:InputMouseApply(cmd, x, y, ang)
 
 	cameraAngles.p = math_Clamp(cameraAngles.p + pitch, -90, 90)
 	cameraAngles.y = cameraAngles.y - (Arbitrage.OnMapReversion() and -yaw or yaw)
-end
+end)
 
 hook("KeyPressID", function(client, id, bIsVisibleGUI)
 	if Arbitrage.lawEnable then return end

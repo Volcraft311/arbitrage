@@ -11,16 +11,16 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
+local PLUGIN = PLUGIN
 AdminESP = PLUGIN
 
-PLUGIN.name = "AdminESP"
+AdminESP.name = "AdminESP"
 
-PLUGIN.playerinfo = {}
-PLUGIN.entityinfo = {}
+AdminESP.playerinfo = {}
+AdminESP.entityinfo = {}
 
-PLUGIN.entslist = {
+AdminESP.entslist = {
     ["prop_ragdoll"] = {Color(157, 111, 210), function(entity)
         if entity:GetNetVar("sIsRagdoll") then
             return false
@@ -34,15 +34,7 @@ PLUGIN.entslist = {
     ["arb_container"] = {Color(240, 73, 61)},
 }
 
-if CLIENT then
-    PLUGIN.mat = PLUGIN.mat or CreateMaterial("deznutz", "VertexLitGeneric", {
-        ["$basetexture"] = "models/debug/debugwhite",
-        ["$model"] = 1,
-        ["$ignorez"] = 1
-    })
-end
-
-function PLUGIN:AddPlayerESPCustomization(index, data)
+function AdminESP:AddPlayerESPCustomization(index, data)
     if !index then return end
     if !data then return end
 
@@ -50,7 +42,7 @@ function PLUGIN:AddPlayerESPCustomization(index, data)
     self.playerinfo[#self.playerinfo + 1] = data
 end
 
-function PLUGIN:AddEntityESPCustomization(index, data)
+function AdminESP:AddEntityESPCustomization(index, data)
     if !index then return end
     if !data then return end
 
@@ -58,7 +50,7 @@ function PLUGIN:AddEntityESPCustomization(index, data)
     self.entityinfo[#self.entityinfo + 1] = data
 end
 
-function PLUGIN:DistanceFits(vec1, vec2, dist)
+function AdminESP:DistanceFits(vec1, vec2, dist)
     if dist == 0 then return true end
 
     return vec1:Distance(vec2) <= dist
@@ -75,26 +67,26 @@ local function addStructure(entity, info)
     return {data, dist}
 end
 
-local metaPl = FindMetaTable("Player")
-function metaPl:ESPInfo()
+local PLAYER = FindMetaTable("Player")
+function PLAYER:ESPInfo()
     local data = {}
 
-    for k, v in ipairs(PLUGIN.playerinfo) do
+    for k, v in ipairs(AdminESP.playerinfo) do
         data[#data + 1] = addStructure(self, v)
     end
 
     return data
 end
 
-function metaPl:IsSpectating()
+function PLAYER:IsSpectating()
     return self:GetLocalVar("spectating", false)
 end
 
-local metaEn = FindMetaTable("Entity")
-function metaEn:ESPInfo()
+local ENTITY = FindMetaTable("Entity")
+function ENTITY:ESPInfo()
     local data = {}
 
-    for k, v in ipairs(PLUGIN.entityinfo) do
+    for k, v in ipairs(AdminESP.entityinfo) do
         data[#data + 1] = addStructure(self, v)
     end
 

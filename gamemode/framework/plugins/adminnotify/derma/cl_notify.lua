@@ -19,6 +19,9 @@ function PANEL:Init()
 
     self:SetPos(0, ScrH() * 0.2)
     self:SetSize(ScrW(), ScrH() - ScrH() * 0.2)
+    self:SetZPos(-99999)
+    self:SetMouseInputEnabled(false)
+    self:SetKeyboardInputEnabled(false)
 
     self.panels = self.panels or {}
 end
@@ -76,9 +79,9 @@ end
 
 function PANEL:Think()
     local y = 0
-    for k, v in SortedPairs(AdminNotify.panels or {}) do
+    for k, v in pairs(self.panels or {}) do
         if IsValid(v) then
-            y = y + v:GetTall() + 4
+            y = y + v:GetTall() + 8
             v.__y = y
         end
     end
@@ -93,6 +96,9 @@ function PANEL:Init()
     self:SetPos(0, 0)
     self:SetSize(0, 0)
     self:SetDrawOnTop(true)
+    self:SetZPos(-99999)
+    self:SetMouseInputEnabled(false)
+    self:SetKeyboardInputEnabled(false)
 
     self:SetAlpha(0)
     self:AlphaTo(255, 0.1)
@@ -100,6 +106,15 @@ function PANEL:Init()
     self._w = 0
     self._h = 0
     self._y = 0
+    self.bHovered = false
+end
+
+function PANEL:OnHovered()
+    self:AlphaTo(0, 0.1)
+end
+
+function PANEL:OnUnHovered()
+    self:AlphaTo(255, 0.1)
 end
 
 function PANEL:Paint(w, h)
@@ -109,10 +124,26 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 
     surface.SetDrawColor(255, 61, 96)
-    surface.DrawRect(0, h-2, t * (w / AdminNotify.guiTime), 2)
+    surface.DrawRect(0, h - 2, t * (w / AdminNotify.guiTime), 2)
 
     draw.SimpleText(self.text2 or "", "ixAdminNotifyFont", 4, 5, color_black, TEXT_ALIGN_LEFT)
     self.parsed:Draw(4, 4, TEXT_ALIGN_LEFT)
+
+    local x, y = self:LocalToScreen(0, 0)
+    local mouseX, mouseY = gui.MousePos()
+    if mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h then
+        if !self.bHovered then
+            self:OnHovered()
+
+            self.bHovered = true
+        end
+    else
+        if self.bHovered then
+            self:OnUnHovered()
+
+            self.bHovered = false
+        end
+    end
 end
 
 function PANEL:Think()

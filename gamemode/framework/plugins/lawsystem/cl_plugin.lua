@@ -565,11 +565,6 @@ function PLUGIN:StartCylinder()
                             surface.SetMaterial(bullet)
                             surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                            surface.SetDrawColor(255, 255, 255)
-                            surface.DrawRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
-
-                            print(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
-
                             draw.SimpleText(self.bulletText or "", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
                         end)
                     cam.PopModelMatrix()

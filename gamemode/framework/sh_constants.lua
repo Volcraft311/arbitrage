@@ -30,13 +30,6 @@ ARBITRAGE_JUMP_POWER = 200
 -- Длина видимости обычного сообщения в чате
 ARBITRAGE_SAY_LENGTH = 300
 
--- Отключенные типы сообщений в чате
-ARBITRAGE_DISABLE_DATA = {
-	joinleave = true,
-	namechange = true,
-	teamchange = true,
-}
-
 -- ID Градиентов
 GRADIENT_CENTER	= 1
 GRADIENT_RIGHT = 2

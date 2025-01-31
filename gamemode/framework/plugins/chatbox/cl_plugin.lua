@@ -44,7 +44,17 @@ function PLUGIN:OnScreenSizeChanged(oldWidth, oldHeight)
     self:CreateChat()
 end
 
+local disableChatText = {
+    joinleave = true,
+    namechange = true,
+    teamchange = true,
+}
+
 function PLUGIN:ChatText(index, name, text, messageType)
+    if disableChatText[messageType] then
+        return true
+    end
+
     if IsValid(self.panel) then
         self.panel:AddMessage(text)
     end
@@ -62,8 +72,7 @@ hook("FinishChat", function()
     net.SendToServer()
 end)
 
-chat.arbAddText = chat.arbAddText or chat.AddText
-
+chat.oldAddText = chat.oldAddText or chat.AddText
 function chat.AddText(...)
     if (IsValid(PLUGIN.panel)) then
         PLUGIN.panel:AddMessage(...)

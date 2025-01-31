@@ -475,10 +475,6 @@ hook("SpawnMenuOpen", function()
     return false
 end)
 
-hook("ChatText", function(index, name, text, type)
-    return ARBITRAGE_DISABLE_DATA[type]
-end)
-
 hook("OnSettingsLoad", function()
     local panel = asterionlib.netgui:Create("arb.MainRemake:UI")
     panel:Content()

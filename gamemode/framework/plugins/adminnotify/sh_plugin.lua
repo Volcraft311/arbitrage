@@ -11,16 +11,15 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 local PLUGIN = PLUGIN
-Arbitrage.adminnotify = PLUGIN
+AdminNotify = PLUGIN
 
-PLUGIN.name = "AdminNotify"
-PLUGIN.notifyList = {}
+AdminNotify.name = "AdminNotify"
+AdminNotify.notifyList = {}
+AdminNotify.guiTime = 30
 
-function PLUGIN:AddNewNotify(name, data)
-    if !name then return end
-    if !isfunction(data) then return end
-
+function AdminNotify:AddNewNotify(name, data)
     self.notifyList[name] = data
 end
 

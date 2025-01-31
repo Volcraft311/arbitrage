@@ -105,7 +105,7 @@ function TOOL:Reload(trace)
         trigger:Sync()
         trigger:SelectTool(client)
 
-        Arbitrage.adminnotify:SendNotify("triggercreated", client:FullName(), trigger.name)
+        AdminNotify:SendNotify("triggercreated", client:FullName(), trigger.name)
     end
 
     return true

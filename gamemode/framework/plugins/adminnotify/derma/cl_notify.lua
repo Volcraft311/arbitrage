@@ -11,15 +11,15 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 local PANEL = {}
 
 function PANEL:Init()
+    AdminNotify.panel = self
+
     self:SetPos(0, ScrH() * 0.2)
     self:SetSize(ScrW(), ScrH() - ScrH() * 0.2)
 
-    Arbitrage.adminnotify = self
     self.panels = self.panels or {}
 end
 
@@ -56,12 +56,12 @@ function PANEL:AddNewNotify(data)
     panel.width = width + 8
     panel.height = height + 8
     panel.id = #self.panels + 1
-    panel.time = SysTime() + PLUGIN.guiTime
+    panel.time = SysTime() + AdminNotify.guiTime
     panel.parsed = markup.Parse(str or "")
 
     self.panels[panel.id] = panel
 
-    timer.Simple(PLUGIN.guiTime, function()
+    timer.Simple(AdminNotify.guiTime, function()
         if IsValid(panel) then
             panel.width = 0
             panel.height = 0
@@ -76,7 +76,7 @@ end
 
 function PANEL:Think()
     local y = 0
-    for k, v in SortedPairs(Arbitrage.adminnotify.panels or {}) do
+    for k, v in SortedPairs(AdminNotify.panels or {}) do
         if IsValid(v) then
             y = y + v:GetTall() + 4
             v.__y = y
@@ -87,7 +87,7 @@ end
 vgui.Register("ixAdminNotify", PANEL, "Panel")
 
 
-local PANEL = {}
+PANEL = {}
 
 function PANEL:Init()
     self:SetPos(0, 0)
@@ -96,6 +96,10 @@ function PANEL:Init()
 
     self:SetAlpha(0)
     self:AlphaTo(255, 0.1)
+
+    self._w = 0
+    self._h = 0
+    self._y = 0
 end
 
 function PANEL:Paint(w, h)
@@ -105,18 +109,18 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, h)
 
     surface.SetDrawColor(255, 61, 96)
-    surface.DrawRect(0, h-2, t * (w / PLUGIN.guiTime), 2)
+    surface.DrawRect(0, h-2, t * (w / AdminNotify.guiTime), 2)
 
     draw.SimpleText(self.text2 or "", "ixAdminNotifyFont", 4, 5, color_black, TEXT_ALIGN_LEFT)
     self.parsed:Draw(4, 4, TEXT_ALIGN_LEFT)
 end
 
 function PANEL:Think()
-    if !self._w or !self._h then self._w, self._h, self._y = 0, 0, 0 end
+    local ft = FrameTime()
 
-    self._w = Lerp(FrameTime() * 10, self._w, self.width or 0)
-    self._h = Lerp(FrameTime() * 10, self._h, self.height or 0)
-    self._y = Lerp(FrameTime() * 10, self._y, self.__y or ScrH())
+    self._w = Lerp(ft * 10, self._w, self.width or 0)
+    self._h = Lerp(ft * 10, self._h, self.height or 0)
+    self._y = Lerp(ft * 10, self._y, self.__y or ScrH())
 
     self:SetWide(self._w)
     self:SetTall(self._h)

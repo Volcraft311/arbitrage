@@ -11,7 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 surface.CreateFont("ixAdminNotifyFont", {
     font = "Arial",
@@ -22,43 +21,45 @@ surface.CreateFont("ixAdminNotifyFont", {
     shadow = false,
 })
 
-function PLUGIN:CreateNotify(data)
-    local panel = Arbitrage.adminnotify
-
-    if !IsValid(panel) then
-        panel = vgui.Create("ixAdminNotify")
+function AdminNotify:CreateNotify(data)
+    if !IsValid(AdminNotify.panel) then
+        AdminNotify.panel = vgui.Create("ixAdminNotify")
     end
 
     if !SETTINGS.options.Get("show_admin_notify") then return end
 
-    panel:AddNewNotify(data)
+    AdminNotify.panel:AddNewNotify(data)
 end
 
-netstream.Hook("ixAdminNotify", function(notify, ...)
-    if !PLUGIN.notifyList[notify] then return end
 
-    local info = {PLUGIN.notifyList[notify](...)}
+concommand.Add("arb_adminnotify_reload", function(client)
+    if !client:IsAdmin() then return end
 
-    if #info > 0 then
-        PLUGIN:CreateNotify(info)
-        MsgC(unpack(info))
-        Msg("\n")
-    end
-end)
-
-timer.Simple(1, function()
-    if IsValid(Arbitrage.adminnotify) then
-        Arbitrage.adminnotify:Remove()
+    if IsValid(AdminNotify.panel) then
+        AdminNotify.panel:Remove()
     end
 
     vgui.Create("ixAdminNotify")
 end)
 
-concommand.Add("arb_adminnotify_reload", function(client)
-    if !client:IsAdmin() then return end
 
-    if IsValid(Arbitrage.adminnotify) then
-        Arbitrage.adminnotify:Remove()
+netstream.Hook("ixAdminNotify", function(notify, ...)
+    if !AdminNotify.notifyList[notify] then return end
+
+    local info = {AdminNotify.notifyList[notify](...)}
+
+    if #info > 0 then
+        AdminNotify:CreateNotify(info)
+
+        MsgC(unpack(info))
+        Msg("\n")
+    end
+end)
+
+
+timer.Simple(1, function()
+    if IsValid(AdminNotify.panel) then
+        AdminNotify.panel:Remove()
     end
 
     vgui.Create("ixAdminNotify")

@@ -11,48 +11,46 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
-function PLUGIN:SendNotify(notify, ...)
+function AdminNotify:SendNotify(notify, ...)
     if !self.notifyList[notify] then return end
 
-    for k, v in ipairs(player.GetAll()) do
-        if v:IsAdmin() then
-            netstream.Start(v, "ixAdminNotify", notify, ...)
-        end
+    for k, v in ipairs(player.GetAdmins()) do
+        netstream.Start(v, "ixAdminNotify", notify, ...)
     end
 end
 
+
 gameevent.Listen("player_connect")
-function PLUGIN:player_connect(data)
+hook("player_connect", function(data)
     local name = data.name
     local steamid = data.networkid
 
-    self:SendNotify("connect", name, steamid)
-end
-
-hook("OnPlayerInitialize", function(client)
-    PLUGIN:SendNotify("join", client:FullName(true))
+    AdminNotify:SendNotify("connect", name, steamid)
 end)
 
-function PLUGIN:PlayerDisconnected(client)
-    self:SendNotify("disconnect", client:FullName(true))
-end
+hook("OnPlayerInitialize", function(client)
+    AdminNotify:SendNotify("join", client:FullName(true))
+end)
 
-function PLUGIN:PlayerDeath(client, inflictor, attacker)
+hook("PlayerDisconnected", function(client)
+    AdminNotify:SendNotify("disconnect", client:FullName(true))
+end)
+
+hook("PlayerDeath", function(client, inflictor, attacker)
     local weapon = attacker:IsPlayer() and attacker:GetActiveWeapon()
 
     local attackerName = (IsValid(attacker) and attacker:IsPlayer()) and attacker:FullName() or attacker:GetClass()
     local targetName = client:FullName()
     local weaponName = IsValid(weapon) and weapon:GetClass()
 
-    self:SendNotify("killed", attackerName, targetName, weaponName)
-end
+    AdminNotify:SendNotify("killed", attackerName, targetName, weaponName)
+end)
 
-function PLUGIN:PlayerSpawn(client)
-    self:SendNotify("spawn", client:FullName())
-end
+hook("PlayerSpawn", function(client)
+    AdminNotify:SendNotify("spawn", client:FullName())
+end)
 
 hook("OnCharacterJoin", function(client, character)
-    PLUGIN:SendNotify("joincharacter", client:FullName(), character:GetName() .. "(" .. character:GetID() .. ")")
+    AdminNotify:SendNotify("joincharacter", client:FullName(), character:GetName() .. "(" .. character:GetID() .. ")")
 end)

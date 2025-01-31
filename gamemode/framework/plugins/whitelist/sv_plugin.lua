@@ -92,8 +92,9 @@ netstream.Hook("Whitelist:Add", function(client, id, time)
 		client:SteamName() .. " (" .. client:SteamID() .. ")"
 	}
 
+	AdminNotify:SendNotify("addwhitelist", client:FullName(), steamid)
+
 	asterionlib.data:Set("whitelist", data)
-	Arbitrage.adminnotify:SendNotify("addwhitelist", client:FullName(), steamid)
 	PLUGIN:OpenMenu(client)
 end)
 
@@ -136,7 +137,7 @@ netstream.Hook("Whitelist:Remove", function(client, array)
 	end
 	str = str .. ")"
 
-	Arbitrage.adminnotify:SendNotify("removewhitelist", client:FullName(), str)
+	AdminNotify:SendNotify("removewhitelist", client:FullName(), str)
 
 	asterionlib.data:Set("whitelist", data)
 	PLUGIN:OpenMenu(client)

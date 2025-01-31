@@ -74,7 +74,7 @@ netstream.Hook("Trigger:Remove", function(client, id)
 
     trigger:Remove()
 
-    Arbitrage.adminnotify:SendNotify("triggerremoved", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerremoved", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:ChangeName", function(client, id, name)
@@ -89,7 +89,7 @@ netstream.Hook("Trigger:ChangeName", function(client, id, name)
     trigger:SetName(name)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:SetActive", function(client, id)
@@ -102,7 +102,7 @@ netstream.Hook("Trigger:SetActive", function(client, id)
     trigger:SetActive(bIsActive)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:AddAction", function(client, id, data)
@@ -114,7 +114,7 @@ netstream.Hook("Trigger:AddAction", function(client, id, data)
     trigger:AddAction(data.type, data.actionid, data.args, data.name)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:EditAction", function(client, id, data)
@@ -126,7 +126,7 @@ netstream.Hook("Trigger:EditAction", function(client, id, data)
     trigger:EditAction(data.type, data.number, data.args, data.name)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:RemoveAction", function(client, id, data)
@@ -138,7 +138,7 @@ netstream.Hook("Trigger:RemoveAction", function(client, id, data)
     trigger:RemoveAction(data.type, data.number)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:RemoveAll", function(client)
@@ -146,7 +146,7 @@ netstream.Hook("Trigger:RemoveAll", function(client)
 
     Trigger:RemoveAll()
 
-    Arbitrage.adminnotify:SendNotify("triggerremoveall", client:FullName())
+    AdminNotify:SendNotify("triggerremoveall", client:FullName())
 end)
 
 netstream.Hook("Trigger:SetOneShot", function(client, id, bool)
@@ -158,7 +158,7 @@ netstream.Hook("Trigger:SetOneShot", function(client, id, bool)
     trigger:SetOneShot(bool)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:ReloadOneShot", function(client, id)
@@ -172,7 +172,7 @@ netstream.Hook("Trigger:ReloadOneShot", function(client, id)
     trigger:ResetInteractedList()
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerlistsreset", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerlistsreset", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:MoveAction", function(client, id, data)
@@ -184,7 +184,7 @@ netstream.Hook("Trigger:MoveAction", function(client, id, data)
     trigger:MoveAction(data.type, data.number, data.direction)
     trigger:Sync()
 
-    Arbitrage.adminnotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
+    AdminNotify:SendNotify("triggerchanged", client:FullName(), trigger.name)
 end)
 
 netstream.Hook("Trigger:LoadConfig", function(client, info)
@@ -200,5 +200,5 @@ netstream.Hook("Trigger:LoadConfig", function(client, info)
 
     Trigger:SyncAll()
 
-    Arbitrage.adminnotify:SendNotify("triggerloadconfig", client:FullName())
+    AdminNotify:SendNotify("triggerloadconfig", client:FullName())
 end)

@@ -213,7 +213,7 @@ local actionList = {
             Character.team:Join(target, faction, bRespawn)
         end
 
-        Arbitrage.adminnotify:SendNotify("transfercharacter", client:FullName(), m_target, faction)
+        AdminNotify:SendNotify("transfercharacter", client:FullName(), m_target, faction)
     end,
     ["addgame"] = function(client, target)
         if !IsValid(target) then return end
@@ -229,7 +229,7 @@ local actionList = {
 
         target:SetNetVar("arbLaw", id)
 
-        Arbitrage.adminnotify:SendNotify("addgame", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("addgame", client:FullName(), target:FullName())
     end,
     ["removegame"] = function(client, steamid)
         if !Arbitrage.players[steamid] then return end
@@ -243,7 +243,7 @@ local actionList = {
             target:SetNetVar("arbLaw", -1)
         end
 
-        Arbitrage.adminnotify:SendNotify("removegame", client:FullName(), m_target)
+        AdminNotify:SendNotify("removegame", client:FullName(), m_target)
     end,
     ["returngame"] = function(client, target)
         if !IsValid(target) then return end
@@ -279,21 +279,21 @@ local actionList = {
             v:Remove()
         end
 
-        Arbitrage.adminnotify:SendNotify("returngame", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("returngame", client:FullName(), target:FullName())
     end,
     ["setfakename"] = function(client, target, name)
         if !IsValid(target) then return end
 
         target:SetFakeName(name)
 
-        Arbitrage.adminnotify:SendNotify("setfakename", client:FullName(), target:FullName(), name)
+        AdminNotify:SendNotify("setfakename", client:FullName(), target:FullName(), name)
     end,
     ["changestatus"] = function(client, target, state)
         if !IsValid(target) then return end
 
         target:SetNetVar("arbAlive", state)
 
-        Arbitrage.adminnotify:SendNotify("changestatus", client:FullName(), target:FullName(), state == nil and "Живой" or "Мертвый")
+        AdminNotify:SendNotify("changestatus", client:FullName(), target:FullName(), state == nil and "Живой" or "Мертвый")
     end,
     ["setplace"] = function(client, steamid, place)
         if !Arbitrage.players[steamid] then return end
@@ -307,7 +307,7 @@ local actionList = {
             target:SetNetVar("arbLaw", place)
         end
 
-        Arbitrage.adminnotify:SendNotify("setplace", client:FullName(), place, m_target)
+        AdminNotify:SendNotify("setplace", client:FullName(), place, m_target)
     end,
     ["setmodel"] = function(client, target, model)
         if !IsValid(target) then return end
@@ -320,7 +320,7 @@ local actionList = {
 
         Arbitrage.player.SetupViewOffset(target)
 
-        Arbitrage.adminnotify:SendNotify("setmodel", client:FullName(), target:FullName(), model)
+        AdminNotify:SendNotify("setmodel", client:FullName(), target:FullName(), model)
     end,
     ["resetstats"] = function(client, target)
         if !IsValid(target) then return end
@@ -341,7 +341,7 @@ local actionList = {
             Arbitrage.statistics.Set(target, v.data, 100)
         end
 
-        Arbitrage.adminnotify:SendNotify("resetstats", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("resetstats", client:FullName(), target:FullName())
     end,
     ["globalvoice"] = function(client, target, value)
         if !IsValid(target) then return end
@@ -354,7 +354,7 @@ local actionList = {
             Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "включила" or "выключила") .. " вам глобальный голосовой чат!")
         end
 
-        Arbitrage.adminnotify:SendNotify("globalvoice", client:FullName(), target:FullName(), value)
+        AdminNotify:SendNotify("globalvoice", client:FullName(), target:FullName(), value)
     end,
     ["mutevoice"] = function(client, target, value)
         if !IsValid(target) then return end
@@ -371,7 +371,7 @@ local actionList = {
             Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "выключила" or "включила") .. " вам голосовой чат!")
         end
 
-        Arbitrage.adminnotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
+        AdminNotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
     end,
     ["mutenonrpchat"] = function(client, target, value)
         if !IsValid(target) then return end
@@ -384,7 +384,7 @@ local actionList = {
             Arbitrage.commands.Notify(target, "Администрация сервера " .. (value and "запретила" or "разрешила") .. " вам писать в NonRP чат!")
         end
 
-        Arbitrage.adminnotify:SendNotify("mutenonrpchat", client:FullName(), target:FullName(), value)
+        AdminNotify:SendNotify("mutenonrpchat", client:FullName(), target:FullName(), value)
     end,
     ["setdescription"] = function(client, target, data)
         if !IsValid(target) then return end
@@ -403,7 +403,7 @@ local actionList = {
             Arbitrage.commands.Notify(target, "Администрация сервера изменила вам описание!")
         end
 
-        Arbitrage.adminnotify:SendNotify("setdescription", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("setdescription", client:FullName(), target:FullName())
     end,
     ["setforceddescription"] = function(client, target, data)
         if !IsValid(target) then return end
@@ -418,7 +418,7 @@ local actionList = {
 
         target:SetNetVar("forced_description", data)
 
-        Arbitrage.adminnotify:SendNotify("setforceddescription", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("setforceddescription", client:FullName(), target:FullName())
     end,
     ["setscale"] = function(client, target, data)
         if !IsValid(target) then return end
@@ -429,7 +429,7 @@ local actionList = {
         target:SetModelScale(data)
         Character.team:EstablishHull(target)
 
-        Arbitrage.adminnotify:SendNotify("setscale", client:FullName(), target:FullName(), data)
+        AdminNotify:SendNotify("setscale", client:FullName(), target:FullName(), data)
     end,
     ["setstats"] = function(client, target, data, amount)
         if !IsValid(target) then return end
@@ -448,7 +448,7 @@ local actionList = {
             return
         end
 
-        Arbitrage.adminnotify:SendNotify("setstats", client:FullName(), data, target:FullName(), amount)
+        AdminNotify:SendNotify("setstats", client:FullName(), data, target:FullName(), amount)
     end,
     ["setspeed"] = function(client, target, data, speed)
         if !IsValid(target) then return end
@@ -466,7 +466,7 @@ local actionList = {
             target.arb_runSpeed = speed
         end
 
-        Arbitrage.adminnotify:SendNotify("setspeed", client:FullName(), data, target:FullName(), speed)
+        AdminNotify:SendNotify("setspeed", client:FullName(), data, target:FullName(), speed)
     end,
     ["claerinventory"] = function(client, target)
         if !IsValid(target) then return end
@@ -483,7 +483,7 @@ local actionList = {
             v:Remove()
         end
 
-        Arbitrage.adminnotify:SendNotify("claerinventory", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("claerinventory", client:FullName(), target:FullName())
     end,
     ["openinventory"] = function(client, target)
         if !IsValid(target) then return end
@@ -495,7 +495,7 @@ local actionList = {
 
         InventoryBase.Open(client, inventory:GetID(), target:Name())
 
-        Arbitrage.adminnotify:SendNotify("openinventory", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("openinventory", client:FullName(), target:FullName())
     end,
     ["scaleinventory"] = function(client, target, x, y)
         if !IsValid(target) then return end
@@ -511,7 +511,7 @@ local actionList = {
         inventory:SetSize(x, y)
         inventory:Sync()
 
-        Arbitrage.adminnotify:SendNotify("scaleinventory", client:FullName(), target:FullName(), x, y)
+        AdminNotify:SendNotify("scaleinventory", client:FullName(), target:FullName(), x, y)
     end,
     ["addhost"] = function(client, steamid)
         if IsHost(steamid) then return end
@@ -524,7 +524,7 @@ local actionList = {
         local target = player.GetBySteamID(steamid)
         local m_target = IsValid(target) and target:FullName() or steamid
 
-        Arbitrage.adminnotify:SendNotify("addhost", client:FullName(), m_target)
+        AdminNotify:SendNotify("addhost", client:FullName(), m_target)
     end,
     ["removehost"] = function(client, steamid)
         if !IsHost(steamid) then return end
@@ -537,7 +537,7 @@ local actionList = {
         local target = player.GetBySteamID(steamid)
         local m_target = IsValid(target) and target:FullName() or steamid
 
-        Arbitrage.adminnotify:SendNotify("removehost", client:FullName(), m_target)
+        AdminNotify:SendNotify("removehost", client:FullName(), m_target)
     end,
     ["addtemporarystatuseffect"] = function(client, target, uniqueID, delay)
         if !isnumber(delay) then return end
@@ -547,7 +547,7 @@ local actionList = {
             client:ChatNotify(message)
         end
 
-        Arbitrage.adminnotify:SendNotify("addstatuseffect", client:FullName(), target:FullName(), uniqueID, delay)
+        AdminNotify:SendNotify("addstatuseffect", client:FullName(), target:FullName(), uniqueID, delay)
     end,
     ["removetemporarystatuseffect"] = function(client, target, uniqueID)
         if !IsValid(target) then return end
@@ -557,7 +557,7 @@ local actionList = {
             client:ChatNotify(message)
         end
 
-        Arbitrage.adminnotify:SendNotify("removestatuseffect", client:FullName(), target:FullName(), uniqueID)
+        AdminNotify:SendNotify("removestatuseffect", client:FullName(), target:FullName(), uniqueID)
     end,
     ["cleartemporarystatuseffects"] = function(client, target)
         if !IsValid(target) then return end
@@ -567,21 +567,21 @@ local actionList = {
             client:ChatNotify(message)
         end
 
-        Arbitrage.adminnotify:SendNotify("clearstatuseffect", client:FullName(), target:FullName(), uniqueID)
+        AdminNotify:SendNotify("clearstatuseffect", client:FullName(), target:FullName(), uniqueID)
     end,
     ["setfallover"] = function(client, target, delay)
         if !IsValid(target) then return end
 
         target:FallOver(delay)
 
-        Arbitrage.adminnotify:SendNotify("setfallover", client:FullName(), target:FullName(), delay)
+        AdminNotify:SendNotify("setfallover", client:FullName(), target:FullName(), delay)
     end,
     ["setstandup"] = function(client, target)
         if !IsValid(target) then return end
 
         target:StandUp()
 
-        Arbitrage.adminnotify:SendNotify("setstandup", client:FullName(), target:FullName())
+        AdminNotify:SendNotify("setstandup", client:FullName(), target:FullName())
     end
 }
 
@@ -619,7 +619,7 @@ netstream.Hook("arb.MonoRunCommandC", function(client, type_id, button_id)
         end)
 
         local str = isfunction(data.data) and data.data() or tostring(data.data)
-        Arbitrage.adminnotify:SendNotify("monocommandc", client:FullName(), str)
+        AdminNotify:SendNotify("monocommandc", client:FullName(), str)
     end
 
     local isCheckBox = data.isCheckBox
@@ -643,7 +643,7 @@ netstream.Hook("arb.MonoSetChapter", function(client, chapter_id)
     if !client:IsAdmin() then return end
 
     SetNetVar("arb.Chapter", chapter_id)
-    Arbitrage.adminnotify:SendNotify("setchapter", client:FullName(), chapter_id)
+    AdminNotify:SendNotify("setchapter", client:FullName(), chapter_id)
 end)
 
 netstream.Hook("arb.MonoAddRules", function(client, title, description, image)
@@ -656,7 +656,7 @@ netstream.Hook("arb.MonoAddRules", function(client, title, description, image)
     netstream.Start(nil, "MonoPad:EditRulesNotify", #data)
     MonoPad:SendNotify(nil)
 
-    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+    AdminNotify:SendNotify("changecharter", client:FullName())
 end)
 
 netstream.Hook("arb.MonoEditRules", function(client, title, description, image, id)
@@ -671,7 +671,7 @@ netstream.Hook("arb.MonoEditRules", function(client, title, description, image, 
     netstream.Start(nil, "MonoPad:EditRulesNotify", id)
     MonoPad:SendNotify(nil)
 
-    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+    AdminNotify:SendNotify("changecharter", client:FullName())
 end)
 
 netstream.Hook("arb.MonoRemoveRules", function(client, id)
@@ -682,7 +682,7 @@ netstream.Hook("arb.MonoRemoveRules", function(client, id)
 
     SetNetVar("arb.Rules", data)
 
-    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+    AdminNotify:SendNotify("changecharter", client:FullName())
 end)
 
 netstream.Hook("arb.MonoDefaultRules", function(client)
@@ -692,7 +692,7 @@ netstream.Hook("arb.MonoDefaultRules", function(client)
     netstream.Start(nil, "MonoPad:EditRulesNotify", nil)
     MonoPad:SendNotify(nil)
 
-    Arbitrage.adminnotify:SendNotify("changecharter", client:FullName())
+    AdminNotify:SendNotify("changecharter", client:FullName())
 end)
 
 netstream.Hook("arb.MonoAddGameLog", function(client, array)
@@ -764,7 +764,7 @@ netstream.Hook("arb.MonoSplashScreen", function(client, data)
         asterionlib.netgui:Create(v, "arb.SplashScreen", nil, "SetData", el)
     end
 
-    Arbitrage.adminnotify:SendNotify("startsplashscreen", client:FullName())
+    AdminNotify:SendNotify("startsplashscreen", client:FullName())
 
     timer.Simple(23, function()
         ScriptMusic:ChangeTheme("none", true)
@@ -784,7 +784,7 @@ netstream.Hook("arb.MonoEndGame", function(client, title, attackerID, targetID, 
         asterionlib.netgui:Create(v, "arb.MonoEndGame", nil, "SetData", title, attackerID, targetID, text1, text2)
     end
 
-    Arbitrage.adminnotify:SendNotify("startendgame", client:FullName())
+    AdminNotify:SendNotify("startendgame", client:FullName())
 end)
 
 netstream.Hook("arb.MonoChangeStyle", function(client, text, r, g, b)

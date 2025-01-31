@@ -272,7 +272,7 @@ netstream.Hook("ItemBase:CreationRegisterItem", function(client, data)
     ItemBase.CreationRegisterItem(baseID, uniqueID, info)
 
     Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был создан! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
-    Arbitrage.adminnotify:SendNotify("registeritem", client:FullName(), uniqueID)
+    AdminNotify:SendNotify("registeritem", client:FullName(), uniqueID)
 end)
 
 netstream.Hook("ItemBase:CreationEditItem", function(client, data)
@@ -299,7 +299,7 @@ netstream.Hook("ItemBase:CreationEditItem", function(client, data)
     ItemBase.CreationEditItem(uniqueID, info)
 
     Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был обновлен! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
-    Arbitrage.adminnotify:SendNotify("edititem", client:FullName(), uniqueID)
+    AdminNotify:SendNotify("edititem", client:FullName(), uniqueID)
 end)
 
 netstream.Hook("ItemBase:CreationRemoveItem", function(client, baseID, uniqueID)
@@ -324,7 +324,7 @@ netstream.Hook("ItemBase:CreationRemoveItem", function(client, baseID, uniqueID)
     ItemBase.CreationRemoveItem(uniqueID)
 
     Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был удален! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
-    Arbitrage.adminnotify:SendNotify("removeitem", client:FullName(), uniqueID)
+    AdminNotify:SendNotify("removeitem", client:FullName(), uniqueID)
 end)
 
 netstream.Hook("ItemBase:CreationProtectItem", function(client, baseID, uniqueID)
@@ -350,5 +350,5 @@ netstream.Hook("ItemBase:CreationProtectItem", function(client, baseID, uniqueID
     ItemBase.CreationProtectItem(uniqueID, info.isprotect)
 
     Arbitrage.commands.Notify(client, "На предмет " .. uniqueID .. " была " .. (info.isprotect and "установлена" or "снята") .. " защита!")
-    Arbitrage.adminnotify:SendNotify("protectitem", client:FullName(), uniqueID)
+    AdminNotify:SendNotify("protectitem", client:FullName(), uniqueID)
 end)

@@ -52,9 +52,30 @@ function PLUGIN:InitPostEntity()
 	end
 end
 
+hook("OnStaticRankLoaded", function(info)
+	local data = asterionlib.data:Get("whitelist", {}, true)
 
-netstream.Hook("Whitelist:Add", function(client, steamid, time)
+	for id in pairs(info) do
+		local steamid, bValid = util.SteamIDFormatFixed(id)
+		if !bValid then continue end
+
+		data[steamid] = {
+			0,
+			os.time(),
+			true,
+			"Storage Auto-Whitelist"
+		}
+	end
+
+	asterionlib.data:Set("whitelist", data)
+end)
+
+
+netstream.Hook("Whitelist:Add", function(client, id, time)
 	if !client:IsAdmin() then return end
+
+	local steamid, bValid = util.SteamIDFormatFixed(id)
+	if !bValid then return end
 
 	local newtime = os.time() + time
 	if time <= 0 then

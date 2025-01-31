@@ -11,11 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
--- hook.Remove("ContextMenuOpen", "TFAContextBlock")
--- hook.Remove("Think", "TFAInspectionMenu")
-hook.Add("TFA_DrawCrosshair", "TFARemoveCrosshair", function()
-	return true
-end)
 
 RunConsoleCommand("cl_tfa_fx_gasblur", 0)
 RunConsoleCommand("cl_tfa_fx_muzzleflashsmoke", 0)
@@ -35,3 +30,9 @@ RunConsoleCommand("cl_tfa_ballistics_fx_tracers_adv", 0)
 
 hook.Remove("PrePlayerDraw", "TFACleanupProjectedTextures")
 hook.Remove("PreDrawOpaqueRenderables", "tfaweaponspredrawopaque")
+-- hook.Remove("ContextMenuOpen", "TFAContextBlock")
+-- hook.Remove("Think", "TFAInspectionMenu")
+
+hook("TFA_DrawCrosshair", function()
+	return true
+end)

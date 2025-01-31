@@ -11,32 +11,30 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
-function PLUGIN:EntityTakeDamage(target, dmginfo)
-    local attacker = dmginfo:GetAttacker()
-
+hook("EntityTakeDamage", function(target, dmginfo)
     if dmginfo:GetDamageType() == 1 then -- Удар от пропа
         return dmginfo:SetDamage(0)
     end
 
+    local attacker = dmginfo:GetAttacker()
     if attacker and IsValid(attacker) and attacker:IsPlayer() then
         local weapon = attacker:GetActiveWeapon()
-        if weapon and IsValid(weapon) then
-        	local class = weapon:GetClass()
-        	if class != "academy_first" then return end
+        if !IsValid(weapon) then return end
 
-            dmginfo:SetDamage(target:Health() <= 5 and 0 or 2)
+        local class = weapon:GetClass()
+        if class != "academy_first" then return end
 
-            if target:IsPlayer() and target:Health() <= 5 then
-                target.fistDamageCount = (target.fistDamageCount or 0) + 1
+        dmginfo:SetDamage(target:Health() <= 5 and 0 or 2)
 
-                if target.fistDamageCount >= 5 then
-                    target:FallOver(30)
+        if target:IsPlayer() and target:Health() <= 5 then
+            target.fistDamageCount = (target.fistDamageCount or 0) + 1
 
-                    target.fistDamageCount = 0
-                end
+            if target.fistDamageCount >= 5 then
+                target:FallOver(30)
+
+                target.fistDamageCount = 0
             end
         end
     end
-end
+end)

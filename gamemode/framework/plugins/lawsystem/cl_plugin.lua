@@ -565,6 +565,11 @@ function PLUGIN:StartCylinder()
                             surface.SetMaterial(bullet)
                             surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
+                            surface.SetDrawColor(255, 255, 255)
+                            surface.DrawRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
+
+                            print(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
+
                             draw.SimpleText(self.bulletText or "", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
                         end)
                     cam.PopModelMatrix()
@@ -869,8 +874,8 @@ netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
         hook.Add("HUDPaint", "arb.VignitteFocus", function()
             vignitte_a = Lerp(FrameTime() * 2, vignitte_a, 255)
 
-            surface.SetTexture(vignitte)
             surface.SetDrawColor(255, 255, 255, vignitte_a)
+            surface.SetTexture(vignitte)
 
             for i = 1, 2 do
                 surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
@@ -881,8 +886,8 @@ netstream.Hook("arb.LawTalking", function(client, anim, isFocus)
             hook.Add("HUDPaint", "arb.VignitteFocus", function()
                 vignitte_a = Lerp(FrameTime() * 2, vignitte_a, 0)
 
-                surface.SetTexture(vignitte)
                 surface.SetDrawColor(255, 255, 255, vignitte_a)
+                surface.SetTexture(vignitte)
 
                 for i = 1, 2 do
                     surface.DrawTexturedRect(0, 0, ScrW(), ScrH())

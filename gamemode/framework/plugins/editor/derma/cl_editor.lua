@@ -246,7 +246,7 @@ function PANEL:InitButtons()
 
 		button.DoClick = function()
 			local client = LocalPlayer()
-			local pos, ang = Arbitrage:GetPos(client)
+			local pos, ang = client:GetPos() + Vector(0, 0, 64), client:GetAngles()
 
 			if actionData[k].noReqeust then
 				local action = ReturnActionAdd(k, nil, {pos, ang})

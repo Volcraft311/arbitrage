@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 Character.category = Character.category or {}
 Character.category.instances = {}
 Character.category.lastID = 0

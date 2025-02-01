@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 Character.emoji = Character.emoji or {}
 Character.emoji.instances = {}
 Character.emoji.data = {}
@@ -61,6 +62,9 @@ end
 
 Arbitrage.base.Include("sh_emoji_list.lua")
 
-for uniqueID, info in pairs(Character.creation.emoji) do
-	Character.CreationRegisterKeys("emoji", uniqueID, info)
-end
+
+timer.Simple(0, function()
+	for uniqueID, info in pairs(Character.creation.emoji) do
+		Character.CreationRegisterKeys("emoji", uniqueID, info)
+	end
+end)

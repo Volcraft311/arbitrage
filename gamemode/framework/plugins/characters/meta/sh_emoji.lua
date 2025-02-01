@@ -13,9 +13,9 @@
 
 local EMOJI = {}
 EMOJI.__index = EMOJI
-EMOJI.uniqueID = 0
 
 EMOJI.data = {}
+EMOJI.uniqueID = 0
 
 function EMOJI:__tostring()
 	return "emoji[" .. self.uniqueID .. "]"

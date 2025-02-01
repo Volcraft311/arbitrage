@@ -11,11 +11,12 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 local PLUGIN = PLUGIN
 Character = PLUGIN
+
 Character.sendRequest = false -- запрашивать информацию с сайта
 Character.APIRequest = "https://api.asterion.games"
-
 Character.creation = Character.creation or {team = {}, emoji = {}, category = {}} -- хранилище net персонажей
 
 Arbitrage.base.Include("meta/sh_emoji.lua")
@@ -30,20 +31,20 @@ local keyData = {
             if istable(info.color) and !IsColor(info.color) then
                 info.color = Color(info.color.r,info.color.g,info.color.b,info.color.a or 255)
             end
-            
+
             Character.team:Create(info)
-        
+
             if SERVER then
                 netstream.Start(nil, "Character:CreationRegisterKeys", "team", uniqueID, info)
             end
         end,
         edit = function(uniqueID, info)
             info.isCreation = true
-            
+
             if istable(info.color) and !IsColor(info.color) then
                 info.color = Color(info.color.r,info.color.g,info.color.b,info.color.a or 255)
             end
-            
+
             local faction = Character.team:GetByUniqueID(uniqueID)
             if !faction then return end
 
@@ -153,10 +154,6 @@ end
 function Character.FixArray(array)
     local data = {}
     for k, v in pairs(array) do
-        -- if isnumber(k) then
-        --     print(k)
-        -- end
-
         data[tostring(k)] = v
     end
 
@@ -169,6 +166,7 @@ Arbitrage.base.Include("sh_team.lua")
 
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")
+
 
 Character.category:Init(function()
     -- Персонаж администратора

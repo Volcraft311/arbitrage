@@ -11,17 +11,10 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 Character.team = Character.team or {}
 Character.team.instances = {}
 Character.team.lastID = 0
-
-
-local meta = FindMetaTable("Player")
-
-function meta:GetCharacter()
-    return Character.team.instances[self:Team()]
-end
-
 
 function Character.team:New(id)
     if self.instances[id] then
@@ -262,4 +255,11 @@ function Character.team:Init(callback)
         Arbitrage.base.Include("sh_team_list.lua")
         c()
     end
+end
+
+
+local PLAYER = FindMetaTable("Player")
+
+function PLAYER:GetCharacter()
+    return Character.team.instances[self:Team()]
 end

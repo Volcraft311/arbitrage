@@ -13,11 +13,11 @@
 
 local CATEGORY = {}
 CATEGORY.__index = CATEGORY
-CATEGORY.id = 0
-CATEGORY.uniqueID = 0
 
 CATEGORY.name = "Название категории"
 CATEGORY.description = "Описание категории"
+CATEGORY.id = 0
+CATEGORY.uniqueID = 0
 CATEGORY.icon = "icon16/contrast.png"
 CATEGORY.background = nil
 CATEGORY.allow_creation = false

@@ -12,14 +12,6 @@
 ]]--
 
 
-function Character:PlayerInitialSpawn(client)
-	Character.CreationSync(client)
-end
-
-function Character:InitPostEntity()
-	Character.CreationSync()
-end
-
 function Character.CreationSync(client)
 	local characterslist = asterionlib.data:Get("characterslist", {}, true)
 
@@ -35,6 +27,15 @@ function Character.CreationSync(client)
 		end
 	end
 end
+
+
+hook("PlayerInitialSpawnForRealz", function(client)
+	Character.CreationSync(client)
+end)
+
+hook("InitPostEntity", function()
+	Character.CreationSync()
+end)
 
 
 local function getInfoTeam(data)

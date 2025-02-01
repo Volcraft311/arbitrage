@@ -13,12 +13,12 @@
 
 local TEAM = {}
 TEAM.__index = TEAM
-TEAM.id = 0
-TEAM.uniqueID = nil
 
 TEAM.name = "Название команды"
 TEAM.title = "Описание таланта"
 TEAM.description = ""
+TEAM.id = 0
+TEAM.uniqueID = nil
 TEAM.category = "Остальные"
 TEAM.model = "models/player/skeleton.mdl"
 TEAM.color = Color(240, 201, 73)

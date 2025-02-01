@@ -11,14 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
--- Localize Global Calls
-local timer_Simple = timer.Simple
-local Material = Material
-local ipairs = ipairs
-local player_GetAll = player.GetAll
-local pairs = pairs
-local FrameTime = FrameTime
-local SortedPairs = SortedPairs
 
 asterionlib.loading:AddType("char_assets", {
 	name = "Загружаем ассеты персонажей",
@@ -33,7 +25,7 @@ function Character.Caching()
 		time = time or 0.2
 
 		if !MaterialIsCached(path) then
-			timer_Simple(i, function()
+			timer.Simple(i, function()
 				Material(path)
 				asterionlib.loading:Start("char_assets", path)
 			end)
@@ -43,8 +35,8 @@ function Character.Caching()
 		end
 	end
 
-	for k, v in ipairs(player_GetAll()) do
-		local faction = Character.team:GetByID(v:Team())
+	for _, target in ipairs(player.GetAll()) do
+		local faction = Character.team:GetByID(target:Team())
 	    if !faction then continue end
 
 	    local uniqueID = faction:GetUniqueID()
@@ -52,21 +44,17 @@ function Character.Caching()
 	    local emoji = Character.emoji:GetByUniqueID(uniqueID)
 	    if !emoji then continue end
 
-	    if v == client then
+	    if target == client then
 	    	for _, stored in pairs(emoji:GetData()) do
-	    		for _, v2 in ipairs({"big", "min"}) do
-		    		for _, path in pairs(stored[v2]) do
+	    		for _, emojiType in ipairs({"big", "min"}) do
+		    		for _, path in pairs(stored[emojiType]) do
 		    			caching(path)
 		    		end
 		    	end
 	    	end
 	    else
-	    	local var = v:GetNetVar("emoji", 1)
-	    	local big = emoji:GetByIndex(var)
-
-	    	if !big then
-	    		big = emoji:GetByIndex(1)
-	    	end
+	    	local var = target:GetNetVar("emoji", 1)
+	    	local big = emoji:GetByIndex(var) or emoji:GetByIndex(1)
 
 	    	if big then
 	    		caching(big)
@@ -74,13 +62,24 @@ function Character.Caching()
 	    end
 
 	    local assets = faction:GetAssets()
-	    if assets and assets.white then
-	    	caching(assets.white)
+	    if assets then
+			if assets.white then
+				caching(assets.white)
+			end
+
+			if assets.dead then
+				caching(assets.dead)
+			end
+
+			if assets.argue then
+				caching(assets.argue)
+			end
 	    end
 	end
 end
 
-timer_Simple(FrameTime(), Character.Caching)
+
+timer.Simple(1, Character.Caching)
 
 
 netstream.Hook("Character:CreationRegisterKeys", function(key, uniqueID, info)

@@ -111,7 +111,9 @@ function PLUGIN:HUDPaint()
 		if !data then continue end
 
 		local bShow = realtime <= self:GetTypingTime(client)
-		client.tDrawAlpha = Lerp(time, client.tDrawAlpha, bShow and 255 or 0)
+		if (bShow and client.tDrawAlpha < 254.995) or (!bShow and client.tDrawAlpha > 0.005) then
+			client.tDrawAlpha = Lerp(time, client.tDrawAlpha, bShow and 255 or 0)
+		end
 
 		local alpha = self:GetTypingAlpha(client)
 		if alpha <= 2 then continue end

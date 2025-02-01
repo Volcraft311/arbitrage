@@ -11,7 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 function TypingDraw:SetTypingText(client, target, data, color)
     netstream.Start(client, "TypingDraw:SetTypingText", target, data, color)

@@ -446,14 +446,14 @@ function PANEL:AddLine(elements, bShouldScroll)
 		            b2 = _h * a
 	        	end
 
-				buffer[#buffer + 1] = ("<img=%s,%dx%d> "):gsub(texture, a2, b2)
+				buffer[#buffer + 1] = ("<img=%s,%dx%d> "):format(texture, a2, b2)
 			end
 		elseif (istable(v) and v.r and v.g and v.b) then
-			buffer[#buffer + 1] = ("<color=%d,%d,%d>"):gsub(v.r, v.g, v.b)
+			buffer[#buffer + 1] = ("<color=%d,%d,%d>"):format(v.r, v.g, v.b)
 		elseif (type(v) == "Player") then
 			local color = team.GetColor(v:Team())
 
-			buffer[#buffer + 1] = ("<color=%d,%d,%d>%s"):gsub(color.r, color.g, color.b, v:GetName():gsub("<", "&lt;"):gsub(">", "&gt;"))
+			buffer[#buffer + 1] = ("<color=%d,%d,%d>%s"):format(color.r, color.g, color.b, v:GetName():gsub("<", "&lt;"):gsub(">", "&gt;"))
 		else
 			buffer[#buffer + 1] = tostring(v):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub("%b**", function(value)
 				local inner = utf8.sub(value, 2, -2)

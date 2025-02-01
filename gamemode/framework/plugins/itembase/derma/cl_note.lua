@@ -169,8 +169,8 @@ local h_colors = {
 
 local htmlColors = ""
 for k, v in pairs(h_colors) do
-    htmlColors = htmlColors .. ("%s {color: rgb(%s, %s, %s)}\n"):gsub(k, v.r, v.g, v.b)
-    htmlColors = htmlColors .. ("b_%s {background-color: rgb(%s, %s, %s)}\n"):gsub(k, v.r, v.g, v.b)
+    htmlColors = htmlColors .. ("%s {color: rgb(%s, %s, %s)}\n"):format(k, v.r, v.g, v.b)
+    htmlColors = htmlColors .. ("b_%s {background-color: rgb(%s, %s, %s)}\n"):format(k, v.r, v.g, v.b)
 end
 
 

@@ -132,11 +132,11 @@ function PLUGIN:TransferCamPos()
 end
 
 local nsb_path = "danganronpa/law/nsb/%s.png"
-local nsb_1, nsb_1_l = Material(nsb_path:gsub("1")), Material(nsb_path:gsub("1_l"))
-local nsb_2, nsb_2_l = Material(nsb_path:gsub("2")), Material(nsb_path:gsub("2_l"))
-local nsb_3, nsb_3_l = Material(nsb_path:gsub("3")), Material(nsb_path:gsub("3_l"))
-local nsb_4, nsb_4_l = Material(nsb_path:gsub("4")), Material(nsb_path:gsub("4_l"))
-local nsb_5, nsb_5_l = Material(nsb_path:gsub("5")), Material(nsb_path:gsub("5_l"))
+local nsb_1, nsb_1_l = Material(nsb_path:format("1")), Material(nsb_path:format("1_l"))
+local nsb_2, nsb_2_l = Material(nsb_path:format("2")), Material(nsb_path:format("2_l"))
+local nsb_3, nsb_3_l = Material(nsb_path:format("3")), Material(nsb_path:format("3_l"))
+local nsb_4, nsb_4_l = Material(nsb_path:format("4")), Material(nsb_path:format("4_l"))
+local nsb_5, nsb_5_l = Material(nsb_path:format("5")), Material(nsb_path:format("5_l"))
 
 function PLUGIN:SendIntroText()
     local size = 400

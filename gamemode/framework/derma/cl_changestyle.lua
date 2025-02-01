@@ -135,11 +135,11 @@ function PANEL:SetCloseTimer()
 end
 
 function PANEL:RotatedText(text, x, y, ang, scale, alpha)
-	local font_name = string.match(self.font, "%a+.%a+_%a+")
-    local font_size = string.match(self.font, "%d+")
+	local font_name = self.font:match("%a+.%a+_%a+")
+	local font_size = self.font:match("%d+")
 
-    local font_normal = font_name .. "BlurN_" .. font_size
-    local font_blur = font_name .. "Blur_" .. font_size
+	local font_normal = font_name .. "BlurN_" .. font_size
+	local font_blur = font_name .. "Blur_" .. font_size
 
 	render.PushFilterMag(TEXFILTER.ANISOTROPIC)
 	render.PushFilterMin(TEXFILTER.ANISOTROPIC)

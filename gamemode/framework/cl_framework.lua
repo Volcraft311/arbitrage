@@ -35,8 +35,8 @@ function Arbitrage.DrawTextBlur(text, font, x, y, color, xAlign, cb)
     local alpha = color.a or 255
     if alpha <= 0.01 then return end
 
-    local font_name = string.match(font, "%a+.%a+_%a+")
-    local font_size = string.match(font, "%d+")
+    local font_name = font:match("%a+.%a+_%a+")
+    local font_size = font:match("%d+")
 
     local font_normal = font_name .. "BlurN_" .. font_size
     local font_blur = font_name .. "Blur_" .. font_size

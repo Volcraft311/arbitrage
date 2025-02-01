@@ -91,7 +91,7 @@ function Medical:StringToObject(str)
 
 	local explode = string.Explode(";", str)
 	for _, v in ipairs(explode) do
-		local name, delay = string.match(v, "(.-)=(.-)$")
+		local name, delay = v:match("(.-)=(.-)$")
 		delay = tonumber(delay)
 
 		if name and delay then

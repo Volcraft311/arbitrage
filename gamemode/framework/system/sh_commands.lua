@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 Arbitrage.commands = Arbitrage.library.Add("commands")
 
 Arbitrage.commands.syntex = "/"
@@ -95,32 +96,4 @@ function Arbitrage.commands.ConvertRusToEng(data)
     end
 
     return newData
-end
-
-function Arbitrage.commands.WordsInArray(data)
-    if !data then return end
-
-    local tableData = {}
-
-    for k, v in pairs(data) do
-        local a = 0
-        local b = 0
-
-        if string.match(v, [["(.+)]]) then
-            a = k
-
-            for i = k, #data do
-                if string.match(data[i], [[(.+)"]]) then
-                    b = i
-                    break
-                end
-            end
-        end
-
-        if a != 0 and b != 0 then
-            tableData[#tableData + 1] = {a, b}
-        end
-    end
-
-    return tableData
 end

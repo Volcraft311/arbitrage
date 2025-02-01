@@ -48,9 +48,9 @@ function PANEL:Init()
         local seconds = math.floor(math.fmod(thisTime, 60))
         local miliseconds = math.floor(math.fmod(thisTime, 1) * 100)
 
-        local _m = string.format("%d", minutes)
-        local _s = string.format("%d", seconds)
-        local _ms = string.format("%d", miliseconds)
+        local _m = ("%d"):format(minutes)
+        local _s = ("%d"):format(seconds)
+        local _ms = ("%d"):format(miliseconds)
 
         if tonumber(_m) < 10 then _m = "0" .. _m end
         if tonumber(_s) < 10 then _s = "0" .. _s end

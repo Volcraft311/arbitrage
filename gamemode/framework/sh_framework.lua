@@ -540,8 +540,8 @@ function Arbitrage.FormatTime(time)
     local hours = math.floor(math.fmod(time, 86400) / 3600)
     local minutes = math.floor(math.fmod(time, 3600) / 60)
 
-    local _h = string.format("%d", hours)
-    local _m = string.format("%d", minutes)
+    local _h = ("%d"):format(hours)
+    local _m = ("%d"):format(minutes)
 
     if tonumber(_h) < 10 then _h = "0" .. _h end
     if tonumber(_m) < 10 then _m = "0" .. _m end
@@ -565,9 +565,9 @@ function Arbitrage.IsDay()
     local minutes = math.floor(math.fmod(arb_time, 3600) / 60)
     local seconds = math.floor(math.fmod(arb_time, 60))
 
-    local h = string.format("%2d", hours)
-    local m = string.format("%2d", minutes)
-    local s = string.format("%2d", seconds)
+    local h = ("%2d"):format(hours)
+    local m = ("%2d"):format(minutes)
+    local s = ("%2d"):format(seconds)
 
     local time = os.time({day = 2, month = 1, wday = 1, yday = 1, year = 1970,
         hour = h,

@@ -35,8 +35,8 @@ function PLUGIN:GetNormalTime(time)
     local minutes = math.floor(math.fmod(thisTime, 3600) / 60)
     local seconds = math.floor(math.fmod(thisTime, 60))
 
-    local _m = string.format("%d", minutes)
-    local _s = string.format("%d", seconds)
+    local _m = ("%d"):format(minutes)
+    local _s = ("%d"):format(seconds)
 
     if tonumber(_m) < 10 then _m = _m end
     if tonumber(_s) < 10 then _s = "0" .. _s end

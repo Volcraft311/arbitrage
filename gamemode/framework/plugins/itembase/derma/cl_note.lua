@@ -169,14 +169,14 @@ local h_colors = {
 
 local htmlColors = ""
 for k, v in pairs(h_colors) do
-    htmlColors = htmlColors .. string.format("%s {color: rgb(%s, %s, %s)}\n", k, v.r, v.g, v.b)
-    htmlColors = htmlColors .. string.format("b_%s {background-color: rgb(%s, %s, %s)}\n", k, v.r, v.g, v.b)
+    htmlColors = htmlColors .. ("%s {color: rgb(%s, %s, %s)}\n"):gsub(k, v.r, v.g, v.b)
+    htmlColors = htmlColors .. ("b_%s {background-color: rgb(%s, %s, %s)}\n"):gsub(k, v.r, v.g, v.b)
 end
 
 
 local htmlSize = ""
 for i = 1, 100 do
-    htmlSize = htmlSize .. string.format("s_%s {font-size: %spx}\n", i, i)
+    htmlSize = htmlSize .. ("s_%s {font-size: %spx}\n"):format(i, i)
 end
 
 
@@ -198,7 +198,7 @@ local h_fonts = {
 local htmlFonts = ""
 for k, v in ipairs(h_fonts) do
     for k2, v2 in pairs(v) do
-        htmlFonts = htmlFonts .. string.format("%s {font-family: %s}\n", k2, v2)
+        htmlFonts = htmlFonts .. ("%s {font-family: %s}\n"):format(k2, v2)
     end
 end
 

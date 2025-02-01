@@ -58,7 +58,7 @@ function PANEL:Think()
             self:TickSound()
             self.textThink = time + 2
         else
-            local formatDeathText = string.format(deathText, math.Clamp(self.spectateTime - os.time(), 0, deathTime))
+            local formatDeathText = deathText:format(math.Clamp(self.spectateTime - os.time(), 0, deathTime))
 
             if self.characterText < formatDeathText:utf8len() and time >= self.textThink then
                 self.characterText = self.characterText + 1

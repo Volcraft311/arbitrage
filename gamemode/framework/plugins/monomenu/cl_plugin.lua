@@ -211,7 +211,7 @@ local function getActionList(clientinfo)
     local m_name = a_isvalid and client:Name() or clientinfo.steamname
     local m_steamname = clientinfo.steamname
     local m_steamid = clientinfo.steamid
-    local m_time = string.format("%s:%s:%s", time.h, time.m, time.s)
+    local m_time = ("%s:%s:%s"):format(time.h, time.m, time.s)
     local m_status = clientinfo.alive and "Жив" or "Мертв"
     local m_character = faction and faction.name or clientinfo.faction
 

@@ -128,7 +128,7 @@ function PANEL:Welcome()
         name = faction:GetName()
     end
 
-    local welcomeText = string.format("Добро пожаловать, %s!", name)
+    local welcomeText = ("Добро пожаловать, %s!"):format(name)
 
     local panel = self:Add("Panel")
     panel:Dock(TOP)

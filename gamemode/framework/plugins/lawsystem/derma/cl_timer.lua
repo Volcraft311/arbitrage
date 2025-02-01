@@ -55,9 +55,9 @@ function PANEL:Paint(w, h)
     local minutes = math.floor(math.fmod(thisTime, 3600) / 60)
     local seconds = math.floor(math.fmod(thisTime, 60))
 
-    local _h = string.format("%d", hours)
-    local _m = string.format("%d", minutes)
-    local _s = string.format("%d", seconds)
+    local _h = ("%d"):format(hours)
+    local _m = ("%d"):format(minutes)
+    local _s = ("%d"):format(seconds)
 
     if tonumber(_h) < 10 then _h = "0" .. _h end
     if tonumber(_m) < 10 then _m = "0" .. _m end

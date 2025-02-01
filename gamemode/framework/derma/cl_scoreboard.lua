@@ -529,7 +529,7 @@ function PANEL:CreatePlayersPanel(parent)
                 local curtime = CurTime()
                 local a_isvalid = IsValid(v)
                 local time = string.FormattedTime(curtime - (a_isvalid and v:GetNetVar("connectedTime", curtime) or curtime))
-                local m_time = string.format("%s:%s:%s", time.h, time.m, time.s)
+                local m_time = ("%s:%s:%s"):format(time.h, time.m, time.s)
 
                 draw.SimpleText(m_time, "arb.Font_FuturaPTBook_6", h + 5, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end

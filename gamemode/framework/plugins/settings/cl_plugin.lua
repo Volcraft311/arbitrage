@@ -27,7 +27,6 @@ local surface_DrawOutlinedRect = surface.DrawOutlinedRect
 local draw_DrawText = draw.DrawText
 local Color = Color
 local input_GetKeyName = input.GetKeyName
-local string_upper = string.upper
 local pairs = pairs
 local IsValid = IsValid
 local timer_Create = timer.Create
@@ -180,7 +179,7 @@ PLUGIN.type = {
                 key = "...."
             end
 
-            draw_DrawText(string_upper(key), "arb.Font_FuturaPTBook_8", w / 2, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            draw_DrawText(key:upper(), "arb.Font_FuturaPTBook_8", w / 2, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
         buttonKey.DoClick = function()
             for k, v in pairs(panel.panelsKeys) do

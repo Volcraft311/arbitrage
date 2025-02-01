@@ -11,24 +11,16 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
--- Localize Global Calls
-local FindMetaTable = FindMetaTable
-local string_lower = string.lower
-local Vector = Vector
-local ipairs = ipairs
-local istable = istable
-
 
 local PLUGIN = PLUGIN
 Emotes = PLUGIN
 
 Emotes.name = "Emotes"
-
 Emotes.action = {}
 Emotes.action.stored = {}
 
 function Emotes.action:Register(uniqueID, data)
-	Emotes.action.stored[string_lower(uniqueID)] = data
+	Emotes.action.stored[uniqueID:lower()] = data
 end
 
 Emotes.ActionList = {

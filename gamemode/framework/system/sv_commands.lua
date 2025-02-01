@@ -14,7 +14,7 @@
 Arbitrage.commands = Arbitrage.library.Add("commands")
 
 function Arbitrage.commands.RunCommand(client, command, data)
-    command = string.lower(command)
+    command = command:lower()
     local commandData = Arbitrage.commands.data[command]
 
     if commandData then
@@ -117,11 +117,12 @@ end
 function Arbitrage.commands.Add(name, data)
     if !data then return end
 
-    Arbitrage.commands.data[string.lower(name)] = data
+    Arbitrage.commands.data[name:lower()] = data
 end
 
 
-local meta = FindMetaTable("Player")
-function meta:ChatNotify(...)
+local PLAYER = FindMetaTable("Player")
+
+function PLAYER:ChatNotify(...)
     Arbitrage.commands.Notify(self, ...)
 end

@@ -14,21 +14,27 @@
 Arbitrage.statistics = Arbitrage.library.Add("statistics")
 
 function Arbitrage.statistics.Add(name, data)
+    name = name:lower()
+
     Arbitrage.statistics.list = Arbitrage.statistics.list or {}
 
     Arbitrage.statistics.list[name] = data
 end
 
 function Arbitrage.statistics.Remove(name)
+    name = name:lower()
+
     Arbitrage.statistics.list = Arbitrage.statistics.list or {}
 
     Arbitrage.statistics.list[name] = nil
 end
 
-function Arbitrage.statistics.Get(client, data)
-    if Arbitrage.statistics.list[string.lower(data)] then
-        return client[string.lower(data)] and client[string.lower(data)] or client:GetNetVar(string.lower(data))
+function Arbitrage.statistics.Get(client, name)
+    name = name:lower()
+
+    if Arbitrage.statistics.list[name] then
+        return client[name] and client[name] or client:GetNetVar(name)
     else
-        Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found '" .. data .. "'")
+        Arbitrage.util.WriteMessage(Color(255, 132, 0), "STATISTICS — ", Color(255, 0, 0), "No query was found '" .. name .. "'")
     end
 end

@@ -28,7 +28,6 @@ local vgui_Create = vgui.Create
 local netstream = netstream
 local table_Count = table.Count
 local game_GetAmmoName = game.GetAmmoName
-local string_lower = string.lower
 local math_floor = math.floor
 local math_Round = math.Round
 local SysTime = SysTime
@@ -259,7 +258,7 @@ function PLUGIN:ActionsOption()
 
 				info[#info + 1] = {
 					name = name .. " (" .. count .. ")",
-					id = "unequip_ammo_" .. string_lower(name),
+					id = "unequip_ammo_" .. name:lower(),
 					description = "Вытащить патроны из запаса для " .. name,
 					action = function()
 					    local DermaPanel = vgui_Create("DFrame")

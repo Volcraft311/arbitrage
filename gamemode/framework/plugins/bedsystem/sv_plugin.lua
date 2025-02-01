@@ -57,7 +57,8 @@ end
 
 
 hook("PlayerUse", function(client, entity)
-    local allow = BedSystem.allowBed[string.lower(tostring(entity:GetModel() or ""))]
+    local model = tostring(entity:GetModel() or ""):lower()
+    local allow = BedSystem.allowBed[model]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
         TypingDraw:SendSphere(0.5, client, "Ложится на кровать", Color(255, 170, 23))

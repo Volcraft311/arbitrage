@@ -92,7 +92,7 @@ function Character.team:GetByUniqueID(uniqueID)
         local id = v:GetUniqueID()
         if !id then continue end
 
-        if string.lower(id) == string.lower(uniqueID) then
+        if id:lower() == uniqueID:lower() then
             cache_uniqueid[uniqueID] = v:GetID()
 
             return v

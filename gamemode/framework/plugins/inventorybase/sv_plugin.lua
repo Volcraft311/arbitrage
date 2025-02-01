@@ -64,7 +64,7 @@ function InventoryBase:PlayerDeath(client)
     local itemsAmmo = {}
     for k, v in pairs(ItemBase.list) do
         if v.base == "base_ammo" and v.uniqueID != "converter_ammo" then
-            itemsAmmo[string.lower(v.ammoClass)] = k
+            itemsAmmo[v.ammoClass:lower()] = k
         end
     end
 
@@ -73,7 +73,7 @@ function InventoryBase:PlayerDeath(client)
         local name = game.GetAmmoName(id)
         if !name then continue end
 
-        local uniqueID = itemsAmmo[string.lower(name)]
+        local uniqueID = itemsAmmo[name:lower()]
         if !uniqueID then continue end
 
         local item = ItemBase.CreateItemInWorld(uniqueID, client:GetShootPos(), Angle(0, 0, 0))
@@ -198,14 +198,14 @@ netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
     local itemsAmmo = {}
     for k, v in pairs(ItemBase.list) do
         if v.base == "base_ammo" and v.uniqueID != "converter_ammo" then
-            itemsAmmo[string.lower(v.ammoClass)] = k
+            itemsAmmo[v.ammoClass:lower()] = k
         end
     end
 
     local name = game.GetAmmoName(id)
     if !name then return end
 
-    local uniqueID = itemsAmmo[string.lower(name)]
+    local uniqueID = itemsAmmo[name:lower()]
     if !uniqueID then return end
 
     local item = ItemBase.CreateItem(uniqueID)

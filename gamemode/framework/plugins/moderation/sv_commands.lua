@@ -392,7 +392,7 @@ timer.Simple(1, function()
             OnAction = function(client, map)
                 if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "Недостаточно прав для выполнения данной команды!") end
 
-                map = string.lower(map)
+                map = map:lower()
                 game.ConsoleCommand("changelevel " .. map .. "\n")
             end
         })
@@ -408,7 +408,7 @@ timer.Simple(1, function()
 
                 local maps = file.Find( "maps/*.bsp", "GAME" )
                 for k, v in ipairs(maps) do
-                    local name = string.lower(string.gsub(v, "%.bsp$", ""))
+                    local name = string.gsub(v, "%.bsp$", ""):lower()
 
                     client:ChatPrint(name)
                 end

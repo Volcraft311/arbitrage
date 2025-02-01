@@ -118,8 +118,7 @@ local function checking(client, name, time)
 end
 
 function playerMeta:StartAction(uniqueID)
-	uniqueID = tostring(uniqueID) or ""
-	uniqueID = string.lower(uniqueID)
+	uniqueID = (tostring(uniqueID) or ""):lower()
 
 	if self.IsProne and self:IsProne() then return Arbitrage.commands.Notify(self, "Вы не можете запустить анимацию, когда вы лежите!") end
 	if self.GetSitting and self:GetSitting() then return Arbitrage.commands.Notify(self, "Вы не можете запустить анимацию, когда вы сидите!") end

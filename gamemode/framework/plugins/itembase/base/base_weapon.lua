@@ -239,11 +239,11 @@ BASE:AddAction("Разоружить", {
 		local itemsAmmo = {}
 	    for k, v in pairs(ItemBase.list) do
 	        if v.base == "base_ammo" and v.uniqueID != "converter_ammo" then
-	            itemsAmmo[string.lower(v.ammoClass)] = k
+	            itemsAmmo[v.ammoClass:lower()] = k
 	        end
 	    end
 
-	    local uniqueID = itemsAmmo[string.lower(name)]
+	    local uniqueID = itemsAmmo[name:lower()]
 	    if !uniqueID then return false end
 
 	    local item2 = ItemBase.CreateItem(uniqueID)

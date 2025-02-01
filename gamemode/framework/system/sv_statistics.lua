@@ -23,7 +23,7 @@ end
 function Arbitrage.statistics.Set(client, data, amount)
     if !IsValid(client) then return end
 
-    local index = string.lower(data)
+    local index = data:lower()
     local tableData = Arbitrage.statistics.list[index]
 
     if tableData then

@@ -58,7 +58,7 @@ local keyData = {
         end,
         remove = function(uniqueID)
             for k, v in pairs(Character.team.instances) do
-                if v.isCreation and string.lower(v.uniqueID) == string.lower(uniqueID) then
+                if v.isCreation and v.uniqueID:lower() == uniqueID:lower() then
                     Character.team.instances[k] = nil
                 end
             end
@@ -123,7 +123,7 @@ local keyData = {
         end,
         remove = function(uniqueID)
             for k, v in pairs(Character.category.instances) do
-                if v.isCreation and string.lower(v.uniqueID) == string.lower(uniqueID) then
+                if v.isCreation and v.uniqueID:lower() == uniqueID:lower() then
                     Character.category.instances[k] = nil
                 end
             end

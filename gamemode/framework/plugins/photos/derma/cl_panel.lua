@@ -82,7 +82,7 @@ function PANEL:Init()
             local alpha = math.sin(curtime * 2) * 255
             local dotA = math.sin(curtime * 1) * 255
             local dot = math.floor(math.abs(dotA) * 0.015)
-            local dotStr = string.rep(".", dot + 1)
+            local dotStr = ("."):rep(dot + 1)
 
             local sizeW, sizeH = w / 2, h / 2
 

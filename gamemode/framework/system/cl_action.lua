@@ -22,7 +22,6 @@ local FrameTime = FrameTime
 local math_Clamp = math.Clamp
 local Color = Color
 local draw_SimpleText = draw.SimpleText
-local string_rep = string.rep
 local surface_SetDrawColor = surface.SetDrawColor
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
@@ -160,7 +159,7 @@ function PANEL:Paint(w, h)
     local bOnFinished = circleClamp >= 300
     self.data.color = LerpColor(ft * 2, self.data.color, bOnFinished and color_finished or color_unfinished)
 
-    draw_SimpleText(self.data.text .. string_rep(".", st * 2 % 5), "arb.Font_FuturaPTBook_10", w / 2, h / 2 + 30, self.data.color, TEXT_ALIGN_CENTER)
+    draw_SimpleText(self.data.text .. ("."):rep(st * 2 % 5), "arb.Font_FuturaPTBook_10", w / 2, h / 2 + 30, self.data.color, TEXT_ALIGN_CENTER)
 
     local circle = Arbitrage.hud.GeneratePoly(w / 2, h / 2, 25, 25)
     surface_SetDrawColor(0, 0, 0, alpha * 0.3)

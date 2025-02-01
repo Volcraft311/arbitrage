@@ -108,7 +108,7 @@ function PANEL:DamagePaint(client, w, h)
 end
 
 function PANEL:TextPaint(ft, w, h, ragdoll)
-    local _, height = draw.SimpleText("Ваш персонаж находится без сознания" .. string.rep(".", RealTime() * 1.5 % 3), "arb.Font_FuturaPTDemi_14", w / 2, h * 0.7, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    local _, height = draw.SimpleText("Ваш персонаж находится без сознания" .. ("."):rep(RealTime() * 1.5 % 3), "arb.Font_FuturaPTDemi_14", w / 2, h * 0.7, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     if !IsValid(ragdoll) then return end
 

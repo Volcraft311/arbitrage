@@ -525,10 +525,7 @@ function PANEL:Init()
 	}
 
 	self.panels = {}
-	local indent = string.rep(" ", 3)
-
-
-
+	local indent = (" "):rep(3)
 
 	local _size = H(60)
 
@@ -984,7 +981,7 @@ function PANEL:Init()
 	}
 
 	self.panels = {}
-	local indent = string.rep(" ", 3)
+	local indent = (" "):rep(3)
 
 	local _size = H(68)
 	for k, v in ipairs(data) do

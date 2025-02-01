@@ -408,7 +408,7 @@ timer.Simple(1, function()
 
                 local maps = file.Find( "maps/*.bsp", "GAME" )
                 for k, v in ipairs(maps) do
-                    local name = string.gsub(v, "%.bsp$", ""):lower()
+                    local name = v:gsub("%.bsp$", ""):lower()
 
                     client:ChatPrint(name)
                 end

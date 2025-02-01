@@ -413,14 +413,14 @@ function PANEL:AddLine(elements, bShouldScroll)
 	buffer[#buffer + 1] = ")<color=255,255,255> "
 
 	for _, v in ipairs(elements) do
-		if (type(v) == "IMaterial") then
+		if type(v) == "IMaterial" then
 			local texture = v:GetName()
 
-			if (texture) then
+			if texture then
 				local a2 = v:Width()
 	            local b2 = v:Height()
 
-	            if string.find(texture, "danganronpa/evidence/") then
+	            if texture:find("danganronpa/evidence/") then
 					local height = draw.GetFontHeight("arb.Font_FuturaPTBook_" .. getFontSize())
 					local maxW = height * 1.3
 		            local maxH = height * 1.3
@@ -432,7 +432,7 @@ function PANEL:AddLine(elements, bShouldScroll)
 
 		            a2 = _w * a
 		            b2 = _h * a
-		        elseif string.find(texture, "asterion/academy/ui/icons/rank_") then
+		        elseif texture:find("asterion/academy/ui/icons/rank_") then
 		        	local height = draw.GetFontHeight("arb.Font_FuturaPTBook_" .. getFontSize())
 					local maxW = height * 0.9
 		            local maxH = height * 0.9
@@ -448,9 +448,9 @@ function PANEL:AddLine(elements, bShouldScroll)
 
 				buffer[#buffer + 1] = ("<img=%s,%dx%d> "):format(texture, a2, b2)
 			end
-		elseif (istable(v) and v.r and v.g and v.b) then
+		elseif istable(v) and v.r and v.g and v.b then
 			buffer[#buffer + 1] = ("<color=%d,%d,%d>"):format(v.r, v.g, v.b)
-		elseif (type(v) == "Player") then
+		elseif type(v) == "Player" then
 			local color = team.GetColor(v:Team())
 
 			buffer[#buffer + 1] = ("<color=%d,%d,%d>%s"):format(color.r, color.g, color.b, v:GetName():gsub("<", "&lt;"):gsub(">", "&gt;"))
@@ -821,7 +821,7 @@ local function GetAllCommands(text, originalText)
 	local data = {}
 
 	for command, stored in pairs(Arbitrage.commands.stored) do
-		if string.find(command:lower(), text:lower(), nil, true) then
+		if command:lower():find(text:lower(), nil, true) then
 			data[command] = {
 				stored.arguments or {},
 				stored.optionalArguments or {},

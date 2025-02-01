@@ -102,7 +102,7 @@ concommand.Add("whitelist_add", function(client, cmd, args)
 	if IsValid(client) then return end
 
 	local steamid = util.SteamIDFrom64(args[1])
-	if !string.find(steamid, "STEAM_(%d+):(%d+):(%d+)") then return end
+	if !steamid:find("STEAM_(%d+):(%d+):(%d+)") then return end
 
 	local data = asterionlib.data:Get("whitelist", {}, true)
 	data[steamid] = {

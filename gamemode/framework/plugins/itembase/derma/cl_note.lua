@@ -393,7 +393,7 @@ local actionList = {
             onRun = function(data, panel)
                 local strPanel = Derma_StringRequest("Добавить нового Владельца", "Введите SteamID человека, которому вы хотите выдать полный доступ к своему блокноту.", "", function(text)
                     if !text then return end
-                    if !string.find(text, "STEAM_") then return end
+                    if !text:find("STEAM_") then return end
 
                     panel:AddEditorPanel(text)
                     netstream.Start("ItemBase:NoteAction", "ADD_EDITOR", data.itemID, text)

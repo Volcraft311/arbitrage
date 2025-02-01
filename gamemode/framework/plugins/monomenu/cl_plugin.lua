@@ -968,7 +968,7 @@ local function CreateMenu(info, parent, drawline)
     end
 
     for k2, v2 in ipairs(panel:GetChildren()) do
-        if v2:GetName() == "DImage" and !string.find(v2:GetImage(), "icon16/") then
+        if v2:GetName() == "DImage" and !v2:GetImage():find("icon16/") then
             local size = parent:GetTall() * 1.5
 
             v2:SetSize(size, size)

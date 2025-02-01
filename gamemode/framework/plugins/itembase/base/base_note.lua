@@ -212,7 +212,7 @@ if SERVER then
             local steamid = data[1]
 
             if !steamid then return end
-            if !string.find(steamid, "STEAM_") then return end
+            if !steamid:find("STEAM_") then return end
             if !HasAccess(item.data.editors, client) then return end
 
             item.data.editors[steamid] = true

@@ -25,7 +25,6 @@ local RealTime = RealTime
 local Material = Material
 local Vector = Vector
 local Color = Color
-local string_find = string.find
 local hook_Run = hook.Run
 local netstream = netstream
 local render_ClearStencil = render.ClearStencil
@@ -76,7 +75,7 @@ function PLUGIN:GetTypingIndicatorPosition(client)
     for i = 1, client:GetBoneCount() do
         local name = client:GetBoneName(i)
 
-        if (string_find(name:lower(), "head")) then
+        if name:lower():find("head") then
             head = i
             break
         end

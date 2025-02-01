@@ -21,7 +21,6 @@ local surface_DrawRect = surface.DrawRect
 local IsValid = IsValid
 local ipairs = ipairs
 local isfunction = isfunction
-local string_find = string.find
 local SortedPairsByMemberValue = SortedPairsByMemberValue
 local Derma_Query = Derma_Query
 local netstream = netstream
@@ -129,7 +128,7 @@ local function CreatePanels(data, parent)
 		panel:SetImage(v.icon)
 
 		for k2, v2 in ipairs(panel:GetChildren()) do
-			if v2:GetName() == "DImage" and !string_find(v2:GetImage(), "icon16/") then
+			if v2:GetName() == "DImage" and !v2:GetImage():find("icon16/") then
 				local size = parent:GetTall() * 1.5
 
 				v2:SetSize(size, size)

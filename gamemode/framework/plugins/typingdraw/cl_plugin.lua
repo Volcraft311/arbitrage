@@ -16,7 +16,6 @@ local PLUGIN = PLUGIN
 
 -- Localize Global Calls
 local Vector = Vector
-local string_find = string.find
 local Color = Color
 local timer_Create = timer.Create
 local IsValid = IsValid
@@ -45,7 +44,7 @@ function PLUGIN:GetTypingIndicatorPosition(client)
 	for i = 1, client:GetBoneCount() do
 	    local name = client:GetBoneName(i)
 
-	    if (string_find(name:lower(), "head")) then
+	    if name:lower():find("head") then
 	        head = i
 	        break
 	    end

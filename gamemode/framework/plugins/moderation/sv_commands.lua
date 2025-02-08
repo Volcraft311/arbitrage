@@ -579,6 +579,7 @@ timer.Simple(1, function()
             if bServerRestart then return Arbitrage.commands.Notify(client, "Сервер уже получил запрос на его перезапуск!") end
 
             delay = delay or 30
+            delay = math.Clamp(delay, 20, 600)
 
             local adminName = client:FullName(true)
 

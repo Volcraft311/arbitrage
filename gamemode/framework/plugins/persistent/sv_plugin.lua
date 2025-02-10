@@ -82,6 +82,13 @@ function Persistent:SetPersistent(entity, client, attacker)
     entity:SetCorpse(corpseInfo)
 end
 
+function Persistent:SetEntityActiveCharacterInfo(entity, client)
+    entity.activeCharacterInfo = {
+        name = client:Name(),
+        character = client:GetCharacter()
+    }
+end
+
 function Persistent:ReDoPlayerDeath(client, attacker)
     self:ClearCompositeEntities(client)
 
@@ -93,6 +100,7 @@ function Persistent:ReDoPlayerDeath(client, attacker)
 
     local entity = self:CreateRagdoll(client)
     self:SetPersistent(entity, client, attacker)
+    self:SetEntityActiveCharacterInfo(entity, client)
 end
 
 netstream.Hook("fb:ChangeFOV", function(client)
@@ -109,11 +117,13 @@ netstream.Hook("fb:ChangeFOV", function(client)
 end)
 
 netstream.Hook("fb:TraceBody", function(client, entity)
-    if Arbitrage.OffCorpseEffect() then return end
     if !entity:IsCorpse() then return end
 
     entity.findClients = entity.findClients or {}
-    entity.findClients[client:SteamID()] = true
+
+    if !Arbitrage.OffCorpseEffect() then
+        entity.findClients[client:SteamID()] = true
+    end
 
     for k, v in ipairs(player.GetAll()) do
         if Persistent:AllowLogFindCorpse(v) then
@@ -121,18 +131,41 @@ netstream.Hook("fb:TraceBody", function(client, entity)
         end
     end
 
-    if Arbitrage.OffSoundMassFindCorpse() then return end
-
     local count = table.Count(entity.findClients)
     if count == 3 then
-        for k, v in ipairs(player.GetAll()) do
-            v:SendLua([[
+        if !Arbitrage.OffSoundMassFindCorpse() then
+            BroadcastLua([[
                 sound.PlayFile("sound/discoveryannounce.wav", "", function(station)
                     if IsValid(station) then
                         station:SetVolume(0.5)
                     end
                 end)
             ]])
+        end
+
+        local info = entity.activeCharacterInfo
+        if !Arbitrage.OffAutoInvestigation() and info then
+            timer.Simple(1, function() -- delay после эффекта
+                for k, v in ipairs(player.GetAll()) do
+                    asterionlib.netgui:Create(v, "arb.ChangeStyle", nil, "SetData", "Расследование", 222, 27, 163)
+                end
+
+                ScriptMusic:ChangeTheme(investigation, true)
+
+                local data = Arbitrage.GetGameLogs()
+                table.insert(data, {
+                    info.character.id,
+                    Arbitrage.GetChapter(),
+                    2, -- Расследование self.investigationID
+                    nil,
+                    Arbitrage.ReturnTime()
+                })
+
+                SetNetVar("arb.GameLogs", data)
+                netstream.Start(nil, "MonoPad:EditGameLogNotify")
+
+                MonoPad:SendNotify(nil)
+            end)
         end
     end
 end)

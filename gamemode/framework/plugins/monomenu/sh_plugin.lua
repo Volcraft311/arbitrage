@@ -580,6 +580,23 @@ MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/st
     end
 })
 
+MonoMenu:AddGameFunction("Авто-расследование", "icon16/cd_add.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffAutoInvestigation", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OffAutoInvestigation", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OffAutoInvestigation()
+    end
+})
+
 MonoMenu:AddGameFunction("Возможность собирать улики", "icon16/folder_magnify.png", {
     isCheckBox = true,
     onEnable = function(client)

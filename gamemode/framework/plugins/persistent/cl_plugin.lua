@@ -117,8 +117,6 @@ function Persistent:EnableEffect(entity)
 
 	    netstream.Start("fb:ChangeFOV")
 	end
-
-	netstream.Start("fb:TraceBody", entity)
 end
 
 function Persistent:IsOn()
@@ -150,5 +148,7 @@ timer_Create("fb:CheckTrace", 0.1, 0, function()
 		if !Arbitrage.OffCorpseEffect() then
 			Persistent:EnableEffect(entity)
 		end
+
+		netstream.Start("fb:TraceBody", entity)
 	end
 end)

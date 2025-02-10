@@ -36,6 +36,7 @@ end
 
 function RagdollSystem:DoPlayerDeath(client, attacker)
     Persistent:ReDoPlayerDeath(client, attacker)
+
     netstream.Start(client, "RagdollSystem:ClosePanel")
 
     if Arbitrage.OffSpawnPersistent() or !client:InGame() then
@@ -46,6 +47,8 @@ function RagdollSystem:DoPlayerDeath(client, attacker)
     if IsValid(entity) then
         Persistent:SetPersistent(entity, client, attacker)
         entity:SetNetVar("sIsRagdoll", nil)
+
+        Persistent:SetEntityActiveCharacterInfo(entity, client)
     end
 end
 

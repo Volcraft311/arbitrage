@@ -706,6 +706,7 @@ netstream.Hook("arb.MonoAddGameLog", function(client, array)
 
     SetNetVar("arb.GameLogs", data)
     netstream.Start(nil, "MonoPad:EditGameLogNotify")
+
     MonoPad:SendNotify(nil)
 end)
 

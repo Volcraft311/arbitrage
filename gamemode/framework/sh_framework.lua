@@ -666,6 +666,10 @@ function Arbitrage.OffSpawnPersistent()
     return GetNetVar("arb.OffSpawnPersistent", false)
 end
 
+function Arbitrage.OffAutoInvestigation()
+    return GetNetVar("arb.OffAutoInvestigation", false)
+end
+
 function Arbitrage.OffShowClassTrial()
     return GetNetVar("arb.OffShowClassTrial", false)
 end

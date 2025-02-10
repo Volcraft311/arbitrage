@@ -120,10 +120,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
     if !entity:IsCorpse() then return end
 
     entity.findClients = entity.findClients or {}
-
-    if !Arbitrage.OffCorpseEffect() then
-        entity.findClients[client:SteamID()] = true
-    end
+    entity.findClients[client:SteamID()] = true
 
     for k, v in ipairs(player.GetAll()) do
         if Persistent:AllowLogFindCorpse(v) then
@@ -145,7 +142,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
 
         local info = entity.activeCharacterInfo
         if !Arbitrage.OffAutoInvestigation() and info then
-            timer.Simple(1, function() -- delay после эффекта
+            timer.Simple(2, function() -- delay после эффекта
                 for k, v in ipairs(player.GetAll()) do
                     asterionlib.netgui:Create(v, "arb.ChangeStyle", nil, "SetData", "Расследование", 222, 27, 163)
                 end

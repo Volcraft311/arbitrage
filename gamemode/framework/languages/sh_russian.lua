@@ -143,6 +143,10 @@ Arbitrage.language:Add("ru", {
     ["#monomenu_on_global_voice_chat"] = "Администрация сервера включила вам глобальный голосовой чат!",
     ["#monomenu_off_global_voice_chat"] = "Администрация сервера выключила вам глобальный голосовой чат!",
 
+    ["#academy_key_no_keys"] = "У вас нет ключей от двери!",
+    ["#academy_key_door_already_open"] = "Данная дверь уже открыта!",
+    ["#academy_key_door_already_close"] = "Данная дверь уже закрыта!",
+
     ["#emoji_smiling"] = "улыбается",
     ["#emoji_sad"] = "грустит",
     ["#emoji_rejoices"] = "радуется",
@@ -164,6 +168,5 @@ Arbitrage.language:Add("ru", {
     ["#emoji_glad"] = "радостный(ая)",
     ["#emoji_upset"] = "расстроенный(ая)",
     ["#emoji_expresses_dissatisfaction"] = "выражает недовольство",
-    ["#emoji_expresses_joy"] = "выражает радость",
-    
+    ["#emoji_expresses_joy"] = "выражает радость"
 })

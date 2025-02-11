@@ -827,7 +827,8 @@ local function GetAllCommands(text, originalText)
 			data[command] = {
 				stored.arguments or {},
 				stored.optionalArguments or {},
-				stored.help
+				stored.help,
+				stored.bAdminOnly
 			}
 		end
 	end
@@ -838,10 +839,11 @@ local function GetAllCommands(text, originalText)
 		local command = "looc"
 		local stored = Arbitrage.commands.stored[command]
 
-			data[command] = {
+		data[command] = {
 			stored.arguments or {},
 			stored.optionalArguments or {},
-			stored.help
+			stored.help,
+			stored.bAdminOnly
 		}
 	end
 
@@ -849,10 +851,11 @@ local function GetAllCommands(text, originalText)
 		local command = "ooc"
 		local stored = Arbitrage.commands.stored[command]
 
-			data[command] = {
+		data[command] = {
 			stored.arguments or {},
 			stored.optionalArguments or {},
-			stored.help
+			stored.help,
+			stored.bAdminOnly
 		}
 	end
 

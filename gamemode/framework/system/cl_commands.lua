@@ -23,49 +23,49 @@ function RegisterCommand(command, help, arguments, optionalArguments, bAdminOnly
     }
 end
 
-RegisterCommand("me", "#command_me", {"text"})
-RegisterCommand("mec", "#command_mec", {"text"})
-RegisterCommand("mel", "#command_mel", {"text"})
-RegisterCommand("meanon", "#command_meanon", {"text"})
+RegisterCommand("me", "#command_me", {"text"}, nil, false)
+RegisterCommand("mec", "#command_mec", {"text"}, nil, false)
+RegisterCommand("mel", "#command_mel", {"text"}, nil, false)
+RegisterCommand("meanon", "#command_meanon", {"text"}, nil, false)
 
-RegisterCommand("try", "#command_try", {"text"})
-RegisterCommand("tryc", "#command_tryc", {"text"})
-RegisterCommand("tryl", "#command_tryl", {"text"})
-RegisterCommand("tryanon", "Анонимное возможное действие случая.", {"text"})
+RegisterCommand("try", "#command_try", {"text"}, nil, false)
+RegisterCommand("tryc", "#command_tryc", {"text"}, nil, false)
+RegisterCommand("tryl", "#command_tryl", {"text"}, nil, false)
+RegisterCommand("tryanon", "Анонимное возможное действие случая.", {"text"}, nil, false)
 
 for _, command in ipairs({"it", "do"}) do
-    RegisterCommand(command, "#command_it", {"text"})
-    RegisterCommand(command .. "c", "#command_itc", {"text"})
-    RegisterCommand(command .. "l", "#command_itl", {"text"})
-    RegisterCommand(command .. "anon", "#command_itanon", {"text"})
+    RegisterCommand(command, "#command_it", {"text"}, nil, false)
+    RegisterCommand(command .. "c", "#command_itc", {"text"}, nil, false)
+    RegisterCommand(command .. "l", "#command_itl", {"text"}, nil, false)
+    RegisterCommand(command .. "anon", "#command_itanon", {"text"}, nil, false)
 end
 
-RegisterCommand("w", "#command_whispers", {"text"})
-RegisterCommand("y", "#command_yell", {"text"})
+RegisterCommand("w", "#command_whispers", {"text"}, nil, false)
+RegisterCommand("y", "#command_yell", {"text"}, nil, false)
 
-RegisterCommand("looc", "#command_looc", {"text"})
-RegisterCommand("ooc", "#command_ooc", {"text"})
+RegisterCommand("looc", "#command_looc", {"text"}, nil, false)
+RegisterCommand("ooc", "#command_ooc", {"text"}, nil, false)
 
 for _, command in ipairs({"broadcast", "announce", "global"}) do
-    RegisterCommand(command, "#command_broadcast", {"text"})
+    RegisterCommand(command, "#command_broadcast", {"text"}, nil, true)
 end
 
-RegisterCommand("event", "#command_event", {"text"})
-RegisterCommand("eventlocal", "#command_eventlocal", {"text"})
+RegisterCommand("event", "#command_event", {"text"}, nil, true)
+RegisterCommand("eventlocal", "#command_eventlocal", {"text"}, nil, true)
 
-RegisterCommand("sg", "#command_sg", {"player"})
-RegisterCommand("settime", "#command_settime", {"time"})
-RegisterCommand("roll", "#command_roll", nil, {"number"})
-RegisterCommand("editor", "#command_editor")
-RegisterCommand("unstuck", "#command_unstuck")
-RegisterCommand("exitaction", "#command_exitaction")
-RegisterCommand("action", "#command_action", {"text"})
-RegisterCommand("sitting", "#command_sitting", {"number"})
-RegisterCommand("mood", "#command_mood", {"number"})
-RegisterCommand("lookaround", "#command_lookaround")
-RegisterCommand("settimespeed", "#command_settimespeed", {"number"})
-RegisterCommand("fallover", "#command_fallover", nil, {"number"})
-RegisterCommand("spectate", "#command_spectate", nil, {"player"})
+RegisterCommand("sg", "#command_sg", {"player"}, nil, true)
+RegisterCommand("settime", "#command_settime", {"time"}, nil, true)
+RegisterCommand("roll", "#command_roll", nil, {"number"}, false)
+RegisterCommand("editor", "#command_editor", nil, nil, true)
+RegisterCommand("unstuck", "#command_unstuck", nil, nil, false)
+RegisterCommand("exitaction", "#command_exitaction", nil, nil, false)
+RegisterCommand("action", "#command_action", {"text"}, nil, false)
+RegisterCommand("sitting", "#command_sitting", {"number"}, nil, false)
+RegisterCommand("mood", "#command_mood", {"number"}, nil, false)
+RegisterCommand("lookaround", "#command_lookaround", nil, nil, false)
+RegisterCommand("settimespeed", "#command_settimespeed", {"number"}, nil, true)
+RegisterCommand("fallover", "#command_fallover", nil, {"number"}, true)
+RegisterCommand("spectate", "#command_spectate", nil, {"player"}, true)
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

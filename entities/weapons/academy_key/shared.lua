@@ -116,8 +116,6 @@ local function FindKey(client, doorData, entity)
     return false
 end
 
-local doorVar = "Locked"
-local doorText = "Данная дверь уже"
 function SWEP:InteractionDoor(bClose)
     if CLIENT then return end
 
@@ -136,15 +134,14 @@ function SWEP:InteractionDoor(bClose)
         local doorData = FindDoorData(door)
 
         local bHaveKeys = FindKey(client, doorData, door)
-        -- "Вы настолько беспомощны, что у вас даже нет возможности открыть дверь без ключей, бездарь ебанный"
-        if !bHaveKeys then return Arbitrage.commands.Notify(client, "У вас нет ключей от двери!") end 
+        if !bHaveKeys then return Arbitrage.commands.Notify(client, "#academy_key_no_keys") end
 
-        if !bClose and !door:GetNWBool(doorVar) then
-            return Arbitrage.commands.Notify(client, doorText .. " открыта!")
+        if !bClose and !door:GetNWBool("Locked") then
+            return Arbitrage.commands.Notify(client, "#academy_key_door_already_open")
         end
 
-        if bClose and door:GetNWBool(doorVar) then
-            return Arbitrage.commands.Notify(client, doorText .. " закрыта!")
+        if bClose and door:GetNWBool("Locked") then
+            return Arbitrage.commands.Notify(client, "#academy_key_door_already_close")
         end
 
         DoorAction(client, door, bClose)

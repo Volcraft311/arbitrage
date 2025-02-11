@@ -218,6 +218,7 @@ Arbitrage.base.Include("sh_system.lua")
 
 Arbitrage.base.IncludeDir("derma")
 Arbitrage.base.IncludeDir("system")
+Arbitrage.base.IncludeDir("languages")
 
 Arbitrage.base.Include("sh_framework.lua")
 Arbitrage.base.Include("cl_framework.lua")

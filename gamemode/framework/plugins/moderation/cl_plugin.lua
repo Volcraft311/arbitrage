@@ -20,6 +20,7 @@ local color_white = Color(255, 255, 255)
 
 netstream.Hook("Moderation:Log", function(uniqueID, info)
     info = info:gsub("%(<https://steamcommunity.com/profiles/%d+>%),?", "")
+    info = F(info)
 
     MsgC(color_green, "[Moderation]", color_red, " [" .. uniqueID .. "]", color_white, " " .. info .. "\n")
 end)

@@ -14,8 +14,6 @@
 Arbitrage.chat = Arbitrage.library.Add("chat")
 
 netstream.Hook("arb.chatCommandCreate", function(client, name, data)
-    if !data then return end
-
     local info = Arbitrage.chat.List[name]
     if info then
         if info.UseAvatar then
@@ -28,6 +26,12 @@ netstream.Hook("arb.chatCommandCreate", function(client, name, data)
             if mat then
                 table.insert(data, 1, mat)
             end
+        end
+    end
+
+    for k, v in ipairs(data) do
+        if isstring(v) then
+            data[k] = F(v)
         end
     end
 

@@ -42,33 +42,33 @@ local function chatColor(name)
 end
 
 local emojiList = {
-    [":)"] = "улыбается", ["(:"] = "улыбается",
-    [":("] = "грустит", ["):"] = "грустит",
-    [":D"] = "радуется",
-    ["D:"] = "грустит",
-    [":P"] = "показывает язык", [":p"] = "показывает язык", [":Р"] = "показывает язык", [":р"] = "показывает язык",
-    [":о"] = "удивлен(а)", [":o"] = "удивлен(а)", [":0"] = "удивлен(а)", [":O"] = "удивлен(а)", [":О"] = "удивлен(а)",
-    [":/"] = "сомневается",
-    [":'("] = "плачет",
-    [":*"] = "целует",
-    [":|"] = "без эмоций",
-    [":$"] = "смущен(а)",
-    [":s"] = "засмущался(ась)",
-    [":X"] = "сжал(а) губы", [":x"] = "сжал(а) губы", [":Х"] = "сжал(а) губы", [":х"] = "сжал(а) губы",
-    [":^)"] = "хитро улыбается",
-    ["^_^"] = "радуется",
-    ["-_-"] = "разочарован(а)",
-    ["0_0"] = "в шоке", ["o_o"] = "в шоке", ["O_O"] = "в шоке", ["о_о"] = "в шоке", ["О_О"] = "в шоке",
-    ["T_T"] = "плачет", ["Т_Т"] = "плачет", ["т_т"] = "плачет",
-    [":\\"] = "недоумевает",
-    ["x_x"] = "уставший(ая)", ["X_X"] = "уставший(ая)", ["Х_Х"] = "уставший(ая)", ["х_х"] = "уставший(ая)",
-    ["^-^"] = "очень счастлив(а)",
-    [":>"] = "радостный(ая)",
-    [":<"] = "расстроенный(ая)",
-    ["o_O"] = "удивлен(а)", ["о_O"] = "удивлен(а)", ["о_О"] = "удивлен(а)", ["o_О"] = "удивлен(а)", ["o_0"] = "удивлен(а)", ["o_0"] = "удивлен(а)", ["о_0"] = "удивлен(а)",
-    ["O_o"] = "удивлен(а)", ["O_о"] = "удивлен(а)", ["О_о"] = "удивлен(а)", ["О_o"] = "удивлен(а)", ["0_o"] = "удивлен(а)", ["0_o"] = "удивлен(а)", ["0_о"] = "удивлен(а)",
-    ["3:"] = "выражает недовольство", ["з:"] = "выражает недовольство", ["З:"] = "выражает недовольство",
-    [":3"] = "выражает радость", [":з"] = "выражает радость", [":З"] = "выражает радость"
+    [":)"] = "#emoji_smiling", ["(:"] = "#emoji_smiling",
+    [":("] = "#emoji_sad", ["):"] = "#emoji_sad",
+    [":D"] = "#emoji_rejoices",
+    ["D:"] = "#emoji_sad",
+    [":P"] = "#emoji_shows_tongue", [":p"] = "#emoji_shows_tongue", [":Р"] = "#emoji_shows_tongue", [":р"] = "#emoji_shows_tongue",
+    [":о"] = "#emoji_surprised", [":o"] = "#emoji_surprised", [":0"] = "#emoji_surprised", [":O"] = "#emoji_surprised", [":О"] = "#emoji_surprised",
+    [":/"] = "#emoji_doubts",
+    [":'("] = "#emoji_crying",
+    [":*"] = "#emoji_kisses",
+    [":|"] = "#emoji_without_emotion",
+    [":$"] = "#emoji_confused",
+    [":s"] = "#emoji_embarrassed",
+    [":X"] = "#emoji_pursed_his_lips", [":x"] = "#emoji_pursed_his_lips", [":Х"] = "#emoji_pursed_his_lips", [":х"] = "#emoji_pursed_his_lips",
+    [":^)"] = "#emoji_smiles_slyly",
+    ["^_^"] = "#emoji_rejoices",
+    ["-_-"] = "#emoji_disappointed",
+    ["0_0"] = "#emoji_shocked", ["o_o"] = "#emoji_shocked", ["O_O"] = "#emoji_shocked", ["о_о"] = "#emoji_shocked", ["О_О"] = "#emoji_shocked",
+    ["T_T"] = "#emoji_crying", ["Т_Т"] = "#emoji_crying", ["т_т"] = "#emoji_crying",
+    [":\\"] = "#emoji_is_perplexed",
+    ["x_x"] = "#emoji_tired", ["X_X"] = "#emoji_tired", ["Х_Х"] = "#emoji_tired", ["х_х"] = "#emoji_tired",
+    ["^-^"] = "#emoji_very_happy",
+    [":>"] = "#emoji_glad",
+    [":<"] = "#emoji_upset",
+    ["o_O"] = "#emoji_surprised", ["о_O"] = "#emoji_surprised", ["о_О"] = "#emoji_surprised", ["o_О"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["о_0"] = "#emoji_surprised",
+    ["O_o"] = "#emoji_surprised", ["O_о"] = "#emoji_surprised", ["О_о"] = "#emoji_surprised", ["О_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_о"] = "#emoji_surprised",
+    ["3:"] = "#emoji_expresses_dissatisfaction", ["з:"] = "#emoji_expresses_dissatisfaction", ["З:"] = "#emoji_expresses_dissatisfaction",
+    [":3"] = "#emoji_expresses_joy", [":з"] = "#emoji_expresses_joy", [":З"] = "#emoji_expresses_joy"
 }
 
 local letterList = {
@@ -158,7 +158,7 @@ Arbitrage.chat.List = {
     ["meanon"] = {
         Color = Color(44, 176, 247),
         OnCreate = function(client, sender, data)
-            return chatColor("meanon"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.anon, "Анонимно", Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
+            return chatColor("meanon"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.anon, "#chat_anonymously", Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -171,7 +171,7 @@ Arbitrage.chat.List = {
     ["try"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -185,7 +185,7 @@ Arbitrage.chat.List = {
     ["tryc"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -199,7 +199,7 @@ Arbitrage.chat.List = {
     ["tryl"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -213,7 +213,7 @@ Arbitrage.chat.List = {
     ["tryanon"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("tryanon"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.anon, "Анонимно", Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "Удачно" or "Неудачно") .. ")"
+            return chatColor("tryanon"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.anon, "#chat_anonymously", Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -225,7 +225,7 @@ Arbitrage.chat.List = {
     },
     ["ic"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " говорит: ", "'" .. format(data[1], true, true) .. "'"
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " #chat_say: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -248,11 +248,11 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return Arbitrage.chat.Colors.looc, "[Локальный НонРП чат] ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.looc, "[#chat_lnrp_type] ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
-            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "Администрация запретила вам писать в NonRP чат!") end
+            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "#chat_nrp_chat_block") end
 
             for k, v in ipairs(player.FindInSphere(client:GetPos(), getDist())) do
                 Arbitrage.chat.SendClient(v, client, name, data)
@@ -266,11 +266,11 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return Arbitrage.chat.Colors.ooc, "[Глобальный НонРП чат] ", c_player, sender:SteamName(), c_other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.ooc, "[#chat_gnrp_type] ", c_player, sender:SteamName(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
-            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "Администрация запретила вам писать в NonRP чат!") end
+            if client:GetNetVar("arb.MuteNonRPChat") then return Arbitrage.commands.Notify(client, "#chat_nrp_chat_block") end
 
             for k, v in ipairs(player.GetAll()) do
                 Arbitrage.chat.SendClient(v, client, name, data)
@@ -281,7 +281,7 @@ Arbitrage.chat.List = {
     ["broadcast"] = {
         Color = Color(216, 62, 62),
         OnCreate = function(client, sender, data)
-            return chatColor("broadcast"), "[Уведомление] ", Arbitrage.chat.Colors.other, format(data[1], true, true)
+            return chatColor("broadcast"), "[#chat_notification_type] ", Arbitrage.chat.Colors.other, format(data[1], true, true)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -319,7 +319,7 @@ Arbitrage.chat.List = {
     },
     ["whispers"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " шепчет: ", "'" .. format(data[1], true, true) .. "'"
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " #chat_whispers: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -332,7 +332,7 @@ Arbitrage.chat.List = {
     },
     ["yell"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " кричит: ", "'" .. format(data[1], true, true) .. "'"
+            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " #chat_yell: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -388,7 +388,7 @@ Arbitrage.chat.List = {
     ["itanon"] = {
         Color = color_white,
         OnCreate = function(client, sender, data)
-            return chatColor("itanon"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.anon, " (Анонимно)"
+            return chatColor("itanon"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.anon, " (#chat_anonymously)"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -421,7 +421,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("pm"), "[Личное сообщение] ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
+            return chatColor("pm"), "[#chat_pm_type] ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
         end,
         OnSend = function(client, name, data)
             local target = data[1]
@@ -438,7 +438,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("admin"), "[Чат администрации] ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
+            return chatColor("admin"), "[#chat_admin_type] ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
             for k, v in ipairs(player.GetAdmins()) do
@@ -454,7 +454,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("help"), "[Помощь] ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
+            return chatColor("help"), "[#chat_help_type] ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
             for k, v in ipairs(player.GetAdmins()) do

@@ -127,7 +127,7 @@ timer_Create("fb:CheckTrace", 0.1, 0, function()
 	local client = LocalPlayer()
 	if !IsValid(client) then return end
 
-	if !Persistent:AllowDetectCorpse(client) then return end
+	-- if !Persistent:AllowDetectCorpse(client) then return end
 
 	local trace = client:GetEyeTrace()
 	local entity = trace.Entity

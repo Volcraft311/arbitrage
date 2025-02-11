@@ -14,57 +14,58 @@
 Arbitrage.commands = Arbitrage.library.Add("commands")
 Arbitrage.commands.stored = {}
 
-function RegisterCommand(command, help, arguments, optionalArguments)
+function RegisterCommand(command, help, arguments, optionalArguments, bAdminOnly)
     Arbitrage.commands.stored[command] = {
         help = help,
         arguments = arguments,
-        optionalArguments = optionalArguments
+        optionalArguments = optionalArguments,
+        bAdminOnly = bAdminOnly
     }
 end
 
-RegisterCommand("me", "Говорить от третьего лица с окружающими.", {"text"})
-RegisterCommand("mec", "Говорить от третьего лица с окружающими ВБЛИЗИ вас.", {"text"})
-RegisterCommand("mel", "Говорить от третьего лица с окружающими большой площади вокруг вас.", {"text"})
-RegisterCommand("meanon", "Говорить анонимно от третьего лица с окружающими.", {"text"})
+RegisterCommand("me", "#command_me", {"text"})
+RegisterCommand("mec", "#command_mec", {"text"})
+RegisterCommand("mel", "#command_mel", {"text"})
+RegisterCommand("meanon", "#command_meanon", {"text"})
 
-RegisterCommand("try", "Возможное действие случая.", {"text"})
-RegisterCommand("tryc", "Возможное действие случая ближнего радиуса.", {"text"})
-RegisterCommand("tryl", "Возможное действие случая большого радиуса.", {"text"})
+RegisterCommand("try", "#command_try", {"text"})
+RegisterCommand("tryc", "#command_tryc", {"text"})
+RegisterCommand("tryl", "#command_tryl", {"text"})
 RegisterCommand("tryanon", "Анонимное возможное действие случая.", {"text"})
 
 for _, command in ipairs({"it", "do"}) do
-    RegisterCommand(command, "Описать местное действие или событие.", {"text"})
-    RegisterCommand(command .. "c", "Описать местное действие или событие ближнего радиуса действия.", {"text"})
-    RegisterCommand(command .. "l", "Описать местное действие или событие на большом расстоянии.", {"text"})
-    RegisterCommand(command .. "anon", "Описать анонимно местное действие или событие.", {"text"})
+    RegisterCommand(command, "#command_it", {"text"})
+    RegisterCommand(command .. "c", "#command_itc", {"text"})
+    RegisterCommand(command .. "l", "#command_itl", {"text"})
+    RegisterCommand(command .. "anon", "#command_itanon", {"text"})
 end
 
-RegisterCommand("w", "Шептать персонажам рядом с вами.", {"text"})
-RegisterCommand("y", "Крикнуть персонажам рядом с вами.", {"text"})
+RegisterCommand("w", "#command_whispers", {"text"})
+RegisterCommand("y", "#command_yell", {"text"})
 
-RegisterCommand("looc", "Написать в локальный НонРП чат.", {"text"})
-RegisterCommand("ooc", "Написать в глобальный НонРП чат.", {"text"})
+RegisterCommand("looc", "#command_looc", {"text"})
+RegisterCommand("ooc", "#command_ooc", {"text"})
 
 for _, command in ipairs({"broadcast", "announce", "global"}) do
-    RegisterCommand(command, "Написать уведомление в общий чат.", {"text"})
+    RegisterCommand(command, "#command_broadcast", {"text"})
 end
 
-RegisterCommand("event", "Написать RP уведомление в общий чат.", {"text"})
-RegisterCommand("eventlocal", "Написать RP уведомление игрокам возле вас.", {"text"})
+RegisterCommand("event", "#command_event", {"text"})
+RegisterCommand("eventlocal", "#command_eventlocal", {"text"})
 
-RegisterCommand("sg", "Получить изображение экрана игрока.", {"player"})
-RegisterCommand("settime", "Установить время на сервере.", {"time"})
-RegisterCommand("roll", "Крутить число от 0 до указанного числа.", nil, {"number"})
-RegisterCommand("editor", "Зайти в режим редактирования.")
-RegisterCommand("unstuck", "Телепортироваться на ближайшую позицию.")
-RegisterCommand("exitaction", "Выйти из анимации.")
-RegisterCommand("action", "Войти в определенную анимацию.", {"text"})
-RegisterCommand("sitting", "Изменить анимацию при сидении.", {"number"})
-RegisterCommand("mood", "Изменить настроение.", {"number"})
-RegisterCommand("lookaround", "Осмотреться.")
-RegisterCommand("settimespeed", "Изменить скорость времени.", {"number"})
-RegisterCommand("fallover", "Заставить своего персонажа упасть на пол.", nil, {"number"})
-RegisterCommand("spectate", "Зайти в наблюдение.", nil, {"player"})
+RegisterCommand("sg", "#command_sg", {"player"})
+RegisterCommand("settime", "#command_settime", {"time"})
+RegisterCommand("roll", "#command_roll", nil, {"number"})
+RegisterCommand("editor", "#command_editor")
+RegisterCommand("unstuck", "#command_unstuck")
+RegisterCommand("exitaction", "#command_exitaction")
+RegisterCommand("action", "#command_action", {"text"})
+RegisterCommand("sitting", "#command_sitting", {"number"})
+RegisterCommand("mood", "#command_mood", {"number"})
+RegisterCommand("lookaround", "#command_lookaround")
+RegisterCommand("settimespeed", "#command_settimespeed", {"number"})
+RegisterCommand("fallover", "#command_fallover", nil, {"number"})
+RegisterCommand("spectate", "#command_spectate", nil, {"player"})
 
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end

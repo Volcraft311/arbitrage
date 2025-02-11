@@ -25,86 +25,85 @@ netstream.Hook("Moderation:Log", function(uniqueID, info)
     MsgC(color_green, "[Moderation]", color_red, " [" .. uniqueID .. "]", color_white, " " .. info .. "\n")
 end)
 
-RegisterCommand("goto", "Телепортироваться к игроку.", {"player"})
-RegisterCommand("bring", "Телепортировать игрока к себе.", {"player"})
-RegisterCommand("tp", "Телепортировать игрока туда куда вы смотрите.", {"player"})
-RegisterCommand("pm", "Написать пользователю в личные сообщения.", {"player", "text"})
-RegisterCommand("return", "Вернуть игрока на прошлую точку до телепортации.", {"player"})
+RegisterCommand("goto", "#command_goto", {"player"})
+RegisterCommand("bring", "#command_bring", {"player"})
+RegisterCommand("tp", "#command_tp", {"player"})
+RegisterCommand("pm", "#command_pm", {"player", "text"})
+RegisterCommand("return", "#command_return", {"player"})
 
 for _, command in ipairs({"unanonymous", "unincognito", "returnrank", "rr"}) do
-    RegisterCommand(command, "Вернуть себе права равные статическому рангу.", {})
+    RegisterCommand(command, "#command_unanonymous", {})
 end
 
 for _, command in ipairs({"anonymous", "incognito", "takerank", "tr"}) do
-    RegisterCommand(command, "Временно снять с себя привилегии статического ранга.", {})
+    RegisterCommand(command, "#command_anonymous", {})
 end
 
 for _, command in ipairs({"a", "admin"}) do
-    RegisterCommand(command, "Отправить сообщение в чат администрации", {"text"})
+    RegisterCommand(command, "#command_admin", {"text"})
 end
 
 for _, command in ipairs({"help", "report"}) do
-    RegisterCommand(command, "Обратиться за помощью к администрации.", {"text"})
+    RegisterCommand(command, "#command_help", {"text"})
 end
 
 for _, command in ipairs({"hp", "health"}) do
-    RegisterCommand(command, "Выдать указанному пользователю здоровье.", {"player", "number"})
+    RegisterCommand(command, "#command_health", {"player", "number"})
 end
 
 for _, command in ipairs({"ar", "armor"}) do
-    RegisterCommand(command, "Выдать указанному пользователю броню.", {"player", "number"})
+    RegisterCommand(command, "#command_armor", {"player", "number"})
 end
 
-RegisterCommand("hunger", "Установить голод указанному пользователю.", {"player", "number"})
-RegisterCommand("thirst", "Установить жажду указанному пользователю.", {"player", "number"})
-RegisterCommand("sleep", "Установить сон указанному пользователю.", {"player", "number"})
-RegisterCommand("cleardecals", "Очистить всем игрока декали.", {})
-
-RegisterCommand("freezeprops", "Заморозить все физические пропы.")
+RegisterCommand("hunger", "#command_hunger", {"player", "number"})
+RegisterCommand("thirst", "#command_thirst", {"player", "number"})
+RegisterCommand("sleep", "#command_sleep", {"player", "number"})
+RegisterCommand("cleardecals", "#command_cleardecals", {})
+RegisterCommand("freezeprops", "#command_freezeprops")
 
 for _, command in ipairs({"unignite", "unfire", "extinguish"}) do
-    RegisterCommand(command, "Потушить указанного пользователя.", {"player"})
+    RegisterCommand(command, "#command_unignite", {"player"})
 end
 
 for _, command in ipairs({"ignite", "fire"}) do
-    RegisterCommand(command, "Поджечь указанного пользователя.", {"player"}, {"number"})
+    RegisterCommand(command, "#command_ignite", {"player"}, {"number"})
 end
 
 for _, command in ipairs({"kill", "slay"}) do
-    RegisterCommand(command, "Убить указанного пользователя.", {"player"})
+    RegisterCommand(command, "#command_slay", {"player"})
 end
 
-RegisterCommand("slap", "Пнуть указанного пользователя.", {"player"})
+RegisterCommand("slap", "#command_slap", {"player"})
 
 for _, command in ipairs({"map", "changemap", "changelevel"}) do
-    RegisterCommand(command, "Сменить карту на указанную.", {"string"})
+    RegisterCommand(command, "#command_changemap", {"string"})
 end
 
 for _, command in ipairs({"getmaps", "maps"}) do
-    RegisterCommand(command, "Получить список имеющихся карт на сервере.", {})
+    RegisterCommand(command, "#command_getmaps", {})
 end
 
-RegisterCommand("kick", "Кикнуть указанного пользователя с сервера.", {"player", "text"})
+RegisterCommand("kick", "#command_kick", {"player", "text"})
 
-RegisterCommand("runconsolecommand", "Выполнить консольную команду на стороне сервера.", {"text"})
+RegisterCommand("runconsolecommand", "#command_runconsolecommand", {"text"})
 
-RegisterCommand("reset", "Сбросить все характеристики игроку.", {"player"})
-RegisterCommand("respawn", "Возродить/Пересоздать игрока.", {"player"})
-RegisterCommand("model", "Изменить модель игроку на указанную.", {"player", "string"})
-RegisterCommand("guard", "Выдать права администрирования указанному игроку.", {"player", "string"})
-RegisterCommand("unguard", "Забрать права администратора указанного игрока.", {"player"})
+RegisterCommand("reset", "#command_reset", {"player"})
+RegisterCommand("respawn", "#command_respawn", {"player"})
+RegisterCommand("model", "#command_model", {"player", "string"})
+RegisterCommand("guard", "#command_guard", {"player", "string"})
+RegisterCommand("unguard", "#command_unguard", {"player"})
 
-RegisterCommand("restartserver", "Перезапустить сервер через указанное время.", {"number"})
-RegisterCommand("unrestartserver", "Отменить перезапуск сервера.")
+RegisterCommand("restartserver", "#command_restartserver", {"number"})
+RegisterCommand("unrestartserver", "#command_unrestartserver")
 
-RegisterCommand("freeze", "Заморозить указанного пользователя.", {"player"})
-RegisterCommand("unfreeze", "Разморозить указанного пользователя.", {"player"})
+RegisterCommand("freeze", "#command_freeze", {"player"})
+RegisterCommand("unfreeze", "#command_unfreeze", {"player"})
 
 for _, command in ipairs({"strip", "strips", "stripweapons", "stripsweapons"}) do
-    RegisterCommand(command, "Забрать оружие у указанного пользователя.", {"player"})
+    RegisterCommand(command, "#command_strip", {"player"})
 end
 
-RegisterCommand("removesoundscape", "Удалить все объекты связанные со звуком на карте.")
+RegisterCommand("removesoundscape", "#command_removesoundscape")
 
 
 function Moderation:HUDPaint()

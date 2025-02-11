@@ -30,6 +30,12 @@ function Arbitrage.notify.NotifyChat(data)
         data = {data}
     end
 
+    for k, v in ipairs(data) do
+        if isstring(v) then
+            data[k] = F(v)
+        end
+    end
+
     chat.AddText(Color(255, 61, 96), "| ", color_white, unpack(data))
 end
 

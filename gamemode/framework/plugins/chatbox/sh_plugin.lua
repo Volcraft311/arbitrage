@@ -1,9 +1,10 @@
 local PLUGIN = PLUGIN
+ChatBox = PLUGIN
 
-PLUGIN.chat = PLUGIN.chat or {}
-PLUGIN.gui = PLUGIN.gui or {}
+ChatBox.chat = ChatBox.chat or {}
+ChatBox.gui = ChatBox.gui or {}
 
-PLUGIN.typesData = {
+ChatBox.typesData = {
     "me",
     "mec",
     "mel",
@@ -22,7 +23,7 @@ PLUGIN.typesData = {
     "command"
 }
 
-function PLUGIN.Bind(self, callback)
+function ChatBox.Bind(self, callback)
     return function(_, ...)
         return callback(self, ...)
     end

@@ -15,7 +15,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("goto", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -33,7 +33,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("bring", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -51,7 +51,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("tp", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -69,12 +69,12 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("pm", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
             [2] = {
-                name = "Текст",
+                name = "#command_argument_text",
                 type = "text",
                 important = true
             },
@@ -91,7 +91,7 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Текст",
+                    name = "#command_argument_text",
                     type = "text",
                     important = true
                 },
@@ -108,7 +108,7 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Текст",
+                    name = "#command_argument_text",
                     type = "text",
                     important = true
                 },
@@ -125,7 +125,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("return", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -184,12 +184,12 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Игрок",
+                    name = "#command_argument_player",
                     type = "player",
                     important = true
                 },
                 [2] = {
-                    name = "Значение",
+                    name = "#command_argument_number",
                     type = "number",
                     important = true
                 },
@@ -206,12 +206,12 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Игрок",
+                    name = "#command_argument_player",
                     type = "player",
                     important = true
                 },
                 [2] = {
-                    name = "Значение",
+                    name = "#command_argument_number",
                     type = "number",
                     important = true
                 },
@@ -227,12 +227,12 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("hunger", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
             [2] = {
-                name = "Значение",
+                name = "#command_argument_number",
                 type = "number",
                 important = true
             },
@@ -247,12 +247,12 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("thirst", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
             [2] = {
-                name = "Значение",
+                name = "#command_argument_number",
                 type = "number",
                 important = true
             },
@@ -267,12 +267,12 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("sleep", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
             [2] = {
-                name = "Значение",
+                name = "#command_argument_number",
                 type = "number",
                 important = true
             },
@@ -296,7 +296,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("slap", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -312,7 +312,7 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Игрок",
+                    name = "#command_argument_player",
                     type = "player",
                     important = true
                 },
@@ -329,12 +329,12 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Игрок",
+                    name = "#command_argument_player",
                     type = "player",
                     important = true
                 },
                 [2] = {
-                    name = "Значение",
+                    name = "#command_argument_number",
                     type = "number",
                     important = false
                 },
@@ -352,7 +352,7 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Игрок",
+                    name = "#command_argument_player",
                     type = "player",
                     important = true
                 },
@@ -419,7 +419,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("kick", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -456,7 +456,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("reset", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             }
@@ -485,7 +485,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("respawn", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             }
@@ -500,7 +500,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("model", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -520,7 +520,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("guard", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             },
@@ -547,7 +547,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("unguard", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             }
@@ -662,7 +662,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("freeze", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             }
@@ -677,7 +677,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("unfreeze", {
         arguments = {
             [1] = {
-                name = "Игрок",
+                name = "#command_argument_player",
                 type = "player",
                 important = true
             }
@@ -714,7 +714,7 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {
                 [1] = {
-                    name = "Игрок",
+                    name = "#command_argument_player",
                     type = "player",
                     important = true
                 }

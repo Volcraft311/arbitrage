@@ -106,16 +106,16 @@ function PANEL:PerformLayout(width, height)
 end
 
 local copyTextStored = {
-	[1] = "Двойное копирование!",
-	[2] = "Тройное копирование!",
-	[3] = "Доминирование!",
-	[4] = "Безумие!",
-	[5] = "Мегакопирование!",
-	[6] = "Вас не остановить!",
-	[7] = "Полный улет!",
-	[8] = "Феноменально!",
-	[9] = "Божественно!",
-	[10] = "ПРОСТО КОСМОС!"
+	[1] = "#chat_copy_double_copied",
+	[2] = "#chat_copy_triple_copied",
+	[3] = "#chat_copy_domination",
+	[4] = "#chat_copy_madness",
+	[5] = "#chat_copy_megacopying",
+	[6] = "#chat_copy_cant_be_stopped",
+	[7] = "#chat_copy_totally_awesome",
+	[8] = "#chat_copy_phenomenal",
+	[9] = "#chat_copy_divine",
+	[10] = "#chat_copy_just_space"
 }
 
 function PANEL:Paint(width, height)
@@ -158,7 +158,7 @@ function PANEL:Paint(width, height)
 				table.remove(self.copys, k)
 			end
 
-			draw.SimpleText(copyTextStored[v.copyNum] or "Скопировано!", "arb.Font_FuturaPTBook_6", v.x, v.y, Color(255, 255, 255, v.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(L(copyTextStored[v.copyNum] or "#chat_copy_copied"), "arb.Font_FuturaPTBook_6", v.x, v.y, Color(255, 255, 255, v.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	DisableClipping(old)
 end
@@ -273,10 +273,12 @@ function PANEL:AddTab(id, filter)
 	button:SetActive(false)
 	button:SetMouseInputEnabled(true)
 
+	local text = L(id)
+
 	local font = "arb.Font_FuturaPTBook_9"
 	local x = W(50)
 	surface.SetFont(font)
-	local width = surface.GetTextSize(id)
+	local width = surface.GetTextSize(text)
 
 	button:SetWide(width + x)
 	button.alpha = 0.1
@@ -289,10 +291,10 @@ function PANEL:AddTab(id, filter)
 		_.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or _.unread) and 1 or 0.1)
 	    _.alpha2 = Lerp(FrameTime() * 10, _.alpha2, selected and 1 or -0.1)
 
-	    Arbitrage.DrawTextBlur(id, font, w / 2 - x * 0.17, H(3), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
+	    Arbitrage.DrawTextBlur(text, font, w / 2 - x * 0.17, H(3), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 
 	    if !selected then
-	        draw.DrawText(id, font, w / 2 - x * 0.17, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+	        draw.DrawText(text, font, w / 2 - x * 0.17, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 	    end
 
 		draw.DrawText("/", font, w - x * 0.25, H(3), Color(255, 255, 255, 10), TEXT_ALIGN_CENTER)
@@ -512,7 +514,7 @@ function PANEL:Init()
 	entryPanel:Dock(BOTTOM)
 
 	local say_panel = entryPanel:Add("DLabel")
-	say_panel:SetText("Написать")
+	say_panel:SetText(L("#chat_chatbox_say"))
 	say_panel:SetContentAlignment(5)
 	say_panel:SetWide(W(106))
 	say_panel:SetFont("arb.Font_FuturaPTBook_7")
@@ -526,7 +528,7 @@ function PANEL:Init()
 
 	self.entry = entryPanel:Add("arbChatBoxFixed")
 	self.entry:SetText("")
-	self.entry:SetPlaceholderText("введите что-либо...")
+	self.entry:SetPlaceholderText(L("#chat_chatbox_enter_something"))
 	self.entry:SetTextColor(Color(255,255,255))
 	self.entry:SetDrawBackground(false)
 	self.entry:SetFont("arb.Font_FuturaPTBook_7")
@@ -691,13 +693,13 @@ function PANEL:SetActive(bActive)
 end
 
 function PANEL:SetupTabs(tabs)
-	self.tabs:AddTab("Общий", {})
-	self.tabs:SetActiveTab("Общий")
+	self.tabs:AddTab("#chat_chatbox_tab_general", {})
+	self.tabs:SetActiveTab("#chat_chatbox_tab_general")
 
-	self.tabs:AddTab("РП", {})
-	self.tabs:AddTab("НонРП", {})
-	self.tabs:AddTab("Личные", {})
-	self.tabs:AddTab("Админские", {})
+	self.tabs:AddTab("#chat_chatbox_tab_rp", {})
+	self.tabs:AddTab("#chat_chatbox_tab_nonrp", {})
+	self.tabs:AddTab("#chat_chatbox_tab_personal", {})
+	self.tabs:AddTab("#chat_chatbox_tab_admin", {})
 end
 
 function PANEL:SetupPosition(info)
@@ -979,7 +981,7 @@ function PANEL:OnTextChanged(text)
 		for command, data in pairs(commands) do
 			local arguments = data[1]
 			local optionalArguments = data[2]
-			local description = data[3]
+			local description = L(data[3])
 
 			if !IsValid(self.commandsPanel.stored[command]) then
 				local panel = self.commandsPanel:Add("DPanel")
@@ -1006,7 +1008,7 @@ function PANEL:OnTextChanged(text)
 								local target = argument and player.GetByIdentifier(argument)
 
 								local old = DisableClipping(true)
-									draw.SimpleText(IsValid(target) and target:FullName(true) or "Неизвестный игрок", "arb.Font_FuturaPTBook_7", x, -_w, color_white, TEXT_ALIGN_LEFT)
+									draw.SimpleText(IsValid(target) and target:FullName(true) or L("#chat_chatbox_unknown_player"), "arb.Font_FuturaPTBook_7", x, -_w, color_white, TEXT_ALIGN_LEFT)
 								DisableClipping(old)
 							end
 
@@ -1109,37 +1111,46 @@ function PANEL:OnTabUpdated(id, filter, newID)
 	self.tabs:RenameTab(id, newID)
 end
 
-local loocSyntax = "[Локальный НонРП чат]"
-local oocSyntax = "[Глобальный НонРП чат]"
-local pmSyntax = "[Личное сообщение]"
-local helpSyntax = "[Помощь]"
-local adminsSyntex = "[Чат администрации]"
 local listAction = {
-	["Общий"] = function(data)
+	["#chat_chatbox_tab_general"] = function(data)
 		return true
 	end,
-	["РП"] = function(data)
+	["#chat_chatbox_tab_rp"] = function(data)
+		local loocSyntax = L("#chat_lnrp_type")
+		local oocSyntax = L("#chat_gnrp_type")
+		local pmSyntax = L("#chat_pm_type")
+		local helpSyntax = L("#chat_help_type")
+		local adminsSyntex = L("#chat_admin_type")
+
 		if data[2] != loocSyntax .. " " and data[2] != oocSyntax .. " " and data[2] != pmSyntax .. " " and data[2] != helpSyntax .. " " and data[2] != adminsSyntex .. " " and
 			data[3] != loocSyntax .. " " and data[3] != oocSyntax .. " " and data[3] != pmSyntax .. " " and data[3] != helpSyntax .. " " and data[3] != adminsSyntex .. " " then
 
 			return true
 		end
 	end,
-	["НонРП"] = function(data)
+	["#chat_chatbox_tab_nonrp"] = function(data)
+		local loocSyntax = L("#chat_lnrp_type")
+		local oocSyntax = L("#chat_gnrp_type")
+
 		if data[2] == loocSyntax .. " " or data[2] == oocSyntax .. " " or
 			data[3] == loocSyntax .. " " or data[3] == oocSyntax .. " " then
 
 			return true
 		end
 	end,
-	["Личные"] = function(data)
+	["#chat_chatbox_tab_personal"] = function(data)
+		local pmSyntax = L("#chat_pm_type")
+
 		if data[2] == pmSyntax .. " " or
 			data[3] == pmSyntax .. " " then
 
 			return true
 		end
 	end,
-	["Админские"] = function(data)
+	["#chat_chatbox_tab_admin"] = function(data)
+		local helpSyntax = L("#chat_help_type")
+		local adminsSyntex = L("#chat_admin_type")
+
 		if data[2] == helpSyntax .. " " or data[2] == adminsSyntex .. " " or
 			data[3] == helpSyntax .. " " or data[3] == adminsSyntex .. " " then
 

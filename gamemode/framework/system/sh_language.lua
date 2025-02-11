@@ -39,12 +39,14 @@ function Arbitrage.language:GetActive()
 end
 
 function Arbitrage.language:Format(data, client)
-    return data:gsub("#([%w_]+)", function(lang_id)
+    local text = data:gsub("#([%w_]+)", function(lang_id)
         lang_id = "#" .. lang_id
 
         local info = client and L(client, lang_id) or L(lang_id)
         return info or lang_id
     end)
+
+    return text
 end
 
 function Arbitrage.language:OnUpdate(old, new)
@@ -56,13 +58,15 @@ end
 local function format(data, ...)
     local args = {...}
 
-    return data:gsub("%%s", function()
+    local text = data:gsub("%%s", function()
         if #args > 0 then
             return table.remove(args, 1)
         else
             return "%s"
         end
     end)
+
+    return text
 end
 
 if SERVER then

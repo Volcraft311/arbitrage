@@ -124,7 +124,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
 
     for k, v in ipairs(player.GetAll()) do
         if Persistent:AllowLogFindCorpse(v) then
-            Arbitrage.commands.Notify(v, Format("%s(%s) обнаружил труп! (%s)", client:Name(), client:SteamName(), tostring(entity)))
+            Arbitrage.commands.Notify(v, L(v, "#persistent_found_corpse", client:Name(), client:SteamName(), tostring(entity)))
         end
     end
 
@@ -135,7 +135,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
                 sound.PlayFile("sound/discoveryannounce.wav", "", function(station)
                     if IsValid(station) then
                         station:SetVolume(0.5)
-                    end
+                    endЫ
                 end)
             ]])
         end

@@ -1,10 +1,6 @@
-local PLUGIN = PLUGIN
+ChatBox.chat.history = ChatBox.chat.history or {}
 
-ChatBox = PLUGIN 
-
-PLUGIN.chat.history = PLUGIN.chat.history or {}
-
-function PLUGIN:CreateChat()
+function ChatBox:CreateChat()
     if IsValid(self.panel) then
         self.panel:Remove()
     end
@@ -14,17 +10,17 @@ function PLUGIN:CreateChat()
     self.panel:SetupPosition("")
 end
 
-function PLUGIN:TabExists(id)
+function ChatBox:TabExists(id)
     if !IsValid(self.panel) then return false end
 
     return self.panel.tabs:GetTabs()[id] != nil
 end
 
-function PLUGIN:InitPostEntity()
+function ChatBox:InitPostEntity()
     self:CreateChat()
 end
 
-function PLUGIN:PlayerBindPress(client, bind, pressed)
+function ChatBox:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
     if bind:find("messagemode") and pressed then
@@ -34,13 +30,13 @@ function PLUGIN:PlayerBindPress(client, bind, pressed)
     end
 end
 
-function PLUGIN:HUDShouldDraw(element)
+function ChatBox:HUDShouldDraw(element)
     if element == "CHudChat" then
         return false
     end
 end
 
-function PLUGIN:OnScreenSizeChanged(oldWidth, oldHeight)
+function ChatBox:OnScreenSizeChanged(oldWidth, oldHeight)
     self:CreateChat()
 end
 
@@ -50,7 +46,7 @@ local disableChatText = {
     teamchange = true,
 }
 
-function PLUGIN:ChatText(index, name, text, messageType)
+function ChatBox:ChatText(index, name, text, messageType)
     if disableChatText[messageType] then
         return true
     end
@@ -72,14 +68,17 @@ hook("FinishChat", function()
     net.SendToServer()
 end)
 
+hook("OnLanguageUpdate", function()
+    ChatBox:CreateChat()
+end)
+
 chat.oldAddText = chat.oldAddText or chat.AddText
 function chat.AddText(...)
-    if (IsValid(PLUGIN.panel)) then
-        PLUGIN.panel:AddMessage(...)
+    if IsValid(ChatBox.panel) then
+        ChatBox.panel:AddMessage(...)
     end
 
     local text = {}
-
     for _, v in ipairs({...}) do
         if (istable(v) or isstring(v)) then
             text[#text + 1] = v
@@ -96,5 +95,5 @@ function chat.AddText(...)
 end
 
 concommand.Add("arb_chatbox_reload", function()
-    PLUGIN:CreateChat()
+    ChatBox:CreateChat()
 end)

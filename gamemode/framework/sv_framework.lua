@@ -16,7 +16,7 @@ for _, command in ipairs({"me"}) do
         Arbitrage.commands.Add(command .. subcommand, {
             arguments = {
                 [1] = {
-                    name = "Текст",
+                    name = "#command_argument_text",
                     type = "text",
                     important = true
                 },
@@ -47,7 +47,7 @@ for _, command in ipairs({"try"}) do
         Arbitrage.commands.Add(command .. subcommand, {
             arguments = {
                 [1] = {
-                    name = "Текст",
+                    name = "#command_argument_text",
                     type = "text",
                     important = true
                 },
@@ -65,7 +65,7 @@ end
 Arbitrage.commands.Add("w", {
     arguments = {
         [1] = {
-            name = "Текст",
+            name = "#command_argument_text",
             type = "text",
             important = true
         },
@@ -81,7 +81,7 @@ Arbitrage.commands.Add("w", {
 Arbitrage.commands.Add("y", {
     arguments = {
         [1] = {
-            name = "Текст",
+            name = "#command_argument_text",
             type = "text",
             important = true
         },
@@ -99,7 +99,7 @@ for _, command in ipairs({"it", "do"}) do
         Arbitrage.commands.Add(command .. subcommand, {
             arguments = {
                 [1] = {
-                    name = "Текст",
+                    name = "#command_argument_text",
                     type = "text",
                     important = true
                 },
@@ -117,7 +117,7 @@ end
 Arbitrage.commands.Add("looc", {
     arguments = {
         [1] = {
-            name = "Текст",
+            name = "#command_argument_text",
             type = "text",
             important = true
         },
@@ -131,7 +131,7 @@ Arbitrage.commands.Add("looc", {
 Arbitrage.commands.Add("ooc", {
     arguments = {
         [1] = {
-            name = "Текст",
+            name = "#command_argument_text",
             type = "text",
             important = true
         },
@@ -150,7 +150,7 @@ for _, command in ipairs({"broadcast", "announce", "global"}) do
     Arbitrage.commands.Add(command, {
         arguments = {
             [1] = {
-                name = "Текст",
+                name = "#command_argument_text",
                 type = "text",
                 important = true
             },
@@ -168,7 +168,7 @@ for _, command in ipairs({"event", "eventlocal"}) do
     Arbitrage.commands.Add(command, {
         arguments = {
             [1] = {
-                name = "Текст",
+                name = "#command_argument_text",
                 type = "text",
                 important = true
             },
@@ -185,7 +185,7 @@ end
 Arbitrage.commands.Add("sg", {
     arguments = {
         [1] = {
-            name = "Игрок",
+            name = "#command_argument_player",
             type = "player",
             important = true
         }
@@ -253,7 +253,7 @@ Arbitrage.commands.Add("settime", {
 Arbitrage.commands.Add("roll", {
     arguments = {
         [1] = {
-            name = "Значение",
+            name = "#command_argument_number",
             type = "number",
             important = false
         },
@@ -428,7 +428,7 @@ Arbitrage.commands.Add("settimespeed", {
 Arbitrage.commands.Add("spectate", {
     arguments = {
         [1] = {
-            name = "Игрок",
+            name = "#command_argument_player",
             type = "string",
             important = false
         }

@@ -81,9 +81,9 @@ Arbitrage.commands.keyList = {
 }
 
 Arbitrage.commands.fault = {
-    [1] = "НЕИЗВЕСТНО",
-    [2] = "Вы указали ошибку в аргументе",
-    [3] = "У вас не указан аргумент"
+    [1] = "#command_fault_unknown",
+    [2] = "#command_argument_error",
+    [3] = "#command_argument_unknown"
 }
 
 function Arbitrage.commands.ConvertRusToEng(data)

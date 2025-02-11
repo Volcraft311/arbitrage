@@ -75,7 +75,7 @@ function Arbitrage.commands.RunCommand(client, command, data)
             end
         end
     else
-        Arbitrage.commands.Notify(client, "Данной команды не существует!")
+        Arbitrage.commands.Notify(client, "#command_not_found")
     end
 end
 
@@ -89,7 +89,7 @@ function Arbitrage.commands.PlayerSay(client, data)
 
         local extra = Arbitrage:ExtractArgs(data)
 
-        local command = extra[1]:utf8lower()
+        local command = extra[1] and extra[1]:utf8lower() or ""
         table.remove(extra, 1)
 
         if bRusCommand then

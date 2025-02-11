@@ -248,7 +248,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return Arbitrage.chat.Colors.looc, "[#chat_lnrp_type] ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.looc, "#chat_lnrp_type ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -266,7 +266,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return Arbitrage.chat.Colors.ooc, "[#chat_gnrp_type] ", c_player, sender:SteamName(), c_other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.ooc, "#chat_gnrp_type ", c_player, sender:SteamName(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -281,7 +281,7 @@ Arbitrage.chat.List = {
     ["broadcast"] = {
         Color = Color(216, 62, 62),
         OnCreate = function(client, sender, data)
-            return chatColor("broadcast"), "[#chat_notification_type] ", Arbitrage.chat.Colors.other, format(data[1], true, true)
+            return chatColor("broadcast"), "#chat_notification_type ", Arbitrage.chat.Colors.other, format(data[1], true, true)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -421,7 +421,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("pm"), "[#chat_pm_type] ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
+            return chatColor("pm"), "#chat_pm_type ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
         end,
         OnSend = function(client, name, data)
             local target = data[1]
@@ -438,7 +438,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("admin"), "[#chat_admin_type] ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
+            return chatColor("admin"), "#chat_admin_type ", c_player, sender:FullName(), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
             for k, v in ipairs(player.GetAdmins()) do
@@ -454,7 +454,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("help"), "[#chat_help_type] ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
+            return chatColor("help"), "#chat_help_type ", c_player, sender:FullName(true), c_other, ": ", "" .. data[1]
         end,
         OnSend = function(client, name, data)
             for k, v in ipairs(player.GetAdmins()) do

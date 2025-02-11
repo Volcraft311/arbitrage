@@ -265,10 +265,10 @@ function PLUGIN:CreateBullet(data)
     return self.bulletList[#self.bulletList], #self.bulletList
 end
 
-local spriteSize = 1.26
+local spriteSize = 1.5
 local spriteW = 45 * spriteSize
 local spriteH = 75 * spriteSize
-local spriteShift = 28
+local spriteShift = 34
 local function drawing(client, mat)
     do
         local ang = Angle(0, client:EyeAngles()[2] + 90, 90)

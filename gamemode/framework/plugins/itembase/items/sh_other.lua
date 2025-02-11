@@ -183,7 +183,7 @@ do
             local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
 
             client:SetModel(model)
-            Arbitrage.commands.Notify(client, "Вы сменили личность на '" .. (isGenocide and "Токо Фукава" or "Геноцид Сё") .. "'.")
+            Arbitrage.commands.Notify(client, isGenocide and "#notify_change_personality_toko" or "#notify_change_personality_genocide")
 
             return false
         end,
@@ -253,7 +253,7 @@ local function cuff(item, ropeLength)
     local client = item.player
 
     local target = findTarget(client)
-    if !IsValid(target) then Arbitrage.commands.Notify(client, "Не валидный игрок") return false end
+    if !IsValid(target) then Arbitrage.commands.Notify(client, "#chat_chatbox_unknown_player") return false end
 
     Arbitrage.action.ActionRun(target, "Вас связывают", cuffTime, function()
         if findTarget(client) != target then return true end

@@ -117,7 +117,7 @@ BASE:AddAction("Взломать дверь", {
         local client = item.player
         local entity = FindDoor(client)
         if !IsValid(entity) then
-            Arbitrage.commands.Notify(client, "Это нельзя взломать!")
+            Arbitrage.commands.Notify(client, "#picklock_not_allow")
             return false
         end
 

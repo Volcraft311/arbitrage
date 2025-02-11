@@ -108,7 +108,7 @@ function BASE:Equip(client, item, id)
 			local itemTable = ItemBase.instances[v.id]
 
 			if itemTable and itemTable.isWeapon and client.carryWeapons[class] and itemTable:GetData("equip") then
-				return Arbitrage.commands.Notify(client, "У вас уже экипированно оружие данного типа!")
+				return Arbitrage.commands.Notify(client, "#weapon_already_equip")
 			end
 		end
 	end

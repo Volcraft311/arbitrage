@@ -55,6 +55,7 @@ Arbitrage.language:Add("ru", {
     ["#try_unsuccessful"] = "Неудачно",
 
     ["#command_argument_text"] = "Текст",
+    ["#command_argument_number"] = "Значение",
     ["#command_argument_player"] = "Игрок",
 
     ["#command_fault_unknown"] = "НЕИЗВЕСТНО",

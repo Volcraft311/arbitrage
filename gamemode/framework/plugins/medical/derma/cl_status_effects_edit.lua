@@ -51,7 +51,7 @@ local function updateHeight(uniqueID, panel)
 	local info = Medical.t_status_effects[uniqueID]
 	if !info then return end
 
-	local description = info.description
+	local description = L(info.description)
 	local formatDescription = Medical:FormatTemporaryDescription(uniqueID, description)
 
 	local size = 0
@@ -69,11 +69,11 @@ local function updateHeight(uniqueID, panel)
 		end
 
 		local valueLabel = v[1]
-		valueLabel:SetText(Medical:FormatTemporaryDescription(uniqueID, info.values[k].description))
+		valueLabel:SetText(Medical:FormatTemporaryDescription(uniqueID, L(info.values[k].description)))
 
 		local value = Medical:FormatTemporaryDescription(uniqueID, Medical:TemporaryStatusEffectsValues(uniqueID)[k])
 		local valueTextEntry = v[3]
-		valueTextEntry:SetValue(value)
+		valueTextEntry:SetValue(L(value))
 	end
 
 	local descriptionPanel = panel.descriptionPanel
@@ -129,6 +129,8 @@ function PANEL:Main()
 			surface.DrawOutlinedRect(0, 0, w, h, 1)
 		end
 
+		local name = L(v.name)
+
 		local title = panel:Add("DButton")
 		title:SetText("")
 		title:Dock(TOP)
@@ -143,7 +145,7 @@ function PANEL:Main()
 			surface.SetMaterial(material)
 			surface.DrawTexturedRect(2, 2, normalSize - 4, normalSize - 4)
 
-			draw.SimpleText(v.name, "arb.Font_FuturaPTBook_8", normalSize + 5, 3, color_white, TEXT_ALIGN_LEFT)
+			draw.SimpleText(name, "arb.Font_FuturaPTBook_8", normalSize + 5, 3, color_white, TEXT_ALIGN_LEFT)
 
 			surface.SetDrawColor(255, 61, 96, 165.75)
 			surface.DrawOutlinedRect(0, 0, w, h, 1)

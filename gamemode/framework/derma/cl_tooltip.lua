@@ -301,7 +301,7 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
                             local status_tooltip = status.tooltip
                             if !status_tooltip then continue end
 
-                            panel:AddSubMenu(status_tooltip.format, function(this)
+                            panel:AddSubMenu(L(status_tooltip.format), function(this)
                                 this.title:SetTextColor(status_tooltip.color)
                             end)
                         end

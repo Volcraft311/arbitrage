@@ -115,7 +115,7 @@ local function getAllTemporaryStatusEffects(client)
     local all_effects = {}
     for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
         all_effects[#all_effects + 1] = {
-            name = v.name,
+            name = L(v.name),
             icon = isfunction(v.icon) and v.icon(client) or v.icon,
             data = function()
                 Derma_StringRequest("Выдать статус эфект", "Введите время, насколько вы хотите выдать игроку данный эффект\n(Если вы хотите установить его навсегда, то введите 0)", "", function(text)
@@ -139,7 +139,7 @@ local function getAllTemporaryStatusEffects(client)
             local delay = v.delay <= 0 and "∞" or math.floor(v.delay - CurTime())
 
             client_effects[#client_effects + 1] = {
-                name = info.name .. " (" .. delay .. " sec)",
+                name = L(info.name) .. " (" .. delay .. " sec)",
                 icon = isfunction(info.icon) and info.icon(client) or info.icon,
                 data = function()
                     runAction("removetemporarystatuseffect", client, uniqueID)

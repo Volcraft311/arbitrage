@@ -183,21 +183,21 @@ MonoMenu:AddGameFunction("Изменить название главы", "icon16
         if SERVER then return false end
 
         local dermaPanel = DermaMenu()
-        local data = {"Эпизод отсутствует", "Пролог", "Эпилог"}
+        local data = {"#episode_missing", "#episode_prologue", "#episode_epilogue"}
 
         for i = 1, 9 do
-            data[#data + 1] = "Эпизод " .. i
+            data[#data + 1] = "#episode_" .. i
         end
 
         for k, v in ipairs(data) do
-            dermaPanel:AddOption(v, function()
+            dermaPanel:AddOption(L(v), function()
                 asterionlib.EmitSound(PLUGIN.ClickSound)
                 netstream.Start("arb.MonoSetChapter", v)
             end)
         end
 
-        local customButton = dermaPanel:AddOption("Ввести свое", function()
-            Derma_StringRequest("Изменить название главы", "Введите название которое вы хотите установить для главы", "", function(text)
+        local customButton = dermaPanel:AddOption(L("#episode_custom"), function()
+            Derma_StringRequest(L("#episode_custom_title"), L("#episode_custom_description"), L(Arbitrage.GetChapter()), function(text)
                 asterionlib.EmitSound(PLUGIN.ClickSound)
                 netstream.Start("arb.MonoSetChapter", text)
             end)

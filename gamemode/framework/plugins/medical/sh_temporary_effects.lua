@@ -13,17 +13,17 @@
 
 
 Medical:TemporaryStatusEffects("light_bleeding", {
-	name = "Кровотечение",
+	name = "#status_effects_light_bleeding_title",
 	icon = "asterion/academy/ui/health/tremor_2.png",
-	description = "Вы теряете {1} HP каждые {2} секунд.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
+	description = "#status_effects_light_bleeding_desc",
 	values = {
 		[1] = {
-			description = "Сколько HP игрок будет терять каждые {2} секунд",
+			description = "#status_effects_light_bleeding_val1",
 			type = Medical.types.number,
 			default = 1,
 		},
 		[2] = {
-			description = "Спустя сколько времени будет терять {1} HP",
+			description = "#status_effects_light_bleeding_val2",
 			type = Medical.types.number,
 			default = 10,
 		}
@@ -37,27 +37,27 @@ Medical:TemporaryStatusEffects("light_bleeding", {
 	end,
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("heavy_bleeding") then
-			return false, "Игрок имеет статус эффект 'Сильное кровотечение'"
+			return false, "#status_effects_have_effect '#status_effects_heavy_bleeding_title'"
 		end
 	end,
 	tooltip = {
-		format = "От данного персонажа течет кровь",
+		format = "#status_effects_light_bleeding_tooltip",
 		color = Color(136, 37, 37)
 	}
 })
 
 Medical:TemporaryStatusEffects("heavy_bleeding", {
-	name = "Сильное кровотечение",
+	name = "#status_effects_heavy_bleeding_title",
 	icon = "asterion/academy/ui/health/tremor_2.png",
-	description = "Вы теряете {1} HP каждые {2} секунд.\nВы оставляете брызги крови, а так же снижается максимальное количество выносливости.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
+	description = "#status_effects_heavy_bleeding_desc",
 	values = {
 		[1] = {
-			description = "Сколько HP игрок будет терять каждые {2} секунд",
+			description = "#status_effects_heavy_bleeding_val1",
 			type = Medical.types.number,
 			default = 2,
 		},
 		[2] = {
-			description = "Спустя сколько времени будет терять {1} HP",
+			description = "#status_effects_heavy_bleeding_val2",
 			type = Medical.types.number,
 			default = 7,
 		}
@@ -90,16 +90,16 @@ Medical:TemporaryStatusEffects("heavy_bleeding", {
 		client:RemoveTemporaryStatusEffect("light_bleeding")
 	end,
 	tooltip = {
-		format = "От данного персонажа сильно течет кровь",
+		format = "#status_effects_heavy_bleeding_tooltip",
 		color = Color(206, 33, 33)
 	}
 })
 
 local tunnelvision_square = Material("danganronpa/ui/medical/tunnelvision_square.png")
 Medical:TemporaryStatusEffects("tunnel_vision", {
-	name = "Туннельное зрение",
+	name = "#status_effects_tunnel_vision_title",
 	icon = "asterion/academy/ui/health/tunnel_1.png",
-	description = "Потеря периферического обзора.",
+	description = "#status_effects_tunnel_vision_desc",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.alpha = stored.alpha or 0
@@ -126,9 +126,9 @@ Medical:TemporaryStatusEffects("tunnel_vision", {
 
 
 Medical:TemporaryStatusEffects("blackout", {
-	name = "Затемнение",
+	name = "#status_effects_blackout_title",
 	icon = "asterion/academy/ui/health/tunnel_2.png",
-	description = "Затемнение видимости окружения.",
+	description = "#status_effects_blackout_desc",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.alpha = stored.alpha or 0
@@ -154,9 +154,9 @@ Medical:TemporaryStatusEffects("blackout", {
 })
 
 Medical:TemporaryStatusEffects("pain", {
-	name = "Боль",
+	name = "#status_effects_pain_title",
 	icon = "asterion/academy/ui/health/tremor_3.png",
-	description = "Размытие изображения.",
+	description = "#status_effects_pain_desc",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.value = stored.value or 1
@@ -172,15 +172,15 @@ Medical:TemporaryStatusEffects("pain", {
 	},
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("painkillers") then
-			return false, "Игрок имеет статус эффект 'На болеутоляющих'"
+			return false, "#status_effects_have_effect '#status_effects_painkillers_title'"
 		end
 	end
 })
 
 Medical:TemporaryStatusEffects("intoxication", {
-	name = "Опьянение",
+	name = "#status_effects_intoxication_title",
 	icon = "asterion/academy/ui/health/intoxication_drugs_2.png",
-	description = "Сильно размытие изображения.",
+	description = "#status_effects_intoxication_desc",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.value = stored.value or 1
@@ -195,15 +195,15 @@ Medical:TemporaryStatusEffects("intoxication", {
 		end
 	},
 	tooltip = {
-		format = "Данный персонаж шатается на месте",
+		format = "#status_effects_intoxication_tooltip",
 		color = Color(122, 173, 63)
 	},
 })
 
 Medical:TemporaryStatusEffects("drug_intoxication", {
-	name = "Наркотическое опьянение",
+	name = "#status_effects_drug_intoxication_title",
 	icon = "asterion/academy/ui/health/intoxication_drugs_2.png",
-	description = "Очень сильно размытие изображения.\nВаша цветовая коррекция меняется спустя время, вы видите то, чего нету перед вами.",
+	description = "#status_effects_drug_intoxication_desc",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			stored.value = stored.value or 1
@@ -234,18 +234,18 @@ Medical:TemporaryStatusEffects("drug_intoxication", {
 		end
 	},
 	tooltip = {
-		format = "Данный персонаж сильно шатается на месте",
+		format = "#status_effects_drug_intoxication_tooltip",
 		color = Color(141, 223, 48)
 	},
 })
 
 Medical:TemporaryStatusEffects("broken_leg", {
-	name = "Перелом ноги",
+	name = "#status_effects_broken_leg_title",
 	icon = "danganronpa/ui/medical/fracture.png",
-	description = "Вы не можете больше бегать, выносливость не восстанавливается.\nКамера покачивается при ходьбе, а скорость передвижения уменьшена на {1}%",
+	description = "#status_effects_broken_leg_desc",
 	values = {
 		[1] = {
-			description = "На сколько % будет уменьшена скорость передвижения",
+			description = "#status_effects_broken_leg_val1",
 			type = Medical.types.number,
 			default = 20,
 		}
@@ -265,7 +265,7 @@ Medical:TemporaryStatusEffects("broken_leg", {
 	end,
 	onCanAdd = function(client, delay)
 		if delay <= 0 then
-			return false, "Данный эффект нельзя установить навсегда"
+			return false, "#status_effects_cant_forever"
 		end
 	end,
 	handler = function(client, stored, values)
@@ -275,36 +275,36 @@ Medical:TemporaryStatusEffects("broken_leg", {
 		end
 	end,
 	tooltip = {
-		format = "Данный персонаж имеет перелом ноги",
+		format = "#status_effects_broken_leg_tooltip",
 		color = Color(238, 92, 92)
 	},
 })
 
 Medical:TemporaryStatusEffects("adrenalin", {
-	name = "Адреналин",
+	name = "#status_effects_adrenalin_title",
 	icon = "asterion/academy/ui/health/adrenaline.png",
-	description = "Ваша скорость бега увеличина на {1}%",
+	description = "#status_effects_adrenalin_desc",
 	values = {
 		[1] = {
-			description = "На сколько % будет увеличина скорость передвижения",
+			description = "#status_effects_adrenalin_val1",
 			type = Medical.types.number,
 			default = 10,
 		}
 	},
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("broken_leg") and !client:HasTemporaryStatusEffect("painkillers") then
-			return false, "Игрок имеет статус эффект 'Перелом ноги'"
+			return false, "#status_effects_have_effect '#status_effects_broken_leg_title'"
 		end
 	end
 })
 
 Medical:TemporaryStatusEffects("stun", {
-	name = "Оглушение",
+	name = "#status_effects_stun_title",
 	icon = "asterion/academy/ui/health/stun_2.png",
-	description = "Все звуки заглушены.",
+	description = "#status_effects_stun_desc",
 	values = {
 		[1] = {
-			description = "Уровень оглушения. От 1 до 14",
+			description = "#status_effects_stun_val1",
 			type = Medical.types.number,
 			default = 14,
 		}
@@ -324,9 +324,9 @@ Medical:TemporaryStatusEffects("stun", {
 })
 
 Medical:TemporaryStatusEffects("hunger", {
-	name = "Восстановление голода",
+	name = "#status_effects_hunger_title",
 	icon = "asterion/academy/ui/health/nutrition_1.png",
-	description = "Ваш голод восстанавливается.",
+	description = "#status_effects_hunger_desc",
 	handler = function(client, stored, values)
 		local key = "Hunger"
 		local info = Arbitrage.statistics.Get(client, key)
@@ -336,15 +336,15 @@ Medical:TemporaryStatusEffects("hunger", {
 })
 
 Medical:TemporaryStatusEffects("hunger_a", {
-	name = "Сытость",
+	name = "#status_effects_hunger_a_title",
 	icon = "asterion/academy/ui/health/nutrition_1.png",
-	description = "Ваш голод больше не тратится."
+	description = "#status_effects_hunger_a_desc"
 })
 
 Medical:TemporaryStatusEffects("thirst", {
-	name = "Восстановление жажды",
+	name = "#status_effects_thirst_title",
 	icon = "asterion/academy/ui/health/hydration_1.png",
-	description = "Ваша жажда восстанавливается.",
+	description = "#status_effects_thirst_desc",
 	handler = function(client, stored, values)
 		local key = "Thirst"
 		local info = Arbitrage.statistics.Get(client, key)
@@ -354,15 +354,15 @@ Medical:TemporaryStatusEffects("thirst", {
 })
 
 Medical:TemporaryStatusEffects("thirst_a", {
-	name = "Насыщенность",
+	name = "#status_effects_thirst_a_title",
 	icon = "asterion/academy/ui/health/hydration_1.png",
-	description = "Ваша жажда больше не тратится."
+	description = "#status_effects_thirst_a_desc"
 })
 
 Medical:TemporaryStatusEffects("sleep", {
-	name = "Сон",
+	name = "#status_effects_sleep_title",
 	icon = "asterion/academy/ui/health/sleep_2.png",
-	description = "Ваш сон восстанавливается.",
+	description = "#status_effects_sleep_desc",
 	handler = function(client, stored, values)
 		stored.time = (stored.time or 0) + 1
 		if stored.time <= 2 then return end
@@ -378,15 +378,15 @@ Medical:TemporaryStatusEffects("sleep", {
 })
 
 Medical:TemporaryStatusEffects("sleep_a", {
-	name = "Бессонница",
+	name = "#status_effects_sleep_a_title",
 	icon = "asterion/academy/ui/health/sleep_1.png",
-	description = "Ваш сон больше не тратится."
+	description = "#status_effects_sleep_a_desc"
 })
 
 Medical:TemporaryStatusEffects("stamina", {
-	name = "Восстановление сил",
+	name = "#status_effects_stamina_title",
 	icon = "asterion/academy/ui/health/adrenaline_2.png",
-	description = "Ваша выносливость восстанавливается.",
+	description = "#status_effects_stamina_desc",
 	handler = function(client, stored, values)
 		local info = Stamina:GetStamina(client)
 
@@ -397,9 +397,9 @@ Medical:TemporaryStatusEffects("stamina", {
 })
 
 Medical:TemporaryStatusEffects("health", {
-	name = "Регенерация здоровья",
+	name = "#status_effects_health_title",
 	icon = "asterion/academy/ui/health/health_1.png",
-	description = "Ваше здоровье восстанавливается.",
+	description = "#status_effects_health_desc",
 	handler = function(client, stored, values)
 		local info = client:Health()
 
@@ -415,9 +415,9 @@ Medical:TemporaryStatusEffects("health", {
 })
 
 Medical:TemporaryStatusEffects("health_bed", {
-	name = "Регенерация здоровья (сон)",
+	name = "#status_effects_health_bed_title",
 	icon = "asterion/academy/ui/health/health_2.png",
-	description = "Ваше здоровье восстанавливается.",
+	description = "#status_effects_health_bed_desc",
 	handler = function(client, stored, values)
 		-- на самом деле не знаю, почему это находится тут (но просто лень еще одно место создавать)...
 		local info = Arbitrage.statistics.Get(client, "Sleep") or 100
@@ -429,7 +429,6 @@ Medical:TemporaryStatusEffects("health_bed", {
 
 			client:SetTemporaryStatusEffect(keyname, a_delay)
 		end
-
 
 		stored.time = (stored.time or 0) + 1
 		if stored.time <= 6 then return end
@@ -445,9 +444,9 @@ Medical:TemporaryStatusEffects("health_bed", {
 })
 
 Medical:TemporaryStatusEffects("sleep_action", {
-	name = "Сон (анимация)",
+	name = "#status_effects_sleep_action_title",
 	icon = "asterion/academy/ui/health/sleep_3.png",
-	description = "Ваш сон очень медленно восстанавливается.",
+	description = "#status_effects_sleep_action_desc",
 	handler = function(client, stored, values)
 		stored.time = (stored.time or 0) + 1
 		if stored.time <= 8 then return end
@@ -463,9 +462,9 @@ Medical:TemporaryStatusEffects("sleep_action", {
 })
 
 Medical:TemporaryStatusEffects("exhaustion", {
-	name = "Усталость",
+	name = "#status_effects_exhaustion_title",
 	icon = "asterion/academy/ui/health/energy_2.png",
-	description = "Скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
+	description = "#status_effects_exhaustion_desc",
 	handler = function(client, stored, values)
 		if math.random(1, 90) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
@@ -473,20 +472,20 @@ Medical:TemporaryStatusEffects("exhaustion", {
 	end,
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("severe_exhaustion") then
-			return false, "Игрок имеет статус эффект 'Сильная усталость'"
+			return false, "#status_effects_have_effect '#status_effects_severe_exhaustion_title'"
 		end
 	end,
 	tooltip = {
-		format = "Персонаж выглядит уставшим",
+		format = "#status_effects_exhaustion_tooltip",
 		color = Color(36, 84, 139)
 	},
 	noSave = true
 })
 
 Medical:TemporaryStatusEffects("severe_exhaustion", {
-	name = "Сильная усталость",
+	name = "#status_effects_severe_exhaustion_title",
 	icon = "asterion/academy/ui/health/eye_drowsiness_1.png",
-	description = "Вы больше не можете бегать, а скорость вашего передвижения медленее.\nЭтот статус может вызвать эффект боли.",
+	description = "#status_effects_severe_exhaustion_desc",
 	handler = function(client, stored, values)
 		if math.random(1, 50) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
@@ -498,16 +497,16 @@ Medical:TemporaryStatusEffects("severe_exhaustion", {
 		client:RemoveTemporaryStatusEffect("exhaustion")
 	end,
 	tooltip = {
-		format = "Персонаж выглядит сильно уставшим",
+		format = "#status_effects_severe_exhaustion_tooltip",
 		color = Color(37, 70, 216)
 	},
 	noSave = true
 })
 
 Medical:TemporaryStatusEffects("dehydration", {
-	name = "Обезвоживание",
+	name = "#status_effects_dehydration_title",
 	icon = "asterion/academy/ui/health/thirst_2.png",
-	description = "Ваша выносливость больше не восстанавливается.\nЭтот статус может вызвать эффект боли.",
+	description = "#status_effects_dehydration_desc",
 	handler = function(client, stored, values)
 		if math.random(1, 40) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
@@ -517,38 +516,38 @@ Medical:TemporaryStatusEffects("dehydration", {
 })
 
 Medical:TemporaryStatusEffects("starvation", {
-	name = "Голодание",
+	name = "#status_effects_starvation_title",
 	icon = "asterion/academy/ui/health/nutrition_2.png",
-	description = "Этот статус может вызвать эффект боли.",
+	description = "#status_effects_starvation_desc",
 	handler = function(client, stored, values)
 		if math.random(1, 40) == 1 then
 			client:AddTemporaryStatusEffect("pain", 5)
 		end
 	end,
 	tooltip = {
-		format = "У данного персонажа урчит живот",
+		format = "#status_effects_starvation_tooltip",
 		color = Color(207, 168, 39)
 	},
 	noSave = true
 })
 
 Medical:TemporaryStatusEffects("armor", {
-	name = "Защита",
+	name = "#status_effects_armor_title",
 	icon = "asterion/academy/ui/health/shield_1.png",
-	description = "Входящий урон поглащается вашей броней.",
+	description = "#status_effects_armor_desc",
 	tooltip = {
-		format = "Данный персонаж явно имеет хорошую защиту",
+		format = "#status_effects_armor_tooltip",
 		color = Color(0, 119, 255)
 	},
 	noSave = true
 })
 
 Medical:TemporaryStatusEffects("painkillers", {
-	name = "На болеутоляющих",
+	name = "#status_effects_painkillers_title",
 	icon = "asterion/academy/ui/health/painkiller_1.png",
-	description = "Немного увеличивает контраст и снимает эффект боли.\n(При переломе) Позволяет идти с нормальной скоростью или бежать, но вы можете получить урон.",
+	description = "#status_effects_painkillers_desc",
 	handler = function(client, stored, values)
-        -- eh...
+		-- eh...
 	end,
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
@@ -624,12 +623,12 @@ local function poisoning_effect(stored, values)
 end
 
 Medical:TemporaryStatusEffects("poisoning_effect", {
-	name = "Отравление",
+	name = "#status_effects_poisoning_effect_title",
 	icon = "asterion/academy/ui/health/poison_2.png",
-	description = "Спустя некоторые время вы получаете эффекты на своем экране, которые усиливаются.",
+	description = "#status_effects_poisoning_effect_desc",
 	values = {
 		[1] = {
-			description = "Спустя сколько времени игрок начнет получать эффекты",
+			description = "#status_effects_poisoning_effect_val1",
 			type = Medical.types.number,
 			default = 30,
 		}
@@ -641,42 +640,42 @@ Medical:TemporaryStatusEffects("poisoning_effect", {
 	},
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("poisoning_damage") then
-			return false, "Игрок имеет статус эффект 'Отравление (постоянный урон)'"
+			return false, "#status_effects_have_effect '#status_effects_poisoning_damage_title'"
 		end
 
 		if client:HasTemporaryStatusEffect("poisoning_dead") then
-			return false, "Игрок имеет статус эффект 'Отравление (мгновенная смерть)'"
+			return false, "#status_effects_have_effect '#status_effects_poisoning_dead_title'"
 		end
 	end,
 	tooltip = {
-		format = "Данный персонаж шатается на месте",
+		format = "#status_effects_poisoning_effect_tooltip",
 		color = Color(122, 173, 63)
 	},
 	isHidden = true
 })
 
 Medical:TemporaryStatusEffects("poisoning_damage", {
-	name = "Отравление (постоянный урон)",
+	name = "#status_effects_poisoning_damage_title",
 	icon = "asterion/academy/ui/health/poison_1.png",
-	description = "Спустя некоторые время вы получаете эффекты на своем экране, которые усиливаются.\nВы получаете {3} урона каждые {4} секунд.",
+	description = "#status_effects_poisoning_damage_desc",
 	values = {
 		[1] = {
-			description = "Спустя сколько времени игрок начнет получать эффекты",
+			description = "#status_effects_poisoning_damage_val1",
 			type = Medical.types.number,
 			default = 30,
 		},
 		[2] = {
-			description = "Спустя сколько времени игрок начнет получать {3} урона",
+			description = "#status_effects_poisoning_damage_val2",
 			type = Medical.types.number,
 			default = 45,
 		},
 		[3] = {
-			description = "Количество урона от отравления",
+			description = "#status_effects_poisoning_damage_val3",
 			type = Medical.types.number,
 			default = 10,
 		},
 		[4] = {
-			description = "Задержка между получением {3} урона",
+			description = "#status_effects_poisoning_damage_val4",
 			type = Medical.types.number,
 			default = 30,
 		}
@@ -698,14 +697,14 @@ Medical:TemporaryStatusEffects("poisoning_damage", {
 	},
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("poisoning_damage") then
-			return false, "Игрок имеет статус эффект 'Отравление (постоянный урон)'"
+			return false, "#status_effects_have_effect '#status_effects_poisoning_damage_title'"
 		end
 
 		local values = Medical:TemporaryStatusEffectsValues("poisoning_damage")
 		local time = values[2] + 1
 
 		if delay < time then
-			return false, "Данный эффект нельзя установить меньше чем " .. time .. " секунд."
+			return false, "#status_effects_cant_less_than " .. time .. " #seconds."
 		end
 	end,
 	onAdd = function(client, delay)
@@ -714,24 +713,24 @@ Medical:TemporaryStatusEffects("poisoning_damage", {
 		client:RemoveTemporaryStatusEffect("poisoning_effect")
 	end,
 	tooltip = {
-		format = "Данный персонаж шатается на месте",
+		format = "#status_effects_poisoning_damage_tooltip",
 		color = Color(122, 173, 63)
 	},
 	isHidden = true
 })
 
 Medical:TemporaryStatusEffects("poisoning_dead", {
-	name = "Отравление (мгновенная смерть)",
+	name = "#status_effects_poisoning_dead_title",
 	icon = "asterion/academy/ui/health/poison_1.png",
-	description = "Спустя некоторые время вы получаете эффекты на своем экране, которые усиливаются.\nВы умрете через некоторое время.",
+	description = "#status_effects_poisoning_dead_desc",
 	values = {
 		[1] = {
-			description = "Спустя сколько времени игрок начнет получать эффекты",
+			description = "#status_effects_poisoning_dead_val1",
 			type = Medical.types.number,
 			default = 30,
 		},
 		[2] = {
-			description = "Спустя сколько времени игрок умрет",
+			description = "#status_effects_poisoning_dead_val2",
 			type = Medical.types.number,
 			default = 600,
 		}
@@ -750,14 +749,11 @@ Medical:TemporaryStatusEffects("poisoning_dead", {
 	},
 	onCanAdd = function(client, delay)
 		if client:HasTemporaryStatusEffect("poisoning_dead") then
-			return false, "Игрок имеет статус эффект 'Отравление (мгновенная смерть)'"
+			return false, "#status_effects_have_effect '#status_effects_poisoning_dead_title'"
 		end
 
-		local values = Medical:TemporaryStatusEffectsValues("poisoning_dead")
-		local time = values[2] + 1
-
 		if delay != 0 then
-			return false, "Данный эффект можно установить только на 0 секунд."
+			return false, "#status_effects_only_possible_0"
 		end
 	end,
 	onAdd = function(client, delay)
@@ -767,19 +763,19 @@ Medical:TemporaryStatusEffects("poisoning_dead", {
 		client:RemoveTemporaryStatusEffect("poisoning_damage")
 	end,
 	tooltip = {
-		format = "Данный персонаж шатается на месте",
+		format = "#status_effects_poisoning_dead_tooltip",
 		color = Color(122, 173, 63)
 	},
 	isHidden = true
 })
 
 Medical:TemporaryStatusEffects("overheal", {
-	name = "Сверхлечение",
+	name = "#status_effects_overheal_title",
 	icon = "asterion/academy/ui/health/shield_1.png",
-	description = "Дает регенерацию здоровья, а так же увеличивает максимальное здоровье персонажа на +{1}.",
+	description = "#status_effects_overheal_desc",
 	values = {
 		[1] = {
-			description = "Сколько HP будет даваться дополнительно игроку",
+			description = "#status_effects_overheal_val1",
 			type = Medical.types.number,
 			default = 50,
 		}
@@ -798,12 +794,12 @@ Medical:TemporaryStatusEffects("overheal", {
 })
 
 Medical:TemporaryStatusEffects("berserk", {
-	name = "Берсерк",
+	name = "#status_effects_berserk_title",
 	icon = "asterion/academy/ui/health/hydration_3.png",
-	description = "Увеличивает скорость передвижения на {1}% и уменьшает трату выносливости.",
+	description = "#status_effects_berserk_desc",
 	values = {
 		[1] = {
-			description = "На сколько % будет увеличина скорость передвижения",
+			description = "#status_effects_berserk_val1",
 			type = Medical.types.number,
 			default = 15,
 		}
@@ -811,9 +807,9 @@ Medical:TemporaryStatusEffects("berserk", {
 })
 
 Medical:TemporaryStatusEffects("flashbang", {
-	name = "Световая вспышка",
+	name = "#status_effects_flashbang_title",
 	icon = "asterion/academy/ui/health/eye_blindness_2.png",
-	description = "Вы ослеплены от сильного света",
+	description = "#status_effects_flashbang_desc",
 	hooks = {
 		RenderScreenspaceEffects = function(stored, values)
 			local ft = FrameTime()
@@ -850,7 +846,6 @@ Medical:TemporaryStatusEffects("flashbang", {
 				end
 			end
 
-
 			surface.SetDrawColor(0, 0, 0, stored.alpha_black2)
 			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
 
@@ -872,9 +867,9 @@ Medical:TemporaryStatusEffects("flashbang", {
 
 -- Для Селестии
 Medical:TemporaryStatusEffects("luck", {
-	name = "Абсолютный Азарт",
+	name = "#status_effects_luck_title",
 	icon = "asterion/academy/ui/health/luck_1.png",
-	description = "Вам очень часто везет.",
+	description = "#status_effects_luck_desc",
 	hooks = {
 		OnCommandTry = function(client, rand)
 			local bSucc = math.random(1, 5) == 5 -- 20% на то, что повезет
@@ -896,16 +891,16 @@ Medical:TemporaryStatusEffects("luck", {
 
 -- Для Макото
 local emoteList = {
-	"споткнулся",
-	"сильно чихнул, отклонив голову вперёд",
-	"заметил на полу монетку и, наклонившись, подбирает",
-	"заметил развязанные шнурки и, наклонившись, завязывает",
-	"заметил паука на полу и, испугавшись, отпрыгнул в сторону"
+	"#increased_luck_protect_1",
+	"#increased_luck_protect_2",
+	"#increased_luck_protect_3",
+	"#increased_luck_protect_4",
+	"#increased_luck_protect_5"
 }
 Medical:TemporaryStatusEffects("increased_luck", {
-	name = "Счастливчик",
+	name = "#status_effects_increased_luck_title",
 	icon = "asterion/academy/ui/health/luck_2.png",
-	description = "Вы имеете повышенную удачу.",
+	description = "#status_effects_increased_luck_desc",
 	hooks = {
 		OnCommandTry = function(client, rand)
 			if rand == false then
@@ -940,9 +935,9 @@ Medical:TemporaryStatusEffects("increased_luck", {
 
 -- Для Нагито
 Medical:TemporaryStatusEffects("absolute_luck", {
-	name = "Абсолютная удача",
+	name = "#status_effects_absolute_luck_title",
 	icon = "asterion/academy/ui/health/luck_3.png",
-	description = "Вы обладаете абсолютной удачей.",
+	description = "#status_effects_absolute_luck_desc",
 	hooks = {
 		OnCommandTry = function(client, rand)
 			local bSucc = math.random(1, 2) == 1 -- 50% на то, что повезет
@@ -967,7 +962,7 @@ Medical:TemporaryStatusEffects("absolute_luck", {
 
 -- Для Химико и Чиаки (спят где хотят)
 Medical:TemporaryStatusEffects("gifted_sleeper", {
-	name = "Одаренный соня",
+	name = "#status_effects_gifted_sleeper_title",
 	icon = function(client)
 		if IsValid(client) then
 			local character = Character.team:GetByID(client:Team())
@@ -983,7 +978,7 @@ Medical:TemporaryStatusEffects("gifted_sleeper", {
 
 		return "asterion/academy/ui/health/sleep_4.png"
 	end,
-	description = "Возможность спать где угодно.",
+	description = "#status_effects_gifted_sleeper_desc",
 	hooks = {
 		OnCanGiftedSleeper = function(client)
 			return true

@@ -526,6 +526,8 @@ function PANEL:TaskBar()
 	self.taskbar = self.menu:Add("DPanel")
 	MonoPad:StartRegisterMeta(self.taskbar)
 
+	local chapter = L(Arbitrage.GetChapter())
+
 	self.taskbar:Dock(TOP)
 	self.taskbar:SetTall(40)
 	self.taskbar:SetZPos(30000)
@@ -533,7 +535,7 @@ function PANEL:TaskBar()
 		surface.SetDrawColor(0, 0, 0, 255)
 		surface.DrawRect(0, 0, w, h)
 
-		draw.SimpleText(Arbitrage.GetChapter() .. ", " .. Arbitrage.GetTime(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
+		draw.SimpleText(chapter .. ", " .. Arbitrage.GetTime(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
 	end
 
 	local monopad = MonoPad:GetObject()

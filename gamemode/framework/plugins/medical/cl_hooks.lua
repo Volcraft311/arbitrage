@@ -127,7 +127,7 @@ function Medical:HUDPaint(...)
 				surface_SetMaterial(material)
 				surface_DrawTexturedRect(x * i + padding * i - padding - x * 0.4, y, size, size)
 
-				local name = info.name:gsub(" ", "\n")
+				local name = L(info.name):gsub(" ", "\n")
 				draw_DrawText(name, "arb.Font_FuturaPTBook_6", x * i + padding * i - padding - x * 0.4 + size / 2 + 2, y + size + 2, Color(0, 0, 0, storage.alpha * 255 * sinAlpha), TEXT_ALIGN_CENTER)
 				draw_DrawText(name, "arb.Font_FuturaPTBook_6", x * i + padding * i - padding - x * 0.4 + size / 2, y + size, Color(255, 255, 255, storage.alpha * 255 * sinAlpha), TEXT_ALIGN_CENTER)
 

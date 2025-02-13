@@ -707,7 +707,7 @@ function Arbitrage.KillerDetectsCorpses()
 end
 
 function Arbitrage.GetChapter()
-    return GetNetVar("arb.Chapter", "Эпизод отсутствует")
+    return GetNetVar("arb.Chapter", "#episode_missing")
 end
 
 function Arbitrage.OffMonopadGlobalChat()
@@ -760,13 +760,13 @@ function Arbitrage.GetShowEvidences()
 end
 
 local themes = {
-    investigation = "Расследование",
-    law = "Суд",
-    voting = "Голосование",
-    execution = "Казнь",
-    splashscreen = "Заставка [Глава]",
-    startgame = "Начало игры",
-    endgame = "Конец игры"
+    investigation = "#theme_investigation",
+    law = "#theme_law",
+    voting = "#theme_voting",
+    execution = "#theme_execution",
+    splashscreen = "#theme_splashscreen",
+    startgame = "#theme_startgame",
+    endgame = "#theme_endgame"
 }
 function Arbitrage.GetTheme()
     local sound_theme = ScriptMusic:GetTheme()
@@ -776,7 +776,7 @@ function Arbitrage.GetTheme()
         return info
     end
 
-    return "Свободное время"
+    return "#theme_freetime"
 end
 
 do

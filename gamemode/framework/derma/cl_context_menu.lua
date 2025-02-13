@@ -73,7 +73,7 @@ function PANEL:Init()
 
         local isHover = false
         local tooltip = self:Add("DLabel")
-        tooltip.text = Medical:FormatTemporaryDescription(uniqueID, info.description)
+        tooltip.text = Medical:FormatTemporaryDescription(uniqueID, L(info.description))
         tooltip.len = 0
         tooltip.lenMax = utf8.len(tooltip.text)
         tooltip:SetText("")
@@ -110,6 +110,8 @@ function PANEL:Init()
             end
         end
 
+        local name = L(info.name)
+
         local panel = self.statusPanel:Add("DPanel")
         panel:Dock(TOP)
         panel:DockMargin(0, 0, 0, 0)
@@ -120,7 +122,7 @@ function PANEL:Init()
             surface.SetMaterial(material)
             surface.DrawTexturedRect(w - size - padding, 0, size, size)
 
-            draw.SimpleText(info.name .. "  ", "arb.Font_FuturaPTBook_7", w - size - padding, size / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(name .. "  ", "arb.Font_FuturaPTBook_7", w - size - padding, size / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
             if panel:IsHovered() then
                 if !isHover then
@@ -249,7 +251,7 @@ function PANEL:Paint(w, h)
             surface.DrawTexturedRect(w / 2 - sizeW / 2, h - sizeH, sizeW, sizeH)
         end
 
-        draw.SimpleText(("%s | %s"):format(Arbitrage.GetTime(), Arbitrage.GetChapter()), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(("%s | %s"):format(Arbitrage.GetTime(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(self.faction:GetTitle(), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 

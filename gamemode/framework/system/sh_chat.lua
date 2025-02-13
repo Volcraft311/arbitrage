@@ -401,7 +401,7 @@ Arbitrage.chat.List = {
     ["roll"] = {
         Color = Color(209, 69, 69),
         OnCreate = function(client, sender, data)
-            return chatColor("roll"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. data[1]
+            return chatColor("roll"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. "#chat_roll_send " .. data[1] .. " #chat_roll_send_prefix " .. data[2] .. "."
         end,
         OnSend = function(client, name, data)
             if !data then return end

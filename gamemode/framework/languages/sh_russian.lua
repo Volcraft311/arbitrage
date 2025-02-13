@@ -87,6 +87,9 @@ Arbitrage.language:Add("ru", {
     ["#chat_help_type"] = "[Помощь]",
     ["#chat_notification_type"] = "[Уведомление]",
 
+    ["#chat_roll_send"] = "получил(а) шанс",
+    ["#chat_roll_send_prefix"] = "из",
+
     ["#chat_nrp_chat_block"] = "Администрация запретила вам писать в NonRP чат!",
 
     ["#try_successfully"] = "Удачно",

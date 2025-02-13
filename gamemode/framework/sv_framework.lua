@@ -269,7 +269,7 @@ Arbitrage.commands.Add("roll", {
             rand = newRand
         end
 
-        Arbitrage.chat.SendCommand("roll", client, "получил(а) шанс " .. rand .. " из " .. maxRand .. ".")
+        Arbitrage.chat.SendCommand("roll", client, rand, maxRand)
     end,
     bNoLog = true
 })

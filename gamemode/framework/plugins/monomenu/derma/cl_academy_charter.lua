@@ -103,6 +103,8 @@ function PANEL:SetData()
     self.rulesPanel:DockMargin(W(5), H(5), W(5), H(5))
 
     for k, v in ipairs(Arbitrage.GetAcademyRules()) do
+        local title = L(v[2])
+
         local panel = self.rulesPanel:Add("DPanel")
         panel:SetTall(H(30))
         panel:Dock(TOP)
@@ -114,7 +116,7 @@ function PANEL:SetData()
             end
 
             draw.DrawText(k, "arb.Font_FuturaPTBook_7", W(15), H(4), color_white, TEXT_ALIGN_LEFT)
-            draw.DrawText(v[2], "arb.Font_FuturaPTBook_7", W(187), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(title, "arb.Font_FuturaPTBook_7", W(187), H(4), color_white, TEXT_ALIGN_LEFT)
         end
 
         local remove = panel:Add("DButton")
@@ -153,7 +155,7 @@ function PANEL:SetData()
         end
         edit.DoClick = function()
             local subMenu = vgui.Create("arb.MonoAcademyCharterSub")
-            subMenu:SetData(v[2], v[3], v[1], function()
+            subMenu:SetData(L(v[2]), L(v[3]), v[1], function()
                 self:SetData()
             end, k)
         end

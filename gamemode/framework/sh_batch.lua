@@ -34,7 +34,7 @@ function Arbitrage.Initialize()
 	end
 
 	properties.Add("setmodel", {
-		MenuLabel = "Изменить модель",
+		MenuLabel = "Change model",
 		Order = 999,
 		MenuIcon = "icon16/contrast_high.png",
 		Filter = function(self, entity, client)
@@ -44,7 +44,7 @@ function Arbitrage.Initialize()
 			return client:IsAdmin()
 		end,
 		Action = function(self, entity)
-			Derma_StringRequest("Изменить модель объекту", "Укажите путь до модели которую вы хотите установить объекту", IsValid(entity) and entity:GetModel() or "", function(text)
+			Derma_StringRequest(L("#batch_setmodel_title"), L("#batch_setmodel_description"), IsValid(entity) and entity:GetModel() or "", function(text)
 				self:MsgStart()
 					net.WriteEntity(entity)
 					net.WriteString(text)
@@ -172,17 +172,16 @@ function Arbitrage.Initialize()
 end
 
 function Arbitrage.base.Include(fileName, realm)
-	if ((realm == "server" or fileName:find("sv_")) and SERVER) then
+	if (realm == "server" or fileName:find("sv_")) and SERVER then
 		return include(fileName)
-	elseif (realm == "shared" or fileName:find("shared.lua") or fileName:find("sh_")) then
-		if (SERVER) then
-
+	elseif realm == "shared" or fileName:find("shared.lua") or fileName:find("sh_") then
+		if SERVER then
 			AddCSLuaFile(fileName)
 		end
 
 		return include(fileName)
-	elseif (realm == "client" or fileName:find("cl_")) then
-		if (SERVER) then
+	elseif realm == "client" or fileName:find("cl_") then
+		if SERVER then
 			AddCSLuaFile(fileName)
 		else
 			return include(fileName)

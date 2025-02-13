@@ -731,20 +731,20 @@ function Arbitrage.OnMapReversion()
 end
 
 Arbitrage.DefaultRules = {
-    {"https://i.imgur.com/WqrdPdz.png", "Перспективы прибывания", "Ученики должны жить в Абсолютной Академии остаток всего своего предпологаемого будущего."},
-    {"https://i.imgur.com/5BEGz5S.png", "Требования для классного суда", "Когда происходит убийство, все выжившие ученики должны участвовать в классном суде."},
-    {"https://i.imgur.com/jGNR57p.png", "Голосование на классном суде", "Если запятнанного обнаружат во время классного суда, только он будет казнен. Если запятнанный не будет обнаружен, все остальные ученики будут казнены."},
-    {"https://i.imgur.com/N3y5t4N.png", "Полное прохождение Академии", "Если запятнанный переживет классный суд, он выпустится и вернётся во внешний мир."},
-    {"https://i.imgur.com/5E0liqc.png", "Продолжение убийственной игры", "Убийственная игра и классный суды будут продолжаться, пока не останется только два выживших ученика."},
-    {"https://i.imgur.com/8Ar23ne.png", "Время тихого часа", "'Ночное Время' длится с 10 вечера до 8 утра."},
-    {"https://i.imgur.com/i6deVka.png", "Хорошие манеры поведения", "Насилие в отношении Монокумы - директора Абсолютной Академии, строго запрещено."},
-    {"https://i.imgur.com/U4P1cUg.png", "Непричастность Директора", "Сам Монокума никогда не совершит убийство."},
-    {"https://i.imgur.com/t89V6Gg.png", "Бережное отношение с имуществом Академии", "Ваши Монопады - очень важные предметы. Пожалуйста, берегите их."},
-    {"https://i.imgur.com/Eg5uJSu.png", "Начало расследования", "'Объявление о Нахождении Тела' заиграет, когда три или более ученика найдут тело"},
-    {"https://i.imgur.com/hpqh3Cp.png", "Правила передвижения по Академии", "Вы можете исследовать школу с минимальными ограничениями."},
-    {"https://i.imgur.com/cMA8o7c.png", "Наказание за нарушение правил", "Ученики, которые нарушат эти правила, будут незамедлительно уничтожены."},
-    {"https://i.imgur.com/DB3K2Nt.png", "Правило первой жертвы", "Если разными людьми одновременно будут совершены несколько убийств, запятнанным считаться будет тот, чью жертву нашли первой."},
-    {"https://i.imgur.com/KQ300mf.png", "Принципы изменения устава Академии", "В дальнейшем, по прихоти директора, могут быть добавлены новые правила."}
+    {"https://i.imgur.com/WqrdPdz.png", "#rules_1_title", "#rules_1_description"},
+    {"https://i.imgur.com/5BEGz5S.png", "#rules_2_title", "#rules_2_description"},
+    {"https://i.imgur.com/jGNR57p.png", "#rules_3_title", "#rules_3_description"},
+    {"https://i.imgur.com/N3y5t4N.png", "#rules_4_title", "#rules_4_description"},
+    {"https://i.imgur.com/5E0liqc.png", "#rules_5_title", "#rules_5_description"},
+    {"https://i.imgur.com/8Ar23ne.png", "#rules_6_title", "#rules_6_description"},
+    {"https://i.imgur.com/i6deVka.png", "#rules_7_title", "#rules_7_description"},
+    {"https://i.imgur.com/U4P1cUg.png", "#rules_8_title", "#rules_8_description"},
+    {"https://i.imgur.com/t89V6Gg.png", "#rules_9_title", "#rules_9_description"},
+    {"https://i.imgur.com/Eg5uJSu.png", "#rules_10_title", "#rules_10_description"},
+    {"https://i.imgur.com/hpqh3Cp.png", "#rules_11_title", "#rules_11_description"},
+    {"https://i.imgur.com/cMA8o7c.png", "#rules_12_title", "#rules_12_description"},
+    {"https://i.imgur.com/DB3K2Nt.png", "#rules_13_title", "#rules_13_description"},
+    {"https://i.imgur.com/KQ300mf.png", "#rules_14_title", "#rules_14_description"}
 }
 
 function Arbitrage.GetAcademyRules()

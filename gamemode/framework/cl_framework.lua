@@ -144,7 +144,7 @@ do
     hook.Add("asterionlib.rpc:Update", "asterionlib.rpc", function()
     	local client = LocalPlayer()
         local upperText = ("%s (%s/%s)"):format(Arbitrage.GetChapter(), #player.GetAll(), game.MaxPlayers())
-        local lowerText = ("%s [%s]"):format(Arbitrage.GetTheme(), Arbitrage.IsDay() and "День" or "Ночь")
+        local lowerText = ("%s [%s]"):format(Arbitrage.GetTheme(), Arbitrage.IsDay() and L("#discord_rpc_day") or L("#discord_rpc_night"))
 
     	rpc:Set("details", upperText)
         rpc:Set("state", lowerText)
@@ -155,7 +155,7 @@ do
         	local steamname = client:SteamName()
         	local factionname = faction:GetName()
 
-        	local lImageText = "Играет за персонажа: " .. (username == steamname and (factionname and factionname or "Не выбран") or username)
+        	local lImageText = L("#discord_rpc_image_text") .. " " .. (username == steamname and (factionname and factionname or L("#discord_rpc_image_unknown")) or username)
         	rpc:Set("largeImageText", lImageText)
 
         	local lImageKey = faction:GetUniqueID() or "big"
@@ -380,7 +380,7 @@ local ActionPressIDList = {
             end
         end
 
-        if !monopad then return chat.AddText("У вас нет монопада!") end
+        if !monopad then return chat.AddText("#no_have_monopad") end
 
         local weapon = findClass("academy_monopad")
         if weapon and !Arbitrage.lawEnable then
@@ -504,7 +504,7 @@ end)
 
 local function DingDongBingBong()
     timer.Simple(2, function() -- Исправление проблемы с текстом
-        local data = Arbitrage.IsDay() and "Наступило дневное время!" or "Наступило ночное время!"
+        local data = Arbitrage.IsDay() and "#day_notification" or "#night_notification"
         Arbitrage.notify.NotifyChat(data)
 
         if !Arbitrage.lawEnable then
@@ -519,12 +519,10 @@ timer.Create("arb.DayChangeNotifications", 1, 0, function()
     if LocalPlayer().IsPlaying and !LocalPlayer():IsPlaying() then return end
     if Arbitrage.OffSoundNightAndDay() then return end
 
-    if oldType != Arbitrage.IsDay() then
-        if (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
-            DingDongBingBong()
+    if oldType != Arbitrage.IsDay() and (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
+        DingDongBingBong()
 
-            Arbitrage.DingDongBingBongCD = CurTime() + 5
-        end
+        Arbitrage.DingDongBingBongCD = CurTime() + 5
     end
 
     oldType = Arbitrage.IsDay()
@@ -562,7 +560,15 @@ end)
 
 
 netstream.Hook("arb.SendMessage", function(...)
-    chat.AddText(...)
+    local data = {...}
+
+    for k, v in ipairs(data) do
+        if isstring(v) then
+            data[k] = F(v)
+        end
+    end
+
+    chat.AddText(unpack(data))
 end)
 
 netstream.Hook("arb.SendCommand", function(command, ...)

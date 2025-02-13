@@ -506,5 +506,5 @@ hook("PopulatePropMenu", function()
         end
     end
 
-    spawnmenu.AddPropCategory("NewSpawn", "Список пропов", contents, "icon16/box.png")
+    spawnmenu.AddPropCategory("NewSpawn", "Props list", contents, "icon16/box.png")
 end)

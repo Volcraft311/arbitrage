@@ -75,7 +75,7 @@ function PANEL:Rebuild()
 	self.listPanel.list = {}
 
 	for k, v in ipairs(Arbitrage.GetAcademyRules()) do
-		self:AddRules(k, v[2], v[3], v[1])
+		self:AddRules(k, L(v[2]), L(v[3]), v[1])
 	end
 end
 
@@ -84,9 +84,11 @@ function PANEL:AddRules(id, title, description, url)
 	local rulesList = monopad.rulesNotify
 
 	local image = nil
-	asterionlib.downloader:Image(url, function(mat)
-		image = mat
-	end)
+	if string.Trim(url) != "" then
+		asterionlib.downloader:Image(url, function(mat)
+			image = mat
+		end)
+	end
 
 	local font = MonoPad:GetFont("rules_title")
 	local fontHeight = draw.GetFontHeight(font)
@@ -342,12 +344,14 @@ function PANEL:SetPage(id)
 	if !rules then return end
 
 	local url = rules[1]
-	local description = "Правило №" .. self.id .. "." .. rules[3]
+	local description = "Правило №" .. self.id .. ". " .. L(rules[3])
 
 	local image = nil
-	asterionlib.downloader:Image(url, function(mat)
-		image = mat
-	end)
+	if string.Trim(url) != "" then
+		asterionlib.downloader:Image(url, function(mat)
+			image = mat
+		end)
+	end
 
 	self.image = image
 	self.data = asterionlib.WrapText(description, 520, self.font)

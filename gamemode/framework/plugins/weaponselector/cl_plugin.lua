@@ -142,18 +142,18 @@ for i = 1, 9 do
     end)
 end
 
-PLUGIN:CreateCategory("main", "ОСНОВНОЕ")
-PLUGIN:CreateCategory("weapons", "ОРУЖИЕ")
-PLUGIN:CreateCategory("build", "СТРОИТЕЛЬСТВО")
+PLUGIN:CreateCategory("main", "#weaponselector_category_main")
+PLUGIN:CreateCategory("weapons", "#weaponselector_category_weapons")
+PLUGIN:CreateCategory("build", "#weaponselector_category_build")
 
 PLUGIN:StandartCategory("weapons")
 
 PLUGIN:AddWeapon("academy_first", "main")
 PLUGIN:AddWeapon("academy_key", "main")
+PLUGIN:AddWeapon("gmod_camera", "main")
 
 PLUGIN:AddWeapon("weapon_physgun", "build")
 PLUGIN:AddWeapon("gmod_tool", "build")
-PLUGIN:AddWeapon("gmod_camera", "main")
 
 PLUGIN:AddIcon("academy_first", "danganronpa/selector/first.png")
 PLUGIN:AddIcon("academy_key", "danganronpa/selector/key.png")

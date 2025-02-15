@@ -7,7 +7,7 @@ if CLIENT then
     SWEP.DrawCrosshair = false
 end
 
-SWEP.PrintName = "Руки"
+SWEP.PrintName = "#weapons_fist"
 SWEP.Author = ""
 SWEP.Instructions = ""
 SWEP.Contact = ""

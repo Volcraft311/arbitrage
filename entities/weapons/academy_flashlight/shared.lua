@@ -21,7 +21,7 @@ if CLIENT then
     SWEP.DrawCrosshair = false
 end
 
-SWEP.PrintName = "Фонарик"
+SWEP.PrintName = "#weapons_flashlight"
 SWEP.Author = "Selenter"
 SWEP.Instructions = "Левый клик - Включить/Выключить фонарик"
 SWEP.Contact = ""

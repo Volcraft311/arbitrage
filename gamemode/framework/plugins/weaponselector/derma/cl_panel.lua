@@ -108,7 +108,7 @@ function PANEL:InitWeapons()
 				surface.DrawOutlinedRect(0, 0, w, h, 3)
 			end
 
-			local description = self.weapons[k]:GetPrintName()
+			local description = L(self.weapons[k]:GetPrintName())
 			if utf8.len(description) > 15 then
 				description = description:utf8sub(1, 12) .. "..."
 			end
@@ -176,7 +176,7 @@ function PANEL:CreateCategory(id, name)
 		surface.SetDrawColor(25, 25, 25, 240)
 		surface.DrawRect(0, 0, w, h)
 
-		draw.SimpleText(name, "arb.Font_FuturaPTDemi_9", w / 2, h / 2 - H(15), Color(255, 234, 238), TEXT_ALIGN_CENTER)
+		draw.SimpleText(L(name), "arb.Font_FuturaPTDemi_9", w / 2, h / 2 - H(15), Color(255, 234, 238), TEXT_ALIGN_CENTER)
 		draw.SimpleText(num, "arb.Font_FuturaPTBook_7", w - 4, h - H(25), Color(255, 234, 238, 50), TEXT_ALIGN_RIGHT)
 	end
 end

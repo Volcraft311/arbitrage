@@ -21,7 +21,7 @@ if CLIENT then
     SWEP.DrawCrosshair = false
 end
 
-SWEP.PrintName = "Монопад"
+SWEP.PrintName = "#weapons_monopad"
 SWEP.Author = "Selenter"
 SWEP.Instructions = ""
 SWEP.Contact = ""

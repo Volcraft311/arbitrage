@@ -21,7 +21,7 @@ if CLIENT then
     SWEP.DrawCrosshair = false
 end
 
-SWEP.PrintName = "Ключи"
+SWEP.PrintName = "#weapons_keys"
 SWEP.Author = "Selenter"
 SWEP.Instructions = "Левая клик - Закрыть дверь\nПравый клик - Открыть дверь"
 SWEP.Contact = ""

@@ -44,6 +44,16 @@ Arbitrage.language:Add("ru", {
     ["#picklock_not_allow"] = "Это нельзя взломать!",
     ["#no_have_monopad"] = "У вас нет монопада!",
 
+    ["#weaponselector_category_main"] = "ОСНОВНОЕ",
+    ["#weaponselector_category_weapons"] = "ОРУЖИЕ",
+    ["#weaponselector_category_build"] = "СТРОИТЕЛЬСТВО",
+
+    ["#weapons_camera"] = "Камера",
+    ["#weapons_fist"] = "Руки",
+    ["#weapons_flashlight"] = "Фонарик",
+    ["#weapons_keys"] = "Ключи",
+    ["#weapons_monopad"] = "Монопад",
+
     ["#rules_1_title"] = "Перспективы прибывания",
     ["#rules_1_description"] = "Ученики должны жить в Абсолютной Академии остаток всего своего предпологаемого будущего.",
     ["#rules_2_title"] = "Требования для классного суда",

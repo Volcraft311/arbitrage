@@ -21,7 +21,7 @@ if CLIENT then
 	SWEP.DrawCrosshair = false
 end
 
-SWEP.PrintName = "Камера"
+SWEP.PrintName = "#weapons_camera"
 SWEP.Author = ""
 SWEP.Instructions = ""
 SWEP.Contact = ""

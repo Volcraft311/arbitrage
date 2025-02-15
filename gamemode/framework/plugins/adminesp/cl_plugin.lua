@@ -78,7 +78,7 @@ local function drawing(entity, info, eyePos)
 		if isfunction(data) then
 			data(entity)
 		elseif isstring(data) then
-		    local _x, _y = draw_SimpleTextOutlined(data, "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
+		    local _x, _y = draw_SimpleTextOutlined(F(data), "AdminESPFont", x, y + y2, col, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0, 0, 0))
 			y2 = y2 + _y
 		end
 	end

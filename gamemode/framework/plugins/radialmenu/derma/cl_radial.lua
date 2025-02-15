@@ -644,7 +644,7 @@ function PANEL:Paint(w, h)
 			surface_SetMaterial(option.icon)
 			surface_DrawTexturedRect(x - size, y - size, size * 2, size * 2)
 		else
-			draw_SimpleText(option.name, "arb.Font_FuturaPTBook_10", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw_SimpleText(F(option.name), "arb.Font_FuturaPTBook_10", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
 		local b = self.panelWide * 0.8
@@ -653,8 +653,8 @@ function PANEL:Paint(w, h)
 
 	local option = self.options[self.selected + 1]
 	if option then
-		local name = option.name
-		local description = option.description
+		local name = F(option.name)
+		local description = F(option.description)
 		local icon = option.icon
 
 		if icon and !option.sequence then
@@ -679,7 +679,7 @@ function PANEL:Paint(w, h)
 	end
 
 	do
-		local _, height = draw_SimpleText("Выбрать опцию", "arb.Font_FuturaPTBook_8", w / 2 + (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		local _, height = draw_SimpleText(L("#radial_button_option"), "arb.Font_FuturaPTBook_8", w / 2 + (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
 		local iconW = height * 3.5
 		local iconH = iconW * 0.3827
@@ -690,7 +690,7 @@ function PANEL:Paint(w, h)
 
 	self.rmbMatAlpha = Lerp(ft * 10, self.rmbMatAlpha, isfunction(self.backFunc) and 1 or 0)
 	if self.rmbMatAlpha > 0.025 then
-		local _, height = draw_SimpleText("Вернуться назад", "arb.Font_FuturaPTBook_8", w / 2 - (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), ColorAlpha(color_white, self.rmbMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		local _, height = draw_SimpleText(L("#radial_button_back"), "arb.Font_FuturaPTBook_8", w / 2 - (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), ColorAlpha(color_white, self.rmbMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
 		local iconW = height * 3.5
 		local iconH = iconW * 0.3827
@@ -701,7 +701,7 @@ function PANEL:Paint(w, h)
 
 	self.ambMatAlpha = Lerp(ft * 10, self.ambMatAlpha, (option and option.id) and 1 or 0)
 	if self.ambMatAlpha > 0.025 then
-		local _, height = draw_SimpleText("Добавить в избранное", "arb.Font_FuturaPTBook_8", w / 2, h / 2 - (self.radialSize + self.size) - 50, ColorAlpha(color_white, self.ambMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		local _, height = draw_SimpleText(L("#radial_button_favorites"), "arb.Font_FuturaPTBook_8", w / 2, h / 2 - (self.radialSize + self.size) - 50, ColorAlpha(color_white, self.ambMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
 		local iconW = height * 3.5
 		local iconH = iconW * 0.3827

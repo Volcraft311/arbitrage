@@ -56,8 +56,8 @@ end)
 function PLUGIN:FacialEmotesOption()
 	local data = {
 		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
+			name = "#radial_option_back",
+			description = "#radial_option_back_desc",
 			icon = Material("danganronpa/radialmenu/back.png"),
 			action = self.MainOption
 		}
@@ -75,7 +75,7 @@ function PLUGIN:FacialEmotesOption()
 				name = name,
 				id = "emotion_" .. LocalPlayer():Team() .. "_" .. k,
 				icon = facialEmote.interface.emojis[v.image],
-				description = "Изменить анимацию лица персонажа на: '" .. name .. "'",
+				description = "#radial_option_facialemote_desc '" .. name .. "'",
 				sequence = "idle_all_01",
 				facial = v.data,
 				cameraBone = "ValveBiped.Bip01_Head1",
@@ -89,35 +89,11 @@ function PLUGIN:FacialEmotesOption()
 	return data, self.MainOption
 end
 
-function PLUGIN:SittingOption()
-	local data = {
-		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
-			icon = Material("danganronpa/radialmenu/back.png"),
-			action = self.MainOption
-		}
-	}
-
-	for k, v in pairs(Emotes.SittingList) do
-		data[#data + 1] = {
-			name = v[1],
-			id = "sitting_" .. k,
-			description = "Изменить анимацию при сидении на: '" .. v[1] .. "'",
-			action = function()
-				RunConsoleCommand("say", "/sitting " .. k)
-			end
-		}
-	end
-
-	return data, self.MainOption
-end
-
 function PLUGIN:MoodsOption()
 	local data = {
 		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
+			name = "#radial_option_back",
+			description = "#radial_option_back_desc",
 			icon = Material("danganronpa/radialmenu/back.png"),
 			action = self.MainOption
 		}
@@ -129,7 +105,7 @@ function PLUGIN:MoodsOption()
 			id = "mood_" .. k,
 			icon = v.icon and Material(v.icon) or nil,
 			sequence = v.sequences and (LocalPlayer():LookupSequence(v.sequences.idle) >= 0 and v.sequences.idle) or "idle_all_01",
-			description = "Изменить настроение персонажа на: '" .. v.name .. "'",
+			description = "#radial_option_mood_desc '" .. v.name .. "'",
 			action = function()
 				RunConsoleCommand("say", "/mood " .. k)
 			end
@@ -142,15 +118,15 @@ end
 function PLUGIN:ActionsOption()
 	local data = {
 		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
+			name = "#radial_option_back",
+			description = "#radial_option_back_desc",
 			icon = Material("danganronpa/radialmenu/back.png"),
 			action = self.MainOption
 		},
 		{
-			name = "Изменить внешний вид",
+			name = "#radial_option_wardrobe",
 			id = "wardrobe",
-			description = "Открыть редактор внешнего вида вашего персонажа",
+			description = "#radial_option_wardrobe_desc",
 			icon = Material("danganronpa/radialmenu/fashion.png"),
 			action = function()
 				local panel = vgui_Create("arb.OpenWardrobe")
@@ -158,9 +134,9 @@ function PLUGIN:ActionsOption()
 			end
 		},
 		{
-			name = "Скрыть свое состояние",
+			name = "#radial_option_hidestatus",
 			id = "hidestatus",
-			description = "Скрыть состояние здоровья вашего персонажа от других игроков",
+			description = "#radial_option_hidestatus_desc",
 			icon = Material("danganronpa/radialmenu/hide.png"),
 			action = function()
 				local a = !LocalPlayer():GetNetVar("hideStatus", false)
@@ -168,59 +144,45 @@ function PLUGIN:ActionsOption()
 			end
 		},
 		{
-			name = "Скрыть свое имя",
+			name = "#radial_option_hidename",
 			id = "hidename",
-			description = "Скрыть имя вашего персонажа от других игроков",
+			description = "#radial_option_hidename_desc",
 			icon = Material("danganronpa/radialmenu/hidden.png"),
 			action = function()
 				netstream.Start("arb.HideName")
 			end
 		},
 		{
-			name = "Изменить РП описание",
+			name = "#radial_option_description",
 			id = "description",
-			description = "Изменить РП описание вашего персонажа",
+			description = "#radial_option_description_desc",
 			icon = Material("danganronpa/radialmenu/loupe.png"),
 			action = function()
 				vgui_Create("arb.OpenEditorDescription")
 			end
 		},
-		-- {
-		-- 	name = "Открыть инвентарь",
-		-- 	description = "Посмотреть содержимое вашего инвентаря",
-		-- 	icon = Material("danganronpa/radialmenu/box.png"),
-		-- 	action = function()
-		-- 		local panel = Arbitrage.gui.inventory
-
-		-- 		if IsValid(panel) then
-		-- 			panel:Remove()
-		-- 		end
-
-		-- 		asterionlib.netgui:Create("InventoryBase:Menu")
-		-- 	end
-		-- },
 		{
-			name = "Осмотреться",
+			name = "#radial_option_lookaround",
 			id = "lookaround",
-			description = "Осмотреть своего персонажа от 3-го лица",
+			description = "#radial_option_lookaround_desc",
 			icon = Material("danganronpa/radialmenu/focus.png"),
 			action = function()
 				RunConsoleCommand("say", "/lookaround")
 			end
 		},
 		{
-			name = "Кинуть ролл",
+			name = "#radial_option_roll",
 			id = "roll",
-			description = "Испытать удачу вашего персонажа",
+			description = "#radial_option_roll_desc",
 			icon = Material("danganronpa/radialmenu/dice.png"),
 			action = function()
 				RunConsoleCommand("say", "/roll")
 			end
 		},
 		{
-			name = "Упасть",
+			name = "#radial_option_fallover",
 			id = "fallover",
-			description = "Заставить вашего персонажа упасть на пол",
+			description = "#radial_option_fallover_desc",
 			icon = Material("danganronpa/radialmenu/d_animation.png"),
 			action = function()
 				RunConsoleCommand("say", "/fallover")
@@ -230,9 +192,9 @@ function PLUGIN:ActionsOption()
 
 	if LocalPlayer():IsToko() then
 		data[#data + 1] = {
-			name = "Вкл случайные чихания",
+			name = "#radial_option_tokotazer",
 			id = "tazer",
-			description = "Включить автоматическую смену личности за вашего персонажа",
+			description = "#radial_option_tokotazer_desc",
 			icon = Material("danganronpa/radialmenu/sneeze.png"),
 			action = function()
 				netstream.Start("arb.TokoSneezing")
@@ -245,8 +207,8 @@ function PLUGIN:ActionsOption()
 		local function stored()
 			local info = {
 				{
-					name = "Вернуться назад",
-					description = "Вернуть в предыдущую категорию",
+					name = "#radial_option_back",
+					description = "#radial_option_back_desc",
 					icon = Material("danganronpa/radialmenu/back.png"),
 					action = self.ActionsOption
 				}
@@ -259,24 +221,24 @@ function PLUGIN:ActionsOption()
 				info[#info + 1] = {
 					name = name .. " (" .. count .. ")",
 					id = "unequip_ammo_" .. name:lower(),
-					description = "Вытащить патроны из запаса для " .. name,
+					description = "#radial_option_unequipammo " .. name,
 					action = function()
 					    local DermaPanel = vgui_Create("DFrame")
-	                    DermaPanel:SetTitle("Вытащить патроны")
+	                    DermaPanel:SetTitle(L("#radial_option_unquipammo_menu_title"))
 	                    DermaPanel:SetSize(400, 100)
 	                    DermaPanel:Center()
 	                    DermaPanel:MakePopup()
 
 	                    local DermaNumSlider = DermaPanel:Add("DNumSlider")
 	                    DermaNumSlider:Dock(FILL)
-	                    DermaNumSlider:SetText("Количество:")
+	                    DermaNumSlider:SetText(L("#radial_option_unquipammo_menu_slider"))
 	                    DermaNumSlider:SetMin(1)
 	                    DermaNumSlider:SetMax(count)
 	                    DermaNumSlider:SetDecimals(0)
 	                    DermaNumSlider:SetValue(math_floor(count / 2))
 
 	                    local DermaButton = DermaNumSlider:Add("DButton")
-	                    DermaButton:SetText("Вытащить")
+	                    DermaButton:SetText(L("#radial_option_unquipammo_menu_button"))
 	                    DermaButton:Dock(BOTTOM)
 	                    DermaButton.DoClick = function()
 	                        local value = DermaNumSlider:GetValue()
@@ -315,8 +277,8 @@ function PLUGIN:ActionsOption()
 		end
 
 		data[#data + 1] = {
-			name = "Вытащить патроны из запаса",
-			description = "Вытащить патроны из запаса для определенного оружия",
+			name = "#radial_option_unquipammob",
+			description = "#radial_option_unquipammob_desc",
 			icon = Material("danganronpa/radialmenu/ammo.png"),
 			iscategory = true,
 			action = stored,
@@ -341,9 +303,9 @@ function PLUGIN:ActionsOption()
 
 	if bSucc then
 		data[#data + 1] = {
-			name = "Уснуть",
+			name = "#radial_option_sleep",
 			id = "sleep",
-			description = "Погрузить вашего персонажа в глубокий сон",
+			description = "#radial_option_sleep_desc",
 			icon = Material("danganronpa/radialmenu/sleep.png"),
 			action = function()
 				netstream.Start("arb.Sleeping")
@@ -353,9 +315,9 @@ function PLUGIN:ActionsOption()
 
 	if Arbitrage.OnThirdPerson() then
 		data[#data + 1] = {
-			name = "3-е лицо",
+			name = "#radial_option_thirdperson",
 			id = "thirdperson",
-			description = "Включить вид от 3-го лица",
+			description = "#radial_option_thirdperson_desc",
 			icon = Material("danganronpa/radialmenu/thirdperson.png"),
 			action = function()
 				Arbitrage.ThirdPerson = !Arbitrage.ThirdPerson
@@ -369,8 +331,8 @@ end
 function PLUGIN:StaticAnimationsOption()
 	local data = {
 		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
+			name = "#radial_option_back",
+			description = "#radial_option_back_desc",
 			icon = Material("danganronpa/radialmenu/back.png"),
 			action = self.MainOption
 		}
@@ -380,8 +342,8 @@ function PLUGIN:StaticAnimationsOption()
 		local function stored()
 			local info = {
 				{
-					name = "Вернуться назад",
-					description = "Вернуть в предыдущую категорию",
+					name = "#radial_option_back",
+					description = "#radial_option_back_desc",
 					icon = Material("danganronpa/radialmenu/back.png"),
 					action = self.StaticAnimationsOption
 				}
@@ -402,7 +364,7 @@ function PLUGIN:StaticAnimationsOption()
 				info[#info + 1] = {
 					name = v2.name,
 					id = "saction_" .. sequnce,
-					description = "Установить анимацию персонажа на: '" .. v2.name .. "'",
+					description = "#radial_option_saction_desc '" .. v2.name .. "'",
 					icon = v2.icon and Material(v2.icon) or nil,
 					sequence = sequnce,
 					action = function()
@@ -416,7 +378,7 @@ function PLUGIN:StaticAnimationsOption()
 
 		data[#data + 1] = {
 			name = v.name,
-			description = "Выбрать анимацию из категории: '" .. v.name .. "'",
+			description = "#radial_option_action_desc '" .. v.name .. "'",
 			icon = v.icon and Material(v.icon) or nil,
 			iscategory = true,
 			action = stored
@@ -428,28 +390,28 @@ end
 
 function PLUGIN:DynamicAnimationsOption()
 	local info = {
-		robot = {"Робот", ACT_GMOD_TAUNT_ROBOT, "asterion/academy/ui/emotes/act_gmod_taunt_robot.png"},
-		muscle = {"Стриптиз", ACT_GMOD_TAUNT_MUSCLE, "asterion/academy/ui/emotes/act_gmod_taunt_muscle.png"},
-		laugh = {"Смех", ACT_GMOD_TAUNT_LAUGH, "asterion/academy/ui/emotes/act_gmod_taunt_laugh.png"},
-		bow = {"Поклон", ACT_GMOD_GESTURE_BOW, "asterion/academy/ui/emotes/act_gmod_gesture_bow.png"},
-		cheer = {"Приветствие", ACT_GMOD_TAUNT_CHEER, "asterion/academy/ui/emotes/act_gmod_taunt_cheer.png"},
-		wave = {"Помахать рукой", ACT_GMOD_GESTURE_WAVE, "asterion/academy/ui/emotes/act_gmod_gesture_wave.png"},
-		becon = {"Иди ко мне", ACT_GMOD_GESTURE_BECON, "asterion/academy/ui/emotes/act_gmod_gesture_becon.png"},
-		agree = {"Палец вверх", ACT_GMOD_GESTURE_AGREE, "asterion/academy/ui/emotes/act_gmod_gesture_agree.png"},
-		disagree = {"Не согласен", ACT_GMOD_GESTURE_DISAGREE, "asterion/academy/ui/emotes/act_gmod_gesture_disagree.png"},
-		forward = {"Вперед", ACT_SIGNAL_FORWARD, "asterion/academy/ui/emotes/act_signal_forward.png"},
-		group = {"Сгруппироваться", ACT_SIGNAL_GROUP, "asterion/academy/ui/emotes/act_signal_group.png"},
-		zombie = {"Зомби", ACT_GMOD_GESTURE_RANGE_ZOMBIE_SPECIAL, "asterion/academy/ui/emotes/act_gmod_gesture_range_zombie_special.png"},
-		dance = {"Танец", ACT_GMOD_TAUNT_DANCE, "asterion/academy/ui/emotes/act_gmod_taunt_dance.png"},
-		pers = {"Поза льва", ACT_GMOD_TAUNT_PERSISTENCE, "asterion/academy/ui/emotes/act_gmod_taunt_persistence.png"},
-		halt = {"Стоять", ACT_SIGNAL_HALT, "asterion/academy/ui/emotes/act_signal_halt.png"},
-		salute = {"Отдать честь", ACT_GMOD_TAUNT_SALUTE, "asterion/academy/ui/emotes/act_gmod_taunt_salute.png"}
+		robot = {"#taunt_robot", ACT_GMOD_TAUNT_ROBOT, "asterion/academy/ui/emotes/act_gmod_taunt_robot.png"},
+		muscle = {"#taunt_muscle", ACT_GMOD_TAUNT_MUSCLE, "asterion/academy/ui/emotes/act_gmod_taunt_muscle.png"},
+		laugh = {"#taunt_laugh", ACT_GMOD_TAUNT_LAUGH, "asterion/academy/ui/emotes/act_gmod_taunt_laugh.png"},
+		bow = {"#taunt_bow", ACT_GMOD_GESTURE_BOW, "asterion/academy/ui/emotes/act_gmod_gesture_bow.png"},
+		cheer = {"#taunt_cheer", ACT_GMOD_TAUNT_CHEER, "asterion/academy/ui/emotes/act_gmod_taunt_cheer.png"},
+		wave = {"#taunt_wave", ACT_GMOD_GESTURE_WAVE, "asterion/academy/ui/emotes/act_gmod_gesture_wave.png"},
+		becon = {"#taunt_becon", ACT_GMOD_GESTURE_BECON, "asterion/academy/ui/emotes/act_gmod_gesture_becon.png"},
+		agree = {"#taunt_agree", ACT_GMOD_GESTURE_AGREE, "asterion/academy/ui/emotes/act_gmod_gesture_agree.png"},
+		disagree = {"#taunt_disagree", ACT_GMOD_GESTURE_DISAGREE, "asterion/academy/ui/emotes/act_gmod_gesture_disagree.png"},
+		forward = {"#taunt_forward", ACT_SIGNAL_FORWARD, "asterion/academy/ui/emotes/act_signal_forward.png"},
+		group = {"#taunt_group", ACT_SIGNAL_GROUP, "asterion/academy/ui/emotes/act_signal_group.png"},
+		zombie = {"#taunt_zombie", ACT_GMOD_GESTURE_RANGE_ZOMBIE_SPECIAL, "asterion/academy/ui/emotes/act_gmod_gesture_range_zombie_special.png"},
+		dance = {"#taunt_dance", ACT_GMOD_TAUNT_DANCE, "asterion/academy/ui/emotes/act_gmod_taunt_dance.png"},
+		pers = {"#taunt_pers", ACT_GMOD_TAUNT_PERSISTENCE, "asterion/academy/ui/emotes/act_gmod_taunt_persistence.png"},
+		halt = {"#taunt_halt", ACT_SIGNAL_HALT, "asterion/academy/ui/emotes/act_signal_halt.png"},
+		salute = {"#taunt_salute", ACT_GMOD_TAUNT_SALUTE, "asterion/academy/ui/emotes/act_gmod_taunt_salute.png"}
 	}
 
 	local data = {
 		{
-			name = "Вернуться назад",
-			description = "Вернуть в предыдущую категорию",
+			name = "#radial_option_back",
+			description = "#radial_option_back_desc",
 			icon = Material("danganronpa/radialmenu/back.png"),
 			action = self.MainOption
 		}
@@ -459,7 +421,7 @@ function PLUGIN:DynamicAnimationsOption()
 		data[#data + 1] = {
 			name = v[1],
 			id = "daction_" .. k,
-			description = "Проиграть анимацию '" .. v[1] .. "'",
+			description = "#radial_option_daction_desc '" .. v[1] .. "'",
 			icon = v[3] and Material(v[3]) or nil,
 			-- sequence = "idle_all_01",
 			-- weightedSequence = v[2],
@@ -475,42 +437,36 @@ end
 function PLUGIN:MainOption()
 	return {
 		{
-			name = "Эмоции",
-			description = "Выбрать интересующую эмоцию лица для вашего персонажа",
+			name = "#radial_option_emotions",
+			description = "#radial_option_emotions_desc",
 			icon = Material("danganronpa/radialmenu/emoticons.png"),
 			iscategory = true,
 			action = self.FacialEmotesOption
 		},
 		{
-			name = "Статические анимации",
-			description = "Выбрать стойку для вашего персонажа",
+			name = "#radial_option_staticanim",
+			description = "#radial_option_staticanim_desc",
 			icon = Material("danganronpa/radialmenu/s_animation.png"),
 			iscategory = true,
 			action = self.StaticAnimationsOption
 		},
 		{
-			name = "Динамические анимации",
-			description = "Выбрать динамическую анимацию стойку для вашего персонажа",
+			name = "#radial_option_dynamicanim",
+			description = "#radial_option_dynamicanim_desc",
 			icon = Material("danganronpa/radialmenu/d_animation.png"),
 			iscategory = true,
 			action = self.DynamicAnimationsOption
 		},
 		{
-			name = "Настроение",
-			description = "Выбрать стиль хождения для вашего персонажа",
+			name = "#radial_option_moods",
+			description = "#radial_option_moods_desc",
 			icon = Material("danganronpa/radialmenu/mood.png"),
 			iscategory = true,
 			action = self.MoodsOption
 		},
-		-- {
-		-- 	name = "Анимация сидения",
-		-- 	description = "Выбрать нужную вам анимацию когда вы будете сидеть",
-		-- 	icon = Material("danganronpa/radialmenu/sit.png"),
-		-- 	action = self.SittingOption
-		-- },
 		{
-			name = "Действия",
-			description = "Выполнить какое либо действие",
+			name = "#radial_option_actionsanim",
+			description = "#radial_option_actionsanim_desc",
 			icon = Material("danganronpa/radialmenu/settings.png"),
 			iscategory = true,
 			action = self.ActionsOption
@@ -521,36 +477,36 @@ end
 function PLUGIN:PlayerOption()
 	local data = {
 		{
-			name = "Обыскать",
+			name = "#radial_option_search",
 			id = "search",
-			description = "Посмотреть содержимое инвентаря данного игрока",
+			description = "#radial_option_search_desc",
 			icon = Material("danganronpa/radialmenu/search.png"),
 			action = function()
 				netstream.Start("RadialMenu:SearchAction")
 			end
 		},
 		{
-			name = "Предложить обмен",
+			name = "#radial_option_exchange",
 			id = "exchange",
-			description = "Предложить обмен предметами с данным игроком",
+			description = "#radial_option_exchange_desc",
 			icon = Material("danganronpa/radialmenu/exchange.png"),
 			action = function()
 				netstream.Start("RadialMenu:ExchangeAction")
 			end
 		},
 		{
-			name = "Толкнуть",
+			name = "#radial_option_push",
 			id = "push",
-			description = "Толкнуть данного игрока",
+			description = "#radial_option_push_desc",
 			icon = Material("danganronpa/radialmenu/push.png"),
 			action = function()
 				netstream.Start("RadialMenu:PushAction")
 			end
 		},
 		{
-			name = "Тянуть за собой",
+			name = "#radial_option_drag",
 			id = "drag",
-			description = "Тянуть за собой данного игрока",
+			description = "#radial_option_drag_desc",
 			icon = Material("asterion/academy/ui/radial/action/drag.png"),
 			action = function()
 				netstream.Start("RadialMenu:DragPlayerAction")
@@ -565,9 +521,9 @@ function PLUGIN:PlayerOption()
 		for _, item in ipairs(items) do
 			if item.base == "base_medical" then
 				data[#data + 1] = {
-					name = "Вылечить",
+					name = "#radial_option_cure",
 					id = "cure",
-					description = "Вылечить данного игрока при помощи ваших медикаментов",
+					description = "#radial_option_cure_desc",
 					icon = Material("danganronpa/radialmenu/cure.png"),
 					action = function()
 						netstream.Start("ItemBase:SendAction", item:GetID(), "Использовать на другом игроке")
@@ -580,9 +536,9 @@ function PLUGIN:PlayerOption()
 		for _, item in ipairs(items) do
 			if item.uniqueID == "cuff" or item.uniqueID == "cuff_rope" then
 				data[#data + 1] = {
-					name = "Связать",
+					name = "#radial_option_cuff",
 					id = "cuff",
-					description = "Связать данного игрока при помощи ваших наручников",
+					description = "#radial_option_cuff_desc",
 					icon = Material("danganronpa/radialmenu/cuff.png"),
 					action = function()
 						netstream.Start("ItemBase:SendAction", item:GetID(), "Связать")
@@ -596,9 +552,9 @@ function PLUGIN:PlayerOption()
 	local target = self:ReturnTracePlayer(LocalPlayer())
 	if IsValid(target) and target.IsHandcuffed and target:IsHandcuffed() then
 		data[#data + 1] = {
-			name = "Развязать",
+			name = "#radial_option_uncuff",
 			id = "uncuff",
-			description = "Развязать данного игрока при помощи ваших наручников",
+			description = "#radial_option_uncuff_desc",
 			icon = Material("danganronpa/radialmenu/uncuff.png"),
 			action = function()
 				net_Start("Cuffs_FreePlayer")
@@ -614,18 +570,18 @@ end
 function PLUGIN:RagdollOption()
 	local data = {
 		{
-			name = "Обыскать",
+			name = "#radial_option_search",
 			id = "search",
-			description = "Посмотреть содержимое инвентаря данного игрока",
+			description = "#radial_option_search_desc",
 			icon = Material("danganronpa/radialmenu/search.png"),
 			action = function()
 				netstream.Start("RadialMenu:SearchAction")
 			end
 		},
 		{
-			name = "Поднять",
+			name = "#radial_option_standup",
 			id = "standup",
-			description = "Поднять игрока на ноги",
+			description = "#radial_option_standup_desc",
 			icon = Material("danganronpa/radialmenu/push.png"),
 			action = function()
 				netstream.Start("RadialMenu:StandUp")

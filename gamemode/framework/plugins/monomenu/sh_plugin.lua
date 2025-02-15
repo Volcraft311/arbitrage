@@ -305,7 +305,7 @@ MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.p
                 RunConsoleCommand("arb_chatbox_reload")
 
                 timer.Simple(0.5, function()
-                    chat.AddText("Администрация очистила чат!")
+                    Arbitrage.commands.Notify(nil, "#chat_admin_clear")
                 end)
             ]])
         end

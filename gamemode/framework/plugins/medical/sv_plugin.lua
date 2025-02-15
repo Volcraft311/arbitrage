@@ -29,15 +29,15 @@ do
 
 		self:SetNetVar("t_status_effects", {})
 
-		return ("Вы успешно удалили все статус эффекты с игрока '%s'!"):format(self:FullName())
+		return ("#status_effects_clear_effects '%s'!"):format(self:FullName())
 	end
 
 	function playerMeta:AddTemporaryStatusEffect(uniqueID, delay)
 		local info = Medical.t_status_effects[uniqueID]
-		if !info then return "Неизвестный статус эффект" end
+		if !info then return "#status_effects_not_found" end
 
 		local disable = GetNetVar("medical:statuseffects_disable", {})
-		if disable[uniqueID] then return "Данный эффект отключен" end
+		if disable[uniqueID] then return "#status_effects_effect_disable" end
 
 		local _delay = delay
 		delay = delay > 0 and CurTime() + delay or delay
@@ -45,8 +45,8 @@ do
 
 		local oldDelay = data[uniqueID]
 		if oldDelay then
-			if oldDelay <= 0 then return "Старое время бесконечное" end
-			if delay > 0 and oldDelay >= delay then return "Старое время больше установленного" end
+			if oldDelay <= 0 then return "#old_time_endless" end
+			if delay > 0 and oldDelay >= delay then return "#old_time_longer_than_time" end
 		end
 
 		local onCanAdd = info.onCanAdd
@@ -54,7 +54,7 @@ do
 			local allow, message = onCanAdd(self, _delay)
 
 			if allow == false then
-				return message or "Невозможно выдать данный статус эффект"
+				return message or "#status_effects_unable"
 			end
 		end
 
@@ -63,10 +63,10 @@ do
 
 	function playerMeta:SetTemporaryStatusEffect(uniqueID, delay)
 		local info = Medical.t_status_effects[uniqueID]
-		if !info then return "Неизвестный статус эффект" end
+		if !info then return "#status_effects_not_found" end
 
 		local disable = GetNetVar("medical:statuseffects_disable", {})
-		if disable[uniqueID] then return "Данный эффект отключен" end
+		if disable[uniqueID] then return "#status_effects_effect_disable" end
 
 		local _delay = delay
 		delay = delay > 0 and CurTime() + delay or delay
@@ -84,15 +84,15 @@ do
 			onAdd(self, delay)
 		end
 
-		return ("Вы успешно установили игроку '%s' статус '%s' %s!"):format(self:FullName(), info.name, delay <= 0 and "навсегда" or "на " .. _delay .. " секунд")
+		return ("#status_effects_set_effects '%s' #status '%s' %s!"):format(self:FullName(), info.name, delay <= 0 and "#forever" or "#on " .. _delay .. " #seconds")
 	end
 
 	function playerMeta:RemoveTemporaryStatusEffect(uniqueID)
 		local info = Medical.t_status_effects[uniqueID]
-		if !info then return "Неизвестный статус эффект" end
+		if !info then return "#status_effects_not_found" end
 
 		local data = self:GetNetVar("t_status_effects", {})
-		if !data[uniqueID] then return "Игрок не имеет данный эффект" end
+		if !data[uniqueID] then return "#status_effects_doesnt_have" end
 
 		local index = self:EntIndex()
 		info.stored[index] = nil
@@ -106,6 +106,6 @@ do
 			onRemove(self)
 		end
 
-		return ("Вы успешно удалили игроку '%s' статус '%s'!"):format(self:FullName(), info.name)
+		return ("#status_effects_remove_effect '%s' #status '%s'!"):format(self:FullName(), info.name)
 	end
 end

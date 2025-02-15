@@ -56,28 +56,8 @@ function Medical:TemporaryStatusEffectsValues(uniqueID)
 	return data
 end
 
-local function findInAllLanguages(name)
-	name = name:utf8lower()
-
-	for _, lang in pairs(Arbitrage.language.stored) do
-		for idx, word in pairs(lang.data) do
-			if isstring(word) then
-				word = word:utf8lower()
-			elseif isfunction(word) then
-				word = word():utf8lower()
-			elseif istable(word) then
-				word = table.concat(word, " ")
-			end
-
-			if word == name then
-				return idx
-			end
-		end
-	end
-end
-
 function Medical:GetTemporaryStatusEffectsByName(name)
-	local idx = findInAllLanguages(name)
+	local idx = Arbitrage.language:FindWord(name)
 	if !idx then return end
 
 	for uniqueID, info in pairs(self.t_status_effects) do

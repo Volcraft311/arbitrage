@@ -380,7 +380,7 @@ local ActionPressIDList = {
             end
         end
 
-        if !monopad then return chat.AddText("#no_have_monopad") end
+        if !monopad then return Arbitrage.commands.Notify(nil, "#no_have_monopad") end
 
         local weapon = findClass("academy_monopad")
         if weapon and !Arbitrage.lawEnable then

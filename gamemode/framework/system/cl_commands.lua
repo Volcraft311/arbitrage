@@ -72,3 +72,11 @@ netstream.Hook("arb.ChatNotify", function(data)
 
     Arbitrage.notify.NotifyChat(data)
 end)
+
+function Arbitrage.commands.Notify(client, ...)
+    if client == LocalPlayer() or client == nil then
+        local data = {...}
+
+        Arbitrage.notify.NotifyChat(data)
+    end
+end

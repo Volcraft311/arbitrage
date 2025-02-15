@@ -49,8 +49,30 @@ function Arbitrage.language:Format(data, client)
     return text
 end
 
+function Arbitrage.language:FindWord(name)
+    name = name:utf8lower()
+
+    for _, lang in pairs(Arbitrage.language.stored) do
+        for idx, word in pairs(lang.data) do
+            if isstring(word) then
+                word = word:utf8lower()
+            elseif isfunction(word) then
+                word = word():utf8lower()
+            elseif istable(word) then
+                word = table.concat(word, " "):utf8lower()
+            end
+
+            if word == name then
+                return idx
+            end
+        end
+    end
+end
+
 function Arbitrage.language:OnUpdate(old, new)
     hook.Run("OnLanguageUpdate", old, new)
+
+    RunConsoleCommand("spawnmenu_reload")
 
     Arbitrage.util.WriteMessage(Color(255, 132, 0), "{" .. Arbitrage.util.GetSide():upper() .. "} ", Color(255, 174, 0), "A change in language was noticed!")
 end

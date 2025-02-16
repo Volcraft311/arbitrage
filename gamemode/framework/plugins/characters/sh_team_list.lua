@@ -14,9 +14,9 @@
 
 -- TRIGGER HAPPY HAVOC
 Character.team:Create({
-    name = "Аой Асахина",
-    title = "Абсолютный Пловец",
-    description = "Жизнерадостная, дружелюбная и эмоциональная. Она искренне заботится о друзьях, стараясь подбодрить их даже в трудные времена. Её любовь к спорту и оптимизм делают её источником поддержки для окружающих.",
+    name = "#char_dr_aoi_name",
+    title = "#char_dr_aoi_title",
+    description = "#char_dr_aoi_desc",
     color = Color(234, 185, 9),
     category = "trigger_happy_havoc",
     model = "models/custom/aoi_asahina.mdl",
@@ -32,9 +32,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Бьякуя Тогами",
-    title = "Абсолютный Наследник",
-    description = "Холодный, высокомерный и уверенный в себе. Он ценит рациональность и презирает слабость, часто ставя себя выше других. Его аналитический ум и стремление к превосходству делают его блестящим стратегом.",
+    name = "#char_dr_byakuya_name",
+    title = "#char_dr_byakuya_title",
+    description = "#char_dr_byakuya_desc",
     color = Color(7, 164, 225),
     category = "trigger_happy_havoc",
     model = "models/custom/byakuya_togami.mdl",
@@ -50,9 +50,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Селестия Люденберг",
-    title = "Абсолютный Азартный Игрок",
-    description = "Хладнокровная, расчетливая и элегантная. Она искусно манипулирует окружающими и сохраняет загадочную ауру вокруг себя.",
+    name = "#char_dr_celestia_name",
+    title = "#char_dr_celestia_title",
+    description = "#char_dr_celestia_desc",
     color = Color(248, 27, 65),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/celestia_ludenberg/default_p.mdl",
@@ -69,9 +69,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Чихиро Фуджисаки",
-    title = "Абсолютный Программист",
-    description = "Добрый, застенчивый и невероятно умный. Несмотря на свою мягкость, он поражает своим мастерством в программировании.",
+    name = "#char_dr_chihiro_name",
+    title = "#char_dr_chihiro_title",
+    description = "#char_dr_chihiro_desc",
     color = Color(182, 220, 10),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/chihiro/default_p.mdl",
@@ -87,9 +87,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Хифуми Ямада",
-    title = "Абсолютный Автор Фанфиков",
-    description = "Эксцентричный, увлечённый и немного самоуверенный. Его преданность миру фанфиков делает его уникальной личностью.",
+    name = "#char_dr_hifumi_name",
+    title = "#char_dr_hifumi_title",
+    description = "#char_dr_hifumi_desc",
     color = Color(210, 31, 107),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/hifumi_yamada.mdl",
@@ -107,9 +107,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Джунко Эношима",
-    title = "Абсолютная Модница",
-    description = "Харизматичная, яркая и непредсказуемая. Её стиль и манеры всегда привлекают внимание окружающих.",
+    name = "#char_dr_junko_name",
+    title = "#char_dr_junko_title",
+    description = "#char_dr_junko_desc",
     color = Color(168, 8, 10),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl",
@@ -125,9 +125,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Киётака Ишимару",
-    title = "Абсолютный Дежурный",
-    description = "Дисциплинированный, строгий и принципиальный. Он живёт по правилам и стремится навести порядок в любой ситуации.",
+    name = "#char_dr_kiyotaka_name",
+    title = "#char_dr_kiyotaka_title",
+    description = "#char_dr_kiyotaka_desc",
     color = Color(1, 94, 181),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/default_p.mdl",
@@ -143,9 +143,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Кёко Киригири",
-    title = "Абсолютный Детектив",
-    description = "Спокойная, проницательная и сдержанная. Она всегда внимательно анализирует ситуацию, чтобы найти правильное решение.",
+    name = "#char_dr_kyoko_name",
+    title = "#char_dr_kyoko_title",
+    description = "#char_dr_kyoko_desc",
     color = Color(200, 57, 234),
     category = "trigger_happy_havoc",
     model = "models/kyoko_kirigiri_yoru/danganronpa/rstar/kyoko_kirigiri_yoru/kyoko_kirigiri_yoru.mdl",
@@ -161,9 +161,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Леон Кувата",
-    title = "Абсолютный Бейсболист",
-    description = "Энергичный, амбициозный и немного бунтарский. Несмотря на свой талант в спорте, он мечтает о свободе.",
+    name = "#char_dr_leon_name",
+    title = "#char_dr_leon_title",
+    description = "#char_dr_leon_desc",
     color = Color(248, 171, 8),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/leon_kuwata.mdl",
@@ -179,9 +179,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Макото Наэги",
-    title = "Абсолютный Счастливчик",
-    description = "Очень добрый, поддерживающий и прощающий, хоть иногда он и бывает немного наивным. Он намного более дружелюбный, вежливый и приземленный, чем другие ученики.",
+    name = "#char_dr_makoto_name",
+    title = "#char_dr_makoto_title",
+    description = "#char_dr_makoto_desc",
     color = Color(90, 136, 89),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/makoto_naegi.mdl",
@@ -198,9 +198,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Мондо Овада",
-    title = "Абсолютный Лидер Банды Байкеров",
-    description = "Горячий, смелый и верный. Его лидерские качества и прямота выделяют его среди окружающих.",
+    name = "#char_dr_mondo_name",
+    title = "#char_dr_mondo_title",
+    description = "#char_dr_mondo_desc",
     color = Color(226, 28, 9),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/mondo_owada/default_p.mdl",
@@ -217,9 +217,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Сакура Огами",
-    title = "Абсолютный Мастер Боевых Искусств",
-    description = "Сильная, решительная и благородная. Её мастерство в боевых искусствах сочетается с добротой и верностью.",
+    name = "#char_dr_sakura_name",
+    title = "#char_dr_sakura_title",
+    description = "#char_dr_sakura_desc",
     color = Color(142, 68, 36),
     category = "trigger_happy_havoc",
     model = "models/player/yourtoast4/danganronpa/sakura_ogami.mdl",
@@ -235,9 +235,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Саяка Майзоно",
-    title = "Абсолютная Поп-Звезда",
-    description = "Обаятельная, дружелюбная и поддерживающая. Её забота о других делает её надёжным другом.",
+    name = "#char_dr_sayaka_name",
+    title = "#char_dr_sayaka_title",
+    description = "#char_dr_sayaka_desc",
     color = Color(242, 111, 188),
     category = "trigger_happy_havoc",
     model = "models/sayaka_yoru/danganronpa/rstar/sayaka_yoru/sayaka_yoru.mdl",
@@ -253,9 +253,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Токо Фукава",
-    title = "Абсолютная Писательница",
-    description = "Замкнутая, нервная и талантливая. Её писательский дар проявляется через её необычное видение мира.",
+    name = "#char_dr_toko_name",
+    title = "#char_dr_toko_title",
+    description = "#char_dr_toko_desc",
     color = Color(148, 21, 131),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl",
@@ -272,9 +272,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Ясухиро Хагакурэ",
-    title = "Абсолютный Предсказатель",
-    description = "Рассеянный, весёлый и оптимистичный. Его странности и вера в свои предсказания делают его непредсказуемым.",
+    name = "#char_dr_yasuhiro_name",
+    title = "#char_dr_yasuhiro_title",
+    description = "#char_dr_yasuhiro_desc",
     color = Color(114, 189, 36),
     category = "trigger_happy_havoc",
     model = "models/player/dewobedil/danganronpa/yasuhiro_hagakure/default_p.mdl",
@@ -292,9 +292,9 @@ Character.team:Create({
 
 -- GOODBYE DESPAIR
 Character.team:Create({
-    name = "Аканэ Овари",
-    title = "Абсолютная Гимнастка",
-    description = "Жизнерадостная и активная, она всегда полна энергии и стремится к совершенству. Несмотря на свою суровость в отношениях с окружающими, она готова поддержать тех, кто рядом.",
+    name = "#char_dr_akane_name",
+    title = "#char_dr_akane_title",
+    description = "#char_dr_akane_desc",
     color = Color(243, 201, 199),
     category = "goodbye_despair",
     model = "models/player/yourtoast4/danganronpa/akane_owari.mdl",
@@ -310,9 +310,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Чиаки Нанами",
-    title = "Абсолютный Геймер",
-    description = "Спокойная и немного зазубренная, Чиаки часто погружается в свои мысли. Её доброта и интерес к играм иногда скрывают её настоящую силу в общении с людьми.",
+    name = "#char_dr_chiaki_name",
+    title = "#char_dr_chiaki_title",
+    description = "#char_dr_chiaki_desc",
     color = Color(215, 186, 225),
     category = "goodbye_despair",
     model = "models/player/dewobedil/chiaki_nanami/default_p.mdl",
@@ -332,9 +332,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Фуюхико Кузурю",
-    title = "Абсолютный Якудза",
-    description = "Холодный и сдержанный, он предпочитает держать дистанцию. Сильно привязан к своей семье, даже если внешне кажется отчуждённым.",
+    name = "#char_dr_fuyuhiko_name",
+    title = "#char_dr_fuyuhiko_title",
+    description = "#char_dr_fuyuhiko_desc",
     color = Color(213, 210, 212),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl",
@@ -350,9 +350,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Гандам Танака",
-    title = "Абсолютный Животновод",
-    description = "Таинственный и эксцентричный, он часто ведет себя как человек, который полон скрытых знаний. Его увлечение мистикой и живностью придает ему особую привлекательность.",
+    name = "#char_dr_gundham_name",
+    title = "#char_dr_gundham_title",
+    description = "#char_dr_gundham_desc",
     color = Color(226, 198, 239),
     category = "goodbye_despair",
     model = "models/player/dewobedil/gundam_tanaka/default_p.mdl",
@@ -368,9 +368,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Хаджимэ Хината",
-    title = "Абсолютный ???",
-    description = "Открытый и честный, но часто оказывается в поисках своих целей и самого себя. Несмотря на свою внутреннюю нерешительность, он не теряет надежды.",
+    name = "#char_dr_hajime_name",
+    title = "#char_dr_hajime_title",
+    description = "#char_dr_hajime_desc",
     color = Color(43, 167, 95),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hajime_hinata/default_p.mdl",
@@ -386,9 +386,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Хиёко Сайонджи",
-    title = "Абсолютный Традиционный Танцор",
-    description = "Молода, импульсивна и часто демонстрирует свою жесткость. Но под внешней строгостью скрывается заботливое сердце, если кто-то сумеет найти подход.",
+    name = "#char_dr__hiyoko_name",
+    title = "#char_dr__hiyoko_title",
+    description = "#char_dr__hiyoko_desc",
     color = Color(206, 184, 172),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl",
@@ -404,9 +404,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Ибуки Миода",
-    title = "Абсолютный Музыкант",
-    description = "Энергичная и немного странная, Ибуки не стесняется выражать свои эмоции и стремится быть яркой во всём, что делает.",
+    name = "#char_dr_ibuki_name",
+    title = "#char_dr_ibuki_title",
+    description = "#char_dr_ibuki_desc",
     color = Color(188, 204, 247),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl",
@@ -422,9 +422,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Казуичи Сода",
-    title = "Абсолютный Механик",
-    description = "Креативен, но в то же время может быть немного наивен. Он часто сомневается в себе, но с готовностью вносит свой вклад в команду.",
+    name = "#char_dr_kazuichi_name",
+    title = "#char_dr_kazuichi_title",
+    description = "#char_dr_kazuichi_desc",
     color = Color(238, 219, 195),
     category = "goodbye_despair",
     model = "models/player/danganronpa/kazuichi_soda.mdl",
@@ -440,9 +440,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Махиру Коизуми",
-    title = "Абсолютный Фотограф",
-    description = "Спокойная и наблюдательная, она всегда готова поддержать кого-то в трудную минуту. Её забота о других делает её особенно близкой к тем, кто ей важен.",
+    name = "#char_dr_mahiru_name",
+    title = "#char_dr_mahiru_title",
+    description = "#char_dr_mahiru_desc",
     color = Color(243, 199, 199),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/mahiru_koizumi/default_p.mdl",
@@ -459,9 +459,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Микан Цумики",
-    title = "Абсолютная Медсестра",
-    description = "Добрая и чуткая, она не может смотреть на чужую боль без стремления помочь. Её природная заботливость делает её идеальным другом.",
+    name = "#char_dr_mikan_name",
+    title = "#char_dr_mikan_title",
+    description = "#char_dr_mikan_desc",
     color = Color(252, 195, 229),
     category = "goodbye_despair",
     model = "models/player/dewobedil/mikan_tsumiki/default_p.mdl",
@@ -478,9 +478,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Нагито Комаэда",
-    title = "Абсолютный Везунчик",
-    description = "Странный и неоднозначный, он склонен видеть в жизни много противоречий. Его поведение и мышление часто сбивают с толку, но за этим скрывается глубокий внутренний мир.",
+    name = "#char_dr_nagito_name",
+    title = "#char_dr_nagito_title",
+    description = "#char_dr_nagito_desc",
     color = Color(193, 201, 242),
     category = "goodbye_despair",
     model = "models/player/dewobedil/nagito_komaeda/default_p.mdl",
@@ -497,9 +497,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Нэкомару Нидай",
-    title = "Абсолютный Тренер",
-    description = "Сильный и решительный, он всегда готов принять любой вызов и поддержать команду. Его серьёзный подход к жизни вызывает уважение.",
+    name = "#char_dr_nekomaru_name",
+    title = "#char_dr_nekomaru_title",
+    description = "#char_dr_nekomaru_desc",
     color = Color(182, 175, 217),
     category = "goodbye_despair",
     model = "models/nekomaru/nekomaruniidai.mdl",
@@ -515,9 +515,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Пеко Пекояма",
-    title = "Абсолютная Мечница",
-    description = "Холодная и сдержанная, она предпочитает не показывать своих чувств. Её верность своим принципам и ответственное отношение к делу выделяют её среди остальных.",
+    name = "#char_dr_peko_name",
+    title = "#char_dr_peko_title",
+    description = "#char_dr_peko_desc",
     color = Color(191, 189, 191),
     category = "goodbye_despair",
     model = "models/player/dewobedil/peko_pekoyama/default_p.mdl",
@@ -533,9 +533,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Сония Невермайнд",
-    title = "Абсолютная Принцесса",
-    description = "Приветливая и утончённая, она обладает чувством величия, но всегда проявляет уважение к окружающим. Её внимание к деталям позволяет ей выстраивать хорошие отношения с другими.",
+    name = "#char_dr_sonia_name",
+    title = "#char_dr_sonia_title",
+    description = "#char_dr_sonia_desc",
     color = Color(202, 204, 223),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/sonia_nevermind/default_p.mdl",
@@ -551,9 +551,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Тэрутэру Ханамура",
-    title = "Абсолютный Повар",
-    description = "Легкомысленный и забавный, но с искренним желанием угодить другим. Его энергия и страсть порой перерастают в чрезмерное увлечение, но это не мешает ему быть ценным другом.",
+    name = "#char_dr_teruteru_name",
+    title = "#char_dr_teruteru_title",
+    description = "#char_dr_teruteru_desc",
     color = Color(237, 191, 192),
     category = "goodbye_despair",
     model = "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl",
@@ -569,9 +569,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Бьякуя Тогами",
-    title = "Абсолютный Самозванец",
-    description = "Уверенный и порой высокомерный, он считает себя выше других. Его харизма и амбициозность привлекают внимание, но он часто оказывается один в своих мыслях.",
+    name = "#char_dr_twogami_name",
+    title = "#char_dr_twogami_title",
+    description = "#char_dr_twogami_desc",
     color = Color(193, 230, 238),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa2/byakuya_togami/default_p.mdl",
@@ -590,9 +590,9 @@ Character.team:Create({
 
 -- KILLING HARMONY
 Character.team:Create({
-    name = "Анджи Ёнага",
-    title = "Абсолютная Художница",
-    description = "Веселая и уверенная, она часто поглощена творчеством и искренне верит в искусство как в нечто священное. Её добродушие и желание помочь другим проявляются в её отношениях с окружающими.",
+    name = "#char_dr_angie_name",
+    title = "#char_dr_angie_title",
+    description = "#char_dr_angie_desc",
     color = Color(214, 177, 14),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl",
@@ -608,9 +608,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Гонта Гокухара",
-    title = "Абсолютный Энтомолог",
-    description = "Сильный и добродушный, он всегда готов помочь окружающим. Его страсть к энтомологии и естественной жизни проявляется в его спокойной и иногда наивной натуре.",
+    name = "#char_dr_gonta_name",
+    title = "#char_dr_gonta_title",
+    description = "#char_dr_gonta_desc",
     color = Color(139, 74, 33),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/gonta/default_p.mdl",
@@ -626,9 +626,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Химико Юмено",
-    title = "Абсолютная Фокусница",
-    description = "Задумчивая и скромная, она часто уходит в свои мысли. Её тихая, но сильная личность привлекает внимание своей загадочностью и внутренним миром.",
+    name = "#char_dr_himiko_name",
+    title = "#char_dr_himiko_title",
+    description = "#char_dr_himiko_desc",
     color = Color(181, 20, 49),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/himiko_yumeno/default_p.mdl",
@@ -648,9 +648,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "K1-B0",
-    title = "Абсолютный Робот",
-    description = "Строгий и логичный. Несмотря на свою механическую природу, он проявляет искреннюю заботу о своих друзьях.",
+    name = "#char_dr_k1b0_name",
+    title = "#char_dr_k1b0_title",
+    description = "#char_dr_k1b0_desc",
     color = Color(73, 226, 99),
     category = "killing_harmony",
     model = "models/player_kiibo.mdl",
@@ -668,9 +668,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Каэде Акамацу",
-    title = "Абсолютная Пианистка",
-    description = "Дружелюбная и решительная, она всегда готова поддержать других, несмотря на собственные переживания. Её умение вдохновлять делает её лидером, которого все ценят.",
+    name = "#char_dr_kaede_name",
+    title = "#char_dr_kaede_title",
+    description = "#char_dr_kaede_desc",
     color = Color(253, 123, 255),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kaede_akamatsu/default_p.mdl",
@@ -686,9 +686,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Кайто Момота",
-    title = "Абсолютный Астронавт",
-    description = "Энергичный и страстный, он всегда полон энтузиазма и решимости. Его амбиции и любовь к космосу вдохновляют окружающих на подвиги и исследования.",
+    name = "#char_dr_kaito_name",
+    title = "#char_dr_kaito_title",
+    description = "#char_dr_kaito_desc",
     color = Color(159, 92, 208),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kaito_momota/default_p.mdl",
@@ -704,9 +704,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Кируми Тоджо",
-    title = "Абсолютная Горничная",
-    description = "Элегантная и ответственно настроенная, она обладает высокими стандартами в своих действиях и никогда не отступает от своей цели. Её забота о других всегда проявляется в её поступках.",
+    name = "#char_dr_kirumi_name",
+    title = "#char_dr_kirumi_title",
+    description = "#char_dr_kirumi_desc",
     color = Color(82, 48, 183),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/kirumi_tojo/default_p.mdl",
@@ -723,9 +723,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Кокичи Ома",
-    title = "Абсолютный Верховный Лидер",
-    description = "Хитрый и манипулятивный, он всегда следит за тем, чтобы быть в центре внимания. Его игривое и порой загадочное поведение скрывает его истинные намерения.",
+    name = "#char_dr_kokichi_name",
+    title = "#char_dr_kokichi_title",
+    description = "#char_dr_kokichi_desc",
     color = Color(64, 4, 201),
     category = "killing_harmony",
     model = "models/player_kokichioumaultimate.mdl",
@@ -742,9 +742,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Корекиё Шингуджи",
-    title = "Абсолютный Антрополог",
-    description = "Таинственный и спокойный, он всегда скрывает свои эмоции за маской. Его исследования в области антропологии придают ему серьёзность, но за этим скрывается глубокий интерес к культуре.",
+    name = "#char_dr_korekiyo_name",
+    title = "#char_dr_korekiyo_title",
+    description = "#char_dr_korekiyo_desc",
     color = Color(196, 133, 39),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/korekiyo_shinguji/default_p.mdl",
@@ -760,9 +760,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Маки Харукава",
-    title = "Абсолютная Воспитательница",
-    description = "Твёрдая и независимая, она редко открывает свои чувства. Её жесткий подход к жизни и умение защищать других делают её надёжным союзником.",
+    name = "#char_dr_maki_name",
+    title = "#char_dr_maki_title",
+    description = "#char_dr_maki_desc",
     color = Color(240, 53, 42),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/maki_harukawa/default_p.mdl",
@@ -778,9 +778,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Миу Ирума",
-    title = "Абсолютный Изобретатель",
-    description = "Изобретательная и эксцентричная, она всегда полна идей, как что-то улучшить. Её страсть к новым технологиям и изобретениям делает её уникальной личностью.",
+    name = "#char_dr_miu_name",
+    title = "#char_dr_miu_title",
+    description = "#char_dr_miu_desc",
     color = Color(238, 78, 195),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/miu_iruma/default_p.mdl",
@@ -796,9 +796,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Рантаро Амами",
-    title = "Абсолютный Авантюрист",
-    description = "Спокойный и авантюрный, он всегда готов к новым переживаниям. Его открытость и искренность помогают ему завоевывать доверие окружающих.",
+    name = "#char_dr_rantaro_name",
+    title = "#char_dr_rantaro_title",
+    description = "#char_dr_rantaro_desc",
     color = Color(168, 199, 35),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/rantaro_amami/default_p.mdl",
@@ -814,9 +814,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Рёма Хоши",
-    title = "Абсолютный Теннисист",
-    description = "Замкнутый и молчаливый, он предпочитает не привлекать к себе внимания. Но за его внешним холодом скрывается человек, готовый проявить решимость в нужный момент.",
+    name = "#char_dr_ryoma_name",
+    title = "#char_dr_ryoma_title",
+    description = "#char_dr_ryoma_desc",
     color = Color(26, 40, 184),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/ryoma_hoshi/default_p.mdl",
@@ -834,9 +834,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Шуичи Сайхара",
-    title = "Абсолютный Детектив",
-    description = "Аналитичный и заботливый, он всегда стремится выявить правду и решить любые загадки. Его спокойный характер делает его хорошим другом и доверенным лицом.",
+    name = "#char_dr_shuichi_name",
+    title = "#char_dr_shuichi_title",
+    description = "#char_dr_shuichi_desc",
     color = Color(32, 91, 150),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/shuichi_saihara/default_p.mdl",
@@ -852,9 +852,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Тенко Чабашира",
-    title = "Абсолютный Мастер Айкидо",
-    description = "Энергичная и решительная, она всегда готова постоять за себя и своих близких. Её упорство и сила воли позволяют ей преодолевать любые преграды.",
+    name = "#char_dr_tenko_name",
+    title = "#char_dr_tenko_title",
+    description = "#char_dr_tenko_desc",
     color = Color(0, 211, 189),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/tenko_chabashira/default_p.mdl",
@@ -870,9 +870,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Цумуги Широганэ",
-    title = "Абсолютный Косплеер",
-    description = "Скромная и искусная в своём деле, она поглощена миром косплея и никогда не перестает удивлять окружающих своим мастерством и вниманием к деталям.",
+    name = "#char_dr_tsumugi_name",
+    title = "#char_dr_tsumugi_title",
+    description = "#char_dr_tsumugi_desc",
     color = Color(23, 57, 177),
     category = "killing_harmony",
     model = "models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl",
@@ -890,9 +890,9 @@ Character.team:Create({
 
 -- ULTRA DESPAIR GIRLS
 Character.team:Create({
-    name = "Джатаро Кемури",
-    title = "Юный Абсолютный Художник",
-    description = "Молодой художник с эксцентричной личностью, страстно стремящийся к самовыражению через искусство. Его стиль уникален, а подход к работе часто бывает радикальным и неординарным.",
+    name = "#char_dr_jataro_name",
+    title = "#char_dr_jataro_title",
+    description = "#char_dr_jataro_desc",
     color = Color(157, 137, 128),
     category = "ultra_despair_girls",
     model = "models/player/jataro.mdl",
@@ -910,9 +910,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Комару Наэги",
-    title = "Абсолютная Младшая Сестра Надежды",
-    description = "Младшая сестра Наэги, обладающая выдающимися лидерскими качествами. Стойкая и решительная, она сражается за справедливость и защищает тех, кто в этом нуждается.",
+    name = "#char_dr_komaru_name",
+    title = "#char_dr_komaru_title",
+    description = "#char_dr_komaru_desc",
     color = Color(158, 61, 113),
     category = "ultra_despair_girls",
     model = "models/player/someguy/komaru_p.mdl",
@@ -928,9 +928,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Котоко Уцуги",
-    title = "Юная Абсолютная Актриса",
-    description = "Молодая актриса, чья жизнь вращается вокруг сцены. Под её внешним шармом скрывается глубокая внутренняя борьба, её способности на сцене соперничают с её личными переживаниями и переживаниями.",
+    name = "#char_dr_kotoko_name",
+    title = "#char_dr_kotoko_title",
+    description = "#char_dr_kotoko_desc",
     color = Color(251, 197, 255),
     category = "ultra_despair_girls",
     model = "models/player/kotoko/kotoko_p.mdl",
@@ -948,9 +948,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Масару Даймон",
-    title = "Юный Абсолютный Спортсмен",
-    description = "Юный спортсмен с выдающимися физическими данными и сильным характером. Он привык побеждать в любых соревнованиях, однако часто сталкивается с конфликтом между личной честностью и стремлением к победе.",
+    name = "#char_dr_masaru_name",
+    title = "#char_dr_masaru_title",
+    description = "#char_dr_masaru_desc",
     color = Color(175, 68, 60),
     category = "ultra_despair_girls",
     model = "models/player/masaru_p.mdl",
@@ -968,9 +968,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Монака Това",
-    title = "Юная Абсолютная Староста",
-    description = "Лидер с выдающимися организаторскими способностями. Она использует свою роль старосты для манипуляций и достижения личных целей, несмотря на её привлекательный образ лидера.",
+    name = "#char_dr_monaca_name",
+    title = "#char_dr_monaca_title",
+    description = "#char_dr_monaca_desc",
     color = Color(200, 185, 102),
     category = "ultra_despair_girls",
     model = "models/player/someguy/monaca_p.mdl",
@@ -988,9 +988,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "Нагиса Шингецу",
-    title = "Юный Абсолютный Обществовед",
-    description = "Молодой обществовед, который прекрасно разбирается в человеческих отношениях и социальных структурах. Его аналитический подход к жизни помогает ему манипулировать окружающими.",
+    name = "#char_dr_nagisa_name",
+    title = "#char_dr_nagisa_title",
+    description = "#char_dr_nagisa_desc",
     color = Color(118, 189, 210),
     category = "ultra_despair_girls",
     model = "models/player/nagisa/nagisa_p.mdl",
@@ -1010,9 +1010,9 @@ Character.team:Create({
 
 -- Ведущие
 Character.team:Create({
-    name = "Монокума",
-    title = "Директор Абсолютного Отчаяния",
-    description = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
+    name = "#char_dr_monokuma_name",
+    title = "#char_dr_monokuma_title",
+    description = "#char_dr_monokuma_desc",
     color = Color(253, 182, 186),
     category = "leading",
     model = "models/player/yourtoast4/danganronpa/monokuma.mdl",

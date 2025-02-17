@@ -70,8 +70,14 @@ function Moderation:CanEditVariable(entity, client, key, val, editor)
 end
 
 Arbitrage.GM.PlayerNoClip = nil
-function Moderation:PlayerNoClip(client)
-    return client:IsAdmin()
+function Moderation:PlayerNoClip(client, state)
+    if client:IsSpectate() then return false end
+    if !client:IsAdmin() then return false end
+    if Arbitrage.lawEnable then return false end
+
+    hook.Run(state and "PlayerEnterNoclip" or "PlayerExitNoclip", client)
+
+    return true
 end
 
 function Moderation:RegisterRank(usergroup, data)

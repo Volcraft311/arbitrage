@@ -11,23 +11,12 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
-function PLUGIN:CanPlayerEnterVehicle(client, vehicle, role)
+hook("CanPlayerEnterVehicle", function(client, vehicle, role)
     if client:IsNocliping() then
         return false
     end
-end
-
-function PLUGIN:PlayerNoClip(client, state)
-    if client:IsSpectate() then return false end
-    if !client:IsAdmin() then return false end
-    if Arbitrage.lawEnable then return false end
-
-    hook.Run(state and "PlayerEnterNoclip" or "PlayerExitNoclip", client)
-
-    return true
-end
+end)
 
 hook("PlayerEnterNoclip", function(client)
     client:DrawHide()
@@ -35,6 +24,7 @@ hook("PlayerEnterNoclip", function(client)
     client:SetNoTarget(true)
 
     client:SetLocalVar("observer", true)
+
     hook.Run("OnObServerEnter", client)
 end)
 
@@ -44,5 +34,6 @@ hook("PlayerExitNoclip", function(client)
     client:SetNoTarget(false)
 
     client:SetLocalVar("observer", nil)
+
     hook.Run("OnObServerExit", client)
 end)

@@ -27,7 +27,7 @@ function PANEL:Init()
 
     self.panels = {}
 
-    self.characterButton = self:AddButton("Выбрать персонажа", nil, ScrW() / 2 - W(276) / 2, H(433), W(276), H(52), function()
+    self.characterButton = self:AddButton("#mainmenu_characterselect", nil, ScrW() / 2 - W(276) / 2, H(433), W(276), H(52), function()
         parent:Bluring(true)
         parent:ShowLogo(false)
         self:Show(false)
@@ -37,7 +37,7 @@ function PANEL:Init()
     self.characterButton:SetDisabled(Arbitrage.IsStartGame())
 
     local isSpectate = LocalPlayer():IsSpectate()
-    self.spectateButton = self:AddButton(isSpectate and "Выйти из наблюдения" or "Стать наблюдателем", nil, ScrW() / 2 - W(276) / 2, H(505), W(276), H(52), function()
+    self.spectateButton = self:AddButton(isSpectate and "#mainmenu_spectatorleave" or "#mainmenu_spectatorjoin", nil, ScrW() / 2 - W(276) / 2, H(505), W(276), H(52), function()
         if isSpectate then
             RunConsoleCommand("arb_join_notcharacter")
         else
@@ -78,7 +78,7 @@ function PANEL:Init()
         parent:Settings()
     end)
 
-    self.closeButton = self:AddButton("Закрыть меню", nil, ScrW() / 2 - W(276) / 2, H(709), W(276), H(52), function()
+    self.closeButton = self:AddButton("#mainmenu_closemenu", nil, ScrW() / 2 - W(276) / 2, H(709), W(276), H(52), function()
         parent:ClosePanel()
     end)
 
@@ -114,7 +114,7 @@ function PANEL:Show(bState)
 end
 
 function PANEL:Paint(w, h)
-    draw.SimpleText("Добро пожаловать, " .. LocalPlayer():SteamName(), "arb.Font_FuturaPTBook_12", w / 2, H(310), Color(255, 234, 238), TEXT_ALIGN_CENTER)
+    draw.SimpleText("#mainmenu_welcome" .. LocalPlayer():SteamName(), "arb.Font_FuturaPTBook_12", w / 2, H(310), Color(255, 234, 238), TEXT_ALIGN_CENTER)
 
     surface.SetDrawColor(255, 234, 238, 3)
     surface.DrawRect(w / 2 - W(460) / 2, H(391), W(460), H(2))

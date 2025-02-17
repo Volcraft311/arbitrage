@@ -13,7 +13,7 @@
 
 
 asterionlib.loading:AddType("char_assets", {
-	name = "Загружаем ассеты персонажей",
+	name = "#load_assets_characters",
 	color = Color(194, 55, 55)
 })
 

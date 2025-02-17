@@ -805,7 +805,18 @@ Arbitrage.language:Add("ru", {
     [""] = "",
     [""] = "",
     [""] = "",
+
 -- ГЛАВНОЕ МЕНЮ
+
+    ["#mainmenu_characterselect"] = "Выбрать персонажа",
+    ["#mainmenu_spectatorleave"] = "Выйти из наблюдения",
+    ["#mainmenu_spectatorjoin"] = "Стать наблюдателем",
+    ["#mainmenu_closemenu"] = "Закрыть меню",
+    ["#mainmenu_welcome"] = "Добро пожаловать, ",
+
+
+    [""] = "",
+    [""] = "",
 
 -- ВЫБОР КАТЕГОРИЙ ПЕРСОНАЖЕЙ
     ["#category_desc_dr_thh"] = "Играйте за студентов 78-го класса\nАкадемии 'Пик Надежды'",
@@ -818,4 +829,7 @@ Arbitrage.language:Add("ru", {
     ["#category_button_mm"] = "Ведущие",
     ["#category_button_unique"] = "Уникальные",
     ["#category_button_other"] = "Остальные",
+
+-- ПОДГРУЗКА АССЕТОВ
+    ["#load_assets_characters"] = "Загружаем ассеты персонажей",
 })

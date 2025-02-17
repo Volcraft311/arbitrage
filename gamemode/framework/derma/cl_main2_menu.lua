@@ -114,9 +114,9 @@ function PANEL:Show(bState)
 end
 
 function PANEL:Paint(w, h)
-    draw.SimpleText("#mainmenu_welcome" .. LocalPlayer():SteamName(), "arb.Font_FuturaPTBook_12", w / 2, H(310), Color(255, 234, 238), TEXT_ALIGN_CENTER)
+    draw.SimpleText(L("#mainmenu_welcome") .. " " .. LocalPlayer():SteamName(), "arb.Font_FuturaPTBook_12", w / 2, H(310), Color(255, 234, 238), TEXT_ALIGN_CENTER)
 
-    surface.SetDrawColor(255, 234, 238, 3)
+    surface.SetDrawColor(34, 21, 23, 3)
     surface.DrawRect(w / 2 - W(460) / 2, H(391), W(460), H(2))
 end
 

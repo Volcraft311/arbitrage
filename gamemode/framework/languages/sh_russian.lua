@@ -788,6 +788,7 @@ Arbitrage.language:Add("ru", {
 -- ПРИВЕТСТВЕННОЕ МЕНЮ
     --["#menu_welcome_desc"] = "",
     ["#menu_welcome_title"] = "РАННИЙ ДОСТУП",
+    ["#menu_welcome_desc"] = "Спасибо, что принимаете участие в раннем доступе Asterion Academy. Работа над\nсервером продолжается, но уже сейчас вы можете оценить нашу разработку.\nИменно благодаря вам, мы можем оперативно исправлять ошибки и улучшать\nгеймплей основываясь на ваших отзывах и предложениях.\n\nО всех найденных багах и ошибках просьба сообщайть в отдельный канал\n#bugs-report нашего официального Discord сообщества сервера.",
     ["#menu_welcome_continue"] = "Продолжить игру",
 
 -- НАСТРОЙКИ
@@ -838,8 +839,8 @@ Arbitrage.language:Add("ru", {
     ["#category_chapter_text"] = "Выбираем класс претендентов",
     ["#category_char_select"] = "ВЫБОР ПРЕТЕНДЕНТА",
     ["#category_char_text"] = "Выбираем, за кого будем играть",
-    ["#category_char_selected"] = "<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж уже выбран</colour></font>",
-    ["#category_char_unavailable"] = "<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж доступен лишь игровым мастерам</colour></font>",
+    ["#category_char_selected"] = "Данный персонаж уже выбран",
+    ["#category_char_unavailable"] = "Данный персонаж доступен лишь игровым мастерам",
     ["#category_char_selectiontext"] = "Кликните по портрету для\nпросмотра персонажа",
     ["#category_select_confirm"] = "Подтвердить выбор",
     [""] = "",
@@ -852,6 +853,7 @@ Arbitrage.language:Add("ru", {
     ["#category_desc_dr_pf"] = "Играйте за участников из отделов\nпрограммы 'Фонд Будущего'",
     ["#category_desc_dr_pt"] = "Играйте за уникальных персонажей\nсозданных специально для вас",
     ["#category_desc_dr_oc"] = "Играйте за оригинальных персонажей\nсозданных для игры",
+    ["#category_button_m"] = "Претенденты",
     ["#category_button_mm"] = "Ведущие",
     ["#category_button_unique"] = "Уникальные",
     ["#category_button_other"] = "Остальные",

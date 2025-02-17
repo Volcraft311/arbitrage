@@ -53,7 +53,7 @@ function PANEL:DesignButton(panel, text, w, h, icon)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
     if text then
-        draw.DrawText(text, "arb.Font_FuturaPTBook_10", w / 2, H(9), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L(text), "arb.Font_FuturaPTBook_10", w / 2, H(9), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
     end
 
     if icon then
@@ -83,7 +83,7 @@ function PANEL:AddOption(panel, buttonText, descText, buttonWide, descWide)
 
     local desc = option:Add("DLabel")
     desc:SetFont("arb.Font_FuturaPTDemi_9")
-    desc:SetText(descText)
+    desc:SetText(L(descText))
     desc:Dock(LEFT)
     desc:SetWide(descWide)
     desc:DockMargin(W(10), 0, 0, 0)
@@ -119,10 +119,10 @@ function PANEL:RegisterCategory(panel, x, y, w, h)
             _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 1 or 0.1)
             _.alpha2 = Lerp(FrameTime() * 10, _.alpha2, _.select and 1 or -0.1)
 
-            Arbitrage.DrawTextBlur(text, "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
+            Arbitrage.DrawTextBlur(L(text), "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 
             if !button.select then
-                draw.DrawText(text, "arb.Font_FuturaPTDemiBlurN_12", w / 2, H(10), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.DrawText(L(text), "arb.Font_FuturaPTDemiBlurN_12", w / 2, H(10), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
         end
         button.DoClick = function(_, bIgnore)

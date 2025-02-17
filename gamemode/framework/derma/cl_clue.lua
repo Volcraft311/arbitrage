@@ -82,7 +82,7 @@ local categoryData = {
             local List = panel:Add("Panel")
             List:Dock(FILL)
             List.Paint = function(_, w, h)
-                draw.DrawText("#clue_wip", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
+                draw.DrawText(L("#clue_wip"), "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
             end
         end,
     },
@@ -92,7 +92,7 @@ local categoryData = {
             local List = panel:Add("Panel")
             List:Dock(FILL)
             List.Paint = function(_, w, h)
-                draw.DrawText("#clue_wip", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
+                draw.DrawText(L("#clue_wip"), "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
             end
         end,
     }
@@ -163,7 +163,7 @@ function PANEL:Init()
             self.scrollTitle:SetAlpha(0)
             self.scrollTitle:AlphaTo(255, 0.5)
             self.scrollTitle.Paint = function(_, w, h)
-                draw.DrawText(v.name, "arb.Font_FuturaPTBook_10", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+                draw.DrawText(L(v.name), "arb.Font_FuturaPTBook_10", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
             end
 
             self.scrollPanel = self.main:Add("DPanelList")
@@ -265,7 +265,7 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, 2, h)
     surface.DrawRect(w - 2, 0, 2, h)
 
-    draw.DrawText(self.data.name or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText(L(self.data.name) or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), color_white, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.EvidenceMenuSub", PANEL, "DFrame")

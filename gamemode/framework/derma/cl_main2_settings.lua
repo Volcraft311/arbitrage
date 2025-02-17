@@ -199,7 +199,7 @@ local stagesData = {
 
             local width, height = draw.SimpleText(this.text, "arb.Font_FuturaPTBook_10", 0, 0, color_white, TEXT_ALIGN_LEFT)
 
-            draw.SimpleText(statusMat[this.status].text, "arb.Font_FuturaPTBook_10", width + 44, 0, statusMat[this.status].color, TEXT_ALIGN_LEFT)
+            draw.SimpleText(L(statusMat[this.status].text), "arb.Font_FuturaPTBook_10", width + 44, 0, statusMat[this.status].color, TEXT_ALIGN_LEFT)
 
             surface.SetDrawColor(255, 255, 255, 20)
             surface.DrawRect(width + 20, 0, 2, h)
@@ -349,7 +349,7 @@ end
 function PANEL:Paint()
     self.titleAlpha = Lerp(FrameTime() * 3, self.titleAlpha, 1)
 
-    draw.DrawText(self.titleText, "arb.Font_FuturaPTDemi_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
+    draw.DrawText(L(self.titleText), "arb.Font_FuturaPTDemi_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MainRemake:Settings", PANEL, "EditablePanel")

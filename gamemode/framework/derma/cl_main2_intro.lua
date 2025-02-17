@@ -14,16 +14,6 @@
 
 local PANEL = {}
 
-local description = [[
-    Спасибо, что принимаете участие в раннем доступе Asterion Academy. Работа над 
-    сервером продолжается, но уже сейчас вы можете оценить нашу разработку. 
-    Именно благодаря вам, мы можем оперативно исправлять ошибки и улучшать 
-    геймплей основываясь на ваших отзывах и предложениях.
-
-    О всех найденных багах и ошибках просьба сообщайть в отдельный канал
-    #bugs-report нашего официального Discord сообщества сервера.
-]]
-
 function PANEL:Init()
     local parent = self:GetParent()
 
@@ -44,8 +34,8 @@ function PANEL:Init()
         surface.SetDrawColor(255, 41, 80)
         surface.DrawRect(0, 0, w, H(56))
 
-        draw.SimpleText("#menu_welcome_title", "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(15, 5, 6), TEXT_ALIGN_CENTER)
-        draw.DrawText(description, "arb.Font_FuturaPTBook_8", w / 2, H(75), Color(255, 234, 238), TEXT_ALIGN_CENTER)
+        draw.SimpleText(L("#menu_welcome_title"), "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(15, 5, 6), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#menu_welcome_desc"), "arb.Font_FuturaPTBook_8", w / 2, H(75), Color(255, 234, 238), TEXT_ALIGN_CENTER)
     end
 
     local continueButton = self:Add("DButton")

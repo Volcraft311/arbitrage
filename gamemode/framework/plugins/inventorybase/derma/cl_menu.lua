@@ -103,7 +103,7 @@ function PANEL:Paint()
         surface.DrawRect(w + sizeW - sizeW / 2 - W(120) * 1.5, h + sizeH - sizeH * 0.25 + H(60), W(120) * 3, 2)
 
         draw.SimpleText(client:Name(), "arb.Font_OpenSansLight_15", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
-        draw.SimpleText(faction:GetTitle(), "arb.Font_OpenSansLight_8", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25 + H(80), Color( 255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(L(faction:GetTitle()), "arb.Font_OpenSansLight_8", w + sizeW - sizeW / 2, h + sizeH - sizeH * 0.25 + H(80), Color( 255, 255, 255), TEXT_ALIGN_CENTER)
     end
 end
 

@@ -76,7 +76,7 @@ function PANEL:WaitingLoadingAddons()
         outlined:SetEndAngle(value)
         outlined()
 
-        local _, heigth = draw.SimpleText("#content_loading" .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_15", w / 2, y + r + 20, color_white, TEXT_ALIGN_CENTER)
+        local _, heigth = draw.SimpleText(L("#content_loading") .. " " .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_15", w / 2, y + r + 20, color_white, TEXT_ALIGN_CENTER)
         draw.SimpleText(nameAddon .. " (" .. idAddon .. ")", "arb.Font_FuturaPTBook_8", w / 2, y + r + heigth + 20, Color(78, 77, 77), TEXT_ALIGN_CENTER)
 
         local size = self:GetTall() * 0.0011
@@ -188,10 +188,10 @@ function PANEL:CheckContent()
         outlined:SetEndAngle(value)
         outlined()
 
-        draw.DrawText("#content_text", fontDescription, 150, h / 2, color_white, TEXT_ALIGN_LEFT)
-        draw.SimpleText("#content_welcome", fontWelcome, 150, h / 2 - fontWelcomeHeight - 33, color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#content_text"), fontDescription, 150, h / 2, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(L("#content_welcome"), fontWelcome, 150, h / 2 - fontWelcomeHeight - 33, color_white, TEXT_ALIGN_LEFT)
 
-        local _, heigth = draw.SimpleText("#content_checked" .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_13", x, y + r + 60, color_white, TEXT_ALIGN_CENTER)
+        local _, heigth = draw.SimpleText(L("#content_checked") .. " " .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_13", x, y + r + 60, color_white, TEXT_ALIGN_CENTER)
         draw.SimpleText(nameAddon .. " (" .. idAddon .. ")", "arb.Font_FuturaPTBook_7", x, y + r + heigth + 60, Color(78, 77, 77), TEXT_ALIGN_CENTER)
 
         local size = self:GetTall() * 0.0011
@@ -264,13 +264,13 @@ function PANEL:CheckContent()
 
     local titlePanel = playerPanel:Add("DLabel")
     titlePanel:Dock(TOP)
-    titlePanel:SetText("#content_profile" .. LocalPlayer():SteamName())
+    titlePanel:SetText(L("#content_profile") .. " " .. LocalPlayer():SteamName())
     titlePanel:SetFont("arb.Font_FuturaPTDemi_11")
     titlePanel:SizeToContents()
 
     local descPanel = playerPanel:Add("DLabel")
     descPanel:Dock(TOP)
-    descPanel:SetText("#content_desc")
+    descPanel:SetText(L("#content_desc"))
     descPanel:SetTextColor(Color(95, 95, 95))
     descPanel:SetFont("arb.Font_FuturaPTBook_8")
     descPanel:SizeToContents()
@@ -297,7 +297,7 @@ function PANEL:NotifyMenu(title, description, buttonPrimaryText, buttonPrimaryCa
     titlePanel:Dock(TOP)
     titlePanel:DockMargin(0, self:GetTall() * 0.4, 0, 10)
     titlePanel:SetContentAlignment(5)
-    titlePanel:SetText(title)
+    titlePanel:SetText(L(title))
     titlePanel:SetFont(titleFont)
     titlePanel:SizeToContents()
 
@@ -305,7 +305,7 @@ function PANEL:NotifyMenu(title, description, buttonPrimaryText, buttonPrimaryCa
     descPanel:Dock(TOP)
     descPanel:DockMargin(0, 0, 0, 60)
     descPanel:SetContentAlignment(5)
-    descPanel:SetText(description)
+    descPanel:SetText(L(description))
     descPanel:SetFont(descFont)
     descPanel:SizeToContents()
 
@@ -328,7 +328,7 @@ function PANEL:NotifyMenu(title, description, buttonPrimaryText, buttonPrimaryCa
         surface.SetDrawColor(155, 35, 57, 255 * this.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText(buttonPrimaryText, buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(L(buttonPrimaryText), buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     retryButton.DoClick = function()
         buttonPrimaryCallback(panel)
@@ -348,7 +348,7 @@ function PANEL:NotifyMenu(title, description, buttonPrimaryText, buttonPrimaryCa
         surface.SetDrawColor(155, 35, 57, 255 * this.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText(buttonSecondaryText, buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(L(buttonSecondaryText), buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     continueButton.DoClick = function()
         buttonSecondaryCallback(panel)
@@ -376,7 +376,7 @@ function PANEL:ErrorMenu(errors)
     titlePanel:Dock(TOP)
     titlePanel:DockMargin(150, H(100), 0, 10)
     titlePanel:SetContentAlignment(4)
-    titlePanel:SetText("#content_recs")
+    titlePanel:SetText(L("#content_recs"))
     titlePanel:SetFont(titleFont)
     titlePanel:SizeToContents()
 
@@ -384,7 +384,7 @@ function PANEL:ErrorMenu(errors)
     descPanel:Dock(TOP)
     descPanel:DockMargin(150, 0, 0, 100)
     descPanel:SetContentAlignment(4)
-    descPanel:SetText("#content_error")
+    descPanel:SetText(L("#content_error"))
     descPanel:SetFont(descFont)
     descPanel:SizeToContents()
 
@@ -453,10 +453,10 @@ function PANEL:ErrorMenu(errors)
             local height = 0
 
             if bIsOptional then
-                height = select(2, draw.SimpleText("#content_optional", "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10, Color(255, 166, 0, 255 - alpha * 0.3), TEXT_ALIGN_CENTER))
+                height = select(2, draw.SimpleText(L("#content_optional"), "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10, Color(255, 166, 0, 255 - alpha * 0.3), TEXT_ALIGN_CENTER))
             end
 
-            draw.SimpleText(name, "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10 + height, Color(255, 255, 255, 255 - alpha), TEXT_ALIGN_CENTER)
+            draw.SimpleText(L(name), "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10 + height, Color(255, 255, 255, 255 - alpha), TEXT_ALIGN_CENTER)
         end
 
         local size = H(40)
@@ -487,7 +487,7 @@ function PANEL:ErrorMenu(errors)
     local informationPanelText = informationPanel:Add("DLabel")
     informationPanelText:Dock(TOP)
     informationPanelText:SetContentAlignment(4)
-    informationPanelText:SetText("#content_error2")
+    informationPanelText:SetText(L("#content_error2"))
     informationPanelText:SetFont(descFont)
     informationPanelText:SizeToContents()
 
@@ -511,7 +511,7 @@ function PANEL:ErrorMenu(errors)
         surface.SetDrawColor(155, 35, 57, 255 * this.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText("#content_leave", buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(L("#content_leave"), buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     disconnectButton.DoClick = function()
         RunConsoleCommand("disconnect")
@@ -531,7 +531,7 @@ function PANEL:ErrorMenu(errors)
         surface.SetDrawColor(155, 35, 57, 255 * this.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText("#content_continue", buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(L("#content_continue"), buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     continueButton.DoClick = function()
         panel:AlphaTo(0, 0.5, 0, function()

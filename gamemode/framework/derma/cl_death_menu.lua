@@ -13,10 +13,7 @@
 
 local PANEL = {}
 
-local deathTitle = "#deathscreen_title"
-local deathText = "#deathscreen_text"
 local deathTime = 10
-
 function PANEL:Init()
     if IsValid(Arbitrage.gui.death) then
         Arbitrage.gui.death:Remove()
@@ -49,6 +46,9 @@ function PANEL:TickSound()
 end
 
 function PANEL:Think()
+    local deathTitle = L("#deathscreen_title")
+    local deathText = L("#deathscreen_text")
+
     local time = RealTime()
     if time >= self.nextThink then
         if self.characterTitle < deathTitle:utf8len() then

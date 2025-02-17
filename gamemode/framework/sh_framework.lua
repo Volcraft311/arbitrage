@@ -809,6 +809,10 @@ do
         local data = Character.team:GetByID(faction)
 
         if faction and self:IsPlaying() and data then
+            if CLIENT then
+                return F(data.name) or self:SteamName()
+            end
+
             return data.name or self:SteamName()
         end
 

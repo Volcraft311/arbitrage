@@ -165,7 +165,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 89.25)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText("#cmenu_favourites", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(L("#cmenu_favourites"), "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
     if !self.client:IsSpectate() then
@@ -183,7 +183,7 @@ function PANEL:Init()
             panel.color = Color(255, 234, 238)
             panel.Paint = function(_, w, h)
                 local color = Color(_.color.r, _.color.g, _.color.b)
-                draw.SimpleText(action.name, "arb.Font_FuturaPTBook_8", W(66), H(10), color, TEXT_ALIGN_LEFT)
+                draw.SimpleText(L(action.name), "arb.Font_FuturaPTBook_8", W(66), H(10), color, TEXT_ALIGN_LEFT)
 
                 local ishover = _:IsHovered()
                 local frame = FrameTime() * 10
@@ -253,7 +253,7 @@ function PANEL:Paint(w, h)
 
         draw.SimpleText(("%s | %s"):format(Arbitrage.GetTime(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
-        draw.SimpleText(self.faction:GetTitle(), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(L(self.faction:GetTitle()), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 
         for k, v in ipairs(self.descriptionData or {}) do
             local padding = #self.descriptionData * self.descriptionHeight

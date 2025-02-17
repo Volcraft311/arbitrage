@@ -31,8 +31,8 @@ function PANEL:Init()
     titlePanel:SetTall(H(60))
     titlePanel:Dock(TOP)
     titlePanel.Paint = function(_, w, h)
-        draw.DrawText("#vote_title", "arb.Font_FuturaPTDemi_15", 0, 0, color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#vote_text", "arb.Font_FuturaPTBook_10", W(380), H(10), Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#vote_title"), "arb.Font_FuturaPTDemi_15", 0, 0, color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#vote_text"), "arb.Font_FuturaPTBook_10", W(380), H(10), Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
     end
 
     self.timerPanel = titlePanel:Add("Panel")
@@ -142,8 +142,8 @@ function PANEL:SetInfo(faction, steamid)
         textPanel.Paint = function(_, w, h)
             asterionlib.DrawRect(w * 0.2, h - H(179), w - (w * 0.2) * 2, 2, {255, 220, 228, 10})
 
-            draw.DrawText(data:GetName(), "arb.Font_FuturaPTBook_14", w / 2, h - H(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
-            draw.DrawText(data:GetTitle(), "arb.Font_FuturaPTBook_9", w / 2, h - H(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
+            draw.DrawText(L(data:GetName()), "arb.Font_FuturaPTBook_14", w / 2, h - H(230), Color(255, 220, 228), TEXT_ALIGN_CENTER)
+            draw.DrawText(L(data:GetTitle()), "arb.Font_FuturaPTBook_9", w / 2, h - H(170), Color(255, 220, 228), TEXT_ALIGN_CENTER)
 
             if self.voting == steamid then
                 parsed:draw(w / 2, h - H(136), TEXT_ALIGN_CENTER, TEXT_ALIGN_LEFT)
@@ -161,7 +161,7 @@ function PANEL:SetInfo(faction, steamid)
             asterionlib.DrawRect(0, 0, w, h, {27, 10, 13, 204 * _.alpha})
             asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {255, 61, 96, 165.75 * _.alpha})
 
-            draw.DrawText("#vote_confirm", "arb.Font_FuturaPTBook_9", w / 2, H(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText(L("#vote_confirm"), "arb.Font_FuturaPTBook_9", w / 2, H(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
         selectButton.DoClick = function()
             self.voting = steamid
@@ -216,10 +216,10 @@ function PANEL:SetData(data, votingList)
             asterionlib.DrawTexturedRect(mat, xPos + 6, 9, W(100) - 12, H(100) - 12, {255, 255, 255, _.alpha * 255})
             asterionlib.DrawTexturedRect(mat2, xPos + 6, 9, W(100) - 12, H(100) - 12, {255, 255, 255, 255 * _.alpha2})
 
-            Arbitrage.DrawTextBlur(factionData.name, "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
+            Arbitrage.DrawTextBlur(L(factionData.name), "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 
             if self.voting != steamid then
-                draw.DrawText(factionData.name, "arb.Font_FuturaPTBookBlurN_7", w / 2, h - H(25), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.DrawText(L(factionData.name), "arb.Font_FuturaPTBookBlurN_7", w / 2, h - H(25), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
             end
 
             asterionlib.DrawOutlinedRect(xPos, 3, W(100), H(100), 2, {255, 61, 96, 165.75 * (_.alpha + 0.5)})
@@ -357,7 +357,7 @@ function PANEL:ShowVotings(winning, votingData)
                 asterionlib.DrawTexturedRect(vote_markMat, h + W(10) + (sizeW * i) + (i * H(5)), h - sizeH, sizeW, sizeH, {255, 255, 255})
             end
 
-            Arbitrage.DrawTextBlur(name, "arb.Font_FuturaPTBook_7", h + W(10), 0, Color(255, 238, 177), TEXT_ALIGN_LEFT)
+            Arbitrage.DrawTextBlur(L(name), "arb.Font_FuturaPTBook_7", h + W(10), 0, Color(255, 238, 177), TEXT_ALIGN_LEFT)
 
             asterionlib.DrawOutlinedRect(0, 0, w, h, {255, 61, 96, 40})
         end

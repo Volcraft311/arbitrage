@@ -93,7 +93,7 @@ end
 
 if SERVER then
     function L(client, id, ...)
-        local convar = client:GetInfo("arb_lang") or Arbitrage.language.default
+        local convar = isstring(client) and client or (client:GetInfo("arb_lang") or Arbitrage.language.default)
         local lang = Arbitrage.language:Get(convar) or Arbitrage.language:Get(Arbitrage.language.default)
         local info = lang.data[id]
 

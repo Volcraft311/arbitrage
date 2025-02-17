@@ -31,7 +31,7 @@ local stagesData = {
         end
 
         panel.categoryOpPanel = parent:RegisterCategory(panel, panel:GetWide() - W(150) - W(336), H(60), W(336), H(62))
-        :AddButton("Претенденты", W(180), function()
+        :AddButton("#category_button_m", W(180), function()
             if IsValid(panel.charactersPanel) then panel.charactersPanel:Remove() end
             if IsValid(panel.charactersInfo) then panel.charactersInfo:Remove() end
 
@@ -153,8 +153,8 @@ local stagesData = {
         panel.charactersPanel:AlphaTo(255, 0.5)
         panel.charactersPanel.character = -1
 
-        local parsed = asterionlib.markup.Parse("#category_char_selected")
-        local parsed2 = asterionlib.markup.Parse("#category_char_unavailable")
+        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> " .. L("#category_char_selected") .. "</colour></font>")
+        local parsed2 = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> " .. L("#category_char_unavailable") .. "</colour></font>")
 
         panel.charactersInfo = panel:Add("DPanel")
         panel.charactersInfo:SetZPos(100)
@@ -180,12 +180,12 @@ local stagesData = {
                 surface.SetMaterial(splash)
                 surface.DrawTexturedRect(0, 0, w, h)
 
-                draw.SimpleText(faction:GetName(), "arb.Font_FuturaPTDemi_15", w / 2, H(400), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(L(faction:GetName()), "arb.Font_FuturaPTDemi_15", w / 2, H(400), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 
                 surface.SetDrawColor(255, 234, 238, 15 * _.alpha)
                 surface.DrawRect(W(155), H(467), W(350), H(2))
 
-                draw.SimpleText(faction:GetTitle(), "arb.Font_FuturaPTBook_10", w / 2, H(485), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.SimpleText(L(faction:GetTitle()), "arb.Font_FuturaPTBook_10", w / 2, H(485), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 
                 local count = 0
                 for k, v in ipairs(player.GetAll()) do
@@ -245,10 +245,10 @@ local stagesData = {
                 surface.SetDrawColor(27, 10, 13, 204 * character.alpha)
                 surface.DrawRect(x, y, W(100), H(100))
 
-                Arbitrage.DrawTextBlur(v.name, "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
+                Arbitrage.DrawTextBlur(L(v.name), "arb.Font_FuturaPTBook_7", w / 2, h - H(25), Color(255, 238, 177, 255 * _.alpha2), TEXT_ALIGN_CENTER)
 
                 if !selected then
-                    draw.DrawText(v.name, "arb.Font_FuturaPTBookBlurN_7", w / 2, h - H(25), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+                    draw.DrawText(L(v.name), "arb.Font_FuturaPTBookBlurN_7", w / 2, h - H(25), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
                 end
 
                 surface.SetDrawColor(255, 61, 96, 165.75 * (_.alpha + 0.5))
@@ -281,8 +281,8 @@ local stagesData = {
                 panel.charactersPanel.character = v.key
 
                 local count = 0
-                for k, v in ipairs(player.GetAll()) do
-                    local vFaction = v:Team()
+                for k2, v2 in ipairs(player.GetAll()) do
+                    local vFaction = v2:Team()
 
                     if vFaction == panel.charactersPanel.character then
                         count = count + 1
@@ -415,8 +415,8 @@ function PANEL:InitCategory()
             surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
             surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-            draw.DrawText(v.name, "arb.Font_FuturaPTDemi_12", w / 2, H(422), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
-            draw.DrawText(v.desc, "arb.Font_FuturaPTBook_8", w / 2, H(464), Color(255, 234, 238, 150 * panel.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText(L(v.name), "arb.Font_FuturaPTDemi_12", w / 2, H(422), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText(L(v.desc), "arb.Font_FuturaPTBook_8", w / 2, H(464), Color(255, 234, 238, 150 * panel.alpha), TEXT_ALIGN_CENTER)
         end
         panel.DoClick = function()
             local data = {}
@@ -451,12 +451,12 @@ end
 function PANEL:Paint(w, h)
     self.titleAlpha = Lerp(FrameTime() * 3, self.titleAlpha, 1)
 
-    draw.DrawText(self.titleText, "arb.Font_FuturaPTDemi_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
+    draw.DrawText(L(self.titleText), "arb.Font_FuturaPTDemi_17", W(150), H(60), Color(255, 234, 238, 255 * self.titleAlpha), TEXT_ALIGN_LEFT)
 
     surface.SetFont("arb.Font_FuturaPTDemi_17")
-    local width, _ = surface.GetTextSize(self.titleText)
+    local width, _ = surface.GetTextSize(L(self.titleText))
 
-    draw.DrawText(self.titleDesc, "arb.Font_FuturaPTBook_10", width + W(170), H(74), Color(255, 234, 238, 20 * self.titleAlpha), TEXT_ALIGN_LEFT)
+    draw.DrawText(L(self.titleDesc), "arb.Font_FuturaPTBook_10", width + W(170), H(74), Color(255, 234, 238, 20 * self.titleAlpha), TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MainRemake:Characters", PANEL, "EditablePanel")

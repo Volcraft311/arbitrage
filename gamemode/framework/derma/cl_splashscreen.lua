@@ -13,36 +13,36 @@
 
 
 surface.CreateFont( "arb.SplashScreenFont", {
-	font = "Futura PT Book",
-	extended = true,
-	size = ScreenScale(32),
-	weight = 400,
-	antialias = true
+    font = "Futura PT Book",
+    extended = true,
+    size = ScreenScale(32),
+    weight = 400,
+    antialias = true
 })
 
 surface.CreateFont( "arb.SplashScreenBlurFont", {
-	font = "Futura PT Book",
-	extended = true,
-	size = ScreenScale(32),
-	weight = 400,
-	antialias = true,
+    font = "Futura PT Book",
+    extended = true,
+    size = ScreenScale(32),
+    weight = 400,
+    antialias = true,
     blursize = 11
 })
 
 surface.CreateFont( "arb.SplashScreenFont2", {
-	font = "Futura PT Book",
-	extended = true,
-	size = ScreenScale(20),
-	weight = 400,
-	antialias = true
+    font = "Futura PT Book",
+    extended = true,
+    size = ScreenScale(20),
+    weight = 400,
+    antialias = true
 })
 
 surface.CreateFont( "arb.SplashScreenBlurFont2", {
-	font = "Futura PT Book",
-	extended = true,
-	size = ScreenScale(20),
-	weight = 400,
-	antialias = true,
+    font = "Futura PT Book",
+    extended = true,
+    size = ScreenScale(20),
+    weight = 400,
+    antialias = true,
     blursize = 11
 })
 
@@ -366,7 +366,7 @@ function PANEL:ShowSurvivalText()
             self.allSurv_color[v] = Lerp(FrameTime() * 7, self.allSurv_color[v], self.allSurv_mcolor[v])
         end
 
-        draw.DrawText("#splashscreen_survivors", "arb.Font_FuturaPTBook_20", ScrW() * 0.13 + _.move * 0.1, 10, Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#splashscreen_survivors"), "arb.Font_FuturaPTBook_20", ScrW() * 0.13 + _.move * 0.1, 10, Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
 
         draw.DrawText(self.allSurv, "arb.SplashScreenBlurFont2", ScrW() * 0.4 + _.move * 0.1, 10, ColorAlpha(self.allSurv_color, _.alpha), TEXT_ALIGN_LEFT)
         draw.DrawText(self.allSurv, "arb.SplashScreenFont2", ScrW() * 0.4 + _.move * 0.1, 10, ColorAlpha(self.allSurv_color, _.alpha), TEXT_ALIGN_LEFT)

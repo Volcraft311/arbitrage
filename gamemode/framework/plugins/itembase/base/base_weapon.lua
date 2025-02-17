@@ -150,7 +150,7 @@ function BASE:Equip(client, item, id)
 		item:HookRun("equip", client)
 	end
 
-	TypingDraw:SendSphere(0.5, client, "Экипирует '" .. item:GetName() .. "'", Color(255, 170, 23))
+	TypingDraw:SendSphere(0.5, client, "#typingdraw_equip '" .. item:GetName() .. "'", Color(255, 170, 23))
 end
 
 function BASE:UnEquip(client, item)

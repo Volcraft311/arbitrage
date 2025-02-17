@@ -145,7 +145,7 @@ BASE:AddAction("Открыть", {
 
         InventoryBase.Open(item.player, inventory:GetID(), item:GetName())
 
-        TypingDraw:SendSphere(0.5, client, "Осматривает содержимое '" .. item:GetName()  .. "'", Color(255, 170, 23))
+        TypingDraw:SendSphere(0.5, client, "#typingdraw_inspect_contents '" .. item:GetName()  .. "'", Color(255, 170, 23))
 
         return false
     end,

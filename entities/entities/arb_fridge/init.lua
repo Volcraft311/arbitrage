@@ -31,7 +31,7 @@ function ENT:Initialize()
 end
 
 function ENT:Use(client, caller)
-	TypingDraw:SendSphere(0.5, client, "Обыскивает 'Холодильник'", Color(255, 170, 23))
+	TypingDraw:SendSphere(0.5, client, "#typingdraw_searches '#typingdraw_fridge'", Color(255, 170, 23))
 
 	client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 

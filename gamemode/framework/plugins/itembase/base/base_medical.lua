@@ -122,9 +122,9 @@ local function RecoveryFunc(item, target)
 
     if !IsValid(target) or !target:IsPlayer() then return false, "Не валидный игрок!" end
 
-    local text = "Использует '" .. item:GetName() .. "'"
+    local text = "#typingdraw_uses '" .. item:GetName() .. "'"
     if target != client then
-        text = text .. " на '" .. target:Name() .. "'"
+        text = text .. " #typingdraw_uses2 '" .. target:Name() .. "'"
 
         client:SetAction("Heal")
     end

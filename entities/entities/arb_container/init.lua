@@ -38,7 +38,7 @@ function ENT:Use(client, caller)
 	name = name:Trim()
 
 	if name != "" and name != " " then
-		TypingDraw:SendSphere(0.5, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
+		TypingDraw:SendSphere(0.5, client, "#typingdraw_examines '" .. name .. "'", Color(255, 170, 23))
 	end
 
 	Arbitrage.action.ActionRun(client, "#action_searching", 1, function()

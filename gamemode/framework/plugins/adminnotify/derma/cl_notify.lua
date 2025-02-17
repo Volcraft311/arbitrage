@@ -50,6 +50,9 @@ function PANEL:AddNewNotify(data)
         end
     end
 
+    str = F(str)
+    onlyString = F(onlyString)
+
     surface.SetFont( "ixAdminNotifyFont" )
     local width, height = surface.GetTextSize(onlyString)
 

@@ -147,7 +147,7 @@ local function RecoveryFunc(item, bAll)
     local client = item.player
     local left = item:GetData("left", tonumber(item:GetMaxUse()))
 
-    TypingDraw:SendSphere(0.5, client, "Использует '" .. item:GetName() .. "'", Color(255, 170, 23))
+    TypingDraw:SendSphere(0.5, client, "#typingdraw_uses '" .. item:GetName() .. "'", Color(255, 170, 23))
 
     local data = {"Thirst", "Hunger", "Sleep"}
     for k, v in ipairs(data) do

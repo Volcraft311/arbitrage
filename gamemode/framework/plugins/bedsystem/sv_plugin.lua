@@ -61,7 +61,7 @@ hook("PlayerUse", function(client, entity)
     local allow = BedSystem.allowBed[model]
 
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
-        TypingDraw:SendSphere(0.5, client, "Ложится на кровать", Color(255, 170, 23))
+        TypingDraw:SendSphere(0.5, client, "#typingdraw_lies_down_bed", Color(255, 170, 23))
 
         Arbitrage.action.ActionRun(client, "#action_down_the_bed", 5, function()
             if client:GetEyeTrace().Entity != entity then return true end

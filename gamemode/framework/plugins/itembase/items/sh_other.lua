@@ -262,7 +262,7 @@ local function cuff(item, ropeLength)
     end, function()
     end)
 
-    TypingDraw:SendSphere(0.5, client, "Связывает '" .. target:Name() .. "'", Color(255, 170, 23))
+    TypingDraw:SendSphere(0.5, client, "#typingdraw_cuff '" .. target:Name() .. "'", Color(255, 170, 23))
 
     Arbitrage.action.ActionRun(client, "#action_cuff", cuffTime, function()
         if findTarget(client) != target then return true end

@@ -40,7 +40,7 @@ function ItemBase.GetBase(base)
             item:Transfer(nil)
             item._oldInventory = nil
 
-            TypingDraw:SendSphere(0.5, client, "Выкидывает '" .. item:GetName() .. "'", Color(255, 170, 23))
+            TypingDraw:SendSphere(0.5, client, "#typingdraw_drop '" .. item:GetName() .. "'", Color(255, 170, 23))
 
             return false
         end,
@@ -80,7 +80,7 @@ function ItemBase.GetBase(base)
                 end
             end
 
-            TypingDraw:SendSphere(0.5, client, "Поднимает '" .. item:GetName() .. "'", Color(255, 170, 23))
+            TypingDraw:SendSphere(0.5, client, "#typingdraw_raises '" .. item:GetName() .. "'", Color(255, 170, 23))
 
             return false
         end,

@@ -133,7 +133,7 @@ BASE:AddAction("Использовать", {
         local ammoAmount = tonumber(item:GetAmount())
 
         client:GiveAmmo(ammoAmount, ammoClass)
-        TypingDraw:SendSphere(0.5, client, "Использует '" .. item:GetName() .. "'", Color(255, 170, 23))
+        TypingDraw:SendSphere(0.5, client, "#typingdraw_uses '" .. item:GetName() .. "'", Color(255, 170, 23))
     end,
     OnCanRun = function(item)
         return true

@@ -86,7 +86,7 @@ local function OpenNote(item, client, page, bEdit, bClose)
         end
     end)
 
-    TypingDraw:SendSphere(0.5, client, (bEdit and "Изменяет" or "Читает") .. " " .. "'" .. item:GetName() .. "'", Color(255, 170, 23))
+    TypingDraw:SendSphere(0.5, client, (bEdit and "#typingdraw_changes" or "#typingdraw_read") .. " " .. "'" .. item:GetName() .. "'", Color(255, 170, 23))
 end
 
 local function ReadNote(item, client, page, bClose)

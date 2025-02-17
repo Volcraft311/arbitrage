@@ -98,7 +98,7 @@ local function HackDoor(client, entity, time)
             client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
             client.keyAnim = CurTime() + 2.1
 
-            TypingDraw:SendSphere(0.5, client, "Взламывает дверь", Color(255, 170, 23))
+            TypingDraw:SendSphere(0.5, client, "#typingdraw_break_door", Color(255, 170, 23))
         end
 
         return false

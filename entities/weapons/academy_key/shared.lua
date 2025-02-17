@@ -54,7 +54,7 @@ SWEP.Secondary.Ammo = ""
 local function DoorAction(client, door, bClose)
     client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 
-    TypingDraw:SendSphere(0.5, client, (bClose and "Закрывает" or "Открывает") .. " дверь", Color(255, 170, 23))
+    TypingDraw:SendSphere(0.5, client, (bClose and "#typingdraw_close" or "#typingdraw_open") .. " #typingdraw_door", Color(255, 170, 23))
 
     Arbitrage.action.ActionRun(client, bClose and "#action_closing_door" or "#action_open_door", 2, function()
         if client:GetEyeTrace().Entity != door then return true end

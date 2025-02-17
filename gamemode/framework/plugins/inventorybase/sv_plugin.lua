@@ -280,5 +280,5 @@ netstream.Hook("InventoryBase:ItemStack", function(client, itemID, itemID2)
 end)
 
 netstream.Hook("Inventory:OpenMenu", function(client)
-    TypingDraw:SendSphere(0.5, client, "Осматривает карманы", Color(255, 170, 23))
+    TypingDraw:SendSphere(0.5, client, "#typingdraw_inspect_inventory", Color(255, 170, 23))
 end)

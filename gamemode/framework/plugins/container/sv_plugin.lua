@@ -65,7 +65,7 @@ function Container:PlayerUse(client, entity)
 
     if !client.containerCD or CurTime() >= client.containerCD then
         local name = entity._containerName or ""
-        TypingDraw:SendSphere(0.5, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
+        TypingDraw:SendSphere(0.5, client, "#typingdraw_examines '" .. name .. "'", Color(255, 170, 23))
 
         Arbitrage.action.ActionRun(client, "#action_searching", entity._containerTime or 1, function()
             if client:GetEyeTrace().Entity != entity then return true end

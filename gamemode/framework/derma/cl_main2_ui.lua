@@ -267,7 +267,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 160)
     surface.DrawRect(0, 0, w, h)
 
-    draw.DrawText("Asterion Academy © 2023 Asterion Staff", "arb.Font_FuturaPTBook_5", w / 2, h - H(30), Color(255, 234, 238, 7), TEXT_ALIGN_CENTER)
+    draw.DrawText("Asterion Academy © 2025 Asterion Staff", "arb.Font_FuturaPTBook_5", w / 2, h - H(30), Color(255, 234, 238, 7), TEXT_ALIGN_CENTER)
     draw.DrawText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", w - W(30), h - H(30), Color(255, 234, 238, 7), TEXT_ALIGN_RIGHT)
 
     surface.SetDrawColor(255, 255, 255, 150)

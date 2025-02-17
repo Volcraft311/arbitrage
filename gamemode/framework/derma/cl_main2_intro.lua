@@ -44,7 +44,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 41, 80)
         surface.DrawRect(0, 0, w, H(56))
 
-        draw.SimpleText("РАННИЙ ДОСТУП", "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(15, 5, 6), TEXT_ALIGN_CENTER)
+        draw.SimpleText("#menu_welcome_title", "arb.Font_FuturaPTDemi_12", w / 2, H(10), Color(15, 5, 6), TEXT_ALIGN_CENTER)
         draw.DrawText(description, "arb.Font_FuturaPTBook_8", w / 2, H(75), Color(255, 234, 238), TEXT_ALIGN_CENTER)
     end
 
@@ -53,7 +53,7 @@ function PANEL:Init()
     continueButton:SetPos(ScrW() / 2 - W(276) / 2, H(682))
     continueButton:SetSize(W(276), H(52))
     continueButton.Paint = function(panel, w, h)
-        parent:DesignButton(panel, "Продолжить игру", w, h)
+        parent:DesignButton(panel, "#menu_welcome_continue", w, h)
     end
     continueButton.DoClick = function()
         self:AlphaTo(0, 0.3, 0, function()

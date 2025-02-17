@@ -787,38 +787,75 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
     ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
 
--- КЛАССНЫЙ СУД
-
--- КАТЕГОРИИ СПРАЙТОВ
-    ["#classtrial_sprite_category_main"] = "Основные",
-    ["#classtrial_sprite_category_monaca_inwheelchair"] = "На коляске",
-
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-
 -- ГЛАВНОЕ МЕНЮ
-
     ["#mainmenu_characterselect"] = "Выбрать персонажа",
     ["#mainmenu_spectatorleave"] = "Выйти из наблюдения",
     ["#mainmenu_spectatorjoin"] = "Стать наблюдателем",
     ["#mainmenu_closemenu"] = "Закрыть меню",
     ["#mainmenu_welcome"] = "Добро пожаловать, ",
 
+    ["#menu_button_back"] = "Назад",
+
+-- ПРИВЕТСТВЕННОЕ МЕНЮ
+    --["#menu_welcome_desc"] = "",
+    ["#menu_welcome_title"] = "РАННИЙ ДОСТУП",
+    ["#menu_welcome_continue"] = "Продолжить игру",
+
+-- НАСТРОЙКИ
+    ["#addon_status_noinstalled"] = "Не установлен",
+    ["#addon_status_tempinstalled"] = "Временно скачан",
+    ["#addon_status_installed"] = "Установлен",
+
+    ["#settings_title_settings"] = "НАСТРОЙКИ",
+    ["#settings_title_gameplay"] = "Игровой процесс",
+    ["#settings_title_keybinds"] = "Управление",
+    ["#settings_title_content"] = "Контент",
+
+-- КОНТЕНТ
+    ["#content_loading"] = "ЗАГРУЗКА: ",
+    ["#content_text"] = "Сейчас происходит проверка игрового\nконтента на наличие ошибок,\nпожалуйста подождите завершение\nпроцесса.",
+    ["#content_welcome"] = "Добро пожаловать!",
+    ["#content_checked"] = "Проверено элементов: ",
+    ["#content_profile"] = "Профиль: ",
+    ["#content_desc"] = "Вы находитесь на Asterion Academy!",
+    ["#content_recs"] = "РЕКОМЕНДАЦИИ",
+    ["#content_error"] = "Были обнаружены проблемы с контентом сервера. Пожалуйста, установите данные дополнения:",
+    ["#content_optional"] = "Не обязательный",
+    ["#content_error2"] = "Если ошибка не решилась, то рекомендуем обратиться к\nадминистрации проекта Asterion Academy. Сделать это\nможно в соц. сетях:",
+    ["#content_leave"] = "Отключиться от сервера",
+    ["#content_continue"] = "Продолжить игру",
+    ["#content_rejoin"] = "Перезайти в игру",
+    ["#content_warning_title"] = "ПРЕДУПРЕЖДЕНИЕ",
+    ["#content_warning_text"] = "Вам необходимо перезайти в игру, чтобы дополнения на которые вы подписали\nначали работать стабильно!",
+    ["#content_warning_text2"] = "Вы подписались не на все дополнения с которыми возникли проблемы.\nЕсли вы продолжите игру, то можете столкнуться с проблемами внутри клиента!",
+    ["#content_firstjoin_title"] = "ВПЕРВЫЕ С НАМИ?",
+    ["#content_firstjoin_text"] = "Похоже, что вы первый раз зашли на наш сервер. Чтобы всё работало\nкорректно необходимл перезайти на сервер. Если вы продолжите игру,\nто можете столкнуться с проблемами внутри клиента. Приятной игры!",
 
     [""] = "",
     [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+
 
 -- ВЫБОР КАТЕГОРИЙ ПЕРСОНАЖЕЙ
+    ["#category_chapter_select"] = "ВЫБОР ГЛАВЫ",
+    ["#category_chapter_text"] = "Выбираем класс претендентов",
+    ["#category_char_select"] = "ВЫБОР ПРЕТЕНДЕНТА",
+    ["#category_char_text"] = "Выбираем, за кого будем играть",
+    ["#category_char_selected"] = "<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж уже выбран</colour></font>",
+    ["#category_char_unavailable"] = "<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж доступен лишь игровым мастерам</colour></font>",
+    ["#category_char_selectiontext"] = "Кликните по портрету для\nпросмотра персонажа",
+    ["#category_select_confirm"] = "Подтвердить выбор",
+    [""] = "",
+
+
     ["#category_desc_dr_thh"] = "Играйте за студентов 78-го класса\nАкадемии 'Пик Надежды'",
     ["#category_desc_dr_gd"] = "Играйте за студентов 77-го 'B' класса\nАкадемии 'Пик Надежды'",
     ["#category_desc_dr_kh"] = "Играйте за студентов 'Абсолютной\nАкадемии Одаренных Узников'",
@@ -832,4 +869,87 @@ Arbitrage.language:Add("ru", {
 
 -- ПОДГРУЗКА АССЕТОВ
     ["#load_assets_characters"] = "Загружаем ассеты персонажей",
+
+
+-- ИГРОВОЙ ПРОЦЕСС
+
+-- КЛАССНЫЙ СУД
+    ["#classtrial_presented"] = "Предъявил: ",
+
+-- КАТЕГОРИИ СПРАЙТОВ
+    ["#classtrial_sprite_category_main"] = "Основные",
+    ["#classtrial_sprite_category_monaca_inwheelchair"] = "На коляске",
+
+-- ГОЛОСОВАНИЕ
+    ["#vote_title"] = "ВРЕМЯ ГОЛОСОВАТЬ",
+    ["#vote_text"] = "Выбираем того, кто является убийцей",
+    ["#vote_voted"] = "<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы проголосовали за данного персонажа</colour></font>",
+    ["#vote_confirm"] = "Подтвердить голос",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+
+-- ТУЛТИПЫ
+    ["#tooltip_quantity_ammo"] = "Количество патрон: %d+",
+    ["#tooltip_quantity_1"] = "Количество: %d+/%d+",
+    ["#tooltip_quantity_2"] = "Осталось: %d+/%d+",
+    ["#tooltip_quantity_3"] = "Количество: %d+",
+    ["#tooltip_status_healty"] = "На вид в порядке",
+    ["#tooltip_status_badshape"] = "Выглядит неважно",
+    ["#tooltip_status_injured"] = "Слегка потрепанный",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+
+-- СПЛЭШСКРИН
+    ["#splashscreen_survivors"] = "Выжившие претенденты:",
+
+-- УЛИКИ
+    ["#clue_list"] = "Список улик",
+    ["#clue_certificate"] = "Свидетельства о смерти",
+    ["#clue_notebook"] = "Список заметок",
+    ["#clue_wip"] = "В разработке...",
+
+-- C-МЕНЮ
+    ["#cmenu_favourites"] = "Избранное",
+
+-- ЭКРАН СМЕРТИ
+    ["#deathscreen_title"] = "Вы погибли!",
+    ["#deathscreen_text"] = "Вы вернетесь в лобби через: %s секунд.",
+
+-- ОПИСАНИЕ ПЕРСОНАЖА
+    ["#description_self_button"] = "Изменить свое РП описание",
+    ["#description_self_text"] = "Введите описание которые вы хотите себе установить",
+    ["#description_self_desc"] = "Пример: Видно пятна крови на правой руке",
+    ["#description_self_placeholder"] = "Описание",
+    ["#description_self_change"] = "Изменить",
+    ["#description_self_success"] = "Вы успешно изменили свое РП описание!",
+
+-- ТАБ МЕНЮ
+    ["#rank_owner"] = "Владелец",
+    ["#rank_curator"] = "Куратор",
+    ["#rank_gamemaster"] = "Игровой мастер",
+    ["#rank_guard"] = "Администратор",
+    ["#rank_developer"] = "Разработчик",
+
+    ["#tab_onserver"] = "На сервере: %s/%s",
+    ["#tab_incast"] = "В касте: %s",
+    ["#tab_hidden"] = "Администратор сервера скрыл основной список игроков!\n:(", "arb.Font_FuturaPTBook_10",
+
+    ["#tab_copyid"] = "Скопировать SteamID",
+    ["#tab_checkprofile"] = "Перейти на профиль",
+    ["#tab_pm"] = "Написать личное сообщение",
+
+    [""] = "",
+    [""] = "",
+    [""] = "",
+
+
+
 })

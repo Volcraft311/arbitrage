@@ -35,8 +35,8 @@ local stagesData = {
             if IsValid(panel.charactersPanel) then panel.charactersPanel:Remove() end
             if IsValid(panel.charactersInfo) then panel.charactersInfo:Remove() end
 
-            panel.titleText = "ВЫБОР ГЛАВЫ"
-            panel.titleDesc = "Выбираем класс претендентов"
+            panel.titleText = "#category_chapter_select"
+            panel.titleDesc = "#category_chapter_text"
             panel.titleAlpha = 0
 
             panel.categoryPanel = panel:Add("Panel")
@@ -110,7 +110,7 @@ local stagesData = {
             panel:InitCategory()
         end, true)
         :AddSlash()
-        :AddButton("Ведущие", W(125), function()
+        :AddButton("#category_button_mm", W(125), function()
             if IsValid(panel.rightButton) then
                 panel.rightButton:Remove()
             end
@@ -124,7 +124,7 @@ local stagesData = {
             for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
                 v.key = k
 
-                if v.category == "Ведущие" then
+                if v.category == "#category_button_mm" then
                     data[#data + 1] = v
                 end
             end
@@ -136,8 +136,8 @@ local stagesData = {
     ["character"] = function(panel, data)
         local parent = panel:GetParent()
 
-        panel.titleText = "ВЫБОР ПРЕТЕНДЕНТА"
-        panel.titleDesc = "Выбираем, за кого будем играть"
+        panel.titleText = "#category_char_select"
+        panel.titleDesc = "#category_char_text"
         panel.titleAlpha = 0
 
         panel.categoryPanel:Remove()
@@ -153,8 +153,8 @@ local stagesData = {
         panel.charactersPanel:AlphaTo(255, 0.5)
         panel.charactersPanel.character = -1
 
-        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж уже выбран</colour></font>")
-        local parsed2 = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Данный персонаж доступен лишь игровым мастерам</colour></font>")
+        local parsed = asterionlib.markup.Parse("#category_char_selected")
+        local parsed2 = asterionlib.markup.Parse("#category_char_unavailable")
 
         panel.charactersInfo = panel:Add("DPanel")
         panel.charactersInfo:SetZPos(100)
@@ -169,7 +169,7 @@ local stagesData = {
                 surface.SetMaterial(Material("danganronpa/ui/unknown.png"))
                 surface.DrawTexturedRect(0, 0, w, h)
 
-                draw.DrawText("Кликните по портрету для\nпросмотра персонажа", "arb.Font_FuturaPTBook_10", w / 2, h - H(100), Color(255, 234, 238, 5 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.DrawText("#category_char_selectiontext", "arb.Font_FuturaPTBook_10", w / 2, h - H(100), Color(255, 234, 238, 5 * _.alpha), TEXT_ALIGN_CENTER)
             else
                 local faction = Character.team:GetByID(panel.charactersPanel.character)
                 if !faction then return end
@@ -212,7 +212,7 @@ local stagesData = {
         acceptButton:SetPos(W(192), H(588))
         acceptButton:SetSize(W(276), H(52))
         acceptButton.Paint = function(_, w, h)
-            parent:DesignButton(_, "Подтвердить выбор", w, h)
+            parent:DesignButton(_, "#category_select_confirm", w, h)
         end
         acceptButton.DoClick = function()
             local id = panel.charactersPanel.character
@@ -331,7 +331,7 @@ function PANEL:Init()
         })
     end
 
-    parent:AddOption(self.optionPanel, "ESC", "Назад", W(50), W(100))
+    parent:AddOption(self.optionPanel, "ESC", "#menu_button_back", W(50), W(100))
 
     self:OpenStages(true, "category")
 end

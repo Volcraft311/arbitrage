@@ -32,10 +32,10 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Изменить свое РП описание", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#description_self_button", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите описание которые вы хотите себе установить", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Видно пятна крови на правой руке", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#description_self_text", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#description_self_desc", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -58,7 +58,7 @@ function PANEL:Init()
     self.descriptionEntry:SetMultiline(true)
     self.descriptionEntry:SetPos(W(5), H(85))
     self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(170))
-    self.descriptionEntry:SetPlaceholderText("Описание")
+    self.descriptionEntry:SetPlaceholderText("#description_self_placeholder")
     self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     local description = LocalPlayer():GetNetVar("description")
@@ -74,7 +74,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Изменить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#description_self_change", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -86,7 +86,7 @@ function PANEL:Init()
         end)
 
         netstream.Start("arb.EditDescription", self.descriptionEntry:GetValue())
-        Arbitrage.notify.NotifyChat("Вы успешно изменили свое РП описание!")
+        Arbitrage.notify.NotifyChat("#description_self_success")
     end
 end
 

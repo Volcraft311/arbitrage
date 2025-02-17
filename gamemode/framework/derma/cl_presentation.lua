@@ -101,7 +101,7 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, w, 2)
     surface.DrawRect(0, h - 2, w, 2)
 
-    draw.SimpleText("Предъявил: " .. self.name, "arb.Font_FuturaPTBook_10", w / 2, h - H(50), Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText("#classtrial_presented" .. self.name, "arb.Font_FuturaPTBook_10", w / 2, h - H(50), Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.Prestation", PANEL, "EditablePanel")

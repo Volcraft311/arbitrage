@@ -74,11 +74,11 @@ local function getMatPing(ping)
 end
 
 local groupData = {
-    founder = "Владелец",
-    curator = "Куратор",
-    gamemaster = "Игровой мастер",
-    guard = "Администратор",
-    developer = "Разработчик"
+    founder = "#rank_owner",
+    curator = "#rank_curator",
+    gamemaster = "#rank_gamemaster",
+    guard = "#rank_guard",
+    developer = "#rank_developer"
 }
 
 local function getGroupName(name)
@@ -218,8 +218,8 @@ function PANEL:CreateLeftPanel()
 
     self:CreateEmptiness(topPanel, 100)
 
-    self:CreateText(topPanel, ("На сервере: %s/%s"):format(#player.GetAll(), game.MaxPlayers()), "arb.Font_FuturaPTBook_7")
-    self:CreateText(topPanel, ("В касте: %s"):format(getCasteCount()), "arb.Font_FuturaPTBook_7")
+    self:CreateText(topPanel, ("#tab_onserver"):format(#player.GetAll(), game.MaxPlayers()), "arb.Font_FuturaPTBook_7")
+    self:CreateText(topPanel, ("#tab_incast"):format(getCasteCount()), "arb.Font_FuturaPTBook_7")
 
 
     local bottomPanel = mainPanel:Add("DPanel")
@@ -365,7 +365,7 @@ function PANEL:CreatePlayersPanel(parent)
         errorPanel:Dock(TOP)
         errorPanel:DockMargin(0, 0, 0, H(30))
         errorPanel.Paint = function(this, w, h)
-            draw.DrawText("Администратор сервера скрыл основной список игроков!\n:(", "arb.Font_FuturaPTBook_10", w / 2, h * 0.35, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.DrawText("#tab_hidden", w / 2, h * 0.35, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
         if !LocalPlayer():IsAdmin() then -- даем админу использовать ТАБ
@@ -539,9 +539,9 @@ function PANEL:CreatePlayersPanel(parent)
         buttonPanel.Paint = nil
         buttonPanel.DoClick = function()
             local menu = DermaMenu(false, self)
-            menu:AddOption("Скопировать SteamID", function() SetClipboardText(steamid) end)
-            menu:AddOption("Перейти на профиль", function() gui.OpenURL(Format("https://steamcommunity.com/profiles/%s", util.SteamIDTo64(steamid))) end)
-            menu:AddOption("Написать личное сообщение", function()
+            menu:AddOption("#tab_copyid", function() SetClipboardText(steamid) end)
+            menu:AddOption("#tab_checkprofile", function() gui.OpenURL(Format("https://steamcommunity.com/profiles/%s", util.SteamIDTo64(steamid))) end)
+            menu:AddOption("#tab_pm", function()
                 local chatbox = Arbitrage.gui.chat
                 if !IsValid(chatbox) then return end
 

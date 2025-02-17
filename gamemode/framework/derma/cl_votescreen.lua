@@ -31,8 +31,8 @@ function PANEL:Init()
     titlePanel:SetTall(H(60))
     titlePanel:Dock(TOP)
     titlePanel.Paint = function(_, w, h)
-        draw.DrawText("ВРЕМЯ ГОЛОСОВАТЬ", "arb.Font_FuturaPTDemi_15", 0, 0, color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Выбираем того, кто является убийцей", "arb.Font_FuturaPTBook_10", W(380), H(10), Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+        draw.DrawText("#vote_title", "arb.Font_FuturaPTDemi_15", 0, 0, color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#vote_text", "arb.Font_FuturaPTBook_10", W(380), H(10), Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
     end
 
     self.timerPanel = titlePanel:Add("Panel")
@@ -135,7 +135,7 @@ function PANEL:SetInfo(faction, steamid)
 
         self.panels[#self.panels + 1] = self.infoPanel
 
-        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы проголосовали за данного персонажа</colour></font>")
+        local parsed = asterionlib.markup.Parse("#vote_voted")
 
         local textPanel = self.infoPanel:Add("Panel")
         textPanel:Dock(FILL)
@@ -161,7 +161,7 @@ function PANEL:SetInfo(faction, steamid)
             asterionlib.DrawRect(0, 0, w, h, {27, 10, 13, 204 * _.alpha})
             asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {255, 61, 96, 165.75 * _.alpha})
 
-            draw.DrawText("Подтвердить голос", "arb.Font_FuturaPTBook_9", w / 2, H(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            draw.DrawText("#vote_confirm", "arb.Font_FuturaPTBook_9", w / 2, H(13), Color(255, 220, 228, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
         selectButton.DoClick = function()
             self.voting = steamid

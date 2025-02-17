@@ -20,17 +20,17 @@ local noInstallMat = Material("danganronpa/ui/info_5.png")
 
 local statusMat = {
     [0] = {
-        text = "Не установлен",
+        text = "#addon_status_noinstalled",
         mat = noInstallMat,
         color = Color(255, 65, 23)
     },
     [1] = {
-        text = "Временно скачан",
+        text = "#addon_status_tempinstalled",
         mat = installMat,
         color = Color(255, 176, 56)
     },
     [2] = {
-        text = "Установлен",
+        text = "#addon_status_installed",
         mat = subscribeMat,
         color = Color(14, 255, 110)
     }
@@ -120,7 +120,7 @@ local stagesData = {
     ["game_process"] = function(panel)
         panel:SettingsCreatePanels()
 
-        panel.titleText = "НАСТРОЙКИ"
+        panel.titleText = "#settings_title_settings"
         panel.titleAlpha = 0
 
         for k, v in pairs(SETTINGS.GetStored().options) do
@@ -140,7 +140,7 @@ local stagesData = {
         end
     end,
     ["control"] = function(panel, data)
-        panel.titleText = "НАСТРОЙКИ"
+        panel.titleText = "#settings_title_settings"
         panel.titleAlpha = 0
 
         panel:SettingsCreatePanels()
@@ -158,7 +158,7 @@ local stagesData = {
         end
     end,
     ["content"] = function(panel, data)
-        panel.titleText = "НАСТРОЙКИ"
+        panel.titleText = "#settings_title_settings"
         panel.titleAlpha = 0
 
         panel.scrollPanel = panel:Add("DScrollPanel")
@@ -240,19 +240,19 @@ function PANEL:Init()
     self.optionPanel:DockMargin(W(150), 0, W(150), H(80))
 
     self.categoryOpPanel = parent:RegisterCategory(self, self:GetWide() - W(150) - W(585), H(60), W(585), H(62))
-    :AddButton("Игровой процесс", W(235), function()
+    :AddButton("#settings_title_gameplay", W(235), function()
         self:OpenStages(true, "game_process")
     end, true)
     :AddSlash()
-    :AddButton("Управление", W(165), function()
+    :AddButton("#settings_title_keybinds", W(165), function()
         self:OpenStages(true, "control")
     end)
     :AddSlash()
-    :AddButton("Контент", W(125), function()
+    :AddButton("#settings_title_content", W(125), function()
         self:OpenStages(true, "content")
     end)
 
-    parent:AddOption(self.optionPanel, "ESC", "Назад", W(50), W(100))
+    parent:AddOption(self.optionPanel, "ESC", "#menu_button_back", W(50), W(100))
 end
 
 function PANEL:SettingsCreatePanels()

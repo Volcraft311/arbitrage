@@ -76,7 +76,7 @@ function PANEL:WaitingLoadingAddons()
         outlined:SetEndAngle(value)
         outlined()
 
-        local _, heigth = draw.SimpleText("ЗАГРУЗКА: " .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_15", w / 2, y + r + 20, color_white, TEXT_ALIGN_CENTER)
+        local _, heigth = draw.SimpleText("#content_loading" .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_15", w / 2, y + r + 20, color_white, TEXT_ALIGN_CENTER)
         draw.SimpleText(nameAddon .. " (" .. idAddon .. ")", "arb.Font_FuturaPTBook_8", w / 2, y + r + heigth + 20, Color(78, 77, 77), TEXT_ALIGN_CENTER)
 
         local size = self:GetTall() * 0.0011
@@ -188,10 +188,10 @@ function PANEL:CheckContent()
         outlined:SetEndAngle(value)
         outlined()
 
-        draw.DrawText("Сейчас происходит проверка игрового\nконтента на наличие ошибок,\nпожалуйста подождите завершение\nпроцесса.", fontDescription, 150, h / 2, color_white, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Добро пожаловать!", fontWelcome, 150, h / 2 - fontWelcomeHeight - 33, color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#content_text", fontDescription, 150, h / 2, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText("#content_welcome", fontWelcome, 150, h / 2 - fontWelcomeHeight - 33, color_white, TEXT_ALIGN_LEFT)
 
-        local _, heigth = draw.SimpleText("Проверено элементов: " .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_13", x, y + r + 60, color_white, TEXT_ALIGN_CENTER)
+        local _, heigth = draw.SimpleText("#content_checked" .. (countAddons - #data) .. "/" .. countAddons .. " (" .. s_m_interest .. "%)", "arb.Font_FuturaPTDemi_13", x, y + r + 60, color_white, TEXT_ALIGN_CENTER)
         draw.SimpleText(nameAddon .. " (" .. idAddon .. ")", "arb.Font_FuturaPTBook_7", x, y + r + heigth + 60, Color(78, 77, 77), TEXT_ALIGN_CENTER)
 
         local size = self:GetTall() * 0.0011
@@ -264,13 +264,13 @@ function PANEL:CheckContent()
 
     local titlePanel = playerPanel:Add("DLabel")
     titlePanel:Dock(TOP)
-    titlePanel:SetText("Профиль: " .. LocalPlayer():SteamName())
+    titlePanel:SetText("#content_profile" .. LocalPlayer():SteamName())
     titlePanel:SetFont("arb.Font_FuturaPTDemi_11")
     titlePanel:SizeToContents()
 
     local descPanel = playerPanel:Add("DLabel")
     descPanel:Dock(TOP)
-    descPanel:SetText("Вы находитесь на Asterion Academy!")
+    descPanel:SetText("#content_desc")
     descPanel:SetTextColor(Color(95, 95, 95))
     descPanel:SetFont("arb.Font_FuturaPTBook_8")
     descPanel:SizeToContents()
@@ -376,7 +376,7 @@ function PANEL:ErrorMenu(errors)
     titlePanel:Dock(TOP)
     titlePanel:DockMargin(150, H(100), 0, 10)
     titlePanel:SetContentAlignment(4)
-    titlePanel:SetText("РЕКОМЕНДАЦИИ")
+    titlePanel:SetText("#content_recs")
     titlePanel:SetFont(titleFont)
     titlePanel:SizeToContents()
 
@@ -384,7 +384,7 @@ function PANEL:ErrorMenu(errors)
     descPanel:Dock(TOP)
     descPanel:DockMargin(150, 0, 0, 100)
     descPanel:SetContentAlignment(4)
-    descPanel:SetText("Были обнаружены проблемы с контентом сервера. Пожалуйста, установите данные дополнения:")
+    descPanel:SetText("#content_error")
     descPanel:SetFont(descFont)
     descPanel:SizeToContents()
 
@@ -453,7 +453,7 @@ function PANEL:ErrorMenu(errors)
             local height = 0
 
             if bIsOptional then
-                height = select(2, draw.SimpleText("Не обязательный", "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10, Color(255, 166, 0, 255 - alpha * 0.3), TEXT_ALIGN_CENTER))
+                height = select(2, draw.SimpleText("#content_optional", "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10, Color(255, 166, 0, 255 - alpha * 0.3), TEXT_ALIGN_CENTER))
             end
 
             draw.SimpleText(name, "arb.Font_FuturaPTBook_6", w / 2, sizeIcon + 10 + height, Color(255, 255, 255, 255 - alpha), TEXT_ALIGN_CENTER)
@@ -487,7 +487,7 @@ function PANEL:ErrorMenu(errors)
     local informationPanelText = informationPanel:Add("DLabel")
     informationPanelText:Dock(TOP)
     informationPanelText:SetContentAlignment(4)
-    informationPanelText:SetText("Если ошибка не решилась, то рекомендуем обратиться к\nадминистрации проекта Asterion Academy. Сделать это\nможно в соц. сетях:")
+    informationPanelText:SetText("#content_error2")
     informationPanelText:SetFont(descFont)
     informationPanelText:SizeToContents()
 
@@ -511,7 +511,7 @@ function PANEL:ErrorMenu(errors)
         surface.SetDrawColor(155, 35, 57, 255 * this.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText("Отключиться от сервера", buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("#content_leave", buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     disconnectButton.DoClick = function()
         RunConsoleCommand("disconnect")
@@ -531,7 +531,7 @@ function PANEL:ErrorMenu(errors)
         surface.SetDrawColor(155, 35, 57, 255 * this.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText("Продолжить игру", buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("#content_continue", buttonFont, w / 2, h / 2, Color(255, 234, 238, 255 * this.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     continueButton.DoClick = function()
         panel:AlphaTo(0, 0.5, 0, function()
@@ -555,13 +555,13 @@ function PANEL:ErrorMenu(errors)
 
             if countNoSubscribe <= 0 then
                 return self:NotifyMenu(
-                    "ПРЕДУПРЕЖДЕНИЕ",
-                    "Вам необходимо перезайти в игру, чтобы дополнения на которые вы подписали\nначали работать стабильно!",
-                    "Перезайти в игру",
+                    "#content_warning_title",
+                    "#content_warning_text",
+                    "#content_rejoin",
                     function(pPanel)
                         os.date("%l") -- :)
                     end,
-                    "Продолжить игру",
+                    "#content_continue",
                     function(pPanel)
                         pPanel:AlphaTo(0, 0.5, 0, function()
                             self:Remove()
@@ -570,9 +570,9 @@ function PANEL:ErrorMenu(errors)
                 )
             else
                 return self:NotifyMenu(
-                    "ПРЕДУПРЕЖДЕНИЕ",
-                    "Вы подписались не на все дополнения с которыми возникли проблемы.\nЕсли вы продолжите игру, то можете столкнуться с проблемами внутри клиента!",
-                    "Назад",
+                    "#content_warning_title",
+                    "#content_warning_text2",
+                    "#menu_button_back",
                     function(pPanel)
                         pPanel:AlphaTo(0, 0.5, 0, function()
                             pPanel:Remove()
@@ -580,7 +580,7 @@ function PANEL:ErrorMenu(errors)
                             self:ShowErrors(errors, true)
                         end)
                     end,
-                    "Продолжить игру",
+                    "#content_continue",
                     function(pPanel)
                         pPanel:AlphaTo(0, 0.5, 0, function()
                             self:Remove()
@@ -598,13 +598,13 @@ function PANEL:ShowErrors(errors, bFirstIgnore)
 
         if number <= 1 then
             return self:NotifyMenu(
-                "ВПЕРВЫЕ С НАМИ?",
-                "Похоже, что вы первый раз зашли на наш сервер. Чтобы всё работало\nкорректно необходимл перезайти на сервер. Если вы продолжите игру,\nто можете столкнуться с проблемами внутри клиента. Приятной игры!",
-                "Перезайти на сервер",
+                "#content_firstjoin_title",
+                "#content_firstjoin_text",
+                "#content_rejoin",
                 function()
                     RunConsoleCommand("retry")
                 end,
-                "Продолжить игру",
+                "#content_continue",
                 function(panel)
                     panel:AlphaTo(0, 0.5, 0, function()
                         panel:Remove()

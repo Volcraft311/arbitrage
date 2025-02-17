@@ -165,7 +165,7 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 89.25)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.SimpleText("Избранное", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText("#cmenu_favourites", "arb.Font_FuturaPTDemi_12", w / 2, H(7), Color(255, 220, 228, 255), TEXT_ALIGN_CENTER)
     end
 
     if !self.client:IsSpectate() then

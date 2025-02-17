@@ -15,7 +15,7 @@ local PANEL = {}
 
 local categoryData = {
     {
-        name = "Список улик",
+        name = "#clue_list",
         func = function(panel)
             local List = panel:Add("DIconLayout")
             List:Dock(FILL)
@@ -77,22 +77,22 @@ local categoryData = {
         end,
     },
     {
-        name = "Свидетельства о смерти",
+        name = "#clue_certificate",
         func = function(panel)
             local List = panel:Add("Panel")
             List:Dock(FILL)
             List.Paint = function(_, w, h)
-                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
+                draw.DrawText("#clue_wip", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
             end
         end,
     },
     {
-        name = "Список заметок",
+        name = "#clue_notebook",
         func = function(panel)
             local List = panel:Add("Panel")
             List:Dock(FILL)
             List.Paint = function(_, w, h)
-                draw.DrawText("В разработке...", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
+                draw.DrawText("#clue_wip", "arb.Font_FuturaPTBook_15", w / 2, 30, color_white, TEXT_ALIGN_CENTER)
             end
         end,
     }

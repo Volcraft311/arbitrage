@@ -89,10 +89,10 @@ function PANEL:SetIcon(material)
 end
 
 function PANEL:SetDescription(description)
-    description = description:gsub("Количество патрон: %d+", "")
-    description = description:gsub("Количество: %d+/%d+", "")
-    description = description:gsub("Осталось: %d+/%d+", "")
-    description = description:gsub("Количество: %d+", "")
+    description = description:gsub("#tooltip_quantity_ammo", "")
+    description = description:gsub("#tooltip_quantity_1", "")
+    description = description:gsub("#tooltip_quantity_2", "")
+    description = description:gsub("#tooltip_quantity_3", "")
     description = string.Trim(description)
 
     description = string.utf8upper(string.utf8sub(description, 1, 1)) .. string.utf8sub(description, 2, string.utf8len(description))
@@ -278,15 +278,15 @@ timer.Create("Tooltip:Entity", 0.1, 0, function()
                     panel:SetTitle(entity:Name())
                     if !entity:GetNetVar("hideStatus") then
                         local color = Color(61, 210, 101)
-                        local stText = "На вид в порядке"
+                        local stText = "#tooltip_status_healty"
                         local health = entity:Health()
 
                         if health <= 40 then
                             color = Color(218, 52, 52)
-                            stText = "Выглядит неважно"
+                            stText = "#tooltip_status_badshape"
                         elseif health <= 80 then
                             color = Color(218, 162, 52)
-                            stText = "Слегка потрепанный"
+                            stText = "#tooltip_status_injured"
                         end
 
                         panel:AddSubMenu(stText, function(this)

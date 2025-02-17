@@ -13,8 +13,8 @@
 
 local PANEL = {}
 
-local deathTitle = "Вы погибли!"
-local deathText = "Вы вернетесь в лобби через: %s секунд."
+local deathTitle = "#deathscreen_title"
+local deathText = "#deathscreen_text"
 local deathTime = 10
 
 function PANEL:Init()

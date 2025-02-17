@@ -14,7 +14,7 @@
 
 -- TRIGGER HAPPY HAVOC
 Character.emoji:Register("aoi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -43,7 +43,7 @@ Character.emoji:Register("aoi", {
 })
 
 Character.emoji:Register("byakuya", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -67,7 +67,7 @@ Character.emoji:Register("byakuya", {
 })
 
 Character.emoji:Register("celestia", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -89,7 +89,7 @@ Character.emoji:Register("celestia", {
 })
 
 Character.emoji:Register("chihiro", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -115,7 +115,7 @@ Character.emoji:Register("chihiro", {
 })
 
 Character.emoji:Register("hifumi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -142,7 +142,7 @@ Character.emoji:Register("hifumi", {
 })
 
 Character.emoji:Register("junko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -166,7 +166,7 @@ Character.emoji:Register("junko", {
 })
 
 Character.emoji:Register("kiyotaka", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -195,7 +195,7 @@ Character.emoji:Register("kiyotaka", {
 })
 
 Character.emoji:Register("kyoko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -218,7 +218,7 @@ Character.emoji:Register("kyoko", {
 })
 
 Character.emoji:Register("leon", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -238,7 +238,7 @@ Character.emoji:Register("leon", {
 })
 
 Character.emoji:Register("makoto", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -268,7 +268,7 @@ Character.emoji:Register("makoto", {
 })
 
 Character.emoji:Register("mondo", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -291,7 +291,7 @@ Character.emoji:Register("mondo", {
 })
 
 Character.emoji:Register("sakura", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -308,7 +308,7 @@ Character.emoji:Register("sakura", {
 })
 
 Character.emoji:Register("sayaka", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -330,7 +330,7 @@ Character.emoji:Register("sayaka", {
 })
 
 Character.emoji:Register("toko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -364,7 +364,7 @@ Character.emoji:Register("toko", {
 })
 
 Character.emoji:Register("yasuhiro", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -387,7 +387,7 @@ Character.emoji:Register("yasuhiro", {
 
 -- GOODBYE DESPAIR
 Character.emoji:Register("akane", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -418,7 +418,7 @@ Character.emoji:Register("akane", {
 })
 
 Character.emoji:Register("chiaki", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -444,7 +444,7 @@ Character.emoji:Register("chiaki", {
 })
 
 Character.emoji:Register("fuyuhiko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -471,7 +471,7 @@ Character.emoji:Register("fuyuhiko", {
 })
 
 Character.emoji:Register("gundham", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -498,7 +498,7 @@ Character.emoji:Register("gundham", {
 })
 
 Character.emoji:Register("hajime", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -527,7 +527,7 @@ Character.emoji:Register("hajime", {
 })
 
 Character.emoji:Register("hiyoko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -556,7 +556,7 @@ Character.emoji:Register("hiyoko", {
 })
 
 Character.emoji:Register("ibuki", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -583,7 +583,7 @@ Character.emoji:Register("ibuki", {
 })
 
 Character.emoji:Register("kazuichi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -613,7 +613,7 @@ Character.emoji:Register("kazuichi", {
 })
 
 Character.emoji:Register("mahiru", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -639,7 +639,7 @@ Character.emoji:Register("mahiru", {
 })
 
 Character.emoji:Register("mikan", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -668,7 +668,7 @@ Character.emoji:Register("mikan", {
 })
 
 Character.emoji:Register("nagito", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -700,7 +700,7 @@ Character.emoji:Register("nagito", {
 })
 
 Character.emoji:Register("nekomaru", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -720,7 +720,7 @@ Character.emoji:Register("nekomaru", {
 })
 
 Character.emoji:Register("peko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -743,7 +743,7 @@ Character.emoji:Register("peko", {
 })
 
 Character.emoji:Register("sonia", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -772,7 +772,7 @@ Character.emoji:Register("sonia", {
 })
 
 Character.emoji:Register("teruteru", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -799,7 +799,7 @@ Character.emoji:Register("teruteru", {
 })
 
 Character.emoji:Register("twogami", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -821,7 +821,7 @@ Character.emoji:Register("twogami", {
 
 -- KILLING HARMONY
 Character.emoji:Register("angie", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -852,7 +852,7 @@ Character.emoji:Register("angie", {
 })
 
 Character.emoji:Register("gonta", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -889,7 +889,7 @@ Character.emoji:Register("gonta", {
 })
 
 Character.emoji:Register("himiko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -930,7 +930,7 @@ Character.emoji:Register("himiko", {
 })
 
 Character.emoji:Register("k1b0", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -961,7 +961,7 @@ Character.emoji:Register("k1b0", {
 })
 
 Character.emoji:Register("kaede", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1013,7 +1013,7 @@ Character.emoji:Register("kaede", {
 })
 
 Character.emoji:Register("kaito", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1063,7 +1063,7 @@ Character.emoji:Register("kaito", {
 })
 
 Character.emoji:Register("kirumi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1100,7 +1100,7 @@ Character.emoji:Register("kirumi", {
 })
 
 Character.emoji:Register("kokichi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1147,7 +1147,7 @@ Character.emoji:Register("kokichi", {
 })
 
 Character.emoji:Register("korekiyo", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1175,7 +1175,7 @@ Character.emoji:Register("korekiyo", {
 })
 
 Character.emoji:Register("maki", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1233,7 +1233,7 @@ Character.emoji:Register("maki", {
 })
 
 Character.emoji:Register("miu", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1270,7 +1270,7 @@ Character.emoji:Register("miu", {
 })
 
 Character.emoji:Register("rantaro", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1299,7 +1299,7 @@ Character.emoji:Register("rantaro", {
 })
 
 Character.emoji:Register("ryoma", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1323,7 +1323,7 @@ Character.emoji:Register("ryoma", {
 })
 
 Character.emoji:Register("shuichi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1406,7 +1406,7 @@ Character.emoji:Register("shuichi", {
 })
 
 Character.emoji:Register("tenko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1444,7 +1444,7 @@ Character.emoji:Register("tenko", {
 })
 
 Character.emoji:Register("tsumugi", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1479,7 +1479,7 @@ Character.emoji:Register("tsumugi", {
 
 -- ULTRA DESPAIR GIRLS
 Character.emoji:Register("jataro", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1495,7 +1495,7 @@ Character.emoji:Register("jataro", {
 })
 
 Character.emoji:Register("komaru", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1532,7 +1532,7 @@ Character.emoji:Register("komaru", {
 })
 
 Character.emoji:Register("kotoko", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1555,7 +1555,7 @@ Character.emoji:Register("kotoko", {
 })
 
 Character.emoji:Register("masaru", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1579,7 +1579,7 @@ Character.emoji:Register("masaru", {
 })
 
 Character.emoji:Register("monaca", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1602,7 +1602,7 @@ Character.emoji:Register("monaca", {
 		"20.png",
 		"21.png"
 	},
-	["На коляске"] = {
+	["#classtrial_sprite_category_monaca_inwheelchair"] = {
 		"22.png",
 		"23.png",
 		"24.png",
@@ -1628,7 +1628,7 @@ Character.emoji:Register("monaca", {
 })
 
 Character.emoji:Register("nagisa", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",
@@ -1651,7 +1651,7 @@ Character.emoji:Register("nagisa", {
 
 -- Ведущие
 Character.emoji:Register("monokuma", {
-	["Основные"] = {
+	["#classtrial_sprite_category_main"] = {
 		"1.png",
 		"2.png",
 		"3.png",

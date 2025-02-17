@@ -456,10 +456,10 @@ function PLUGIN:RenderScreenspaceEffects()
 
     DrawColorModify(tab)
 
-    Hints:AddKeyDraw("Говорить / Перевести камеру", "+voicerecord")
+    Hints:AddKeyDraw("#hintsdraw_law_talk", "+voicerecord")
 
     local ui = MonoPad:GetUI()
-    Hints:AddKeyDraw((IsValid(ui) and "Убрать" or "Достать") .. " планшет", SETTINGS.binds.Get("open_material_ui"))
+    Hints:AddKeyDraw((IsValid(ui) and "#hintsdraw_putaway" or "#hintsdraw_getit") .. " #hintsdraw_tablet", SETTINGS.binds.Get("open_material_ui"))
 end
 
 function PLUGIN:CameraTwist()

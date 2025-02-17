@@ -137,5 +137,5 @@ end
 function SWEP:DrawHUD()
     local client = LocalPlayer()
 
-    Hints:AddKeyDraw((client:GetLocalVar("sharedflashlight") and "Выключить" or "Включить") .. " фонарик", MOUSE_LEFT)
+    Hints:AddKeyDraw(client:GetLocalVar("sharedflashlight") and "#hintsdraw_flashlight_off" or "#hintsdraw_flashlight_on", MOUSE_LEFT)
 end

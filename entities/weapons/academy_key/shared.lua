@@ -168,8 +168,8 @@ if CLIENT then
         local t_entity = client:GetEyeTrace().Entity
 
         if IsValid(t_entity) and t_entity:IsDoor() and t_entity:GetPos():DistToSqr(EyePos()) < 6000 then
-            Hints:AddKeyDraw("Закрыть дверь", MOUSE_LEFT)
-            Hints:AddKeyDraw("Открыть дверь", MOUSE_RIGHT)
+            Hints:AddKeyDraw("#hintsdraw_close_door", MOUSE_LEFT)
+            Hints:AddKeyDraw("#hintsdraw_open_door", MOUSE_RIGHT)
         end
     end
 end

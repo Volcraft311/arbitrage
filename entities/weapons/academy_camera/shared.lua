@@ -79,6 +79,7 @@ function SWEP:PrimaryAttack()
 	local cmd = client:GetCurrentCommand()
 	if cmd:KeyDown(IN_USE) then
 		Arbitrage.notify.NotifyChat("Вы " .. (self.Flash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
+
 		self.Flash = !self.Flash
 	else
 		netstream.Start("Photos:Request", !self.Flash)
@@ -151,8 +152,8 @@ function SWEP:DrawHUD()
 	local client = LocalPlayer()
 	if client.GetSitting and client:GetSitting() then return end
 
-	Hints:AddKeyDraw((self.Flash and "Включить" or "Выключить") .. " вспышку", {MOUSE_LEFT, "+use"})
-	Hints:AddKeyDraw("Изменить ракурс", MOUSE_RIGHT)
-	Hints:AddKeyDraw("Сфотографировать", MOUSE_LEFT)
-	Hints:AddKeyDraw("Сбросить камеру", "+reload")
+	Hints:AddKeyDraw(self.Flash and "#hintsdraw_flash_on" or "#hintsdraw_flash_off", {MOUSE_LEFT, "+use"})
+	Hints:AddKeyDraw("#hintsdraw_change_angle", MOUSE_RIGHT)
+	Hints:AddKeyDraw("#hintsdraw_take_photo", MOUSE_LEFT)
+	Hints:AddKeyDraw("#hintsdraw_reset_camera", "+reload")
 end

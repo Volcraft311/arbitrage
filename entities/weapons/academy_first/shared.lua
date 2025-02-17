@@ -568,12 +568,12 @@ if CLIENT then
         if client:IsSpectating() then return end
 
         if client:GetLocalVar("bIsHoldingObject", false) then
-            Hints:AddKeyDraw("Отпустить объект", "+reload")
-            Hints:AddKeyDraw("Кинуть", MOUSE_LEFT)
-            Hints:AddKeyDraw("Крутить вокруг оси", MOUSE_RIGHT)
+            Hints:AddKeyDraw("#hintsdraw_release_object", "+reload")
+            Hints:AddKeyDraw("#hintsdraw_throw", MOUSE_LEFT)
+            Hints:AddKeyDraw("#hintsdraw_spin_around_axis", MOUSE_RIGHT)
         else
             local isAttack = self:GetAttack()
-            Hints:AddKeyDraw((isAttack and "Опустить" or "Поднять") .. " руки", "+reload")
+            Hints:AddKeyDraw(isAttack and "#hintsdraw_lower_hand" or "#hintsdraw_raise_hand", "+reload")
 
             local data = {}
             data.start = client:GetShootPos()
@@ -585,9 +585,9 @@ if CLIENT then
 
             if IsValid(entity) then
                 if allowedHoldableClasses[entity:GetClass()] then
-                    Hints:AddKeyDraw("Поднять объект", MOUSE_RIGHT)
+                    Hints:AddKeyDraw("#hintsdraw_pickup_object", MOUSE_RIGHT)
                 elseif entity:IsDoor() and !isAttack then
-                    Hints:AddKeyDraw("Постучать в дверь", MOUSE_LEFT)
+                    Hints:AddKeyDraw("#hintsdraw_knock_door", MOUSE_LEFT)
                 end
             end
         end

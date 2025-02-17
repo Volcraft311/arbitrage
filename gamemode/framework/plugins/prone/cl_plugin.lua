@@ -20,7 +20,7 @@ function Prone:HUDPaint()
 	if client.IsProne and client:IsProne() then
 		if !prone.CanExit(client) then return end
 
-		Hints:AddKeyDraw("Встать на ноги", SETTINGS.binds.Get("prone"))
+		Hints:AddKeyDraw("#hintsdraw_prone_wakeup", SETTINGS.binds.Get("prone"))
 	end
 end
 

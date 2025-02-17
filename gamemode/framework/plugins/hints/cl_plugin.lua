@@ -77,13 +77,32 @@ function Hints:Select(id)
     end)
 end
 
-hook("OnSettingsLoad", function()
-    Hints:Add("Вы всегда можете настроить игру под себя в настройках главного меню.")
-    Hints:Add("Для большего погружения, не забывайте использовать RP-команды (/me, /try, /it).")
-    Hints:Add("При наличии ошибок с моделями или текстурами, проверьте статус скачанных аддонов во вкладке 'Контент' игровых настроек.")
+function Hints:InitHints()
+    self.stored = {}
 
-    Hints:Add("Открыть главное меню можно нажатием клавиши '" .. input_GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
-    Hints:Add("При помощи клавиш '" .. input_GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' и '" .. input_GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', вы можете регулировать дальность слышимости вашего микрофона.")
+    self:Add("#hint_1")
+    self:Add("#hint_2")
+    self:Add("#hint_3")
+
+    self:Add("#hint_4 '" .. input_GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
+    self:Add("#hint_5 '" .. input_GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' , '" .. input_GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', #hint_5_1")
+
+    self:Add("#hint_6")
+    self:Add("#hint_7")
+    self:Add("#hint_8")
+    self:Add("#hint_9")
+    self:Add("#hint_10")
+    self:Add("#hint_11")
+    self:Add("#hint_12")
+    self:Add("#hint_13")
+end
+
+hook("OnSettingsLoad", function()
+    Hints:InitHints()
+end)
+
+hook("OnLanguageUpdate", function()
+    Hints:InitHints()
 end)
 
 timer_Create("Hints:Random", 150, 0, function()
@@ -113,23 +132,23 @@ timer_Create("Hints:Update", 0.1, 0, function()
     local sit_key = SETTINGS.binds.Get("sitting")
     if trace.HitPos:DistToSqr(EyePos()) < 5000 or input_IsKeyDown(sit_key) then
         if !client.IsProne or !client:IsProne() then
-            Hints:AddKeyDraw("Сесть", sit_key)
+            Hints:AddKeyDraw("#hintsdraw_sit", sit_key)
         end
     end
 
     local t_entity = trace.Entity
     if IsValid(t_entity) and t_entity:GetPos():DistToSqr(EyePos()) < 10000 then
         if t_entity:GetClass() == "arb_item" or t_entity:GetClass() == "arb_fridge" then
-            Hints:AddKeyDraw("Использовать", "+use")
+            Hints:AddKeyDraw("#hintsdraw_use", "+use")
         elseif t_entity:GetClass() == "arb_container" or t_entity:GetClass() == "arb_wardrobe" then
-            Hints:AddKeyDraw("Открыть", "+use")
+            Hints:AddKeyDraw("#hintsdraw_open", "+use")
         elseif t_entity:IsPlayer() then
-            Hints:AddKeyDraw("Действия", "+use")
+            Hints:AddKeyDraw("#hintsdraw_actions", "+use")
         else
             local model = t_entity:GetModel() or ""
 
             if BedSystem.allowBed[model:lower()] then
-                Hints:AddKeyDraw("Лечь спать", "+use")
+                Hints:AddKeyDraw("#hintsdraw_go_to_bed", "+use")
             end
         end
     end
@@ -146,13 +165,13 @@ timer_Create("Hints:Update", 0.1, 0, function()
                     local id = "tfa_safety_" .. class
                     local status = client:GetNetVar(id, false)
 
-                    Hints:AddKeyDraw(status and "Поднять оружие" or "Опустить оружие", "+reload")
+                    Hints:AddKeyDraw(status and "#hintsdraw_raise_weapon" or "#hintsdraw_lower_weapon", "+reload")
                 end
             else
-                Hints:AddKeyDraw("Проверить магазин", "+reload")
+                Hints:AddKeyDraw("#hintsdraw_check_ammo", "+reload")
             end
 
-            Hints:AddKeyDraw("Ударить", "+zoom")
+            Hints:AddKeyDraw("#hintsdraw_hit", "+zoom")
         end
     end
 end)
@@ -164,6 +183,8 @@ function Hints:Think()
     if time >= self.nextThink then
         local data = self.stored[self.select]
         if !data then return end
+
+        data = F(data)
 
         if self.char < data:utf8len() then
             self.char = self.char + 1
@@ -205,7 +226,7 @@ local padding = 0
 local paddingX, paddingY = 25, 25
 local function drawKey(info)
     local x, y = ScrW() - paddingX, ScrH() - paddingY - padding
-    local w, h = draw_SimpleText(info.text, "arb.Font_FuturaPTBook_9", x, y, Color(255, 242, 245, info.alpha), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+    local w, h = draw_SimpleText(F(info.text), "arb.Font_FuturaPTBook_9", x, y, Color(255, 242, 245, info.alpha), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
 
     x, y = x - w - h * 1.2, y - h
 
@@ -255,7 +276,7 @@ function Hints:HUDPaint()
         self.alpha = Lerp(FrameTime() * 2, self.alpha, self.alphaTo)
 
         if self.alpha >= 0.1 then
-            local w, h = draw_SimpleText(self.text, "arb.Font_FuturaPTBook_7", paddingX, paddingY, Color(255, 255, 255, self.alpha), TEXT_ALIGN_LEFT)
+            local w, h = draw_SimpleText(F(self.text), "arb.Font_FuturaPTBook_7", paddingX, paddingY, Color(255, 255, 255, self.alpha), TEXT_ALIGN_LEFT)
 
             surface_SetDrawColor(255, 255, 255, self.alpha)
             surface_SetMaterial(mat)

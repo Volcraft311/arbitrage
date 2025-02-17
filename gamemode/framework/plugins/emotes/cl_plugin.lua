@@ -95,7 +95,7 @@ function Emotes:CalcView(client, origin)
 
 	local bThirdPerson = select(3, GetAction(client))
 	if bThirdPerson then
-		Hints:AddKeyDraw("Выйти из анимации", "+jump")
+		Hints:AddKeyDraw("#hintsdraw_exit_action", "+jump")
 
 		local ang = client:EyeAngles()
 
@@ -139,8 +139,8 @@ function Emotes:CalcView(client, origin)
 	end
 
 	if client.GetSitting and client:GetSitting() then
-		Hints:AddKeyDraw("Изменить положение камеры", "+duck")
-		Hints:AddKeyDraw("Встать на ноги", "+use")
+		Hints:AddKeyDraw("#hintsdraw_camera_pos", "+duck")
+		Hints:AddKeyDraw("#hintsdraw_back_feet", "+use")
 
 		if client:GetPos():DistToSqr(Vector(0, 0, 0)) <= 150 then
 			RunConsoleCommand("+use")

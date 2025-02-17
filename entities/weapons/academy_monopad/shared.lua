@@ -333,18 +333,16 @@ if CLIENT then
         local client = LocalPlayer()
         if client.GetSitting and client:GetSitting() then return end
 
-        Hints:AddKeyDraw("Убрать планшет", SETTINGS.binds.Get("open_material_ui"))
+        Hints:AddKeyDraw("#hintsdraw_lower_tablet", SETTINGS.binds.Get("open_material_ui"))
 
         local ui = MonoPad:GetUI()
         if IsValid(ui) then
-            Hints:AddKeyDraw("Управлять " .. (ui.editing and "камерой" or "курсором"), "+jump")
-
-            local hideHands = ui.hidehands
-            Hints:AddKeyDraw((hideHands and "Показать" or "Скрыть") .. " руки", "+reload")
+            Hints:AddKeyDraw(ui.editing and "#hintsdraw_control_camera" or "#hintsdraw_control_cursor", "+jump")
+            Hints:AddKeyDraw(ui.hidehands and "#hintsdraw_draw_hands" or "#hintsdraw_undraw_hands", "+reload")
         end
 
-        Hints:AddKeyDraw((self.Edit and "Отдалить" or "Приблизить") .. " планшет", MOUSE_RIGHT)
-        Hints:AddKeyDraw("Выбрать", MOUSE_LEFT)
+        Hints:AddKeyDraw(self.Edit and "#hintsdraw_zoom_out_tablet" or "#hintsdraw_zoom_in_tablet", MOUSE_RIGHT)
+        Hints:AddKeyDraw("#hintsdraw_select", MOUSE_LEFT)
     end
 else
     function SWEP:CreateTablet()

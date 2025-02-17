@@ -18,8 +18,8 @@
 AdminESP:AddPlayerESPCustomization("name_pl", {
     dist = 0,
     config = {
-        name = "Имя персонажа",
-        desc = "Включить показатель имени персонажа"
+        name = "#adminesp_custom_charname_title",
+        desc = "#adminesp_custom_charname_desc"
     },
     data = function(entity)
         return entity:Name()
@@ -29,8 +29,8 @@ AdminESP:AddPlayerESPCustomization("name_pl", {
 AdminESP:AddPlayerESPCustomization("steamname_pl", {
     dist = 0,
     config = {
-        name = "STEAM Имя персонажа",
-        desc = "Включить показатель имени персонажа"
+        name = "#adminesp_custom_steamname_title",
+        desc = "#adminesp_custom_steamname_desc"
     },
     data = function(entity)
         return entity:SteamName()
@@ -40,8 +40,8 @@ AdminESP:AddPlayerESPCustomization("steamname_pl", {
 AdminESP:AddPlayerESPCustomization("rank_pl", {
     dist = 1500,
     config = {
-        name = "Ранг игрока",
-        desc = "Включить показатель ранга игрока"
+        name = "#adminesp_custom_rank_title",
+        desc = "#adminesp_custom_rank_desc"
     },
     data = function(entity)
         return entity:GetUserGroup()
@@ -51,8 +51,8 @@ AdminESP:AddPlayerESPCustomization("rank_pl", {
 AdminESP:AddPlayerESPCustomization("hp_armor_pl", {
     dist = 1000,
     config = {
-        name = "Состояние игрока",
-        desc = "Включить показатель состояния игрока"
+        name = "#adminesp_custom_status_title",
+        desc = "#adminesp_custom_status_desc"
     },
     data = function(entity)
         return entity:Health() .. "/" .. entity:Armor()
@@ -62,8 +62,8 @@ AdminESP:AddPlayerESPCustomization("hp_armor_pl", {
 AdminESP:AddPlayerESPCustomization("statistics_pl", {
     dist = 1000,
     config = {
-        name = "Статистика игрока",
-        desc = "Включить показатель статистики игрока"
+        name = "#adminesp_custom_stats_title",
+        desc = "#adminesp_custom_stats_desc"
     },
     data = function(entity)
         return ("H: %s   T: %s   S: %s"):format(Arbitrage.statistics.Get(entity, "Hunger") or 100, Arbitrage.statistics.Get(entity, "Thirst") or 100, Arbitrage.statistics.Get(entity, "Sleep") or 100)
@@ -73,8 +73,8 @@ AdminESP:AddPlayerESPCustomization("statistics_pl", {
 AdminESP:AddPlayerESPCustomization("weapon_pl", {
     dist = 1000,
     config = {
-        name = "Оружие игрока",
-        desc = "Включить показатель информации о оружии игрока"
+        name = "#adminesp_custom_weapon_title",
+        desc = "#adminesp_custom_weapon_desc"
     },
     data = function(entity)
         local weapon = entity:GetActiveWeapon()
@@ -87,8 +87,8 @@ AdminESP:AddPlayerESPCustomization("weapon_pl", {
 AdminESP:AddPlayerESPCustomization("trace_pl", {
     dist = 1000,
     config = {
-        name = "Прицел игрока",
-        desc = "Показывать куда смотрит игрок"
+        name = "#adminesp_custom_tracer_title",
+        desc = "#adminesp_custom_tracer_desc"
     },
     data = function(entity)
         if entity:IsDormant() then return end
@@ -119,8 +119,8 @@ AdminESP:AddPlayerESPCustomization("trace_pl", {
 AdminESP:AddPlayerESPCustomization("observer_pl", {
     dist = 0,
     config = {
-        name = "ОбСервер статус",
-        desc = "Включить показатель состояния ОбСервера игрока"
+        name = "#adminesp_custom_obs_title",
+        desc = "#adminesp_custom_obs_desc"
     },
     data = function(entity)
         if entity:GetMoveType() == MOVETYPE_NOCLIP then
@@ -132,8 +132,8 @@ AdminESP:AddPlayerESPCustomization("observer_pl", {
 AdminESP:AddPlayerESPCustomization("fallover_pl", {
     dist = 0,
     config = {
-        name = "Fallover статус",
-        desc = "Включить показатель состояния Fallover-а игрока"
+        name = "#adminesp_custom_fallover_title",
+        desc = "#adminesp_custom_fallover_desc"
     },
     data = function(entity)
         local ragdoll = entity:IsRagdolling()
@@ -150,8 +150,8 @@ AdminESP:AddPlayerESPCustomization("fallover_pl", {
 AdminESP:AddEntityESPCustomization("name_en", {
     dist = 3000,
     config = {
-        name = "Название энтити",
-        desc = "Включить показатель названия энтити"
+        name = "#adminesp_custom_entname_title",
+        desc = "#adminesp_custom_entname_desc"
     },
     data = function(entity)
         local class = entity:GetClass()
@@ -169,8 +169,8 @@ AdminESP:AddEntityESPCustomization("name_en", {
 AdminESP:AddEntityESPCustomization("class_en", {
     dist = 1000,
     config = {
-        name = "Класс энтити",
-        desc = "Включить показатель класса энтити"
+        name = "#adminesp_custom_entclass_title",
+        desc = "#adminesp_custom_entclass_desc"
     },
     data = function(entity)
         return entity:GetClass()
@@ -180,8 +180,8 @@ AdminESP:AddEntityESPCustomization("class_en", {
 AdminESP:AddEntityESPCustomization("model_en", {
     dist = 200,
     config = {
-        name = "Модель энтити",
-        desc = "Включить показатель модели энтити"
+        name = "#adminesp_custom_entmodel_title",
+        desc = "#adminesp_custom_entmodel_desc"
     },
     data = function(entity)
         return entity:GetModel()

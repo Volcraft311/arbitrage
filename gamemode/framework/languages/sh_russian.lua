@@ -286,17 +286,6 @@ Arbitrage.language:Add("ru", {
 -- ОБНАРУЖЕНИЕ ТРУПА
     ["#persistent_found_corpse"] = "%s(%s) обнаружил труп! (%s)",
 
--- МОНОМЕНЮ
-    ["#monomenu_inventory_not_found"] = "У данного игрока не инициализирован инвентарь!",
-    ["#monomenu_inventory_own_open"] = "Нельзя открыть собственный инвентарь!",
-    ["#monomenu_description_change"] = "Администрация сервера изменила вам описание!",
-    ["#monomenu_ban_nonrp_chat"] = "Администрация сервера запретила вам писать в NonRP чат!",
-    ["#monomenu_unban_nonrp_chat"] = "Администрация сервера разрешила вам писать в NonRP чат!",
-    ["#monomenu_ban_voice_chat"] = "Администрация сервера выключила вам голосовой чат!",
-    ["#monomenu_unban_voice_chat"] = "Администрация сервера включила вам голосовой чат!",
-    ["#monomenu_on_global_voice_chat"] = "Администрация сервера включила вам глобальный голосовой чат!",
-    ["#monomenu_off_global_voice_chat"] = "Администрация сервера выключила вам глобальный голосовой чат!",
-
 -- ВЗАИМОДЕЙСТВИЕ С ДВЕРЬМИ
     ["#academy_key_no_keys"] = "У вас нет ключей от двери!",
     ["#academy_key_door_already_open"] = "Данная дверь уже открыта!",
@@ -950,6 +939,66 @@ Arbitrage.language:Add("ru", {
     [""] = "",
     [""] = "",
 
+-- МОНОМЕНЮ
+    ["#monomenu_inventory_not_found"] = "У данного игрока не инициализирован инвентарь!",
+    ["#monomenu_inventory_own_open"] = "Нельзя открыть собственный инвентарь!",
+    ["#monomenu_description_change"] = "Администрация сервера изменила вам описание!",
+    ["#monomenu_ban_nonrp_chat"] = "Администрация сервера запретила вам писать в NonRP чат!",
+    ["#monomenu_unban_nonrp_chat"] = "Администрация сервера разрешила вам писать в NonRP чат!",
+    ["#monomenu_ban_voice_chat"] = "Администрация сервера выключила вам голосовой чат!",
+    ["#monomenu_unban_voice_chat"] = "Администрация сервера включила вам голосовой чат!",
+    ["#monomenu_on_global_voice_chat"] = "Администрация сервера включила вам глобальный голосовой чат!",
+    ["#monomenu_off_global_voice_chat"] = "Администрация сервера выключила вам глобальный голосовой чат!",
 
+-- AdminESP
+    ["#adminesp_custom_charname_title"] = "Имя персонажа",
+    ["#adminesp_custom_charname_desc"] = "Включить показатель имени персонажа",
+    ["#adminesp_custom_steamname_title"] = "STEAM Имя персонажа",
+    ["#adminesp_custom_steamname_desc"] = "Включить показатель имени персонажа",
+    ["#adminesp_custom_rank_title"] = "Ранг игрока",
+    ["#adminesp_custom_rank_desc"] = "Включить показатель ранга игрока",
+    ["#adminesp_custom_status_title"] = "Состояние игрока",
+    ["#adminesp_custom_status_desc"] = "Включить показатель состояния игрока",
+    ["#adminesp_custom_stats_title"] = "Статистика игрока",
+    ["#adminesp_custom_stats_desc"] = "Включить показатель статистики игрока",
+    ["#adminesp_custom_weapon_title"] = "Оружие игрока",
+    ["#adminesp_custom_weapon_desc"] = "Включить показатель информации о оружии игрока",
+    ["#adminesp_custom_tracer_title"] = "Прицел игрока",
+    ["#adminesp_custom_tracer_desc"] = "Показывать куда смотрит игрок",
+    ["#adminesp_custom_obs_title"] = "ОбСервер статус",
+    ["#adminesp_custom_obs_desc"] = "Включить показатель состояния ОбСервера игрока",
+    ["#adminesp_custom_fallover_title"] = "Fallover статус",
+    ["#adminesp_custom_fallover_desc"] = "Включить показатель состояния Fallover-а игрока",
+    ["#adminesp_custom_entname_title"] = "Название энтити",
+    ["#adminesp_custom_entname_desc"] = "Включить показатель названия энтити",
+    ["#adminesp_custom_entclass_title"] = "Класс энтити",
+    ["#adminesp_custom_entclass_desc"] = "Включить показатель класса энтити",
+    ["#adminesp_custom_entmodel_title"] = "Модель энтити",
+    ["#adminesp_custom_entmodel_desc"] = "Включить показатель модели энтити",
+    
+-- РЕЖИМ НАБЛЮДЕНИЯ
+    ["#spectate_object_attach"] = "Прикрепиться к объекту",
+    ["#spectate_object_detach"] = "Открепиться от объекта",
+    ["#spectate_object_menu"] = "Меню свойств объекта",
+    ["#spectate_teleport_ontracer"] = "Телепортироваться на место камеры",
+    ["#spectate_leave"] = "Выйти из наблюдения",
+    ["#spectate_getsg"] = "Получить изображение экрана",
+    ["#spectate_changecamera"] = "Изменить положение камеры",
+    ["#spectate_forward"] = "Переместиться вперед",
+
+
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
 
 })

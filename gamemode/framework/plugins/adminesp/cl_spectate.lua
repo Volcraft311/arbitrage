@@ -109,26 +109,26 @@ function AdminESP:SpectatePaint()
 	if IsValid(entity) then
 		outline.Add({entity}, Color(0, 255, 0), 0)
 
-		Hints:AddKeyDraw("Прикрепиться к объекту", {MOUSE_LEFT})
+		Hints:AddKeyDraw("#spectate_object_attach", {MOUSE_LEFT})
 	end
 
 	cameraTraceEntity = entity
 
-	Hints:AddKeyDraw("Выйти из наблюдения", SETTINGS.binds.Get("spectating"))
-	Hints:AddKeyDraw("Телепортироваться на место камеры", {"+reload"})
+	Hints:AddKeyDraw("#spectate_leave", SETTINGS.binds.Get("spectating"))
+	Hints:AddKeyDraw("#spectate_teleport_ontracer", {"+reload"})
 
 	if IsValid(cameraEntity) then
-		Hints:AddKeyDraw("Открепиться от объекта", {MOUSE_LEFT})
+		Hints:AddKeyDraw("#spectate_object_detach", {MOUSE_LEFT})
 	end
 
-	Hints:AddKeyDraw(IsValid(cameraEntity) and "Изменить положение камеры" or "Переместиться вперед", {MOUSE_RIGHT})
+	Hints:AddKeyDraw(IsValid(cameraEntity) and "#spectate_changecamera" or "#spectate_forward", {MOUSE_RIGHT})
 
 	if IsValid(cameraEntity) and cameraEntity:IsPlayer() then
-		Hints:AddKeyDraw("Получить изображение экрана", {"+use"})
+		Hints:AddKeyDraw("#spectate_getsg", {"+use"})
 	end
 
 	if IsValid(entity) and ((entity:IsPlayer() and entity != LocalPlayer()) or entity:IsDoor()) then
-		Hints:AddKeyDraw("Меню свойств объекта", {KEY_F2})
+		Hints:AddKeyDraw("#spectate_object_menu", {KEY_F2})
 	end
 end
 

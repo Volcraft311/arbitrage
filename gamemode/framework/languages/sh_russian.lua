@@ -44,16 +44,19 @@ Arbitrage.language:Add("ru", {
     ["#picklock_not_allow"] = "Это нельзя взломать!",
     ["#no_have_monopad"] = "У вас нет монопада!",
 
+-- СЕЛЕКТОР
     ["#weaponselector_category_main"] = "ОСНОВНОЕ",
     ["#weaponselector_category_weapons"] = "ОРУЖИЕ",
     ["#weaponselector_category_build"] = "СТРОИТЕЛЬСТВО",
 
+-- ОРУЖИЕ
     ["#weapons_camera"] = "Камера",
     ["#weapons_fist"] = "Руки",
     ["#weapons_flashlight"] = "Фонарик",
     ["#weapons_keys"] = "Ключи",
     ["#weapons_monopad"] = "Монопад",
 
+-- УСТАВ АКАДЕМИИ
     ["#rules_1_title"] = "Перспективы прибывания",
     ["#rules_1_description"] = "Ученики должны жить в Абсолютной Академии остаток всего своего предпологаемого будущего.",
     ["#rules_2_title"] = "Требования для классного суда",
@@ -83,8 +86,10 @@ Arbitrage.language:Add("ru", {
     ["#rules_14_title"] = "Принципы изменения устава Академии",
     ["#rules_14_description"] = "В дальнейшем, по прихоти директора, могут быть добавлены новые правила.",
 
+-- СМЕНА ВРЕМЕНИ СУТОК
     ["#day_notification"] = "Наступило дневное время!",
     ["#night_notification"] = "Наступило ночное время!",
+
 
     ["#theme_investigation"] = "Расследование",
     ["#theme_law"] = "Суд",
@@ -134,12 +139,14 @@ Arbitrage.language:Add("ru", {
     ["#chat_chatbox_say"] = "Написать",
     ["#chat_chatbox_enter_something"] = "введите что-либо...",
 
+-- КАТЕГОРИИ ЧАТА
     ["#chat_chatbox_tab_general"] = "Общий",
     ["#chat_chatbox_tab_rp"] = "РП",
     ["#chat_chatbox_tab_nonrp"] = "НонРП",
     ["#chat_chatbox_tab_personal"] = "Личные",
     ["#chat_chatbox_tab_admin"] = "Админские",
 
+-- КОПИРОВАНИЕ
     ["#chat_copy_copied"] = "Скопировано!",
     ["#chat_copy_double_copied"] = "Двойное копирование!",
     ["#chat_copy_triple_copied"] = "Тройное копирование!",
@@ -152,6 +159,7 @@ Arbitrage.language:Add("ru", {
     ["#chat_copy_divine"] = "Божественно!",
     ["#chat_copy_just_space"] = "ПРОСТО КОСМОС!",
 
+-- ЧАТ
     ["#chat_lnrp_type"] = "[Локальный НонРП чат]",
     ["#chat_gnrp_type"] = "[Глобальный НонРП чат]",
     ["#chat_pm_type"] = "[Личное сообщение]",
@@ -159,22 +167,28 @@ Arbitrage.language:Add("ru", {
     ["#chat_help_type"] = "[Помощь]",
     ["#chat_notification_type"] = "[Уведомление]",
 
+-- /ROLL
     ["#chat_roll_send"] = "получил(а) шанс",
     ["#chat_roll_send_prefix"] = "из",
 
+-- БЛОКИРОВКА ЧАТА
     ["#chat_nrp_chat_block"] = "Администрация запретила вам писать в NonRP чат!",
 
+-- /TRY
     ["#try_successfully"] = "Удачно",
     ["#try_unsuccessful"] = "Неудачно",
 
+-- АРГУМЕНТЫ
     ["#command_argument_text"] = "Текст",
     ["#command_argument_number"] = "Значение",
     ["#command_argument_player"] = "Игрок",
 
+-- ОШИБКИ
     ["#command_fault_unknown"] = "НЕИЗВЕСТНО",
     ["#command_argument_error"] = "Вы указали ошибку в аргументе",
     ["#command_argument_unknown"] = "У вас не указан аргумент",
 
+-- ПЕРСОНАЛЬНЫЕ КОМАНДЫ
     ["#command_no_have_static_rank"] = "У вас отсутствует статический ранг и вы не можете выдать себе права!",
     ["#command_have_static_rank"] = "Вам уже выданы данные права!",
     ["#command_notify_give_static_rank"] = "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/tr\"!",
@@ -199,6 +213,7 @@ Arbitrage.language:Add("ru", {
     ["#command_take_admin_rank"] = "Администратор %s забрал админские права у %s!",
     ["#command_notify_take_guard_rank"] = "С вас были сняты админские права!",
 
+-- КОМАНДЫ В ОТНОШЕНИИ ИГРОКА
     ["#command_goto"] = "Телепортироваться к игроку.",
     ["#command_bring"] = "Телепортировать игрока к себе.",
     ["#command_tp"] = "Телепортировать игрока туда куда вы смотрите.",
@@ -268,8 +283,10 @@ Arbitrage.language:Add("ru", {
     ["#command_spectate"] = "Зайти в наблюдение.",
     ["#command_not_found"] = "Данной команды не существует!",
 
+-- ОБНАРУЖЕНИЕ ТРУПА
     ["#persistent_found_corpse"] = "%s(%s) обнаружил труп! (%s)",
 
+-- МОНОМЕНЮ
     ["#monomenu_inventory_not_found"] = "У данного игрока не инициализирован инвентарь!",
     ["#monomenu_inventory_own_open"] = "Нельзя открыть собственный инвентарь!",
     ["#monomenu_description_change"] = "Администрация сервера изменила вам описание!",
@@ -280,10 +297,12 @@ Arbitrage.language:Add("ru", {
     ["#monomenu_on_global_voice_chat"] = "Администрация сервера включила вам глобальный голосовой чат!",
     ["#monomenu_off_global_voice_chat"] = "Администрация сервера выключила вам глобальный голосовой чат!",
 
+-- ВЗАИМОДЕЙСТВИЕ С ДВЕРЬМИ
     ["#academy_key_no_keys"] = "У вас нет ключей от двери!",
     ["#academy_key_door_already_open"] = "Данная дверь уже открыта!",
     ["#academy_key_door_already_close"] = "Данная дверь уже закрыта!",
 
+-- ЭМОЦИИ
     ["#emoji_smiling"] = "улыбается",
     ["#emoji_sad"] = "грустит",
     ["#emoji_rejoices"] = "радуется",
@@ -307,6 +326,7 @@ Arbitrage.language:Add("ru", {
     ["#emoji_expresses_dissatisfaction"] = "выражает недовольство",
     ["#emoji_expresses_joy"] = "выражает радость",
 
+-- РАДИАЛЬНОЕ МЕНЮ
     ["#radial_button_favorites"] = "Добавить в избранное",
     ["#radial_button_back"] = "Вернуться назад",
     ["#radial_button_option"] = "Выбрать опцию",
@@ -372,6 +392,7 @@ Arbitrage.language:Add("ru", {
     ["#radial_option_standup"] = "Поднять",
     ["#radial_option_standup_desc"] = "Поднять игрока на ноги",
 
+-- КОНТЕКСТНЫЕ АНИМАЦИИ
     ["#emotes_category_stand"] = "Встать",
     ["#emotes_category_wall"] = "Возле стены",
     ["#emotes_category_sit"] = "Присесть",
@@ -435,6 +456,7 @@ Arbitrage.language:Add("ru", {
     ["#emotes_action_animated_5"] = "Ожидание 3",
     ["#emotes_action_animated_6"] = "Ожидание 4",
 
+-- НАСТРОЕНИЯ
     ["#mood_action_standart"] = "Стандартная",
     ["#mood_action_relaxed"] = "Расслабленный",
     ["#mood_action_panicked"] = "Запаниковал",
@@ -443,6 +465,7 @@ Arbitrage.language:Add("ru", {
     ["#mood_action_confident"] = "Уверенный",
     ["#mood_action_diligent"] = "Прилежный",
 
+-- ТАУНТЫ
     ["#taunt_robot"] = "Робот",
     ["#taunt_muscle"] = "Стриптиз",
     ["#taunt_laugh"] = "Смех",
@@ -460,6 +483,7 @@ Arbitrage.language:Add("ru", {
     ["#taunt_halt"] = "Стоять",
     ["#taunt_salute"] = "Отдать честь",
 
+-- СТАТУС ЭФФЕКТЫ
     ["#status_effects_light_bleeding_title"] = "Кровотечение",
     ["#status_effects_light_bleeding_desc"] = "Вы теряете {1} HP каждые {2} секунд.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
     ["#status_effects_light_bleeding_val1"] = "Сколько HP игрок будет терять каждые {2} секунд",
@@ -761,5 +785,25 @@ Arbitrage.language:Add("ru", {
 -- ВЕДУЩИЕ
     ["#char_dr_monokuma_name"] = "Монокума",
     ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
-    ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",   
+    ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
+
+-- КЛАССНЫЙ СУД
+
+-- КАТЕГОРИИ СПРАЙТОВ
+    ["#classtrial_sprite_category_main"] = "Основные",
+    ["#classtrial_sprite_category_monaca_inwheelchair"] = "На коляске",
+
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+    [""] = "",
+
 })

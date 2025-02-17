@@ -255,7 +255,7 @@ local function cuff(item, ropeLength)
     local target = findTarget(client)
     if !IsValid(target) then Arbitrage.commands.Notify(client, "#chat_chatbox_unknown_player") return false end
 
-    Arbitrage.action.ActionRun(target, "Вас связывают", cuffTime, function()
+    Arbitrage.action.ActionRun(target, "#action_being_cuff", cuffTime, function()
         if findTarget(client) != target then return true end
 
         return false
@@ -264,7 +264,7 @@ local function cuff(item, ropeLength)
 
     TypingDraw:SendSphere(0.5, client, "Связывает '" .. target:Name() .. "'", Color(255, 170, 23))
 
-    Arbitrage.action.ActionRun(client, "Связываем", cuffTime, function()
+    Arbitrage.action.ActionRun(client, "#action_cuff", cuffTime, function()
         if findTarget(client) != target then return true end
 
         if (!client.CuffindCD or CurTime() >= client.CuffindCD) then

@@ -40,7 +40,7 @@ function PLUGIN:PlayerSwitchWeapon(client, old, new)
 
     if !weaponData[new:GetClass()] then
         if Arbitrage.util.IsServerSide() and !client.allowSwitch then
-            Arbitrage.action.ActionRun(client, "Достаем оружие", 1, function()
+            Arbitrage.action.ActionRun(client, "#action_take_weapon", 1, function()
                 if !client.switchAnim or CurTime() >= client.switchAnim then
                     client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 

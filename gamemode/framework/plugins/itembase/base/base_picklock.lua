@@ -90,7 +90,7 @@ local function FindDoor(client)
 end
 
 local function HackDoor(client, entity, time)
-    Arbitrage.action.ActionRun(client, "Взламываем дверь", time, function()
+    Arbitrage.action.ActionRun(client, "#action_breaking_door", time, function()
         if client:GetEyeTrace().Entity != entity then return true end
         if client:GetPos():Distance(entity:GetPos()) >= 130 then return true end
 

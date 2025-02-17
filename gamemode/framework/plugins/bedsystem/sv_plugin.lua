@@ -63,7 +63,7 @@ hook("PlayerUse", function(client, entity)
     if allow and client:oldAlive() and (!client.BedCD or CurTime() >= client.BedCD) then
         TypingDraw:SendSphere(0.5, client, "Ложится на кровать", Color(255, 170, 23))
 
-        Arbitrage.action.ActionRun(client, "Ложимся на кровать", 5, function()
+        Arbitrage.action.ActionRun(client, "#action_down_the_bed", 5, function()
             if client:GetEyeTrace().Entity != entity then return true end
             if client:GetPos():Distance(entity:GetPos()) >= 180 then return true end
 
@@ -114,7 +114,7 @@ end)
 netstream.Hook("BedSystem:GetUpBed", function(client)
     if !client.inBed then return end
 
-    Arbitrage.action.ActionRun(client, "Вы просыпаетесь", 5, function()
+    Arbitrage.action.ActionRun(client, "#action_wake_up", 5, function()
         return false
     end, function(activator)
         BedSystem:GetUpBed(client)

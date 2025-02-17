@@ -67,7 +67,7 @@ function Container:PlayerUse(client, entity)
         local name = entity._containerName or ""
         TypingDraw:SendSphere(0.5, client, "Осматривает '" .. name .. "'", Color(255, 170, 23))
 
-        Arbitrage.action.ActionRun(client, "Обыскиваем", entity._containerTime or 1, function()
+        Arbitrage.action.ActionRun(client, "#action_searching", entity._containerTime or 1, function()
             if client:GetEyeTrace().Entity != entity then return true end
             if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 

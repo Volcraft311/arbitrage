@@ -56,7 +56,7 @@ local function DoorAction(client, door, bClose)
 
     TypingDraw:SendSphere(0.5, client, (bClose and "Закрывает" or "Открывает") .. " дверь", Color(255, 170, 23))
 
-    Arbitrage.action.ActionRun(client, bClose and "Закрываем дверь" or "Открываем дверь", 2, function()
+    Arbitrage.action.ActionRun(client, bClose and "#action_closing_door" or "#action_open_door", 2, function()
         if client:GetEyeTrace().Entity != door then return true end
         if client:GetPos():Distance(door:GetPos()) >= 130 then return true end
 

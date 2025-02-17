@@ -71,7 +71,7 @@ netstream.Hook("RagdollSystem:StandUp", function(client, entity, time)
 
     time = isnumber(time) and math.Clamp(time, 1, 60) or 5
 
-    Arbitrage.action.ActionRun(client, "Встаем на ноги", time, function()
+    Arbitrage.action.ActionRun(client, "#action_getting_feet", time, function()
         if !IsValid(ragdoll) then return true end
 
         local length = ragdoll:GetVelocity():Length()

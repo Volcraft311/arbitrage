@@ -145,7 +145,7 @@ function Evidence:EntityRemoved(entity)
 end
 
 local function collect(client, entity, idx)
-    Arbitrage.action.ActionRun(client, "Собираем улику", 1, function()
+    Arbitrage.action.ActionRun(client, "#action_collecting_evidence", 1, function()
         if !IsValid(entity) then return true end
         if client:GetPos():Distance(entity:GetPos()) >= 200 then return true end
 

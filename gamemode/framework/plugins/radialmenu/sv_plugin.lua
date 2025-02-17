@@ -42,7 +42,7 @@ netstream.Hook("RadialMenu:StandUp", function(client)
 
     TypingDraw:SendSphere(0.5, client, "Поднимает '" .. name .. "'", Color(255, 170, 23))
 
-    Arbitrage.action.ActionRun(client, "Поднимаем", delay, function()
+    Arbitrage.action.ActionRun(client, "#action_we_raise", delay, function()
         if !IsValid(entity) then return end
 
         if bSequenceAction then
@@ -114,7 +114,7 @@ netstream.Hook("RadialMenu:SearchAction", function(client)
 
     TypingDraw:SendSphere(0.5, client, "Обыскивает '" .. name .. "'", Color(255, 170, 23))
 
-    Arbitrage.action.ActionRun(client, "Обыскиваем", IsValid(ragdollClient) and 23 or 15, function()
+    Arbitrage.action.ActionRun(client, "#action_searching", IsValid(ragdollClient) and 23 or 15, function()
         if !IsValid(entity) then return end
 
         if bSequenceAction then

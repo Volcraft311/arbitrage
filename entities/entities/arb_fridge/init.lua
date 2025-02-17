@@ -35,7 +35,7 @@ function ENT:Use(client, caller)
 
 	client:PlayGesture(ACT_GMOD_GESTURE_ITEM_PLACE)
 
-	Arbitrage.action.ActionRun(client, "Берем еду", 10, function()
+	Arbitrage.action.ActionRun(client, "#action_take_food", 10, function()
 		if client:GetEyeTrace().Entity != self then return true end
 		if client:GetPos():Distance(self:GetPos()) >= 110 then return true end
 

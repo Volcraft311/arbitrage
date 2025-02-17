@@ -44,19 +44,19 @@ Arbitrage.language:Add("ru", {
     ["#picklock_not_allow"] = "Это нельзя взломать!",
     ["#no_have_monopad"] = "У вас нет монопада!",
 
--- СЕЛЕКТОР
+    -- СЕЛЕКТОР
     ["#weaponselector_category_main"] = "ОСНОВНОЕ",
     ["#weaponselector_category_weapons"] = "ОРУЖИЕ",
     ["#weaponselector_category_build"] = "СТРОИТЕЛЬСТВО",
 
--- ОРУЖИЕ
+    -- ОРУЖИЕ
     ["#weapons_camera"] = "Камера",
     ["#weapons_fist"] = "Руки",
     ["#weapons_flashlight"] = "Фонарик",
     ["#weapons_keys"] = "Ключи",
     ["#weapons_monopad"] = "Монопад",
 
--- УСТАВ АКАДЕМИИ
+    -- УСТАВ АКАДЕМИИ
     ["#rules_1_title"] = "Перспективы прибывания",
     ["#rules_1_description"] = "Ученики должны жить в Абсолютной Академии остаток всего своего предпологаемого будущего.",
     ["#rules_2_title"] = "Требования для классного суда",
@@ -86,10 +86,9 @@ Arbitrage.language:Add("ru", {
     ["#rules_14_title"] = "Принципы изменения устава Академии",
     ["#rules_14_description"] = "В дальнейшем, по прихоти директора, могут быть добавлены новые правила.",
 
--- СМЕНА ВРЕМЕНИ СУТОК
+    -- СМЕНА ВРЕМЕНИ СУТОК
     ["#day_notification"] = "Наступило дневное время!",
     ["#night_notification"] = "Наступило ночное время!",
-
 
     ["#theme_investigation"] = "Расследование",
     ["#theme_law"] = "Суд",
@@ -139,14 +138,14 @@ Arbitrage.language:Add("ru", {
     ["#chat_chatbox_say"] = "Написать",
     ["#chat_chatbox_enter_something"] = "введите что-либо...",
 
--- КАТЕГОРИИ ЧАТА
+    -- КАТЕГОРИИ ЧАТА
     ["#chat_chatbox_tab_general"] = "Общий",
     ["#chat_chatbox_tab_rp"] = "РП",
     ["#chat_chatbox_tab_nonrp"] = "НонРП",
     ["#chat_chatbox_tab_personal"] = "Личные",
     ["#chat_chatbox_tab_admin"] = "Админские",
 
--- КОПИРОВАНИЕ
+    -- КОПИРОВАНИЕ
     ["#chat_copy_copied"] = "Скопировано!",
     ["#chat_copy_double_copied"] = "Двойное копирование!",
     ["#chat_copy_triple_copied"] = "Тройное копирование!",
@@ -159,7 +158,7 @@ Arbitrage.language:Add("ru", {
     ["#chat_copy_divine"] = "Божественно!",
     ["#chat_copy_just_space"] = "ПРОСТО КОСМОС!",
 
--- ЧАТ
+    -- ЧАТ
     ["#chat_lnrp_type"] = "[Локальный НонРП чат]",
     ["#chat_gnrp_type"] = "[Глобальный НонРП чат]",
     ["#chat_pm_type"] = "[Личное сообщение]",
@@ -167,28 +166,28 @@ Arbitrage.language:Add("ru", {
     ["#chat_help_type"] = "[Помощь]",
     ["#chat_notification_type"] = "[Уведомление]",
 
--- /ROLL
+    -- /ROLL
     ["#chat_roll_send"] = "получил(а) шанс",
     ["#chat_roll_send_prefix"] = "из",
 
--- БЛОКИРОВКА ЧАТА
+    -- БЛОКИРОВКА ЧАТА
     ["#chat_nrp_chat_block"] = "Администрация запретила вам писать в NonRP чат!",
 
--- /TRY
+    -- /TRY
     ["#try_successfully"] = "Удачно",
     ["#try_unsuccessful"] = "Неудачно",
 
--- АРГУМЕНТЫ
+    -- АРГУМЕНТЫ
     ["#command_argument_text"] = "Текст",
     ["#command_argument_number"] = "Значение",
     ["#command_argument_player"] = "Игрок",
 
--- ОШИБКИ
+    -- ОШИБКИ
     ["#command_fault_unknown"] = "НЕИЗВЕСТНО",
     ["#command_argument_error"] = "Вы указали ошибку в аргументе",
     ["#command_argument_unknown"] = "У вас не указан аргумент",
 
--- ПЕРСОНАЛЬНЫЕ КОМАНДЫ
+    -- ПЕРСОНАЛЬНЫЕ КОМАНДЫ
     ["#command_no_have_static_rank"] = "У вас отсутствует статический ранг и вы не можете выдать себе права!",
     ["#command_have_static_rank"] = "Вам уже выданы данные права!",
     ["#command_notify_give_static_rank"] = "Вы успешно вернули себе права. Чтобы их снять, используйте команду \"/tr\"!",
@@ -213,7 +212,7 @@ Arbitrage.language:Add("ru", {
     ["#command_take_admin_rank"] = "Администратор %s забрал админские права у %s!",
     ["#command_notify_take_guard_rank"] = "С вас были сняты админские права!",
 
--- КОМАНДЫ В ОТНОШЕНИИ ИГРОКА
+    -- КОМАНДЫ В ОТНОШЕНИИ ИГРОКА
     ["#command_goto"] = "Телепортироваться к игроку.",
     ["#command_bring"] = "Телепортировать игрока к себе.",
     ["#command_tp"] = "Телепортировать игрока туда куда вы смотрите.",
@@ -283,15 +282,15 @@ Arbitrage.language:Add("ru", {
     ["#command_spectate"] = "Зайти в наблюдение.",
     ["#command_not_found"] = "Данной команды не существует!",
 
--- ОБНАРУЖЕНИЕ ТРУПА
+    -- ОБНАРУЖЕНИЕ ТРУПА
     ["#persistent_found_corpse"] = "%s(%s) обнаружил труп! (%s)",
 
--- ВЗАИМОДЕЙСТВИЕ С ДВЕРЬМИ
+    -- ВЗАИМОДЕЙСТВИЕ С ДВЕРЬМИ
     ["#academy_key_no_keys"] = "У вас нет ключей от двери!",
     ["#academy_key_door_already_open"] = "Данная дверь уже открыта!",
     ["#academy_key_door_already_close"] = "Данная дверь уже закрыта!",
 
--- ЭМОЦИИ
+    -- ЭМОЦИИ
     ["#emoji_smiling"] = "улыбается",
     ["#emoji_sad"] = "грустит",
     ["#emoji_rejoices"] = "радуется",
@@ -315,7 +314,7 @@ Arbitrage.language:Add("ru", {
     ["#emoji_expresses_dissatisfaction"] = "выражает недовольство",
     ["#emoji_expresses_joy"] = "выражает радость",
 
--- РАДИАЛЬНОЕ МЕНЮ
+    -- РАДИАЛЬНОЕ МЕНЮ
     ["#radial_button_favorites"] = "Добавить в избранное",
     ["#radial_button_back"] = "Вернуться назад",
     ["#radial_button_option"] = "Выбрать опцию",
@@ -381,7 +380,7 @@ Arbitrage.language:Add("ru", {
     ["#radial_option_standup"] = "Поднять",
     ["#radial_option_standup_desc"] = "Поднять игрока на ноги",
 
--- КОНТЕКСТНЫЕ АНИМАЦИИ
+    -- КОНТЕКСТНЫЕ АНИМАЦИИ
     ["#emotes_category_stand"] = "Встать",
     ["#emotes_category_wall"] = "Возле стены",
     ["#emotes_category_sit"] = "Присесть",
@@ -445,7 +444,7 @@ Arbitrage.language:Add("ru", {
     ["#emotes_action_animated_5"] = "Ожидание 3",
     ["#emotes_action_animated_6"] = "Ожидание 4",
 
--- НАСТРОЕНИЯ
+    -- НАСТРОЕНИЯ
     ["#mood_action_standart"] = "Стандартная",
     ["#mood_action_relaxed"] = "Расслабленный",
     ["#mood_action_panicked"] = "Запаниковал",
@@ -454,7 +453,7 @@ Arbitrage.language:Add("ru", {
     ["#mood_action_confident"] = "Уверенный",
     ["#mood_action_diligent"] = "Прилежный",
 
--- ТАУНТЫ
+    -- ТАУНТЫ
     ["#taunt_robot"] = "Робот",
     ["#taunt_muscle"] = "Стриптиз",
     ["#taunt_laugh"] = "Смех",
@@ -472,7 +471,7 @@ Arbitrage.language:Add("ru", {
     ["#taunt_halt"] = "Стоять",
     ["#taunt_salute"] = "Отдать честь",
 
--- СТАТУС ЭФФЕКТЫ
+    -- СТАТУС ЭФФЕКТЫ
     ["#status_effects_light_bleeding_title"] = "Кровотечение",
     ["#status_effects_light_bleeding_desc"] = "Вы теряете {1} HP каждые {2} секунд.\nПриводит к смерти, когда общий запас здоровья достигает 0.",
     ["#status_effects_light_bleeding_val1"] = "Сколько HP игрок будет терять каждые {2} секунд",
@@ -607,7 +606,7 @@ Arbitrage.language:Add("ru", {
     ["#discord_rpc_day"] = "День",
     ["#discord_rpc_night"] = "Ночь",
 
--- TRIGGER HAPPY HAVOC
+    -- TRIGGER HAPPY HAVOC
     ["#char_dr_aoi_name"] = "Аой Асахина",
     ["#char_dr_aoi_title"] = "Абсолютный Пловец",
     ["#char_dr_aoi_desc"] = "Жизнерадостная, дружелюбная и эмоциональная. Она искренне заботится о друзьях, стараясь подбодрить их даже в трудные времена. Её любовь к спорту и оптимизм делают её источником поддержки для окружающих.",
@@ -653,7 +652,8 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_yasuhiro_name"] = "Ясухиро Хагакурэ",
     ["#char_dr_yasuhiro_title"] = "Абсолютный Предсказатель",
     ["#char_dr_yasuhiro_desc"] = "Рассеянный, весёлый и оптимистичный. Его странности и вера в свои предсказания делают его непредсказуемым.",
--- GOODBYE DESPAIR
+
+    -- GOODBYE DESPAIR
     ["#char_dr_akane_name"] = "Аканэ Овари",
     ["#char_dr_akane_title"] = "Абсолютная Гимнастка",
     ["#char_dr_akane_desc"] = "Жизнерадостная и активная, она всегда полна энергии и стремится к совершенству. Несмотря на свою суровость в отношениях с окружающими, она готова поддержать тех, кто рядом.",
@@ -702,7 +702,8 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_twogami_name"] = "Бьякуя Тогами",
     ["#char_dr_twogami_title"] = "Абсолютный Самозванец",
     ["#char_dr_twogami_desc"] = "Уверенный и порой высокомерный, он считает себя выше других. Его харизма и амбициозность привлекают внимание, но он часто оказывается один в своих мыслях.",
--- KILLING HARMONY
+
+    -- KILLING HARMONY
     ["#char_dr_angie_name"] = "Анджи Ёнага",
     ["#char_dr_angie_title"] = "Абсолютная Художница",
     ["#char_dr_angie_desc"] = "Веселая и уверенная, она часто поглощена творчеством и искренне верит в искусство как в нечто священное. Её добродушие и желание помочь другим проявляются в её отношениях с окружающими.",
@@ -751,7 +752,8 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_tsumugi_name"] = "Цумуги Широганэ",
     ["#char_dr_tsumugi_title"] = "Абсолютный Косплеер",
     ["#char_dr_tsumugi_desc"] = "Скромная и искусная в своём деле, она поглощена миром косплея и никогда не перестает удивлять окружающих своим мастерством и вниманием к деталям.",
--- ULTRA DESPAIR GIRLS
+
+    -- ULTRA DESPAIR GIRLS
     ["#char_dr_jataro_name"] = "Джатаро Кемури",
     ["#char_dr_jataro_title"] = "Юный Абсолютный Художник",
     ["#char_dr_jataro_desc"] = "Молодой художник с эксцентричной личностью, страстно стремящийся к самовыражению через искусство. Его стиль уникален, а подход к работе часто бывает радикальным и неординарным.",
@@ -771,12 +773,12 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_nagisa_title"] = "Юный Абсолютный Обществовед",
     ["#char_dr_nagisa_desc"] = "Молодой обществовед, который прекрасно разбирается в человеческих отношениях и социальных структурах. Его аналитический подход к жизни помогает ему манипулировать окружающими.",
 
--- ВЕДУЩИЕ
+    -- ВЕДУЩИЕ
     ["#char_dr_monokuma_name"] = "Монокума",
     ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
     ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
 
--- ГЛАВНОЕ МЕНЮ
+    -- ГЛАВНОЕ МЕНЮ
     ["#mainmenu_characterselect"] = "Выбрать персонажа",
     ["#mainmenu_spectatorleave"] = "Выйти из наблюдения",
     ["#mainmenu_spectatorjoin"] = "Стать наблюдателем",
@@ -785,13 +787,12 @@ Arbitrage.language:Add("ru", {
 
     ["#menu_button_back"] = "Назад",
 
--- ПРИВЕТСТВЕННОЕ МЕНЮ
-    --["#menu_welcome_desc"] = "",
+    -- ПРИВЕТСТВЕННОЕ МЕНЮ
     ["#menu_welcome_title"] = "РАННИЙ ДОСТУП",
     ["#menu_welcome_desc"] = "Спасибо, что принимаете участие в раннем доступе Asterion Academy. Работа над\nсервером продолжается, но уже сейчас вы можете оценить нашу разработку.\nИменно благодаря вам, мы можем оперативно исправлять ошибки и улучшать\nгеймплей основываясь на ваших отзывах и предложениях.\n\nО всех найденных багах и ошибках просьба сообщайть в отдельный канал\n#bugs-report нашего официального Discord сообщества сервера.",
     ["#menu_welcome_continue"] = "Продолжить игру",
 
--- НАСТРОЙКИ
+    -- НАСТРОЙКИ
     ["#addon_status_noinstalled"] = "Не установлен",
     ["#addon_status_tempinstalled"] = "Временно скачан",
     ["#addon_status_installed"] = "Установлен",
@@ -801,7 +802,7 @@ Arbitrage.language:Add("ru", {
     ["#settings_title_keybinds"] = "Управление",
     ["#settings_title_content"] = "Контент",
 
--- КОНТЕНТ
+    -- КОНТЕНТ
     ["#content_loading"] = "ЗАГРУЗКА: ",
     ["#content_text"] = "Сейчас происходит проверка игрового\nконтента на наличие ошибок,\nпожалуйста подождите завершение\nпроцесса.",
     ["#content_welcome"] = "Добро пожаловать!",
@@ -821,20 +822,7 @@ Arbitrage.language:Add("ru", {
     ["#content_firstjoin_title"] = "ВПЕРВЫЕ С НАМИ?",
     ["#content_firstjoin_text"] = "Похоже, что вы первый раз зашли на наш сервер. Чтобы всё работало\nкорректно необходимл перезайти на сервер. Если вы продолжите игру,\nто можете столкнуться с проблемами внутри клиента. Приятной игры!",
 
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-
-
--- ВЫБОР КАТЕГОРИЙ ПЕРСОНАЖЕЙ
+    -- ВЫБОР КАТЕГОРИЙ ПЕРСОНАЖЕЙ
     ["#category_chapter_select"] = "ВЫБОР ГЛАВЫ",
     ["#category_chapter_text"] = "Выбираем класс претендентов",
     ["#category_char_select"] = "ВЫБОР ПРЕТЕНДЕНТА",
@@ -843,8 +831,6 @@ Arbitrage.language:Add("ru", {
     ["#category_char_unavailable"] = "Данный персонаж доступен лишь игровым мастерам",
     ["#category_char_selectiontext"] = "Кликните по портрету для\nпросмотра персонажа",
     ["#category_select_confirm"] = "Подтвердить выбор",
-    [""] = "",
-
 
     ["#category_desc_dr_thh"] = "Играйте за студентов 78-го класса\nАкадемии 'Пик Надежды'",
     ["#category_desc_dr_gd"] = "Играйте за студентов 77-го 'B' класса\nАкадемии 'Пик Надежды'",
@@ -858,34 +844,26 @@ Arbitrage.language:Add("ru", {
     ["#category_button_unique"] = "Уникальные",
     ["#category_button_other"] = "Остальные",
 
--- ПОДГРУЗКА АССЕТОВ
+    -- ПОДГРУЗКА АССЕТОВ
     ["#load_assets_characters"] = "Загружаем ассеты персонажей",
 
 
--- ИГРОВОЙ ПРОЦЕСС
+    -- ИГРОВОЙ ПРОЦЕСС
 
--- КЛАССНЫЙ СУД
+    -- КЛАССНЫЙ СУД
     ["#classtrial_presented"] = "Предъявил: ",
 
--- КАТЕГОРИИ СПРАЙТОВ
+    -- КАТЕГОРИИ СПРАЙТОВ
     ["#classtrial_sprite_category_main"] = "Основные",
     ["#classtrial_sprite_category_monaca_inwheelchair"] = "На коляске",
 
--- ГОЛОСОВАНИЕ
+    -- ГОЛОСОВАНИЕ
     ["#vote_title"] = "ВРЕМЯ ГОЛОСОВАТЬ",
     ["#vote_text"] = "Выбираем того, кто является убийцей",
     ["#vote_voted"] = "<font=arb.Font_FuturaPTBook_7><img=materials/danganronpa/ui/warning.png, 15x15, 255, 255, 255><colour=255,61,96,255> Вы проголосовали за данного персонажа</colour></font>",
     ["#vote_confirm"] = "Подтвердить голос",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
 
--- ТУЛТИПЫ
+    -- ТУЛТИПЫ
     ["#tooltip_quantity_ammo"] = "Количество патрон: %d+",
     ["#tooltip_quantity_1"] = "Количество: %d+/%d+",
     ["#tooltip_quantity_2"] = "Осталось: %d+/%d+",
@@ -893,28 +871,24 @@ Arbitrage.language:Add("ru", {
     ["#tooltip_status_healty"] = "На вид в порядке",
     ["#tooltip_status_badshape"] = "Выглядит неважно",
     ["#tooltip_status_injured"] = "Слегка потрепанный",
-    [""] = "",
-    [""] = "",
-    [""] = "",
-    [""] = "",
 
--- СПЛЭШСКРИН
+    -- СПЛЭШСКРИН
     ["#splashscreen_survivors"] = "Выжившие претенденты:",
 
--- УЛИКИ
+    -- УЛИКИ
     ["#clue_list"] = "Список улик",
     ["#clue_certificate"] = "Свидетельства о смерти",
     ["#clue_notebook"] = "Список заметок",
     ["#clue_wip"] = "В разработке...",
 
--- C-МЕНЮ
+    -- C-МЕНЮ
     ["#cmenu_favourites"] = "Избранное",
 
--- ЭКРАН СМЕРТИ
+    -- ЭКРАН СМЕРТИ
     ["#deathscreen_title"] = "Вы погибли!",
     ["#deathscreen_text"] = "Вы вернетесь в лобби через: %s секунд.",
 
--- ОПИСАНИЕ ПЕРСОНАЖА
+    -- ОПИСАНИЕ ПЕРСОНАЖА
     ["#description_self_button"] = "Изменить свое РП описание",
     ["#description_self_text"] = "Введите описание которые вы хотите себе установить",
     ["#description_self_desc"] = "Пример: Видно пятна крови на правой руке",
@@ -922,7 +896,7 @@ Arbitrage.language:Add("ru", {
     ["#description_self_change"] = "Изменить",
     ["#description_self_success"] = "Вы успешно изменили свое РП описание!",
 
--- ТАБ МЕНЮ
+    -- ТАБ МЕНЮ
     ["#rank_owner"] = "Владелец",
     ["#rank_curator"] = "Куратор",
     ["#rank_gamemaster"] = "Игровой мастер",
@@ -937,11 +911,7 @@ Arbitrage.language:Add("ru", {
     ["#tab_checkprofile"] = "Перейти на профиль",
     ["#tab_pm"] = "Написать личное сообщение",
 
-    [""] = "",
-    [""] = "",
-    [""] = "",
-
--- МОНОМЕНЮ
+    -- МОНОМЕНЮ
     ["#monomenu_inventory_not_found"] = "У данного игрока не инициализирован инвентарь!",
     ["#monomenu_inventory_own_open"] = "Нельзя открыть собственный инвентарь!",
     ["#monomenu_description_change"] = "Администрация сервера изменила вам описание!",
@@ -952,7 +922,7 @@ Arbitrage.language:Add("ru", {
     ["#monomenu_on_global_voice_chat"] = "Администрация сервера включила вам глобальный голосовой чат!",
     ["#monomenu_off_global_voice_chat"] = "Администрация сервера выключила вам глобальный голосовой чат!",
 
--- AdminESP
+    -- AdminESP
     ["#adminesp_custom_charname_title"] = "Имя персонажа",
     ["#adminesp_custom_charname_desc"] = "Включить показатель имени персонажа",
     ["#adminesp_custom_steamname_title"] = "STEAM Имя персонажа",
@@ -977,8 +947,8 @@ Arbitrage.language:Add("ru", {
     ["#adminesp_custom_entclass_desc"] = "Включить показатель класса энтити",
     ["#adminesp_custom_entmodel_title"] = "Модель энтити",
     ["#adminesp_custom_entmodel_desc"] = "Включить показатель модели энтити",
-    
--- РЕЖИМ НАБЛЮДЕНИЯ
+
+    -- РЕЖИМ НАБЛЮДЕНИЯ
     ["#spectate_object_attach"] = "Прикрепиться к объекту",
     ["#spectate_object_detach"] = "Открепиться от объекта",
     ["#spectate_object_menu"] = "Меню свойств объекта",
@@ -988,7 +958,7 @@ Arbitrage.language:Add("ru", {
     ["#spectate_changecamera"] = "Изменить положение камеры",
     ["#spectate_forward"] = "Переместиться вперед",
 
--- NOTIFY
+    -- NOTIFY
     ["#notify_killed_1"] = " убил игрока ",
     ["#notify_killed_2"] = " при помощи ",
     ["#notify_charjoined"] = " зашел за персонажа ",
@@ -1061,6 +1031,17 @@ Arbitrage.language:Add("ru", {
     ["#notify_triggerremoveall"] = " удалил все триггеры",
     ["#notify_triggerlistsreset"] = " перезарядил триггер",
 
-    ["#notify_"] = "",
-    ["#notify_"] = "",
+    ["#action_take_weapon"] = "Достаем оружие",
+    ["#action_getting_feet"] = "Встаем на ноги",
+    ["#action_searching"] = "Обыскиваем",
+    ["#action_we_raise"] = "Поднимаем",
+    ["#action_cuff"] = "Связываем",
+    ["#action_being_cuff"] = "Вас связывают",
+    ["#action_breaking_door"] = "Взламываем дверь",
+    ["#action_collecting_evidence"] = "Собираем улику",
+    ["#action_wake_up"] = "Вы просыпаетесь",
+    ["#action_down_the_bed"] = "Ложимся на кровать",
+    ["#action_closing_door"] = "Закрываем дверь",
+    ["#action_open_door"] = "Открываем дверь",
+    ["#action_take_food"] = "Берем еду"
 })

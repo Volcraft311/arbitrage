@@ -606,6 +606,17 @@ Arbitrage.language:Add("ru", {
     ["#discord_rpc_day"] = "День",
     ["#discord_rpc_night"] = "Ночь",
 
+
+    -- CHARACTERS
+    ["#char_team_admin"] = "Администратор",
+    ["#char_team_empty"] = "Персонаж не выбран",
+    ["#char_team_spectator"] = "Наблюдатель",
+
+    -- ВЕДУЩИЕ
+    ["#char_dr_monokuma_name"] = "Монокума",
+    ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
+    ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
+
     -- TRIGGER HAPPY HAVOC
     ["#char_dr_aoi_name"] = "Аой Асахина",
     ["#char_dr_aoi_title"] = "Абсолютный Пловец",
@@ -773,10 +784,25 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_nagisa_title"] = "Юный Абсолютный Обществовед",
     ["#char_dr_nagisa_desc"] = "Молодой обществовед, который прекрасно разбирается в человеческих отношениях и социальных структурах. Его аналитический подход к жизни помогает ему манипулировать окружающими.",
 
-    -- ВЕДУЩИЕ
-    ["#char_dr_monokuma_name"] = "Монокума",
-    ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
-    ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
+    -- РЕДАКТОР ПЕРСОНАЖЕЙ
+    ["#char_team_id"] = "Команда с ID ",
+    ["#char_team_cmd"] = "Команда ",
+    ["#char_team_exist"] = " уже существует!",
+    ["#char_team_created"] = " успешно была создана!",
+    ["#char_team_deleted"] = " была успешно удалена!",
+    ["#char_team_deletedm"] = " были успешно удалены!",
+    ["#char_team_updated"] = " была успешно обновлена!",
+    ["#char_team_nonexistent"] = " не существует!",
+
+    ["#char_sprites_id"] = "Спрайты с ID ",
+    ["#char_sprites_cmd"] = "Спрайты ",
+    ["#char_sprites_exist"] = " уже существуют!",
+    ["#char_sprites_created"] = " успешно были созданы!",
+    ["#char_sprites_deleted"] = " были успешно удалены!",
+    ["#char_sprites_nonexistent"] = " не существуют!",
+
+    ["#char_category_id"] = "Категория с ID ",
+    ["#char_category_cmd"] = "Категория ",
 
     -- ГЛАВНОЕ МЕНЮ
     ["#mainmenu_characterselect"] = "Выбрать персонажа",
@@ -1138,7 +1164,7 @@ Arbitrage.language:Add("ru", {
     ["#hint_12"] = "Некоторые двери можно взламывать, но будьте осторожны – это незаконно!",
     ["#hint_13"] = "В круговом меню можно добавлять нужные вам действия в избранное. После этого их можно использовать в контекстном меню.",
 
--- EDITOR
+    -- EDITOR
     ["#editor_editmode"] = "Вы находитесь в режиме редактирования!",
     ["#editor_place"] = "Место ",
     ["#editor_camera"] = "Камера у места ",
@@ -1147,14 +1173,14 @@ Arbitrage.language:Add("ru", {
     ["#editor_endpoint_camera"] = "Конечное место камеры",
     ["#editor_startpoint_camera"] = "Место начальной камеры",
 
--- EPAINT
+    -- EPAINT
     ["#epaint_brush_square"] = "Квадрат",
     ["#epaint_brush_circle"] = "Круг",
     ["#epaint_brush_line"] = "Линия",
     ["#epaint_brush_rectangle"] = "Прямоугольник",
     ["#epaint_brush_hollowrec"] = "Прямоугольник не залитый",
 
--- EVIDENCE
+    -- EVIDENCE
     ["#evidence_ribbon_blue"] = "Информационные носители",
     ["#evidence_ribbon_green"] = "Медицина",
     ["#evidence_ribbon_orange"] = "Физические носители",
@@ -1180,7 +1206,7 @@ Arbitrage.language:Add("ru", {
     ["#evidence_unknown"] = "Неизвестно",
     ["#evidence_nonvalid"] = "Не валидное Entity!",
 
--- BEDSYSTEM
+    -- BEDSYSTEM
     ["#bed_title"] = "Кровати",
     ["#bed_objects"] = "Все объекты"
 })

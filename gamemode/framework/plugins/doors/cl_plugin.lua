@@ -145,9 +145,9 @@ local function gRequestAddDoorFaction()
 			name = v:GetName(),
 			icon = v:GetAssets().pixel,
 			data = function()
-				Derma_Query("Вы точно хотите дать этому персонажу доступ к данной двери?",  "[DoorSaver] Добавление доступа", "Да", function()
+				Derma_Query("#doors_char_confirm",  "#doors_ds_access", "#doors_yes", function()
 					netstream.Start("arb.DoorAddOwner", k)
-				end, "Нет")
+				end, "#doors_no")
 			end
 		}
 	end
@@ -220,9 +220,9 @@ local function gRequestAddDoorPlayer()
 			name = v:FullName(true),
 			icon = icon,
 			data = function()
-				Derma_Query("Вы точно хотите дать этому персонажу доступ к данной двери?",  "[DoorSaver] Добавление доступа", "Да", function()
+				Derma_Query("#doors_char_confirm",  "#doors_ds_access", "#doors_yes", function()
 					netstream.Start("arb.DoorAddOwner", id)
-				end, "Нет")
+				end, "#doors_no")
 			end
 		}
 	end
@@ -242,9 +242,9 @@ local function gRequestRemoveDoorPlayer(doorData)
 			name = faction:GetName(),
 			icon = faction:GetAssets().pixel,
 			data = function()
-				Derma_Query("Вы точно хотите удалить данного игрока из двери?",  "[DoorSaver] Удаление из базы", "Да", function()
+				Derma_Query("#doors_ply_delete",  "#doors_ds_remove", "#doors_yes", function()
 					netstream.Start("arb.DoorRemoveOwner", k)
-				end, "Нет")
+				end, "#doors_no")
 			end
 		}
 	end
@@ -255,21 +255,21 @@ end
 local function getActionList(entity, doorData)
 	return {
 		{
-			name = "Действия с дверью",
+			name = "#doors_actions",
 			icon = "icon16/report_disk.png",
 			data = {
 				{
-					name = (entity:GetNWBool("disableHack") and "Разрешить" or "Запретить") .. " взламывать",
+					name = (entity:GetNWBool("disableHack") and "#doors_approve" or "#doors_prohibit") .. "#doors_lockpick",
 					icon = "icon16/attach.png",
 					data = function()
 						netstream.Start("arb.DoorSetHack")
 					end
 				},
 				{
-					name = "Установить уникальный идентификатор",
+					name = "#doors_setid",
 					icon = "icon16/report_key.png",
 					data = function()
-						Derma_StringRequest("Уникальный идентификатор", "Введите уникальный ID который вы хотите установить двери", entity:GetNetVar("key_uniqueid", ""), function(text)
+						Derma_StringRequest("#doors_uniqueid", "#doors_setuniqueid", entity:GetNetVar("key_uniqueid", ""), function(text)
 							netstream.Start("arb.DoorSetUniqueID", text)
 						end)
 					end
@@ -277,33 +277,33 @@ local function getActionList(entity, doorData)
 			}
 		},
 		{
-			name = "Добавить доступ к двери",
+			name = "#doors_addaccess",
 			icon = "icon16/pencil_add.png",
 			data = {
 				{
-					name = "Поиск по игрокам",
+					name = "#doors_searchply",
 					icon = "icon16/user_go.png",
 					data = gRequestAddDoorPlayer()
 				},
 				{
-					name = "Поиск по всем фракциям",
+					name = "#doors_searchfraction",
 					icon = "icon16/transmit_go.png",
 					data = gRequestAddDoorFaction()
 				}
 			}
 		},
 		{
-			name = "Убрать доступ из двери",
+			name = "#doors_removeaccess",
 			icon = "icon16/pencil_delete.png",
 			data = gRequestRemoveDoorPlayer(doorData)
 		},
 		{
-			name = "Добавить иконку к двери",
+			name = "#doors_addicon",
 			icon = "icon16/camera_add.png",
 			data = gAddIcon(entity)
 		},
 		{
-			name = "Удалить иконку у двери",
+			name = "#doors_removeicon",
 			icon = "icon16/camera_delete.png",
 			data = gRemoveIcon(entity)
 		}

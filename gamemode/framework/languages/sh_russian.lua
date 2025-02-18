@@ -1243,5 +1243,37 @@ Arbitrage.language:Add("ru", {
     ["#container_deleted"] = "Вы успешно удалили контейнер из ",
 
     -- DESCRIPTIVETEXT
-    ["#description_example"] = "Ваш текст"
+    ["#description_example"] = "Ваш текст",
+
+    -- DOORS
+    ["#doors_char_confirm"] = "Вы точно хотите дать этому персонажу доступ к данной двери?",
+    ["#doors_ds_access"] = "[DoorSaver] Добавление доступа",
+    ["#doors_yes"] = "Да",
+    ["#doors_no"] = "Нет",
+    ["#doors_ply_delete"] = "Вы точно хотите удалить данного игрока из двери?",
+    ["#doors_ds_remove"] = "[DoorSaver] Удаление из базы",
+    ["#doors_actions"] = "Действия с дверью",
+    ["#doors_approve"] = "Разрешить",
+    ["#doors_prohibit"] = "Запретить",
+    ["#doors_lockpick"] = " взламывать",
+    ["#doors_setid"] = "Установить уникальный идентификатор",
+    ["#doors_uniqueid"] = "Уникальный идентификатор",
+    ["#doors_setuniqueid"] = "Введите уникальный ID который вы хотите установить двери",
+    ["#doors_addaccess"] = "Добавить доступ к двери",
+    ["#doors_searchply"] = "Поиск по игрокам",
+    ["#doors_searchfraction"] = "Поиск по всем фракциям",
+    ["#doors_removeaccess"] = "Убрать доступ из двери",
+    ["#doors_addicon"] = "Добавить иконку к двери",
+    ["#doors_removeicon"] = "Удалить иконку у двери",
+
+    ["#doors_provided"] = "Вы успешно дали ",
+    ["#doors_access"] = " доступ к двери!",
+    ["#doors_removed"] = "Вы успешно убрали у ",
+    ["#doors_addedicon"] = "Вы успешно добавили новую иконку к двери!",
+    ["#doors_removedicon"] = "Вы успешно удалили иконку у двери!",
+    ["#doors_successfully"] = "Вы успешно ",
+    ["#doors_allowed"] = "разрешили",
+    ["#doors_prohibited"] = "запретили",
+    ["#doors_lockpicking"] = " взламывать дверь!",
+    ["#doors_addeduniqueid"] = "Вы успешно установили двери уникальный идентификатор "
 })

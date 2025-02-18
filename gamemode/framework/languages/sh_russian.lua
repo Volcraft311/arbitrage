@@ -975,7 +975,7 @@ Arbitrage.language:Add("ru", {
     ["#adminesp_custom_entmodel_desc"] = "Включить показатель модели энтити",
 
     ["#adminesp_spectate"] = "[Наблюдение] ",
-    ["#adminesp_chat"] = " написал в чат: ", 
+    ["#adminesp_chat"] = " написал в чат: ",
 
     -- РЕЖИМ НАБЛЮДЕНИЯ
     ["#spectate_object_attach"] = "Прикрепиться к объекту",
@@ -1224,7 +1224,7 @@ Arbitrage.language:Add("ru", {
     ["#evidence_ribbon_pink"] = "Мед. экспертиза",
 
     ["#evidence_clue_number"] = "Улика №",
-    ["#evidence_clue_success"] = " была успешно присвоина "
+    ["#evidence_clue_success"] = " была успешно присвоина ",
     ["#evidence_clue_delete"] = "Вы успешно удалили улику №",
     ["#evidence_clue_error"] = "Ошибка при выдаче улики игроку!",
     ["#evidence_clue_journal"] = "Журнал улик монопада обновлён.",

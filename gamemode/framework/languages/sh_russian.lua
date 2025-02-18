@@ -948,6 +948,9 @@ Arbitrage.language:Add("ru", {
     ["#adminesp_custom_entmodel_title"] = "Модель энтити",
     ["#adminesp_custom_entmodel_desc"] = "Включить показатель модели энтити",
 
+    ["#adminesp_spectate"] = "[Наблюдение] ",
+    ["#adminesp_chat"] = " написал в чат: ", 
+
     -- РЕЖИМ НАБЛЮДЕНИЯ
     ["#spectate_object_attach"] = "Прикрепиться к объекту",
     ["#spectate_object_detach"] = "Открепиться от объекта",

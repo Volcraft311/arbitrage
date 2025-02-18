@@ -118,13 +118,13 @@ do
 end
 
 do
-    Evidence:AddRibbon("blue.png", "Информационные носители", Color(89, 118, 224))
-    Evidence:AddRibbon("green.png", "Медицина", Color(106, 224, 89))
-    Evidence:AddRibbon("orange.png", "Физические носители", Color(220, 124, 61))
-    Evidence:AddRibbon("red.png", "Орудия убийства", Color(221, 61, 61))
-    Evidence:AddRibbon("violet.png", "Химические материалы", Color(141, 61, 220))
-    Evidence:AddRibbon("white.png", "Ключевые материалы", Color(197, 206, 247))
-    Evidence:AddRibbon("pink.png", "Мед. экспертиза", Color(253, 177, 255))
+    Evidence:AddRibbon("blue.png", "#evidence_ribbon_blue", Color(89, 118, 224))
+    Evidence:AddRibbon("green.png", "#evidence_ribbon_green", Color(106, 224, 89))
+    Evidence:AddRibbon("orange.png", "#evidence_ribbon_orange", Color(220, 124, 61))
+    Evidence:AddRibbon("red.png", "#evidence_ribbon_red", Color(221, 61, 61))
+    Evidence:AddRibbon("violet.png", "#evidence_ribbon_violet", Color(141, 61, 220))
+    Evidence:AddRibbon("white.png", "#evidence_ribbon_white", Color(197, 206, 247))
+    Evidence:AddRibbon("pink.png", "#evidence_ribbon_pink", Color(253, 177, 255))
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

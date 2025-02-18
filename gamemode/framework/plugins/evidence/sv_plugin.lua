@@ -24,18 +24,18 @@ function Evidence:RegisterNewEvidence(data)
 end
 
 function Evidence:SetEntityEvidence(entity, idx)
-    if !IsValid(entity) then return "Не валидное Entity!" end
+    if !IsValid(entity) then return "#evidence_nonvalid" end
     --if !idx then return "Улики с данным ID не существует!" end // пока комментарии ибо нужно возвращать как-то nil значение для удаления
 
     entity:SetNetVar("ev_id", idx)
 
-    return "Улика №" .. tostring(idx) .. " была успешно присвоина " .. tostring(entity) .. "."
+    return "#evidence_clue_number" .. tostring(idx) .. "#evidence_clue_success" .. tostring(entity) .. "."
 end
 
 local function reg(data)
     return Evidence:RegisterNewEvidence({
-        name = data.name or "Неизвестно",
-        description = data.description or "Неизвестно",
+        name = data.name or "#evidence_unknown",
+        description = data.description or "#evidence_unknown",
         color = data.color or color_white,
         alpha = data.alpha or 255,
         image = tonumber(data.image) and math.floor(data.image) or 1,
@@ -88,7 +88,7 @@ function Evidence:Reload(data)
 
     self:DeleteEvidence(idx)
 
-    return "Вы успешно удалили улику №" .. idx .. " с " .. name .. "."
+    return "#evidence_clue_delete" .. idx .. " с " .. name .. "."
 end
 
 function Evidence:DeleteEvidence(idx)
@@ -114,24 +114,24 @@ end
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:AddEvidence(idx, time)
-    if !Evidence:GetEvidence(idx) then return "Ошибка при выдаче улики игроку!" end
+    if !Evidence:GetEvidence(idx) then return "#evidence_clue_error" end
 
     local monopad = MonoPad:FindMonoPad(self)
-    if !monopad then return "У игрока нету монопада!" end
+    if !monopad then return "#evidence_nomonopad" end
 
     local object = monopad.stored
-    if !object then return "У монопада отсутствует его объект!" end
+    if !object then return "#evidence_noobj_monopad" end
 
     object:AddEvidence(idx, time)
     object:Sync()
 
     if !Arbitrage.lawEnable then
-        netstream.Start(self, "arb.Notify", "Журнал улик монопада обновлён.", false)
+        netstream.Start(self, "arb.Notify", "#evidence_clue_journal", false)
     end
 
     netstream.Start(self, "MonoPad:EditSpecialNotify")
 
-    return "Улика с ID №" .. tostring(idx) .. " была успешно выдана игроку " .. tostring(self) .. "."
+    return "#evidence_clue_ply_id" .. tostring(idx) .. "#evidence_clue_ply_success" .. tostring(self) .. "."
 end
 
 
@@ -181,7 +181,7 @@ function Evidence:PlayerUse(client, entity)
         if !monopad then return collect(client, entity, idx) end
         if !client:HasEvidence(idx) then return collect(client, entity, idx) end
 
-        netstream.Start(client, "arb.Notify", "В монопаде уже есть данная улика!", true)
+        netstream.Start(client, "arb.Notify", "#evidence_clue_monopad", true)
     end
 end
 
@@ -196,7 +196,7 @@ end
 
 
 netstream.Hook("Evidence:SetDescription", function(client, data)
-    client.EvidenceDescription = data or "Описание улики"
+    client.EvidenceDescription = data or "#evidence_clue_desc"
 end)
 
 netstream.Hook("Evidence:SetFactionData", function(client, data)

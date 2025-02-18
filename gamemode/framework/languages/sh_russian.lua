@@ -1149,5 +1149,31 @@ Arbitrage.language:Add("ru", {
     ["#epaint_brush_circle"] = "Круг",
     ["#epaint_brush_line"] = "Линия",
     ["#epaint_brush_rectangle"] = "Прямоугольник",
-    ["#epaint_brush_hollowrec"] = "Прямоугольник не залитый"
+    ["#epaint_brush_hollowrec"] = "Прямоугольник не залитый",
+
+-- EVIDENCE
+    ["#evidence_ribbon_blue"] = "Информационные носители",
+    ["#evidence_ribbon_green"] = "Медицина",
+    ["#evidence_ribbon_orange"] = "Физические носители",
+    ["#evidence_ribbon_red"] = "Орудия убийства",
+    ["#evidence_ribbon_violet"] = "Химические материалы",
+    ["#evidence_ribbon_white"] = "Ключевые материалы",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+
+    ["#evidence_clue_number"] = "Улика №",
+    ["#evidence_clue_success"] = " была успешно присвоина "
+    ["#evidence_clue_delete"] = "Вы успешно удалили улику №",
+    ["#evidence_clue_error"] = "Ошибка при выдаче улики игроку!",
+    ["#evidence_clue_journal"] = "Журнал улик монопада обновлён.",
+    ["#evidence_clue_ply_id"] = "Улика с ID №",
+    ["#evidence_clue_ply_success"] = " была успешно выдана игроку ",
+    ["#evidence_clue_monopad"] = "В монопаде уже есть данная улика!",
+    ["#evidence_clue_desc"] = "Описание улики",
+    ["#evidence_nomonopad"] = "У игрока нету монопада!",
+    ["#evidence_noobj_monopad"] = "У монопада отсутствует его объект!",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+    ["#evidence_unknown"] = "Неизвестно",
+    ["#evidence_nonvalid"] = "Не валидное Entity!"
 })

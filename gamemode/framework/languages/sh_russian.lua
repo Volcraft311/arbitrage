@@ -1232,5 +1232,13 @@ Arbitrage.language:Add("ru", {
     ["#colorcorrection_turnply"] = "Включить для определенных игроков",
     ["#colorcorrection_title"] = "Цветокоррекция",
     ["#colorcorrection_name"] = "Название",
-    ["#colorcorrection_desc"] = "Значение"
+    ["#colorcorrection_desc"] = "Значение",
+
+    -- CONTAINER
+    ["#container_desc"] = "Описание контейнера",
+
+    ["#container_exist"] = " уже является контейнером!",
+    ["#container_none"] = " не является контейнером!",
+    ["#container_created"] = "Вы успешно создали контейнер у ",
+    ["#container_deleted"] = "Вы успешно удалили контейнер из "
 })

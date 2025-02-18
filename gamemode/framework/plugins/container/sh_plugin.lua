@@ -38,7 +38,7 @@ function Container:GetToolData(client)
 
     local data = {
         name = containerName,
-        description = client.ContainerDescription or "Описание контейнера",
+        description = client.ContainerDescription or "#container_desc",
         w = containerW,
         h = containerH,
         entity = entity

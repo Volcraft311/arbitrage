@@ -18,7 +18,7 @@ function Container:LeftClick(data)
     local entity = data.entity
     if !IsValid(entity) then return end
 
-    if entity:GetClass() == "arb_container" then return tostring(entity) .. " уже является контейнером!" end
+    if entity:GetClass() == "arb_container" then return tostring(entity) .. "#container_exist" end
 
     local container = ents.Create("arb_container")
     container:SetPos(entity:GetPos())
@@ -27,7 +27,7 @@ function Container:LeftClick(data)
     container:SetContainer(entity:GetModel(), data.name, data.description, data.w, data.h)
     entity:Remove()
 
-    return "Вы успешно создали контейнер у " .. tostring(entity) .. "."
+    return "#container_created" .. tostring(entity) .. "."
 end
 
 function Container:Reload(data)
@@ -36,7 +36,7 @@ function Container:Reload(data)
     local entity = data.entity
     if !IsValid(entity) then return end
 
-    if entity:GetClass() != "arb_container" then return tostring(entity) .. " не является контейнером!" end
+    if entity:GetClass() != "arb_container" then return tostring(entity) .. "#container_none" end
 
     local name = tostring(entity)
 
@@ -55,7 +55,7 @@ function Container:Reload(data)
 
     entity:Remove()
 
-    return "Вы успешно удалили контейнер из " .. name .. "."
+    return "#container_deleted" .. name .. "."
 end
 
 function Container:PlayerUse(client, entity)
@@ -86,5 +86,5 @@ function Container:PlayerUse(client, entity)
 end
 
 netstream.Hook("Container:SetDescription", function(client, data)
-    client.ContainerDescription = data or "Описание контейнера"
+    client.ContainerDescription = data or "#container_desc"
 end)

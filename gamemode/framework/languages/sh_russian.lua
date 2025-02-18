@@ -1142,5 +1142,12 @@ Arbitrage.language:Add("ru", {
     ["#editor_spawn"] = "Спавн у места ",
     ["#editor_lobby"] = "Место Лобби: ",
     ["#editor_endpoint_camera"] = "Конечное место камеры",
-    ["#editor_startpoint_camera"] = "Место начальной камеры"
+    ["#editor_startpoint_camera"] = "Место начальной камеры",
+
+-- EPAINT
+    ["#epaint_brush_square"] = "Квадрат",
+    ["#epaint_brush_circle"] = "Круг",
+    ["#epaint_brush_line"] = "Линия",
+    ["#epaint_brush_rectangle"] = "Прямоугольник",
+    ["#epaint_brush_hollowrec"] = "Прямоугольник не залитый"
 })

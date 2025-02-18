@@ -1178,5 +1178,9 @@ Arbitrage.language:Add("ru", {
     ["#evidence_ribbon_pink"] = "Мед. экспертиза",
     ["#evidence_ribbon_pink"] = "Мед. экспертиза",
     ["#evidence_unknown"] = "Неизвестно",
-    ["#evidence_nonvalid"] = "Не валидное Entity!"
+    ["#evidence_nonvalid"] = "Не валидное Entity!",
+
+-- BEDSYSTEM
+    ["#bed_title"] = "Кровати",
+    ["#bed_objects"] = "Все объекты"
 })

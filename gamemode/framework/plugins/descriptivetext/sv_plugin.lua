@@ -15,5 +15,5 @@
 local PLUGIN = PLUGIN
 
 netstream.Hook("DescriptiveText:SetDescription", function(client, data)
-    client.DescriptiveTextDescription = data or "Ваш текст"
+    client.DescriptiveTextDescription = data or "#description_example"
 end)

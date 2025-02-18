@@ -1240,5 +1240,8 @@ Arbitrage.language:Add("ru", {
     ["#container_exist"] = " уже является контейнером!",
     ["#container_none"] = " не является контейнером!",
     ["#container_created"] = "Вы успешно создали контейнер у ",
-    ["#container_deleted"] = "Вы успешно удалили контейнер из "
+    ["#container_deleted"] = "Вы успешно удалили контейнер из ",
+
+    -- DESCRIPTIVETEXT
+    ["#description_example"] = "Ваш текст"
 })

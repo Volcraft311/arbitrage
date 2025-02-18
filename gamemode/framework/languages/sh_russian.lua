@@ -1173,6 +1173,40 @@ Arbitrage.language:Add("ru", {
     ["#editor_endpoint_camera"] = "Конечное место камеры",
     ["#editor_startpoint_camera"] = "Место начальной камеры",
 
+    ["#editor_changed"] = "Вы успешно добавили изменения в '",
+    ["#editor_configloaded"] = "Ваш конфиг успешно был загружен!",
+
+    ["#editor_lobbylist_current"] = "Расположение мест в лобби:",
+    ["#editor_spawnlist_current"] = "Расположение мест при запуске игры:",
+    ["#editor_placeslist_current"] = "Расположение мест на суде:",
+    ["#editor_camposend_current"] = "Расположение основной камеры:",
+    ["#editor_campos_current"] = "Расположение начальной камеры:",
+    ["#editor_camposplaces_current"] = "Расположение камеру у мест:",
+
+    ["#editor_lobbylist_set"] = "Установить новое место в лобби",
+    ["#editor_spawnlist_set"] = "Установить новое место при запуске игры",
+    ["#editor_placeslist_set"] = "Установить место на суде",
+    ["#editor_camposend_set"] = "Установить основную камеру",
+    ["#editor_campos_set"] = "Установить начальную камеру",
+    ["#editor_camposplaces_set"] = "Установить камеру у места",
+
+    ["#editor_lobbylist_delete"] = "Удалить места в лобби",
+    ["#editor_spawnlist_delete"] = "Удалить места при запуске игры",
+    ["#editor_placeslist_delete"] = "Удалить места на суде",
+    ["#editor_camposend_delete"] = "Удалить расположение основной камеры",
+    ["#editor_campos_delete"] = "Удалить расположение начальной камеры",
+    ["#editor_camposplaces_delete"] = "Удалить расположение камер у всех мест",
+
+    ["#editor_menu"] = "Меню редактирования",
+    ["#editor_config"] = "Конфигурация",
+    ["#editor_saveconfig"] = "Сохранить конфигурацию",
+    ["#editor_typedoc"] = "Введите название документа в который сохраниться конфигурация из Editor-а",
+    ["#editor_savedconfig"] = "Ваш конфиг успешно был сохранен в файл: ",
+    ["#editor_loadconfig"] = "Загрузить конфигурацию",
+    ["#editor_number"] = "Номер",
+    ["#editor_setnumber"] = "Введите номер нужного вам места",
+    ["#editor_iwanttodeleteit"] = "Да, я хочу удалить это!",
+
     -- EPAINT
     ["#epaint_brush_square"] = "Квадрат",
     ["#epaint_brush_circle"] = "Круг",

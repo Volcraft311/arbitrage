@@ -39,15 +39,15 @@ function PLUGIN:Get()
 end
 
 local info = {
-    ["brightness"] = {name = "Яркость", minimum = -2, maximum = 2, decimals = 2},
-    ["contrast"] = {name = "Контраст", minimum = 0, maximum = 10, decimals = 2},
-    ["color"] = {name = "Цвет", minimum = 0, maximum = 5, decimals = 2},
-    ["addr"] = {name = "Добавить красный цвет", minimum = 0, maximum = 255, decimals = 0},
-    ["addg"] = {name = "Добавить зеленый цвет", minimum = 0, maximum = 255, decimals = 0},
-    ["addb"] = {name = "Добавить синий цвет", minimum = 0, maximum = 255, decimals = 0},
-    ["mulr"] = {name = "Умножить красные цвета", minimum = 0, maximum = 255, decimals = 0},
-    ["mulg"] = {name = "Умножить зеленые цвета", minimum = 0, maximum = 255, decimals = 0},
-    ["mulb"] = {name = "Умножить синие цвета", minimum = 0, maximum = 255, decimals = 0}
+    ["brightness"] = {name = "#colorcorrection_brightness", minimum = -2, maximum = 2, decimals = 2},
+    ["contrast"] = {name = "#colorcorrection_contrast", minimum = 0, maximum = 10, decimals = 2},
+    ["color"] = {name = "#colorcorrection_color", minimum = 0, maximum = 5, decimals = 2},
+    ["addr"] = {name = "#colorcorrection_addr", minimum = 0, maximum = 255, decimals = 0},
+    ["addg"] = {name = "#colorcorrection_addg", minimum = 0, maximum = 255, decimals = 0},
+    ["addb"] = {name = "#colorcorrection_addb", minimum = 0, maximum = 255, decimals = 0},
+    ["mulr"] = {name = "#colorcorrection_mulr", minimum = 0, maximum = 255, decimals = 0},
+    ["mulg"] = {name = "#colorcorrection_mulg", minimum = 0, maximum = 255, decimals = 0},
+    ["mulb"] = {name = "#colorcorrection_mulb", minimum = 0, maximum = 255, decimals = 0}
 }
 
 function PLUGIN:GetInfo(key)

@@ -1208,5 +1208,29 @@ Arbitrage.language:Add("ru", {
 
     -- BEDSYSTEM
     ["#bed_title"] = "Кровати",
-    ["#bed_objects"] = "Все объекты"
+    ["#bed_objects"] = "Все объекты",
+
+    -- COLORCORRECTION
+    ["#colorcorrection_brightness"] = "Яркость",
+    ["#colorcorrection_contrast"] = "Контраст",
+    ["#colorcorrection_color"] = "Цвет",
+    ["#colorcorrection_addr"] = "Добавить красный цвет",
+    ["#colorcorrection_addg"] = "Добавить зеленый цвет",
+    ["#colorcorrection_addb"] = "Добавить синий цвет",
+    ["#colorcorrection_mulr"] = "Умножить красные цвета",
+    ["#colorcorrection_mulg"] = "Умножить зеленые цвета",
+    ["#colorcorrection_mulb"] = "Умножить синие цвета",
+
+    ["#colorcorrection_turnon"] = "Включить изменение цветокоррекции",
+    ["#colorcorrection_restore"] = "Вернуть стандартную цветокоррекцию",
+    ["#colorcorrection_configs"] = "Конфигурации",
+    ["#colorcorrection_savecc"] = "Сохранить цветокор",
+    ["#colorcorrection_loadcc"] = "Загрузить цветокор",
+    ["#colorcorrection_savefile"] = "Введите название документа в который вы хотите сохранить цветокор",
+    ["#colorcorrection_save"] = "Сохранить",
+    ["#colorcorrection_cancel"] = "Отменить",
+    ["#colorcorrection_turnply"] = "Включить для определенных игроков",
+    ["#colorcorrection_title"] = "Цветокоррекция",
+    ["#colorcorrection_name"] = "Название",
+    ["#colorcorrection_desc"] = "Значение"
 })

@@ -156,7 +156,7 @@ function PANEL:AddRules(id, title, description, url)
 			    surface.SetDrawColor(14, 9, 3, 170)
 			    surface.DrawRect(8, 8, 127, 23)
 
-			    MonoPad:DrawTextBlur("Новое изменение", MonoPad:GetFont("rules_notify"), 14, 9, Color(255, 176, 56), TEXT_ALIGN_LEFT, Color(255, 176, 56, 150))
+			    MonoPad:DrawTextBlur("#monopad_rules_newedit", MonoPad:GetFont("rules_notify"), 14, 9, Color(255, 176, 56), TEXT_ALIGN_LEFT, Color(255, 176, 56, 150))
 			end
 	    end)
 	end
@@ -166,7 +166,7 @@ function PANEL:AddRules(id, title, description, url)
 		local ui = MonoPad:GetUI()
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"rules",
-			"Правило №" .. id,
+			"#monopad_rules_number" .. id,
 			MonoPad.icons.rules,
 			{id}
 		})
@@ -213,7 +213,7 @@ function PANEL:Init()
 
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"rules",
-			"Устав Академии",
+			"#monopad_rules_regulation",
 			MonoPad.icons.rules,
 			{}
 		})
@@ -283,7 +283,7 @@ function PANEL:Init()
 			self:SetPage(id)
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"rules",
-				"Правило №" .. id,
+				"#monopad_rules_number" .. id,
 				MonoPad.icons.rules,
 				{id}
 			})
@@ -321,7 +321,7 @@ function PANEL:Init()
 
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"rules",
-				"Правило №" .. id,
+				"#monopad_rules_number" .. id,
 				MonoPad.icons.rules,
 				{id}
 			})
@@ -344,7 +344,7 @@ function PANEL:SetPage(id)
 	if !rules then return end
 
 	local url = rules[1]
-	local description = "Правило №" .. self.id .. ". " .. L(rules[3])
+	local description = "#monopad_rules_number" .. self.id .. ". " .. L(rules[3])
 
 	local image = nil
 	if string.Trim(url) != "" then

@@ -48,7 +48,7 @@ function PANEL:Init()
 	leftPanel:SetWide(200)
 	leftPanel:Dock(LEFT)
 	leftPanel.Paint = function(_, w, h)
-		draw.SimpleText("Уровень просмотра:", MonoPad:GetFont("minimap_button"), 20, 10, color_white, TEXT_ALIGN_LEFT)
+		draw.SimpleText("#monopad_nav_level", MonoPad:GetFont("minimap_button"), 20, 10, color_white, TEXT_ALIGN_LEFT)
 	end
 
 	local rightPanel = bottomPanel:Add("Panel")

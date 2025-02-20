@@ -91,7 +91,7 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 
 	local stringTime = Arbitrage.FormatTime(time)
 
-	local attackerName = "Неизвестно"
+	local attackerName = "#monopad_unknown"
 	if attackerID then
 		local attackerFaction = Character.team:GetByID(attackerID)
 
@@ -137,21 +137,21 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 		    	surface.DrawTexturedRect(158 / 2 - size / 2, 158 / 2 - size / 2 + 20, size, size)
 		    end
 
-		    draw.SimpleText("Дело №" .. id .. ", " .. (this.inflictorFaction and this.inflictorFaction:GetName() or "Неизвестно"), MonoPad:GetFont("gamelog_title"), 176, 14, color_white, TEXT_ALIGN_LEFT)
-		    draw.SimpleText("Глава '" .. chapterTitle .. "'", MonoPad:GetFont("gamelog_text"), 176, 44, color_white, TEXT_ALIGN_LEFT)
+		    draw.SimpleText("#monopad_gamelog_casenumber" .. id .. ", " .. (this.inflictorFaction and this.inflictorFaction:GetName() or "#monopad_unknown"), MonoPad:GetFont("gamelog_title"), 176, 14, color_white, TEXT_ALIGN_LEFT)
+		    draw.SimpleText("#monopad_gamelog_chapter '" .. chapterTitle .. "'", MonoPad:GetFont("gamelog_text"), 176, 44, color_white, TEXT_ALIGN_LEFT)
 
 		    do
-		    	local _w, _ = draw.SimpleText("Статус: ", MonoPad:GetFont("gamelog_text"), 176, 76, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+		    	local _w, _ = draw.SimpleText("#monopad_gamelog_status ", MonoPad:GetFont("gamelog_text"), 176, 76, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
 		    	MonoPad:DrawTextBlur(info[1], MonoPad:GetFont("gamelog_text"), 176 + _w, 76, info[2], TEXT_ALIGN_LEFT, ColorAlpha(info[2], 100))
 			end
 
 			do
-				local _w, _ = draw.SimpleText("Виновный: ", MonoPad:GetFont("gamelog_text"), 176, 102, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+				local _w, _ = draw.SimpleText("#monopad_gamelog_culprit ", MonoPad:GetFont("gamelog_text"), 176, 102, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
 				draw.SimpleText(attackerName, MonoPad:GetFont("gamelog_text"), 176 + _w, 102, color_white, TEXT_ALIGN_LEFT)
 			end
 
 			do
-				local _w, _ = draw.SimpleText("Начато: ", MonoPad:GetFont("gamelog_text"), 176, 126, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+				local _w, _ = draw.SimpleText("#monopad_gamelog_started ", MonoPad:GetFont("gamelog_text"), 176, 126, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
 				draw.SimpleText("в " .. stringTime, MonoPad:GetFont("gamelog_text"), 176 + _w, 126, color_white, TEXT_ALIGN_LEFT)
 			end
 
@@ -287,10 +287,10 @@ function PANEL:SetData(id)
 	local caseStored = monopad.caseStored[id] or {}
 
 	local m_inflictor = caseStored[1] or nil
-	local m_time = caseStored[2] or "Не указано"
-	local m_reason = caseStored[3] or "Не указано"
-	local m_place = caseStored[4] or "Не указано"
-	local m_found = caseStored[5] or "Не указано"
+	local m_time = caseStored[2] or "#monopad_gamelog_notspecified"
+	local m_reason = caseStored[3] or "#monopad_gamelog_notspecified"
+	local m_place = caseStored[4] or "#monopad_gamelog_notspecified"
+	local m_found = caseStored[5] or "#monopad_gamelog_notspecified"
 
 	if !inflictorID then
 		inflictorID = m_inflictor
@@ -353,11 +353,11 @@ function PANEL:SetData(id)
 	self.infoPanel:SetTall(0)
 	MonoPad:StartRegisterMeta(self.infoPanel)
 
-	self:AddInformation("Жертва:", inflictorFaction and inflictorFaction:GetName() or "Неизвестно")
-	self:AddInformation("Время смерти:", m_time)
-	self:AddInformation("Причина:", m_reason)
-	self:AddInformation("Тело найдено:", m_place)
-	self:AddInformation("Обнаружено:", m_found, true)
+	self:AddInformation("#monopad_gamelog_victim", inflictorFaction and inflictorFaction:GetName() or "#monopad_gamelog_unknown")
+	self:AddInformation("#monopad_gamelog_time", m_time)
+	self:AddInformation("#monopad_gamelog_cause", m_reason)
+	self:AddInformation("#monopad_gamelog_place", m_place)
+	self:AddInformation("#monopad_gamelog_discovery", m_found, true)
 
 	local editButton = self.infoPanel:Add("DButton")
 	editButton:SetText("")
@@ -500,22 +500,22 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Изменить дело", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_gledit_case", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберете жертву в деле", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Химико Юмено", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_gledit_victim", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_glexample_victim", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите время смерти", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: ~ 17:40", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_gledit_time", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_glexample_time", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите причину смерти", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Удар тупым предметом в область головы", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_gledit_cause", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_glexample_cause", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите место нахождения тело", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: в Библиотеке", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_gledit_place", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_glexample_place", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите время обнаружения тело", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: 22:45", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_gledit_discovery", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_glexample_discovery", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -544,28 +544,28 @@ function PANEL:Init()
     self.timeEntry = self.main:Add("DTextEntry")
     self.timeEntry:SetPos(W(5), H(155))
     self.timeEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.timeEntry:SetPlaceholderText("Время смерти")
+    self.timeEntry:SetPlaceholderText("#monopad_glmain_time")
     self.timeEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.reasonEntry = self.main:Add("DTextEntry")
     self.reasonEntry:SetPos(W(5), H(235))
     self.reasonEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.reasonEntry:SetPlaceholderText("Причина смерти")
+    self.reasonEntry:SetPlaceholderText("#monopad_glmain_cause")
     self.reasonEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.placeEntry = self.main:Add("DTextEntry")
     self.placeEntry:SetPos(W(5), H(315))
     self.placeEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.placeEntry:SetPlaceholderText("Место нахождения тело")
+    self.placeEntry:SetPlaceholderText("#monopad_glmain_place")
     self.placeEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.foundEntry = self.main:Add("DTextEntry")
     self.foundEntry:SetPos(W(5), H(395))
     self.foundEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.foundEntry:SetPlaceholderText("Время обнаружения тело")
+    self.foundEntry:SetPlaceholderText("#monopad_glmain_discovery")
     self.foundEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    self.inflictorBox:AddChoice("Неизвестно", nil, true)
+    self.inflictorBox:AddChoice("#monopad_unknown", nil, true)
     for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
         if v:GetAssets().pixel then
             self.inflictorBox:AddChoice(v:GetName(), k)
@@ -580,7 +580,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Изменить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#monopad_glmain_edit", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -614,7 +614,7 @@ function PANEL:SetData(inflictor, time, reason, place, found, callback, id)
 	    	self.inflictorBox:SetDisabled(true)
 	    end
 	else
-		self.inflictorBox:SetValue("Неизвестно")
+		self.inflictorBox:SetValue("#monopad_unknown")
 	end
 
 	if time then

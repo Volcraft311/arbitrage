@@ -290,10 +290,10 @@ netstream.Hook("MonoPad:EditCase", function(client, caseID, data)
 	if state == 1 then return end
 
 	local m_inflictor = data[1] or nil
-	local m_time = data[2] or "Не указано"
-	local m_reason = data[3] or "Не указано"
-	local m_place = data[4] or "Не указано"
-	local m_found = data[5] or "Не указано"
+	local m_time = data[2] or "#monopad_gamelog_notspecified"
+	local m_reason = data[3] or "#monopad_gamelog_notspecified"
+	local m_place = data[4] or "#monopad_gamelog_notspecified"
+	local m_found = data[5] or "#monopad_gamelog_notspecified"
 
 	local caseStored = monopad.caseStored
 	caseStored[caseID] = caseStored[caseID] or {}

@@ -24,7 +24,7 @@ function PANEL:Init()
     if !monopad then return end
 
     local validMap = MonoPad.miniMapList[game.GetMap()]
-    local panel = self:CreateButton("navigation", "Навигация", "Удобная карта с активным трекингом", 50, 158, "danganronpa/monopad/category/navigation.png", function()
+    local panel = self:CreateButton("navigation", "#monopad_title_navigation", "#monopad_desc_navigation", 50, 158, "danganronpa/monopad/category/navigation.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -40,7 +40,7 @@ function PANEL:Init()
     panel:SetAlpha(validMap and 255 or 15)
     panel:SetDisabled(true)
 
-    self:CreateButton("rules", "Устав Академии", "Свод основным правил поведения", 335, 158, "danganronpa/monopad/category/charter.png", function()
+    self:CreateButton("rules", "#monopad_title_rules", "#monopad_desc_rules", 335, 158, "danganronpa/monopad/category/charter.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -56,7 +56,7 @@ function PANEL:Init()
         return table.Count(monopad.rulesNotify or {}) > 0
     end)
 
-    self:CreateButton("messenger", "Мессенджер", "Личные сообщения от участников", 620, 158, "danganronpa/monopad/category/messenger.png", function()
+    self:CreateButton("messenger", "#monopad_title_messenger", "#monopad_desc_messenger", 620, 158, "danganronpa/monopad/category/messenger.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -72,7 +72,7 @@ function PANEL:Init()
         return monopad.messagesNotify > 0
     end)
 
-    self:CreateButton("gamelog", "Журнал игры", "История расследования в Академии", 50, 343, "danganronpa/monopad/category/gamelog.png", function()
+    self:CreateButton("gamelog", "#monopad_title_gamelog", "#monopad_desc_gamelog", 50, 343, "danganronpa/monopad/category/gamelog.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -88,7 +88,7 @@ function PANEL:Init()
         return monopad.gamelogNotify
     end)
 
-    self:CreateButton("notes", "Личные заметки", "Цифровой блокнот для записей", 335, 343, "danganronpa/monopad/category/notes.png", function()
+    self:CreateButton("notes", "#monopad_title_notes", "#monopad_desc_notes", 335, 343, "danganronpa/monopad/category/notes.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -102,7 +102,7 @@ function PANEL:Init()
         end)
     end)
 
-    self:CreateButton("special", "Спец. материалы", "Особая информация для игры", 620, 343, "danganronpa/monopad/category/special.png", function()
+    self:CreateButton("special", "#monopad_title_special", "#monopad_desc_special", 620, 343, "danganronpa/monopad/category/special.png", function()
         parent:DrawLoading(function()
             self:Remove()
 
@@ -120,7 +120,7 @@ function PANEL:Init()
 end
 
 function PANEL:Welcome()
-    local name = "Неизвестно"
+    local name = "#monopad_unknown"
 
     local monopad = MonoPad:GetObject()
     local faction = Character.team:GetByID(monopad:GetTeam())
@@ -128,7 +128,7 @@ function PANEL:Welcome()
         name = faction:GetName()
     end
 
-    local welcomeText = ("Добро пожаловать, %s!"):format(name)
+    local welcomeText = ("#monopad_welcome, %s!"):format(name)
 
     local panel = self:Add("Panel")
     panel:Dock(TOP)
@@ -175,7 +175,7 @@ function PANEL:CreateButton(uniqueID, text, desc, x, y, image, callback, isNotif
             surface.SetDrawColor(14, 9, 3, 170)
             surface.DrawRect(8, 8, 127, 23)
 
-            MonoPad:DrawTextBlur("Новое изменение", MonoPad:GetFont("category_notify"), 14, 9, Color(255, 176, 56), TEXT_ALIGN_LEFT, Color(255, 176, 56, 150))
+            MonoPad:DrawTextBlur("#monopad_newmod", MonoPad:GetFont("category_notify"), 14, 9, Color(255, 176, 56), TEXT_ALIGN_LEFT, Color(255, 176, 56, 150))
         end
 
         surface.SetDrawColor(15, 15, 15)

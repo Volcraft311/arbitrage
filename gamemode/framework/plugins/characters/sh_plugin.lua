@@ -167,6 +167,9 @@ Arbitrage.base.Include("sh_team.lua")
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")
 
+Arbitrage.base.Include("derma/cl_sprites.lua")
+
+
 
 Character.category:Init(function()
     -- Персонаж администратора

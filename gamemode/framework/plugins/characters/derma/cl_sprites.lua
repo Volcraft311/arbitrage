@@ -30,7 +30,7 @@ function PANEL:Init()
 
     local image_margin = self:Add("DPanel")
     image_margin:SetBackgroundColor(Color(100,100,100,100))
-    image_margin:SetWidth(200)
+    image_margin:SetWidth(210)
     image_margin:Dock(RIGHT)
     local image = image_margin:Add("DImage")
     image:Dock(TOP)

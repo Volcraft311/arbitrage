@@ -130,6 +130,9 @@ netstream.Hook("Character:CreationRegisterEmoji", function(client, uniqueID, dat
 	if !client:IsAdmin() then return end
 
 	uniqueID = tostring(uniqueID)
+	print("id", uniqueID)
+	print("data")
+	Print(data)
 
 	local characterslist = asterionlib.data:Get("characterslist", {}, true)
 	characterslist.emoji = characterslist.emoji or {}

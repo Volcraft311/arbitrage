@@ -128,7 +128,7 @@ function PANEL:Welcome()
         name = faction:GetName()
     end
 
-    local welcomeText = ("#monopad_welcome, %s!"):format(name)
+    local welcomeText = F(("#monopad_welcome, %s!"):format(name))
 
     local panel = self:Add("Panel")
     panel:Dock(TOP)
@@ -167,8 +167,8 @@ function PANEL:CreateButton(uniqueID, text, desc, x, y, image, callback, isNotif
         surface.SetDrawColor(0, 0, 0, 250 - 250 * _.alpha)
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleText(text, MonoPad:GetFont("category_title"), 14, 100, color_white, TEXT_ALIGN_LEFT)
-        draw.SimpleText(desc, MonoPad:GetFont("category_desc"), 14, 128.5, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(L(text), MonoPad:GetFont("category_title"), 14, 100, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(L(desc), MonoPad:GetFont("category_desc"), 14, 128.5, color_white, TEXT_ALIGN_LEFT)
 
         local isnotify = isNotify and isNotify()
         if isnotify then

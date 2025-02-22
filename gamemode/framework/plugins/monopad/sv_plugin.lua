@@ -219,7 +219,7 @@ netstream.Hook("MonoPad:ReadMessages", function(client, targetID)
 	local targetFaction = Character.team:GetByID(targetID)
 	if !targetFaction then return end
 
-	for k, v in ipairs(monopad.messages[targetID]) do
+	for k, v in ipairs(monopad.messages[targetID] or {}) do
 		monopad.messages[targetID][k].notify = nil
 	end
 end)

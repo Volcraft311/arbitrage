@@ -166,7 +166,7 @@ function PANEL:AddRules(id, title, description, url)
 		local ui = MonoPad:GetUI()
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"rules",
-			"#monopad_rules_number" .. id,
+			L("#monopad_rules_number") .. id,
 			MonoPad.icons.rules,
 			{id}
 		})
@@ -283,7 +283,7 @@ function PANEL:Init()
 			self:SetPage(id)
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"rules",
-				"#monopad_rules_number" .. id,
+				L("#monopad_rules_number") .. id,
 				MonoPad.icons.rules,
 				{id}
 			})
@@ -321,7 +321,7 @@ function PANEL:Init()
 
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"rules",
-				"#monopad_rules_number" .. id,
+				L("#monopad_rules_number") .. id,
 				MonoPad.icons.rules,
 				{id}
 			})
@@ -344,7 +344,7 @@ function PANEL:SetPage(id)
 	if !rules then return end
 
 	local url = rules[1]
-	local description = "#monopad_rules_number" .. self.id .. ". " .. L(rules[3])
+	local description = L("#monopad_rules_number") .. self.id .. ". " .. L(rules[3])
 
 	local image = nil
 	if string.Trim(url) != "" then

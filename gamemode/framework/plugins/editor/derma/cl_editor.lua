@@ -170,11 +170,11 @@ function PANEL:Init()
 	configButton.DoClick = function()
 		local Menu = DermaMenu()
 			Menu:AddOption("#editor_saveconfig", function()
-				Derma_StringRequest("#editor_saveconfig", "#editor_typedoc", "", function(text)
+				Derma_StringRequest(L("#editor_saveconfig"), L("#editor_typedoc"), "", function(text)
 					local data = util.TableToJSON(Editor:GetStored())
 
 					file.Write("academy_editor_configs/" .. text .. ".txt", data)
-					chat.AddText("#editor_savedconfig" .. text .. ".txt")
+					chat.AddText("#editor_savedconfig " .. text .. ".txt")
 				end)
 			end):SetIcon("icon16/add.png")
 
@@ -254,7 +254,7 @@ function PANEL:InitButtons()
 
 				timer.Simple(0.3, function() self:GetData() end)
 			else
-				Derma_StringRequest("#editor_number", "#editor_setnumber", "", function(text)
+				Derma_StringRequest(L("#editor_number"), L("#editor_setnumber"), "", function(text)
 					local action = ReturnActionAdd(k, text, {pos, ang})
 					netstream.Start("Editor:ChangeProperty", k, action)
 

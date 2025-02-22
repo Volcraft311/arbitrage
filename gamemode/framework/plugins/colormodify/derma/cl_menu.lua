@@ -144,7 +144,7 @@ function PANEL:InitColorModify()
     saveButton.DoClick = function()
         local Menu = DermaMenu()
         Menu:AddOption("#colorcorrection_savecc", function()
-            Derma_StringRequest("#colorcorrection_savecc", "#colorcorrection_savefile", "", function(text)
+            Derma_StringRequest(L("#colorcorrection_savecc"), L("#colorcorrection_savefile"), "", function(text)
                 local data = PLUGIN:Get()
 
                 local array = {}

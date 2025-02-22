@@ -57,7 +57,7 @@ end
 --[[
     ИГРОВЫЕ ФУНКЦИИ
 ]]--
-MonoMenu:AddGameFunction("Игра запущена", "icon16/control_play_blue.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_startgame", "icon16/control_play_blue.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -77,7 +77,7 @@ MonoMenu:AddGameFunction("Игра запущена", "icon16/control_play_blue.
     end
 })
 
-MonoMenu:AddGameFunction("Суд запущен", "icon16/control_equalizer_blue.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_classtrial", "icon16/control_equalizer_blue.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -100,7 +100,7 @@ MonoMenu:AddGameFunction("Суд запущен", "icon16/control_equalizer_blue
     end
 })
 
-MonoMenu:AddGameFunction("Запустить заставку (глава)", "icon16/application_add.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_splashscreen", "icon16/application_add.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -108,7 +108,7 @@ MonoMenu:AddGameFunction("Запустить заставку (глава)", "ic
     end
 })
 
-MonoMenu:AddGameFunction("Запустить заставку (gameover)", "icon16/application_add.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_gameoverscreen", "icon16/application_add.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -116,7 +116,7 @@ MonoMenu:AddGameFunction("Запустить заставку (gameover)", "icon
     end
 })
 
-MonoMenu:AddGameFunction("Запустить заставку (статус)", "icon16/application_add.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_statusscreen", "icon16/application_add.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -124,7 +124,7 @@ MonoMenu:AddGameFunction("Запустить заставку (статус)", "
     end
 })
 
-MonoMenu:AddGameFunction("Запустить голосование", "icon16/application_view_tile.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_vote", "icon16/application_view_tile.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -132,7 +132,7 @@ MonoMenu:AddGameFunction("Запустить голосование", "icon16/ap
     end
 })
 
-MonoMenu:AddGameFunction("Изменить устав академии", "icon16/book_edit.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_charter", "icon16/book_edit.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -140,7 +140,7 @@ MonoMenu:AddGameFunction("Изменить устав академии", "icon16
     end
 })
 
-MonoMenu:AddGameFunction("Изменить журнал игры", "icon16/calendar_edit.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_gamelog", "icon16/calendar_edit.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -148,7 +148,7 @@ MonoMenu:AddGameFunction("Изменить журнал игры", "icon16/calen
     end
 })
 
-MonoMenu:AddGameFunction("Изменить статус эффекты", "icon16/pill_go.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_statuseffects", "icon16/pill_go.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -156,7 +156,7 @@ MonoMenu:AddGameFunction("Изменить статус эффекты", "icon16
     end
 })
 
-MonoMenu:AddGameFunction("Заморозить всех игроков", "icon16/shading.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_freezeall", "icon16/shading.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -168,7 +168,7 @@ MonoMenu:AddGameFunction("Заморозить всех игроков", "icon16
     end
 })
 
-MonoMenu:AddGameFunction("Разморозить всех игроков", "icon16/shape_move_front.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_unfreezeall", "icon16/shape_move_front.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -178,7 +178,7 @@ MonoMenu:AddGameFunction("Разморозить всех игроков", "icon
     end
 })
 
-MonoMenu:AddGameFunction("Изменить название главы", "icon16/color_swatch.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_setepisode", "icon16/color_swatch.png", {
     onRun = function(client)
         if SERVER then return false end
 
@@ -208,7 +208,7 @@ MonoMenu:AddGameFunction("Изменить название главы", "icon16
     end
 })
 
-MonoMenu:AddGameFunction("Открыть WhiteList список", "icon16/application_view_list.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_whitelist", "icon16/application_view_list.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -216,7 +216,7 @@ MonoMenu:AddGameFunction("Открыть WhiteList список", "icon16/applic
     end
 })
 
-MonoMenu:AddGameFunction("Открыть список дополнений", "icon16/database_gear.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_addonmenu", "icon16/database_gear.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -224,7 +224,7 @@ MonoMenu:AddGameFunction("Открыть список дополнений", "ic
     end
 })
 
-MonoMenu:AddGameFunction("Открыть список предметов", "icon16/table_edit.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_itemlist", "icon16/table_edit.png", {
     onRun = function(client)
         if SERVER then return end
 
@@ -232,7 +232,7 @@ MonoMenu:AddGameFunction("Открыть список предметов", "icon
     end
 })
 
-MonoMenu:AddGameFunction("Открыть список персонажей", "icon16/group_edit.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_charlist", "icon16/group_edit.png", {
     onRun = function(client)
         if SERVER then return end
 
@@ -240,7 +240,7 @@ MonoMenu:AddGameFunction("Открыть список персонажей", "ic
     end
 })
 
-MonoMenu:AddGameFunction("Изменить цветокоррекцию", "icon16/color_wheel.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_colorcorrection", "icon16/color_wheel.png", {
     onRun = function(client)
         if SERVER then return end
 
@@ -248,7 +248,7 @@ MonoMenu:AddGameFunction("Изменить цветокоррекцию", "icon1
     end
 })
 
-MonoMenu:AddGameFunction("Открыть редактор музыки", "icon16/music.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_musicplayer", "icon16/music.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -256,7 +256,7 @@ MonoMenu:AddGameFunction("Открыть редактор музыки", "icon16
     end
 })
 
-MonoMenu:AddGameFunction("Сбросить всем всю статистику", "icon16/chart_line.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_clearstats", "icon16/chart_line.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -271,7 +271,7 @@ MonoMenu:AddGameFunction("Сбросить всем всю статистику"
     end
 })
 
-MonoMenu:AddGameFunction("Остановить всем все звуки", "icon16/sound_none.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_stopsound", "icon16/sound_none.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -281,7 +281,7 @@ MonoMenu:AddGameFunction("Остановить всем все звуки", "ico
     end
 })
 
-MonoMenu:AddGameFunction("Удалить все улики на карте", "icon16/bug_delete.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_clearclues", "icon16/bug_delete.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -296,7 +296,7 @@ MonoMenu:AddGameFunction("Удалить все улики на карте", "ic
     end
 })
 
-MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_clearchat", "icon16/application_delete.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -312,7 +312,7 @@ MonoMenu:AddGameFunction("Очистить чат", "icon16/application_delete.p
     end
 })
 
-MonoMenu:AddGameFunction("Реверсия карты", "icon16/script_code_red.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_mapreversion", "icon16/script_code_red.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -329,7 +329,7 @@ MonoMenu:AddGameFunction("Реверсия карты", "icon16/script_code_red.
     end
 })
 
-MonoMenu:AddGameFunction("Отображение списка игроков", "icon16/information.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_tabmenu", "icon16/information.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -346,7 +346,7 @@ MonoMenu:AddGameFunction("Отображение списка игроков", "
     end
 })
 
-MonoMenu:AddGameFunction("Оповещение смены дня и ночи", "icon16/bell.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_daynight", "icon16/bell.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -363,7 +363,7 @@ MonoMenu:AddGameFunction("Оповещение смены дня и ночи", "
     end
 })
 
-MonoMenu:AddGameFunction("Надпись ClassTrial", "icon16/chart_curve_add.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_ctname", "icon16/chart_curve_add.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -380,7 +380,7 @@ MonoMenu:AddGameFunction("Надпись ClassTrial", "icon16/chart_curve_add.pn
     end
 })
 
-MonoMenu:AddGameFunction("Разрешить RebuttalShowdown", "icon16/photos.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_rebuttal", "icon16/photos.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -401,7 +401,7 @@ MonoMenu:AddGameFunction("Разрешить RebuttalShowdown", "icon16/photos.p
     end
 })
 
-MonoMenu:AddGameFunction("OOC чат", "icon16/world.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_oocchat", "icon16/world.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -418,7 +418,7 @@ MonoMenu:AddGameFunction("OOC чат", "icon16/world.png", {
     end
 })
 
-MonoMenu:AddGameFunction("Падение Голода", "icon16/cup.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_hunger", "icon16/cup.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -438,7 +438,7 @@ MonoMenu:AddGameFunction("Падение Голода", "icon16/cup.png", {
     end
 })
 
-MonoMenu:AddGameFunction("Падение Жажды", "icon16/cup.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_thirst", "icon16/cup.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -458,7 +458,7 @@ MonoMenu:AddGameFunction("Падение Жажды", "icon16/cup.png", {
     end
 })
 
-MonoMenu:AddGameFunction("Падение Сна", "icon16/cup.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_sleep", "icon16/cup.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -478,7 +478,7 @@ MonoMenu:AddGameFunction("Падение Сна", "icon16/cup.png", {
     end
 })
 
-MonoMenu:AddGameFunction("Смерть из-за потребности", "icon16/transmit.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_death", "icon16/transmit.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -495,7 +495,7 @@ MonoMenu:AddGameFunction("Смерть из-за потребности", "icon1
     end
 })
 
-MonoMenu:AddGameFunction("Эффект обнаружения трупа", "icon16/camera_delete.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_discovery", "icon16/camera_delete.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -512,7 +512,7 @@ MonoMenu:AddGameFunction("Эффект обнаружения трупа", "icon
     end
 })
 
-MonoMenu:AddGameFunction("Убийца детектит труп", "icon16/camera_go.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_culpritcorpse", "icon16/camera_go.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -529,7 +529,7 @@ MonoMenu:AddGameFunction("Убийца детектит труп", "icon16/camer
     end
 })
 
-MonoMenu:AddGameFunction("Создавать мертвые портреты", "icon16/tag_blue_delete.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_portraits", "icon16/tag_blue_delete.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -546,7 +546,7 @@ MonoMenu:AddGameFunction("Создавать мертвые портреты", "
     end
 })
 
-MonoMenu:AddGameFunction("Оповещение нахождения трупа", "icon16/camera_error.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_alarm", "icon16/camera_error.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -563,7 +563,7 @@ MonoMenu:AddGameFunction("Оповещение нахождения трупа",
     end
 })
 
-MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/status_online.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_corpsespawn", "icon16/status_online.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -580,7 +580,7 @@ MonoMenu:AddGameFunction("Спавн трупа при смерти", "icon16/st
     end
 })
 
-MonoMenu:AddGameFunction("Авто-расследование", "icon16/cd_add.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_autoinvestigation", "icon16/cd_add.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -597,7 +597,7 @@ MonoMenu:AddGameFunction("Авто-расследование", "icon16/cd_add.p
     end
 })
 
-MonoMenu:AddGameFunction("Возможность собирать улики", "icon16/folder_magnify.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_collectclues", "icon16/folder_magnify.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -614,7 +614,7 @@ MonoMenu:AddGameFunction("Возможность собирать улики", "
     end
 })
 
-MonoMenu:AddGameFunction("Выдача монопадов", "icon16/application_xp_terminal.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_givemonopad", "icon16/application_xp_terminal.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -631,7 +631,7 @@ MonoMenu:AddGameFunction("Выдача монопадов", "icon16/application_
     end
 })
 
-MonoMenu:AddGameFunction("Общий чат монопадов", "icon16/world_add.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_monopad_global", "icon16/world_add.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -648,7 +648,7 @@ MonoMenu:AddGameFunction("Общий чат монопадов", "icon16/world_a
     end
 })
 
-MonoMenu:AddGameFunction("Разрешить 3-е лицо", "icon16/magnifier_zoom_in.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_thirdperson", "icon16/magnifier_zoom_in.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -665,7 +665,7 @@ MonoMenu:AddGameFunction("Разрешить 3-е лицо", "icon16/magnifier_z
     end
 })
 
-MonoMenu:AddGameFunction("Выдача оружий персонажа", "icon16/gun.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_giveweapons", "icon16/gun.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -682,7 +682,7 @@ MonoMenu:AddGameFunction("Выдача оружий персонажа", "icon16
     end
 })
 
-MonoMenu:AddGameFunction("Выдача предметов персонажа", "icon16/wand.png", {
+MonoMenu:AddGameFunction("#monomenu_gm_giveitems", "icon16/wand.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -702,7 +702,7 @@ MonoMenu:AddGameFunction("Выдача предметов персонажа", "
 --[[
     АДМИНСКИЕ ФУНКЦИИ
 ]]--
-MonoMenu:AddAdminFunction("Зайти за администратора", "icon16/star.png", {
+MonoMenu:AddAdminFunction("#monomenu_admin_role", "icon16/star.png", {
     onRun = function(client)
         if CLIENT then return end
 
@@ -713,7 +713,7 @@ MonoMenu:AddAdminFunction("Зайти за администратора", "icon1
     end
 })
 
-MonoMenu:AddAdminFunction("Выдать инструменты", "icon16/basket_put.png", {
+MonoMenu:AddAdminFunction("#monomenu_admin_tools", "icon16/basket_put.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -732,7 +732,7 @@ MonoMenu:AddAdminFunction("Выдать инструменты", "icon16/basket_
     end
 })
 
-MonoMenu:AddAdminFunction("Невидимые инструменты", "icon16/monitor_delete.png", {
+MonoMenu:AddAdminFunction("#monomenu_admin_invisibletools", "icon16/monitor_delete.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -771,7 +771,7 @@ MonoMenu:AddAdminFunction("Невидимые инструменты", "icon16/m
     end
 })
 
-MonoMenu:AddAdminFunction("Глобальный Voice", "icon16/sound_low.png", {
+MonoMenu:AddAdminFunction("#monomenu_admin_globalvoice", "icon16/sound_low.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
@@ -788,7 +788,7 @@ MonoMenu:AddAdminFunction("Глобальный Voice", "icon16/sound_low.png", 
     end
 })
 
-MonoMenu:AddAdminFunction("FullBright", "icon16/lightbulb.png", {
+MonoMenu:AddAdminFunction("#monomenu_admin_fullbright", "icon16/lightbulb.png", {
     isCheckBox = true,
     onEnable = function(client)
         if SERVER then return end

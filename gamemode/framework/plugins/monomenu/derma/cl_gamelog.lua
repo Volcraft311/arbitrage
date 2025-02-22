@@ -64,7 +64,7 @@ function PANEL:SetData()
     self.addButton.alpha = 0
     self.addButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Добавить новое дело", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#monomenu_gamelog_newcase", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -98,7 +98,7 @@ function PANEL:SetData()
             end
 
             draw.DrawText(k, "arb.Font_FuturaPTBook_7", W(15), H(4), color_white, TEXT_ALIGN_LEFT)
-            draw.DrawText(inflictorFaction and inflictorFaction:GetName() or "Неизвестно", "arb.Font_FuturaPTBook_7", W(150 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(inflictorFaction and inflictorFaction:GetName() or "#monomenu_unknown", "arb.Font_FuturaPTBook_7", W(150 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
             draw.DrawText(info[1], "arb.Font_FuturaPTBook_7", W(300 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
             draw.DrawText(timeString, "arb.Font_FuturaPTBook_7", W(550 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
         end
@@ -160,12 +160,12 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Редактор журнала игры", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#monomenu_gamelog_journal", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Номер", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("Персонаж", "arb.Font_FuturaPTBook_7", W(150), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("Статус", "arb.Font_FuturaPTBook_7", W(300), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("Время", "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#monomenu_gamelog_number", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#monomenu_gamelog_char", "arb.Font_FuturaPTBook_7", W(150), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#monomenu_gamelog_status", "arb.Font_FuturaPTBook_7", W(300), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#monomenu_gamelog_time", "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MonoGameLog", PANEL, "DFrame")
@@ -202,23 +202,23 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Добавить новое дело", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_newcase", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберете персонажа в деле", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Химико Юмено", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_selectchar", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_selectexample", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите название главы", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Потерянные цепи отчаяния", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_setchapter", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_chapterexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выбирете тип дела", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Активное расследование", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_casetype", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_typeexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберете винового персонажа", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Каэде Акамацу", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_selectculprit", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_gamelog_culpritexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
         if self.id then
-            draw.DrawText("Укажите время начала дела в секундах", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-            draw.DrawText("Пример: 1000", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText("#monomenu_gamelog_settime", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText("#monomenu_gamelog_timexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
         end
     end
 
@@ -248,7 +248,7 @@ function PANEL:Init()
     self.chapterEntry = self.main:Add("DTextEntry")
     self.chapterEntry:SetPos(W(5), H(155))
     self.chapterEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.chapterEntry:SetPlaceholderText("Название главы")
+    self.chapterEntry:SetPlaceholderText("#monomenu_gamelog_chaptername")
     self.chapterEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.investigationID = 2
@@ -284,8 +284,8 @@ function PANEL:Init()
         self.attackerID = data
     end
 
-    self.inflictorBox:AddChoice("Неизвестно", nil, true)
-    self.attackerBox:AddChoice("Неизвестно", nil, true)
+    self.inflictorBox:AddChoice("#monomenu_unknown", nil, true)
+    self.attackerBox:AddChoice("#monomenu_unknown", nil, true)
     for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
         if v:GetAssets().pixel then
             self.inflictorBox:AddChoice(v:GetName(), k)
@@ -303,7 +303,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText(self.id and "Изменить" or "Добавить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(self.id and "#monomenu_charter_edit" or "#monomenu_charter_add", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -314,7 +314,7 @@ function PANEL:Init()
         if !c then return end
 
         if string.Trim(b) == "" then
-            b = "Отсутствует"
+            b = "#monomenu_gamelog_nonexistent"
         end
 
         if !e then
@@ -324,7 +324,7 @@ function PANEL:Init()
         netstream.Start(f and "arb.MonoEditGameLog" or "arb.MonoAddGameLog", {a, b, c, d, e, f})
 
         if !f and self.startInvestigation then
-            netstream.Start("arb.MonoChangeStyle", "Расследование", 222, 27, 163)
+            netstream.Start("arb.MonoChangeStyle", "#monomenu_gamelog_investigation", 222, 27, 163)
             netstream.Start("ScriptMusic:ChangeTheme", "investigation", true)
         end
 
@@ -368,11 +368,11 @@ function PANEL:SetData(inflictorID, chapterTitle, investigationType, attackerID,
         self.timeEntry:SetValue(time or Arbitrage.ReturnTime())
         self.timeEntry:SetPos(W(5), H(395))
         self.timeEntry:SetSize(self.main:GetWide() - W(10), H(25))
-        self.timeEntry:SetPlaceholderText("Время")
+        self.timeEntry:SetPlaceholderText("#monomenu_gamelog_time")
         self.timeEntry:SetFont("arb.Font_FuturaPTBook_8")
     else
         self.checkBox = self.main:Add("DCheckBoxLabel")
-        self.checkBox:SetText("Запустить расследование")
+        self.checkBox:SetText("#monomenu_gamelog_startinvestigation")
         self.checkBox:SetPos(W(5), H(360))
         self.checkBox:SetSize(self.main:GetWide() - W(10), H(25))
         self.checkBox:SetFont("arb.Font_FuturaPTBook_8")

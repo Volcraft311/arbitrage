@@ -115,7 +115,7 @@ function PLUGIN:StartVoting()
                 end
             end
 
-            local str = "Информация о голосовании: \n"
+            local str = "#monomenu_vote_info \n"
             for k, v in ipairs(newData) do
                 local steamid = v[1]
                 local num = v[2]
@@ -125,7 +125,7 @@ function PLUGIN:StartVoting()
 
                 local info = factionData.name .. " (" .. steamid .. ")"
 
-                str = str .. info .. ". Количество голосов:  " .. num .. "\n"
+                str = str .. info .. ". #monomenu_vote_amount  " .. num .. "\n"
             end
 
             for k, v in ipairs(player.GetAll()) do
@@ -161,7 +161,7 @@ hook("ChatAddText", function(client, message)
         local data = v:GetLocalVar("spectatescommand", {})
 
         if data[client:SteamID()] then
-            netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "[Слежка] ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " написал в чат: ", "'", message, "'")
+            netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "#monomenu_spectate_main ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " #monomenu_spectate_chat ", "'", message, "'")
         end
     end
 end)
@@ -175,7 +175,7 @@ netstream.Hook("arb.StartSpectateCommand", function(client, steamid)
     local data = client:GetLocalVar("spectatescommand", {})
     if !data[steamid] then
         data[steamid] = true
-        client:ChatNotify("Вы начали слежку за командами игрока: " .. target:FullName())
+        client:ChatNotify("#monomenu_spectate_started " .. target:FullName())
 
         client:SetLocalVar("spectatescommand", data)
     end
@@ -190,7 +190,7 @@ netstream.Hook("arb.EndSpectateCommand", function(client, steamid)
     local data = client:GetLocalVar("spectatescommand", {})
     if data[steamid] then
         data[steamid] = nil
-        client:ChatNotify("Вы перестали следить за командами игрока: " .. target:FullName())
+        client:ChatNotify("#monomenu_spectate_stopped " .. target:FullName())
 
         client:SetLocalVar("spectatescommand", data)
     end
@@ -293,7 +293,7 @@ local actionList = {
 
         target:SetNetVar("arbAlive", state)
 
-        AdminNotify:SendNotify("changestatus", client:FullName(), target:FullName(), state == nil and "Живой" or "Мертвый")
+        AdminNotify:SendNotify("changestatus", client:FullName(), target:FullName(), state == nil and "#monomenu_spectate_alive" or "#monomenu_spectate_dead")
     end,
     ["setplace"] = function(client, steamid, place)
         if !Arbitrage.players[steamid] then return end

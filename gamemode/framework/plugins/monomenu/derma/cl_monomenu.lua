@@ -55,7 +55,7 @@ function PANEL:InitPlayersCategory()
     self.charactersPanel:Dock(TOP)
     self.charactersPanel.pl = {}
     self.charactersPanel.Paint = function(_, w, h)
-        draw.DrawText("В игре", "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
+        draw.DrawText("#monomenu_menu_ingame", "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 255, 255, 50)
         surface.DrawRect(w * 0.15, 22 - 2, w - w * 0.3, 2)
@@ -65,7 +65,7 @@ function PANEL:InitPlayersCategory()
     self.notcharactersPanel:SetTall(H(22))
     self.notcharactersPanel:Dock(TOP)
     self.notcharactersPanel.Paint = function(_, w, h)
-        draw.DrawText("Остальные", "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
+        draw.DrawText("#monomenu_other", "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 255, 255, 50)
         surface.DrawRect(w * 0.15, 22 - 2, w - w * 0.3, 2)
@@ -336,7 +336,7 @@ function PANEL:SetData(data)
                 draw.DrawText(factionData:GetName(), "arb.Font_FuturaPTBook_5", w / 2, H(8), factionColor, TEXT_ALIGN_CENTER)
             end
 
-            draw.DrawText("Место на суде: " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + W(200), H(8), placeColor, TEXT_ALIGN_CENTER)
+            draw.DrawText("#monomenu_menu_ctplace " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + W(200), H(8), placeColor, TEXT_ALIGN_CENTER)
         end
 
         local mat = (factionData and factionData:GetAssets().pixel) and Material(factionData:GetAssets().pixel) or nil
@@ -420,11 +420,11 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Моно-Меню (Панель администрации)", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#monomenu_menu_panel", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Игровое меню", "arb.Font_FuturaPTBook_7", W(130), H(45), color_white, TEXT_ALIGN_CENTER)
-    draw.DrawText("Админ-способности", "arb.Font_FuturaPTBook_7", W(390), H(45), color_white, TEXT_ALIGN_CENTER)
-    draw.DrawText("Взаимодействие с игроками", "arb.Font_FuturaPTBook_7", W(900), H(45), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText("#monomenu_menu_gamemenu", "arb.Font_FuturaPTBook_7", W(130), H(45), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText("#monomenu_menu_admin", "arb.Font_FuturaPTBook_7", W(390), H(45), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText("#monomenu_menu_players", "arb.Font_FuturaPTBook_7", W(900), H(45), color_white, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.MonoMenu", PANEL, "DFrame")

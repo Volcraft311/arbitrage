@@ -44,12 +44,12 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Запустить заставку", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_splash_startscreen", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите название статуса", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Свободное время!", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_splash_entername", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_splash_example", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Выберите нужный вам цвет", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monomenu_splash_color", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -68,10 +68,10 @@ function PANEL:Init()
     end
 
     self.title = self.main:Add("DTextEntry")
-    self.title:SetValue("Свободное время!")
+    self.title:SetValue("#monomenu_splash_freetime")
     self.title:SetPos(W(5), H(75))
     self.title:SetSize(self.main:GetWide() - W(10), H(25))
-    self.title:SetPlaceholderText("Свободное время!")
+    self.title:SetPlaceholderText("#monomenu_splash_freetime")
     self.title:SetFont("arb.Font_FuturaPTBook_8")
 
     local BGPanel = self.main:Add("DPanel")
@@ -128,7 +128,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Запустить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#monomenu_splash_start", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)

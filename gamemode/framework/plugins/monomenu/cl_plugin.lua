@@ -54,7 +54,7 @@ local function getCharacters(steamid)
 
     local info = {}
     for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
-        local category = v.category or "Остальные"
+        local category = v.category or "#monomenu_other"
 
         info[category] = info[category] or {}
         info[category][#info[category] + 1] = {
@@ -96,7 +96,7 @@ local function getPlaces(steamid)
     copy[-1] = true -- обнуление места
 
     for k, v in pairs(copy) do
-        local info = k > 0 and k .. " место" or (k == 0 and "* Место Монокума" or "- Обнулить место")
+        local info = k > 0 and k .. " #monomenu_ct_place" or (k == 0 and "* #monomenu_ct_monokuma" or "- #monomenu_ct_null")
 
         data[#data + 1] = {
             name = info,
@@ -118,7 +118,7 @@ local function getAllTemporaryStatusEffects(client)
             name = L(v.name),
             icon = isfunction(v.icon) and v.icon(client) or v.icon,
             data = function()
-                Derma_StringRequest("Выдать статус эфект", "Введите время, насколько вы хотите выдать игроку данный эффект\n(Если вы хотите установить его навсегда, то введите 0)", "", function(text)
+                Derma_StringRequest("#monomenu_ply_status_givestatus", "#monomenu_ply_status_timestatus", "", function(text)
                     text = tonumber(text)
                     if !text then return end
 
@@ -150,17 +150,17 @@ local function getAllTemporaryStatusEffects(client)
 
     local data = {
         {
-            name = "Выдать",
+            name = "#monomenu_ply_status_give",
             icon = "icon16/pill_add.png",
             data = all_effects
         },
         {
-            name = "Забрать",
+            name = "#monomenu_ply_status_take",
             icon = "icon16/pill_delete.png",
             data = client_effects
         },
         {
-            name = "Очистить все эффекты",
+            name = "#monomenu_ply_status_clearall",
             icon = "icon16/pill.png",
             data = function()
                 runAction("cleartemporarystatuseffects", client)
@@ -212,14 +212,14 @@ local function getActionList(clientinfo)
     local m_steamname = clientinfo.steamname
     local m_steamid = clientinfo.steamid
     local m_time = ("%s:%s:%s"):format(time.h, time.m, time.s)
-    local m_status = clientinfo.alive and "Жив" or "Мертв"
+    local m_status = clientinfo.alive and "#monomenu_stats_alive" or "#monomenu_stats_dead"
     local m_character = faction and faction.name or clientinfo.faction
 
-    local s_health = a_isvalid and client:Health() or "Неизвестно"
-    local s_armor = a_isvalid and client:Armor() or "Неизвестно"
-    local s_hunger = a_isvalid and (Arbitrage.statistics.Get(client, "Hunger") or 100) or "Неизвестно"
-    local s_thirst = a_isvalid and (Arbitrage.statistics.Get(client, "Thirst") or 100) or "Неизвестно"
-    local s_sleep = a_isvalid and (Arbitrage.statistics.Get(client, "Sleep") or 100) or "Неизвестно"
+    local s_health = a_isvalid and client:Health() or "#monomenu_unknown"
+    local s_armor = a_isvalid and client:Armor() or "#monomenu_unknown"
+    local s_hunger = a_isvalid and (Arbitrage.statistics.Get(client, "Hunger") or 100) or "#monomenu_unknown"
+    local s_thirst = a_isvalid and (Arbitrage.statistics.Get(client, "Thirst") or 100) or "#monomenu_unknown"
+    local s_sleep = a_isvalid and (Arbitrage.statistics.Get(client, "Sleep") or 100) or "#monomenu_unknown"
 
     -- Люблю гмод, чтобы на всякий не было ошибок (которые появляются у одного игрока в 9999 лет)
     m_name, m_steamname, m_steamid, m_time, m_status, m_character, s_health, s_armor, s_hunger, s_thirst, s_sleep = tostring(m_name), tostring(m_steamname), tostring(m_steamid), tostring(m_time), tostring(m_status), tostring(m_character), tostring(s_health), tostring(s_armor), tostring(s_hunger), tostring(s_thirst), tostring(s_sleep)
@@ -227,77 +227,77 @@ local function getActionList(clientinfo)
     return {
         {
             {
-                name = "Имя: " .. m_name,
+                name = "#monomenu_stats_name " .. m_name,
                 icon = "icon16/book.png",
                 data = function()
                     SetClipboardText(m_name)
                 end
             },
             {
-                name = "SteamName: " .. m_steamname,
+                name = "#monomenu_stats_steamname " .. m_steamname,
                 icon = "icon16/book_addresses.png",
                 data = function()
                     SetClipboardText(m_steamname)
                 end
             },
             {
-                name = "SteamID: " .. m_steamid,
+                name = "#monomenu_stats_steamid " .. m_steamid,
                 icon = "icon16/book_link.png",
                 data = function()
                     SetClipboardText(m_steamid)
                 end
             },
             {
-                name = "Время на сервере: " .. m_time,
+                name = "#monomenu_stats_uptime " .. m_time,
                 icon = "icon16/clock.png",
                 data = function()
                     SetClipboardText(m_time)
                 end
             },
             {
-                name = "Состояние: " .. m_status,
+                name = "#monomenu_stats_status " .. m_status,
                 icon = "icon16/status_online.png",
                 data = function()
                     SetClipboardText(m_status)
                 end
             },
             {
-                name = "Персонаж: " .. m_character,
+                name = "#monomenu_stats_char " .. m_character,
                 icon = "icon16/user.png",
                 data = function()
                     SetClipboardText(m_character)
                 end
             },
             {
-                name = "Здоровье: " .. s_health,
+                name = "#monomenu_stats_health " .. s_health,
                 icon = "icon16/heart.png",
                 data = function()
                     SetClipboardText(s_health)
                 end
             },
             {
-                name = "Броня: " .. s_armor,
+                name = "#monomenu_stats_armor " .. s_armor,
                 icon = "icon16/shape_square.png",
                 data = function()
                     SetClipboardText(s_armor)
                 end
             },
             {
-                name = "Голод: " .. s_hunger,
+                name = "#monomenu_stats_hunger " .. s_hunger,
                 icon = "icon16/cake.png",
                 data = function()
                     SetClipboardText(s_hunger)
                 end
             },
             {
-                name = "Жажда: " .. s_thirst,
+                name = "#monomenu_stats_thirst " .. s_thirst,
                 icon = "icon16/cup.png",
                 data = function()
                     SetClipboardText(s_thirst)
                 end
             },
             {
-                name = "Сон: " .. s_sleep,
+                name = "#monomenu_stats_sleep " .. s_sleep,
                 icon = "icon16/contrast_high.png",
                 data = function()
                     SetClipboardText(s_sleep)
@@ -306,16 +306,16 @@ local function getActionList(clientinfo)
         },
         {
             {
-                name = "Изменить персонажа",
+                name = "#monomenu_stats_setchar",
                 icon = "icon16/user_go.png",
                 data = getCharacters(m_steamid)
             },
             {
-                name = "Изменить роль",
+                name = "#monomenu_stats_setrole",
                 icon = "icon16/ruby_gear.png",
                 data = {
                     {
-                        name = "Сделать участником",
+                        name = "#monomenu_stats_setplayer",
                         icon = "icon16/ruby_delete.png",
                         data = function()
                             runAction("removehost", m_steamid)
@@ -325,7 +325,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Сделать ведущим",
+                        name = "#monomenu_stats_setgm",
                         icon = "icon16/ruby_add.png",
                         data = function()
                             runAction("addhost", m_steamid)
@@ -337,11 +337,11 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Действия с игрой",
+                name = "#monomenu_stats_actions",
                 icon = "icon16/database_go.png",
                 data = {
                     {
-                        name = "Добавить в игру",
+                        name = "#monomenu_stats_addgame",
                         icon = "icon16/database_add.png",
                         data = function()
                             runAction("addgame", client)
@@ -351,7 +351,7 @@ local function getActionList(clientinfo)
                         -- end
                     },
                     {
-                        name = "Убрать из игры",
+                        name = "#monomenu_stats_removegame",
                         icon = "icon16/database_delete.png",
                         data = function()
                             runAction("removegame", m_steamid)
@@ -361,7 +361,7 @@ local function getActionList(clientinfo)
                         -- end
                     },
                     {
-                        name = "Вернуть в игру",
+                        name = "#monomenu_stats_returngame",
                         icon = "icon16/database_refresh.png",
                         data = function()
                             runAction("returngame", client)
@@ -373,10 +373,10 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить имя",
+                name = "#monomenu_stats_setname",
                 icon = "icon16/page_white_edit.png",
                 data = function()
-                    Derma_StringRequest("Изменить имя", "Введите имя, которое вы хотите присвоить данному персонажу.\n(Если вы хотите вернуть стандартное имя, то оставьте это поле пустым)", IsValid(client) and client:GetNetVar("fakename", "") or "", function(text)
+                    Derma_StringRequest("#monomenu_stats_setname", "#monomenu_stats_nameex", IsValid(client) and client:GetNetVar("fakename", "") or "", function(text)
                         runAction("setfakename", client, text)
                     end)
                 end,
@@ -385,7 +385,7 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Возродить",
+                name = "#monomenu_stats_respawn",
                 icon = "icon16/arrow_refresh.png",
                 data = function()
                     runAction("setfaction", m_steamid, client:Team(), true)
@@ -395,11 +395,11 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Чат",
+                name = "#monomenu_comms_chat",
                 icon = "icon16/sound.png",
                 data = {
                     {
-                        name = "Включить глобальный войс",
+                        name = "#monomenu_comms_globalon",
                         icon = "icon16/sound_add.png",
                         data = function()
                             runAction("globalvoice", client, true)
@@ -409,7 +409,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Выключить глобальный войс",
+                        name = "#monomenu_comms_globaloff",
                         icon = "icon16/sound_low.png",
                         data = function()
                             runAction("globalvoice", client, false)
@@ -419,7 +419,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Включить микрофон",
+                        name = "#monomenu_comms_micon",
                         icon = "icon16/sound_none.png",
                         data = function()
                             runAction("mutevoice", client, false)
@@ -429,7 +429,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Выключить микрофон",
+                        name = "#monomenu_comms_micoff",
                         icon = "icon16/sound_mute.png",
                         data = function()
                             runAction("mutevoice", client, true)
@@ -439,7 +439,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Включить NonRP чат",
+                        name = "#monomenu_comms_nrpon",
                         icon = "icon16/comment.png",
                         data = function()
                             runAction("mutenonrpchat", client, false)
@@ -449,7 +449,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Выключить NonRP чат",
+                        name = "#monomenu_comms_nrpoff",
                         icon = "icon16/comment_delete.png",
                         data = function()
                             runAction("mutenonrpchat", client, true)
@@ -461,11 +461,11 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить игровой статус",
+                name = "#monomenu_ply_gamestatus",
                 icon = "icon16/world_go.png",
                 data = {
                     {
-                        name = "Сделать живым",
+                        name = "#monomenu_ply_statusalive",
                         icon = "icon16/world_add.png",
                         data = function()
                             runAction("changestatus", client, nil)
@@ -475,7 +475,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Сделать мертвым",
+                        name = "#monomenu_ply_statusdead",
                         icon = "icon16/world_delete.png",
                         data = function()
                             runAction("changestatus", client, false)
@@ -487,16 +487,16 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить место на суде",
+                name = "#monomenu_ply_setctplace",
                 icon = "icon16/group.png",
                 data = getPlaces(m_steamid)
             },
             {
-                name = "Изменить инвентарь",
+                name = "#monomenu_inv_change",
                 icon = "icon16/package_go.png",
                 data = {
                     {
-                        name = "Очистить все предметы",
+                        name = "#monomenu_inv_clearall",
                         icon = "icon16/package_delete.png",
                         data = function()
                             runAction("claerinventory", client)
@@ -506,7 +506,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Посмотреть содержимое",
+                        name = "#monomenu_inv_check",
                         icon = "icon16/package_link.png",
                         data = function()
                             runAction("openinventory", client)
@@ -516,7 +516,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Изменить размер",
+                        name = "#monomenu_inv_change",
                         icon = "icon16/package.png",
                         data = function()
                             local x, y = 4, 2
@@ -529,10 +529,10 @@ local function getActionList(clientinfo)
                                 end
                             end
 
-                            Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по ширине", x, function(inventoryX)
+                            Derma_StringRequest("#monomenu_inv_change", "#monomenu_inv_widght", x, function(inventoryX)
                                 if !tonumber(inventoryX) then return end
 
-                                Derma_StringRequest("Изменить инвентарь", "Введите размер инвентаря по высоте", y, function(inventoryY)
+                                Derma_StringRequest("#monomenu_inv_change", "#monomenu_inv_height", y, function(inventoryY)
                                     if !tonumber(inventoryY) then return end
 
                                     runAction("scaleinventory", client, inventoryX, inventoryY)
@@ -546,10 +546,10 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить модель",
+                name = "#monomenu_ply_setmodel",
                 icon = "icon16/report_user.png",
                 data = function()
-                    Derma_StringRequest("Изменить модель", "Укажите путь к моделе которую вы хотите поменять игроку", IsValid(client) and client:GetModel() or "", function(text)
+                    Derma_StringRequest("#monomenu_ply_setmodel", "#monomenu_ply_modelpath", IsValid(client) and client:GetModel() or "", function(text)
                         runAction("setmodel", client, text)
                     end)
                 end,
@@ -558,14 +558,14 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Изменить описание персонажа",
+                name = "#monomenu_ply_setdesc",
                 icon = "icon16/page_white_copy.png",
                 data = {
                     {
-                        name = "Обычное описание",
+                        name = "#monomenu_ply_regdesc",
                         icon = "icon16/page_white_edit.png",
                         data = function()
-                            Derma_StringRequest("Изменить обычно описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
+                            Derma_StringRequest("#monomenu_ply_setregdesc", "#monomenu_ply_writedesc", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
                                 runAction("setdescription", client, text)
                             end)
                         end,
@@ -574,10 +574,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Принудительное описание",
+                        name = "#monomenu_ply_forceddesc",
                         icon = "icon16/page_white_zip.png",
                         data = function()
-                            Derma_StringRequest("Изменить принудительное описание", "Введите какое описание которое вы хотите установить игроку", IsValid(client) and client:GetNetVar("forced_description", "") or "", function(text)
+                            Derma_StringRequest("#monomenu_ply_setforced", "#monomenu_ply_writedesc", IsValid(client) and client:GetNetVar("forced_description", "") or "", function(text)
                                 runAction("setforceddescription", client, text)
                             end)
                         end,
@@ -588,10 +588,10 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить размер персонажа",
+                name = "#monomenu_ply_setsizechar",
                 icon = "icon16/link_break.png",
                 data = function()
-                    Derma_StringRequest("Изменить размер", "Введите размер который вы хотите установить персонажу\n1 - стандартная", IsValid(client) and client:GetModelScale() or 1, function(text)
+                    Derma_StringRequest("#monomenu_ply_writesize", IsValid(client) and client:GetModelScale() or 1, function(text)
                         if !tonumber(text) then return end
 
                         runAction("setscale", client, text)
@@ -602,11 +602,11 @@ local function getActionList(clientinfo)
                 end
             },
             {
-                name = "Изменить статистику",
+                name = "#monomenu_ply_setstats",
                 icon = "icon16/bricks.png",
                 data = {
                     {
-                        name = "Сбросить все характеристики",
+                        name = "#monomenu_ply_clearstats",
                         icon = "icon16/chart_line.png",
                         data = function()
                             runAction("resetstats", client)
@@ -616,10 +616,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Установить здоровье",
+                        name = "#monomenu_ply_sethealth",
                         icon = "icon16/heart.png",
                         data = function()
-                            Derma_StringRequest("Установить здоровье", "Введите количество здоровье которое вы хотите установить игроку", IsValid(client) and client:Health() or 100, function(text)
+                            Derma_StringRequest("#monomenu_ply_sethealth", "#monomenu_ply_healthdesc", IsValid(client) and client:Health() or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "health", tonumber(text))
@@ -630,10 +630,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Установить броню",
+                        name = "#monomenu_ply_setarmor",
                         icon = "icon16/shape_square.png",
                         data = function()
-                            Derma_StringRequest("Установить броню", "Введите количество брони которое вы хотите установить игроку", IsValid(client) and client:Armor() or 100, function(text)
+                            Derma_StringRequest("#monomenu_ply_setarmor", "#monomenu_ply_armordesc", IsValid(client) and client:Armor() or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "armor", tonumber(text))
@@ -644,10 +644,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Установить голод",
+                        name = "#monomenu_ply_sethunger",
                         icon = "icon16/cake.png",
                         data = function()
-                            Derma_StringRequest("Установить голод", "Введите количество голода которое вы хотите установить игроку", IsValid(client) and (Arbitrage.statistics.Get(client, "Hunger") or 100) or 100, function(text)
+                            Derma_StringRequest("#monomenu_ply_sethunger", "#monomenu_ply_hungerdesc", IsValid(client) and (Arbitrage.statistics.Get(client, "Hunger") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "hunger", math.Clamp(tonumber(text), 1, 100))
@@ -658,10 +658,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Установить жажду",
+                        name = "#monomenu_ply_setthirst",
                         icon = "icon16/cup.png",
                         data = function()
-                            Derma_StringRequest("Установить жажду", "Введите количество жажды которое вы хотите установить игроку", IsValid(client) and (Arbitrage.statistics.Get(client, "Thirst") or 100) or 100, function(text)
+                            Derma_StringRequest("#monomenu_ply_setthirst", "#monomenu_ply_thirstdesc", IsValid(client) and (Arbitrage.statistics.Get(client, "Thirst") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "thirst", math.Clamp(tonumber(text), 1, 100))
@@ -672,10 +672,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Установить сон",
+                        name = "#monomenu_ply_setsleep",
                         icon = "icon16/contrast_high.png",
                         data = function()
-                            Derma_StringRequest("Установить сон", "Введите количество сна которое вы хотите установить игроку", IsValid(client) and (Arbitrage.statistics.Get(client, "Sleep") or 100) or 100, function(text)
+                            Derma_StringRequest("#monomenu_ply_setsleep", "#monomenu_ply_sleepdesc", IsValid(client) and (Arbitrage.statistics.Get(client, "Sleep") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "sleep", math.Clamp(tonumber(text), 1, 100))
@@ -688,19 +688,19 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить статус эффекты",
+                name = "#monomenu_ply_setstatuseffects",
                 icon = "icon16/pill_go.png",
                 data = getAllTemporaryStatusEffects(client)
             },
             {
-                name = "Изменить скорость",
+                name = "#monomenu_ply_setspeed",
                 icon = "icon16/arrow_switch.png",
                 data = {
                     {
-                        name = "Скорость ходьбы",
+                        name = "#monomenu_ply_walkspeed",
                         icon = "icon16/bullet_go.png",
                         data = function()
-                            Derma_StringRequest("Изменить скорость ходьбы", "Введите значение на которое вы хотите изменить скорость ходьбы.\n1 - стандартная скорость", 1, function(text)
+                            Derma_StringRequest("#monomenu_ply_setwalkspeed", "#monomenu_ply_writewalkspeed", 1, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setspeed", client, "walk", tonumber(text))
@@ -711,10 +711,10 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Скорость бега",
+                        name = "#monomenu_ply_runspeed",
                         icon = "icon16/arrow_right.png",
                         data = function()
-                            Derma_StringRequest("Изменить скорость бега", "Введите значение на которое вы хотите изменить скорость бега.\n1 - стандартная скорость", 1, function(text)
+                            Derma_StringRequest("#monomenu_ply_setrunspeed", "#monomenu_ply_writerunspeed", 1, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setspeed", client, "run", tonumber(text))
@@ -727,14 +727,14 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Изменить статус регдулла",
+                name = "#monomenu_ply_setragdoll",
                 icon = "icon16/zoom.png",
                 data = {
                     {
-                        name = "Опрокинуть",
+                        name = "#monomenu_ply_fallover",
                         icon = "icon16/zoom_in.png",
                         data = function()
-                            Derma_StringRequest("Изменить регдулл статус", "Введите значение на которое вы хотите опрокинуть игрока.\n0 - дать ему возможность встать самому\n-1 - навсегда", 0, function(text)
+                            Derma_StringRequest("#monomenu_ply_setragdoll", "#monomenu_ply_writeragdoll", 0, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setfallover", client, tonumber(text))
@@ -745,7 +745,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Поднять",
+                        name = "#monomenu_ply_setstandup",
                         icon = "icon16/zoom_out.png",
                         data = function()
                             runAction("setstandup", client)
@@ -757,16 +757,16 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Слежка за игроком",
+                name = "#monomenu_ply_spectate",
                 icon = "icon16/arrow_inout.png",
                 data = {
                     {
-                        name = "Включить подсветку",
+                        name = "#monomenu_ply_backlightturnon",
                         icon = "icon16/arrow_in.png",
                         data = function()
                             table.insert(PLUGIN.entityList, m_steamid)
 
-                            Arbitrage.notify.NotifyChat("Вы включили подсветку за игроком: " .. client:FullName())
+                            Arbitrage.notify.NotifyChat("#monomenu_ply_backlightturnedon " .. client:FullName())
                         end,
                         check = function()
                             local bShow = false
@@ -780,14 +780,14 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Выключить подстветку",
+                        name = "#monomenu_ply_backlightturnoff",
                         icon = "icon16/arrow_out.png",
                         data = function()
                             for k, v in ipairs(PLUGIN.entityList) do
                                 if v == m_steamid then
                                     table.remove(PLUGIN.entityList, k)
 
-                                    Arbitrage.notify.NotifyChat("Вы выключили подсветку за игроком: " .. client:FullName())
+                                    Arbitrage.notify.NotifyChat("#monomenu_ply_backlightturnedoff " .. client:FullName())
                                 end
                             end
                         end,
@@ -803,7 +803,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Включить слежку за чатом",
+                        name = "#monomenu_ply_chatspectateon",
                         icon = "icon16/arrow_in.png",
                         data = function()
                             netstream.Start("arb.StartSpectateCommand", m_steamid)
@@ -815,7 +815,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Выключить слежку за чатом",
+                        name = "#monomenu_ply_chatspectateoff",
                         icon = "icon16/arrow_out.png",
                         data = function()
                             netstream.Start("arb.EndSpectateCommand", m_steamid)
@@ -829,11 +829,11 @@ local function getActionList(clientinfo)
                 }
             },
             {
-                name = "Модерация",
+                name = "#monomenu_ply_moderation",
                 icon = "icon16/plugin.png",
                 data = {
                     {
-                        name = "Убить",
+                        name = "#monomenu_ply_kill",
                         icon = "icon16/cross.png",
                         data = function()
                             RunConsoleCommand("say", "/slay " .. m_steamid)
@@ -843,7 +843,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Телепортироваться",
+                        name = "#monomenu_ply_teleportto",
                         icon = "icon16/control_play_blue.png",
                         data = function()
                             RunConsoleCommand("say", "/goto " .. m_steamid)
@@ -853,7 +853,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Телепортировать",
+                        name = "#monomenu_ply_teleportfrom",
                         icon = "icon16/control_repeat_blue.png",
                         data = function()
                             RunConsoleCommand("say", "/bring " .. m_steamid)
@@ -863,7 +863,7 @@ local function getActionList(clientinfo)
                         end
                     },
                     {
-                        name = "Пнуть",
+                        name = "#monomenu_ply_slap",
                         icon = "icon16/ipod_cast.png",
                         data = function()
                             RunConsoleCommand("say", "/slap " .. m_steamid)

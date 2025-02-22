@@ -34,22 +34,22 @@ local infoTable = {
 		},
 		key = "emoji",
 		Get = function()
-			local data = {}
+			-- local data = {}
 
-			for k, v in pairs(Character.emoji.instances) do
-				if v.isCreation then
-					data[k] = v
-				end
-			end
-
-			return data
+			-- for k, v in pairs(Character.emoji.instances) do
+			-- 	if v.isCreation then
+			-- 		data[k] = v
+			-- 	end
+			-- end
+			vgui.Create("SpritesMenu")
+			return {}
 		end
 	},
 	{
 		name = "Категории",
 		subTitle = {{"Уникальный ID", "uniqueID"}, {"Название", "name"}, {"Иконка", "icon"}},
 		subMenu = "Character:CreationMenuCategorySub",
-		net = {
+		net = { -- #NET
 			add = "Character:CreationRegisterCategory",
 			edit = "Character:CreationEditCategory",
 			remove = "Character:CreationRemoveCategory"
@@ -815,7 +815,7 @@ function PANEL:CreateCategory(name, data)
 		end
 	end
 
-	local addButton = category:Add("DButton")
+	local addButton = category:Add("DButton") -- #SPRITE
 	addButton:DockMargin(0, H(5), 0, H(5))
 	addButton:SetText("")
 	addButton:SetTall(H(20))
@@ -919,11 +919,13 @@ function PANEL:Init()
 
 	    surface.SetDrawColor(255, 61, 96, 30)
 	    surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+		print("submit")
+
 	end
 
 	submitButton.DoClick = function()
+		
 		local data = {}
-
 		for k, v in pairs(self.panels or {}) do
 			if IsValid(v) then
 				local text = v:GetValue(v)

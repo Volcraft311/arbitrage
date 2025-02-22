@@ -43,7 +43,7 @@ function PANEL:Init()
         if !nodeid then return end
         self.stored_id = nodeid
         self:Clear()
-        local edata = Character.emoji.data[nodeid] -- чистое название файла/эмоции
+        local edata = Character.emoji.data[nodeid]
         for k, categ in SortedPairs(edata) do
             local category = self:AddNode(k)
             category:Receiver("add-sprite", function(this, panels, dropped, _, x,y)
@@ -171,7 +171,6 @@ function PANEL:Init()
     end
 
     function files_tree:OnNodeSelected(node)
-        -- if !node.category then return end
         simage:SetImage(node.small_image)
         bimage:SetImage(node.big_image)
     end

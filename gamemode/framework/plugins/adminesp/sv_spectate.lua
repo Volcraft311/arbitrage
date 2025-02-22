@@ -96,7 +96,7 @@ concommand.Add("spectate", function(client, cmd, args)
 	local target = nil
 
 	if text then
-		target = player.GetByIdentifier(text)
+		target = Arbitrage.commands:FindPlayer(text)
 	end
 
 	AdminESP:Spec(client, target)

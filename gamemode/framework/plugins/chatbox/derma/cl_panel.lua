@@ -1008,7 +1008,7 @@ function PANEL:OnTextChanged(text)
 
 							if self._numEx > 1 and v == "player" then
 								local argument = self.inputExplode[k + 1]
-								local target = argument and player.GetByIdentifier(argument)
+								local target = argument and Arbitrage.commands:FindPlayer(argument)
 
 								local old = DisableClipping(true)
 									draw.SimpleText(IsValid(target) and target:FullName(true) or L("#chat_chatbox_unknown_player"), "arb.Font_FuturaPTBook_7", x, -_w, color_white, TEXT_ALIGN_LEFT)

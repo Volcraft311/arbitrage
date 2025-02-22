@@ -40,7 +40,40 @@ Arbitrage.commands.types = {
             return data
         end
 
-        return player.GetByIdentifier(data)
+        local oldData = data
+        data = data:Trim():utf8lower()
+
+        if data == "" then return end
+
+        local players = {}
+        for _, client in ipairs(player.GetAll()) do
+            local character = client:GetCharacter()
+            if !character then continue end
+
+            local name = character:GetName()
+            if name:utf8sub(1, 1) == "#" then
+                local info = {}
+
+                for id, lang in pairs(Arbitrage.language.stored) do
+                    local lang_name = lang.data[name]
+                    if lang_name then
+                        info[id] = lang_name:Trim():utf8lower()
+                    end
+                end
+
+                players[client] = info
+            end
+        end
+
+        for client, info in pairs(players) do
+            for _, lang_name in pairs(info) do
+                if lang_name:find(data) then
+                    return client
+                end
+            end
+        end
+
+        return player.GetByIdentifier(oldData)
     end
 }
 
@@ -96,4 +129,8 @@ function Arbitrage.commands.ConvertRusToEng(data)
     end
 
     return newData
+end
+
+function Arbitrage.commands:FindPlayer(data)
+    return self.types.player(data)
 end

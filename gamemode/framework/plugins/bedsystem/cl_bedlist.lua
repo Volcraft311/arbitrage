@@ -47,11 +47,11 @@ spawnmenu.AddContentType("Bed", function(container, model)
     end
 end)
 
-spawnmenu.AddCreationTab("Кровати", function()
+spawnmenu.AddCreationTab("#bed_title", function()
     local base = vgui.Create("SpawnmenuContentPanel")
     local tree = base.ContentNavBar.Tree
 
-    local node = tree:AddNode("Все объекты", "icon16/brick.png")
+    local node = tree:AddNode("#bed_objects", "icon16/brick.png")
     node.DoPopulate = function(this)
         if this.Container then return end
 

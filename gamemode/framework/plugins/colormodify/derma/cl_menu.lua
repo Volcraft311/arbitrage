@@ -61,7 +61,7 @@ function PANEL:InitColorModify()
     enableButton:SetTall(H(30))
     enableButton:Dock(TOP)
     enableButton:DockMargin(W(25), H(3), 0, H(20))
-    enableButton:SetText("Включить изменение цветокоррекции")
+    enableButton:SetText("#colorcorrection_turnon")
     enableButton:SetFont("arb.Font_FuturaPTBook_8")
     enableButton:SetValue(data.enabled)
     enableButton.OnChange = function(_, value)
@@ -115,7 +115,7 @@ function PANEL:InitColorModify()
     returnButton.alpha = 0
     returnButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Вернуть стандартную цветокоррекцию", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#colorcorrection_restore", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -136,15 +136,15 @@ function PANEL:InitColorModify()
     saveButton.alpha = 0
     saveButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Конфигурации", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#colorcorrection_configs", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
     end
     saveButton.DoClick = function()
         local Menu = DermaMenu()
-        Menu:AddOption("Сохранить цветокор", function()
-            Derma_StringRequest("Сохранить цветокор", "Введите название документа в который вы хотите сохранить цветокор", "", function(text)
+        Menu:AddOption("#colorcorrection_savecc", function()
+            Derma_StringRequest("#colorcorrection_savecc", "#colorcorrection_savefile", "", function(text)
                 local data = PLUGIN:Get()
 
                 local array = {}
@@ -159,10 +159,10 @@ function PANEL:InitColorModify()
                 array.addb = data.addb
 
                 file.Write("academy_colormodify_configs/" .. text .. ".txt", util.TableToJSON(array))
-            end, nil, "Сохранить", "Отменить")
+            end, nil, "#colorcorrection_save", "#colorcorrection_cancel")
         end):SetIcon("icon16/add.png")
 
-        local Child, Parent = Menu:AddSubMenu("Загрузить цветокор")
+        local Child, Parent = Menu:AddSubMenu("#colorcorrection_loadcc")
         Parent:SetIcon("icon16/arrow_down.png")
 
         local files = file.Find("academy_colormodify_configs/*", "DATA")
@@ -195,7 +195,7 @@ function PANEL:InitColorModify()
     enablePlayersButton:SetTall(H(30))
     enablePlayersButton:Dock(TOP)
     enablePlayersButton:DockMargin(W(25), H(3), 0, H(20))
-    enablePlayersButton:SetText("Включить для определенных игроков")
+    enablePlayersButton:SetText("#colorcorrection_turnply")
     enablePlayersButton:SetFont("arb.Font_FuturaPTBook_8")
     enablePlayersButton:SetValue(data.players)
     enablePlayersButton.OnChange = function(_, value)
@@ -250,10 +250,10 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("Цветокоррекция", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#colorcorrection_title", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("Название", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("Значение", "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#colorcorrection_name", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText("#colorcorrection_desc", "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("ColorModify:Menu", PANEL, "DFrame")

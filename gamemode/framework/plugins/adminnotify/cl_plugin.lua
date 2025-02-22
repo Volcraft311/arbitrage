@@ -51,6 +51,12 @@ netstream.Hook("ixAdminNotify", function(notify, ...)
     if #info > 0 then
         AdminNotify:CreateNotify(info)
 
+        for k, v in ipairs(info) do
+            if isstring(v) then
+                info[k] = F(v)
+            end
+        end
+
         MsgC(unpack(info))
         Msg("\n")
     end

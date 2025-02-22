@@ -293,18 +293,6 @@ local function drawing(client, mat)
     end
 end
 
-local function sort()
-    local data = {}
-    for k, v in ipairs(player.GetAll()) do
-        local place = v:LawPlace()
-        if place >= 0 then
-            data[place] = v
-        end
-    end
-
-    return data
-end
-
 local sizeW, sizeH = 150, 150
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawTranslucentRenderables()
@@ -373,12 +361,25 @@ function PLUGIN:PostDrawTranslucentRenderables()
             end
         end
 
-        local data = sort()
-        for place, v in SortedPairs(data) do
-            local faction = Character.team:GetByID(v:Team())
-            if !faction then continue end
+        local data = player.GetAll()
+        table.sort(data, function(a, b)
+            local eyePos = EyePos()
 
-            local uniqueID = faction:GetUniqueID()
+            local a_place = a:GetPos():DistToSqr(eyePos)
+            local b_place = b:GetPos():DistToSqr(eyePos)
+
+            return a_place > b_place
+        end)
+
+        for _, v in ipairs(data) do
+            local place = v:LawPlace()
+            if place <= -1 then continue end
+
+            local character = v:GetCharacter()
+            if !character then continue end
+
+            local uniqueID = character:GetUniqueID()
+
             local emoji = Character.emoji:GetByUniqueID(uniqueID)
             if !emoji then continue end
 

@@ -606,6 +606,17 @@ Arbitrage.language:Add("ru", {
     ["#discord_rpc_day"] = "День",
     ["#discord_rpc_night"] = "Ночь",
 
+
+    -- CHARACTERS
+    ["#char_team_admin"] = "Администратор",
+    ["#char_team_empty"] = "Персонаж не выбран",
+    ["#char_team_spectator"] = "Наблюдатель",
+
+    -- ВЕДУЩИЕ
+    ["#char_dr_monokuma_name"] = "Монокума",
+    ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
+    ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
+
     -- TRIGGER HAPPY HAVOC
     ["#char_dr_aoi_name"] = "Аой Асахина",
     ["#char_dr_aoi_title"] = "Абсолютный Пловец",
@@ -773,10 +784,25 @@ Arbitrage.language:Add("ru", {
     ["#char_dr_nagisa_title"] = "Юный Абсолютный Обществовед",
     ["#char_dr_nagisa_desc"] = "Молодой обществовед, который прекрасно разбирается в человеческих отношениях и социальных структурах. Его аналитический подход к жизни помогает ему манипулировать окружающими.",
 
-    -- ВЕДУЩИЕ
-    ["#char_dr_monokuma_name"] = "Монокума",
-    ["#char_dr_monokuma_title"] = "Директор Абсолютного Отчаяния",
-    ["#char_dr_monokuma_desc"] = "Жёсткий и зловещий директор, который сеет хаос и отчаяние вокруг себя. Его роль в жизни других — это быть абсолютным источником страха и контроля.",
+    -- РЕДАКТОР ПЕРСОНАЖЕЙ
+    ["#char_team_id"] = "Команда с ID ",
+    ["#char_team_cmd"] = "Команда ",
+    ["#char_team_exist"] = " уже существует!",
+    ["#char_team_created"] = " успешно была создана!",
+    ["#char_team_deleted"] = " была успешно удалена!",
+    ["#char_team_deletedm"] = " были успешно удалены!",
+    ["#char_team_updated"] = " была успешно обновлена!",
+    ["#char_team_nonexistent"] = " не существует!",
+
+    ["#char_sprites_id"] = "Спрайты с ID ",
+    ["#char_sprites_cmd"] = "Спрайты ",
+    ["#char_sprites_exist"] = " уже существуют!",
+    ["#char_sprites_created"] = " успешно были созданы!",
+    ["#char_sprites_deleted"] = " были успешно удалены!",
+    ["#char_sprites_nonexistent"] = " не существуют!",
+
+    ["#char_category_id"] = "Категория с ID ",
+    ["#char_category_cmd"] = "Категория ",
 
     -- ГЛАВНОЕ МЕНЮ
     ["#mainmenu_characterselect"] = "Выбрать персонажа",
@@ -947,6 +973,9 @@ Arbitrage.language:Add("ru", {
     ["#adminesp_custom_entclass_desc"] = "Включить показатель класса энтити",
     ["#adminesp_custom_entmodel_title"] = "Модель энтити",
     ["#adminesp_custom_entmodel_desc"] = "Включить показатель модели энтити",
+
+    ["#adminesp_spectate"] = "[Наблюдение] ",
+    ["#adminesp_chat"] = " написал в чат: ",
 
     -- РЕЖИМ НАБЛЮДЕНИЯ
     ["#spectate_object_attach"] = "Прикрепиться к объекту",
@@ -1133,5 +1162,255 @@ Arbitrage.language:Add("ru", {
     ["#hint_10"] = "Следите за состоянием персонажа – еда, вода и сон могут влиять на ваш игровой процесс.",
     ["#hint_11"] = "Открыв контекстное меню вы можете посмотреть свои характеристики. Так же вы можете прочитать описание статус эффектов наведя на них мышкой.",
     ["#hint_12"] = "Некоторые двери можно взламывать, но будьте осторожны – это незаконно!",
-    ["#hint_13"] = "В круговом меню можно добавлять нужные вам действия в избранное. После этого их можно использовать в контекстном меню."
+    ["#hint_13"] = "В круговом меню можно добавлять нужные вам действия в избранное. После этого их можно использовать в контекстном меню.",
+
+    -- EDITOR
+    ["#editor_editmode"] = "Вы находитесь в режиме редактирования!",
+    ["#editor_place"] = "Место ",
+    ["#editor_camera"] = "Камера у места ",
+    ["#editor_spawn"] = "Спавн у места ",
+    ["#editor_lobby"] = "Место Лобби: ",
+    ["#editor_endpoint_camera"] = "Конечное место камеры",
+    ["#editor_startpoint_camera"] = "Место начальной камеры",
+
+    ["#editor_changed"] = "Вы успешно добавили изменения в '",
+    ["#editor_configloaded"] = "Ваш конфиг успешно был загружен!",
+
+    ["#editor_lobbylist_current"] = "Расположение мест в лобби:",
+    ["#editor_spawnlist_current"] = "Расположение мест при запуске игры:",
+    ["#editor_placeslist_current"] = "Расположение мест на суде:",
+    ["#editor_camposend_current"] = "Расположение основной камеры:",
+    ["#editor_campos_current"] = "Расположение начальной камеры:",
+    ["#editor_camposplaces_current"] = "Расположение камеру у мест:",
+
+    ["#editor_lobbylist_set"] = "Установить новое место в лобби",
+    ["#editor_spawnlist_set"] = "Установить новое место при запуске игры",
+    ["#editor_placeslist_set"] = "Установить место на суде",
+    ["#editor_camposend_set"] = "Установить основную камеру",
+    ["#editor_campos_set"] = "Установить начальную камеру",
+    ["#editor_camposplaces_set"] = "Установить камеру у места",
+
+    ["#editor_lobbylist_delete"] = "Удалить места в лобби",
+    ["#editor_spawnlist_delete"] = "Удалить места при запуске игры",
+    ["#editor_placeslist_delete"] = "Удалить места на суде",
+    ["#editor_camposend_delete"] = "Удалить расположение основной камеры",
+    ["#editor_campos_delete"] = "Удалить расположение начальной камеры",
+    ["#editor_camposplaces_delete"] = "Удалить расположение камер у всех мест",
+
+    ["#editor_menu"] = "Меню редактирования",
+    ["#editor_config"] = "Конфигурация",
+    ["#editor_saveconfig"] = "Сохранить конфигурацию",
+    ["#editor_typedoc"] = "Введите название документа в который сохраниться конфигурация из Editor-а",
+    ["#editor_savedconfig"] = "Ваш конфиг успешно был сохранен в файл: ",
+    ["#editor_loadconfig"] = "Загрузить конфигурацию",
+    ["#editor_number"] = "Номер",
+    ["#editor_setnumber"] = "Введите номер нужного вам места",
+    ["#editor_iwanttodeleteit"] = "Да, я хочу удалить это!",
+
+    -- EPAINT
+    ["#epaint_brush_square"] = "Квадрат",
+    ["#epaint_brush_circle"] = "Круг",
+    ["#epaint_brush_line"] = "Линия",
+    ["#epaint_brush_rectangle"] = "Прямоугольник",
+    ["#epaint_brush_hollowrec"] = "Прямоугольник не залитый",
+
+    -- EVIDENCE
+    ["#evidence_ribbon_blue"] = "Информационные носители",
+    ["#evidence_ribbon_green"] = "Медицина",
+    ["#evidence_ribbon_orange"] = "Физические носители",
+    ["#evidence_ribbon_red"] = "Орудия убийства",
+    ["#evidence_ribbon_violet"] = "Химические материалы",
+    ["#evidence_ribbon_white"] = "Ключевые материалы",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+
+    ["#evidence_clue_number"] = "Улика №",
+    ["#evidence_clue_success"] = " была успешно присвоина ",
+    ["#evidence_clue_delete"] = "Вы успешно удалили улику №",
+    ["#evidence_clue_error"] = "Ошибка при выдаче улики игроку!",
+    ["#evidence_clue_journal"] = "Журнал улик монопада обновлён.",
+    ["#evidence_clue_ply_id"] = "Улика с ID №",
+    ["#evidence_clue_ply_success"] = " была успешно выдана игроку ",
+    ["#evidence_clue_monopad"] = "В монопаде уже есть данная улика!",
+    ["#evidence_clue_desc"] = "Описание улики",
+    ["#evidence_nomonopad"] = "У игрока нету монопада!",
+    ["#evidence_noobj_monopad"] = "У монопада отсутствует его объект!",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+    ["#evidence_ribbon_pink"] = "Мед. экспертиза",
+    ["#evidence_unknown"] = "Неизвестно",
+    ["#evidence_nonvalid"] = "Не валидное Entity!",
+
+    -- BEDSYSTEM
+    ["#bed_title"] = "Кровати",
+    ["#bed_objects"] = "Все объекты",
+
+    -- COLORCORRECTION
+    ["#colorcorrection_brightness"] = "Яркость",
+    ["#colorcorrection_contrast"] = "Контраст",
+    ["#colorcorrection_color"] = "Цвет",
+    ["#colorcorrection_addr"] = "Добавить красный цвет",
+    ["#colorcorrection_addg"] = "Добавить зеленый цвет",
+    ["#colorcorrection_addb"] = "Добавить синий цвет",
+    ["#colorcorrection_mulr"] = "Умножить красные цвета",
+    ["#colorcorrection_mulg"] = "Умножить зеленые цвета",
+    ["#colorcorrection_mulb"] = "Умножить синие цвета",
+
+    ["#colorcorrection_turnon"] = "Включить изменение цветокоррекции",
+    ["#colorcorrection_restore"] = "Вернуть стандартную цветокоррекцию",
+    ["#colorcorrection_configs"] = "Конфигурации",
+    ["#colorcorrection_savecc"] = "Сохранить цветокор",
+    ["#colorcorrection_loadcc"] = "Загрузить цветокор",
+    ["#colorcorrection_savefile"] = "Введите название документа в который вы хотите сохранить цветокор",
+    ["#colorcorrection_save"] = "Сохранить",
+    ["#colorcorrection_cancel"] = "Отменить",
+    ["#colorcorrection_turnply"] = "Включить для определенных игроков",
+    ["#colorcorrection_title"] = "Цветокоррекция",
+    ["#colorcorrection_name"] = "Название",
+    ["#colorcorrection_desc"] = "Значение",
+
+    -- CONTAINER
+    ["#container_desc"] = "Описание контейнера",
+
+    ["#container_exist"] = " уже является контейнером!",
+    ["#container_none"] = " не является контейнером!",
+    ["#container_created"] = "Вы успешно создали контейнер у ",
+    ["#container_deleted"] = "Вы успешно удалили контейнер из ",
+
+    -- DESCRIPTIVETEXT
+    ["#description_example"] = "Ваш текст",
+
+    -- DOORS
+    ["#doors_char_confirm"] = "Вы точно хотите дать этому персонажу доступ к данной двери?",
+    ["#doors_ds_access"] = "[DoorSaver] Добавление доступа",
+    ["#doors_yes"] = "Да",
+    ["#doors_no"] = "Нет",
+    ["#doors_ply_delete"] = "Вы точно хотите удалить данного игрока из двери?",
+    ["#doors_ds_remove"] = "[DoorSaver] Удаление из базы",
+    ["#doors_actions"] = "Действия с дверью",
+    ["#doors_approve"] = "Разрешить",
+    ["#doors_prohibit"] = "Запретить",
+    ["#doors_lockpick"] = " взламывать",
+    ["#doors_setid"] = "Установить уникальный идентификатор",
+    ["#doors_uniqueid"] = "Уникальный идентификатор",
+    ["#doors_setuniqueid"] = "Введите уникальный ID который вы хотите установить двери",
+    ["#doors_addaccess"] = "Добавить доступ к двери",
+    ["#doors_searchply"] = "Поиск по игрокам",
+    ["#doors_searchfraction"] = "Поиск по всем фракциям",
+    ["#doors_removeaccess"] = "Убрать доступ из двери",
+    ["#doors_addicon"] = "Добавить иконку к двери",
+    ["#doors_removeicon"] = "Удалить иконку у двери",
+
+    ["#doors_provided"] = "Вы успешно дали ",
+    ["#doors_access"] = " доступ к двери!",
+    ["#doors_removed"] = "Вы успешно убрали у ",
+    ["#doors_addedicon"] = "Вы успешно добавили новую иконку к двери!",
+    ["#doors_removedicon"] = "Вы успешно удалили иконку у двери!",
+    ["#doors_successfully"] = "Вы успешно ",
+    ["#doors_allowed"] = "разрешили",
+    ["#doors_prohibited"] = "запретили",
+    ["#doors_lockpicking"] = " взламывать дверь!",
+    ["#doors_addeduniqueid"] = "Вы успешно установили двери уникальный идентификатор ",
+
+    -- MONOPAD
+    ["#monopad_unknown"] = "Неизвестно",
+
+    ["#monopad_gamelog_casenumber"] = "Дело №",
+    ["#monopad_gamelog_chapter"] = "Глава",
+    ["#monopad_gamelog_status"] = "Статус:",
+    ["#monopad_gamelog_culprit"] = "Виновный:",
+    ["#monopad_gamelog_started"] = "Начато:",
+    ["#monopad_gamelog_notspecified"] = "Не указано",
+    ["#monopad_gamelog_victim"] = "Жертва:",
+    ["#monopad_gamelog_time"] = "Время смерти:",
+    ["#monopad_gamelog_cause"] = "Причина:",
+    ["#monopad_gamelog_place"] = "Тело найдено:",
+    ["#monopad_gamelog_discovery"] = "Обнаружено:",
+
+    ["#monopad_gledit_case"] = "Изменить дело",
+    ["#monopad_gledit_victim"] = "Выберете жертву в деле",
+    ["#monopad_glexample_victim"] = "Пример: Химико Юмено",
+    ["#monopad_gledit_time"] = "Введите время смерти",
+    ["#monopad_glexample_time"] = "Пример: ~ 17:40",
+    ["#monopad_gledit_cause"] = "Введите причину смерти",
+    ["#monopad_glexample_cause"] = "Пример: Удар тупым предметом в область головы",
+    ["#monopad_gledit_place"] = "Введите место нахождения тела",
+    ["#monopad_glexample_place"] = "Пример: в Библиотеке",
+    ["#monopad_gledit_discovery"] = "Введите время обнаружения тела",
+    ["#monopad_glexample_discovery"] = "Пример: 22:45",
+
+    ["#monopad_glmain_time"] = "Время смерти",
+    ["#monopad_glmain_cause"] = "Причина смерти",
+    ["#monopad_glmain_place"] = "Место нахождения тело",
+    ["#monopad_glmain_discovery"] = "Время обнаружения тело",
+    ["#monopad_glmain_edit"] = "Изменить",
+
+    ["#monopad_title_navigation"] = "Навигация",
+    ["#monopad_desc_navigation"] = "Удобная карта с активным трекингом",
+    ["#monopad_title_rules"] = "Устав Академии",
+    ["#monopad_desc_rules"] = "Свод основным правил поведения",
+    ["#monopad_title_messenger"] = "Мессенджер",
+    ["#monopad_desc_messenger"] = "Личные сообщения от участников",
+    ["#monopad_title_gamelog"] = "Журнал игры",
+    ["#monopad_desc_gamelog"] = "История расследования в Академии",
+    ["#monopad_title_notes"] = "Личные заметки",
+    ["#monopad_desc_notes"] = "Цифровой блокнот для записей",
+    ["#monopad_title_special"] = "Спец. материалы",
+    ["#monopad_desc_special"] = "Особая информация для игры",
+
+    ["#monopad_welcome"] = "Добро пожаловать",
+    ["#monopad_newmod"] = "Новое изменение",
+
+    ["#monopad_foundin"] = "Найдено в",
+
+    ["#monopad_msg_unavailable"] = "Данный пользователь недоступен",
+    ["#monopad_msg_writemsg"] = "Напишите сообщение...",
+    ["#monopad_msg_sendmsg"] = "Отправить сообщение",
+    ["#monopad_msg_writetext"] = "Введите текст который вы хотите отправить",
+    ["#monopad_msg_send"] = "Отправить",
+    ["#monopad_msg_cancel"] = "Отменить",
+    ["#monopad_msg_global"] = "Общий чат",
+    ["#monopad_msg_dialog"] = "Диалог с",
+
+    ["#monopad_nav_level"] = "Уровень просмотра:",
+
+    ["#monopad_notes_createnew"] = "Создать новую заметку",
+    ["#monopad_notes_createnote"] = "Создать заметку",
+    ["#monopad_notes_setnotename"] = "Введите название вашей заметки",
+    ["#monopad_notes_success"] = "Вы успешно добавили новую заметку!",
+    ["#monopad_notes_create"] = "Создать",
+    ["#monopad_notes_cancel"] = "Отменить",
+    ["#monopad_notes_deleted"] = "Вы успешно удалили заметку!",
+    ["#monopad_notes_addnew"] = "Добавить новую заметку",
+    ["#monopad_notes_setname"] = "Введите название заметки",
+    ["#monopad_notesexample_name"] = "Пример: Важно",
+    ["#monopad_notes_setdesc"] = "Введите описание заметки",
+    ["#monopad_notesexample_create"] = "Пример: Кто-то ходил в спорт зал поздно ночью",
+    ["#monopad_notes_name"] = "Название",
+    ["#monopad_notes_desc"] = "Описание",
+    ["#monopad_notes_add"] = "Добавить",
+    ["#monopad_notes_edited"] = "Вы успешно изменили данные в заметке!",
+
+    ["#monopad_notes_create"] = "Создать новую заметку",
+    ["#monopad_notes_create"] = "Создать новую заметку",
+    ["#monopad_notes_create"] = "Создать новую заметку",
+    ["#monopad_notes_create"] = "Создать новую заметку",
+    ["#monopad_notes_create"] = "Создать новую заметку",
+
+    ["#monopad_cluenumber"] = "Улика №",
+
+    ["#monopad_rules_newedit"] = "Новое изменение",
+    ["#monopad_rules_number"] = "Правило №",
+    ["#monopad_rules_regulation"] = "Устав Академии",
+
+    ["#monopad_clues_title"] = "Найденные улики",
+    ["#monopad_clues_desc"] = "Все найденные вами улики заносятся в данную\nкатегорию. Распределяйте их по активным делам\nдля правильного выявления виновного",
+    ["#monopad_clues_list"] = "Список улик",
+    ["#monopad_mystery_title"] = "Тайны Академии",
+    ["#monopad_mystery_desc"] = "Особые материалы и файлы, помогающие\nраскрывать общую тайну. Используйте их для\nполного успешного прохождения Академии.",
+    ["#monopad_special_title"] = "Спец. материалы",
+    ["#monopad_materials_found"] = "Найденные материалы",
+
+    ["#monopad_chapter_completed"] = "Завершено",
+    ["#monopad_chapter_investigation"] = "Активное расследование",
+    ["#monopad_chapter_classtrial"] = "Классный суд"
 })

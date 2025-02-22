@@ -29,9 +29,9 @@ MonoPad.sounds = {
 }
 
 MonoPad.chapterTypes = {
-    [1] = {"Завершено", Color(11, 255, 108)},
-    [2] = {"Активное расследование", Color(255, 176, 56)},
-    [3] = {"Классный суд", Color(233, 66, 66)}
+    [1] = {"#monopad_chapter_completed", Color(11, 255, 108)},
+    [2] = {"#monopad_chapter_investigation", Color(255, 176, 56)},
+    [3] = {"#monopad_chapter_classtrial", Color(233, 66, 66)}
 }
 
 function MonoPad:New(id)

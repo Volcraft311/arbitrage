@@ -33,7 +33,7 @@ function PANEL:Init()
 		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end)
 
-	self.evidencePanel = self:CreateButton("Найденные улики", "Все найденные вами улики заносятся в данную\nкатегорию. Распределяйте их по активным делам\nдля правильного выявления виновного", Material("danganronpa/monopad/evidence.png"))
+	self.evidencePanel = self:CreateButton("#monopad_clues_title", "#monopad_clues_desc", Material("danganronpa/monopad/evidence.png"))
 	self.evidencePanel:SetPos(80, 70)
 	self.evidencePanel.DoClick = function()
 		if self.isOpen then return end
@@ -49,7 +49,7 @@ function PANEL:Init()
 
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"special",
-			"Список улик",
+			"#monopad_clues_list",
 			MonoPad.icons.special,
 			{1}
 		})
@@ -57,7 +57,7 @@ function PANEL:Init()
 		asterionlib.EmitSound(MonoPad.sounds.planshet_beep)
 	end
 
-	self.secretsPanel = self:CreateButton("Тайны Академии", "Особые материалы и файлы, помогающие\nраскрывать общую тайну. Используйте их для\nполного успешного прохождения Академии.", Material("danganronpa/monopad/secrets.png"))
+	self.secretsPanel = self:CreateButton("#monopad_mystery_title", "#monopad_mystery_desc", Material("danganronpa/monopad/secrets.png"))
 	self.secretsPanel:SetPos(470, 70)
 	self.secretsPanel.disable = true
 	self.secretsPanel:SetAlpha(30)
@@ -119,7 +119,7 @@ function PANEL:Init()
 
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"special",
-				"Спец. материалы",
+				"#monopad_special_title",
 				MonoPad.icons.special,
 				{}
 			})
@@ -145,7 +145,7 @@ function PANEL:Init()
 	local leftTitle = self.leftPanel:Add("DLabel")
 	leftTitle:Dock(TOP)
 	leftTitle:DockMargin(20, 14, 20, 18)
-	leftTitle:SetText("Найденные материалы")
+	leftTitle:SetText("#monopad_materials_found")
 	leftTitle:SetFont(MonoPad:GetFont("special_title"))
 
 	self.scrollPanel = self.leftPanel:Add("DScrollPanel")
@@ -272,8 +272,8 @@ function PANEL:Rebuild()
 		        surface.SetDrawColor(255, 255, 255)
 		        surface.DrawRect(0, padding, w, tall)
 		    end, function()
-		    	local name = inflictorFaction and inflictorFaction:GetName() or "Неизвестно"
-			    draw.SimpleText("Дело №" .. k .. ", " .. name, MonoPad:GetFont("gamelog_title"), 20, 14, color_white, TEXT_ALIGN_LEFT)
+		    	local name = inflictorFaction and inflictorFaction:GetName() or "#monopad_unknown"
+			    draw.SimpleText("#monopad_gamelog_casenumber" .. k .. ", " .. name, MonoPad:GetFont("gamelog_title"), 20, 14, color_white, TEXT_ALIGN_LEFT)
 		    end)
 		end
 		MonoPad:StartRegisterMeta(title)

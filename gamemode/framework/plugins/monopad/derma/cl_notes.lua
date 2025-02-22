@@ -55,18 +55,18 @@ function PANEL:Init()
 		surface.SetMaterial(addMat)
 		surface.DrawTexturedRect(25, h / 2 - size / 2, size, size)
 
-		draw.SimpleText("Создать новую заметку", MonoPad:GetFont("notes_title"), 52, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+		draw.SimpleText("#monopad_notes_createnew", MonoPad:GetFont("notes_title"), 52, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
 	end
 	addButton.DoClick = function()
-		DermaStringRequest = Derma_StringRequest("Создать заметку", "Введите название вашей заметки", "", function(text)
+		DermaStringRequest = Derma_StringRequest("#monopad_notes_createnote", "#monopad_notes_setnotename", "", function(text)
 			netstream.Start("MonoPad:CreateNotes", text)
 
 			timer.Simple(0.5, function()
 				self:Rebuild()
 			end)
 
-			Arbitrage.notify.NotifyChat("Вы успешно добавили новую заметку!")
-		end, nil, "Создать", "Отменить")
+			Arbitrage.notify.NotifyChat("#monopad_notes_success")
+		end, nil, "#monopad_notes_create", "#monopad_notes_cancel")
 		DermaStringRequest.startTime = SysTime()
 		DermaStringRequest:SetAlpha(0)
 		DermaStringRequest:AlphaTo(255, 0.3)
@@ -210,7 +210,7 @@ function PANEL:Init()
 		end)
 
 		asterionlib.EmitSound(MonoPad.sounds.message_sent)
-		Arbitrage.notify.NotifyChat("Вы успешно удалили заметку!")
+		Arbitrage.notify.NotifyChat("#monopad_notes_deleted")
 	end
 
 	local font = MonoPad:GetFont("notes_description")
@@ -366,13 +366,13 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("Добавить новую заметку", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_notes_addnew", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите название заметки", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Важно", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_notes_setname", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_notesexample_name", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Введите описание заметки", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("Пример: Кто-то ходил в спорт зал поздно ночью", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_notes_setdesc", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText("#monopad_notesexample_create", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -393,7 +393,7 @@ function PANEL:Init()
     self.titleEntry = self.main:Add("DTextEntry")
     self.titleEntry:SetPos(W(5), H(75))
     self.titleEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.titleEntry:SetPlaceholderText("Название")
+    self.titleEntry:SetPlaceholderText("#monopad_notes_name")
     self.titleEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.descriptionEntry = self.main:Add("DTextEntry")
@@ -401,7 +401,7 @@ function PANEL:Init()
     self.descriptionEntry:SetMultiline(true)
     self.descriptionEntry:SetPos(W(5), H(155))
     self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(150))
-    self.descriptionEntry:SetPlaceholderText("Описание")
+    self.descriptionEntry:SetPlaceholderText("#monopad_notes_desc")
     self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     local submitButton = self.main:Add("DButton")
@@ -412,7 +412,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Добавить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText("#monopad_notes_add", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -434,7 +434,7 @@ function PANEL:Init()
 	        end
     	end)
 
-        Arbitrage.notify.NotifyChat("Вы успешно изменили данные в заметке!")
+        Arbitrage.notify.NotifyChat("#monopad_notes_edited")
     end
 end
 

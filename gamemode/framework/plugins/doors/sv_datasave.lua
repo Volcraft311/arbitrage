@@ -39,7 +39,7 @@ netstream.Hook("arb.DoorAddOwner", function(client, faction)
 	db[id].list[faction] = true
 	db[id].idx = entity:EntIndex()
 
-	Arbitrage.commands.Notify(client, "Вы успешно дали " .. factionData.name .. " доступ к двери!")
+	Arbitrage.commands.Notify(client, "#doors_provided" .. factionData.name .. "#doors_access")
 	PLUGIN:SendDoorData(nil, PLUGIN.DoorsData)
 end)
 
@@ -65,7 +65,7 @@ netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
 	db[id].list[faction] = nil
 	db[id].idx = entity:EntIndex()
 
-	Arbitrage.commands.Notify(client, "Вы успешно убрали у " .. factionData.name .. " доступ к двери!")
+	Arbitrage.commands.Notify(client, "#doors_removed" .. factionData.name .. "#doors_access")
 	PLUGIN:SendDoorData(nil, PLUGIN.DoorsData)
 end)
 
@@ -89,7 +89,7 @@ netstream.Hook("arb.DoorAddIcon", function(client, entity, id)
 
 	entity:SetNetVar("arb.image", data)
 
-	Arbitrage.commands.Notify(client, "Вы успешно добавили новую иконку к двери!")
+	Arbitrage.commands.Notify(client, "#doors_addedicon")
 end)
 
 netstream.Hook("arb.DoorRemoveIcon", function(client, entity, indx)
@@ -103,7 +103,7 @@ netstream.Hook("arb.DoorRemoveIcon", function(client, entity, indx)
 
 	entity:SetNetVar("arb.image", data)
 
-	Arbitrage.commands.Notify(client, "Вы успешно удалили иконку у двери!")
+	Arbitrage.commands.Notify(client, "#doors_removedicon")
 end)
 
 netstream.Hook("arb.DoorSetHack", function(client)
@@ -119,7 +119,7 @@ netstream.Hook("arb.DoorSetHack", function(client)
 	local data = entity:GetNWBool("disableHack", false)
 	entity:SetNWBool("disableHack", !data)
 
-	Arbitrage.commands.Notify(client, "Вы успешно " .. (data and "разрешили" or "запретили") .. " взламывать двеь!")
+	Arbitrage.commands.Notify(client, "#doors_successfully" .. (data and "#doors_allowed" or "#doors_prohibited") .. "#doors_lockpicking")
 end)
 
 netstream.Hook("arb.DoorSetUniqueID", function(client, data)
@@ -134,5 +134,5 @@ netstream.Hook("arb.DoorSetUniqueID", function(client, data)
 
 	entity:SetNetVar("key_uniqueid", data)
 
-	Arbitrage.commands.Notify(client, "Вы успешно установили двери уникальный идентификатор " .. data .. "!")
+	Arbitrage.commands.Notify(client, "#doors_addeduniqueid" .. data .. "!")
 end)

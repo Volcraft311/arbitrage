@@ -90,7 +90,7 @@ netstream.Hook("Editor:ChangeProperty", function(client, id, data)
 			end
 		end
 
-		Arbitrage.commands.Notify(client, "Вы успешно добавили изменения в '" .. id .. "'.")
+		Arbitrage.commands.Notify(client, "#editor_changed" .. id .. "'.")
 		Arbitrage:ReplaceVariables()
 		netstream.Start(nil, "Editor:SetVariables", info)
 	end
@@ -103,5 +103,5 @@ netstream.Hook("Editor:LoadConfig", function(client, data)
 	Arbitrage:ReplaceVariables()
 	netstream.Start(nil, "Editor:SetVariables", data)
 
-	client:ChatNotify("Ваш конфиг успешно был загружен!")
+	client:ChatNotify("#editor_configloaded")
 end)

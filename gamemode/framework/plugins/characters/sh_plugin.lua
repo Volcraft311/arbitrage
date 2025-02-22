@@ -174,7 +174,7 @@ Arbitrage.base.Include("derma/cl_sprites.lua")
 Character.category:Init(function()
     -- Персонаж администратора
     TEAM_ADMIN = Character.team:Create({
-        name = "Администратор",
+        name = "#char_team_admin",
         health = 9999999,
         color = Color(87, 211, 132),
         model = "models/editor/camera.mdl",
@@ -183,14 +183,14 @@ Character.category:Init(function()
 
     -- Персонаж не выбранного персонажа
     TEAM_NOTCHARACTER = Character.team:Create({
-        name = "Персонаж не выбран",
+        name = "#char_team_empty",
         health = 9999999,
         color = Color(211, 87, 87)
     })
 
     -- Персонаж наблюдателя
     TEAM_SPECTATE = Character.team:Create({
-        name = "Наблюдатель",
+        name = "#char_team_spectator",
         health = 9999999,
         color = Color(255, 255, 255),
         model = "models/props_doors/null.mdl",

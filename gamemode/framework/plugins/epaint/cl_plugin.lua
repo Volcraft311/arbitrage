@@ -47,14 +47,14 @@ EPaint.materialsCache = EPaint.materialsCache or {}
 
 EPaint.DrawingTypes = {
 	[1] = {
-		name = "Квадрат",
+		name = "#epaint_brush_square",
 		cursor = "crosshair",
 		data = function(x, y, size)
 			surface_DrawRect(x - size, y - size, size * 2, size * 2)
 		end
 	},
 	[2] = {
-		name = "Круг",
+		name = "#epaint_brush_circle",
 		cursor = "crosshair",
 		data = function(x, y, size)
 			local uniqueID = x .. "_" .. y .. "_" .. size
@@ -67,7 +67,7 @@ EPaint.DrawingTypes = {
 		end
 	},
 	[3] = {
-		name = "Линия",
+		name = "#epaint_brush_line",
 		cursor = "crosshair",
 		saveBefore = true,
 		data = function(x, y, size, beforeX, beforeY)
@@ -77,7 +77,7 @@ EPaint.DrawingTypes = {
 		end
 	},
 	[4] = {
-		name = "Прямоугольник",
+		name = "#epaint_brush_rectangle",
 		cursor = "crosshair",
 		saveBefore = true,
 		data = function(x, y, size, beforeX, beforeY)
@@ -89,7 +89,7 @@ EPaint.DrawingTypes = {
 		end
 	},
 	[5] = {
-		name = "Прямоугольник не залитый",
+		name = "#epaint_brush_hollowrec",
 		cursor = "crosshair",
 		saveBefore = true,
 		data = function(x, y, size, beforeX, beforeY)

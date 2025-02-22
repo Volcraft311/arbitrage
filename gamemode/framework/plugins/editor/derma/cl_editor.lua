@@ -90,21 +90,21 @@ local actionData = {
 }
 
 local titleData = {
-	lobbyList = "Расположение мест в лобби:",
-	spawnList = "Расположение мест при запуске игры:",
-	placesList = "Расположение мест на суде:",
-	camPosEnd = "Расположение основной камеры:",
-	camPos = "Расположение начальной камеры:",
-	camPosPlaces = "Расположение камеру у мест:"
+	lobbyList = "#editor_lobbylist_current",
+	spawnList = "#editor_spawnlist_current",
+	placesList = "#editor_placeslist_current",
+	camPosEnd = "#editor_camposend_current",
+	camPos = "#editor_campos_current",
+	camPosPlaces = "#editor_camposplaces_current"
 }
 
 local textData = {
-	lobbyList = "Установить новое место в лобби",
-	spawnList = "Установить новое место при запуске игры",
-	placesList = "Установить место на суде",
-	camPosEnd = "Установить основную камеру",
-	camPos = "Установить начальную камеру",
-	camPosPlaces = "Установить камеру у места"
+	lobbyList = "#editor_lobbylist_set",
+	spawnList = "#editor_spawnlist_set",
+	placesList = "#editor_placeslist_set",
+	camPosEnd = "#editor_camposend_set",
+	camPos = "#editor_campos_set",
+	camPosPlaces = "#editor_camposplaces_set"
 }
 
 local function ReturnOptionName(id, key, value)
@@ -144,7 +144,7 @@ end
 
 local size = 0.4
 function PANEL:Init()
-	self:SetTitle("Меню редактирования")
+	self:SetTitle("#editor_menu")
 	self:SetSize(ScrW() * size, ScrH() * (size * 2))
 	self:Center()
 	self:MakePopup()
@@ -165,20 +165,20 @@ function PANEL:Init()
 		surface.SetDrawColor(155, 35, 57, _.alpha)
 		surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-		draw.DrawText("Конфигурация", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+		draw.DrawText("#editor_config", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 	end
 	configButton.DoClick = function()
 		local Menu = DermaMenu()
-			Menu:AddOption("Сохранить конфигурацию", function()
-				Derma_StringRequest("Сохранить конфигурацию", "Введите название документа в который сохраниться конфигурация из Editor-а", "", function(text)
+			Menu:AddOption("#editor_saveconfig", function()
+				Derma_StringRequest("#editor_saveconfig", "#editor_typedoc", "", function(text)
 					local data = util.TableToJSON(Editor:GetStored())
 
 					file.Write("academy_editor_configs/" .. text .. ".txt", data)
-					chat.AddText("Ваш конфиг успешно был сохранен в файл: " .. text .. ".txt")
+					chat.AddText("#editor_savedconfig" .. text .. ".txt")
 				end)
 			end):SetIcon("icon16/add.png")
 
-			local subMenu, parentMenuOption = Menu:AddSubMenu("Загрузить конфигурацию")
+			local subMenu, parentMenuOption = Menu:AddSubMenu("#editor_loadconfig")
 			parentMenuOption:SetIcon("icon16/cd.png")
 
 			local files, _ = file.Find("academy_editor_configs/*.txt", "DATA" )
@@ -254,7 +254,7 @@ function PANEL:InitButtons()
 
 				timer.Simple(0.3, function() self:GetData() end)
 			else
-				Derma_StringRequest("Номер", "Введите номер нужного вам места", "", function(text)
+				Derma_StringRequest("#editor_number", "#editor_setnumber", "", function(text)
 					local action = ReturnActionAdd(k, text, {pos, ang})
 					netstream.Start("Editor:ChangeProperty", k, action)
 
@@ -328,7 +328,7 @@ function PANEL:AddInfo(dp, id, data)
 			checkBox:SetChecked(true)
 
 			local Menu = DermaMenu()
-				Menu:AddOption("Да, я хочу удалить это!", function()
+				Menu:AddOption("#editor_iwanttodeleteit", function()
 					local action = ReturnActionClear(id, k, v)
 					netstream.Start("Editor:ChangeProperty", id, action)
 
@@ -359,19 +359,19 @@ vgui.Register("Editor:MenuAdd", PANEL, "DFrame")
 
 
 local deleteData = {
-	lobbyList = "Удалить места в лобби",
-	spawnList = "Удалить места при запуске игры",
-	placesList = "Удалить места на суде",
-	camPosEnd = "Удалить расположение основной камеры",
-	camPos = "Удалить расположение начальной камеры",
-	camPosPlaces = "Удалить расположение камер у всех мест"
+	lobbyList = "#editor_lobbylist_delete",
+	spawnList = "#editor_spawnlist_delete",
+	placesList = "#editor_placeslist_delete",
+	camPosEnd = "#editor_camposend_delete",
+	camPos = "#editor_campos_delete",
+	camPosPlaces = "#editor_camposplaces_delete"
 }
 
 local PANEL = {}
 
 local size = 0.3
 function PANEL:Init()
-	self:SetTitle("Меню редактирования")
+	self:SetTitle("#editor_menu")
 	self:SetSize(ScrW() * size, ScrH() * size)
 	self:Center()
 	self:MakePopup()

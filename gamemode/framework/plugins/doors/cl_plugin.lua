@@ -259,7 +259,7 @@ local function getActionList(entity, doorData)
 			icon = "icon16/report_disk.png",
 			data = {
 				{
-					name = (entity:GetNWBool("disableHack") and "#doors_approve" or "#doors_prohibit") .. "#doors_lockpick",
+					name = (entity:GetNWBool("disableHack") and "#doors_approve" or "#doors_prohibit") .. " #doors_lockpick",
 					icon = "icon16/attach.png",
 					data = function()
 						netstream.Start("arb.DoorSetHack")
@@ -269,7 +269,7 @@ local function getActionList(entity, doorData)
 					name = "#doors_setid",
 					icon = "icon16/report_key.png",
 					data = function()
-						Derma_StringRequest("#doors_uniqueid", "#doors_setuniqueid", entity:GetNetVar("key_uniqueid", ""), function(text)
+						Derma_StringRequest(L("#doors_uniqueid"), L("#doors_setuniqueid"), entity:GetNetVar("key_uniqueid", ""), function(text)
 							netstream.Start("arb.DoorSetUniqueID", text)
 						end)
 					end

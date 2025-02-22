@@ -29,7 +29,7 @@ function Evidence:SetEntityEvidence(entity, idx)
 
     entity:SetNetVar("ev_id", idx)
 
-    return "#evidence_clue_number" .. tostring(idx) .. "#evidence_clue_success" .. tostring(entity) .. "."
+    return "#evidence_clue_number " .. tostring(idx) .. " #evidence_clue_success " .. tostring(entity) .. "."
 end
 
 local function reg(data)
@@ -88,7 +88,7 @@ function Evidence:Reload(data)
 
     self:DeleteEvidence(idx)
 
-    return "#evidence_clue_delete" .. idx .. " с " .. name .. "."
+    return "#evidence_clue_delete " .. idx .. " с " .. name .. "."
 end
 
 function Evidence:DeleteEvidence(idx)
@@ -131,7 +131,7 @@ function PLAYER:AddEvidence(idx, time)
 
     netstream.Start(self, "MonoPad:EditSpecialNotify")
 
-    return "#evidence_clue_ply_id" .. tostring(idx) .. "#evidence_clue_ply_success" .. tostring(self) .. "."
+    return "#evidence_clue_ply_id " .. tostring(idx) .. " #evidence_clue_ply_success " .. tostring(self) .. "."
 end
 
 

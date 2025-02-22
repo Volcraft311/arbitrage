@@ -391,7 +391,7 @@ function PANEL:InitInput()
 		if self.isOpen then return end
 		if !self.selectID then return end
 
-		DermaStringRequest = Derma_StringRequest("#monopad_msg_sendmsg", "#monopad_msg_writetext", "", function(text)
+		DermaStringRequest = Derma_StringRequest(L("#monopad_msg_sendmsg"), L("#monopad_msg_writetext"), "", function(text)
 			if string.Trim(text) == "" then return end
 
 			self.isSent = true

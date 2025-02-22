@@ -117,7 +117,7 @@ function Editor:HUDPaint()
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
             local pos, ang = v[1], v[2]
 
-            self:DrawInfo("#editor_place" .. k, pos, ang, color, "placesList_" .. k, "models/editor/spot.mdl", true)
+            self:DrawInfo("#editor_place " .. k, pos, ang, color, "placesList_" .. k, "models/editor/spot.mdl", true)
         end
     end
 
@@ -125,19 +125,19 @@ function Editor:HUDPaint()
         for k, v in pairs(Arbitrage.camPosPlaces or {}) do
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
 
-            self:DrawInfo("#editor_camera" .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
+            self:DrawInfo("#editor_camera " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
         end
     end
 
     do
         for k, v in pairs(Arbitrage.spawnList or {}) do
-            self:DrawInfo("#editor_spawn" .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
+            self:DrawInfo("#editor_spawn " .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
         end
     end
 
     do
         for k, v in pairs(Arbitrage.lobbyList or {}) do
-            self:DrawInfo("#editor_lobby" .. k, v, nil, Color(145, 240, 49), "lobbyList_" .. k, "models/editor/axis_helper.mdl", true)
+            self:DrawInfo("#editor_lobby " .. k, v, nil, Color(145, 240, 49), "lobbyList_" .. k, "models/editor/axis_helper.mdl", true)
         end
     end
 

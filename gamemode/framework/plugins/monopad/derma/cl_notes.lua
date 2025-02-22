@@ -58,7 +58,7 @@ function PANEL:Init()
 		draw.SimpleText("#monopad_notes_createnew", MonoPad:GetFont("notes_title"), 52, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
 	end
 	addButton.DoClick = function()
-		DermaStringRequest = Derma_StringRequest("#monopad_notes_createnote", "#monopad_notes_setnotename", "", function(text)
+		DermaStringRequest = Derma_StringRequest(L("#monopad_notes_createnote"), L("#monopad_notes_setnotename"), "", function(text)
 			netstream.Start("MonoPad:CreateNotes", text)
 
 			timer.Simple(0.5, function()

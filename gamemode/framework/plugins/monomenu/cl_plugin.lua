@@ -115,10 +115,10 @@ local function getAllTemporaryStatusEffects(client)
     local all_effects = {}
     for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
         all_effects[#all_effects + 1] = {
-            name = L(v.name),
+            name = v.name,
             icon = isfunction(v.icon) and v.icon(client) or v.icon,
             data = function()
-                Derma_StringRequest("#monomenu_ply_status_givestatus", "#monomenu_ply_status_timestatus", "", function(text)
+                Derma_StringRequest(L("#monomenu_ply_status_givestatus"), L("#monomenu_ply_status_timestatus"), "", function(text)
                     text = tonumber(text)
                     if !text then return end
 
@@ -139,7 +139,7 @@ local function getAllTemporaryStatusEffects(client)
             local delay = v.delay <= 0 and "∞" or math.floor(v.delay - CurTime())
 
             client_effects[#client_effects + 1] = {
-                name = L(info.name) .. " (" .. delay .. " sec)",
+                name = info.name .. " (" .. delay .. " sec)",
                 icon = isfunction(info.icon) and info.icon(client) or info.icon,
                 data = function()
                     runAction("removetemporarystatuseffect", client, uniqueID)
@@ -376,7 +376,7 @@ local function getActionList(clientinfo)
                 name = "#monomenu_stats_setname",
                 icon = "icon16/page_white_edit.png",
                 data = function()
-                    Derma_StringRequest("#monomenu_stats_setname", "#monomenu_stats_nameex", IsValid(client) and client:GetNetVar("fakename", "") or "", function(text)
+                    Derma_StringRequest(L("#monomenu_stats_setname"), L("#monomenu_stats_nameex"), IsValid(client) and client:GetNetVar("fakename", "") or "", function(text)
                         runAction("setfakename", client, text)
                     end)
                 end,
@@ -529,10 +529,10 @@ local function getActionList(clientinfo)
                                 end
                             end
 
-                            Derma_StringRequest("#monomenu_inv_change", "#monomenu_inv_widght", x, function(inventoryX)
+                            Derma_StringRequest(L("#monomenu_inv_change"), L("#monomenu_inv_widght"), x, function(inventoryX)
                                 if !tonumber(inventoryX) then return end
 
-                                Derma_StringRequest("#monomenu_inv_change", "#monomenu_inv_height", y, function(inventoryY)
+                                Derma_StringRequest(L("#monomenu_inv_change"), L("#monomenu_inv_height"), y, function(inventoryY)
                                     if !tonumber(inventoryY) then return end
 
                                     runAction("scaleinventory", client, inventoryX, inventoryY)
@@ -549,7 +549,7 @@ local function getActionList(clientinfo)
                 name = "#monomenu_ply_setmodel",
                 icon = "icon16/report_user.png",
                 data = function()
-                    Derma_StringRequest("#monomenu_ply_setmodel", "#monomenu_ply_modelpath", IsValid(client) and client:GetModel() or "", function(text)
+                    Derma_StringRequest(L("#monomenu_ply_setmodel"), L("#monomenu_ply_modelpath"), IsValid(client) and client:GetModel() or "", function(text)
                         runAction("setmodel", client, text)
                     end)
                 end,
@@ -565,7 +565,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_regdesc",
                         icon = "icon16/page_white_edit.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setregdesc", "#monomenu_ply_writedesc", IsValid(client) and client:GetNetVar("description", "") or "", function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setregdesc"), L("#monomenu_ply_writedesc"), IsValid(client) and client:GetNetVar("description", "") or "", function(text)
                                 runAction("setdescription", client, text)
                             end)
                         end,
@@ -577,7 +577,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_forceddesc",
                         icon = "icon16/page_white_zip.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setforced", "#monomenu_ply_writedesc", IsValid(client) and client:GetNetVar("forced_description", "") or "", function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setforced"), L("#monomenu_ply_writedesc"), IsValid(client) and client:GetNetVar("forced_description", "") or "", function(text)
                                 runAction("setforceddescription", client, text)
                             end)
                         end,
@@ -591,7 +591,7 @@ local function getActionList(clientinfo)
                 name = "#monomenu_ply_setsizechar",
                 icon = "icon16/link_break.png",
                 data = function()
-                    Derma_StringRequest("#monomenu_ply_writesize", IsValid(client) and client:GetModelScale() or 1, function(text)
+                    Derma_StringRequest(L("#monomenu_ply_setsize"), L("#monomenu_ply_writesize"), IsValid(client) and client:GetModelScale() or 1, function(text)
                         if !tonumber(text) then return end
 
                         runAction("setscale", client, text)
@@ -619,7 +619,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_sethealth",
                         icon = "icon16/heart.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_sethealth", "#monomenu_ply_healthdesc", IsValid(client) and client:Health() or 100, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_sethealth"), L("#monomenu_ply_healthdesc"), IsValid(client) and client:Health() or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "health", tonumber(text))
@@ -633,7 +633,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_setarmor",
                         icon = "icon16/shape_square.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setarmor", "#monomenu_ply_armordesc", IsValid(client) and client:Armor() or 100, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setarmor"), L("#monomenu_ply_armordesc"), IsValid(client) and client:Armor() or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "armor", tonumber(text))
@@ -647,7 +647,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_sethunger",
                         icon = "icon16/cake.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_sethunger", "#monomenu_ply_hungerdesc", IsValid(client) and (Arbitrage.statistics.Get(client, "Hunger") or 100) or 100, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_sethunger"), L("#monomenu_ply_hungerdesc"), IsValid(client) and (Arbitrage.statistics.Get(client, "Hunger") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "hunger", math.Clamp(tonumber(text), 1, 100))
@@ -661,7 +661,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_setthirst",
                         icon = "icon16/cup.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setthirst", "#monomenu_ply_thirstdesc", IsValid(client) and (Arbitrage.statistics.Get(client, "Thirst") or 100) or 100, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setthirst"), L("#monomenu_ply_thirstdesc"), IsValid(client) and (Arbitrage.statistics.Get(client, "Thirst") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "thirst", math.Clamp(tonumber(text), 1, 100))
@@ -675,7 +675,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_setsleep",
                         icon = "icon16/contrast_high.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setsleep", "#monomenu_ply_sleepdesc", IsValid(client) and (Arbitrage.statistics.Get(client, "Sleep") or 100) or 100, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setsleep"), L("#monomenu_ply_sleepdesc"), IsValid(client) and (Arbitrage.statistics.Get(client, "Sleep") or 100) or 100, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setstats", client, "sleep", math.Clamp(tonumber(text), 1, 100))
@@ -700,7 +700,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_walkspeed",
                         icon = "icon16/bullet_go.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setwalkspeed", "#monomenu_ply_writewalkspeed", 1, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setwalkspeed"), L("#monomenu_ply_writewalkspeed"), 1, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setspeed", client, "walk", tonumber(text))
@@ -714,7 +714,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_runspeed",
                         icon = "icon16/arrow_right.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setrunspeed", "#monomenu_ply_writerunspeed", 1, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setrunspeed"), L("#monomenu_ply_writerunspeed"), 1, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setspeed", client, "run", tonumber(text))
@@ -734,7 +734,7 @@ local function getActionList(clientinfo)
                         name = "#monomenu_ply_fallover",
                         icon = "icon16/zoom_in.png",
                         data = function()
-                            Derma_StringRequest("#monomenu_ply_setragdoll", "#monomenu_ply_writeragdoll", 0, function(text)
+                            Derma_StringRequest(L("#monomenu_ply_setragdoll"), L("#monomenu_ply_writeragdoll"), 0, function(text)
                                 if !tonumber(text) then return end
 
                                 runAction("setfallover", client, tonumber(text))
@@ -949,9 +949,9 @@ local function CreateMenu(info, parent, drawline)
             info.data = nil
         end
 
-        panel = parent:AddOption(text, info.data)
+        panel = parent:AddOption(F(text), info.data)
     else
-        subMenu, panel = parent:AddSubMenu(text)
+        subMenu, panel = parent:AddSubMenu(F(text))
         paintMenu(subMenu)
 
         for k, v in ipairs(info.data) do

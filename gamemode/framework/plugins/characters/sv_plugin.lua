@@ -74,7 +74,7 @@ netstream.Hook("Character:CreationRegisterTeam", function(client, data)
 	characterslist.team = characterslist.team or {}
 
 	if characterslist.team[uniqueID] or Character.team:GetByUniqueID(uniqueID) then
-		return Arbitrage.commands.Notify(client, "#char_team_id" .. uniqueID .. "#char_team_exist")
+		return Arbitrage.commands.Notify(client, "#char_team_id '" .. uniqueID .. "' #char_team_exist")
 	end
 
 	characterslist.team[uniqueID] = info
@@ -82,7 +82,7 @@ netstream.Hook("Character:CreationRegisterTeam", function(client, data)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRegisterKeys("team", uniqueID, info)
 
-	Arbitrage.commands.Notify(client, "#char_team_cmd" .. uniqueID .. "#char_team_created")
+	Arbitrage.commands.Notify(client, "#char_team_cmd '" .. uniqueID .. "' #char_team_created")
 end)
 
 netstream.Hook("Character:CreationEditTeam", function(client, data)
@@ -94,7 +94,7 @@ netstream.Hook("Character:CreationEditTeam", function(client, data)
 	characterslist.team = characterslist.team or {}
 
 	if !characterslist.team[uniqueID] then
-		return Arbitrage.commands.Notify(client, "#char_team_id" .. uniqueID .. "#char_team_nonexistent")
+		return Arbitrage.commands.Notify(client, "#char_team_id '" .. uniqueID .. "' #char_team_nonexistent")
 	end
 
 	characterslist.team[uniqueID] = info
@@ -102,7 +102,7 @@ netstream.Hook("Character:CreationEditTeam", function(client, data)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationEditKeys("team", uniqueID, info)
 
-	Arbitrage.commands.Notify(client, "#char_team_cmd" .. uniqueID .. "#char_team_updated")
+	Arbitrage.commands.Notify(client, "#char_team_cmd '" .. uniqueID .. "' #char_team_updated")
 end)
 
 netstream.Hook("Character:CreationRemoveTeam", function(client, uniqueID)
@@ -114,7 +114,7 @@ netstream.Hook("Character:CreationRemoveTeam", function(client, uniqueID)
 	characterslist.team = characterslist.team or {}
 
 	if !characterslist.team[uniqueID] then
-		return Arbitrage.commands.Notify(client, "#char_team_id" .. uniqueID .. "#char_team_nonexistent")
+		return Arbitrage.commands.Notify(client, "#char_team_id '" .. uniqueID .. "' #char_team_nonexistent")
 	end
 
 	characterslist.team[uniqueID] = nil
@@ -122,7 +122,7 @@ netstream.Hook("Character:CreationRemoveTeam", function(client, uniqueID)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRemoveKeys("team", uniqueID)
 
-	Arbitrage.commands.Notify(client, "#char_team_cmd" .. uniqueID .. "#char_team_deleted")
+	Arbitrage.commands.Notify(client, "#char_team_cmd '" .. uniqueID .. "' #char_team_deleted")
 end)
 
 
@@ -135,7 +135,7 @@ netstream.Hook("Character:CreationRegisterEmoji", function(client, uniqueID, dat
 	characterslist.emoji = characterslist.emoji or {}
 
 	if characterslist.emoji[uniqueID] or Character.emoji:GetByUniqueID(uniqueID) then
-		return Arbitrage.commands.Notify(client, "#char_sprites_id" .. uniqueID .. "#char_sprites_exist")
+		return Arbitrage.commands.Notify(client, "#char_sprites_id '" .. uniqueID .. "' #char_sprites_exist")
 	end
 
 	characterslist.emoji[uniqueID] = data
@@ -143,7 +143,7 @@ netstream.Hook("Character:CreationRegisterEmoji", function(client, uniqueID, dat
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRegisterKeys("emoji", uniqueID, data)
 
-	Arbitrage.commands.Notify(client, "#char_sprites_cmd" .. uniqueID .. "#char_sprites_created")
+	Arbitrage.commands.Notify(client, "#char_sprites_cmd '" .. uniqueID .. "' #char_sprites_created")
 end)
 
 netstream.Hook("Character:CreationEditEmoji", function(client, uniqueID, data)
@@ -155,7 +155,7 @@ netstream.Hook("Character:CreationEditEmoji", function(client, uniqueID, data)
 	characterslist.emoji = characterslist.emoji or {}
 
 	if !characterslist.emoji[uniqueID] then
-		return Arbitrage.commands.Notify(client, "#char_sprites_id" .. uniqueID .. "#char_sprites_nonexistent")
+		return Arbitrage.commands.Notify(client, "#char_sprites_id '" .. uniqueID .. "' #char_sprites_nonexistent")
 	end
 
 	characterslist.emoji[uniqueID] = data
@@ -163,7 +163,7 @@ netstream.Hook("Character:CreationEditEmoji", function(client, uniqueID, data)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRegisterKeys("emoji", uniqueID, data)
 
-	Arbitrage.commands.Notify(client, "#char_sprites_cmd" .. uniqueID .. "#char_sprites_created")
+	Arbitrage.commands.Notify(client, "#char_sprites_cmd '" .. uniqueID .. "' #char_sprites_created")
 end)
 
 netstream.Hook("Character:CreationRemoveEmoji", function(client, uniqueID)
@@ -175,7 +175,7 @@ netstream.Hook("Character:CreationRemoveEmoji", function(client, uniqueID)
 	characterslist.emoji = characterslist.emoji or {}
 
 	if !characterslist.emoji[uniqueID] then
-		return Arbitrage.commands.Notify(client, "#char_sprites_id" .. uniqueID .. "#char_sprites_nonexistent")
+		return Arbitrage.commands.Notify(client, "#char_sprites_id '" .. uniqueID .. "' #char_sprites_nonexistent")
 	end
 
 	characterslist.emoji[uniqueID] = nil
@@ -183,7 +183,7 @@ netstream.Hook("Character:CreationRemoveEmoji", function(client, uniqueID)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRemoveKeys("emoji", uniqueID)
 
-	Arbitrage.commands.Notify(client, "#char_sprites_cmd" .. uniqueID .. "#char_sprites_deleted")
+	Arbitrage.commands.Notify(client, "#char_sprites_cmd '" .. uniqueID .. "' #char_sprites_deleted")
 end)
 
 
@@ -206,7 +206,7 @@ netstream.Hook("Character:CreationRegisterCategory", function(client, data)
 	characterslist.category = characterslist.category or {}
 
 	if characterslist.category[uniqueID] or Character.category:GetByUniqueID(uniqueID) then
-		return Arbitrage.commands.Notify(client, "#char_category_id" .. uniqueID .. "#char_team_exist")
+		return Arbitrage.commands.Notify(client, "#char_category_id '" .. uniqueID .. "' #char_team_exist")
 	end
 
 	characterslist.category[uniqueID] = info
@@ -214,7 +214,7 @@ netstream.Hook("Character:CreationRegisterCategory", function(client, data)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRegisterKeys("category", uniqueID, info)
 
-	Arbitrage.commands.Notify(client, "#char_category_cmd" .. uniqueID .. "#char_team_created")
+	Arbitrage.commands.Notify(client, "#char_category_cmd '" .. uniqueID .. "' #char_team_created")
 end)
 
 netstream.Hook("Character:CreationEditCategory", function(client, data)
@@ -226,7 +226,7 @@ netstream.Hook("Character:CreationEditCategory", function(client, data)
 	characterslist.category = characterslist.category or {}
 
 	if !characterslist.category[uniqueID] then
-		return Arbitrage.commands.Notify(client, "#char_category_id" .. uniqueID .. "#char_team_nonexistent")
+		return Arbitrage.commands.Notify(client, "#char_category_id '" .. uniqueID .. "' #char_team_nonexistent")
 	end
 
 	characterslist.category[uniqueID] = info
@@ -234,7 +234,7 @@ netstream.Hook("Character:CreationEditCategory", function(client, data)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationEditKeys("category", uniqueID, info)
 
-	Arbitrage.commands.Notify(client, "#char_category_cmd" .. uniqueID .. "#char_team_updated")
+	Arbitrage.commands.Notify(client, "#char_category_cmd '" .. uniqueID .. "' #char_team_updated")
 end)
 
 netstream.Hook("Character:CreationRemoveCategory", function(client, uniqueID)
@@ -246,7 +246,7 @@ netstream.Hook("Character:CreationRemoveCategory", function(client, uniqueID)
 	characterslist.category = characterslist.category or {}
 
 	if !characterslist.category[uniqueID] then
-		return Arbitrage.commands.Notify(client, "#char_category_id" .. uniqueID .. "#char_team_nonexistent")
+		return Arbitrage.commands.Notify(client, "#char_category_id '" .. uniqueID .. "' #char_team_nonexistent")
 	end
 
 	characterslist.category[uniqueID] = nil
@@ -254,5 +254,5 @@ netstream.Hook("Character:CreationRemoveCategory", function(client, uniqueID)
 	asterionlib.data:Set("characterslist", characterslist)
 	Character.CreationRemoveKeys("category", uniqueID)
 
-	Arbitrage.commands.Notify(client, "#char_category_cmd" .. uniqueID .. "#char_team_deleted")
+	Arbitrage.commands.Notify(client, "#char_category_cmd '" .. uniqueID .. "' #char_team_deleted")
 end)

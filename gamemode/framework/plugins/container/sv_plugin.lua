@@ -18,7 +18,7 @@ function Container:LeftClick(data)
     local entity = data.entity
     if !IsValid(entity) then return end
 
-    if entity:GetClass() == "arb_container" then return tostring(entity) .. "#container_exist" end
+    if entity:GetClass() == "arb_container" then return tostring(entity) .. " #container_exist" end
 
     local container = ents.Create("arb_container")
     container:SetPos(entity:GetPos())
@@ -27,7 +27,7 @@ function Container:LeftClick(data)
     container:SetContainer(entity:GetModel(), data.name, data.description, data.w, data.h)
     entity:Remove()
 
-    return "#container_created" .. tostring(entity) .. "."
+    return "#container_created " .. tostring(entity) .. "."
 end
 
 function Container:Reload(data)
@@ -36,7 +36,7 @@ function Container:Reload(data)
     local entity = data.entity
     if !IsValid(entity) then return end
 
-    if entity:GetClass() != "arb_container" then return tostring(entity) .. "#container_none" end
+    if entity:GetClass() != "arb_container" then return tostring(entity) .. " #container_none" end
 
     local name = tostring(entity)
 
@@ -55,7 +55,7 @@ function Container:Reload(data)
 
     entity:Remove()
 
-    return "#container_deleted" .. name .. "."
+    return "#container_deleted " .. name .. "."
 end
 
 function Container:PlayerUse(client, entity)

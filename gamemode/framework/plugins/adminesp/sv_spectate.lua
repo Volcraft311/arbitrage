@@ -115,7 +115,7 @@ hook("ChatAddText", function(client, message)
 	    if data[client:SteamID()] then continue end
 
 	    if v._CameraPosition:Distance(pos) <= dist or (IsValid(v._CameraEntity) and v._CameraEntity:GetPos():Distance(pos) <= dist) then
-	    	netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "#adminesp_spectate", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), "#adminesp_chat", "'", message, "'")
+	    	netstream.Start(v, "arb.SendMessage", Color(255, 0, 0), "#adminesp_spectate ", team.GetColor(client:Team()), client:FullName(), Color(238, 220, 194), " #adminesp_chat ", "'", message, "'")
 	    end
 	end
 end)

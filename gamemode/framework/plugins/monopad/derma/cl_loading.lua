@@ -43,7 +43,7 @@ end
 function PANEL:Start(callback)
     local main = MonoPad:GetUI()
     main.isLoading = true
-    
+
     self.size = self:GetWide() / 10
     self.padding = (self.size * 10) - self:GetTall()
 
@@ -121,7 +121,7 @@ function PANEL:Start(callback)
             object:White(math.random() * 0.2)
         end)
 
-        timer.Simple(math.random(1, 5), function()
+        timer.Simple(1 + math.random() * 2, function()
             timer.Remove(id)
             if !IsValid(self) then return end
 

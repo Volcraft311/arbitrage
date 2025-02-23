@@ -216,7 +216,7 @@ function PANEL:CreateMain()
         end
     end
 
-    if LocalPlayer():IsSuperAdmin() then
+    if LocalPlayer():IsSuperAdmin() or LocalPlayer():GetUserGroup() == "gamemaster" then
         local installButton = leftPanel:Add("DButton")
         installButton:SetText("")
         installButton:SetTall(H(25))

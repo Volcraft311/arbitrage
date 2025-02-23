@@ -257,7 +257,7 @@ local function install(id)
     resource.AddWorkshop(tostring(id))
 end
 netstream.Hook("Workshop:Install", function(client, array)
-    if !client:IsSuperAdmin() then return end
+    if !client:IsSuperAdmin() and client:GetUserGroup() != "gamemaster" then return end
 
     local logInfo = "("
     local i = 1

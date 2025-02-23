@@ -180,10 +180,10 @@ function Moderation:SendLog(client, uniqueID, ...)
         local embed = asterionlib.webhook:Embed()
         embed.title = nil
         embed.author = nil
-        embed.description = info
+        embed.description = F("ru", info)
         embed.color = log.color
 
-        embed.footer.text = ("%s • Тип лога: %s[%s] • %s"):format(client:FullName(true), log.name, log.id, os.date("%H:%M:%S - %d/%m/%Y", os.time()))
+        embed.footer.text = ("%s • Тип лога: %s[%s] • %s"):format(F("ru", client:FullName(true)), log.name, log.id, os.date("%H:%M:%S - %d/%m/%Y", os.time()))
         embed.footer.icon_url = client:AvatarURL()
 
         asterionlib.webhook:Arbitrage(nil, embed)

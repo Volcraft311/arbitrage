@@ -54,6 +54,9 @@ function PANEL:Init()
 end
 
 function PANEL:AddTooltip(panel, title, description, color, time, callback)
+	title = F(title)
+	description = F(description)
+
 	panel.OThink = panel.OThink or panel.Think
 
 	panel.hoverTime = nil
@@ -408,7 +411,7 @@ function PANEL:DrawCursor()
 			this.isHide = false
 			this:AlphaTo(255, 0.3)
 
-			time = "#monopad_foundin " .. Arbitrage.FormatTime(time)
+			time = L("#monopad_foundin") .. " " .. Arbitrage.FormatTime(time)
 
 			local w1, _ = draw.SimpleText(title, MonoPad:GetFont("tooltip_text"), 0, 0, color_white, TEXT_ALIGN_LEFT)
 			local w2, _ = draw.SimpleText(description, MonoPad:GetFont("tooltip_text"), 0, 0, color_white, TEXT_ALIGN_LEFT)

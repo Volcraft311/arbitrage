@@ -49,7 +49,7 @@ function PANEL:Init()
 
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"special",
-			"#monopad_clues_list",
+			L("#monopad_clues_list"),
 			MonoPad.icons.special,
 			{1}
 		})
@@ -67,6 +67,9 @@ function PANEL:Init()
 end
 
 function PANEL:CreateButton(title, description, mat)
+	title = L(title)
+	description = L(description)
+
 	local panel = self:Add("DButton")
 	panel:SetSize(380, 416)
 	panel:SetText("")
@@ -119,7 +122,7 @@ function PANEL:Init()
 
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"special",
-				"#monopad_special_title",
+				L("#monopad_special_title"),
 				MonoPad.icons.special,
 				{}
 			})
@@ -145,7 +148,7 @@ function PANEL:Init()
 	local leftTitle = self.leftPanel:Add("DLabel")
 	leftTitle:Dock(TOP)
 	leftTitle:DockMargin(20, 14, 20, 18)
-	leftTitle:SetText("#monopad_materials_found")
+	leftTitle:SetText(L("#monopad_materials_found"))
 	leftTitle:SetFont(MonoPad:GetFont("special_title"))
 
 	self.scrollPanel = self.leftPanel:Add("DScrollPanel")
@@ -272,8 +275,8 @@ function PANEL:Rebuild()
 		        surface.SetDrawColor(255, 255, 255)
 		        surface.DrawRect(0, padding, w, tall)
 		    end, function()
-		    	local name = inflictorFaction and inflictorFaction:GetName() or "#monopad_unknown"
-			    draw.SimpleText("#monopad_gamelog_casenumber" .. k .. ", " .. name, MonoPad:GetFont("gamelog_title"), 20, 14, color_white, TEXT_ALIGN_LEFT)
+		    	local name = inflictorFaction and L(inflictorFaction:GetName()) or L("#monopad_unknown")
+			    draw.SimpleText(L("#monopad_gamelog_casenumber") .. k .. ", " .. name, MonoPad:GetFont("gamelog_title"), 20, 14, color_white, TEXT_ALIGN_LEFT)
 		    end)
 		end
 		MonoPad:StartRegisterMeta(title)

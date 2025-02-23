@@ -91,12 +91,12 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 
 	local stringTime = Arbitrage.FormatTime(time)
 
-	local attackerName = "#monopad_unknown"
+	local attackerName = L("#monopad_unknown")
 	if attackerID then
 		local attackerFaction = Character.team:GetByID(attackerID)
 
 		if attackerFaction then
-			attackerName = attackerFaction:GetName()
+			attackerName = L(attackerFaction:GetName())
 		end
 	end
 
@@ -137,22 +137,22 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 		    	surface.DrawTexturedRect(158 / 2 - size / 2, 158 / 2 - size / 2 + 20, size, size)
 		    end
 
-		    draw.SimpleText("#monopad_gamelog_casenumber" .. id .. ", " .. (this.inflictorFaction and this.inflictorFaction:GetName() or "#monopad_unknown"), MonoPad:GetFont("gamelog_title"), 176, 14, color_white, TEXT_ALIGN_LEFT)
-		    draw.SimpleText("#monopad_gamelog_chapter '" .. chapterTitle .. "'", MonoPad:GetFont("gamelog_text"), 176, 44, color_white, TEXT_ALIGN_LEFT)
+		    draw.SimpleText(L("#monopad_gamelog_casenumber") .. id .. ", " .. (this.inflictorFaction and L(this.inflictorFaction:GetName()) or L("#monopad_unknown")), MonoPad:GetFont("gamelog_title"), 176, 14, color_white, TEXT_ALIGN_LEFT)
+		    draw.SimpleText(L("#monopad_gamelog_chapter") .. " '" .. chapterTitle .. "'", MonoPad:GetFont("gamelog_text"), 176, 44, color_white, TEXT_ALIGN_LEFT)
 
 		    do
-		    	local _w, _ = draw.SimpleText("#monopad_gamelog_status ", MonoPad:GetFont("gamelog_text"), 176, 76, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
-		    	MonoPad:DrawTextBlur(info[1], MonoPad:GetFont("gamelog_text"), 176 + _w, 76, info[2], TEXT_ALIGN_LEFT, ColorAlpha(info[2], 100))
+		    	local _w, _ = draw.SimpleText(L("#monopad_gamelog_status") .. " ", MonoPad:GetFont("gamelog_text"), 176, 76, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+		    	MonoPad:DrawTextBlur(L(info[1]), MonoPad:GetFont("gamelog_text"), 176 + _w, 76, info[2], TEXT_ALIGN_LEFT, ColorAlpha(info[2], 100))
 			end
 
 			do
-				local _w, _ = draw.SimpleText("#monopad_gamelog_culprit ", MonoPad:GetFont("gamelog_text"), 176, 102, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+				local _w, _ = draw.SimpleText(L("#monopad_gamelog_culprit") .. " ", MonoPad:GetFont("gamelog_text"), 176, 102, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
 				draw.SimpleText(attackerName, MonoPad:GetFont("gamelog_text"), 176 + _w, 102, color_white, TEXT_ALIGN_LEFT)
 			end
 
 			do
-				local _w, _ = draw.SimpleText("#monopad_gamelog_started ", MonoPad:GetFont("gamelog_text"), 176, 126, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
-				draw.SimpleText("в " .. stringTime, MonoPad:GetFont("gamelog_text"), 176 + _w, 126, color_white, TEXT_ALIGN_LEFT)
+				local _w, _ = draw.SimpleText(L("#monopad_gamelog_started") .. " ", MonoPad:GetFont("gamelog_text"), 176, 126, Color(255, 255, 255, 50), TEXT_ALIGN_LEFT)
+				draw.SimpleText(stringTime, MonoPad:GetFont("gamelog_text"), 176 + _w, 126, color_white, TEXT_ALIGN_LEFT)
 			end
 
 			if investigationType == 1 then
@@ -218,6 +218,9 @@ end
 
 function PANEL:AddInformation(title, description, hideLine)
 	local font = MonoPad:GetFont("gamelog_title")
+
+	title = F(title)
+	description = F(description)
 
 	surface.SetFont(font)
 	local w1, h1 = surface.GetTextSize(title)
@@ -286,14 +289,14 @@ function PANEL:SetData(id)
 	local monopad = MonoPad:GetObject()
 	local caseStored = monopad.caseStored[id] or {}
 
-	local m_inflictor = caseStored[1] or nil
-	local m_time = caseStored[2] or "#monopad_gamelog_notspecified"
-	local m_reason = caseStored[3] or "#monopad_gamelog_notspecified"
-	local m_place = caseStored[4] or "#monopad_gamelog_notspecified"
-	local m_found = caseStored[5] or "#monopad_gamelog_notspecified"
+	local m_inflictor = L(caseStored[1]) or nil
+	local m_time = caseStored[2] or L("#monopad_gamelog_notspecified")
+	local m_reason = caseStored[3] or L("#monopad_gamelog_notspecified")
+	local m_place = caseStored[4] or L("#monopad_gamelog_notspecified")
+	local m_found = caseStored[5] or L("#monopad_gamelog_notspecified")
 
 	if !inflictorID then
-		inflictorID = m_inflictor
+		inflictorID = L(m_inflictor)
 	end
 
 	local max, min = nil, nil
@@ -471,154 +474,154 @@ vgui.Register("MonoPad:GameLogSub", PANEL, "Panel")
 local PANEL = {}
 
 function PANEL:Init()
-    self:SetPos(0, 0)
-    self:SetSize(ScrW(), ScrH())
-    self:MakePopup()
-    self:SetAlpha(0)
-    self:AlphaTo(255, 0.3)
-    self.startTime = SysTime()
+	self:SetPos(0, 0)
+	self:SetSize(ScrW(), ScrH())
+	self:MakePopup()
+	self:SetAlpha(0)
+	self:AlphaTo(255, 0.3)
+	self.startTime = SysTime()
 
-    local t = H(470)
-    self.main = self:Add("Panel")
-    self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
-    self.main:SetSize(W(600), 0)
+	local t = H(470)
+	self.main = self:Add("Panel")
+	self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
+	self.main:SetSize(W(600), 0)
 
-    self.main.Think = function(panel)
-        panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
-    end
+	self.main.Think = function(panel)
+		panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
+	end
 
-    self.main.Paint = function(panel, w, h)
-        surface.SetDrawColor(41, 22, 25)
-        surface.DrawRect(0, 0, w, h)
+	self.main.Paint = function(panel, w, h)
+		surface.SetDrawColor(41, 22, 25)
+		surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(255, 61, 96, 165.75)
-        surface.DrawOutlinedRect(0, 0, w, h, 2)
+		surface.SetDrawColor(255, 61, 96, 165.75)
+		surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        surface.SetDrawColor(255, 61, 96, 165.75)
-        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+		surface.SetDrawColor(255, 61, 96, 165.75)
+		surface.DrawOutlinedRect(0, 0, w, H(23), 2)
 
-        surface.SetDrawColor(255, 61, 96, 20)
-        surface.DrawRect(0, 0, w, H(23))
+		surface.SetDrawColor(255, 61, 96, 20)
+		surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("#monopad_gledit_case", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_gledit_case"), "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_gledit_victim", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_glexample_victim", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_gledit_victim"), "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_glexample_victim"), "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_gledit_time", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_glexample_time", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_gledit_time"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_glexample_time"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_gledit_cause", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_glexample_cause", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_gledit_cause"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_glexample_cause"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_gledit_place", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_glexample_place", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_gledit_place"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_glexample_place"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_gledit_discovery", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_glexample_discovery", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
-    end
+		draw.DrawText(L("#monopad_gledit_discovery"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_glexample_discovery"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+	end
 
-    local close = self.main:Add("DButton")
-    close:SetPos(self.main:GetWide() - H(70 / 2), 0)
-    close:SetSize(H(70 / 2), H(23))
-    close:SetText("")
-    close.alpha = 40
-    close.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
-    end
-    close.DoClick = function()
-        self:AlphaTo(0, 0.2, 0, function()
-            self:Remove()
-        end)
-    end
+	local close = self.main:Add("DButton")
+	close:SetPos(self.main:GetWide() - H(70 / 2), 0)
+	close:SetSize(H(70 / 2), H(23))
+	close:SetText("")
+	close.alpha = 40
+	close.Paint = function(_, w, h)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
+		draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+	end
+	close.DoClick = function()
+		self:AlphaTo(0, 0.2, 0, function()
+			self:Remove()
+		end)
+	end
 
-    self.inflictorBox = self.main:Add("DComboBox")
-    self.inflictorBox:SetFont("arb.Font_FuturaPTBook_8")
-    self.inflictorBox:SetPos(W(5), H(75))
-    self.inflictorBox:SetSize(self.main:GetWide() - W(10), H(25))
-    self.inflictorBox.OnSelect = function(_, index, value, data)
-        self.inflictorID = data
-    end
+	self.inflictorBox = self.main:Add("DComboBox")
+	self.inflictorBox:SetFont("arb.Font_FuturaPTBook_8")
+	self.inflictorBox:SetPos(W(5), H(75))
+	self.inflictorBox:SetSize(self.main:GetWide() - W(10), H(25))
+	self.inflictorBox.OnSelect = function(_, index, value, data)
+		self.inflictorID = data
+	end
 
-    self.timeEntry = self.main:Add("DTextEntry")
-    self.timeEntry:SetPos(W(5), H(155))
-    self.timeEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.timeEntry:SetPlaceholderText("#monopad_glmain_time")
-    self.timeEntry:SetFont("arb.Font_FuturaPTBook_8")
+	self.timeEntry = self.main:Add("DTextEntry")
+	self.timeEntry:SetPos(W(5), H(155))
+	self.timeEntry:SetSize(self.main:GetWide() - W(10), H(25))
+	self.timeEntry:SetPlaceholderText(L("#monopad_glmain_time"))
+	self.timeEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    self.reasonEntry = self.main:Add("DTextEntry")
-    self.reasonEntry:SetPos(W(5), H(235))
-    self.reasonEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.reasonEntry:SetPlaceholderText("#monopad_glmain_cause")
-    self.reasonEntry:SetFont("arb.Font_FuturaPTBook_8")
+	self.reasonEntry = self.main:Add("DTextEntry")
+	self.reasonEntry:SetPos(W(5), H(235))
+	self.reasonEntry:SetSize(self.main:GetWide() - W(10), H(25))
+	self.reasonEntry:SetPlaceholderText(L("#monopad_glmain_cause"))
+	self.reasonEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    self.placeEntry = self.main:Add("DTextEntry")
-    self.placeEntry:SetPos(W(5), H(315))
-    self.placeEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.placeEntry:SetPlaceholderText("#monopad_glmain_place")
-    self.placeEntry:SetFont("arb.Font_FuturaPTBook_8")
+	self.placeEntry = self.main:Add("DTextEntry")
+	self.placeEntry:SetPos(W(5), H(315))
+	self.placeEntry:SetSize(self.main:GetWide() - W(10), H(25))
+	self.placeEntry:SetPlaceholderText(L("#monopad_glmain_place"))
+	self.placeEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    self.foundEntry = self.main:Add("DTextEntry")
-    self.foundEntry:SetPos(W(5), H(395))
-    self.foundEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.foundEntry:SetPlaceholderText("#monopad_glmain_discovery")
-    self.foundEntry:SetFont("arb.Font_FuturaPTBook_8")
+	self.foundEntry = self.main:Add("DTextEntry")
+	self.foundEntry:SetPos(W(5), H(395))
+	self.foundEntry:SetSize(self.main:GetWide() - W(10), H(25))
+	self.foundEntry:SetPlaceholderText(L("#monopad_glmain_discovery"))
+	self.foundEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    self.inflictorBox:AddChoice("#monopad_unknown", nil, true)
-    for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
-        if v:GetAssets().pixel then
-            self.inflictorBox:AddChoice(v:GetName(), k)
-        end
-    end
+	self.inflictorBox:AddChoice(L("#monopad_unknown"), nil, true)
+	for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
+		if v:GetAssets().pixel then
+			self.inflictorBox:AddChoice(L(v:GetName()), k)
+		end
+	end
 
-    local submitButton = self.main:Add("DButton")
-    submitButton:DockMargin(0, H(5), 0, H(5))
-    submitButton:SetText("")
-    submitButton:SetTall(H(25))
-    submitButton:Dock(BOTTOM)
-    submitButton.alpha = 0
-    submitButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("#monopad_glmain_edit", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	local submitButton = self.main:Add("DButton")
+	submitButton:DockMargin(0, H(5), 0, H(5))
+	submitButton:SetText("")
+	submitButton:SetTall(H(25))
+	submitButton:Dock(BOTTOM)
+	submitButton.alpha = 0
+	submitButton.Paint = function(_, w, h)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+		draw.DrawText(L("#monopad_glmain_edit"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
-        surface.SetDrawColor(255, 61, 96, 30)
-        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
-    end
+		surface.SetDrawColor(255, 61, 96, 30)
+		surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+	end
 
-    submitButton.DoClick = function()
-        local a, b, c, d, e, f = self.inflictorID, self.timeEntry:GetValue(), self.reasonEntry:GetValue(), self.placeEntry:GetValue(), self.foundEntry:GetValue(), self.id
+	submitButton.DoClick = function()
+		local a, b, c, d, e, f = self.inflictorID, self.timeEntry:GetValue(), self.reasonEntry:GetValue(), self.placeEntry:GetValue(), self.foundEntry:GetValue(), self.id
 
-        netstream.Start("MonoPad:EditCase", f, {a, b, c, d, e})
+		netstream.Start("MonoPad:EditCase", f, {a, b, c, d, e})
 
-        local cb = self.callback
-        timer.Simple(0.5, function()
-            if cb then
-                cb()
-            end
-        end)
+		local cb = self.callback
+		timer.Simple(0.5, function()
+			if cb then
+				cb()
+			end
+		end)
 
-        self:AlphaTo(0, 0.3, 0, function()
-            self:Remove()
-        end)
-    end
+		self:AlphaTo(0, 0.3, 0, function()
+			self:Remove()
+		end)
+	end
 end
 
 function PANEL:SetData(inflictor, time, reason, place, found, callback, id)
 	if inflictor then
 		self.inflictorID = inflictor
-	    self.inflictorBox:SetValue(Character.team:GetByID(inflictor).name)
+		self.inflictorBox:SetValue(L(Character.team:GetByID(inflictor).name))
 
-	    local log = Arbitrage.GetGameLogs()[id]
-	    if log[1] then
-	    	self.inflictorBox:SetDisabled(true)
-	    end
+		local log = Arbitrage.GetGameLogs()[id]
+		if log[1] then
+			self.inflictorBox:SetDisabled(true)
+		end
 	else
-		self.inflictorBox:SetValue("#monopad_unknown")
+		self.inflictorBox:SetValue(L("#monopad_unknown"))
 	end
 
 	if time then
-	    self.timeEntry:SetValue(time)
+		self.timeEntry:SetValue(time)
 	end
 
 	if reason then
@@ -638,7 +641,7 @@ function PANEL:SetData(inflictor, time, reason, place, found, callback, id)
 end
 
 function PANEL:Paint(w, h)
-    Derma_DrawBackgroundBlur(self, self.startTime)
+	Derma_DrawBackgroundBlur(self, self.startTime)
 end
 
 vgui.Register("MonoPad:GameLogSubEdit", PANEL, "EditablePanel")

@@ -75,7 +75,7 @@ function PANEL:Init()
 				local selectCategory = self.selectCategory or 1
 				ui:EditHistory(ui:GetActiveHistoryID(), {
 					"navigation",
-					self.data.stored[selectCategory][1],
+					L(self.data.stored[selectCategory][1]),
 					MonoPad.icons.navigation,
 					{selectCategory}
 				})
@@ -109,7 +109,7 @@ function PANEL:PerformLayout(w, h)
 		local ui = MonoPad:GetUI()
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"navigation",
-			self.data.stored[selectCategory][1],
+			L(self.data.stored[selectCategory][1]),
 			MonoPad.icons.navigation,
 			{selectCategory}
 		})

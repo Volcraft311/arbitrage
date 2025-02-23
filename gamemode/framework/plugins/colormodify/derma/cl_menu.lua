@@ -159,7 +159,7 @@ function PANEL:InitColorModify()
                 array.addb = data.addb
 
                 file.Write("academy_colormodify_configs/" .. text .. ".txt", util.TableToJSON(array))
-            end, nil, "#colorcorrection_save", "#colorcorrection_cancel")
+            end, nil, L("#colorcorrection_save"), L("#colorcorrection_cancel"))
         end):SetIcon("icon16/add.png")
 
         local Child, Parent = Menu:AddSubMenu("#colorcorrection_loadcc")

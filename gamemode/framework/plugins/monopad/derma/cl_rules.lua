@@ -213,7 +213,7 @@ function PANEL:Init()
 
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"rules",
-			"#monopad_rules_regulation",
+			L("#monopad_rules_regulation"),
 			MonoPad.icons.rules,
 			{}
 		})

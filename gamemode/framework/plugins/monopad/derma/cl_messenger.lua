@@ -97,7 +97,7 @@ function PANEL:Init()
 				end
 			end
 
-			draw.SimpleText(_.text, MonoPad:GetFont("notes_title2"), w / 2, 11, color_white, TEXT_ALIGN_CENTER)
+			draw.SimpleText(F(_.text), MonoPad:GetFont("notes_title2"), w / 2, 11, color_white, TEXT_ALIGN_CENTER)
 		end
 	end
 	MonoPad:StartRegisterMeta(self.title)
@@ -321,7 +321,7 @@ function PANEL:InitInput()
 			surface.SetDrawColor(255, 255, 255, 10)
 			surface.DrawRect(16, 0, w - 32, 1)
 
-			draw.SimpleText("#monopad_msg_unavailable", MonoPad:GetFont("notes_title"), w / 2, 10, Color(255, 255, 255, 10), TEXT_ALIGN_CENTER)
+			draw.SimpleText(L("#monopad_msg_unavailable"), MonoPad:GetFont("notes_title"), w / 2, 10, Color(255, 255, 255, 10), TEXT_ALIGN_CENTER)
 		end
 
 		return
@@ -368,10 +368,10 @@ function PANEL:InitInput()
 		local text = nil
 		if IsValid(DermaStringRequest) then
 		    local a = DermaStringRequest:GetChildren()[5]
-		    
+
 		    if IsValid(a) then
 		        local b = a:GetChildren()[2]
-		        
+
 		        if IsValid(b) then
 		            text = b:GetValue()
 		        end
@@ -384,7 +384,7 @@ function PANEL:InitInput()
 	        surface.SetDrawColor(255, 255, 255)
 	        surface.DrawRect(0, 0, w, h)
 	    end, function()
-	    	draw.SimpleText(text or "#monopad_msg_writemsg", MonoPad:GetFont("notes_title"), 15, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+	    	draw.SimpleText(text or L("#monopad_msg_writemsg"), MonoPad:GetFont("notes_title"), 15, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
 		end)
 	end
 	inputButton.DoClick = function()
@@ -397,7 +397,7 @@ function PANEL:InitInput()
 			self.isSent = true
 			netstream.Start("MonoPad:SendMessage", self.selectID, text)
 			asterionlib.EmitSound(MonoPad.sounds.message_sent)
-		end, nil, "#monopad_msg_send", "#monopad_msg_cancel")
+		end, nil, L("#monopad_msg_send"), L("#monopad_msg_cancel"))
 		DermaStringRequest.startTime = SysTime()
 		DermaStringRequest:SetAlpha(0)
 		DermaStringRequest:AlphaTo(255, 0.3)
@@ -436,14 +436,14 @@ function PANEL:InitMessages(id)
 	local localPixel = localAssets.pixel
 	local localPixelMat = Material(localPixel)
 
-	local name = "#monopad_msg_global"
+	local name = L("#monopad_msg_global")
 	local pixelMat = nil
 
 	if id > 0 then
 		local faction = Character.team:GetByID(id)
 		if !faction then return end
 
-		name = faction:GetName()
+		name = L(faction:GetName())
 
 		local assets = faction:GetAssets()
 		local pixel = assets.pixel
@@ -458,7 +458,7 @@ function PANEL:InitMessages(id)
 	self.title:AlphaTo(255, 0.2)
 	self.title.icon = pixelMat
 	self.title.icon2 = localPixelMat
-	self.title.text = id > 0 and "#monopad_msg_dialog " .. name or "#monopad_msg_global"
+	self.title.text = id > 0 and L("#monopad_msg_dialog") .. " " .. name or L("#monopad_msg_global")
 
 	self:InitInput(id)
 	self:ReadingMessages(id)
@@ -470,14 +470,14 @@ function PANEL:InitMessages(id)
 
 	local info = {
 		"messenger",
-		"#monopad_msg_global",
+		L("#monopad_msg_global"),
 		MonoPad.icons.messenger,
 		{-1}
 	}
 
 	local character = Character.team:GetByID(id)
 	if character then
-		info[2] = character:GetName()
+		info[2] = L(character:GetName())
 		info[3] = MonoPad.icons.messenger
 		info[4][1] = id
 	end
@@ -517,7 +517,7 @@ function PANEL:InitMessages(id)
 			local font = MonoPad:GetFont("messenger_text")
 			local fontHeight = draw.GetFontHeight(font)
 
-			local titleText = faction:GetName() .. ", " .. Arbitrage.FormatTime(v.time)
+			local titleText = L(faction:GetName()) .. ", " .. Arbitrage.FormatTime(v.time)
 			local textData = {}
 
 			local panel = docker:Add("DButton")
@@ -558,7 +558,7 @@ function PANEL:InitMessages(id)
 							surface.SetMaterial(Material("danganronpa/monopad/icons/file_blur.png"))
 							surface.DrawTexturedRect(15, size - 5, 30, 30)
 
-							MonoPad:DrawTextBlur("#monopad_cluenumber" .. v.data, font, 15 + 24 + 6, size, Color(255, 16, 59, 255 * this.alpha), TEXT_ALIGN_LEFT, Color(255, 16, 59, 190))
+							MonoPad:DrawTextBlur(L("#monopad_cluenumber") .. v.data, font, 15 + 24 + 6, size, Color(255, 16, 59, 255 * this.alpha), TEXT_ALIGN_LEFT, Color(255, 16, 59, 190))
 						end
 
 						size = size + fontHeight
@@ -682,7 +682,7 @@ function PANEL:AddPlayerButton(id)
 	local localPixel = localAssets.pixel
 	local localPixelMat = Material(localPixel)
 
-	local name = "#monopad_msg_global"
+	local name = L("#monopad_msg_global")
 	local pixelMat = nil
 	local isDead = false
 
@@ -690,7 +690,7 @@ function PANEL:AddPlayerButton(id)
 		local faction = Character.team:GetByID(id)
 		if !faction then return end
 
-		name = faction:GetName()
+		name = L(faction:GetName())
 
 		local assets = faction:GetAssets()
 		local pixel = assets.pixel
@@ -837,9 +837,9 @@ function PANEL:SetEvidence(id)
 	local time = LocalPlayer():HasEvidence(id)
 	if !time then return end
 
-	self.time = "#monopad_foundin " .. Arbitrage.FormatTime(time)
+	self.time = L("#monopad_foundin") .. " " .. Arbitrage.FormatTime(time)
 
-	local description = "#monopad_cluenumber" .. id .. ". " .. evidence.description
+	local description = L("#monopad_cluenumber") .. id .. ". " .. evidence.description
 
 	self.title = evidence.name
 	self.data = asterionlib.WrapText(description, 520, self.font, true)
@@ -877,14 +877,14 @@ function PANEL:Paint(w, h)
 			local font = MonoPad:GetFont("rules_title")
 
 			local w1, _ = draw.SimpleText(self.title, font, 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
-			local w2, _ = draw.SimpleText(self.typeText, MonoPad:GetFont("rules_description"), 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
+			local w2, _ = draw.SimpleText(L(self.typeText), MonoPad:GetFont("rules_description"), 0, 0, Color(0, 0, 0, 0), TEXT_ALIGN_LEFT)
 			local size = w1 + w2 + 30
 
 			local _w, _h = draw.SimpleText(self.title, MonoPad:GetFont("rules_title"), 205 + 520 / 2 - size / 2, 380, color_white, TEXT_ALIGN_LEFT)
 			surface.SetDrawColor(255, 255, 255, 5)
 			surface.DrawRect(205 + 520 / 2 - size / 2 + _w + 15, 380, 1, _h)
 
-			MonoPad:DrawTextBlur(self.typeText, MonoPad:GetFont("rules_description"), 205 + 520 / 2 + _w + 30 - size / 2, 380 + 6, self.typeColor, TEXT_ALIGN_LEFT, ColorAlpha(self.typeColor, self.typeColor.a * 0.4))
+			MonoPad:DrawTextBlur(L(self.typeText), MonoPad:GetFont("rules_description"), 205 + 520 / 2 + _w + 30 - size / 2, 380 + 6, self.typeColor, TEXT_ALIGN_LEFT, ColorAlpha(self.typeColor, self.typeColor.a * 0.4))
 
 			y = _h * 1.5
 		end

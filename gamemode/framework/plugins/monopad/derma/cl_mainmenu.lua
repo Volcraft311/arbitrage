@@ -175,7 +175,7 @@ function PANEL:CreateButton(uniqueID, text, desc, x, y, image, callback, isNotif
             surface.SetDrawColor(14, 9, 3, 170)
             surface.DrawRect(8, 8, 127, 23)
 
-            MonoPad:DrawTextBlur("#monopad_newmod", MonoPad:GetFont("category_notify"), 14, 9, Color(255, 176, 56), TEXT_ALIGN_LEFT, Color(255, 176, 56, 150))
+            MonoPad:DrawTextBlur(L("#monopad_newmod"), MonoPad:GetFont("category_notify"), 14, 9, Color(255, 176, 56), TEXT_ALIGN_LEFT, Color(255, 176, 56, 150))
         end
 
         surface.SetDrawColor(15, 15, 15)
@@ -229,10 +229,10 @@ function PANEL:CreateButton(uniqueID, text, desc, x, y, image, callback, isNotif
             local icon = MonoPad.icons[uniqueID] or "danganronpa/monopad/icons/home.png"
 
             local monopad = MonoPad:GetObject()
-            table.insert(monopad.history, {uniqueID, text, icon, {}})
+            table.insert(monopad.history, {uniqueID, L(text), icon, {}})
             parent.historyID = #monopad.history
 
-            local panel = parent:AddButton(uniqueID, text, icon, function()
+            local panel = parent:AddButton(uniqueID, L(text), icon, function()
                 if IsValid(parent.mainmenu) then
                     parent.mainmenu:Remove()
                 end

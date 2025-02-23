@@ -55,7 +55,7 @@ function PANEL:Init()
 		surface.SetMaterial(addMat)
 		surface.DrawTexturedRect(25, h / 2 - size / 2, size, size)
 
-		draw.SimpleText("#monopad_notes_createnew", MonoPad:GetFont("notes_title"), 52, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
+		draw.SimpleText(L("#monopad_notes_createnew"), MonoPad:GetFont("notes_title"), 52, 9, Color(255, 255, 255, 255 * _.alpha), TEXT_ALIGN_LEFT)
 	end
 	addButton.DoClick = function()
 		DermaStringRequest = Derma_StringRequest(L("#monopad_notes_createnote"), L("#monopad_notes_setnotename"), "", function(text)
@@ -66,7 +66,7 @@ function PANEL:Init()
 			end)
 
 			Arbitrage.notify.NotifyChat("#monopad_notes_success")
-		end, nil, "#monopad_notes_create", "#monopad_notes_cancel")
+		end, nil, L("#monopad_notes_create"), L("#monopad_notes_cancel"))
 		DermaStringRequest.startTime = SysTime()
 		DermaStringRequest:SetAlpha(0)
 		DermaStringRequest:AlphaTo(255, 0.3)
@@ -172,7 +172,7 @@ function PANEL:Init()
 
 			ui:EditHistory(ui:GetActiveHistoryID(), {
 				"notes",
-				title,
+				L(title),
 				MonoPad.icons.notes,
 				{self.selectID, title}
 			})
@@ -298,10 +298,10 @@ function PANEL:AddNotes(id, title)
 		local tall = math.min(h - padding, self.scrollPanel:GetTall() - y)
 
 		asterionlib.DrawRender(function()
-	        surface.SetDrawColor(255, 255, 255)
-	        surface.DrawRect(0, padding, w, tall)
-	    end, function()
-		    surface.SetDrawColor(255, 255, 255, 10)
+			surface.SetDrawColor(255, 255, 255)
+			surface.DrawRect(0, padding, w, tall)
+		end, function()
+			surface.SetDrawColor(255, 255, 255, 10)
 			surface.DrawRect(14, h - 1, w - 28, 1)
 
 			local size = 22
@@ -310,7 +310,7 @@ function PANEL:AddNotes(id, title)
 			surface.DrawTexturedRect(15, h / 2 - size / 2, size, size)
 
 			draw.SimpleText("№" .. id .. " " .. title, MonoPad:GetFont("notes_title"), 44, 11, Color(255, 255, 255, 255 * this.alpha), TEXT_ALIGN_LEFT)
-	    end)
+		end)
 	end
 	button.DoClick = function(this)
 		local _, y = self.scrollPanel:GetChildPosition(this)
@@ -321,7 +321,7 @@ function PANEL:AddNotes(id, title)
 		local ui = MonoPad:GetUI()
 		ui:EditHistory(ui:GetActiveHistoryID(), {
 			"notes",
-			title,
+			L(title),
 			MonoPad.icons.notes,
 			{id, title}
 		})
@@ -336,106 +336,106 @@ vgui.Register("MonoPad:Notes", PANEL, "Panel")
 local PANEL = {}
 
 function PANEL:Init()
-    self:SetPos(0, 0)
-    self:SetSize(ScrW(), ScrH())
-    self:MakePopup()
-    self:SetAlpha(0)
-    self:AlphaTo(255, 0.3)
-    self.startTime = SysTime()
+	self:SetPos(0, 0)
+	self:SetSize(ScrW(), ScrH())
+	self:MakePopup()
+	self:SetAlpha(0)
+	self:AlphaTo(255, 0.3)
+	self.startTime = SysTime()
 
 
-    local t = H(375)
-    self.main = self:Add("Panel")
-    self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
-    self.main:SetSize(W(600), 0)
+	local t = H(375)
+	self.main = self:Add("Panel")
+	self.main:SetPos(ScrW() / 2 - (W(600)) / 2, ScrH() / 2 - (t / 2))
+	self.main:SetSize(W(600), 0)
 
-    self.main.Think = function(panel)
-        panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
-    end
+	self.main.Think = function(panel)
+		panel:SetTall(Lerp(FrameTime() * 10, panel:GetTall(), t))
+	end
 
-    self.main.Paint = function(panel, w, h)
-        surface.SetDrawColor(41, 22, 25)
-        surface.DrawRect(0, 0, w, h)
+	self.main.Paint = function(panel, w, h)
+		surface.SetDrawColor(41, 22, 25)
+		surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(255, 61, 96, 165.75)
-        surface.DrawOutlinedRect(0, 0, w, h, 2)
+		surface.SetDrawColor(255, 61, 96, 165.75)
+		surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        surface.SetDrawColor(255, 61, 96, 165.75)
-        surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+		surface.SetDrawColor(255, 61, 96, 165.75)
+		surface.DrawOutlinedRect(0, 0, w, H(23), 2)
 
-        surface.SetDrawColor(255, 61, 96, 20)
-        surface.DrawRect(0, 0, w, H(23))
+		surface.SetDrawColor(255, 61, 96, 20)
+		surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("#monopad_notes_addnew", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_notes_addnew"), "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_notes_setname", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_notesexample_name", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_notes_setname"), "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_notesexample_name"), "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monopad_notes_setdesc", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monopad_notesexample_create", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
-    end
+		draw.DrawText(L("#monopad_notes_setdesc"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#monopad_notesexample_create"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+	end
 
-    local close = self.main:Add("DButton")
-    close:SetPos(self.main:GetWide() - H(70 / 2), 0)
-    close:SetSize(H(70 / 2), H(23))
-    close:SetText("")
-    close.alpha = 40
-    close.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-        draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
-    end
-    close.DoClick = function()
-        self:AlphaTo(0, 0.2, 0, function()
-            self:Remove()
-        end)
-    end
+	local close = self.main:Add("DButton")
+	close:SetPos(self.main:GetWide() - H(70 / 2), 0)
+	close:SetSize(H(70 / 2), H(23))
+	close:SetText("")
+	close.alpha = 40
+	close.Paint = function(_, w, h)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
+		draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+	end
+	close.DoClick = function()
+		self:AlphaTo(0, 0.2, 0, function()
+			self:Remove()
+		end)
+	end
 
-    self.titleEntry = self.main:Add("DTextEntry")
-    self.titleEntry:SetPos(W(5), H(75))
-    self.titleEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.titleEntry:SetPlaceholderText("#monopad_notes_name")
-    self.titleEntry:SetFont("arb.Font_FuturaPTBook_8")
+	self.titleEntry = self.main:Add("DTextEntry")
+	self.titleEntry:SetPos(W(5), H(75))
+	self.titleEntry:SetSize(self.main:GetWide() - W(10), H(25))
+	self.titleEntry:SetPlaceholderText(L("#monopad_notes_name"))
+	self.titleEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    self.descriptionEntry = self.main:Add("DTextEntry")
-    self.descriptionEntry:SetVerticalScrollbarEnabled(true)
-    self.descriptionEntry:SetMultiline(true)
-    self.descriptionEntry:SetPos(W(5), H(155))
-    self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(150))
-    self.descriptionEntry:SetPlaceholderText("#monopad_notes_desc")
-    self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
+	self.descriptionEntry = self.main:Add("DTextEntry")
+	self.descriptionEntry:SetVerticalScrollbarEnabled(true)
+	self.descriptionEntry:SetMultiline(true)
+	self.descriptionEntry:SetPos(W(5), H(155))
+	self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(150))
+	self.descriptionEntry:SetPlaceholderText(L("#monopad_notes_desc"))
+	self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
 
-    local submitButton = self.main:Add("DButton")
-    submitButton:DockMargin(0, H(5), 0, H(5))
-    submitButton:SetText("")
-    submitButton:SetTall(H(25))
-    submitButton:Dock(BOTTOM)
-    submitButton.alpha = 0
-    submitButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("#monopad_notes_add", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	local submitButton = self.main:Add("DButton")
+	submitButton:DockMargin(0, H(5), 0, H(5))
+	submitButton:SetText("")
+	submitButton:SetTall(H(25))
+	submitButton:Dock(BOTTOM)
+	submitButton.alpha = 0
+	submitButton.Paint = function(_, w, h)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+		draw.DrawText(L("#monopad_notes_add"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
-        surface.SetDrawColor(255, 61, 96, 30)
-        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
-    end
+		surface.SetDrawColor(255, 61, 96, 30)
+		surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+	end
 
-    submitButton.DoClick = function()
-        self:AlphaTo(0, 0.3, 0, function()
-            self:Remove()
-        end)
+	submitButton.DoClick = function()
+		self:AlphaTo(0, 0.3, 0, function()
+			self:Remove()
+		end)
 
-        local a, b = self.titleEntry:GetValue(), self.descriptionEntry:GetValue()
+		local a, b = self.titleEntry:GetValue(), self.descriptionEntry:GetValue()
 
-        netstream.Start("MonoPad:EditNotes", self.id, a, b)
+		netstream.Start("MonoPad:EditNotes", self.id, a, b)
 
-        local cb = self.callback
-        timer.Simple(0.5, function()
-	        if cb then
-	        	cb(a, b)
-	        end
-    	end)
+		local cb = self.callback
+		timer.Simple(0.5, function()
+			if cb then
+				cb(a, b)
+			end
+		end)
 
-        Arbitrage.notify.NotifyChat("#monopad_notes_edited")
-    end
+		Arbitrage.notify.NotifyChat("#monopad_notes_edited")
+	end
 end
 
 function PANEL:SetData(id, title, description, callback)
@@ -447,7 +447,7 @@ function PANEL:SetData(id, title, description, callback)
 end
 
 function PANEL:Paint(w, h)
-    Derma_DrawBackgroundBlur(self, self.startTime)
+	Derma_DrawBackgroundBlur(self, self.startTime)
 end
 
 vgui.Register("MonoPad:NotesSub", PANEL, "EditablePanel")

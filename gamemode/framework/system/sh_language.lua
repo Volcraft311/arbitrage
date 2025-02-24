@@ -14,6 +14,7 @@
 
 Arbitrage.language = Arbitrage.library.Add("language")
 Arbitrage.language.stored = Arbitrage.language.stored or {}
+Arbitrage.language.creationTabs = Arbitrage.language.creationTabs or {}
 Arbitrage.language.default = "ru"
 Arbitrage.language.convar = CreateClientConVar("arb_lang", Arbitrage.language.default, true, true)
 
@@ -69,9 +70,48 @@ function Arbitrage.language:FindWord(name)
     end
 end
 
+function Arbitrage.language:AddCreationTab(name)
+    self.creationTabs[#self.creationTabs + 1] = name
+end
+
+function Arbitrage.language:ReloadCreationTab(activeLang)
+    local data = {}
+
+    for _, name in ipairs(self.creationTabs) do
+        local info = {name}
+
+        for lang_id, lang in pairs(self.stored) do
+            local word = lang.data[name]
+
+            if word then
+                info[lang_id] = word
+            end
+        end
+
+        data[name] = info
+    end
+
+    local tabs = spawnmenu.GetCreationTabs()
+
+    for name, info in pairs(data) do
+        for lang_id, word in pairs(info) do
+            local tab = tabs[word]
+
+            if tab then
+                local newName = data[name][activeLang] or name
+                local copy = table.Copy(tab)
+
+                tabs[word] = nil
+                tabs[newName] = copy
+            end
+        end
+    end
+end
+
 function Arbitrage.language:OnUpdate(old, new)
     hook.Run("OnLanguageUpdate", old, new)
 
+    self:ReloadCreationTab(new)
     RunConsoleCommand("spawnmenu_reload")
 
     Arbitrage.util.WriteMessage(Color(255, 132, 0), "{" .. Arbitrage.util.GetSide():upper() .. "} ", Color(255, 174, 0), "A change in language was noticed!")

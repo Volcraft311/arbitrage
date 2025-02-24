@@ -47,32 +47,36 @@ spawnmenu.AddContentType("Bed", function(container, model)
     end
 end)
 
-spawnmenu.AddCreationTab("#bed_title", function()
-    local base = vgui.Create("SpawnmenuContentPanel")
-    local tree = base.ContentNavBar.Tree
+timer.Simple(0, function()
+    Arbitrage.language:AddCreationTab("#bed_title")
 
-    local node = tree:AddNode("#bed_objects", "icon16/brick.png")
-    node.DoPopulate = function(this)
-        if this.Container then return end
+    spawnmenu.AddCreationTab(L("#bed_title"), function()
+        local base = vgui.Create("SpawnmenuContentPanel")
+        local tree = base.ContentNavBar.Tree
 
-        this.Container = vgui.Create("ContentContainer", base)
-        this.Container:SetVisible(false)
-        this.Container:SetTriggerSpawnlistChange(false)
+        local node = tree:AddNode(L("#bed_objects"), "icon16/brick.png")
+        node.DoPopulate = function(this)
+            if this.Container then return end
 
-        for k, v in pairs(BedSystem.allowBed) do
-            spawnmenu.CreateContentIcon("Bed", this.Container, k)
+            this.Container = vgui.Create("ContentContainer", base)
+            this.Container:SetVisible(false)
+            this.Container:SetTriggerSpawnlistChange(false)
+
+            for k, v in pairs(BedSystem.allowBed) do
+                spawnmenu.CreateContentIcon("Bed", this.Container, k)
+            end
         end
-    end
 
-    node.DoClick = function(this)
-        this:DoPopulate()
-        base:SwitchPanel(this.Container)
-    end
+        node.DoClick = function(this)
+            this:DoPopulate()
+            base:SwitchPanel(this.Container)
+        end
 
-    local FirstNode = tree:Root():GetChildNode(0)
-    if IsValid(FirstNode) then
-        FirstNode:InternalDoClick()
-    end
+        local FirstNode = tree:Root():GetChildNode(0)
+        if IsValid(FirstNode) then
+            FirstNode:InternalDoClick()
+        end
 
-    return base
-end, "icon16/photo.png")
+        return base
+    end, "icon16/photo.png")
+end)

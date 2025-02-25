@@ -15,11 +15,11 @@
 local PANEL = {}
 
 function PANEL:Init()
-	if IsValid(Arbitrage.gui.inventory) then
-		Arbitrage.gui.inventory:Remove()
-	end
+    if IsValid(Arbitrage.gui.inventory) then
+        Arbitrage.gui.inventory:Remove()
+    end
 
-	Arbitrage.gui.inventory = self
+    Arbitrage.gui.inventory = self
 
     local client = LocalPlayer()
 
@@ -50,8 +50,8 @@ function PANEL:Init()
         self.infoPanel:AlphaTo(255, 0.3)
         self.line:SetAlpha(255)
 
-        self.itemName:SetText(item:GetName())
-        self.itemCategory:SetText(item:GetCategory())
+        self.itemName:SetText(F(item:GetName()))
+        self.itemCategory:SetText(F(item:GetCategory()))
     end
 
     InventoryBase:CreateInfoPanel(self, inventoryPanel:GetX(), inventoryPanel:GetY() + h + H(40), math.max(w, W(420)))
@@ -87,8 +87,8 @@ function PANEL:SetContainerInv(inventory, name)
         self.infoPanel:AlphaTo(255, 0.3)
         self.line:SetAlpha(255)
 
-        self.itemName:SetText(item:GetName())
-        self.itemCategory:SetText(item:GetCategory())
+        self.itemName:SetText(F(item:GetName()))
+        self.itemCategory:SetText(F(item:GetCategory()))
     end
 
     self.containerID = inventory:GetID()
@@ -100,7 +100,7 @@ function PANEL:SetContainerInv(inventory, name)
         namePanel:SetPos(inventoryPanel:GetX(), inventoryPanel:GetY() - size - H(20))
         namePanel:SetSize(inventoryPanel:GetWide(), size)
         namePanel.Paint = function(_, w, h)
-            draw.SimpleText(name, "arb.Font_FuturaPTBook_12", 0, 0, color_white, TEXT_ALIGN_LEFT)
+            draw.SimpleText(F(name), "arb.Font_FuturaPTBook_12", 0, 0, color_white, TEXT_ALIGN_LEFT)
 
             surface.SetDrawColor(255, 255, 255, 100)
             surface.DrawRect(0, h - 2, w, 2)

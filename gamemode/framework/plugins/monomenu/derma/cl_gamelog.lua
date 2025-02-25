@@ -64,7 +64,8 @@ function PANEL:SetData()
     self.addButton.alpha = 0
     self.addButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("#monomenu_gamelog_newcase", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+
+        draw.DrawText(L("#monomenu_gamelog_newcase"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -98,8 +99,8 @@ function PANEL:SetData()
             end
 
             draw.DrawText(k, "arb.Font_FuturaPTBook_7", W(15), H(4), color_white, TEXT_ALIGN_LEFT)
-            draw.DrawText(inflictorFaction and inflictorFaction:GetName() or "#monomenu_unknown", "arb.Font_FuturaPTBook_7", W(150 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
-            draw.DrawText(info[1], "arb.Font_FuturaPTBook_7", W(300 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(inflictorFaction and L(inflictorFaction:GetName()) or L("#monomenu_unknown"), "arb.Font_FuturaPTBook_7", W(150 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(L(info[1]), "arb.Font_FuturaPTBook_7", W(300 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
             draw.DrawText(timeString, "arb.Font_FuturaPTBook_7", W(550 - 15), H(4), color_white, TEXT_ALIGN_LEFT)
         end
 
@@ -160,12 +161,12 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("#monomenu_gamelog_journal", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_gamelog_journal"), "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("#monomenu_gamelog_number", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("#monomenu_gamelog_char", "arb.Font_FuturaPTBook_7", W(150), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("#monomenu_gamelog_status", "arb.Font_FuturaPTBook_7", W(300), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("#monomenu_gamelog_time", "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_gamelog_number"), "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_gamelog_char"), "arb.Font_FuturaPTBook_7", W(150), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_gamelog_status"), "arb.Font_FuturaPTBook_7", W(300), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_gamelog_time"), "arb.Font_FuturaPTBook_7", W(550), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MonoGameLog", PANEL, "DFrame")
@@ -202,23 +203,23 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("#monomenu_gamelog_newcase", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_newcase"), "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_gamelog_selectchar", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_gamelog_selectexample", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_selectchar"), "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_selectexample"), "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_gamelog_setchapter", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_gamelog_chapterexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_setchapter"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_chapterexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_gamelog_casetype", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_gamelog_typeexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_casetype"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_typeexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_gamelog_selectculprit", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_gamelog_culpritexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_selectculprit"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_gamelog_culpritexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
         if self.id then
-            draw.DrawText("#monomenu_gamelog_settime", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
-            draw.DrawText("#monomenu_gamelog_timexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+            draw.DrawText(L("#monomenu_gamelog_settime"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80 + 80 + 80), color_white, TEXT_ALIGN_LEFT)
+            draw.DrawText(L("#monomenu_gamelog_timexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80 + 80 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
         end
     end
 
@@ -248,14 +249,14 @@ function PANEL:Init()
     self.chapterEntry = self.main:Add("DTextEntry")
     self.chapterEntry:SetPos(W(5), H(155))
     self.chapterEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.chapterEntry:SetPlaceholderText("#monomenu_gamelog_chaptername")
+    self.chapterEntry:SetPlaceholderText(L("#monomenu_gamelog_chaptername"))
     self.chapterEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.investigationID = 2
     local sizeW = W(150)
     for k, v in ipairs(MonoPad.chapterTypes) do
         local button = self.main:Add("DButton")
-        button:SetText(v[1])
+        button:SetText(L(v[1]))
         button:SetTextColor(color_white)
         button:SetPos(W(5) + (k - 1) * sizeW + (k - 1) * W(10), H(235))
         button:SetSize(sizeW, H(25))
@@ -284,12 +285,12 @@ function PANEL:Init()
         self.attackerID = data
     end
 
-    self.inflictorBox:AddChoice("#monomenu_unknown", nil, true)
-    self.attackerBox:AddChoice("#monomenu_unknown", nil, true)
+    self.inflictorBox:AddChoice(L("#monomenu_unknown"), nil, true)
+    self.attackerBox:AddChoice(L("#monomenu_unknown"), nil, true)
     for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
         if v:GetAssets().pixel then
-            self.inflictorBox:AddChoice(v:GetName(), k)
-            self.attackerBox:AddChoice(v:GetName(), k)
+            self.inflictorBox:AddChoice(L(v:GetName()), k)
+            self.attackerBox:AddChoice(L(v:GetName()), k)
         end
     end
 
@@ -303,7 +304,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText(self.id and "#monomenu_charter_edit" or "#monomenu_charter_add", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(self.id and L("#monomenu_charter_edit") or L("#monomenu_charter_add"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -324,7 +325,7 @@ function PANEL:Init()
         netstream.Start(f and "arb.MonoEditGameLog" or "arb.MonoAddGameLog", {a, b, c, d, e, f})
 
         if !f and self.startInvestigation then
-            netstream.Start("arb.MonoChangeStyle", "#monomenu_gamelog_investigation", 222, 27, 163)
+            netstream.Start("arb.MonoChangeStyle", L("#monomenu_gamelog_investigation"), 222, 27, 163)
             netstream.Start("ScriptMusic:ChangeTheme", "investigation", true)
         end
 
@@ -344,7 +345,7 @@ end
 function PANEL:SetData(inflictorID, chapterTitle, investigationType, attackerID, time, callback, id)
     if inflictorID then
         self.inflictorID = inflictorID
-        self.inflictorBox:SetValue(Character.team:GetByID(inflictorID).name)
+        self.inflictorBox:SetValue(L(Character.team:GetByID(inflictorID).name))
     end
 
     if chapterTitle then
@@ -368,11 +369,11 @@ function PANEL:SetData(inflictorID, chapterTitle, investigationType, attackerID,
         self.timeEntry:SetValue(time or Arbitrage.ReturnTime())
         self.timeEntry:SetPos(W(5), H(395))
         self.timeEntry:SetSize(self.main:GetWide() - W(10), H(25))
-        self.timeEntry:SetPlaceholderText("#monomenu_gamelog_time")
+        self.timeEntry:SetPlaceholderText(L("#monomenu_gamelog_time"))
         self.timeEntry:SetFont("arb.Font_FuturaPTBook_8")
     else
         self.checkBox = self.main:Add("DCheckBoxLabel")
-        self.checkBox:SetText("#monomenu_gamelog_startinvestigation")
+        self.checkBox:SetText(L("#monomenu_gamelog_startinvestigation"))
         self.checkBox:SetPos(W(5), H(360))
         self.checkBox:SetSize(self.main:GetWide() - W(10), H(25))
         self.checkBox:SetFont("arb.Font_FuturaPTBook_8")

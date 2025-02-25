@@ -78,8 +78,8 @@ function PANEL:Init()
     local character = Character.team:GetByID(LocalPlayer():Team())
     if !character then return end
 
-    self.name = character:GetName()
-    self.title = character:GetTitle()
+    self.name = L(character:GetName())
+    self.title = L(character:GetTitle())
     self.color = character:GetColor()
     self.uniqueID = character:GetUniqueID()
 

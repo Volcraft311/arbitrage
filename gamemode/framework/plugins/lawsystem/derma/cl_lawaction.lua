@@ -12,24 +12,24 @@
 ]]--
 
 local function createCategory(panel, name)
-	local category = panel:Add("Panel")
-	category:Dock(TOP)
-	category:DockMargin(0, 0, 0, H(5))
-	category.Paint = function(_, w, h)
-		surface.SetDrawColor(255, 61, 96, 50)
-	    surface.DrawOutlinedRect(0, 0, w, h, 1)
-	end
+    local category = panel:Add("Panel")
+    category:Dock(TOP)
+    category:DockMargin(0, 0, 0, H(5))
+    category.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 61, 96, 50)
+        surface.DrawOutlinedRect(0, 0, w, h, 1)
+    end
 
-	local title = category:Add("Panel")
-	title:Dock(TOP)
-	title:DockMargin(0, 0, 0, H(3))
-	title:SetTall(H(20))
-	title.Paint = function(_, w, h)
-		surface.SetDrawColor(255, 61, 96, 50)
-		surface.DrawRect(0, 0, w, h)
+    local title = category:Add("Panel")
+    title:Dock(TOP)
+    title:DockMargin(0, 0, 0, H(3))
+    title:SetTall(H(20))
+    title.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 61, 96, 50)
+        surface.DrawRect(0, 0, w, h)
 
-		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", 5, 0, color_white, TEXT_ALIGN_LEFT)
-	end
+        draw.SimpleText(F(name), "arb.Font_FuturaPTBook_6", 5, 0, color_white, TEXT_ALIGN_LEFT)
+    end
 
     local button = title:Add("DButton")
     button:SetText("")
@@ -47,17 +47,17 @@ local function createCategory(panel, name)
         category:SizeTo(category:GetWide(), category.isHide and H(20) or category.normalTall, 0.25, 0, -1)
     end
 
-	category.PerformLayout = function(_, w, h)
+    category.PerformLayout = function(_, w, h)
         if !category.c then
-    		category:SizeToChildren(false, true)
+            category:SizeToChildren(false, true)
 
             category.normalTall = category:GetTall()
 
             category.c = true
         end
-	end
+    end
 
-	return category
+    return category
 end
 
 local function createItemButton(panel, id, path, name, data)
@@ -70,88 +70,88 @@ local function createItemButton(panel, id, path, name, data)
         icon = Material(path)
     end
 
-	local showText = Arbitrage.gui.lawaction.items[id] and "Предъвил: " .. Arbitrage.gui.lawaction.items[id] or "Вы не показывали этот предмет!"
+    local showText = Arbitrage.gui.lawaction.items[id] and "Предъвил: " .. Arbitrage.gui.lawaction.items[id] or "Вы не показывали этот предмет!"
 
-	local itemButton = panel:Add("DButton")
-	itemButton:SetText("")
-	itemButton:Dock(TOP)
-	itemButton:DockMargin(W(3), 0, W(3), H(3))
-	itemButton:SetTall(H(40))
-	itemButton.alpha = 0
-	itemButton.Paint = function(_, w, h)
-		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
+    local itemButton = panel:Add("DButton")
+    itemButton:SetText("")
+    itemButton:Dock(TOP)
+    itemButton:DockMargin(W(3), 0, W(3), H(3))
+    itemButton:SetTall(H(40))
+    itemButton.alpha = 0
+    itemButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
 
-		surface.SetDrawColor(255, 61, 96, _.alpha)
-	    surface.DrawRect(0, 0, w, h)
+        surface.SetDrawColor(255, 61, 96, _.alpha)
+        surface.DrawRect(0, 0, w, h)
 
-		surface.SetDrawColor(255, 61, 96, 50)
-		surface.DrawOutlinedRect(0, 0, w, h, 1)
+        surface.SetDrawColor(255, 61, 96, 50)
+        surface.DrawOutlinedRect(0, 0, w, h, 1)
 
         if icon then
-    		surface.SetDrawColor(255, 255, 255)
-    		surface.SetMaterial(icon)
-    		surface.DrawTexturedRect(0, 0, h, h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(icon)
+            surface.DrawTexturedRect(0, 0, h, h)
         end
 
-		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
-		draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
-	end
-	itemButton.DoClick = function()
-	    local x = 0
-	    local y = ScrH() * 0.25
-	    local wide = W(620)
+        draw.SimpleText(F(name), "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(F(showText), "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
+    end
+    itemButton.DoClick = function()
+        local x = 0
+        local y = ScrH() * 0.25
+        local wide = W(620)
 
-	    local evidence = vgui.Create("arb.EvidenceMenuSub")
-	    evidence:SetEvidence(data)
-	    evidence:SetPos(x + wide * 1.05, y)
-	end
+        local evidence = vgui.Create("arb.EvidenceMenuSub")
+        evidence:SetEvidence(data)
+        evidence:SetPos(x + wide * 1.05, y)
+    end
 
-	local iconPresent = Material("danganronpa/ui/info_3.png")
-	local present = itemButton:Add("DButton")
-	present:SetText("")
-	present:Dock(RIGHT)
-	present:DockMargin(0, H(10), W(5), H(10))
-	present:SetWide(H(20))
-	present.alpha = 30
-	present.size = 0.8
-	present.Paint = function(_, w, h)
-		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-		_.size = Lerp(FrameTime() * 10, _.size, _:IsHovered() and 1 or 0.8)
+    local iconPresent = Material("danganronpa/ui/info_3.png")
+    local present = itemButton:Add("DButton")
+    present:SetText("")
+    present:Dock(RIGHT)
+    present:DockMargin(0, H(10), W(5), H(10))
+    present:SetWide(H(20))
+    present.alpha = 30
+    present.size = 0.8
+    present.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        _.size = Lerp(FrameTime() * 10, _.size, _:IsHovered() and 1 or 0.8)
 
-		local w_size, h_size = w * _.size, h * _.size
+        local w_size, h_size = w * _.size, h * _.size
 
-		surface.SetDrawColor(255, 255, 255, _.alpha)
-		surface.SetMaterial(iconPresent)
-		surface.DrawTexturedRect(w / 2 - w_size / 2, h / 2 - h_size / 2, w_size, h_size)
-	end
-	present.DoClick = function()
-	    netstream.Start("arb.ShowItem", id)
-	end
+        surface.SetDrawColor(255, 255, 255, _.alpha)
+        surface.SetMaterial(iconPresent)
+        surface.DrawTexturedRect(w / 2 - w_size / 2, h / 2 - h_size / 2, w_size, h_size)
+    end
+    present.DoClick = function()
+        netstream.Start("arb.ShowItem", id)
+    end
 
-	local item = ItemBase.instances[id]
-	if item and item.lawInspect then
-		local iconInspect = Material("danganronpa/ui/info_4.png")
-		local inspect = itemButton:Add("DButton")
-		inspect:SetText("")
-		inspect:Dock(RIGHT)
-		inspect:DockMargin(0, H(10), W(5), H(10))
-		inspect:SetWide(H(20))
-		inspect.alpha = 30
-		inspect.size = 0.8
-		inspect.Paint = function(_, w, h)
-			_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-			_.size = Lerp(FrameTime() * 10, _.size, _:IsHovered() and 1 or 0.8)
+    local item = ItemBase.instances[id]
+    if item and item.lawInspect then
+        local iconInspect = Material("danganronpa/ui/info_4.png")
+        local inspect = itemButton:Add("DButton")
+        inspect:SetText("")
+        inspect:Dock(RIGHT)
+        inspect:DockMargin(0, H(10), W(5), H(10))
+        inspect:SetWide(H(20))
+        inspect.alpha = 30
+        inspect.size = 0.8
+        inspect.Paint = function(_, w, h)
+            _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+            _.size = Lerp(FrameTime() * 10, _.size, _:IsHovered() and 1 or 0.8)
 
-			local w_size, h_size = w * _.size, h * _.size
+            local w_size, h_size = w * _.size, h * _.size
 
-			surface.SetDrawColor(255, 255, 255, _.alpha)
-			surface.SetMaterial(iconInspect)
-			surface.DrawTexturedRect(w / 2 - w_size / 2, h / 2 - h_size / 2, w_size, h_size)
-		end
-		inspect.DoClick = function()
-	        netstream.Start("arb.InspectItem", id)
-	    end
-	end
+            surface.SetDrawColor(255, 255, 255, _.alpha)
+            surface.SetMaterial(iconInspect)
+            surface.DrawTexturedRect(w / 2 - w_size / 2, h / 2 - h_size / 2, w_size, h_size)
+        end
+        inspect.DoClick = function()
+            netstream.Start("arb.InspectItem", id)
+        end
+    end
 end
 
 local function getEvidence(id)
@@ -184,64 +184,64 @@ local function createEvidenceButton(panel, id, time)
         showText = "Предъявил: " .. evidencesList[id][2]
     end
 
-	local evidenceButton = panel:Add("DButton")
-	evidenceButton:SetText("")
-	evidenceButton:Dock(TOP)
-	evidenceButton:DockMargin(W(3), 0, W(3), H(3))
-	evidenceButton:SetTall(H(58))
-	evidenceButton.alpha = 0
-	evidenceButton.Paint = function(_, w, h)
-		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
+    local evidenceButton = panel:Add("DButton")
+    evidenceButton:SetText("")
+    evidenceButton:Dock(TOP)
+    evidenceButton:DockMargin(W(3), 0, W(3), H(3))
+    evidenceButton:SetTall(H(58))
+    evidenceButton.alpha = 0
+    evidenceButton.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 20 or 0)
 
-		surface.SetDrawColor(255, 61, 96, _.alpha)
-	    surface.DrawRect(0, 0, w, h)
+        surface.SetDrawColor(255, 61, 96, _.alpha)
+        surface.DrawRect(0, 0, w, h)
 
-		surface.SetDrawColor(255, 61, 96, 50)
-		surface.DrawOutlinedRect(0, 0, w, h, 1)
+        surface.SetDrawColor(255, 61, 96, 50)
+        surface.DrawOutlinedRect(0, 0, w, h, 1)
 
-		surface.SetDrawColor(255, 255, 255)
-		surface.SetMaterial(evidenceMat)
-		surface.DrawTexturedRect(0, 0, h, h)
+        surface.SetDrawColor(255, 255, 255)
+        surface.SetMaterial(evidenceMat)
+        surface.DrawTexturedRect(0, 0, h, h)
 
         surface.SetDrawColor(255, 255, 255)
         surface.SetMaterial(ribbonMat)
         surface.DrawTexturedRect(0, 0, h, h)
 
-		draw.SimpleText(name, "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
-		draw.SimpleText(timeText, "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
-        draw.SimpleText(showText, "arb.Font_FuturaPTBook_6", h + 5, H(36), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
-	end
-	evidenceButton.DoClick = function()
-	    local x = 0
-	    local y = ScrH() * 0.25
-	    local wide = W(620)
+        draw.SimpleText(F(name), "arb.Font_FuturaPTBook_6", h + 5, 0, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(F(timeText), "arb.Font_FuturaPTBook_6", h + 5, H(18), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
+        draw.SimpleText(F(showText), "arb.Font_FuturaPTBook_6", h + 5, H(36), Color(255, 255, 255, 80), TEXT_ALIGN_LEFT)
+    end
+    evidenceButton.DoClick = function()
+        local x = 0
+        local y = ScrH() * 0.25
+        local wide = W(620)
 
-	    local evidence = vgui.Create("arb.EvidenceMenuSub")
-	    evidence:SetEvidence(data)
-	    evidence:SetPos(x + wide * 1.05, y)
-	end
+        local evidence = vgui.Create("arb.EvidenceMenuSub")
+        evidence:SetEvidence(data)
+        evidence:SetPos(x + wide * 1.05, y)
+    end
 
-	local iconPresent = Material("danganronpa/ui/info_3.png")
-	local present = evidenceButton:Add("DButton")
-	present:SetText("")
-	present:Dock(RIGHT)
-	present:DockMargin(0, H(19), W(5), H(19))
-	present:SetWide(H(20))
-	present.alpha = 30
-	present.size = 0.8
-	present.Paint = function(_, w, h)
-		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-		_.size = Lerp(FrameTime() * 10, _.size, _:IsHovered() and 1 or 0.8)
+    local iconPresent = Material("danganronpa/ui/info_3.png")
+    local present = evidenceButton:Add("DButton")
+    present:SetText("")
+    present:Dock(RIGHT)
+    present:DockMargin(0, H(19), W(5), H(19))
+    present:SetWide(H(20))
+    present.alpha = 30
+    present.size = 0.8
+    present.Paint = function(_, w, h)
+        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+        _.size = Lerp(FrameTime() * 10, _.size, _:IsHovered() and 1 or 0.8)
 
-		local w_size, h_size = w * _.size, h * _.size
+        local w_size, h_size = w * _.size, h * _.size
 
-		surface.SetDrawColor(255, 255, 255, _.alpha)
-		surface.SetMaterial(iconPresent)
-		surface.DrawTexturedRect(w / 2 - w_size / 2, h / 2 - h_size / 2, w_size, h_size)
-	end
-	present.DoClick = function()
-	    netstream.Start("arb.ShowEvidence", id)
-	end
+        surface.SetDrawColor(255, 255, 255, _.alpha)
+        surface.SetMaterial(iconPresent)
+        surface.DrawTexturedRect(w / 2 - w_size / 2, h / 2 - h_size / 2, w_size, h_size)
+    end
+    present.DoClick = function()
+        netstream.Start("arb.ShowEvidence", id)
+    end
 end
 
 local PLUGIN = PLUGIN
@@ -492,7 +492,7 @@ function PANEL:Init()
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.DrawText(text, "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L(text), "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
     end
     interruptionButton.DoClick = function()
         if isActiveRS() and !Arbitrage.OffRebuttalShowdown() then
@@ -520,7 +520,7 @@ function PANEL:Init()
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.DrawText("Сфокусировать камеру на себя", "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("Сфокусировать камеру на себя"), "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
     end
     focusButton.DoClick = function()
         netstream.Start("arb.LawFocus")
@@ -541,7 +541,7 @@ function PANEL:InitCategory()
     for k, v in pairs(categoryData) do
         local s = self.topPanel:GetTall()
 
-        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_6><colour=255,255,255><img=materials/" .. v.icon .. ", " .. s / 2 .. "x" .. s / 2 .. ", 255, 255, 255> " .. v.name .. "</colour></font>")
+        local parsed = asterionlib.markup.Parse("<font=arb.Font_FuturaPTBook_6><colour=255,255,255><img=materials/" .. v.icon .. ", " .. s / 2 .. "x" .. s / 2 .. ", 255, 255, 255> " .. L(v.name) .. "</colour></font>")
 
         local category = self.topPanel:Add("DButton")
         category:SetText("")
@@ -605,7 +605,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 165.75)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-    draw.DrawText("Меню классного суда", "arb.Font_FuturaPTBook_9", 10, 0, color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("Меню классного суда"), "arb.Font_FuturaPTBook_9", 10, 0, color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.LawAction", PANEL, "DFrame")

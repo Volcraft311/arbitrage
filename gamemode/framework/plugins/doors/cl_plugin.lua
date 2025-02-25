@@ -114,9 +114,9 @@ local function CreatePanels(data, parent)
 		local panel, subMenu = nil, nil
 
 		if isfunction(v.data) then
-			panel = parent:AddOption(v.name, v.data)
+			panel = parent:AddOption(F(v.name), v.data)
 		else
-			subMenu, panel = parent:AddSubMenu(v.name)
+			subMenu, panel = parent:AddSubMenu(F(v.name))
 			paintMenu(subMenu)
 
 			CreatePanels(v.data, subMenu)

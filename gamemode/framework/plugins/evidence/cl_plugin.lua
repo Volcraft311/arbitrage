@@ -314,6 +314,7 @@ netstream.Hook("Evidence:Draw", function(entity)
     evidence.animPos = entity:GetPos()
     evidence.animAlpha = 0
     evidence.animSize = 0
+    evidence.animTextAlpha = 0
 
     timer_Simple(1, function()
         evidence.animID = 2
@@ -322,7 +323,6 @@ netstream.Hook("Evidence:Draw", function(entity)
 
     timer_Simple(2.5, function()
         evidence.animID = 3
-        evidence.animTextAlpha = 0
     end)
 
     timer_Simple(6, function()

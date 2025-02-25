@@ -72,7 +72,7 @@ function InventoryBase:CreateInfoPanel(panel, x, y, wide)
     descPanel.Paint = function(_, w, h)
         if !panel.item then return end
 
-        local descriptionText = asterionlib.WrapText(panel.item:GetDescription(), w, descFont)
+        local descriptionText = asterionlib.WrapText(F(panel.item:GetDescription()), w, descFont)
         for i in pairs(descriptionText) do
             local text = descriptionText[i]
             local y = (i - 1) * descHeight

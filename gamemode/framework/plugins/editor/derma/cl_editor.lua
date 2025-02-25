@@ -144,7 +144,7 @@ end
 
 local size = 0.4
 function PANEL:Init()
-	self:SetTitle("#editor_menu")
+	self:SetTitle(L("#editor_menu"))
 	self:SetSize(ScrW() * size, ScrH() * (size * 2))
 	self:Center()
 	self:MakePopup()
@@ -165,11 +165,11 @@ function PANEL:Init()
 		surface.SetDrawColor(155, 35, 57, _.alpha)
 		surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-		draw.DrawText("#editor_config", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+		draw.DrawText(L("#editor_config"), "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 	end
 	configButton.DoClick = function()
 		local Menu = DermaMenu()
-			Menu:AddOption("#editor_saveconfig", function()
+			Menu:AddOption(L("#editor_saveconfig"), function()
 				Derma_StringRequest(L("#editor_saveconfig"), L("#editor_typedoc"), "", function(text)
 					local data = util.TableToJSON(Editor:GetStored())
 
@@ -178,7 +178,7 @@ function PANEL:Init()
 				end)
 			end):SetIcon("icon16/add.png")
 
-			local subMenu, parentMenuOption = Menu:AddSubMenu("#editor_loadconfig")
+			local subMenu, parentMenuOption = Menu:AddSubMenu(L("#editor_loadconfig"))
 			parentMenuOption:SetIcon("icon16/cd.png")
 
 			local files, _ = file.Find("academy_editor_configs/*.txt", "DATA" )
@@ -241,7 +241,7 @@ function PANEL:InitButtons()
 			surface.SetDrawColor(155, 35, 57, _.alpha)
 			surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-			draw.DrawText(name, "arb.Font_FuturaPTBook_8", w / 2, 0, Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+			draw.DrawText(L(name), "arb.Font_FuturaPTBook_8", w / 2, 0, Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 		end
 
 		button.DoClick = function()
@@ -292,7 +292,7 @@ function PANEL:AddInfo(dp, id, data)
 
 	local title = panel:Add("DLabel")
 	title:Dock(TOP)
-	title:SetText(name)
+	title:SetText(L(name))
 	title:SizeToContents()
 
 	local _ = panel:Add("DPanel")
@@ -318,7 +318,7 @@ function PANEL:AddInfo(dp, id, data)
 		local text = ReturnOptionName(id, k, v)
 
 		local checkBox = info:Add("DCheckBoxLabel")
-		checkBox:SetText(text)
+		checkBox:SetText(L(text))
 		checkBox:SetChecked(true)
 		checkBox:Dock(TOP)
 		checkBox:DockMargin(5, 5, 0, 0)
@@ -328,7 +328,7 @@ function PANEL:AddInfo(dp, id, data)
 			checkBox:SetChecked(true)
 
 			local Menu = DermaMenu()
-				Menu:AddOption("#editor_iwanttodeleteit", function()
+				Menu:AddOption(L("#editor_iwanttodeleteit"), function()
 					local action = ReturnActionClear(id, k, v)
 					netstream.Start("Editor:ChangeProperty", id, action)
 
@@ -371,7 +371,7 @@ local PANEL = {}
 
 local size = 0.3
 function PANEL:Init()
-	self:SetTitle("#editor_menu")
+	self:SetTitle(L("#editor_menu"))
 	self:SetSize(ScrW() * size, ScrH() * size)
 	self:Center()
 	self:MakePopup()
@@ -400,7 +400,7 @@ function PANEL:Init()
 			surface.SetDrawColor(155, 35, 57, _.alpha)
 			surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-			draw.DrawText(name, "arb.Font_FuturaPTBook_8", w / 2, 0, Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+			draw.DrawText(L(name), "arb.Font_FuturaPTBook_8", w / 2, 0, Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 		end
 
 		button.DoClick = function()

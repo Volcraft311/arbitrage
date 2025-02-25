@@ -51,8 +51,8 @@ function PANEL:Init()
         self.infoPanel:AlphaTo(255, 0.3)
         self.line:SetAlpha(255)
 
-        self.itemName:SetText(item:GetName())
-        self.itemCategory:SetText(item:GetCategory())
+        self.itemName:SetText(F(item:GetName()))
+        self.itemCategory:SetText(F(item:GetCategory()))
     end
 
     InventoryBase:CreateInfoPanel(self, inventoryPanel:GetX(), inventoryPanel:GetY() + h + H(40), math.max(w, W(420)))

@@ -110,14 +110,14 @@ function Editor:HUDPaint()
     local client = LocalPlayer()
     if !client:IsEditing() then return end
 
-    draw.SimpleText("#editor_editmode", "arb.Font_FuturaPTDemi_10", ScrW() / 2, H(10), Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
+    draw.SimpleText(L("#editor_editmode"), "arb.Font_FuturaPTDemi_10", ScrW() / 2, H(10), Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
 
     do
         for k, v in pairs(Arbitrage.placesList or {}) do
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
             local pos, ang = v[1], v[2]
 
-            self:DrawInfo("#editor_place " .. k, pos, ang, color, "placesList_" .. k, "models/editor/spot.mdl", true)
+            self:DrawInfo(L("#editor_place") .. " " .. k, pos, ang, color, "placesList_" .. k, "models/editor/spot.mdl", true)
         end
     end
 
@@ -125,24 +125,24 @@ function Editor:HUDPaint()
         for k, v in pairs(Arbitrage.camPosPlaces or {}) do
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
 
-            self:DrawInfo("#editor_camera " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
+            self:DrawInfo(L("#editor_camera") .. " " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")
         end
     end
 
     do
         for k, v in pairs(Arbitrage.spawnList or {}) do
-            self:DrawInfo("#editor_spawn " .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
+            self:DrawInfo(L("#editor_spawn") .. " " .. k, v, nil, Color(49, 139, 240), "spawnList_" .. k, "models/editor/axis_helper.mdl", true)
         end
     end
 
     do
         for k, v in pairs(Arbitrage.lobbyList or {}) do
-            self:DrawInfo("#editor_lobby " .. k, v, nil, Color(145, 240, 49), "lobbyList_" .. k, "models/editor/axis_helper.mdl", true)
+            self:DrawInfo(L("#editor_lobby") .. " " .. k, v, nil, Color(145, 240, 49), "lobbyList_" .. k, "models/editor/axis_helper.mdl", true)
         end
     end
 
-    self:DrawInfo("#editor_endpoint_camera", Arbitrage.camPosEnd, nil, Color(0, 255, 0), "camPosEnd", "models/editor/air_node_hint.mdl")
-    self:DrawInfo("#editor_startpoint_camera", Arbitrage.camPos and Arbitrage.camPos[1], Arbitrage.camPos and Arbitrage.camPos[2], Color(171, 57, 193), "camPos", "models/editor/cone_helper.mdl", true)
+    self:DrawInfo(L("#editor_endpoint_camera"), Arbitrage.camPosEnd, nil, Color(0, 255, 0), "camPosEnd", "models/editor/air_node_hint.mdl")
+    self:DrawInfo(L("#editor_startpoint_camera"), Arbitrage.camPos and Arbitrage.camPos[1], Arbitrage.camPos and Arbitrage.camPos[2], Color(171, 57, 193), "camPos", "models/editor/cone_helper.mdl", true)
 
     Hints:AddKeyDraw("#hintsdraw_remove_points", {MOUSE_RIGHT})
     Hints:AddKeyDraw("#hintsdraw_change_points", {MOUSE_LEFT})

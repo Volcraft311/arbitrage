@@ -14,12 +14,10 @@
 Arbitrage.notify = Arbitrage.library.Add("notify")
 
 function Arbitrage.notify.Add(data, warning)
-    if !data then return end
-
     local notify = Arbitrage.notifypanel:Add("arb.Notify") -- vgui.Create("arb.Notify")
     notify:Dock(TOP)
     notify:DockMargin(0, 10, 0, 0)
-    notify:SetData(data)
+    notify:SetData(F(data))
     notify:SetWarning(warning)
 end
 

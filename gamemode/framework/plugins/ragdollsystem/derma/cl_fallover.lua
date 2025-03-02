@@ -73,6 +73,7 @@ function PANEL:RenderPaint(client, w, h, ragdoll)
             w = w,
             h = h
         })
+        ColorModify.ApplyColorModify()
         DisableClipping(old)
     end
 end

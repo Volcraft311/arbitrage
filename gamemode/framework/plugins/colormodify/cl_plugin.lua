@@ -55,21 +55,27 @@ local function _createColorModify(data)
 end
 
 
-function PLUGIN:RenderScreenspaceEffects()
+function PLUGIN:ApplyColorModify()
+
     if PLUGIN.TargetTColor == nil then
-        local data = self:Get()
+        local data = PLUGIN:Get()
         if !data.enabled then return end
 
         if data.players and !data.playersList[LocalPlayer():SteamID()] then return end
-        local ColorModify = _createColorModify(data)
+        local colorTable = _createColorModify(data)
         if system.IsOSX() then
-            ColorModify["$pp_colour_brightness"] = 0
-            ColorModify["$pp_colour_contrast"] = 1
+            colorTable["$pp_colour_brightness"] = 0
+            colorTable["$pp_colour_contrast"] = 1
         end
-        DrawColorModify(ColorModify)
+        DrawColorModify(colorTable)
 
     else
-        local ColorModify = _createColorModify(self.CurrentTColor)
-        DrawColorModify(ColorModify)
+        local colorTable = _createColorModify(PLUGIN.CurrentTColor)
+        DrawColorModify(colorTable)
     end
+end
+
+
+function PLUGIN:RenderScreenspaceEffects()
+    ColorModify:ApplyColorModify()
 end

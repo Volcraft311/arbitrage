@@ -67,19 +67,11 @@ RegisterCommand("settimespeed", "#command_settimespeed", {"number"}, nil, true)
 RegisterCommand("fallover", "#command_fallover", nil, {"number"}, true)
 RegisterCommand("spectate", "#command_spectate", nil, {"player"}, true)
 
-netstream.Hook("arb.ChatNotify", function(data)
-    if !data then return end
-
-    LocalPlayer():ChatNotify(data)
+netstream.Hook("arb.ChatNotify", function(...)
+    LocalPlayer():ChatNotify(...)
 end)
 
 local function notify(data)
-    if !data then return end
-
-    if !istable(data) then
-        data = {data}
-    end
-
     for k, v in ipairs(data) do
         if isstring(v) then
             data[k] = F(v)

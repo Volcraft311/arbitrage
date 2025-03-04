@@ -109,14 +109,10 @@ function Arbitrage.commands.PlayerSay(client, data)
 end
 
 function Arbitrage.commands.Notify(client, ...)
-    local dataTable = {...}
-
-    netstream.Start(client, "arb.ChatNotify", dataTable)
+    netstream.Start(client, "arb.ChatNotify", ...)
 end
 
 function Arbitrage.commands.Add(name, data)
-    if !data then return end
-
     Arbitrage.commands.data[name:lower()] = data
 end
 

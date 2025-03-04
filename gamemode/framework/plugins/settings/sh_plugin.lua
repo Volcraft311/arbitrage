@@ -256,7 +256,6 @@ end
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("cl_binds.lua")
 Arbitrage.base.Include("cl_options.lua")
-Arbitrage.base.Include("sv_plugin.lua")
 
 Arbitrage.base.Include("cl_hooks.lua")
 Arbitrage.base.Include("sh_hooks.lua")

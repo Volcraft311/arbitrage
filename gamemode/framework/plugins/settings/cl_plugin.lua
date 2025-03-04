@@ -242,7 +242,7 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
         _.color.b = Lerp(frametime, _.color.b, isselect and 96 or 238)
         _.color.a = Lerp(frametime, _.color.a, (ishover or isselect) and 255 or 50)
 
-        draw_DrawText(data.name, "arb.Font_FuturaPTBook_9", h + 5, 0, Color(_.color.r, _.color.g, _.color.b, _.color.a), TEXT_ALIGN_LEFT)
+        draw_DrawText(F(data.name), "arb.Font_FuturaPTBook_9", h + 5, 0, Color(_.color.r, _.color.g, _.color.b, _.color.a), TEXT_ALIGN_LEFT)
     end
     frame.DoClick = function()
         if panel.select == frame then return end
@@ -258,7 +258,7 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
         panelinfo:SetAlpha(0)
         panelinfo:AlphaTo(255, 0.2)
 
-        local text = data.description
+        local text = F(data.description)
         local font = "arb.Font_FuturaPTBook_8"
         local textData = asterionlib.WrapText(text, panelinfo:GetWide(), font)
 
@@ -266,7 +266,7 @@ function PLUGIN.GeneratePanel(data, panel, panelinfo, isBind)
         local _, height = surface_GetTextSize(text)
 
         local labelTitle = panelinfo:Add("DLabel")
-        labelTitle:SetText(data.title)
+        labelTitle:SetText(F(data.title))
         labelTitle:SetFont("arb.Font_FuturaPTBook_11")
         labelTitle:SetTextColor(Color(255, 41, 80))
         labelTitle:Dock(TOP)

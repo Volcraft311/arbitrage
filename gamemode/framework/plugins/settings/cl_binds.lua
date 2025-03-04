@@ -41,82 +41,82 @@ end
 
 
 SETTINGS.binds.Add("open_interface", KEY_Q, {
-    name = "Кнопка открытия инвентаря",
-    title = "Интерфейс",
-    description = "Открывает интерфейса инвентаря"
+    name = "#binds_open_interface_name",
+    title = "#binds_open_interface_title",
+    description = "#binds_open_interface_desc"
 })
 
 SETTINGS.binds.Add("open_context", KEY_C, {
-    name = "Кнопка открытия интерфейса с действиями",
-    title = "Интерфейс с действиями",
-    description = "Открывает контекстное меню вместе с информацией о персонаже"
+    name = "#binds_open_context_name",
+    title = "#binds_open_context_title",
+    description = "#binds_open_context_desc"
 })
 
 SETTINGS.binds.Add("open_scoreboard", KEY_TAB, {
-    name = "Кнопка открытия списка игроков",
-    title = "Список игроков",
-    description = "Открывает таблицу текущим списком игроков на сервере и информацией о них"
+    name = "#binds_open_scoreboard_name",
+    title = "#binds_open_scoreboard_title",
+    description = "#binds_open_scoreboard_desc"
 })
 
 SETTINGS.binds.Add("open_mainmenu_ui", KEY_F1, {
-    name = "Кнопка открытия главного меню",
-    title = "Главное меню",
-    description = "Открывает главное меню"
+    name = "#binds_open_mainmenu_ui_name",
+    title = "#binds_open_mainmenu_ui_title",
+    description = "#binds_open_mainmenu_ui_desc"
 })
 
 SETTINGS.binds.Add("open_monomenu_ui", KEY_F3, {
-    name = "Кнопка открытия мономеню",
-    title = "Мономеню",
-    description = "Открывает мономеню, которое имеет в себе полный доступ к инструментарию ведущих и администраторов"
+    name = "#binds_open_monomenu_ui_name",
+    title = "#binds_open_monomenu_ui_title",
+    description = "#binds_open_monomenu_ui_desc"
 })
 
 SETTINGS.binds.Add("open_material_ui", KEY_F4, {
-    name = "Кнопка открытия меню материалов",
-    title = "Список Материалов",
-    description = "Открывает окно с материалами и уликами для текущей игры"
+    name = "#binds_open_material_ui_name",
+    title = "#binds_open_material_ui_title",
+    description = "#binds_open_material_ui_desc"
 })
 
 SETTINGS.binds.Add("voice_up", KEY_RBRACKET, {
-    name = "Повысить дальность микрофона",
-    title = "Громкость микрофона",
-    description = "Повышает расстояние слышимости вашего голоса"
+    name = "#binds_voice_up_name",
+    title = "#binds_voice_up_title",
+    description = "#binds_voice_up_desc"
 })
 
 SETTINGS.binds.Add("voice_down", KEY_LBRACKET, {
-    name = "Понизить дальность микрофона",
-    title = "Громкость микрофона",
-    description = "Понижает расстояние слышимости вашего голоса"
+    name = "#binds_voice_down_name",
+    title = "#binds_voice_down_title",
+    description = "#binds_voice_down_desc"
 })
 
 SETTINGS.binds.Add("sitting", KEY_N, {
-    name = "Кнопка для сидения",
-    title = "Сесть на пол",
-    description = "Кнопка при помощи которой вы можете сесть на землю"
+    name = "#binds_sitting_name",
+    title = "#binds_sitting_title",
+    description = "#binds_sitting_desc"
 })
 
 SETTINGS.binds.Add("radialmenu", KEY_H, {
-    name = "Кнопка меню действий",
-    title = "Меню действий",
-    description = "Кнопка которая открываем интерфейс с разными взаимодействиями"
+    name = "#binds_radialmenu_name",
+    title = "#binds_radialmenu_title",
+    description = "#binds_radialmenu_desc"
 })
 
 SETTINGS.binds.Add("spectating", KEY_B, {
-    name = "Режим наблюдения",
-    title = "Режим наблюдения",
-    description = "Кнопка, которая отвечает за вход/выход из режима наблюдения",
+    name = "#binds_spectating_name",
+    title = "#binds_spectating_title",
+    description = "#binds_spectating_desc",
     IsHidden = function(client)
         return client:IsAdmin()
     end
 })
 
 SETTINGS.binds.Add("prone", KEY_SLASH, {
-    name = "Лечь на землю",
-    title = "Лечь на землю",
-    description = "Кнопка, которая отвечает за вход/выход из режима ползания"
+    name = "#binds_prone_name",
+    title = "#binds_prone_title",
+    description = "#binds_prone_desc"
 })
 
 SETTINGS.binds.Add("closerlook", KEY_LALT, {
-    name = "Присмотреться",
-    title = "Присмотреться",
-    description = "Возможность приблизить изображение когда вы держите ключи или руки"
+    name = "#binds_closerlook_name",
+    title = "#binds_closerlook_title",
+    description = "#binds_closerlook_desc"
 })

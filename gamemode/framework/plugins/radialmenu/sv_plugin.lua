@@ -164,8 +164,8 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
     local uniqueID = "RadialMenu:Exchange_" .. util.SHA1(clientSteamID .. targetSteamID)
     if timer.Exists(uniqueID) then return end
 
-    client:ChatNotify("Вы предложили обмен " .. targetName .. ".")
-    target:ChatNotify(clientName .. " предложил вам обмен!")
+    client:ChatNotify(L(client, "#notify_you_offered_exchange", targetName))
+    target:ChatNotify(L(target, "#notify_offered_exchange", clientName))
 
     local function remove()
         hook.Remove("InventoryBase:StopReceiving", uniqueID)
@@ -185,7 +185,7 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
         if !IsValid(target) then return remove() end
 
         local dist = client:GetPos():DistToSqr(target:GetPos())
-        if dist >= 10000 then client:ChatNotify("Предложение обмена было отменено! " .. targetName .. " находится слишком далеко.") return remove() end
+        if dist >= 10000 then client:ChatNotify(L(client, "#notify_exchange_canceled", targetName)) return remove() end
 
         if client.ExchangeID == targetSteamID and target.ExchangeID == clientSteamID then
             remove()

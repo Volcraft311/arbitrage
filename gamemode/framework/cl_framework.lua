@@ -383,7 +383,7 @@ local ActionPressIDList = {
             end
         end
 
-        if !monopad then return Arbitrage.commands.Notify(nil, "#no_have_monopad") end
+        if !monopad then return LocalPlayer():ChatNotify("#no_have_monopad") end
 
         local weapon = findClass("academy_monopad")
         if weapon and !Arbitrage.lawEnable then
@@ -508,7 +508,7 @@ end)
 local function DingDongBingBong()
     timer.Simple(2, function() -- Исправление проблемы с текстом
         local data = Arbitrage.IsDay() and "#day_notification" or "#night_notification"
-        Arbitrage.notify.NotifyChat(data)
+        LocalPlayer():ChatNotify(data)
 
         if !Arbitrage.lawEnable then
             asterionlib.EmitSound("dingdong.wav")

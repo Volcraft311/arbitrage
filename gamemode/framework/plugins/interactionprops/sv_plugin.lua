@@ -17,14 +17,14 @@ local PLUGIN = PLUGIN
 function PLUGIN:SetEntityInteraction(entity, data)
     entity.Interaction = data
 
-    return "Взаимодействие успешна была присвоино " .. tostring(entity) .. "."
+    return "#tool_interaction_interact_set_entity " .. tostring(entity) .. "."
 end
 
 function PLUGIN:DeleteEntityInteraction(entity)
     if !entity:IsInteraction() then return end
     entity.Interaction = nil
 
-    return "Взаимодействие успешна было удалена с " .. tostring(entity) .. "."
+    return "#tool_interaction_interact_remove_entity " .. tostring(entity) .. "."
 end
 
 function PLUGIN:IsEntityInteraction(entity)
@@ -45,7 +45,7 @@ end
 
 function PLUGIN:RightClick(data)
     if !data then return end
-    if !IsValid(data.entity) then return "Не валидное Entity!" end
+    if !IsValid(data.entity) then return "#notify_not_valid_entity" end
 
     return data.entity:DeleteInteraction()
 end
@@ -81,8 +81,8 @@ end
 
 
 netstream.Hook("Interaction:LeftClick", function(client, data, entity)
-    if !client:IsUsesTool("Interaction Tool") then return client:ChatNotify("Вы не используете Interaction Tool!") end
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !client:IsUsesTool("Interaction Tool") then return client:ChatNotify("#tool_interaction_not_use_tool") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     PLUGIN:LeftClick(client, data, entity)
 end)

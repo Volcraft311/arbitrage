@@ -70,13 +70,35 @@ RegisterCommand("spectate", "#command_spectate", nil, {"player"}, true)
 netstream.Hook("arb.ChatNotify", function(data)
     if !data then return end
 
-    Arbitrage.notify.NotifyChat(data)
+    LocalPlayer():ChatNotify(data)
 end)
+
+local function notify(data)
+    if !data then return end
+
+    if !istable(data) then
+        data = {data}
+    end
+
+    for k, v in ipairs(data) do
+        if isstring(v) then
+            data[k] = F(v)
+        end
+    end
+
+    chat.AddText(Color(255, 61, 96), "| ", color_white, unpack(data))
+end
 
 function Arbitrage.commands.Notify(client, ...)
     if client == LocalPlayer() or client == nil then
         local data = {...}
 
-        Arbitrage.notify.NotifyChat(data)
+        notify(data)
     end
+end
+
+local PLAYER = FindMetaTable("Player")
+
+function PLAYER:ChatNotify(...)
+    Arbitrage.commands.Notify(self, ...)
 end

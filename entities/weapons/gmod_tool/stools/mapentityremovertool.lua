@@ -92,10 +92,10 @@ function TOOL:LeftClick()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     local id = entity:MapCreationID()
-    if id == -1 then return client:ChatNotify("Данный объект не создан миром!") end
+    if id == -1 then return client:ChatNotify("#notify_entity_not_created_world") end
 
     netstream.Start(client, "MapEntityRemover:Add", entity:EntIndex(), id)
 end
@@ -106,7 +106,7 @@ function TOOL:Reload()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     netstream.Start(client, "MapEntityRemover:Remove", entity:EntIndex())
 end

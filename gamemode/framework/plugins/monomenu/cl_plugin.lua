@@ -766,7 +766,7 @@ local function getActionList(clientinfo)
                         data = function()
                             table.insert(PLUGIN.entityList, m_steamid)
 
-                            Arbitrage.notify.NotifyChat("#monomenu_ply_backlightturnedon " .. client:FullName())
+                            LocalPlayer():ChatNotify("#monomenu_ply_backlightturnedon " .. client:FullName())
                         end,
                         check = function()
                             local bShow = false
@@ -787,7 +787,7 @@ local function getActionList(clientinfo)
                                 if v == m_steamid then
                                     table.remove(PLUGIN.entityList, k)
 
-                                    Arbitrage.notify.NotifyChat("#monomenu_ply_backlightturnedoff " .. client:FullName())
+                                    LocalPlayer():ChatNotify("#monomenu_ply_backlightturnedoff " .. client:FullName())
                                 end
                             end
                         end,

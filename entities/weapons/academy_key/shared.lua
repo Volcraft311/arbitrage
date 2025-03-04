@@ -134,14 +134,14 @@ function SWEP:InteractionDoor(bClose)
         local doorData = FindDoorData(door)
 
         local bHaveKeys = FindKey(client, doorData, door)
-        if !bHaveKeys then return Arbitrage.commands.Notify(client, "#academy_key_no_keys") end
+        if !bHaveKeys then return client:ChatNotify("#academy_key_no_keys") end
 
         if !bClose and !door:GetNWBool("Locked") then
-            return Arbitrage.commands.Notify(client, "#academy_key_door_already_open")
+            return client:ChatNotify("#academy_key_door_already_open")
         end
 
         if bClose and door:GetNWBool("Locked") then
-            return Arbitrage.commands.Notify(client, "#academy_key_door_already_close")
+            return client:ChatNotify("#academy_key_door_already_close")
         end
 
         DoorAction(client, door, bClose)

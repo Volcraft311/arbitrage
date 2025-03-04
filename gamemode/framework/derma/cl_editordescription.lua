@@ -85,7 +85,7 @@ function PANEL:Init()
         end)
 
         netstream.Start("arb.EditDescription", self.descriptionEntry:GetValue())
-        Arbitrage.notify.NotifyChat("#description_self_success")
+        LocalPlayer():ChatNotify("#description_self_success")
     end
 end
 

@@ -21,22 +21,6 @@ function Arbitrage.notify.Add(data, warning)
     notify:SetWarning(warning)
 end
 
-function Arbitrage.notify.NotifyChat(data)
-    if !data then return end
-
-    if !istable(data) then
-        data = {data}
-    end
-
-    for k, v in ipairs(data) do
-        if isstring(v) then
-            data[k] = F(v)
-        end
-    end
-
-    chat.AddText(Color(255, 61, 96), "| ", color_white, unpack(data))
-end
-
 netstream.Hook("arb.Notify", function(data, warning)
     if !data then return end
 

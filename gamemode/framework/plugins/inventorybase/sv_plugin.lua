@@ -131,7 +131,7 @@ netstream.Hook("InventoryBase:TransferItem", function(client, itemID, invID, x, 
     local errNotify = item:Transfer(invID, x, y)
 
     if errNotify then
-        return Arbitrage.commands.Notify(client, errNotify)
+        return client:ChatNotify(errNotify)
     else
         local inventoryPlayer = inventoryTransfer:GetOwner()
 
@@ -163,7 +163,7 @@ netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
 
     local data = client:GetLocalVar("fast_slot_" .. slotID)
 
-    if !item.UnEquip or !item.Equip then return Arbitrage.commands.Notify(client, "Этот предмет нельзя экипировать!") end
+    if !item.UnEquip or !item.Equip then return client:ChatNotify("Этот предмет нельзя экипировать!") end
 
     item:UnEquip(client, item)
 
@@ -217,7 +217,7 @@ netstream.Hook("Inventory:UnequipAmmo", function(client, id, amount)
     end
 
     client:RemoveAmmo(amount, name)
-    client:ChatNotify("Вы успешно вытащили " .. amount .. " патрон из запаса для " .. name .. "!")
+    client:ChatNotify(L(client, "#notify_unequip_ammo", amount, name))
 end)
 
 netstream.Hook("InventoryBase:ItemUnStack", function(client, itemID, invID, value, x, y)

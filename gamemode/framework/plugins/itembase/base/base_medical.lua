@@ -175,7 +175,7 @@ BASE:AddAction("Использовать", {
         local st, msg = RecoveryFunc(item, item.player)
         if st == true then return
         elseif st == false and msg then
-            Arbitrage.commands.Notify(client, msg)
+            client:ChatNotify(msg)
         end
 
         return false
@@ -208,7 +208,7 @@ BASE:AddAction("Использовать на другом игроке", {
         local st, msg = RecoveryFunc(item, target)
         if st == true then return
         elseif st == false and msg then
-            Arbitrage.commands.Notify(client, msg)
+            client:ChatNotify(msg)
         end
 
         return false

@@ -183,7 +183,7 @@ do
             local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
 
             client:SetModel(model)
-            Arbitrage.commands.Notify(client, isGenocide and "#notify_change_personality_toko" or "#notify_change_personality_genocide")
+            client:ChatNotify(isGenocide and "#notify_change_personality_toko" or "#notify_change_personality_genocide")
 
             return false
         end,
@@ -211,7 +211,7 @@ do
             local monopad = MonoPad:New(item:GetID())
             monopad:SetOwner(client)
 
-            client:ChatNotify("Данный монопад еще никто не запускал! Вы были установлены как его владелец.")
+            client:ChatNotify("#notify_monopad_set_owner")
             item.stored = monopad
         end
 
@@ -253,7 +253,7 @@ local function cuff(item, ropeLength)
     local client = item.player
 
     local target = findTarget(client)
-    if !IsValid(target) then Arbitrage.commands.Notify(client, "#chat_chatbox_unknown_player") return false end
+    if !IsValid(target) then client:ChatNotify("#chat_chatbox_unknown_player") return false end
 
     Arbitrage.action.ActionRun(target, "#action_being_cuff", cuffTime, function()
         if findTarget(client) != target then return true end

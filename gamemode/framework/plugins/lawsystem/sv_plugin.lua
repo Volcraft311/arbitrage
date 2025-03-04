@@ -114,7 +114,7 @@ concommand.Add("arb_interruption_cd", function(client, cmd, args)
     if !time then return end
 
     PLUGIN.InterruptionCD = time
-    client:ChatNotify("Вы изменили время прерывания камеры на суде на " .. time .. " секунд!")
+    client:ChatNotify(L(client, "#notify_changed_camera_interruption", time))
 end)
 
 function Arbitrage:StartLaw()
@@ -449,7 +449,7 @@ netstream.Hook("arb.StopRebuttalShowdowns", function(client)
 
         for _client in pairs(PLUGIN.RS_players or {}) do
             if _client != client then
-                _client:ChatNotify("Второй игрок проголосовал за остановку дебатов!")
+                _client:ChatNotify("#notify_player_two_voted_end_debate")
             end
         end
     end

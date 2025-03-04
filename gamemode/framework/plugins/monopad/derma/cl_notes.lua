@@ -65,7 +65,7 @@ function PANEL:Init()
 				self:Rebuild()
 			end)
 
-			Arbitrage.notify.NotifyChat("#monopad_notes_success")
+			LocalPlayer():ChatNotify("#monopad_notes_success")
 		end, nil, L("#monopad_notes_create"), L("#monopad_notes_cancel"))
 		DermaStringRequest.startTime = SysTime()
 		DermaStringRequest:SetAlpha(0)
@@ -210,7 +210,7 @@ function PANEL:Init()
 		end)
 
 		asterionlib.EmitSound(MonoPad.sounds.message_sent)
-		Arbitrage.notify.NotifyChat("#monopad_notes_deleted")
+		LocalPlayer():ChatNotify("#monopad_notes_deleted")
 	end
 
 	local font = MonoPad:GetFont("notes_description")
@@ -434,7 +434,7 @@ function PANEL:Init()
 			end
 		end)
 
-		Arbitrage.notify.NotifyChat("#monopad_notes_edited")
+		LocalPlayer():ChatNotify("#monopad_notes_edited")
 	end
 end
 

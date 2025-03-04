@@ -21,7 +21,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             client.moderationOldPos = client:GetPos()
 
@@ -39,7 +39,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             target.moderationOldPos = target:GetPos()
 
@@ -57,7 +57,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             target.moderationOldPos = target:GetPos()
 
@@ -80,7 +80,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target, message)
-            if client == target then return Arbitrage.commands.Notify(client, "#command_send_message_yourself") end
+            if client == target then return client:ChatNotify("#command_send_message_yourself") end
 
             Arbitrage.chat.SendCommand("pm", client, target, message)
         end,
@@ -97,7 +97,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, message)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 Arbitrage.chat.SendCommand("admin", client, message)
             end
@@ -114,7 +114,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, message)
-                if client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_pm_already_admin") end
+                if client:IsAdmin() then return client:ChatNotify("#command_pm_already_admin") end
 
                 Arbitrage.chat.SendCommand("help", client, message)
                 netstream.Start(player.GetAdmins(), "Moderation:HelpTarget", client:SteamID())
@@ -131,8 +131,8 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
-            if !target.moderationOldPos then return Arbitrage.commands.Notify(client, "#command_tp_no_return_pos") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
+            if !target.moderationOldPos then return client:ChatNotify("#command_tp_no_return_pos") end
 
             target:SetPos(target.moderationOldPos)
             target:UnStuck()
@@ -143,18 +143,18 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {},
             OnAction = function(client)
-                if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "#command_no_have_static_rank") end
-                if client:GetStaticUserGroup() == client:GetDynamicUserGroup() then return Arbitrage.commands.Notify(client, "#command_have_static_rank") end
+                if client:GetStaticUserGroup() == "user" then return client:ChatNotify("#command_no_have_static_rank") end
+                if client:GetStaticUserGroup() == client:GetDynamicUserGroup() then return client:ChatNotify("#command_have_static_rank") end
 
                 client:Give("weapon_physgun")
                 client:Give("gmod_tool")
 
                 for k, v in ipairs(player.GetAdmins()) do
-                    Arbitrage.commands.Notify(v, L(v, "#command_notify_return_static_rank", client:FullName()))
+                    v:ChatNotify(L(v, "#command_notify_return_static_rank", client:FullName()))
                 end
 
                 client:SetDynamicToStaticUserGroup()
-                Arbitrage.commands.Notify(client, "#command_notify_give_static_rank")
+                client:ChatNotify("#command_notify_give_static_rank")
             end
         })
     end
@@ -163,8 +163,8 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {},
             OnAction = function(client)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
-                if client:GetStaticUserGroup() == "user" then return Arbitrage.commands.Notify(client, "#command_no_have_static_rank") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
+                if client:GetStaticUserGroup() == "user" then return client:ChatNotify("#command_no_have_static_rank") end
 
                 client:StripWeapon("weapon_physgun")
                 client:StripWeapon("gmod_tool")
@@ -172,10 +172,10 @@ timer.Simple(1, function()
                 client:SetDynamicUserGroup("user")
 
                 for k, v in ipairs(player.GetAdmins()) do
-                    Arbitrage.commands.Notify(v, L(v, "#command_notify_take_off_static_rank", client:FullName()))
+                    v:ChatNotify(L(v, "#command_notify_take_off_static_rank", client:FullName()))
                 end
 
-                Arbitrage.commands.Notify(client, "#command_notify_take_static_rank")
+                client:ChatNotify("#command_notify_take_static_rank")
             end
         })
     end
@@ -195,7 +195,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, target, value)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 target:SetHealth(value)
             end
@@ -217,7 +217,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, target, value)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 target:SetArmor(value)
             end
@@ -238,7 +238,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target, value)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             Arbitrage.statistics.Set(target, "Hunger", value)
         end
@@ -258,7 +258,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target, value)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             Arbitrage.statistics.Set(target, "Thirst", value)
         end
@@ -278,7 +278,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target, value)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             Arbitrage.statistics.Set(target, "Sleep", value)
         end
@@ -287,7 +287,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("cleardecals", {
         arguments = {},
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             BroadcastLua([[RunConsoleCommand("r_cleardecals")]])
         end
@@ -302,7 +302,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             target:SetVelocity(Vector(math.random(-225, 225), math.random(-225, 225), 10))
         end
@@ -318,7 +318,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, target)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 target:Kill()
             end
@@ -340,7 +340,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, target, delay)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 delay = delay or 999999
                 target:Ignite(delay)
@@ -358,7 +358,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, target)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 target:Extinguish()
             end
@@ -368,7 +368,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("freezeprops", {
         arguments = {},
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             for k, v in ipairs(ents.FindByClass("prop_physics")) do
                 local physicsObject = v:GetPhysicsObject()
@@ -390,7 +390,7 @@ timer.Simple(1, function()
                 },
             },
             OnAction = function(client, map)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 map = map:lower()
                 game.ConsoleCommand("changelevel " .. map .. "\n")
@@ -402,9 +402,9 @@ timer.Simple(1, function()
         Arbitrage.commands.Add(command, {
             arguments = {},
             OnAction = function(client)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
-                Arbitrage.commands.Notify(client, "#command_list_all_maps")
+                client:ChatNotify("#command_list_all_maps")
 
                 local maps = file.Find( "maps/*.bsp", "GAME" )
                 for k, v in ipairs(maps) do
@@ -430,7 +430,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, target, reason)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             reason = reason or "You have been kicked by the server administrator!"
             target:Kick(reason)
@@ -446,7 +446,7 @@ timer.Simple(1, function()
             },
         },
         OnAction = function(client, command)
-            if !client:IsSuperAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsSuperAdmin() then return client:ChatNotify("#command_no_permission") end
 
             command = string.Explode(" ", command)
             asterionlib.RunConsoleCommand(unpack(command))
@@ -462,7 +462,7 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             local id = target:Team()
             local character = Character.team:GetByID(id)
@@ -491,7 +491,7 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             Character.team:Join(target, target:Team(), true)
         end
@@ -511,7 +511,7 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target, model)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             target:SetModel(model)
         end
@@ -531,10 +531,10 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target, delay)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             for k, v in ipairs(player.GetAdmins()) do
-                Arbitrage.commands.Notify(v, L(v, "#command_give_admin_rank", client:FullName(), target:FullName(true), delay))
+                v:ChatNotify(L(v, "#command_give_admin_rank", client:FullName(), target:FullName(true), delay))
             end
 
             local time = asterionlib.IsoDurationToSeconds(delay)
@@ -553,16 +553,16 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
-            if !target:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_user_no_have_admin") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
+            if !target:IsAdmin() then return client:ChatNotify("#command_user_no_have_admin") end
 
             target:SetDynamicUserGroup("user")
 
             for k, v in ipairs(player.GetAdmins()) do
-                Arbitrage.commands.Notify(v, L(v, "#command_take_admin_rank", client:FullName(), target:FullName(true)))
+                v:ChatNotify(L(v, "#command_take_admin_rank", client:FullName(), target:FullName(true)))
             end
 
-            Arbitrage.commands.Notify(target, "#command_notify_take_guard_rank")
+            target:ChatNotify("#command_notify_take_guard_rank")
         end
     })
 
@@ -575,8 +575,8 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, delay)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
-            if bServerRestart then return Arbitrage.commands.Notify(client, "#command_restart_request_received") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
+            if bServerRestart then return client:ChatNotify("#command_restart_request_received") end
 
             delay = delay or 30
             delay = math.Clamp(delay, 20, 600)
@@ -622,15 +622,15 @@ timer.Simple(1, function()
             end)
 
             bServerRestart = true
-            Arbitrage.commands.Notify(client, "#command_restart_request_sent")
+            client:ChatNotify("#command_restart_request_sent")
         end
     })
 
     Arbitrage.commands.Add("unrestartserver", {
         arguments = {},
         OnAction = function(client, delay)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
-            if !bServerRestart then return Arbitrage.commands.Notify(client, "#command_restart_no_request_received") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
+            if !bServerRestart then return client:ChatNotify("#command_restart_no_request_received") end
 
             local function notifyAll(data, ...)
                 for k, v in ipairs(player.GetAll()) do
@@ -668,7 +668,7 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             target:Freeze(true)
         end
@@ -683,7 +683,7 @@ timer.Simple(1, function()
             }
         },
         OnAction = function(client, target)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             target:Freeze(false)
         end
@@ -692,7 +692,7 @@ timer.Simple(1, function()
     Arbitrage.commands.Add("removesoundscape", {
         arguments = {},
         OnAction = function(client)
-            if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+            if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
             for k, v in ipairs(ents.GetAll()) do
                 if v:GetClass() == "env_soundscape" then
@@ -720,7 +720,7 @@ timer.Simple(1, function()
                 }
             },
             OnAction = function(client, target)
-                if !client:IsAdmin() then return Arbitrage.commands.Notify(client, "#command_no_permission") end
+                if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
                 target:StripWeapons()
                 target:Give("academy_first")

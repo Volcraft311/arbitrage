@@ -124,7 +124,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
 
     for k, v in ipairs(player.GetAll()) do
         if Persistent:AllowLogFindCorpse(v) then
-            Arbitrage.commands.Notify(v, L(v, "#persistent_found_corpse", client:Name(), client:SteamName(), tostring(entity)))
+            v:ChatNotify(L(v, "#persistent_found_corpse", client:Name(), client:SteamName(), tostring(entity)))
         end
     end
 

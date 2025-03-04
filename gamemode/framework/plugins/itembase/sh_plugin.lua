@@ -73,7 +73,7 @@ function ItemBase.GetBase(base)
 
             local notify = client:GetInventory():AddItem(item:GetID())
             if notify then
-                Arbitrage.commands.Notify(client, notify)
+                client:ChatNotify(notify)
             else
                 if !item.bNoAnim then
                     ItemBase.AnimTakeItem(nil, client, entityPos, entityAng, entityModel)

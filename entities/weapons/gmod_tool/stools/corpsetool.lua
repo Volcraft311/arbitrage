@@ -37,7 +37,7 @@ function TOOL:LeftClick()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     if !entity:IsCorpse() then
         local convar = tostring(client:GetTool():GetClientInfo("steamid"))
@@ -48,9 +48,9 @@ function TOOL:LeftClick()
         end
 
         entity:SetCorpse(steamid)
-        client:ChatNotify("Вы успешно сделали из " .. tostring(entity) .. " труп.")
+        client:ChatNotify(L(client, "#notify_entity_set_corpse", tostring(entity)))
     else
-        client:ChatNotify(tostring(entity) .. " уже является трупом!")
+        client:ChatNotify(L(client, "#notify_entity_is_corpse", tostring(entity)))
     end
 end
 
@@ -60,13 +60,13 @@ function TOOL:RightClick()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     if entity:IsCorpse() then
         entity:SetCorpse(nil)
-        client:ChatNotify("Вы успешно убрали из " .. tostring(entity) .. " труп.")
+        client:ChatNotify(L(client, "#notify_entity_remove_corpse", tostring(entity)))
     else
-        client:ChatNotify(tostring(entity) .. " не является трупом!")
+        client:ChatNotify(L(client, "#notify_entity_not_corpse", tostring(entity)))
     end
 end
 

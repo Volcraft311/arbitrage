@@ -104,7 +104,7 @@ function PANEL:Init()
         local func = function(data)
             netstream.Start("ScriptMusic:ChangeTheme", data, true)
 
-            Arbitrage.notify.NotifyChat("Вы поменяли тему на: " .. data)
+            LocalPlayer():ChatNotify("Вы поменяли тему на: " .. data)
         end
 
         local menu = DermaMenu()

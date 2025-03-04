@@ -139,7 +139,7 @@ Arbitrage.commands.Add("ooc", {
     },
     OnAction = function(client, text)
         if Arbitrage.OffOOC() then
-            return Arbitrage.commands.Notify(client, "#chat_ooc_chat_disable")
+            return client:ChatNotify("#chat_ooc_chat_disable")
         end
 
         Arbitrage.chat.SendCommand("ooc", client, text)
@@ -197,11 +197,11 @@ Arbitrage.commands.Add("sg", {
         local client_name = client:SteamName()
         local client_steamid = client:SteamID()
 
-        Arbitrage.commands.Notify(client, "#sg_processing")
+        client:ChatNotify("#sg_processing")
 
         local b = ("Ответ администратору **%s**(%s)"):format(client_name, client_steamid)
         asterionlib.sg:Capture(b, target, function(url)
-            Arbitrage.commands.Notify(client, L(client, "#sg_url", url))
+            client:ChatNotify(L(client, "#sg_url", url))
 
             client:SendLua([[
                 local image = nil
@@ -246,7 +246,7 @@ Arbitrage.commands.Add("settime", {
         local value = asterionlib.IsoDurationToSeconds(time)
 
         SetNetVar("arb.Time", value)
-        Arbitrage.commands.Notify(client, L(client, "#settime_success", time))
+        client:ChatNotify(L(client, "#settime_success", time))
     end
 })
 
@@ -292,9 +292,9 @@ Arbitrage.commands.Add("unstuck", {
         if client:IsStuck() then
             client:UnStuck()
 
-            Arbitrage.commands.Notify(client, "#stuck_teleport")
+            client:ChatNotify("#stuck_teleport")
         else
-            Arbitrage.commands.Notify(client, "#stuck_no_stucked")
+            client:ChatNotify("#stuck_no_stucked")
         end
     end
 })
@@ -303,7 +303,7 @@ Arbitrage.commands.Add("exitaction", {
     arguments = {},
     OnAction = function(client)
         local bThirdPerson = select(3, client:GetAction())
-        if !bThirdPerson then return Arbitrage.commands.Notify(client, "#not_in_animation") end
+        if !bThirdPerson then return client:ChatNotify("#not_in_animation") end
 
         client:ExitAction(true)
     end
@@ -319,13 +319,13 @@ Arbitrage.commands.Add("action", {
     },
     OnAction = function(client, uniqueID)
         local bThirdPerson = select(3, client:GetAction())
-        if bThirdPerson then return Arbitrage.commands.Notify(client, "#already_in_animation") end
+        if bThirdPerson then return client:ChatNotify("#already_in_animation") end
 
         local bOnGround = client:OnGround()
-        if !bOnGround then return Arbitrage.commands.Notify(client, "#must_ground_active_animation") end
+        if !bOnGround then return client:ChatNotify("#must_ground_active_animation") end
 
         local bLawEnable = Arbitrage.lawEnable
-        if bLawEnable then return Arbitrage.commands.Notify(client, "#can_run_animation_during_trial") end
+        if bLawEnable then return client:ChatNotify("#can_run_animation_during_trial") end
 
         client:StartAction(uniqueID)
     end
@@ -341,7 +341,7 @@ Arbitrage.commands.Add("sitting", {
     },
     OnAction = function(client, id)
         local bSitting = client.GetSitting and client:GetSitting()
-        if bSitting then return Arbitrage.commands.Notify(client, "#stand_up_change_sitting_anim") end
+        if bSitting then return client:ChatNotify("#stand_up_change_sitting_anim") end
 
         id = tonumber(id)
 
@@ -383,7 +383,7 @@ Arbitrage.commands.Add("mood", {
                 end
             end
 
-            Arbitrage.commands.Notify(client, L(client, "#setmood_success", name, id))
+            client:ChatNotify(L(client, "#setmood_success", name, id))
         end
     end,
     bNoLog = true
@@ -393,10 +393,10 @@ Arbitrage.commands.Add("lookaround", {
     arguments = {},
     OnAction = function(client)
         local bThirdPerson = select(3, client:GetAction())
-        if bThirdPerson then return Arbitrage.commands.Notify(client, "#are_in_animation") end
+        if bThirdPerson then return client:ChatNotify("#are_in_animation") end
 
         local bSitting = client.GetSitting and client:GetSitting()
-        if bSitting then return Arbitrage.commands.Notify(client, "#stand_up_examine") end
+        if bSitting then return client:ChatNotify("#stand_up_examine") end
 
         client:SetNetVar("action", {
             -1,
@@ -421,7 +421,7 @@ Arbitrage.commands.Add("settimespeed", {
         speed = tonumber(speed)
         Arbitrage.TickTime = speed
 
-        Arbitrage.commands.Notify(client, L(client, "#settimespeed_success", speed))
+        client:ChatNotify(L(client, "#settimespeed_success", speed))
     end
 })
 
@@ -1034,7 +1034,7 @@ netstream.Hook("arb.HideState", function(client, state)
     local bHide = state and true or false
 
     client:SetNetVar("hideStatus", bHide)
-    Arbitrage.commands.Notify(client, bHide and "#hide_their_condition" or "#unhide_their_condition")
+    client:ChatNotify(bHide and "#hide_their_condition" or "#unhide_their_condition")
 end)
 
 netstream.Hook("arb.HideName", function(client)
@@ -1042,7 +1042,7 @@ netstream.Hook("arb.HideName", function(client)
     local bHide = !state
 
     client:SetNetVar("hideName", bHide)
-    Arbitrage.commands.Notify(client, bHide and "#hide_their_name" or "#unhide_their_name")
+    client:ChatNotify(bHide and "#hide_their_name" or "#unhide_their_name")
 end)
 
 netstream.Hook("arb.EditDescription", function(client, data)
@@ -1095,8 +1095,9 @@ local function ChangeTokoType(client, idx)
         local isGenocide = client:IsTokoGenocide()
         local model = isGenocide and Arbitrage.TokoModel or Arbitrage.TokoGenocideModel
 
-        Arbitrage.commands.Notify(client, isGenocide and "#notify_change_personality_toko" or "#notify_change_personality_genocide")
+        client:ChatNotify(isGenocide and "#notify_change_personality_toko" or "#notify_change_personality_genocide")
         Arbitrage.commands.RunCommand(client, "me", {"#toko_changed_identity " .. (isGenocide and "#toko_name" or "#genocide_name") .. "."})
+
         client:SetModel(model)
 
         ChangeTokoType(client, idx)
@@ -1110,12 +1111,12 @@ netstream.Hook("arb.TokoSneezing", function(client)
     if timer.Exists(idx) then
         timer.Remove(idx)
 
-        return Arbitrage.commands.Notify(client, "#notify_toko_turned_off_shift")
+        return client:ChatNotify("#notify_toko_turned_off_shift")
     end
 
     ChangeTokoType(client, idx)
 
-    Arbitrage.commands.Notify(client, "#notify_toko_turned_on_shift")
+    client:ChatNotify("#notify_toko_turned_on_shift")
 end)
 
 netstream.Hook("arb.Sleeping", function(client)

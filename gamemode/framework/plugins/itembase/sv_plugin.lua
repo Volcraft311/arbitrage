@@ -171,13 +171,13 @@ netstream.Hook("ItemBase:GiveItem", function(client, target, uniqueID)
     local errNotify = item:Transfer(inventory:GetID())
 
     if errNotify then
-        return Arbitrage.commands.Notify(client, errNotify)
+        return client:ChatNotify(errNotify)
     end
 
-    Arbitrage.commands.Notify(client, "Вы успешно выдали '" .. item:GetName() .. "' игроку '" .. target:Name() .. "'!")
+    client:ChatNotify("Вы успешно выдали '" .. item:GetName() .. "' игроку '" .. target:Name() .. "'!")
 
     if client != target then
-        Arbitrage.commands.Notify(target, "Администратор выдал вам предмет '" .. item:GetName() .. "'!")
+        target:ChatNotify("Администратор выдал вам предмет '" .. item:GetName() .. "'!")
     end
 end)
 
@@ -263,7 +263,7 @@ netstream.Hook("ItemBase:CreationRegisterItem", function(client, data)
     itemslist[baseID] = itemslist[baseID] or {}
 
     if itemslist[baseID][uniqueID] or ItemBase.list[uniqueID] then
-        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " уже существует!")
+        return client:ChatNotify("Предмет с ID " .. uniqueID .. " уже существует!")
     end
 
     itemslist[baseID][uniqueID] = info
@@ -271,7 +271,7 @@ netstream.Hook("ItemBase:CreationRegisterItem", function(client, data)
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationRegisterItem(baseID, uniqueID, info)
 
-    Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был создан! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    client:ChatNotify("Предмет " .. uniqueID .. " успешно был создан! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
     AdminNotify:SendNotify("registeritem", client:FullName(), uniqueID)
 end)
 
@@ -284,11 +284,11 @@ netstream.Hook("ItemBase:CreationEditItem", function(client, data)
     itemslist[baseID] = itemslist[baseID] or {}
 
     if !itemslist[baseID][uniqueID] then
-        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
+        return client:ChatNotify("Предмет с ID " .. uniqueID .. " не существует!")
     end
 
     if !client:IsSuperAdmin() and itemslist[baseID][uniqueID].isprotect then
-        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " защищен!")
+        return client:ChatNotify("Предмет с ID " .. uniqueID .. " защищен!")
     end
 
     info.isprotect = false
@@ -298,7 +298,7 @@ netstream.Hook("ItemBase:CreationEditItem", function(client, data)
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationEditItem(uniqueID, info)
 
-    Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был обновлен! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    client:ChatNotify("Предмет " .. uniqueID .. " успешно был обновлен! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
     AdminNotify:SendNotify("edititem", client:FullName(), uniqueID)
 end)
 
@@ -311,11 +311,11 @@ netstream.Hook("ItemBase:CreationRemoveItem", function(client, baseID, uniqueID)
     itemslist[baseID] = itemslist[baseID] or {}
 
     if !itemslist[baseID][uniqueID] then
-        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
+        return client:ChatNotify("Предмет с ID " .. uniqueID .. " не существует!")
     end
 
     if !client:IsSuperAdmin() and itemslist[baseID][uniqueID].isprotect then
-        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " защищен!")
+        return client:ChatNotify("Предмет с ID " .. uniqueID .. " защищен!")
     end
 
     itemslist[baseID][uniqueID] = nil
@@ -323,7 +323,7 @@ netstream.Hook("ItemBase:CreationRemoveItem", function(client, baseID, uniqueID)
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationRemoveItem(uniqueID)
 
-    Arbitrage.commands.Notify(client, "Предмет " .. uniqueID .. " успешно был удален! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    client:ChatNotify("Предмет " .. uniqueID .. " успешно был удален! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
     AdminNotify:SendNotify("removeitem", client:FullName(), uniqueID)
 end)
 
@@ -337,7 +337,7 @@ netstream.Hook("ItemBase:CreationProtectItem", function(client, baseID, uniqueID
 
     local info = itemslist[baseID][uniqueID]
     if !info then
-        return Arbitrage.commands.Notify(client, "Предмет с ID " .. uniqueID .. " не существует!")
+        return client:ChatNotify("Предмет с ID " .. uniqueID .. " не существует!")
     end
 
     if info.isprotect == nil then
@@ -349,6 +349,6 @@ netstream.Hook("ItemBase:CreationProtectItem", function(client, baseID, uniqueID
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationProtectItem(uniqueID, info.isprotect)
 
-    Arbitrage.commands.Notify(client, "На предмет " .. uniqueID .. " была " .. (info.isprotect and "установлена" or "снята") .. " защита!")
+    client:ChatNotify("На предмет " .. uniqueID .. " была " .. (info.isprotect and "установлена" or "снята") .. " защита!")
     AdminNotify:SendNotify("protectitem", client:FullName(), uniqueID)
 end)

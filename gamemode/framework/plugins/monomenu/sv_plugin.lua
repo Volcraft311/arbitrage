@@ -351,7 +351,7 @@ local actionList = {
         target:SetNetVar("arbGlobalVoice", value)
 
         if client != target then
-            Arbitrage.commands.Notify(target, value and "monomenu_on_global_voice_chat" or "monomenu_off_global_voice_chat")
+            target:ChatNotify(value and "monomenu_on_global_voice_chat" or "monomenu_off_global_voice_chat")
         end
 
         AdminNotify:SendNotify("globalvoice", client:FullName(), target:FullName(), value)
@@ -368,7 +368,7 @@ local actionList = {
         end
 
         if client != target then
-            Arbitrage.commands.Notify(target, value and "#monomenu_ban_voice_chat" or "#monomenu_unban_voice_chat")
+            target:ChatNotify(value and "#monomenu_ban_voice_chat" or "#monomenu_unban_voice_chat")
         end
 
         AdminNotify:SendNotify("mutevoice", client:FullName(), target:FullName(), value)
@@ -381,7 +381,7 @@ local actionList = {
         target:SetNetVar("arb.MuteNonRPChat", value)
 
         if client != target then
-            Arbitrage.commands.Notify(target, value and "#monomenu_ban_nonrp_chat" or "#monomenu_unban_nonrp_chat")
+            target:ChatNotify(value and "#monomenu_ban_nonrp_chat" or "#monomenu_unban_nonrp_chat")
         end
 
         AdminNotify:SendNotify("mutenonrpchat", client:FullName(), target:FullName(), value)
@@ -400,7 +400,7 @@ local actionList = {
         target:SetNetVar("description", data)
 
         if client != target then
-            Arbitrage.commands.Notify(target, "#monomenu_description_change")
+            target:ChatNotify("#monomenu_description_change")
         end
 
         AdminNotify:SendNotify("setdescription", client:FullName(), target:FullName())
@@ -472,7 +472,7 @@ local actionList = {
         if !IsValid(target) then return end
 
         local inventory = target:GetInventory()
-        if !inventory then return Arbitrage.commands.Notify(client, "#monomenu_inventory_not_found") end
+        if !inventory then return client:ChatNotify("#monomenu_inventory_not_found") end
 
         local items = inventory:GetItems()
         for k, v in pairs(items) do
@@ -488,10 +488,10 @@ local actionList = {
     ["openinventory"] = function(client, target)
         if !IsValid(target) then return end
 
-        if client == target then return Arbitrage.commands.Notify(client, "#monomenu_inventory_own_open") end
+        if client == target then return client:ChatNotify("#monomenu_inventory_own_open") end
 
         local inventory = target:GetInventory()
-        if !inventory then return Arbitrage.commands.Notify(client, "#monomenu_inventory_not_found") end
+        if !inventory then return client:ChatNotify("#monomenu_inventory_not_found") end
 
         InventoryBase.Open(client, inventory:GetID(), target:Name())
 
@@ -501,7 +501,7 @@ local actionList = {
         if !IsValid(target) then return end
 
         local inventory = target:GetInventory()
-        if !inventory then return Arbitrage.commands.Notify(client, "#monomenu_inventory_not_found") end
+        if !inventory then return client:ChatNotify("#monomenu_inventory_not_found") end
 
         x, y = tonumber(x), tonumber(y)
 

@@ -184,7 +184,7 @@ Trigger:AddActionType({
         local delay = args[2]
 
         timer.Simple(delay or 0, function()
-            Arbitrage.commands.Notify(client, message)
+            client:ChatNotify(message)
         end)
     end
 })

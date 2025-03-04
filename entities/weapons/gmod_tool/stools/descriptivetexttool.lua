@@ -45,7 +45,7 @@ function TOOL:LeftClick()
 
     entity:SetDescriptiveText(client.DescriptiveTextDescription or "Ваш текст")
 
-    client:ChatNotify("Вы успешно установили свой текст в мире.")
+    client:ChatNotify("#notify_add_world_text")
 end
 
 function TOOL:RightClick()
@@ -61,10 +61,10 @@ function TOOL:RightClick()
         -- Обновляем так как entscollector сам обновляет только в случае создания Entity
         BroadcastLua([=[asterionlib.entscollector:UpdateTracks()]=])
 
-        client:ChatNotify("Вы успешно прикрепили свой текст к объекту " .. tostring(entity) .. ".")
+        client:ChatNotify("#notify_set_descriptivetext_entity " .. tostring(entity) .. ".")
 
         if entity:IsPlayer() then
-            entity:ChatNotify("Администратор прикрепил к вам текст: '" .. data .. "'!")
+            entity:ChatNotify("#notify_admin_set_descriptivetext '" .. data .. "'!")
         end
     end
 end
@@ -77,14 +77,14 @@ function TOOL:Reload()
 
     if IsValid(entity) and entity:GetNetVar("DescriptiveText") then
         entity:SetNetVar("DescriptiveText", nil)
-        client:ChatNotify("Вы успешно открепили свой текст от объекта.")
+        client:ChatNotify("#notify_remove_descriptivetext_entity")
 
         if entity:GetClass() == "arb_descriptivetext" then
             entity:Remove()
         end
 
         if entity:IsPlayer() then
-            entity:ChatNotify("Администратор убрал с вас текст!")
+            entity:ChatNotify("#notify_admin_remove_descriptivetext")
         end
     end
 end

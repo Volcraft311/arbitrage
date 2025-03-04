@@ -177,12 +177,12 @@ function TOOL:LeftClick(trace)
 
     local client = self:GetOwner()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     local id = entity:MapCreationID()
-    if id == -1 then return client:ChatNotify("Данный объект не создан миром!") end
+    if id == -1 then return client:ChatNotify("#notify_entity_not_created_world") end
 
-    if !entity:IsDoor() then return client:ChatNotify("Данный объект не является дверью!") end
+    if !entity:IsDoor() then return client:ChatNotify("#notify_entity_not_door") end
 
     local convar = tonumber(client:GetTool():GetClientInfo("maximumcharacters")) or 1
     netstream.Start(client, "DoorDistribution:Add", entity:EntIndex(), id, convar)
@@ -193,7 +193,7 @@ function TOOL:RightClick(trace)
 
     local client = self:GetOwner()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     netstream.Start(client, "DoorDistribution:Remove", entity:EntIndex())
 end
@@ -203,7 +203,7 @@ function TOOL:Reload(trace)
 
     local client = self:GetOwner()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
     netstream.Start(client, "DoorDistribution:Update")
 

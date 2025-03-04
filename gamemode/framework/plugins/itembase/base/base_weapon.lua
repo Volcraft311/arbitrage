@@ -108,7 +108,7 @@ function BASE:Equip(client, item, id)
 			local itemTable = ItemBase.instances[v.id]
 
 			if itemTable and itemTable.isWeapon and client.carryWeapons[class] and itemTable:GetData("equip") then
-				return Arbitrage.commands.Notify(client, "#weapon_already_equip")
+				return client:ChatNotify("#weapon_already_equip")
 			end
 		end
 	end
@@ -255,7 +255,7 @@ BASE:AddAction("Разоружить", {
 	    end
 
 	    item:SetData("ammoClip", 0)
-	    client:ChatNotify("Вы успешно вытащили патроны из " .. item:GetName() .. "!")
+	    client:ChatNotify(L(client, "#notify_unequip_ammo_weapon", item:GetName()))
 
 	    return false
 	end,

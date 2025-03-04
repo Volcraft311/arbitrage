@@ -37,10 +37,10 @@ function TOOL:LeftClick()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
-    if entity:GetClass() == "arb_item" then return client:ChatNotify("Данный объект уже является предметом!") end
-    if entity:IsPlayer() then return client:ChatNotify("Игрока нельзя превратить в предмет!") end
+    if entity:GetClass() == "arb_item" then return client:ChatNotify("#notify_entity_is_item") end
+    if entity:IsPlayer() then return client:ChatNotify("#notify_player_convert_item_error") end
 
     local base = "basic"
     local convar = tostring(client:GetTool():GetClientInfo("base"))
@@ -83,9 +83,9 @@ function TOOL:Reload()
     local client = self:GetOwner()
     local trace = client:GetEyeTrace()
     local entity = trace.Entity
-    if !IsValid(entity) then return client:ChatNotify("Не валидное Entity!") end
+    if !IsValid(entity) then return client:ChatNotify("#notify_not_valid_entity") end
 
-    if entity:GetClass() != "arb_item" then return client:ChatNotify("Данный объект не является предметом!") end
+    if entity:GetClass() != "arb_item" then return client:ChatNotify("#notify_entity_not_item") end
 
     local pos, ang, model = entity:GetPos(), entity:GetAngles(), entity:GetModel()
     entity:Remove()

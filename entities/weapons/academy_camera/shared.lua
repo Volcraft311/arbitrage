@@ -78,7 +78,7 @@ function SWEP:PrimaryAttack()
 	local client = self:GetOwner()
 	local cmd = client:GetCurrentCommand()
 	if cmd:KeyDown(IN_USE) then
-		Arbitrage.notify.NotifyChat("Вы " .. (self.Flash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
+		client:ChatNotify("Вы " .. (self.Flash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
 
 		self.Flash = !self.Flash
 	else

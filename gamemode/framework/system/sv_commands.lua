@@ -71,11 +71,11 @@ function Arbitrage.commands.RunCommand(client, command, data)
                     hook.Run("OnCommandRun", client, command, args)
                 end
             else
-                Arbitrage.commands.Notify(client, Arbitrage.commands.fault[state[3]], " ", Color(216, 61, 61), state[2], color_white, "!")
+                client:ChatNotify(Arbitrage.commands.fault[state[3]], " ", Color(216, 61, 61), state[2], color_white, "!")
             end
         end
     else
-        Arbitrage.commands.Notify(client, "#command_not_found")
+        client:ChatNotify("#command_not_found")
     end
 end
 

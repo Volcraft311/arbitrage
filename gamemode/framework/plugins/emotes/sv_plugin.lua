@@ -120,12 +120,12 @@ end
 function playerMeta:StartAction(uniqueID)
 	uniqueID = (tostring(uniqueID) or ""):lower()
 
-	if self.IsProne and self:IsProne() then return self:ChatNotify("Вы не можете запустить анимацию, когда вы лежите!") end
-	if self.GetSitting and self:GetSitting() then return self:ChatNotify("Вы не можете запустить анимацию, когда вы сидите!") end
-	if self:IsRagdolling() then return self:ChatNotify("Вы не можете запустить анимацию, когда вы без сознания!") end
+	if self.IsProne and self:IsProne() then return self:ChatNotify("#notify_animation_client_prone") end
+	if self.GetSitting and self:GetSitting() then return self:ChatNotify("#notify_animation_client_sit") end
+	if self:IsRagdolling() then return self:ChatNotify("#notify_animation_client_ragdoll") end
 
 	local data = Emotes.action.stored[uniqueID]
-	if !data then return self:ChatNotify("Данной анимации не существует!") end
+	if !data then return self:ChatNotify("#notify_animation_not_valid") end
 
 	local startSeq, startTime, normalSeq, normalTime, finishSeq, finishTime
 	if data.start then startSeq, startTime = data.start[1], data.start.duration end
@@ -143,7 +143,7 @@ function playerMeta:StartAction(uniqueID)
 
 		local bAllow = checking(self, name, duration)
 		if !bAllow then
-			return self:ChatNotify("Ваша модель не поддерживает данную анимацию!")
+			return self:ChatNotify("#notify_model_not_have_animation")
 		end
 	end
 

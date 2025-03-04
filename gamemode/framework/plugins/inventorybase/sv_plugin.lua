@@ -163,7 +163,7 @@ netstream.Hook("InventoryBase:EquipItem", function(client, slotID, itemID)
 
     local data = client:GetLocalVar("fast_slot_" .. slotID)
 
-    if !item.UnEquip or !item.Equip then return client:ChatNotify("Этот предмет нельзя экипировать!") end
+    if !item.UnEquip or !item.Equip then return client:ChatNotify("#notify_not_allow_equip") end
 
     item:UnEquip(client, item)
 

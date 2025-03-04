@@ -174,10 +174,10 @@ netstream.Hook("ItemBase:GiveItem", function(client, target, uniqueID)
         return client:ChatNotify(errNotify)
     end
 
-    client:ChatNotify("Вы успешно выдали '" .. item:GetName() .. "' игроку '" .. target:Name() .. "'!")
+    client:ChatNotify(L(client, "#notify_give_item", item:GetName(), target:Name()))
 
     if client != target then
-        target:ChatNotify("Администратор выдал вам предмет '" .. item:GetName() .. "'!")
+        target:ChatNotify(L(target, "#notify_admin_give_item", item:GetName()))
     end
 end)
 

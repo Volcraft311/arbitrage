@@ -78,7 +78,7 @@ function SWEP:PrimaryAttack()
 	local client = self:GetOwner()
 	local cmd = client:GetCurrentCommand()
 	if cmd:KeyDown(IN_USE) then
-		client:ChatNotify("Вы " .. (self.Flash and "включили" or "выключили") .. " вспышку от фотоаппарата!")
+		client:ChatNotify(L(client, "notify_camera_flashlight", self.Flash and "#notify_camera_flashlight_on" or "#notify_camera_flashlight_off"))
 
 		self.Flash = !self.Flash
 	else

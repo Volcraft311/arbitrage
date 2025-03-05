@@ -50,7 +50,7 @@ local categoryData = {
                     surface.DrawOutlinedRect(0, 0, w, h, 1)
 
                     local descHeight = draw.GetFontHeight("arb.Font_FuturaPTBook_7")
-                    local descriptionText = asterionlib.WrapText(data.name, W(140), "arb.Font_FuturaPTBook_7")
+                    local descriptionText = asterionlib.WrapText(F(data.name), W(140), "arb.Font_FuturaPTBook_7")
 
                     for i, _ in pairs(descriptionText) do
                         local y2 = descHeight * i - descHeight
@@ -163,7 +163,7 @@ function PANEL:Init()
             self.scrollTitle:SetAlpha(0)
             self.scrollTitle:AlphaTo(255, 0.5)
             self.scrollTitle.Paint = function(_, w, h)
-                draw.DrawText(L(v.name), "arb.Font_FuturaPTBook_10", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
+                draw.DrawText(F(v.name), "arb.Font_FuturaPTBook_10", w / 2, -5, Color(255, 255, 255, _.alpha), TEXT_ALIGN_CENTER)
             end
 
             self.scrollPanel = self.main:Add("DPanelList")
@@ -253,7 +253,7 @@ end
 function PANEL:SetEvidence(data)
     self.data = data
 
-    self.textPanel:SetValue(self.data.description)
+    self.textPanel:SetValue(F(self.data.description))
 end
 
 function PANEL:Paint(w, h)
@@ -265,7 +265,7 @@ function PANEL:Paint(w, h)
     surface.DrawRect(0, 0, 2, h)
     surface.DrawRect(w - 2, 0, 2, h)
 
-    draw.DrawText(L(self.data.name) or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), color_white, TEXT_ALIGN_CENTER)
+    draw.DrawText(F(self.data.name) or "", "arb.Font_FuturaPTBook_9", w / 2, H(40), color_white, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.EvidenceMenuSub", PANEL, "DFrame")

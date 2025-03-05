@@ -70,7 +70,7 @@ local function createItemButton(panel, id, path, name, data)
         icon = Material(path)
     end
 
-    local showText = Arbitrage.gui.lawaction.items[id] and "Предъвил: " .. Arbitrage.gui.lawaction.items[id] or "Вы не показывали этот предмет!"
+    local showText = Arbitrage.gui.lawaction.items[id] and "#law_presented " .. Arbitrage.gui.lawaction.items[id] or "#law_no_show_item"
 
     local itemButton = panel:Add("DButton")
     itemButton:SetText("")
@@ -176,12 +176,12 @@ local function createEvidenceButton(panel, id, time)
     if !Evidence:GetEvidence(id) then return end
     local evidenceMat, ribbonMat, name, data = getEvidence(id)
 
-    local showText = "Никто не показывал эту улику!"
-    local timeText = "Найдено в " .. Arbitrage.FormatTime(time)
+    local showText = "#law_nobody_showed_evidence"
+    local timeText = "#law_find_in " .. Arbitrage.FormatTime(time)
 
     local evidencesList = Arbitrage.GetShowEvidences()
     if evidencesList[id] then
-        showText = "Предъявил: " .. evidencesList[id][2]
+        showText = "#law_presented " .. evidencesList[id][2]
     end
 
     local evidenceButton = panel:Add("DButton")
@@ -248,7 +248,7 @@ local PLUGIN = PLUGIN
 
 local categoryData = {
     {
-        name = "Эмоции",
+        name = "#law_category_emotes",
         icon = "icon16/emoticon_grin.png",
         data = function(client, panel)
             local faction = Character.team:GetByID(client:Team())
@@ -308,10 +308,10 @@ local categoryData = {
         end
     },
     {
-        name = "Улики",
+        name = "#law_category_evidence",
         icon = "icon16/image.png",
         data = function(client, panel)
-            local showEvidencePanel = createCategory(panel, "Показанные улики")
+            local showEvidencePanel = createCategory(panel, "#law_button_all_show_evidence")
             for id, stored in pairs(Arbitrage.GetShowEvidences()) do
                 if Evidence:GetEvidence(id) then
                     createEvidenceButton(showEvidencePanel, id, stored[1])
@@ -332,9 +332,9 @@ local categoryData = {
                     end
 
                     local inflictorFaction = Character.team:GetByID(inflictorID)
-                    local name = inflictorFaction and inflictorFaction:GetName() or "Неизвестно"
+                    local name = inflictorFaction and inflictorFaction:GetName() or "#law_unknown"
 
-                    local categoryPanel = createCategory(panel, "Дело №" .. k .. ", " .. name)
+                    local categoryPanel = createCategory(panel, "#law_case " .. k .. ", " .. name)
                     for id in pairs(caseStored[6] or {}) do
                         local time = LocalPlayer():HasEvidence(id)
                         if !time then continue end
@@ -344,7 +344,7 @@ local categoryData = {
                 end
             end
 
-            local yourEvidencePanel = createCategory(panel, "Ваши улики")
+            local yourEvidencePanel = createCategory(panel, "#law_button_your_evidence")
             for id, time in pairs(client:GetEvidences()) do
                 local evidencesList = Arbitrage.GetShowEvidences()
                 local ev = evidencesList[id]
@@ -361,11 +361,11 @@ local categoryData = {
         end
     },
     {
-    	name = "Предметы",
+    	name = "#law_category_items",
     	icon = "icon16/package.png",
         data = function(client, panel)
-    		local showItemsPanel = createCategory(panel, "Показанные предметы")
-    		local yourItemsPanel = createCategory(panel, "Ваши предметы")
+    		local showItemsPanel = createCategory(panel, "#law_button_all_show_items")
+    		local yourItemsPanel = createCategory(panel, "#law_button_your_items")
 
             local inventory = client:GetInventory()
             local items = {}
@@ -466,22 +466,22 @@ function PANEL:Init()
 
         local t = (self.interruptionSize or 0) - RealTime()
         local c = Color(99, 17, 32)
-        local text = "Опровергнуть"
+        local text = "#law_button_refute"
 
         if !Arbitrage.OffRebuttalShowdown() then
             if !self.green then
                 if isActiveRS() then
-                    text = "Остановить Rebuttal Showdowns"
+                    text = "#law_button_stop_rebuttal"
 
                     if LocalPlayer():GetLocalVar("rs_stopvoting") then
-                        text = "Ожидаем второго участника"
+                        text = "#law_button_wait_secondary_player"
 
                         surface.SetDrawColor(111, 191, 83, 255 / 2)
                         surface.DrawRect(0, 0, w, h)
                     end
                 end
             else
-                text = "Rebuttal Showdowns"
+                text = "#law_button_rebuttal"
                 c = Color(111, 191, 83)
             end
         end
@@ -520,7 +520,7 @@ function PANEL:Init()
         surface.SetDrawColor(155, 35, 57, 255 * panel.alpha)
         surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-        draw.DrawText(L("Сфокусировать камеру на себя"), "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#law_button_focus_camera"), "arb.Font_FuturaPTBook_7", w / 2, H(1), Color(255, 234, 238, 255 * panel.alpha), TEXT_ALIGN_CENTER)
     end
     focusButton.DoClick = function()
         netstream.Start("arb.LawFocus")
@@ -605,7 +605,7 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 165.75)
     surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-    draw.DrawText(L("Меню классного суда"), "arb.Font_FuturaPTBook_9", 10, 0, color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#law_title_actionmenu"), "arb.Font_FuturaPTBook_9", 10, 0, color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.LawAction", PANEL, "DFrame")

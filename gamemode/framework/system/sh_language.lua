@@ -92,7 +92,6 @@ function Arbitrage.language:ReloadCreationTab(activeLang)
     end
 
     local tabs = spawnmenu.GetCreationTabs()
-
     for name, info in pairs(data) do
         for lang_id, word in pairs(info) do
             local tab = tabs[word]
@@ -109,6 +108,9 @@ function Arbitrage.language:ReloadCreationTab(activeLang)
 end
 
 function Arbitrage.language:OnUpdate(old, new)
+    -- Авто перенос больших букв на маленькие
+    RunConsoleCommand("arb_lang", new:lower())
+
     hook.Run("OnLanguageUpdate", old, new)
 
     self:ReloadCreationTab(new)
@@ -180,9 +182,9 @@ else
     end
 
 
-    local oldConVar = Arbitrage.language.convar:GetString()
+    local oldConVar = Arbitrage.language.convar:GetString():lower()
     timer.Create("Arbitrage.language:OnUpdate", 1, 0, function()
-        local newConVar = Arbitrage.language.convar:GetString()
+        local newConVar = Arbitrage.language.convar:GetString():lower()
         if newConVar != oldConVar then
             Arbitrage.language:OnUpdate(oldConVar, newConVar)
         end

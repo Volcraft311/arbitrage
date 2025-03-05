@@ -910,9 +910,7 @@ Arbitrage.language:Add("ru", {
 
     -- ПОДГРУЗКА АССЕТОВ
     ["#load_assets_characters"] = "Загружаем ассеты персонажей",
-
-
-    -- ИГРОВОЙ ПРОЦЕСС
+    ["#load_assets_image"] = "Загружаем уникальные изображения",
 
     -- КЛАССНЫЙ СУД
     ["#classtrial_presented"] = "Предъявил:",
@@ -1112,14 +1110,6 @@ Arbitrage.language:Add("ru", {
     ["#action_open_door"] = "Открываем дверь",
     ["#action_take_food"] = "Берем еду",
 
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
-    ["#typingdraw_"] = "",
     ["#typingdraw_fridge"] = "Холодильник",
     ["#typingdraw_door"] = "дверь",
     ["#typingdraw_open"] = "Открывает",
@@ -1810,5 +1800,30 @@ Arbitrage.language:Add("ru", {
     ["#options_static_crosshair_desc"] = "Выключить динамический прицел и перейти в статическую версию.",
     ["#options_alpha_localplayer_name"] = "Изменять прозрачность игроку от 3-его лица",
     ["#options_alpha_localplayer_title"] = "Прозрачность игрока от 3-его лица",
-    ["#options_alpha_localplayer_desc"] = "Включить изменение прозрачности локального игрока в зависимости от дальности камеры."
+    ["#options_alpha_localplayer_desc"] = "Включить изменение прозрачности локального игрока в зависимости от дальности камеры.",
+
+    ["#law_no_show_item"] = "Вы не показывали этот предмет!",
+    ["#law_presented"] = "Предъвил:",
+    ["#law_nobody_showed_evidence"] = "Никто не показывал эту улику!",
+    ["#law_find_in"] = "Найдено в",
+    ["#law_category_emotes"] = "Эмоции",
+    ["#law_category_evidence"] = "Улики",
+    ["#law_button_all_show_evidence"] = "Показанные улики",
+    ["#law_unknown"] = "Неизвестно",
+    ["#law_case"] = "Дело №",
+    ["#law_button_your_evidence"] = "Ваши улики",
+    ["#law_button_all_show_items"] = "Показанные предметы",
+    ["#law_button_your_items"] = "Ваши предметы",
+    ["#law_button_refute"] = "Опровергнуть",
+    ["#law_button_stop_rebuttal"] = "Остановить Rebuttal Showdowns",
+    ["#law_button_wait_secondary_player"] = "Ожидаем второго участника",
+    ["#law_button_rebuttal"] = "Rebuttal Showdowns",
+    ["#law_button_focus_camera"] = "Сфокусировать камеру на себя",
+    ["#law_title_actionmenu"] = "Меню классного суда",
+    ["#law_category_items"] = "Предметы",
+
+    ["#observer_status_prefix"] = "Вы находитесь в",
+    ["#observer_status_invisible"] = "невидимости",
+    ["#observer_status_and_invisible"] = "и невидимости",
+    ["#observer_status_spectate"] = "режиме наблюдения"
 })

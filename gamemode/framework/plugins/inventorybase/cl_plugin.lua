@@ -208,7 +208,7 @@ netstream.Hook("InventoryBase:OpenActions", function(itemID, data)
     paintMenu(Menu)
 
     for k, v in SortedPairsByMemberValue(data, 1) do
-        local panel = Menu:AddOption(v[1], function()
+        local panel = Menu:AddOption(F(v[1]), function()
             netstream.Start("ItemBase:SendAction", itemID, v[1])
         end)
 

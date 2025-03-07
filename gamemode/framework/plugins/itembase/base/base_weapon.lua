@@ -205,7 +205,7 @@ BASE:HookAdd("transferOtherInventory", function(item, old, new)
 	end
 end)
 
-BASE:AddAction("Снять", {
+BASE:AddAction("#item_action_takeoff", {
 	icon = "icon16/wand.png",
 	OnRun = function(item)
 		item:UnEquip(item.player, item, 1)
@@ -216,7 +216,7 @@ BASE:AddAction("Снять", {
 	end
 })
 
-BASE:AddAction("Разоружить", {
+BASE:AddAction("#item_action_disarm", {
 	icon = "icon16/chart_organisation.png",
 	OnRun = function(item)
 		local client = item.player

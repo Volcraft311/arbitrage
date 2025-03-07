@@ -17,7 +17,7 @@ local BASE = ItemBase.GetBase()
 BASE.name = "База Блокнотов"
 BASE.description = ""
 BASE.category = "Библиотека"
-BASE.lawInspect = "Прочитать"
+BASE.lawInspect = "#item_action_read"
 BASE.data = {font = 1, editors = {}, pages = {{
     title = "Заголовок",
     text = "Ваш текст..."
@@ -105,7 +105,7 @@ function BASE:Tooltip(tooltip)
     tooltip:SetIcon("asterion/academy/ui/tooltip/pencil.png")
 end
 
-BASE:AddAction("Прочитать", {
+BASE:AddAction("#item_action_read", {
     icon = "icon16/page.png",
     OnRun = function(item)
         local client = item.player
@@ -119,7 +119,7 @@ BASE:AddAction("Прочитать", {
     end
 })
 
-BASE:AddAction("Изменить", {
+BASE:AddAction("#item_action_edit", {
     icon = "icon16/page_gear.png",
     OnRun = function(item)
         local client = item.player

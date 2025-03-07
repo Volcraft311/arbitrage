@@ -145,9 +145,9 @@ local function gRequestAddDoorFaction()
 			name = v:GetName(),
 			icon = v:GetAssets().pixel,
 			data = function()
-				Derma_Query("#doors_char_confirm",  "#doors_ds_access", "#doors_yes", function()
+				Derma_Query(L("#doors_char_confirm"),  L("#doors_ds_access"), L("#doors_yes"), function()
 					netstream.Start("arb.DoorAddOwner", k)
-				end, "#doors_no")
+				end, L("#doors_no"))
 			end
 		}
 	end
@@ -220,9 +220,9 @@ local function gRequestAddDoorPlayer()
 			name = v:FullName(true),
 			icon = icon,
 			data = function()
-				Derma_Query("#doors_char_confirm",  "#doors_ds_access", "#doors_yes", function()
+				Derma_Query(L("#doors_char_confirm"),  L("#doors_ds_access"), L("#doors_yes"), function()
 					netstream.Start("arb.DoorAddOwner", id)
-				end, "#doors_no")
+				end, L("#doors_no"))
 			end
 		}
 	end
@@ -242,9 +242,9 @@ local function gRequestRemoveDoorPlayer(doorData)
 			name = faction:GetName(),
 			icon = faction:GetAssets().pixel,
 			data = function()
-				Derma_Query("#doors_ply_delete",  "#doors_ds_remove", "#doors_yes", function()
+				Derma_Query(L("#doors_ply_delete"),  L("#doors_ds_remove"), L("#doors_yes"), function()
 					netstream.Start("arb.DoorRemoveOwner", k)
-				end, "#doors_no")
+				end, L("#doors_no"))
 			end
 		}
 	end

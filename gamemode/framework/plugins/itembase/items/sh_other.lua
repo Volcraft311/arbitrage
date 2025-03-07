@@ -33,7 +33,7 @@ do
         return Format(self.description, data)
     end
 
-    ITEM:AddAction("* Присвоить ключу фракцию", {
+    ITEM:AddAction("#item_action_admin_set_fraction_key", {
         icon = "icon16/cog.png",
         OnRun = function(item)
             local client = item.player
@@ -113,11 +113,11 @@ do
     ITEM.description = "Обычная фотография, на ней есть какое-то изображение"
     ITEM.model = "models/gibs/metal_gib4.mdl"
     ITEM.category = "Уникальные"
-    ITEM.lawInspect = "Посмотреть"
+    ITEM.lawInspect = "#item_action_look"
     ITEM.image = nil
     ITEM.icon = "danganronpa/inventory/items/special_photo.png"
 
-    ITEM:AddAction("Посмотреть", {
+    ITEM:AddAction("#item_action_look", {
         icon = "icon16/page.png",
         OnRun = function(item)
             local client = item.player
@@ -132,7 +132,7 @@ do
         end
     })
 
-    ITEM:AddAction("Изменить картинку", {
+    ITEM:AddAction("#item_action_admin_edit_image", {
         icon = "icon16/page_gear.png",
         OnRun = function(item)
             local client = item.player
@@ -174,7 +174,7 @@ do
     ITEM.category = "Уникальные"
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/7991/7991337.png"
 
-    ITEM:AddAction("Использовать", {
+    ITEM:AddAction("#item_action_use", {
         icon = "icon16/tick.png",
         OnRun = function(item)
             local client = item.player
@@ -302,7 +302,7 @@ do
     ITEM.model = "models/props_lab/box01a.mdl"
     ITEM.category = "Наручники"
 
-    ITEM:AddAction("Связать", {
+    ITEM:AddAction("#item_action_tie", {
         icon = "icon16/tick.png",
         OnRun = function(item)
             cuff(item, 0)
@@ -323,7 +323,7 @@ do
     ITEM.model = "models/props_lab/box01a.mdl"
     ITEM.category = "Наручники"
 
-    ITEM:AddAction("Связать", {
+    ITEM:AddAction("#item_action_tie", {
         icon = "icon16/tick.png",
         OnRun = function(item)
             cuff(item, 100)

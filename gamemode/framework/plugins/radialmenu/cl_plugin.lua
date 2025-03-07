@@ -526,7 +526,7 @@ function PLUGIN:PlayerOption()
 					description = "#radial_option_cure_desc",
 					icon = Material("danganronpa/radialmenu/cure.png"),
 					action = function()
-						netstream.Start("ItemBase:SendAction", item:GetID(), "Использовать на другом игроке")
+						netstream.Start("ItemBase:SendAction", item:GetID(), "#item_action_use_another_player")
 					end
 				}
 				break
@@ -541,7 +541,7 @@ function PLUGIN:PlayerOption()
 					description = "#radial_option_cuff_desc",
 					icon = Material("danganronpa/radialmenu/cuff.png"),
 					action = function()
-						netstream.Start("ItemBase:SendAction", item:GetID(), "Связать")
+						netstream.Start("ItemBase:SendAction", item:GetID(), "#item_action_tie")
 					end
 				}
 				break

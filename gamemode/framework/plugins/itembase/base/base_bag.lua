@@ -137,7 +137,7 @@ function BASE:OnDuplicatePaste(entity, info)
     end
 end
 
-BASE:AddAction("Открыть", {
+BASE:AddAction("#item_action_open", {
     icon = "icon16/package.png",
     OnRun = function(item)
         local client = item.player

@@ -186,6 +186,12 @@ else
     timer.Create("Arbitrage.language:OnUpdate", 1, 0, function()
         local newConVar = Arbitrage.language.convar:GetString():lower()
         if newConVar != oldConVar then
+            if !Arbitrage.language.stored[newConVar] then
+                RunConsoleCommand("arb_lang", Arbitrage.language.default)
+
+                return Arbitrage.util.WriteMessage(Color(255, 132, 0), "{" .. Arbitrage.util.GetSide():upper() .. "} ", Color(255, 0, 0), "[ERROR] ", Color(235, 93, 93), "The specified language was not found. Resetting to default state!")
+            end
+
             Arbitrage.language:OnUpdate(oldConVar, newConVar)
         end
 

@@ -210,7 +210,7 @@ local function RecoveryFunc(item, bAll)
     end
 end
 
-BASE:AddAction("Использовать", {
+BASE:AddAction("#item_action_use", {
     icon = "icon16/cup.png",
     OnRun = function(item)
         RecoveryFunc(item)
@@ -226,7 +226,7 @@ BASE:AddAction("Использовать", {
     end
 })
 
-BASE:AddAction("Использовать все", {
+BASE:AddAction("#item_action_use_all", {
     icon = "icon16/cup_go.png",
     OnRun = function(item)
         RecoveryFunc(item, true)

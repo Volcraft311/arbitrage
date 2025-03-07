@@ -167,7 +167,7 @@ local function RecoveryFunc(item, target)
     if (left - 1) <= 0 then return true end
 end
 
-BASE:AddAction("Использовать", {
+BASE:AddAction("#item_action_use", {
     icon = "icon16/heart.png",
     OnRun = function(item)
         local client = item.player
@@ -199,7 +199,7 @@ local function findTarget(client)
     end
 end
 
-BASE:AddAction("Использовать на другом игроке", {
+BASE:AddAction("#item_action_use_another_player", {
     icon = "icon16/feed.png",
     OnRun = function(item)
         local client = item.player

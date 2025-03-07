@@ -64,7 +64,7 @@ function PANEL:Init()
         if bDoDrop and item then
             panel.selectPanel = nil
 
-            netstream.Start("ItemBase:SendAction", item:GetID(), "Выбросить")
+            netstream.Start("ItemBase:SendAction", item:GetID(), "#item_action_drop")
         end
     end)
 end

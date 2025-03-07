@@ -1825,5 +1825,24 @@ Arbitrage.language:Add("ru", {
     ["#observer_status_prefix"] = "Вы находитесь в",
     ["#observer_status_invisible"] = "невидимости",
     ["#observer_status_and_invisible"] = "и невидимости",
-    ["#observer_status_spectate"] = "режиме наблюдения"
+    ["#observer_status_spectate"] = "режиме наблюдения",
+
+    ["#item_action_drop"] = "Выбросить",
+    ["#item_action_take"] = "Взять",
+    ["#item_action_admin_edit_properties"] = "* Изменить свойства",
+    ["#item_action_use"] = "Использовать",
+    ["#item_action_open"] = "Открыть",
+    ["#item_action_use_another_player"] = "Использовать на другом игроке",
+    ["#item_action_read"] = "Прочитать",
+    ["#item_action_edit"] = "Изменить",
+    ["#item_action_break_door"] = "Взломать дверь",
+    ["#item_action_takeoff"] = "Снять",
+    ["#item_action_disarm"] = "Разоружить",
+    ["#item_action_admin_set_fraction_key"] = "* Присвоить ключу фракцию",
+    ["#item_action_look"] = "Посмотреть",
+    ["#item_action_admin_edit_image"] = "* Изменить картинку",
+    ["#item_action_tie"] = "Связать",
+    ["#item_action_use_all"] = "Использовать все",
+
+    ["#items_title"] = "Предметы"
 })

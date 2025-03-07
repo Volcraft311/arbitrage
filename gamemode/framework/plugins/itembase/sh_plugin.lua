@@ -28,7 +28,7 @@ PLUGIN.defaultBaseID = "basic"
 function ItemBase.GetBase(base)
     local meta = table.Copy(Arbitrage.meta.item)
 
-    meta:AddAction("Выбросить", {
+    meta:AddAction("#item_action_drop", {
         icon = "icon16/brick_delete.png",
         OnRun = function(item)
             if Arbitrage.lawEnable then return false end
@@ -49,7 +49,7 @@ function ItemBase.GetBase(base)
         end
     })
 
-    meta:AddAction("Взять", {
+    meta:AddAction("#item_action_take", {
         icon = "icon16/brick_add.png",
         OnRun = function(item)
             local client = item.player
@@ -89,7 +89,7 @@ function ItemBase.GetBase(base)
         end
     })
 
-    meta:AddAction("* Изменить свойства", {
+    meta:AddAction("#item_action_admin_edit_properties", {
         icon = "icon16/script_gear.png",
         OnRun = function(item)
             local client = item.player

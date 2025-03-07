@@ -121,6 +121,10 @@ netstream.Hook("ItemBase:SyncAllItems", function(info)
 		ItemBase:New(data.uniqueID, id)
 		ItemBase.data[id] = data.data
 	end
+
+	timer.Simple(5, function()
+		RunConsoleCommand("spawnmenu_reload")
+	end)
 end)
 
 netstream.Hook("ItemBase.AnimTakeItem", function(target, pos, ang, model)

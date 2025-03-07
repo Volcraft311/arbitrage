@@ -105,48 +105,47 @@ spawnmenu.AddContentType("Item", function(container, item)
     end
 end)
 
-spawnmenu.AddCreationTab("Предметы", function()
-    local base = vgui.Create("SpawnmenuContentPanel")
-    local tree = base.ContentNavBar.Tree
-    local categories = {}
+timer.Simple(0, function()
+    Arbitrage.language:AddCreationTab("#items_title")
 
-    for k, v in SortedPairsByMemberValue(ItemBase.list, "category") do
-        if v:GetCategory() == "Converter" then continue end
-        if categories[v:GetCategory()] then continue end
+    spawnmenu.AddCreationTab(L("#items_title"), function()
+        local base = vgui.Create("SpawnmenuContentPanel")
+        local tree = base.ContentNavBar.Tree
+        local categories = {}
 
-        local node = tree:AddNode(v:GetCategory(), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")
+        for k, v in SortedPairsByMemberValue(ItemBase.list, "category") do
+            if v:GetCategory() == "Converter" then continue end
+            if categories[v:GetCategory()] then continue end
 
-        node.DoPopulate = function(this)
-            if this.Container then return end
+            local node = tree:AddNode(L(v:GetCategory()), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")
 
-            this.Container = vgui.Create("ContentContainer", base)
-            this.Container:SetVisible(false)
-            this.Container:SetTriggerSpawnlistChange(false)
+            node.DoPopulate = function(this)
+                if this.Container then return end
 
-            for k2, v2 in pairs(ItemBase.list) do
-                if v:GetCategory() == v2:GetCategory() then
-                    spawnmenu.CreateContentIcon("Item", this.Container, v2)
+                this.Container = vgui.Create("ContentContainer", base)
+                this.Container:SetVisible(false)
+                this.Container:SetTriggerSpawnlistChange(false)
+
+                for k2, v2 in pairs(ItemBase.list) do
+                    if v:GetCategory() == v2:GetCategory() then
+                        spawnmenu.CreateContentIcon("Item", this.Container, v2)
+                    end
                 end
             end
+
+            node.DoClick = function(this)
+                this:DoPopulate()
+                base:SwitchPanel(this.Container)
+            end
+
+            categories[v:GetCategory()] = node
         end
 
-        node.DoClick = function(this)
-            this:DoPopulate()
-            base:SwitchPanel(this.Container)
+        local FirstNode = tree:Root():GetChildNode(0)
+        if IsValid(FirstNode) then
+            FirstNode:InternalDoClick()
         end
 
-        categories[v:GetCategory()] = node
-    end
-
-    local FirstNode = tree:Root():GetChildNode(0)
-    if IsValid(FirstNode) then
-        FirstNode:InternalDoClick()
-    end
-
-    return base
-end, "icon16/book_addresses.png")
-
-
-timer.Simple(0, function()
-    RunConsoleCommand("spawnmenu_reload")
+        return base
+    end, "icon16/book_addresses.png")
 end)

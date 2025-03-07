@@ -125,7 +125,7 @@ function BASE:UnStackValue()
     return amount - 1
 end
 
-BASE:AddAction("Использовать", {
+BASE:AddAction("#item_action_use", {
     icon = "icon16/tick.png",
     OnRun = function(item)
     	local client = item.player

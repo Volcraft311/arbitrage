@@ -173,7 +173,7 @@ function PLUGIN.actionMenu:Paint()
                     surface_DrawTexturedRect(_x + (fontHeight / 2 - a / 2), _y + (fontHeight / 2 - a / 2), a, a)
                 end
 
-                draw_SimpleText(v2[1], self.font, _x + fontHeight + W(10), tall, Color(240, 240, 240, alphanew), TEXT_ALIGN_LEFT)
+                draw_SimpleText(F(v2[1]), self.font, _x + fontHeight + W(10), tall, Color(240, 240, 240, alphanew), TEXT_ALIGN_LEFT)
 
                 if bSelected then isSelect = v2[1] end
             end

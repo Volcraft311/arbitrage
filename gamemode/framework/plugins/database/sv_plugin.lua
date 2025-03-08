@@ -219,6 +219,11 @@ function PLUGIN:PlayerInitialSpawnForRealz(client)
         if inventory then
             inventory:SetOwner(client)
             inventory:Sync()
+
+            -- Сихнронизируем повторно, ибо клиент не всегда получает запрос при заходе
+            timer.Simple(10, function()
+                inventory:Sync()
+            end)
         end
     end
 

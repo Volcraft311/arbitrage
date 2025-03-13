@@ -72,7 +72,7 @@ netstream.Hook("RagdollSystem:StandUp", function(client, entity, time)
     time = isnumber(time) and math.Clamp(time, 1, 60) or 5
 
     Arbitrage.action.ActionRun(client, "#action_getting_feet", time, function()
-        if !IsValid(ragdoll) then return true end
+        if !IsValid(ragdoll) then client:StandUp() return true end
 
         local length = ragdoll:GetVelocity():Length()
         local bAllowStand = length <= 2

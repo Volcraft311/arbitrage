@@ -92,6 +92,14 @@ SETTINGS.options.Add("corpse_find_volume", SETTINGS.type.number, 50, {
     max = 100
 })
 
+SETTINGS.options.Add("viewbob_strength", SETTINGS.type.number, 50, {
+    name = "#options_viewbob_strength_name",
+    title = "#options_viewbob_strength_title",
+    description = "#options_viewbob_strength",
+    min = 0,
+    max = 100
+})
+
 SETTINGS.options.Add("camera_smoothness", SETTINGS.type.number, 25, {
     name = "#options_camera_smoothness_name",
     title = "#options_camera_smoothness_title",

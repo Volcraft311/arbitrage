@@ -1801,6 +1801,9 @@ Arbitrage.language:Add("ru", {
     ["#options_alpha_localplayer_name"] = "Изменять прозрачность игроку от 3-его лица",
     ["#options_alpha_localplayer_title"] = "Прозрачность игрока от 3-его лица",
     ["#options_alpha_localplayer_desc"] = "Включить изменение прозрачности локального игрока в зависимости от дальности камеры.",
+    ["#options_viewbob_strength_name"] = "Качание головы",
+    ["#options_viewbob_strength_title"] = "Качание головы",
+    ["#options_viewbob_strength"] = "Сила качания головы при движении.",
 
     ["#law_no_show_item"] = "Вы не показывали этот предмет!",
     ["#law_presented"] = "Предъвил:",

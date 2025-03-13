@@ -148,16 +148,27 @@ function Stamina:SpeedHandler(client, info)
 	if length <= 10 then return end
 
 	local runSpeed = info.runSpeed
-	local isRunning = info.isRunning
 	local maxWalkSpeed = info.maxWalkSpeed
 	local maxRunSpeed = info.maxRunSpeed
 	local stamina = info.stamina
+	local isRunning = info.isRunning
 	local isWalking = info.isWalking
 	local isShifting = (isWalking and client:KeyDown(IN_SPEED))
 
 	if (!isRunning and runSpeed > maxWalkSpeed + 0.1) or (stamina < 100 or stamina > 100) or (runSpeed < maxWalkSpeed) or (runSpeed > maxRunSpeed) or isShifting then
 		local ftSpeed = info.ft * 12
-		runSpeed = Lerp(ftSpeed, runSpeed, (isRunning and stamina > 5) and maxRunSpeed or maxWalkSpeed + 0.03)
+
+		local bIsRunning = isRunning and stamina > 5
+		local rewriteMaxRunSpeed = maxRunSpeed
+		if bIsRunning then
+			if client:KeyDown(IN_BACK) then
+				rewriteMaxRunSpeed = rewriteMaxRunSpeed * 0.65
+			elseif (client:KeyDown(IN_MOVELEFT) or client:KeyDown(IN_MOVERIGHT)) and !client:KeyDown(IN_FORWARD) then
+				rewriteMaxRunSpeed = rewriteMaxRunSpeed * 0.85
+			end
+		end
+
+		runSpeed = Lerp(ftSpeed, runSpeed, bIsRunning and rewriteMaxRunSpeed or maxWalkSpeed + 0.03)
 		runSpeed = math_max(maxWalkSpeed, runSpeed)
 
 		if math_Round(info.runSpeed, 2) != math_Round(runSpeed, 2) then

@@ -195,7 +195,7 @@ function PANEL:Think()
 
     self.fraction = Lerp(ft * 4, self.fraction, self.bClose and 0.1 or 1)
     self.pWidth = Lerp(ft * 4, self.pWidth, self.width)
-    if self.pWidth >= self.width - 0.005 then
+    if self.pWidth >= self.width - 1 then
         self.pHeight = Lerp(ft * 4, self.pHeight, self.height)
     end
 

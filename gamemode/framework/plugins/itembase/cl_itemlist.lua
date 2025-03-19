@@ -46,7 +46,7 @@ spawnmenu.AddContentType("Item", function(container, item)
     local uniqueID = item.uniqueID
 
     local icon = vgui.Create("ContentIcon", container)
-    icon:SetName(name)
+    icon:SetName(L(name))
     icon:SetContentType("Item")
     icon:SetSpawnName(uniqueID)
     icon:SetMaterial(item.icon)

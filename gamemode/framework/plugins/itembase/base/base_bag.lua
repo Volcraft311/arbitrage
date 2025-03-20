@@ -16,7 +16,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Рюкзаков"
 BASE.description = ""
-BASE.category = "Рюкзаки"
+BASE.category = "#item_category_backpacks"
 BASE.maxw = 4
 BASE.maxh = 4
 
@@ -24,7 +24,7 @@ BASE.creationExample = {
     {
         variable = "category",
         title = "Категория",
-        default = "Рюкзаки"
+        default = "#item_category_backpacks"
     },
     {
         variable = "maxw",
@@ -39,14 +39,14 @@ BASE.creationExample = {
 }
 
 BASE.propertiesInfo = {
-    {"maxuse", "Размер рюкзака по ширине", function(item)
+    {"maxw", "Размер рюкзака по ширине", function(item)
         return item:GetMaxWidth()
     end, function(item, entity, value)
         local inventory = item:GetBagInventory()
 
         inventory:SetSize(tonumber(value), inventory.h)
     end},
-    {"hunger", "Размер рюкзака по высоте", function(item)
+    {"maxh", "Размер рюкзака по высоте", function(item)
         return item:GetMaxHeight()
     end, function(item, entity, value)
         local inventory = item:GetBagInventory()

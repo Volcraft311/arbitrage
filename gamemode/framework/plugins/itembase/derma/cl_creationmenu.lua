@@ -426,7 +426,7 @@ function PANEL:SetBase(id)
 			{
 				variable = "category",
 				title = "Категория",
-				default = "Остальное"
+				default = "#item_category_other"
 			}
 		}
 	else

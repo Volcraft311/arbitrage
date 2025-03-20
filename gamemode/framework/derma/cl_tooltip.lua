@@ -78,6 +78,7 @@ function PANEL:Init()
 end
 
 function PANEL:SetTitle(title)
+    title = F(title)
     title = string.Trim(title)
     title = string.utf8upper(string.utf8sub(title, 1, 1)) .. string.utf8sub(title, 2, string.utf8len(title))
 
@@ -89,10 +90,16 @@ function PANEL:SetIcon(material)
 end
 
 function PANEL:SetDescription(description)
-    description = description:gsub("#tooltip_quantity_ammo", "")
-    description = description:gsub("#tooltip_quantity_1", "")
-    description = description:gsub("#tooltip_quantity_2", "")
-    description = description:gsub("#tooltip_quantity_3", "")
+    description = description or ""
+
+    description = description:gsub("#item_number_ammo: %d+", "")
+    description = description:gsub("#item_number: %d+/%d+", "")
+    description = description:gsub("#item_left: %d+/%d+", "")
+    description = description:gsub("#item_number: %d+", "")
+
+    print(description)
+
+    description = F(description)
     description = string.Trim(description)
 
     description = string.utf8upper(string.utf8sub(description, 1, 1)) .. string.utf8sub(description, 2, string.utf8len(description))
@@ -117,7 +124,7 @@ function PANEL:AddSubMenu(title, callback)
     panel:SetTall(fontDescriptionHeight + 7)
 
     panel.title = panel:Add("DLabel")
-    panel.title:SetText(title)
+    panel.title:SetText(F(title))
     panel.title:SetFont(fontDescription)
     panel.title:SetTextColor(color_white)
     panel.title:SetContentAlignment(9)

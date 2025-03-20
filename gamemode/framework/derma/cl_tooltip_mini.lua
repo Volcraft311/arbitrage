@@ -57,6 +57,7 @@ function PANEL:Init()
 end
 
 function PANEL:SetTitle(title)
+    title = F(title)
     title = string.Trim(title)
     title = string.utf8upper(string.utf8sub(title, 1, 1)) .. string.utf8sub(title, 2, string.utf8len(title))
 
@@ -77,8 +78,7 @@ function PANEL:SetTitle(title)
 end
 
 function PANEL:SetDescription(description)
-    description = description or ""
-    description = L(description)
+    description = description and F(description) or ""
 
     description = string.Trim(description)
     description = string.utf8upper(string.utf8sub(description, 1, 1)) .. string.utf8sub(description, 2, string.utf8len(description))
@@ -121,7 +121,7 @@ function PANEL:AddSubMenu(title, callback)
     panel:SetTall(fontSubHeight)
 
     panel.title = panel:Add("DLabel")
-    panel.title:SetText(L(title))
+    panel.title:SetText(F(title))
     panel.title:SetExpensiveShadow(1, Color(0, 0, 0, 255))
     panel.title:SetFont(fontSub)
     panel.title:SetTextColor(color_white)

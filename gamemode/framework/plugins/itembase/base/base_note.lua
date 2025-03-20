@@ -16,7 +16,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Блокнотов"
 BASE.description = ""
-BASE.category = "Библиотека"
+BASE.category = "#item_category_library"
 BASE.lawInspect = "#item_action_read"
 BASE.data = {font = 1, editors = {}, pages = {{
     title = "Заголовок",
@@ -27,7 +27,7 @@ BASE.creationExample = {
     {
         variable = "category",
         title = "Категория",
-        default = "Библиотека"
+        default = "#item_category_library"
     },
 }
 

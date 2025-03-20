@@ -16,7 +16,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Еды"
 BASE.description = ""
-BASE.category = "Продукты"
+BASE.category = "#item_category_food"
 BASE.maxuse = 10
 BASE.thirst = 10
 BASE.hunger = 10
@@ -29,7 +29,7 @@ BASE.creationExample = {
     {
         variable = "category",
         title = "Категория",
-        default = "Продукты"
+        default = "#item_category_food"
     },
     {
         variable = "maxuse",
@@ -102,7 +102,7 @@ function BASE:Tooltip(tooltip)
     tooltip:SetTitle(self:GetName())
     tooltip:SetDescription(self:GetDescription())
     tooltip:SetIcon("asterion/academy/ui/tooltip/food.png")
-    tooltip:AddSubMenu("Осталось: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
+    tooltip:AddSubMenu("#item_left: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
 end
 
 function BASE:GetMaxUse()
@@ -140,7 +140,7 @@ end
 function BASE:GetDescription()
     local left = self:GetLeft()
 
-    return self:GetData("m_description", self.description) .. " Осталось: " .. left .. "/" .. self:GetMaxUse()
+    return self:GetData("m_description", self.description) .. " " .. "#item_left: " .. left .. "/" .. self:GetMaxUse()
 end
 
 local function RecoveryFunc(item, bAll)

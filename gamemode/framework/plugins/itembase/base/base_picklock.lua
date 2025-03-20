@@ -15,7 +15,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Отмычек"
 BASE.description = ""
-BASE.category = "Отмычки"
+BASE.category = "#item_category_lockpicks"
 BASE.maxuse = 2
 BASE.hacktime = 20
 
@@ -23,7 +23,7 @@ BASE.creationExample = {
     {
         variable = "category",
         title = "Категория",
-        default = "Отмычки"
+        default = "#item_category_lockpicks"
     },
     {
         variable = "maxuse",
@@ -56,7 +56,7 @@ function BASE:Tooltip(tooltip)
     tooltip:SetTitle(self:GetName())
     tooltip:SetDescription(self:GetDescription())
     tooltip:SetIcon("asterion/academy/ui/tooltip/key.png")
-    tooltip:AddSubMenu("Осталось: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
+    tooltip:AddSubMenu("#item_left: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
 end
 
 function BASE:GetMaxUse()
@@ -74,7 +74,7 @@ end
 function BASE:GetDescription()
     local left = self:GetLeft()
 
-    return self:GetData("m_description", self.description) .. " Осталось: " .. left .. "/" .. self:GetMaxUse()
+    return self:GetData("m_description", self.description) .. " " .. "#item_left: " .. left .. "/" .. self:GetMaxUse()
 end
 
 local function FindDoor(client)

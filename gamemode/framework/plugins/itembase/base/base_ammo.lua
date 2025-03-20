@@ -16,7 +16,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Патронов"
 BASE.description = ""
-BASE.category = "Патроны"
+BASE.category = "#item_category_ammo"
 BASE.ammoClass = "pistol"
 BASE.ammoAmount = 10
 
@@ -24,7 +24,7 @@ BASE.creationExample = {
     {
         variable = "category",
         title = "Категория",
-        default = "Патроны"
+        default = "#item_category_ammo"
     },
     {
         variable = "ammoClass",
@@ -64,7 +64,7 @@ function BASE:Tooltip(tooltip)
     tooltip:SetTitle(self:GetName())
     tooltip:SetDescription(self:GetDescription())
     tooltip:SetIcon("asterion/academy/ui/tooltip/ammo.png")
-    tooltip:AddSubMenu("Количество патрон: " .. self:GetAmount())
+    tooltip:AddSubMenu("#item_number_ammo: " .. self:GetAmount())
 end
 
 function BASE:GetAmmoClass()
@@ -82,7 +82,7 @@ end
 function BASE:GetDescription()
     local amount = self:GetAmount()
 
-    return self:GetData("m_description", self.description) .. " Количество патрон: " .. amount
+    return self:GetData("m_description", self.description) .. " " .. "#item_number_ammo: " .. amount
 end
 
 function BASE:Stack(item)

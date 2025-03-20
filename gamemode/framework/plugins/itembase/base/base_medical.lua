@@ -16,7 +16,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Медикаметров"
 BASE.description = ""
-BASE.category = "Медикаменты"
+BASE.category = "#item_category_medical"
 BASE.sethealth = 50
 BASE.maxuse = 1
 BASE.sound = "items/medshot4.wav"
@@ -27,7 +27,7 @@ BASE.creationExample = {
     {
         variable = "category",
         title = "Категория",
-        default = "Медикаменты"
+        default = "#item_category_medical"
     },
     {
         variable = "sethealth",
@@ -84,7 +84,7 @@ function BASE:Tooltip(tooltip)
     tooltip:SetTitle(self:GetName())
     tooltip:SetDescription(self:GetDescription())
     tooltip:SetIcon("asterion/academy/ui/tooltip/medical.png")
-    tooltip:AddSubMenu("Осталось: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
+    tooltip:AddSubMenu("#item_left: " .. self:GetLeft() .. "/" .. self:GetMaxUse())
 end
 
 function BASE:GetSetHealth()
@@ -114,13 +114,13 @@ end
 function BASE:GetDescription()
     local left = self:GetLeft()
 
-    return self:GetData("m_description", self.description) .. " Осталось: " .. left .. "/" .. self:GetMaxUse()
+    return self:GetData("m_description", self.description) .. " " .. "#item_left: " .. left .. "/" .. self:GetMaxUse()
 end
 
 local function RecoveryFunc(item, target)
     local client = item.player
 
-    if !IsValid(target) or !target:IsPlayer() then return false, "Не валидный игрок!" end
+    if !IsValid(target) or !target:IsPlayer() then return false, "#notify_not_valid_entity" end
 
     local text = "#typingdraw_uses '" .. item:GetName() .. "'"
     if target != client then

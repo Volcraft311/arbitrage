@@ -158,7 +158,7 @@ function PANEL:InitSlot(panel)
 
                     local DermaNumSlider = DermaPanel:Add("DNumSlider")
                     DermaNumSlider:Dock(FILL)
-                    DermaNumSlider:SetText("Количество:")
+                    DermaNumSlider:SetText(L("#item_number") .. ":")
                     DermaNumSlider:SetMin(1)
                     DermaNumSlider:SetMax(maxValue)
                     DermaNumSlider:SetDecimals(0)

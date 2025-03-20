@@ -16,7 +16,7 @@ local BASE = ItemBase.GetBase()
 
 BASE.name = "База Оружия"
 BASE.description = ""
-BASE.category = "Оружие"
+BASE.category = "#item_category_gun"
 BASE.model = "models/weapons/w_pistol.mdl"
 BASE.class = "weapon_pistol"
 BASE.isWeapon = true
@@ -25,7 +25,7 @@ BASE.creationExample = {
 	{
 	    variable = "category",
 	    title = "Категория",
-	    default = "Оружие"
+	    default = "#item_category_gun"
 	},
 	{
 		variable = "class",
@@ -54,7 +54,7 @@ function BASE:Tooltip(tooltip)
 	local amount = tonumber(self:GetData("ammoClip", 0))
 
 	if amount > 0 then
-		tooltip:AddSubMenu("Количество патрон: " .. amount)
+		tooltip:AddSubMenu("#item_number_ammo: " .. amount)
 	end
 end
 
@@ -89,7 +89,7 @@ function BASE:GetDescription()
 	local amount = tonumber(self:GetData("ammoClip", 0))
 
 	if amount > 0 then
-		return description .. " Количество патрон: " .. amount
+		return description .. " " .. "#item_number_ammo: " .. amount
 	end
 
 	return description

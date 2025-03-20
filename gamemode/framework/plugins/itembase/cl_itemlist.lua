@@ -15,28 +15,22 @@
 local PLUGIN = PLUGIN
 
 local icons = {
-    ["Патроны"] = "attach",
-    ["Одежда"] = "user_suit",
-    ["Коммуникация"] = "transmit",
-    ["Продукты"] = "cake",
-    ["Мусор"] = "bin_closed",
-    ["Ингредиенты"] = "package_add",
-    ["Литература"] = "book",
-    ["Медикаменты"] = "heart_add",
-    ["Рюкзаки"] = "package",
-    ["Остальное"] = "box",
-    ["Библиотека"] = "report",
-    ["Хранилище"] = "briefcase",
-    ["Инструменты"] = "wrench_orange",
-    ["Отмычки"] = "connect",
-    ["Уникальные"] = "bug",
-    ["Оружие"] = "gun",
-    ["Оружие - Ближнее"] = "gun",
-    ["Оружие - Пистолеты"] = "gun",
-    ["Оружие - ПП/Автоматы"] = "gun",
-    ["Оружие - Остальное"] = "gun",
-    ["Оружие - CSS"] = "gun",
-    ["Оружие - CSS Alt"] = "gun"
+    ["#item_category_ammo"] = "attach",
+    ["#item_category_food"] = "cake",
+    ["#item_category_medical"] = "heart_add",
+    ["#item_category_backpacks"] = "package",
+    ["#item_category_other"] = "box",
+    ["#item_category_library"] = "report",
+    ["#item_category_lockpicks"] = "connect",
+    ["#item_category_unique"] = "bug",
+    ["#item_category_gun"] = "gun",
+    ["#item_category_gun_melee"] = "gun",
+    ["#item_category_gun_pistol"] = "gun",
+    ["#item_category_gun_submachine"] = "gun",
+    ["#item_category_gun_other"] = "gun",
+    ["#item_category_gun_css"] = "gun",
+    ["#item_category_gun_css_alt"] = "gun",
+    ["#item_category_handcuffs"] = "pilcrow"
 }
 
 spawnmenu.AddContentType("Item", function(container, item)
@@ -71,17 +65,17 @@ spawnmenu.AddContentType("Item", function(container, item)
     icon.OpenMenu = function()
         local Menu = DermaMenu()
 
-        local _ = Menu:AddOption("Скопировать ID", function()
+        local _ = Menu:AddOption(L("#itemlist_copy_id"), function()
             SetClipboardText(uniqueID)
         end)
         _:SetIcon("icon16/brick_link.png")
 
-        local _ = Menu:AddOption("Выдать себе", function()
+        local _ = Menu:AddOption(L("#itemlist_give_me"), function()
             netstream.Start("ItemBase:GiveItem", LocalPlayer(), uniqueID)
         end)
         _:SetIcon("icon16/accept.png")
 
-        local subMenu, parentMenuOption = Menu:AddSubMenu("Выдать игроку")
+        local subMenu, parentMenuOption = Menu:AddSubMenu(L("#itemlist_give_player"))
         parentMenuOption:SetIcon("icon16/status_online.png")
 
         for k, v in ipairs(player.GetAll()) do
@@ -117,7 +111,9 @@ timer.Simple(0, function()
             if v:GetCategory() == "Converter" then continue end
             if categories[v:GetCategory()] then continue end
 
-            local node = tree:AddNode(L(v:GetCategory()), icons[v:GetCategory()] and ("icon16/" .. icons[v:GetCategory()] .. ".png") or "icon16/brick.png")
+
+            local category = v:GetCategory()
+            local node = tree:AddNode(L(category), icons[category] and ("icon16/" .. icons[category] .. ".png") or "icon16/brick.png")
 
             node.DoPopulate = function(this)
                 if this.Container then return end

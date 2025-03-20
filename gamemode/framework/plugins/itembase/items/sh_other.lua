@@ -11,13 +11,14 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Ключи"
-    ITEM.description = "Ключи от комнаты: '%s'"
+    ITEM.name = "#item_keys_name"
+    ITEM.description = "#item_keys_description"
     ITEM.model = "models/gibs/metal_gib4.mdl"
-    ITEM.category = "Уникальные"
+    ITEM.category = "#item_category_unique"
     ITEM.icon = "danganronpa/inventory/items/key_dorms.png"
 
     function ITEM:GetDescription()
@@ -97,10 +98,10 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Ключ ко всем дверям"
-    ITEM.description = "Ключи от всех дверей"
+    ITEM.name = "#item_keys_all_name"
+    ITEM.description = "#item_keys_all_description"
     ITEM.model = "models/gibs/metal_gib4.mdl"
-    ITEM.category = "Уникальные"
+    ITEM.category = "#item_category_unique"
     ITEM.icon = "danganronpa/inventory/items/key_dorms.png"
 
     ItemBase:RegisterItem("keys_all", ITEM)
@@ -109,10 +110,10 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Фотография"
-    ITEM.description = "Обычная фотография, на ней есть какое-то изображение"
+    ITEM.name = "#item_photo_name"
+    ITEM.description = "#item_photo_description"
     ITEM.model = "models/gibs/metal_gib4.mdl"
-    ITEM.category = "Уникальные"
+    ITEM.category = "#item_category_unique"
     ITEM.lawInspect = "#item_action_look"
     ITEM.image = nil
     ITEM.icon = "danganronpa/inventory/items/special_photo.png"
@@ -168,10 +169,10 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Шокер"
-    ITEM.description = "Уникальный тазер Токо Фукавы, которым она приручила свою вторую личность «Геноцид Сё». В экстренных случаях он может быть использован для намеренной смены личности."
+    ITEM.name = "#item_toko_shocker_name"
+    ITEM.description = "#item_toko_shocker_description"
     ITEM.model = "models/weapons/w_alyx_gun.mdl"
-    ITEM.category = "Уникальные"
+    ITEM.category = "#item_category_unique"
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/7991/7991337.png"
 
     ITEM:AddAction("#item_action_use", {
@@ -200,9 +201,9 @@ end
 do
     local ITEM = ItemBase.GetBase("base_weapon")
 
-    ITEM.name = "Монопад"
+    ITEM.name = "#item_monopad_name"
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/8818/8818724.png"
-    ITEM.description = "Самый обычный планшет."
+    ITEM.description = "#item_monopad_description"
     ITEM.model = "models/props_junk/cardboard_box004a.mdl"
     ITEM.class = "academy_monopad"
 
@@ -296,11 +297,11 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Стяжки"
+    ITEM.name = "#item_cuff_name"
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/3365/3365759.png"
-    ITEM.description = "Ими можно попробовать кого-то связать."
+    ITEM.description = "#item_cuff_description"
     ITEM.model = "models/props_lab/box01a.mdl"
-    ITEM.category = "Наручники"
+    ITEM.category = "#item_category_handcuffs"
 
     ITEM:AddAction("#item_action_tie", {
         icon = "icon16/tick.png",
@@ -317,11 +318,11 @@ end
 do
     local ITEM = ItemBase.GetBase()
 
-    ITEM.name = "Стяжки с веревкой"
+    ITEM.name = "#item_cuff_rope_name"
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/4664/4664962.png"
-    ITEM.description = "Ими можно попробовать кого-то связать."
+    ITEM.description = "#item_cuff_rope_description"
     ITEM.model = "models/props_lab/box01a.mdl"
-    ITEM.category = "Наручники"
+    ITEM.category = "#item_category_handcuffs"
 
     ITEM:AddAction("#item_action_tie", {
         icon = "icon16/tick.png",

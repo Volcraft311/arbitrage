@@ -29,4 +29,5 @@ function EPaint:AllowEntity(entity)
 end
 
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("cl_epaintlist.lua")
 Arbitrage.base.Include("sv_plugin.lua")

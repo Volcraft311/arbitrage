@@ -12,10 +12,10 @@
 ]]--
 
 
-spawnmenu.AddContentType("Bed", function(container, model)
+spawnmenu.AddContentType("EPaint", function(container, model)
     local icon = vgui.Create("ContentIcon", container)
     icon:SetName(model)
-    icon:SetContentType("Bed")
+    icon:SetContentType("EPaint")
     icon:SetSpawnName(model)
     icon.DoClick = function()
         RunConsoleCommand("gm_spawn", model)
@@ -48,13 +48,13 @@ spawnmenu.AddContentType("Bed", function(container, model)
 end)
 
 timer.Simple(0, function()
-    Arbitrage.language:AddCreationTab("#bed_title")
+    Arbitrage.language:AddCreationTab("#epaint_title")
 
-    spawnmenu.AddCreationTab(L("#bed_title"), function()
+    spawnmenu.AddCreationTab(L("#epaint_title"), function()
         local base = vgui.Create("SpawnmenuContentPanel")
         local tree = base.ContentNavBar.Tree
 
-        local node = tree:AddNode(L("#bed_objects"), "icon16/brick.png")
+        local node = tree:AddNode(L("#epaint_objects"), "icon16/brick.png")
         node.DoPopulate = function(this)
             if this.Container then return end
 
@@ -62,8 +62,8 @@ timer.Simple(0, function()
             this.Container:SetVisible(false)
             this.Container:SetTriggerSpawnlistChange(false)
 
-            for k, v in pairs(BedSystem.allowBed) do
-                spawnmenu.CreateContentIcon("Bed", this.Container, k)
+            for k, v in pairs(EPaint.allowModels) do
+                spawnmenu.CreateContentIcon("EPaint", this.Container, k)
             end
         end
 
@@ -78,5 +78,5 @@ timer.Simple(0, function()
         end
 
         return base
-    end, "icon16/lorry_flatbed.png")
+    end, "icon16/palette.png")
 end)

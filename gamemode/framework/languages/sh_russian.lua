@@ -1267,6 +1267,10 @@ Arbitrage.language:Add("ru", {
     ["#bed_title"] = "Кровати",
     ["#bed_objects"] = "Все объекты",
 
+    -- EPaint
+    ["#epaint_title"] = "Рисование",
+    ["#epaint_objects"] = "Все объекты",
+
     -- COLORCORRECTION
     ["#colorcorrection_brightness"] = "Яркость",
     ["#colorcorrection_contrast"] = "Контраст",

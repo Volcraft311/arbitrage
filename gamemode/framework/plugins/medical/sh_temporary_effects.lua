@@ -241,7 +241,7 @@ Medical:TemporaryStatusEffects("drug_intoxication", {
 
 Medical:TemporaryStatusEffects("broken_leg", {
 	name = "#status_effects_broken_leg_title",
-	icon = "danganronpa/ui/medical/fracture.png",
+	icon = "asterion/academy/ui/health/fracture.png",
 	description = "#status_effects_broken_leg_desc",
 	values = {
 		[1] = {

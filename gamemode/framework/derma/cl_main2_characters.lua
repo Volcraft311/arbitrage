@@ -169,7 +169,7 @@ local stagesData = {
                 surface.SetMaterial(Material("danganronpa/ui/unknown.png"))
                 surface.DrawTexturedRect(0, 0, w, h)
 
-                draw.DrawText("#category_char_selectiontext", "arb.Font_FuturaPTBook_10", w / 2, h - H(100), Color(255, 234, 238, 5 * _.alpha), TEXT_ALIGN_CENTER)
+                draw.DrawText(L("#category_char_selectiontext"), "arb.Font_FuturaPTBook_10", w / 2, h - H(100), Color(255, 234, 238, 5 * _.alpha), TEXT_ALIGN_CENTER)
             else
                 local faction = Character.team:GetByID(panel.charactersPanel.character)
                 if !faction then return end

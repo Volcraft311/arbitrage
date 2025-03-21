@@ -16,6 +16,7 @@ local PANEL = {}
 
 function PANEL:Init()
     local parent = self:GetParent()
+    parent:ShowLogo(true)
 
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)

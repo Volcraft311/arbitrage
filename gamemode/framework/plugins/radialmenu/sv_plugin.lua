@@ -76,7 +76,8 @@ netstream.Hook("RadialMenu:PushAction", function(client)
         target:SetVelocity(direction)
         client:EmitSound("Weapon_Crossbow.BoltHitBody")
 
-        client:PlayGesture(ACT_GMOD_GESTURE_MELEE_SHOVE_2HAND)
+        client:PlaySequence("new_push")
+
         client:ViewPunch(KnockViewPunchAngle)
         target:ViewPunch(KnockViewPunchAngle)
 

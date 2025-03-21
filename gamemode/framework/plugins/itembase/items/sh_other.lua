@@ -22,7 +22,7 @@ do
     ITEM.icon = "danganronpa/inventory/items/key_dorms.png"
 
     function ITEM:GetDescription()
-        local data = "Отсутствует"
+        local data = "Unknown"
 
         local faction = self:GetData("faction")
         if faction then
@@ -31,7 +31,7 @@ do
             data = factionData and factionData.name or data
         end
 
-        return Format(self.description, data)
+        return Format(F(self.description), data)
     end
 
     ITEM:AddAction("#item_action_admin_set_fraction_key", {

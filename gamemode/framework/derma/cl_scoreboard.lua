@@ -365,7 +365,7 @@ function PANEL:CreatePlayersPanel(parent)
         errorPanel:Dock(TOP)
         errorPanel:DockMargin(0, 0, 0, H(30))
         errorPanel.Paint = function(this, w, h)
-            draw.DrawText(L("#tab_hidden"), w / 2, h * 0.35, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.DrawText(L("#tab_hidden"), "arb.Font_FuturaPTBook_11", w / 2, h * 0.35, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
         if !LocalPlayer():IsAdmin() then -- даем админу использовать ТАБ

@@ -50,7 +50,7 @@ function PANEL:Init()
 	end
 
 	self.sizeSlider = actionPanel:Add("DNumSlider")
-	self.sizeSlider:SetText("Размер кисти:")
+	self.sizeSlider:SetText(L("#epaint_size"))
 	self.sizeSlider:Dock(TOP)
 	self.sizeSlider:SetMin(2)
 	self.sizeSlider:SetMax(200)
@@ -99,14 +99,14 @@ function PANEL:Init()
 	cancel.alpha = 0
 	cancel.Paint = function(_, w, h)
 	    _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-	    draw.DrawText("Отменить прошлое действие", "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	    draw.DrawText(L("#epaint_undo_prev_action"), "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
 	    surface.SetDrawColor(255, 61, 96, 30)
 	    surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
 	end
 
 	local label = actionPanel:Add("DLabel")
-	label:SetText("Типы кисточек:")
+	label:SetText(L("#epaint_type"))
 	label:SetFont("arb.Font_FuturaPTBook_7")
 	label:Dock(TOP)
 	label:SizeToContents()
@@ -122,7 +122,7 @@ function PANEL:Init()
 		button.alpha = 0
 		button.Paint = function(_, w, h)
 		    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.type == k) and 255 or 30)
-		    draw.DrawText(v.name, "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+		    draw.DrawText(L(v.name), "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
 		    surface.SetDrawColor(255, 61, 96, 30)
 		    surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -136,7 +136,7 @@ function PANEL:Init()
 	saveButton:SetTall(H(40))
 	saveButton.DoClick = function()
 		if LocalPlayer().EPaint_Sending then return end
-		Arbitrage.notify.Add("Передаем данные...")
+		Arbitrage.notify.Add("#epaint_send")
 
 		LocalPlayer().EPaint_Sending = true
 		netstream.Heavy("EPaint:Save", self.idx, self.array)
@@ -144,7 +144,7 @@ function PANEL:Init()
 	saveButton.alpha = 0
 	saveButton.Paint = function(_, w, h)
 	    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.type == k) and 255 or 30)
-	    draw.DrawText("Сохранить", "arb.Font_FuturaPTBook_6", w / 2, H(10), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	    draw.DrawText(L("#epaint_save"), "arb.Font_FuturaPTBook_6", w / 2, H(10), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
 	    surface.SetDrawColor(255, 61, 96, 30)
 	    surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -160,7 +160,7 @@ function PANEL:Init()
 	resetButton.alpha = 0
 	resetButton.Paint = function(_, w, h)
 	    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.type == k) and 255 or 30)
-	    draw.DrawText("Сбросить", "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	    draw.DrawText(L("#epaint_reset"), "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
 	    surface.SetDrawColor(255, 61, 96, 30)
 	    surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -173,13 +173,13 @@ function PANEL:Init()
 	configButton:DockMargin(0, 0, 0, 5)
 	configButton.DoClick = function()
 		local Menu = DermaMenu()
-		Menu:AddOption("Сохранить рисунок", function()
-			Derma_StringRequest("Сохранение рисунка", "Введите название документа в который вы хотите сохранить данный рисунок", "", function(text)
+		Menu:AddOption(L("#epaint_sub_title"), function()
+			Derma_StringRequest(L("#epaint_sub_title"), L("#epaint_sub_desc"), "", function(text)
 				file.Write("academy_epaint_configs/" .. text .. ".txt", util.TableToJSON(self.array))
-			end, nil, "Сохранить", "Отменить")
+			end, nil, L("#epaint_save"), L("#epaint_cancel"))
 		end):SetIcon("icon16/add.png")
 
-		local Child, Parent = Menu:AddSubMenu("Загрузить рисунок")
+		local Child, Parent = Menu:AddSubMenu(L("#epaint_sub_load"))
 		Parent:SetIcon("icon16/arrow_down.png")
 
 		local files = file.Find("academy_epaint_configs/*", "DATA")
@@ -195,7 +195,7 @@ function PANEL:Init()
 	configButton.alpha = 0
 	configButton.Paint = function(_, w, h)
 	    _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.type == k) and 255 or 30)
-	    draw.DrawText("Сохранения", "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	    draw.DrawText(L("#epaint_config"), "arb.Font_FuturaPTBook_6", w / 2, H(2), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
 	    surface.SetDrawColor(255, 61, 96, 30)
 	    surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -320,7 +320,7 @@ function PANEL:Paint(w, h)
 	surface.SetDrawColor(255, 61, 96, 20)
 	surface.DrawRect(0, 0, w, H(30))
 
-	draw.DrawText("Доска", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+	draw.DrawText(L("#epaint_title"), "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("EPaint:Editor", PANEL, "DFrame")

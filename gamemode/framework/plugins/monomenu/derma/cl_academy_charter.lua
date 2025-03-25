@@ -65,7 +65,7 @@ function PANEL:SetData()
     self.defaultButton.alpha = 0
     self.defaultButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("#monomenu_charter_revert", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#monomenu_charter_revert"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -86,7 +86,7 @@ function PANEL:SetData()
     self.addButton.alpha = 0
     self.addButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("#monomenu_charter_addrule", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#monomenu_charter_addrule"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -176,10 +176,10 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(255, 61, 96, 20)
     surface.DrawRect(0, 0, w, H(30))
 
-    draw.DrawText("#monomenu_charter_editor", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_charter_editor"), "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-    draw.DrawText("#monomenu_charter_number", "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
-    draw.DrawText("#monomenu_charter_title", "arb.Font_FuturaPTBook_7", W(200), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_charter_number"), "arb.Font_FuturaPTBook_7", W(30), H(45), color_white, TEXT_ALIGN_LEFT)
+    draw.DrawText(L("#monomenu_charter_title"), "arb.Font_FuturaPTBook_7", W(200), H(45), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("arb.MonoAcademyCharter", PANEL, "DFrame")
@@ -217,16 +217,16 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("#monomenu_charter_addrule", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_addrule"), "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_charter_entertitle", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_charter_titleexample", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_entertitle"), "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_titleexample"), "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_charter_enterdesc", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_charter_descexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_enterdesc"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_descexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_charter_enterurl", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_charter_urlexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_enterurl"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28 + 80), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_charter_urlexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50 + 80), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -247,19 +247,19 @@ function PANEL:Init()
     self.titleEntry = self.main:Add("DTextEntry")
     self.titleEntry:SetPos(W(5), H(75))
     self.titleEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.titleEntry:SetPlaceholderText("#monomenu_charter_title")
+    self.titleEntry:SetPlaceholderText(L("#monomenu_charter_title"))
     self.titleEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.descriptionEntry = self.main:Add("DTextEntry")
     self.descriptionEntry:SetPos(W(5), H(155))
     self.descriptionEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.descriptionEntry:SetPlaceholderText("#monomenu_charter_desc")
+    self.descriptionEntry:SetPlaceholderText(L("#monomenu_charter_desc"))
     self.descriptionEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     self.imageEntry = self.main:Add("DTextEntry")
     self.imageEntry:SetPos(W(5), H(235))
     self.imageEntry:SetSize(self.main:GetWide() - W(10), H(25))
-    self.imageEntry:SetPlaceholderText("#monomenu_charter_url")
+    self.imageEntry:SetPlaceholderText(L("#monomenu_charter_url"))
     self.imageEntry:SetFont("arb.Font_FuturaPTBook_8")
 
     local submitButton = self.main:Add("DButton")
@@ -270,7 +270,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText(self.id and "#monomenu_charter_edit" or "#monomenu_charter_add", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(self.id and L("#monomenu_charter_edit") or L("#monomenu_charter_add"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)

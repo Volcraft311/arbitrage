@@ -135,7 +135,7 @@ function PANEL:SetInfo(faction, steamid)
 
         self.panels[#self.panels + 1] = self.infoPanel
 
-        local parsed = asterionlib.markup.Parse("#vote_voted")
+        local parsed = asterionlib.markup.Parse(L("#vote_voted"))
 
         local textPanel = self.infoPanel:Add("Panel")
         textPanel:Dock(FILL)

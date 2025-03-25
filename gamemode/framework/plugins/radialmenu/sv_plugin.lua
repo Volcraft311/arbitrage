@@ -192,8 +192,8 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
             remove()
 
             local inventory = InventoryBase.CreateInventory(4, 4)
-            InventoryBase.Open(client, inventory:GetID(), "Обмен с " .. targetName)
-            InventoryBase.Open(target, inventory:GetID(), "Обмен с " .. clientName)
+            InventoryBase.Open(client, inventory:GetID(), "#exchange_with " .. targetName)
+            InventoryBase.Open(target, inventory:GetID(), "#exchange_with " .. clientName)
 
             hook.Add("InventoryBase:StopReceiving", uniqueID, function(caller, invID)
                 if caller != client and caller != target and invID != inventory:GetID() then return end

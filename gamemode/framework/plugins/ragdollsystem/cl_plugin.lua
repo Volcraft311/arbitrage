@@ -24,24 +24,51 @@ function RagdollSystem:NetworkEntityCreated(entity)
 
             tooltip.player = client
             tooltip:SetTitle(client:Name())
-                if !client:GetNetVar("hideStatus") then
-                    local color = Color(61, 210, 101)
-                    local stText = "На вид в порядке"
-                    local health = client:Health()
+            if !client:GetNetVar("hideStatus") then
+                local color = Color(61, 210, 101)
+                local stText = "#tooltip_status_healty"
+                local health = client:Health()
 
-                    if health <= 40 then
-                        color = Color(218, 52, 52)
-                        stText = "Выглядит неважно"
-                    elseif health <= 80 then
-                        color = Color(218, 162, 52)
-                        stText = "Слегка потрепанный"
-                    end
+                if health <= 40 then
+                    color = Color(218, 52, 52)
+                    stText = "#tooltip_status_badshape"
+                elseif health <= 80 then
+                    color = Color(218, 162, 52)
+                    stText = "#tooltip_status_injured"
+                end
 
-                    tooltip:AddSubMenu(stText, function(this)
-                        this.title:SetTextColor(color)
+                tooltip:AddSubMenu(stText, function(this)
+                    this.title:SetTextColor(color)
+                end)
+
+                for _, v in ipairs(client:GetTemporaryStatusEffects()) do
+                    local uniqueID = v.uniqueID
+                    local status = Medical.t_status_effects[uniqueID]
+                    if !status then continue end
+
+                    local status_tooltip = status.tooltip
+                    if !status_tooltip then continue end
+
+                    tooltip:AddSubMenu(L(status_tooltip.format), function(this)
+                        this.title:SetTextColor(status_tooltip.color)
                     end)
                 end
-            tooltip:SetDescription(client:GetNetVar("description"))
+            end
+
+            local description = client:GetNetVar("description")
+            if description then
+                tooltip:SetDescription(description)
+            end
+
+            local forced_description = client:GetNetVar("forced_description")
+            if forced_description then
+                local wrapData = asterionlib.WrapText(forced_description, tooltip:GetWide(), "arb.Font_FuturaPTBook_7")
+                for k, v in ipairs(wrapData or {}) do
+                    tooltip:AddSubMenu(v, function(this)
+                        this.title:SetTextColor(Color(245, 206, 206))
+                    end)
+                end
+            end
         end
     end)
 end

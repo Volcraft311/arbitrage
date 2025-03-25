@@ -228,7 +228,7 @@ function PLUGIN:DrawVoiceIcon()
     end
 
     if self.alpha2 > 0.2 then
-        draw_SimpleText("Дальность голоса " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
+        draw_SimpleText(L("#voice_range") .. ": " .. value * 100 .. "%", "arb.Font_FuturaPTBook_6", ScrW() / 2, ScrH() - self.pos2 * 3 - ScrH() * 0.025, Color(255, 255, 255, self.alpha2), TEXT_ALIGN_CENTER)
 
         surface_SetDrawColor(255, 255, 255, self.alpha2 * 0.1)
         surface_DrawRect(ScrW() / 2 - size, ScrH() - self.pos2 * 3, size * 2, 5)

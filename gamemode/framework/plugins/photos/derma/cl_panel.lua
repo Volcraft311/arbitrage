@@ -37,8 +37,8 @@ function PANEL:Init()
     titlePanel:SetTall(sizeT)
     titlePanel:Dock(TOP)
     titlePanel.Paint = function(_, w, h)
-        local tW = draw.SimpleText("Фотография", "arb.Font_FuturaPTDemi_13", 71, H(5), Color(255, 234, 238), TEXT_ALIGN_LEFT)
-        draw.SimpleText("Изображение фотографии которую вы открыли", "arb.Font_FuturaPTBook_7", tW + 71 + W(22), H(19), Color(255, 234, 238, 30), TEXT_ALIGN_LEFT)
+        local tW = draw.SimpleText(L("#photo_title"), "arb.Font_FuturaPTDemi_13", 71, H(5), Color(255, 234, 238), TEXT_ALIGN_LEFT)
+        draw.SimpleText(L("#photo_description"), "arb.Font_FuturaPTBook_7", tW + 71 + W(22), H(19), Color(255, 234, 238, 30), TEXT_ALIGN_LEFT)
     end
 
     local closeButton = titlePanel:Add("DButton")

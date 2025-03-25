@@ -150,9 +150,9 @@ do
 
     if CLIENT then
         netstream.Hook("ItemBase:OpenCreateImageMenu", function(itemID, oldURL)
-            Derma_StringRequest("Установить изображение", "Введите URL картинки которую хотите прикрепить к фотографии", oldURL or "", function(text)
+            Derma_StringRequest(L("#item_image_set_url_title"), L("#item_image_set_url_desc"), oldURL or "", function(text)
                 netstream.Start("ItemBase:CreateImage", itemID, text)
-            end, nil, "Установить", "Отменить")
+            end, nil, L("#item_image_set_url_add"), L("#item_image_set_url_cancel"))
         end)
     else
         netstream.Hook("ItemBase:CreateImage", function(client, itemID, url)

@@ -205,7 +205,7 @@ function PANEL:Main()
 			valueLabel:SetFont("arb.Font_FuturaPTBook_7")
 
 			local valueDefault = panel:Add("DLabel")
-			valueDefault:SetText("Стандартно: " .. v2.default)
+			valueDefault:SetText(L("#statuseffects_standart") .. ": " .. v2.default)
 			valueDefault:SetTextColor(Color(255, 255, 255, 50))
 			valueDefault:Dock(TOP)
 			valueDefault:DockMargin(10, 0, 10, 0)
@@ -275,7 +275,7 @@ function PANEL:Paint(w, h)
 	surface.SetDrawColor(255, 61, 96, 20)
 	surface.DrawRect(0, 0, w, H(30))
 
-	draw.DrawText("Меню статус эффектов", "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+	draw.DrawText(L("#statuseffects_title"), "arb.Font_FuturaPTDemi_8", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 end
 
 vgui.Register("Medical:StatusEffectsEdit", PANEL, "DFrame")

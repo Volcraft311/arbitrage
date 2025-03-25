@@ -56,7 +56,7 @@ function PANEL:CreateTitle()
 	end
 
 	local label = panel:Add("DLabel")
-	label:SetText("Whitelist система")
+	label:SetText(L("#whitelist_title"))
 	label:SetFont("arb.Font_FuturaPTDemi_8")
 	label:SetTextColor(Color(255, 255, 255))
 	label:Dock(FILL)
@@ -87,7 +87,7 @@ function PANEL:CreateSearch()
 	panel:Dock(TOP)
 	panel:DockMargin(W(30), H(15), W(30), H(5))
 	panel:SetFont("arb.Font_FuturaPTDemi_7")
-	panel:SetPlaceholderText("Вставьте SteamID человека, сюда...")
+	panel:SetPlaceholderText(L("#whitelist_enter_text"))
 	panel.OnEnter = function(this)
 	    local data = this:GetValue()
 	    local id = nil
@@ -158,7 +158,7 @@ function PANEL:BottomPanels()
     privateButton.alpha = 0
     privateButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText(PLUGIN:IsPublic() and "Сделать сервер приватным" or "Сделать сервер публичным", "arb.Font_FuturaPTBook_8", w / 2, H(0), PLUGIN:IsPublic() and Color(255, 0, 0, _.alpha) or Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(PLUGIN:IsPublic() and L("#whitelist_private") or L("#whitelist_public"), "arb.Font_FuturaPTBook_8", w / 2, H(0), PLUGIN:IsPublic() and Color(255, 0, 0, _.alpha) or Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -175,7 +175,7 @@ function PANEL:BottomPanels()
     removeButton.alpha = 0
     removeButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Удалить " .. table.Count(self.selectID) .. " пользователей", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#whitelist_remove") .. " " .. table.Count(self.selectID) .. " " .. L("#whitelist_users"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
@@ -232,10 +232,10 @@ function PANEL:SetData(data)
 	        local _, _h = draw.SimpleText(k, "arb.Font_FuturaPTBook_7", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
 	        padding = padding + _h + H(5)
 
-	        local _, _h = draw.SimpleText("Добавлен: " .. TimeString .. "  [Осталось " .. time .. "]", "arb.Font_FuturaPTBook_5", h + 5, padding, Color(255, 255, 255, 100), TEXT_ALIGN_LEFT)
+	        local _, _h = draw.SimpleText(L("#whitelist_add_time") .. ": " .. TimeString .. "  [" .. L("#whitelist_left") .. " " .. time .. "]", "arb.Font_FuturaPTBook_5", h + 5, padding, Color(255, 255, 255, 100), TEXT_ALIGN_LEFT)
 	        padding = padding + _h
 
-	        local _, _h = draw.SimpleText("Добавил: " .. v[4], "arb.Font_FuturaPTBook_5", h + 5, padding, Color(255, 255, 255, 100), TEXT_ALIGN_LEFT)
+	        local _, _h = draw.SimpleText(L("#whitelist_add_by") .. ": " .. v[4], "arb.Font_FuturaPTBook_5", h + 5, padding, Color(255, 255, 255, 100), TEXT_ALIGN_LEFT)
 	        padding = padding + _h
 
 	        if v[3] then
@@ -269,7 +269,7 @@ function PANEL:SetData(data)
 	    if LocalPlayer():IsSuperAdmin() then
 		    panel.DoRightClick = function()
 		    	local menu = DermaMenu()
-				menu:AddOption("Защитить", function()
+				menu:AddOption("* " .. L("#whitelist_protect"), function()
 					netstream.Start("Whitelist:Protect", k)
 					v[3] = !v[3]
 					self.selectID[k] = nil
@@ -302,7 +302,7 @@ vgui.Register("Whitelist:Menu", PANEL, "EditablePanel")
 
 local PANEL = {}
 
-function PANEL:Init()
+	function PANEL:Init()
 	self:SetPos(0, 0)
 	self:SetSize(ScrW(), ScrH())
 	self:MakePopup()
@@ -322,23 +322,23 @@ function PANEL:Init()
 	self.main:SetSize(W(600), 0)
 
 	self.main.Think = function(this)
-	    this:SetTall(Lerp(FrameTime() * 10, this:GetTall(), t))
+		this:SetTall(Lerp(FrameTime() * 10, this:GetTall(), t))
 	end
 
 	self.main.Paint = function(panel, w, h)
-	    surface.SetDrawColor(41, 22, 25)
-	    surface.DrawRect(0, 0, w, h)
+		surface.SetDrawColor(41, 22, 25)
+		surface.DrawRect(0, 0, w, h)
 
-	    surface.SetDrawColor(255, 61, 96, 165.75)
-	    surface.DrawOutlinedRect(0, 0, w, h, 2)
+		surface.SetDrawColor(255, 61, 96, 165.75)
+		surface.DrawOutlinedRect(0, 0, w, h, 2)
 
-	    surface.SetDrawColor(255, 61, 96, 165.75)
-	    surface.DrawOutlinedRect(0, 0, w, H(23), 2)
+		surface.SetDrawColor(255, 61, 96, 165.75)
+		surface.DrawOutlinedRect(0, 0, w, H(23), 2)
 
-	    surface.SetDrawColor(255, 61, 96, 20)
-	    surface.DrawRect(0, 0, w, H(23))
+		surface.SetDrawColor(255, 61, 96, 20)
+		surface.DrawRect(0, 0, w, H(23))
 
-	    draw.DrawText("Добавить нового пользователя", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+		draw.DrawText(L("#whitelist_sub_title"), "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 	end
 
 	local close = self.main:Add("DButton")
@@ -347,113 +347,113 @@ function PANEL:Init()
 	close:SetText("")
 	close.alpha = 40
 	close.Paint = function(_, w, h)
-	    _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
-	    draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 40)
+		draw.DrawText("X", "arb.Font_FuturaPTBook_5", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
 	end
 	close.DoClick = function()
-	    self:AlphaTo(0, 0.2, 0, function()
-	        self:Remove()
-	    end)
+		self:AlphaTo(0, 0.2, 0, function()
+			self:Remove()
+		end)
 	end
 
 	local infoPanel = self.main:Add("DPanel")
-    infoPanel:Dock(FILL)
-    infoPanel:DockMargin(0, H(23), 0, 0)
-    infoPanel.Paint = function(_, w, h)
-        if self.image then
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(self.image)
-            surface.DrawTexturedRect(2, 2, h - 4, h - 4)
-        end
+	infoPanel:Dock(FILL)
+	infoPanel:DockMargin(0, H(23), 0, 0)
+	infoPanel.Paint = function(_, w, h)
+		if self.image then
+			surface.SetDrawColor(255, 255, 255)
+			surface.SetMaterial(self.image)
+			surface.DrawTexturedRect(2, 2, h - 4, h - 4)
+		end
 
-        local padding = 0
-        local _, h1 = draw.SimpleText(self.steamname, "arb.Font_FuturaPTDemi_7", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
-        padding = padding + h1 + 5
+		local padding = 0
+		local _, h1 = draw.SimpleText(self.steamname, "arb.Font_FuturaPTDemi_7", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
+		padding = padding + h1 + 5
 
-        local _, h1 = draw.SimpleText(self.steamid, "arb.Font_FuturaPTBook_5", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
-        padding = padding + h1
+		local _, h1 = draw.SimpleText(self.steamid, "arb.Font_FuturaPTBook_5", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
+		padding = padding + h1
 
-        local _, h1 = draw.SimpleText(self.id, "arb.Font_FuturaPTBook_5", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
-        padding = padding + h1
-    end
+		local _, h1 = draw.SimpleText(self.id, "arb.Font_FuturaPTBook_5", h + 5, padding, color_white, TEXT_ALIGN_LEFT)
+		padding = padding + h1
+	end
 
-    local submitButton = self.main:Add("DButton")
-    submitButton:DockMargin(0, H(5), 0, H(5))
-    submitButton:SetText("")
-    submitButton:SetTall(H(25))
-    submitButton:Dock(BOTTOM)
-    submitButton.alpha = 0
-    submitButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Добавить", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	local submitButton = self.main:Add("DButton")
+	submitButton:DockMargin(0, H(5), 0, H(5))
+	submitButton:SetText("")
+	submitButton:SetTall(H(25))
+	submitButton:Dock(BOTTOM)
+	submitButton.alpha = 0
+	submitButton.Paint = function(_, w, h)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+		draw.DrawText(L("#whitelist_sub_add"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
-        surface.SetDrawColor(255, 61, 96, 30)
-        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
-    end
-    submitButton.DoClick = function()
-        if !self.id then return end
+		surface.SetDrawColor(255, 61, 96, 30)
+		surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+	end
+	submitButton.DoClick = function()
+		if !self.id then return end
 
-        self:AlphaTo(0, 0.3, 0, function()
-            self:Remove()
-        end)
+		self:AlphaTo(0, 0.3, 0, function()
+			self:Remove()
+		end)
 
-        netstream.Start("Whitelist:Add", self.steamid, self.time)
-    end
+		netstream.Start("Whitelist:Add", self.steamid, self.time)
+	end
 
-    local openButton = self.main:Add("DButton")
-    openButton:DockMargin(0, H(5), 0, H(5))
-    openButton:SetText("")
-    openButton:SetTall(H(25))
-    openButton:Dock(BOTTOM)
-    openButton.alpha = 0
-    openButton.Paint = function(_, w, h)
-        _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("Посмотреть", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+	local openButton = self.main:Add("DButton")
+	openButton:DockMargin(0, H(5), 0, H(5))
+	openButton:SetText("")
+	openButton:SetTall(H(25))
+	openButton:Dock(BOTTOM)
+	openButton.alpha = 0
+	openButton.Paint = function(_, w, h)
+		_.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
+		draw.DrawText(L("#whitelist_sub_see_profile"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
-        surface.SetDrawColor(255, 61, 96, 30)
-        surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
-    end
-    openButton.DoClick = function()
-        if !self.id then return end
+		surface.SetDrawColor(255, 61, 96, 30)
+		surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)
+	end
+	openButton.DoClick = function()
+		if !self.id then return end
 
-        gui.OpenURL("https://steamcommunity.com/profiles/" .. self.id)
-    end
+		gui.OpenURL("https://steamcommunity.com/profiles/" .. self.id)
+	end
 
-    local panelButtons = self.main:Add("Panel")
-    panelButtons:SetTall(H(25))
-    panelButtons:Dock(BOTTOM)
-    panelButtons:DockMargin(5, 5, 5, 5)
+	local panelButtons = self.main:Add("Panel")
+	panelButtons:SetTall(H(25))
+	panelButtons:Dock(BOTTOM)
+	panelButtons:DockMargin(5, 5, 5, 5)
 
-    local data = {{"Навсегда", 0}, {"1 Час", 3600}, {"1 День", 86400}, {"1 Неделя", 604800}, {"1 Месяц", 2628000}}
-    for k, v in ipairs(data) do
-    	local button = panelButtons:Add("DButton")
-    	button:Dock(LEFT)
-    	button:DockMargin(0, 0, 5, 0)
-    	button:SetWide(70)
-    	button:SetText(v[1])
-        button:SetTextColor(color_white)
-        button.alpha = 0.1
-        button.Paint = function(_, w, h)
-            _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.time == v[2]) and 1 or 0.1)
+	local data = {{"#whitelist_forever", 0}, {"#whitelist_1_hour", 3600}, {"#whitelist_1_day", 86400}, {"#whitelist_1_week", 604800}, {"#whitelist_1_month", 2628000}}
+	for k, v in ipairs(data) do
+		local button = panelButtons:Add("DButton")
+		button:Dock(LEFT)
+		button:DockMargin(0, 0, 5, 0)
+		button:SetWide(70)
+		button:SetText(L(v[1]))
+		button:SetTextColor(color_white)
+		button.alpha = 0.1
+		button.Paint = function(_, w, h)
+			_.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() or self.time == v[2]) and 1 or 0.1)
 
-            _:SetTextColor(Color(255, 255, 255, 255 * _.alpha))
+			_:SetTextColor(Color(255, 255, 255, 255 * _.alpha))
 
-            surface.SetDrawColor(15, 5, 6, 204)
-            surface.DrawRect(0, 0, w, h)
+			surface.SetDrawColor(15, 5, 6, 204)
+			surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(155, 35, 57, 255 * _.alpha)
-            surface.DrawOutlinedRect(0, 0, w, h, 2)
-        end
-        button.DoClick = function()
-            self.time = v[2]
-        end
-    end
+			surface.SetDrawColor(155, 35, 57, 255 * _.alpha)
+			surface.DrawOutlinedRect(0, 0, w, h, 2)
+		end
+		button.DoClick = function()
+			self.time = v[2]
+		end
+	end
 end
 
 function PANEL:SetData(id)
 	self.id = id
-	self.steamname = "Загрузка..."
-	self.steamid = "Загрузка..."
+	self.steamname = "Loading..."
+	self.steamid = "Loading..."
 
 	self.steamid = util.SteamIDFrom64(self.id)
 

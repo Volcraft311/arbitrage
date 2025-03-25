@@ -44,22 +44,22 @@ function PANEL:Init()
         surface.SetDrawColor(255, 61, 96, 20)
         surface.DrawRect(0, 0, w, H(23))
 
-        draw.DrawText("#monomenu_splash_startscreen", "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_splash_startscreen"), "arb.Font_FuturaPTBook_5", W(10), H(3), color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_endgame_settitle", "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_endgame_titleexample", "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_settitle"), "arb.Font_FuturaPTBook_7", W(10), H(28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_titleexample"), "arb.Font_FuturaPTBook_7", W(10), H(50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_endgame_setfirst", "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_endgame_firstexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_setfirst"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_firstexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_endgame_setsecond", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_endgame_secondexample", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_setsecond"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_secondexample"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_endgame_settext1", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_endgame_text1example", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_settext1"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_text1example"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
 
-        draw.DrawText("#monomenu_endgame_settext2", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
-        draw.DrawText("#monomenu_endgame_text2example", "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_settext2"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 80 + 28), color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#monomenu_endgame_text2example"), "arb.Font_FuturaPTBook_7", W(10), H(80 + 80 + 80 + 80 + 50), Color(150, 150, 150, 255), TEXT_ALIGN_LEFT)
     end
 
     local close = self.main:Add("DButton")
@@ -78,10 +78,10 @@ function PANEL:Init()
     end
 
     self.title = self.main:Add("DTextEntry")
-    self.title:SetValue("#monomenu_endgame_gameover")
+    self.title:SetValue(L("#monomenu_endgame_gameover"))
     self.title:SetPos(W(5), H(75))
     self.title:SetSize(self.main:GetWide() - W(10), H(25))
-    self.title:SetPlaceholderText("#monomenu_endgame_gameover")
+    self.title:SetPlaceholderText(L("#monomenu_endgame_gameover"))
     self.title:SetFont("arb.Font_FuturaPTBook_8")
 
     self.attackerBox = self.main:Add("DComboBox")
@@ -101,23 +101,23 @@ function PANEL:Init()
     end
 
     self.text1 = self.main:Add("DTextEntry")
-    self.text1:SetValue("#monomenu_endgame_text1example")
+    self.text1:SetValue(L("#monomenu_endgame_text1example"))
     self.text1:SetPos(W(5), H(315))
     self.text1:SetSize(self.main:GetWide() - W(10), H(25))
-    self.text1:SetPlaceholderText("#monomenu_endgame_text1example")
+    self.text1:SetPlaceholderText(L("#monomenu_endgame_text1example"))
     self.text1:SetFont("arb.Font_FuturaPTBook_8")
 
     self.text2 = self.main:Add("DTextEntry")
-    self.text2:SetValue("#monomenu_endgame_text2example")
+    self.text2:SetValue(L("#monomenu_endgame_text2example"))
     self.text2:SetPos(W(5), H(395))
     self.text2:SetSize(self.main:GetWide() - W(10), H(25))
-    self.text2:SetPlaceholderText("#monomenu_endgame_text2example")
+    self.text2:SetPlaceholderText(L("#monomenu_endgame_text2example"))
     self.text2:SetFont("arb.Font_FuturaPTBook_8")
 
     for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
         if v:GetAssets().pixel then
-            self.attackerBox:AddChoice(v:GetName(), k)
-            self.targetBox:AddChoice(v:GetName(), k)
+            self.attackerBox:AddChoice(L(v:GetName()), k)
+            self.targetBox:AddChoice(L(v:GetName()), k)
         end
     end
 
@@ -129,7 +129,7 @@ function PANEL:Init()
     submitButton.alpha = 0
     submitButton.Paint = function(_, w, h)
         _.alpha = Lerp(FrameTime() * 10, _.alpha, _:IsHovered() and 255 or 30)
-        draw.DrawText("#monomenu_splash_start", "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#monomenu_splash_start"), "arb.Font_FuturaPTBook_8", w / 2, H(0), Color(255, 220, 228, _.alpha), TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 61, 96, 30)
         surface.DrawRect(w * 0.2, h - 2, w - (w * 0.2) * 2, 2)

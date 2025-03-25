@@ -118,7 +118,7 @@ PLUGIN.type = {
             surface_SetDrawColor(99, 17, 32, 255 * _.alpha)
             surface_DrawOutlinedRect(0, 0, w, h, 2)
 
-            draw_DrawText("НЕТ", "arb.Font_FuturaPTBook_8", w / 2, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            draw_DrawText(L("#no_upper"), "arb.Font_FuturaPTBook_8", w / 2, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
         buttonNo.DoClick = function()
             local status = SETTINGS.options.Get(data.id) == false
@@ -144,7 +144,7 @@ PLUGIN.type = {
             surface_SetDrawColor(99, 17, 32, 255 * _.alpha)
             surface_DrawOutlinedRect(0, 0, w, h, 2)
 
-            draw_DrawText("ДА", "arb.Font_FuturaPTBook_8", w / 2, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+            draw_DrawText(L("#yes_upper"), "arb.Font_FuturaPTBook_8", w / 2, H(3), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
         end
         buttonYes.DoClick = function()
             local status = SETTINGS.options.Get(data.id) == true

@@ -793,7 +793,7 @@ do
         if self == NULL then return "" end -- Tried to use a NULL entity
 
         if CLIENT and self != LocalPlayer() and self:GetNetVar("hideName") then
-            return "Неизвестно"
+            return L("#player_unknown")
         end
 
         local fakeName = self:FakeName()
@@ -802,18 +802,24 @@ do
         end
 
         if self:IsTokoGenocide() then
-        	return "Геноцид Сё"
+            local name = "#genocide_name"
+            if CLIENT then
+                return F(name)
+            end
+
+        	return name
         end
 
         local faction = self:Team()
         local data = Character.team:GetByID(faction)
 
         if faction and self:IsPlaying() and data then
+            local name = data.name or self:SteamName()
             if CLIENT then
-                return F(data.name) or self:SteamName()
+                return F(name)
             end
 
-            return data.name or self:SteamName()
+            return name
         end
 
         return self:SteamName()

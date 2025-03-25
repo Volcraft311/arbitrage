@@ -103,8 +103,8 @@ function PANEL:BlurPaint(w, h, entity)
         surface.SetDrawColor(0, 0, 0, self.darkAlpha)
         surface.DrawRect(0, 0, w, h)
 
-        local _w, _h = draw.SimpleText("Вы спите" .. ("."):rep(RealTime() * 1 % 4), "arb.Font_FuturaPTDemi_20", w / 2, h * 0.35, Color(255, 255, 255, self.darkAlpha), TEXT_ALIGN_CENTER)
-        draw.SimpleText("Нажмите 'SPACE' чтобы проснуться", "arb.Font_FuturaPTBook_10", w / 2, h * 0.9, Color(255, 255, 255, self.darkLowerAlpha), TEXT_ALIGN_CENTER)
+        local _w, _h = draw.SimpleText(L("#bed_title") .. ("."):rep(RealTime() * 1 % 4), "arb.Font_FuturaPTDemi_20", w / 2, h * 0.35, Color(255, 255, 255, self.darkAlpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(L("#bed_description"), "arb.Font_FuturaPTBook_10", w / 2, h * 0.9, Color(255, 255, 255, self.darkLowerAlpha), TEXT_ALIGN_CENTER)
     end
 end
 

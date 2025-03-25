@@ -362,13 +362,13 @@ end
 local actionList = {
     {
         {
-            name = "❖ Сохранить данную страницу",
+            name = "❖ #note_action_save",
             onRun = function(data, panel)
                 netstream.Start("ItemBase:NoteAction", "SAVE_PAGE", data.itemID, data.page, panel.note.title:GetValue(), panel.note.text:GetValue())
             end
         },
         {
-            name = "√ Создать новую страницу",
+            name = "√ #note_action_new",
             onCanRun = function(data, panel)
                 return data.pages < NOTE_MAX_PAGES
             end,
@@ -377,7 +377,7 @@ local actionList = {
             end
         },
         {
-            name = "⌦ Удалить последнюю страницу",
+            name = "⌦ #note_action_remove_last_page",
             onCanRun = function(data, panel)
                 return data.pages > 1
             end,
@@ -386,18 +386,18 @@ local actionList = {
             end
         },
         {
-            name = "☑ Добавить нового владельца",
+            name = "☑ #note_action_add_new_owner",
             onCanRun = function(data, panel)
                 return table.Count(panel.data.editors) < NOTE_MAX_EDITORS
             end,
             onRun = function(data, panel)
-                local strPanel = Derma_StringRequest("Добавить нового Владельца", "Введите SteamID человека, которому вы хотите выдать полный доступ к своему блокноту.", "", function(text)
+                local strPanel = Derma_StringRequest(L("#note_action_add_new_owner"), L("#note_action_add_new_owner_desc"), "STEAM_0:0:000000000", function(text)
                     if !text then return end
                     if !text:find("STEAM_") then return end
 
                     panel:AddEditorPanel(text)
                     netstream.Start("ItemBase:NoteAction", "ADD_EDITOR", data.itemID, text)
-                end, nil, "Добавить", "Закрыть меню")
+                end, nil, L("#note_action_add_new_owner_add"), L("#note_action_add_new_owner_cancel"))
                 strPanel.startTime = SysTime()
 
                 strPanel.Paint = function(_, w, h)
@@ -416,7 +416,7 @@ local actionList = {
             end
         },
         {
-            name = "✉ Перейти в режим чтение",
+            name = "✉ #note_action_read",
             onCanRun = function(data, panel)
                 return table.Count(panel.data.editors) < NOTE_MAX_EDITORS
             end,
@@ -425,20 +425,20 @@ local actionList = {
             end
         },
         {
-            name = "Ø Разрешить/Запретить поднимать",
+            name = "Ø #note_action_allow_take_drop",
             onRun = function(data, panel)
                 netstream.Start("ItemBase:NoteAction", "CHANGE_TAKE", data.itemID)
             end
         },
         {
-            name = "✉ Просмотр страницы",
+            name = "✉ #note_action_see_page",
             onRun = function(data, panel)
                 if IsValid(panel.view) then
                     panel.view:Remove()
                 end
 
                 panel.view = vgui.Create("DFrame")
-                panel.view:SetTitle("Просмотр страницы")
+                panel.view:SetTitle(L("#note_action_see_page"))
                 panel.view:SetSize(panel.note.text:GetSize())
                 panel.view:MakePopup()
                 panel.view:Center()
@@ -450,14 +450,14 @@ local actionList = {
             end
         },
         {
-            name = "✉ Редактор HTML страницы",
+            name = "✉ #note_action_html_editor",
             onRun = function(data, panel)
                 if IsValid(panel.site) then
                     panel.site:Remove()
                 end
 
                 panel.site = vgui.Create("DFrame")
-                panel.site:SetTitle("Редактор HTML страницы")
+                panel.site:SetTitle(L("#note_action_html_editor"))
                 panel.site:SetSize(ScrW() * 0.5, ScrH() * 0.5)
                 panel.site:MakePopup()
                 panel.site:Center()
@@ -471,7 +471,7 @@ local actionList = {
     },
     {
         {
-            name = "→ Следующая страница",
+            name = "→ #note_action_next_page",
             onCanRun = function(data, panel)
                 local nextPage = data.page + 1
 
@@ -482,7 +482,7 @@ local actionList = {
             end
         },
         {
-            name = "← Предыдущая страница",
+            name = "← #note_action_prev_page",
             onCanRun = function(data, panel)
                 local previousPage = data.page - 1
 
@@ -493,7 +493,7 @@ local actionList = {
             end
         },
         {
-            name = "x Закрыть блокнот",
+            name = "x #note_action_close_note",
             onRun = function(data, panel)
                 panel:Remove()
             end
@@ -638,7 +638,7 @@ function PANEL:Init()
     titlePanel:Dock(TOP)
     titlePanel:SetTall(H(60))
     titlePanel.Paint = function(_, w, h)
-        draw.DrawText("Страница №" .. (self.data.page or 1), GetFont(self.data.font) .. 7, w, -2, Color(100, 100, 100), TEXT_ALIGN_RIGHT)
+        draw.DrawText(L("#note_number_page") .. (self.data.page or 1), GetFont(self.data.font) .. 7, w, -2, Color(100, 100, 100), TEXT_ALIGN_RIGHT)
 
         surface.SetDrawColor(159, 159, 159)
         surface.DrawRect(w * 0.1, h - 2, w - (w * 0.1) * 2, 2)
@@ -812,10 +812,10 @@ function PANEL:Init()
     self.infoPanel:SetTall(H(100))
     self.infoPanel:Dock(BOTTOM)
     self.infoPanel.Paint = function(_, w, h)
-        draw.DrawText("Количество владельцев: " .. table.Count(self.data.editors) .. "/" .. NOTE_MAX_EDITORS, GetFont(self.data.font) .. 7, 25, H(3), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
-        draw.DrawText("Количество страниц: " .. self.data.pages .. "/" .. NOTE_MAX_PAGES, GetFont(self.data.font) .. 7, 25, H(23), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
-        draw.DrawText("Размер заголовка: " .. utf8.len(self.note.title:GetValue()) .. "/" .. NOTE_SIZE_TITLE, GetFont(self.data.font) .. 7, 25, H(43), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
-        draw.DrawText("Размер текста: " .. utf8.len(self.note.text:GetValue()) .. "/" .. NOTE_SIZE_TEXT, GetFont(self.data.font) .. 7, 25, H(63), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#note_label_owners") .. ": " .. table.Count(self.data.editors) .. "/" .. NOTE_MAX_EDITORS, GetFont(self.data.font) .. 7, 25, H(3), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#note_label_pages") .. ": " .. self.data.pages .. "/" .. NOTE_MAX_PAGES, GetFont(self.data.font) .. 7, 25, H(23), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#note_label_title_len") .. ": " .. utf8.len(self.note.title:GetValue()) .. "/" .. NOTE_SIZE_TITLE, GetFont(self.data.font) .. 7, 25, H(43), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#note_label_text_len") .. ": " .. utf8.len(self.note.text:GetValue()) .. "/" .. NOTE_SIZE_TEXT, GetFont(self.data.font) .. 7, 25, H(63), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
     end
 
     self.editorsPanel = yellowPanel:Add("DPanelList")
@@ -862,7 +862,7 @@ function PANEL:Init()
             surface.DrawRect(0, 0, 10, h)
         end
 
-        draw.DrawText("Количество страниц: " .. self.data.pages, GetFont(self.data.font) .. 7, 25, h - H(25), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
+        draw.DrawText(L("#note_label_pages") .. ": " .. self.data.pages, GetFont(self.data.font) .. 7, 25, h - H(25), Color(0, 0, 0, 155), TEXT_ALIGN_LEFT)
     end
 
     do
@@ -963,7 +963,7 @@ function PANEL:SetData(data, bEdit)
             panel.Paint = function(_, w, h)
                 _.alpha = Lerp(FrameTime() * 10, _.alpha, (_:IsHovered() and _.onCan) and 230 or 185)
 
-                draw.DrawText(v.name, GetFont(self.data.font) .. 7, 25, H(3), _.onCan and Color(0, 0, 0, _.alpha) or Color(255, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
+                draw.DrawText(F(v.name), GetFont(self.data.font) .. 7, 25, H(3), _.onCan and Color(0, 0, 0, _.alpha) or Color(255, 0, 0, _.alpha), TEXT_ALIGN_LEFT)
 
                 surface.SetFont(GetFont(self.data.font) .. 7)
                 local width = surface.GetTextSize(v.name)

@@ -109,7 +109,7 @@ function PANEL:DamagePaint(client, w, h)
 end
 
 function PANEL:TextPaint(ft, w, h, ragdoll)
-    local _, height = draw.SimpleText("Ваш персонаж находится без сознания" .. ("."):rep(RealTime() * 1.5 % 3), "arb.Font_FuturaPTDemi_14", w / 2, h * 0.7, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    local _, height = draw.SimpleText(L("#fallover_title") .. ("."):rep(RealTime() * 1.5 % 3), "arb.Font_FuturaPTDemi_14", w / 2, h * 0.7, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     if !IsValid(ragdoll) then return end
 
@@ -122,7 +122,7 @@ function PANEL:TextPaint(ft, w, h, ragdoll)
     self.alphaStandUp = Lerp(ft * 5, self.alphaStandUp, (RealTime() > self.timeStart + 5 and bAllowStand and !IsValid(Arbitrage.gui.action)) and 255 or 0)
 
     if self.alphaStandUp >= 0.5 then
-        draw.SimpleText("Нажмите 'ПРОБЕЛ', чтобы встать", "arb.Font_FuturaPTBook_10", w / 2, h * 0.7 + height, Color(255, 255, 255, self.alphaStandUp), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(L("#fallover_description"), "arb.Font_FuturaPTBook_10", w / 2, h * 0.7 + height, Color(255, 255, 255, self.alphaStandUp), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         if self.alphaStandUp >= 150 and input.IsKeyDown(KEY_SPACE) and !vgui.CursorVisible() then
             self:SendNetStandUp()

@@ -20,8 +20,8 @@ hook("NetworkEntityCreated", function(entity)
     if !BedSystem.allowBed[model] then return end
 
     entity.Tooltip = function(this, tooltip)
-        tooltip:SetTitle("Кровать")
-        tooltip:SetDescription("Уютная кровать, обитая мягким материалом. На ней вы можете расслабиться и отдохнуть.")
+        tooltip:SetTitle("#bed_tooltip_title")
+        tooltip:SetDescription("#bed_tooltip_desc")
         tooltip:SetIcon("asterion/academy/ui/tooltip/bed.png")
     end
 end)

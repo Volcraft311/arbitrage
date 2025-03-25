@@ -19,8 +19,8 @@ BASE.description = ""
 BASE.category = "#item_category_library"
 BASE.lawInspect = "#item_action_read"
 BASE.data = {font = 1, editors = {}, pages = {{
-    title = "Заголовок",
-    text = "Ваш текст..."
+    title = "",
+    text = ""
 }}}
 
 BASE.creationExample = {
@@ -47,8 +47,8 @@ local function AddNewPage(item)
     local data = item.data
 
     item.data.pages[#data.pages + 1] = {
-        title = "Заголовок",
-        text = "Ваш текст..."
+        title = "",
+        text = ""
     }
 end
 

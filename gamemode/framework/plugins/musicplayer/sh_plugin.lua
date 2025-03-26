@@ -35,7 +35,7 @@ MPlayer.music = MPlayer.music or {}
 ]]
 
 
-Arbitrage.base.Include("meta/sh_meta_playlist.lua")
-Arbitrage.base.Include("sh_mplayer.lua")
-Arbitrage.base.Include("sv_mplayer.lua")
-Arbitrage.base.Include("cl_mplayer.lua")
+-- Arbitrage.base.Include("meta/sh_meta_playlist.lua")
+-- Arbitrage.base.Include("sh_mplayer.lua")
+-- Arbitrage.base.Include("sv_mplayer.lua")
+-- Arbitrage.base.Include("cl_mplayer.lua")

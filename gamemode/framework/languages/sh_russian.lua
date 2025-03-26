@@ -1264,7 +1264,7 @@ Arbitrage.language:Add("ru", {
     ["#evidence_nonvalid"] = "Не валидное Entity!",
 
     -- BEDSYSTEM
-    ["#bed_title"] = "Кровати",
+    ["#bed_sm_title"] = "Кровати",
     ["#bed_objects"] = "Все объекты",
 
     -- EPaint
@@ -2351,5 +2351,8 @@ Arbitrage.language:Add("ru", {
     ["#note_alignment"] = "Выравнивание",
     ["#note_alignment_left"] = "Лево",
     ["#note_alignment_right"] = "Право",
-    ["#note_alignment_center"] = "Центр"
+    ["#note_alignment_center"] = "Центр",
+
+    ["#leaveplayer_title"] = "Спящий персонаж",
+    ["#leaveplayer_description"] = "Данный персонаж вышел с сервера."
 })

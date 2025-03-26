@@ -48,9 +48,9 @@ spawnmenu.AddContentType("Bed", function(container, model)
 end)
 
 timer.Simple(0, function()
-    Arbitrage.language:AddCreationTab("#bed_title")
+    Arbitrage.language:AddCreationTab("#bed_sm_title")
 
-    spawnmenu.AddCreationTab(L("#bed_title"), function()
+    spawnmenu.AddCreationTab(L("#bed_sm_title"), function()
         local base = vgui.Create("SpawnmenuContentPanel")
         local tree = base.ContentNavBar.Tree
 

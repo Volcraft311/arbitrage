@@ -1259,7 +1259,7 @@ Arbitrage.language:Add("en", {
     ["#evidence_nonvalid"] = "Invalid Entity!",
 
     -- BEDSYSTEM
-    ["#bed_title"] = "Beds",
+    ["#bed_sm_title"] = "Beds",
     ["#bed_objects"] = "All objects",
 
     -- EPAINT
@@ -2340,5 +2340,8 @@ Arbitrage.language:Add("en", {
     ["#note_alignment"] = "Alignment",
     ["#note_alignment_left"] = "Left",
     ["#note_alignment_right"] = "Right",
-    ["#note_alignment_center"] = "Center"
+    ["#note_alignment_center"] = "Center",
+
+    ["#leaveplayer_title"] = "Sleeping character",
+    ["#leaveplayer_description"] = "This character has logged off the server."
 })

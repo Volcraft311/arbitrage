@@ -30,7 +30,7 @@ function ENT:Think()
 end
 
 function ENT:Tooltip(tooltip)
-    tooltip:SetTitle("Спящий персонаж")
-    tooltip:SetDescription("Данный персонаж вышел с сервера.")
+    tooltip:SetTitle("#leaveplayer_title")
+    tooltip:SetDescription("#leaveplayer_description")
     tooltip:SetIcon("asterion/academy/ui/tooltip/sleep.png")
 end

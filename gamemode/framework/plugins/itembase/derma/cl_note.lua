@@ -545,10 +545,10 @@ for i = 1, 100 do
 end
 
 local h_indentation = {
-    ["Маленький отсуп"] = "&nbsp;",
-    ["Средний отступ"] = "&ensp;",
-    ["Большой отступ"] = "&emsp;",
-    ["Отступ вниз"] = "<br>"
+    ["#note_small_indent"] = "&nbsp;",
+    ["#note_average_indent"] = "&ensp;",
+    ["#note_big_indent"] = "&emsp;",
+    ["#note_down_indent"] = "<br>"
 }
 
 local editorIndentation = {}
@@ -561,58 +561,58 @@ end
 
 local editorList = {
     {
-        name = "Полужирный",
+        name = "#note_bold",
         insert = {"<b>", "</b>"}
     },
     {
-        name = "Курсив",
+        name = "#note_italics",
         insert = {"<i>", "</i>"}
     },
     {
-        name = "Подчеркнутый",
+        name = "#note_stressed",
         insert = {"<u>", "</u>"}
     },
     {
-        name = "Зачеркнутый",
+        name = "#note_crossed_out",
         insert = {"<s>", "</s>"}
     },
     {
-        name = "Отступ",
+        name = "#note_indentation",
         data = editorIndentation
     },
     {
-        name = "Картинка",
+        name = "#note_image",
         insert = {"<img>", "</img>"}
     },
     {
-        name = "Цвет шрифта",
+        name = "#note_color_font",
         data = editorColor
     },
     {
-        name = "Цвет выделения",
+        name = "#note_color_highlight",
         data = editorBColor
     },
     {
-        name = "Шрифты",
+        name = "#note_fonts",
         data = editorFont
     },
     {
-        name = "Размер шрифта",
+        name = "#note_size_font",
         data = editorSize
     },
     {
-        name = "Выравнивание",
+        name = "#note_alignment",
         data = {
             {
-                name = "Лево",
+                name = "#note_alignment_left",
                 insert = {"<left>", "</left>"}
             },
             {
-                name = "Право",
+                name = "#note_alignment_right",
                 insert = {"<right>", "</right>"}
             },
             {
-                name = "Центр",
+                name = "#note_alignment_center",
                 insert = {"<center>", "</center>"}
             }
         }
@@ -705,7 +705,7 @@ function PANEL:SetData(data, bEdit)
 
             for k, v in ipairs(editorList) do
                 local button = self.bottomPanel:Add("DButton")
-                button:SetText(v.name)
+                button:SetText(L(v.name))
                 button:Dock(LEFT)
                 button:DockMargin(0, H(20), 0, H(5))
                 button:SizeToContents()
@@ -741,7 +741,7 @@ function PANEL:SetData(data, bEdit)
                         Menu.panels = {}
 
                         for k2, v2 in ipairs(v.data) do
-                            local option = Menu:AddOption(v2.name, function()
+                            local option = Menu:AddOption(L(v2.name), function()
                                 insert(v2)
 
                                 self.text:OnChange()

@@ -303,7 +303,7 @@ function PANEL:AddMessage(name)
 		        surface.SetDrawColor(255, 255, 255)
 			    surface.DrawRect(0, 0, wide, h)
 		    end, function()
-		        draw.SimpleText(self.text1, "arb.EndGameFont", w / 2, height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
+		        draw.SimpleText(F(self.text1), "arb.EndGameFont", w / 2, height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
 		    end)
 		end
 
@@ -314,7 +314,7 @@ function PANEL:AddMessage(name)
 		        surface.SetDrawColor(255, 255, 255)
 			    surface.DrawRect(0, 0, wide, h)
 		    end, function()
-		        draw.SimpleText(self.text2, "arb.EndGameFont", w / 2, height + height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
+		        draw.SimpleText(F(self.text2), "arb.EndGameFont", w / 2, height + height / 2, Color(255, 35, 57), TEXT_ALIGN_CENTER)
 		    end)
 		end
 	end

@@ -136,7 +136,7 @@ function PANEL:Init()
 	    asterionlib.DrawRect(0, 0, w, h, {15, 5, 6, 255 * _.alpha})
 	    asterionlib.DrawOutlinedRect(0, 0, w, h, 2, {99, 17, 32, 255 * _.alpha})
 
-	    draw.SimpleText("Сохранить изменения", "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
+	    draw.SimpleText(L("#wardrobe_save"), "arb.Font_FuturaPTBook_8", w / 2, H(2), Color(255, 234, 238, 255 * _.alpha), TEXT_ALIGN_CENTER)
 	end
 	saveButton.DoClick = function()
 	    netstream.Start("arb.WardrobeChange", self.bg, self.skin)

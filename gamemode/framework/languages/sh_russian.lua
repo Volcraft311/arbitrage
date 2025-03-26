@@ -2258,6 +2258,7 @@ Arbitrage.language:Add("ru", {
 
     ["#wardrobe_title"] = "Гардероб",
     ["#wardrobe_description"] = "Смените образ своего персонажа",
+    ["#wardrobe_save"] = "Сохранить изменения",
 
     ["#player_unknown"] = "Неизвестно",
 

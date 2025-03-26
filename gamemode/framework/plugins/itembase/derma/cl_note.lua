@@ -537,7 +537,7 @@ for k, v in ipairs(h_fonts) do
 end
 
 local editorSize = {}
-for i = 1, 100 do
+for i = 2, 100 do
     editorSize[#editorSize + 1] = {
         name = i,
         insert = {"<s_" .. i .. ">", "</s_" .. i .. ">"}

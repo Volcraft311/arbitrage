@@ -2247,6 +2247,7 @@ Arbitrage.language:Add("en", {
 
     ["#wardrobe_title"] = "Wardrobe",
     ["#wardrobe_description"] = "Change your character's appearance",
+    ["#wardrobe_save"] = "Save changes",
 
     ["#player_unknown"] = "Unknown",
 

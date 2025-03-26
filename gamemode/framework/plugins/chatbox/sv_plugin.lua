@@ -7,6 +7,12 @@ net.Receive("arb.ChatMessage", function(length, client)
     local text = net.ReadString()
 
     if ((client.arbNextChat or 0) < CurTime() and isstring(text) and text:find("%S")) then
+        local maxLength = 1024 * 1.25
+
+        if F("ru", text):utf8len() > maxLength then
+            text = text:utf8sub(0, maxLength)
+        end
+
         hook.Run("PlayerSay", client, text)
 
         client:SetNetVar("arb.chattype", nil)

@@ -13,7 +13,7 @@ function PANEL:Init()
 end
 
 function PANEL:AllowInput(char)
-	local text = self:GetValue()
+	local text = F(self:GetValue())
 
 	if text and text != "" and self:get_limit() != 0 and utf8.len(text) >= self:get_limit() then
 		surface.PlaySound("common/talk.wav")

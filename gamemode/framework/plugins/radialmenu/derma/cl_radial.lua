@@ -13,61 +13,125 @@
 
 local PLUGIN = PLUGIN
 
--- Localize Global Calls
+local RADIAL_CONFIG = {
+	SOUNDS = {
+		OPEN = {"academy/radialmenu/whoosh%d.wav", 1, 6},
+		CLOSE = {"academy/radialmenu/whoosh%d.wav", 1, 6},
+		SELECT = "academy/radialmenu/press.wav",
+		HOVER = "academy/radialmenu/rollover.wav"
+	},
+
+	MATERIALS = {
+		CIRCLE_BLUR = "asterion/academy/ui/radial/circle_blur.png",
+		SCREEN = "asterion/academy/ui/radial/screen.png",
+		ARROW = "asterion/academy/ui/radial/arrow.png",
+		GRADIENT = "asterion/academy/ui/radial/gradient_select.png",
+		FILL_BLUR = "asterion/academy/ui/radial/fill_blur.png",
+		MOUSE = {
+			AMB = "asterion/academy/ui/radial/m_mouse.png",
+			LMB = "asterion/academy/ui/radial/l_mouse.png",
+			RMB = "asterion/academy/ui/radial/r_mouse.png"
+		},
+		STAR = "asterion/academy/ui/radial/favorite.png"
+	},
+
+	COLORS = {
+		BLACK = Color(0, 0, 0),
+		RED = Color(255, 41, 76),
+		BLUR = Color(218, 19, 40),
+		WHITE = color_white
+	},
+
+	DEFAULTS = {
+		RADIAL_SIZE_MULTIPLIER = 0.28,
+		INITIAL_SIZE = 80,
+		FADE_TIME = 0.5,
+		CAMERA = {
+			POSITION = Vector(80, 0, 35),
+			ANGLE = Angle(0, 180, 0),
+			FOV = 30
+		}
+	}
+}
+
+local Lerp = Lerp
+local LerpAngle = function(a, b, t)
+	local delta = (b - a) % 360
+
+	if delta > 180 then
+		delta = delta - 360
+	end
+
+	return a + delta * t
+end
+local IsValid = IsValid
+local RealTime = RealTime
+local FrameTime = FrameTime
+local math = math
+local surface = surface
+local render = render
+local cam = cam
+local input = input
+local draw = draw
+local vgui = vgui
+local ipairs = ipairs
+local pairs = pairs
+local table = table
+
+local math_floor = math.floor
+local math_random = math.random
+local math_rad = math.rad
+local math_deg = math.deg
+local math_cos = math.cos
+local math_sin = math.sin
+local math_atan2 = math.atan2
+
+local ColorAlpha = ColorAlpha
+local ScrW = ScrW
+local ScrH = ScrH
 local Angle = Angle
-local ClientsideModel = ClientsideModel
+local Vector = Vector
+local Material = Material
+
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawRect = surface.DrawRect
+local surface_SetMaterial = surface.SetMaterial
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local surface_DrawTexturedRectRotated = surface.DrawTexturedRectRotated
+
 local render_SuppressEngineLighting = render.SuppressEngineLighting
 local render_SetLightingOrigin = render.SetLightingOrigin
 local render_SetModelLighting = render.SetModelLighting
-local surface_SetDrawColor = surface.SetDrawColor
-local surface_DrawRect = surface.DrawRect
-local cam_Start3D = cam.Start3D
-local cam_End3D = cam.End3D
-local surface_SetMaterial = surface.SetMaterial
-local surface_DrawTexturedRect = surface.DrawTexturedRect
-local input_GetCursorPos = input.GetCursorPos
-local math_atan2 = math.atan2
-local math_deg = math.deg
-local surface_DrawTexturedRectRotated = surface.DrawTexturedRectRotated
-local IsValid = IsValid
-local math_random = math.random
-local ScrW = ScrW
-local ScrH = ScrH
-local Color = Color
-local Vector = Vector
-local math_floor = math.floor
-local RealTime = RealTime
-local math_rad = math.rad
-local math_cos = math.cos
-local math_sin = math.sin
-local isfunction = isfunction
-local istable = istable
-local ipairs = ipairs
-local table_remove = table.remove
-local table_insert = table.insert
-local input_IsMouseDown = input.IsMouseDown
-local input_IsKeyDown = input.IsKeyDown
-local input_SetCursorPos = input.SetCursorPos
-local Material = Material
-local FrameTime = FrameTime
-local Lerp = Lerp
-local draw_SimpleText = draw.SimpleText
-local ColorAlpha = ColorAlpha
-local draw_GetFontHeight = draw.GetFontHeight
-local vgui_Register = vgui.Register
-local pairs = pairs
 local render_ResetModelLighting = render.ResetModelLighting
 local render_SetColorModulation = render.SetColorModulation
 
+local cam_Start3D = cam.Start3D
+local cam_End3D = cam.End3D
+
+local input_GetCursorPos = input.GetCursorPos
+local input_SetCursorPos = input.SetCursorPos
+local input_IsMouseDown = input.IsMouseDown
+local input_IsKeyDown = input.IsKeyDown
+
+local draw_SimpleText = draw.SimpleText
+local draw_GetFontHeight = draw.GetFontHeight
+
+local table_remove = table.remove
+
+local vgui_Register = vgui.Register
+
 local circles = asterionlib.Circles
-local color_black = Color(0, 0, 0)
-local color_red = Color(255, 41, 76)
-local color_blur = Color(218, 19, 40)
-local circle_blurMat = Material("asterion/academy/ui/radial/circle_blur.png")
-local screenMat = Material("asterion/academy/ui/radial/screen.png")
-local arrowMat = Material("asterion/academy/ui/radial/arrow.png")
-local gradient_selectMat = Material("asterion/academy/ui/radial/gradient_select.png")
-local fill_blurMat = Material("asterion/academy/ui/radial/fill_blur.png")
+local CIRCLE_FILLED = CIRCLE_FILLED
+
+local circle_blurMat = Material(RADIAL_CONFIG.MATERIALS.CIRCLE_BLUR)
+local screenMat = Material(RADIAL_CONFIG.MATERIALS.SCREEN)
+local arrowMat = Material(RADIAL_CONFIG.MATERIALS.ARROW)
+local gradient_selectMat = Material(RADIAL_CONFIG.MATERIALS.GRADIENT)
+local fill_blurMat = Material(RADIAL_CONFIG.MATERIALS.FILL_BLUR)
+local ambMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.AMB)
+local lmbMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.LMB)
+local rmbMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.RMB)
+local starMat = Material(RADIAL_CONFIG.MATERIALS.STAR)
 
 local PANEL = {}
 
@@ -78,39 +142,47 @@ function PANEL:Init()
 
 	Arbitrage.gui.radialmenu = self
 
-	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math_random(1, 6) .. ".wav")
+	self:PlaySound(RADIAL_CONFIG.SOUNDS.OPEN)
 
 	self:SetPos(0, 0)
 	self:SetSize(ScrW(), ScrH())
 	self:MakePopup()
 	self:SetAlpha(0)
-	self:AlphaTo(255, 0.5)
+	self:AlphaTo(255, RADIAL_CONFIG.DEFAULTS.FADE_TIME)
 	self:SetKeyboardInputEnabled(false)
-
-	local client = LocalPlayer()
 
 	self.options = {}
 	self.clampKeys = {}
 
+	self:InitializeDimensions()
+	self:InitializeCharacterModel()
+	self:InitializeBackground()
+end
+
+function PANEL:InitializeDimensions()
 	self.panelWide = self:GetWide()
 	self.panelTall = self:GetTall()
 
 	self.centerX = self.panelWide / 2
 	self.centerY = self.panelTall / 2
-	self.radialSize = self.panelTall * 0.28
+	self.radialSize = self.panelTall * RADIAL_CONFIG.DEFAULTS.RADIAL_SIZE_MULTIPLIER
 
-	self.size = 80
+	self.size = RADIAL_CONFIG.DEFAULTS.INITIAL_SIZE
 	self.angleDegrees = 0
 	self.angleGradient = 0
 	self.selSize = 2
 	self.textAlpha = 0
 
-	self.cameraPosition = Vector(80, 0, 35)
-	self.cameraAngle = Angle(0, 180, 0)
-	self.cameraFov = 30
+	self.cameraPosition = RADIAL_CONFIG.DEFAULTS.CAMERA.POSITION
+	self.cameraAngle = RADIAL_CONFIG.DEFAULTS.CAMERA.ANGLE
+	self.cameraFov = RADIAL_CONFIG.DEFAULTS.CAMERA.FOV
 
 	self.ambMatAlpha = 0
 	self.rmbMatAlpha = 0
+end
+
+function PANEL:InitializeCharacterModel()
+	local client = LocalPlayer()
 
 	self.activeCharacter = ClientsideModel(client:GetModel())
 	self.activeCharacter:SetSkin(client:GetSkin())
@@ -123,7 +195,7 @@ function PANEL:Init()
 	self.activeCharacter.upPosition = 0
 	self.activeCharacter.childrens = {}
 
-	for k, v in ipairs(client:GetBodyGroups() or {}) do
+	for _, v in ipairs(client:GetBodyGroups() or {}) do
 		local bodygroup = client:GetBodygroup(v.id)
 
 		if bodygroup > 0 then
@@ -139,7 +211,16 @@ function PANEL:Init()
 		end
 	end
 
-	for k, v in ipairs(CompositeEntities and CompositeEntities.GetArrayEntitites(client) or {}) do
+	self:InitializeCompositeEntities(client)
+
+	self.boneCharacter = ClientsideModel(client:GetModel())
+	self.boneCharacter:SetNoDraw(true)
+end
+
+function PANEL:InitializeCompositeEntities(client)
+	local composites = CompositeEntities and CompositeEntities.GetArrayEntitites(client) or {}
+
+	for _, v in ipairs(composites) do
 		local composite = ClientsideModel(v.model)
 		composite:SetSkin(v.Skin)
 		composite:SetMaterial(v.Material)
@@ -147,11 +228,11 @@ function PANEL:Init()
 		composite:SetColor(v.Color)
 
 		for k2, v2 in pairs(v.BodyG) do
-		    composite:SetBodygroup(k2, v2)
+			composite:SetBodygroup(k2, v2)
 		end
 
 		for k2, v2 in pairs(v.SubMat) do
-		    composite:SetSubMaterial(k2, v2)
+			composite:SetSubMaterial(k2, v2)
 		end
 
 		if v.BoneManip then
@@ -159,20 +240,16 @@ function PANEL:Init()
 				local t = v.BoneManip[i]
 
 				if t then
-					local s = t.s
-					local a = t.a
-					local p = t.p
-
-					if s then
-						composite:ManipulateBoneScale(i, s)
+					if t.s then
+						composite:ManipulateBoneScale(i, t.s)
 					end
 
-					if a then
-						composite:ManipulateBoneAngles(i, a)
+					if t.a then
+						composite:ManipulateBoneAngles(i, t.a)
 					end
 
-					if p then
-						composite:ManipulateBonePosition(i, p)
+					if t.p then
+						composite:ManipulateBonePosition(i, t.p)
 					end
 				end
 			end
@@ -180,30 +257,29 @@ function PANEL:Init()
 
 		if v.mode == 0 or v.mode == nil then
 			if composite:IsEffectActive(EF_BONEMERGE) then
-				return composite:Remove()
+				composite:Remove()
+				continue
 			end
 
 			composite:SetParent(self.activeCharacter)
-
 			composite:RemoveEffects(EF_FOLLOWBONE)
 			composite:RemoveEffects(EF_PARENT_ANIMATES)
-
 			composite:AddEffects(EF_BONEMERGE)
 		else
 			if v.boneName then
 				local boneID = self.activeCharacter:LookupBone(v.boneName)
 				if !boneID then
-					return composite:Remove()
+					composite:Remove()
+					continue
 				end
 
 				if !composite:IsEffectActive(EF_BONEMERGE) and composite:GetParentAttachment() == boneID then
-					return composite:Remove()
+					composite:Remove()
+					continue
 				end
 
 				composite:SetParent(self.activeCharacter, boneID)
-
 				composite:RemoveEffects(EF_BONEMERGE)
-
 				composite:AddEffects(EF_FOLLOWBONE)
 				composite:AddEffects(EF_PARENT_ANIMATES)
 			end
@@ -216,13 +292,23 @@ function PANEL:Init()
 
 		self.activeCharacter.childrens[#self.activeCharacter.childrens + 1] = composite
 	end
+end
 
-	self.boneCharacter = ClientsideModel(client:GetModel())
-	self.boneCharacter:SetNoDraw(true)
-
+function PANEL:InitializeBackground()
 	self.background_blur = circles.New(CIRCLE_FILLED, self.panelWide + self.size, self.centerX, self.centerY, self.size * 2)
+
 	self.background_blur:SetMaterial(circle_blurMat)
-	self.background_blur:SetColor(color_white)
+	self.background_blur:SetColor(RADIAL_CONFIG.COLORS.WHITE)
+end
+
+function PANEL:PlaySound(soundData)
+	if istable(soundData) then
+		local pattern, min, max = unpack(soundData)
+
+		asterionlib.EmitSound(pattern:format(math_random(min, max)))
+	else
+		asterionlib.EmitSound(soundData)
+	end
 end
 
 function PANEL:FindSelected(segment_size)
@@ -243,10 +329,10 @@ function PANEL:NewClose()
 	if self.bClose then return end
 	self.bClose = true
 
-	asterionlib.EmitSound("academy/radialmenu/whoosh" .. math_random(1, 6) .. ".wav")
+	self:PlaySound(RADIAL_CONFIG.SOUNDS.CLOSE)
 
 	if IsValid(self.activeCharacter) then
-		for k, v in ipairs(self.activeCharacter.childrens) do
+		for _, v in ipairs(self.activeCharacter.childrens) do
 			if IsValid(v) then
 				v:Remove()
 			end
@@ -282,7 +368,8 @@ function PANEL:SelectOption(id)
 
 	local action = option.action
 	if isfunction(action) then
-		asterionlib.EmitSound("academy/radialmenu/press.wav")
+		self:PlaySound(RADIAL_CONFIG.SOUNDS.SELECT)
+
 		local info, backFunc = action(PLUGIN, self)
 
 		if istable(info) then
@@ -290,7 +377,6 @@ function PANEL:SelectOption(id)
 			self.panelWide = self.panelWide + 50
 			self.selSize = self.selSize + 20
 			self.textAlpha = 0
-
 			self.backFunc = backFunc
 		else
 			self:NewClose()
@@ -318,9 +404,9 @@ function PANEL:OnRightClick()
 			self.panelWide = self.panelWide + 50
 			self.selSize = self.selSize + 20
 			self.textAlpha = 0
-
 			self.backFunc = backFunc
-			asterionlib.EmitSound("academy/radialmenu/press.wav")
+
+			self:PlaySound(RADIAL_CONFIG.SOUNDS.SELECT)
 		end
 	else
 		self:NewClose()
@@ -332,24 +418,23 @@ function PANEL:OnMiddleClick()
 	if !self.selected then return end
 
 	local option = self.options[self.selected + 1]
-	if !option then return end
-
-	local id = option.id
-	if !id then return end
+	if !option or !option.id then return end
 
 	local data = asterionlib.data:Get("radialmenu_favorites", {})
-
 	local find = nil
+
 	for k, v in ipairs(data) do
-		if id == v then
+		if option.id == v then
 			find = k
+
+			break
 		end
 	end
 
 	if find then
 		table_remove(data, find)
 	else
-		table_insert(data, id)
+		data[#data + 1] = option.id
 	end
 
 	asterionlib.data:Set("radialmenu_favorites", data)
@@ -360,10 +445,16 @@ function PANEL:OnRotate()
 	self.selSize = self.selSize + 8
 	self.textAlpha = 0
 
-	asterionlib.EmitSound("academy/radialmenu/rollover.wav")
+	self:PlaySound(RADIAL_CONFIG.SOUNDS.HOVER)
 end
 
 function PANEL:Think()
+	self:HandleMouseInput()
+
+	self:HandleKeyboardInput()
+end
+
+function PANEL:HandleMouseInput()
 	local onLeftClick = input_IsMouseDown(MOUSE_LEFT)
 	if onLeftClick then
 		if !self.bLeftClick then
@@ -396,10 +487,12 @@ function PANEL:Think()
 	else
 		self.bMiddleClick = nil
 	end
+end
 
+function PANEL:HandleKeyboardInput()
 	local data = {}
-	for i = 1, 9 do data[#data + 1] = i end
-	for i = 37, 46 do data[#data + 1] = i end
+	for i = 1, 9 do data[#data + 1] = i end -- Numbers 1-9
+	for i = 37, 46 do data[#data + 1] = i end -- Numpad 1-9
 
 	for k, i in ipairs(data) do
 		local onDown = input_IsKeyDown(i + 1)
@@ -450,27 +543,28 @@ function PANEL:OnEntityDraw()
 
 	if self.facial then
 		for i = 0, self.activeCharacter:GetFlexNum() - 1 do
-			self.activeCharacter:SetFlexWeight(i, self.facial and self.facial[i] or 0)
+			self.activeCharacter:SetFlexWeight(i, self.facial[i] or 0)
 		end
 	else
 		for i = 0, self.activeCharacter:GetFlexNum() - 1 do
-			local weight = LocalPlayer():GetFlexWeight(i)
-
-			self.activeCharacter:SetFlexWeight(i, weight)
+			self.activeCharacter:SetFlexWeight(i, LocalPlayer():GetFlexWeight(i))
 		end
 	end
 
 	local boneIdx = self.boneCharacter:LookupBone(self.cameraBone or "ValveBiped.Bip01_Spine")
 	local bonePos = self.boneCharacter:GetBonePosition(boneIdx)
+
 	if bonePos then
-		self.activeCharacter.upPosition = Lerp(ft * 15, self.activeCharacter.upPosition, 32 - bonePos.z - (self.cameraBone and 0 or 10))
+		local targetPos = 32 - bonePos.z - (self.cameraBone and 0 or 10)
+
+		self.activeCharacter.upPosition = Lerp(ft * 15, self.activeCharacter.upPosition, targetPos)
 	end
 
 	self.activeCharacter:FrameAdvance()
 	self.activeCharacter:SetPos(Vector(0, 1.25, self.activeCharacter.upPosition))
 	self.activeCharacter:DrawModel()
 
-	for k, v in ipairs(self.activeCharacter.childrens) do
+	for _, v in ipairs(self.activeCharacter.childrens) do
 		if IsValid(v) then
 			v:DrawModel()
 		end
@@ -486,21 +580,6 @@ function PANEL:OnChangeSequence(sequence)
 	self.activeCharacter:SetPlaybackRate(1)
 end
 
-local function LerpA(a, b, t)
-	local delta = (b - a) % 360
-
-	if delta > 180 then
-		delta = delta - 360
-	end
-
-	return a + delta * t
-end
-
-local ambMat = Material("asterion/academy/ui/radial/m_mouse.png")
-local lmbMat = Material("asterion/academy/ui/radial/l_mouse.png")
-local rmbMat = Material("asterion/academy/ui/radial/r_mouse.png")
-local starMat = Material("asterion/academy/ui/radial/favorite.png")
-
 function PANEL:Paint(w, h)
 	local ft = FrameTime()
 
@@ -510,6 +589,7 @@ function PANEL:Paint(w, h)
 
 	local segment_size = 360 / #self.options
 	self.selected = self.selected or nil
+
 	if !self.bClose then
 		self.selected = self:FindSelected(segment_size)
 	end
@@ -517,13 +597,10 @@ function PANEL:Paint(w, h)
 	if !self.selected then return end
 
 	self.rotate = self.rotate or self.selected * segment_size
-	self.rotate = LerpA(self.rotate, self.selected * segment_size, ft * 20)
+	self.rotate = LerpAngle(self.rotate, self.selected * segment_size, ft * 20)
 	self.oldselected = self.oldselected or self.selected
 
-	asterionlib.DrawBlur(self, 1)
-
-	surface_SetDrawColor(0, 0, 0, 50)
-	surface_DrawRect(0, 0, w, h)
+	self:DrawBackground(w, h)
 
 	cam_Start3D(self.cameraPosition, self.cameraAngle, self.cameraFov, 0, 0, w, h)
 		if IsValid(self.activeCharacter) and IsValid(self.boneCharacter) then
@@ -545,10 +622,19 @@ function PANEL:Paint(w, h)
 		end
 	cam_End3D()
 
-	-- self.background_circle_blur:SetRadius(self.panelWide + self.size + 5)
-	-- self.background_circle_blur()
+	self:DrawRadialElements(w, h)
 
-	surface_SetDrawColor(0, 0, 0, 100)
+	if self.selected != self.oldselected then
+		self:OnRotate()
+	end
+
+	self.oldselected = self.selected
+end
+
+function PANEL:DrawBackground(w, h)
+	asterionlib.DrawBlur(self, 1)
+
+	surface_SetDrawColor(0, 0, 0, 50)
 	surface_DrawRect(0, 0, w, h)
 
 	surface_SetDrawColor(255, 255, 255, 255)
@@ -557,52 +643,69 @@ function PANEL:Paint(w, h)
 
 	self.background_blur:SetRadius(self.panelWide + self.size + 75)
 	self.background_blur()
+end
 
-	do
-		local mouseX, mouseY = input_GetCursorPos()
-		local deltaX = mouseX - self.centerX
-		local deltaY = mouseY - self.centerY
-		local angleRadians = math_atan2(deltaY, deltaX)
-		local angleDegrees = math_deg(angleRadians)
-		self.angleDegrees = LerpA(self.angleDegrees, angleDegrees, ft * 10)
-	end
+function PANEL:DrawRadialElements(w, h)
+	local ft = FrameTime()
 
-	do
-		local option = self.options[self.selected + 1]
-		if option then
-			local size = 360 / #self.options
-			local a = math_rad(size * self.selected + size / 2)
-			local x = self.centerX + math_cos(a) * self.panelWide
-			local y = self.centerY + math_sin(a) * self.panelWide
+	self:CalculateCursorAngle()
+	self:DrawSelectionGradient(w, h)
+	self:DrawCursorArrow(w, h)
+	self:DrawMenuOptions(w, h, ft)
+	self:DrawSelectedOptionInfo(w, h, ft)
+	self:DrawControlHints(w, h, ft)
+end
 
-			local deltaX = x - self.centerX
-			local deltaY = y - self.centerY
-			local angleRadians = math_atan2(deltaY, deltaX)
-			local angleDegrees = math_deg(angleRadians)
+function PANEL:CalculateCursorAngle()
+	local mouseX, mouseY = input_GetCursorPos()
+	local deltaX = mouseX - self.centerX
+	local deltaY = mouseY - self.centerY
+	local angleRadians = math_atan2(deltaY, deltaX)
+	local angleDegrees = math_deg(angleRadians)
 
-			self.angleGradient = angleDegrees
-		end
-	end
+	self.angleDegrees = LerpAngle(self.angleDegrees, angleDegrees, FrameTime() * 10)
+end
 
+function PANEL:DrawSelectionGradient(w, h)
+	local option = self.options[self.selected + 1]
+	if !option then return end
+
+	local segment_size = 360 / #self.options
+	local a = math_rad(segment_size * self.selected + segment_size / 2)
+	local x = self.centerX + math_cos(a) * self.panelWide
+	local y = self.centerY + math_sin(a) * self.panelWide
+
+	local deltaX = x - self.centerX
+	local deltaY = y - self.centerY
+	local angleRadians = math_atan2(deltaY, deltaX)
+	local angleDegrees = math_deg(angleRadians)
+
+	self.angleGradient = angleDegrees
+
+	local size_gradient = (self.panelWide + self.size) * 2 + 5
+	surface_SetDrawColor(RADIAL_CONFIG.COLORS.BLUR)
+	surface_SetMaterial(gradient_selectMat)
+	surface_DrawTexturedRectRotated(w / 2, h / 2, size_gradient, size_gradient, -self.angleGradient)
+end
+
+function PANEL:DrawCursorArrow(w, h)
 	local size_arrow = self:GetTall() * 0.45
+
 	surface_SetDrawColor(255, 255, 255)
 	surface_SetMaterial(arrowMat)
 	surface_DrawTexturedRectRotated(w / 2, h / 2, size_arrow, size_arrow, -self.angleDegrees)
+end
 
-	local size_gradient = (self.panelWide + self.size) * 2 + 5
-	surface_SetDrawColor(color_blur)
-	surface_SetMaterial(gradient_selectMat)
-	surface_DrawTexturedRectRotated(w / 2, h / 2, size_gradient, size_gradient, -self.angleGradient)
-
+function PANEL:DrawMenuOptions(w, h, ft)
+	local segment_size = 360 / #self.options
 	local data = asterionlib.data:Get("radialmenu_favorites", {})
 
 	for i = 0, #self.options - 1 do
 		local option = self.options[i + 1]
-
 		local a = math_rad(segment_size * i + segment_size / 2)
 		local x = self.centerX + math_cos(a) * self.panelWide
 		local y = self.centerY + math_sin(a) * self.panelWide
-		local color = color_blur
+		local color = RADIAL_CONFIG.COLORS.BLUR
 
 		option.fill_alpha = option.fill_alpha or 0
 		option.fill_alpha = Lerp(ft * 20, option.fill_alpha, self.selected == i and 257 or -2)
@@ -613,7 +716,7 @@ function PANEL:Paint(w, h)
 		surface_DrawTexturedRect(x - size_fill, y - size_fill, size_fill * 2, size_fill * 2)
 
 		if self.selected == i then
-			color = color_black
+			color = RADIAL_CONFIG.COLORS.BLACK
 
 			self.sequence = option.sequence
 			self.weightedSequence = option.weightedSequence
@@ -622,13 +725,13 @@ function PANEL:Paint(w, h)
 		end
 
 		if option.id then
-			for k, v in ipairs(data) do
+			for _, v in ipairs(data) do
 				if v == option.id then
 					local size = self:GetTall() * 0.035
-
 					surface_SetDrawColor(255, 255, 255)
 					surface_SetMaterial(starMat)
 					surface_DrawTexturedRect(x - size, y - size, size * 2, size * 2)
+
 					break
 				end
 			end
@@ -638,7 +741,7 @@ function PANEL:Paint(w, h)
 			option.iconNoColor = option.iconNoColor or option.icon:GetName():find("emojis/")
 
 			local size = self:GetTall() * 0.03
-			local iconColor = option.iconNoColor and color_white or color
+			local iconColor = option.iconNoColor and RADIAL_CONFIG.COLORS.WHITE or color
 
 			surface_SetDrawColor(iconColor)
 			surface_SetMaterial(option.icon)
@@ -648,73 +751,81 @@ function PANEL:Paint(w, h)
 		end
 
 		local b = self.panelWide * 0.8
-		draw_SimpleText(i + 1, "arb.Font_FuturaPTDemi_5", self.centerX + math_cos(a) * b, self.centerY + math_sin(a) * b, color_red, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw_SimpleText(i + 1, "arb.Font_FuturaPTDemi_5", self.centerX + math_cos(a) * b, self.centerY + math_sin(a) * b, RADIAL_CONFIG.COLORS.RED, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
+end
 
+function PANEL:DrawSelectedOptionInfo(w, h, ft)
 	local option = self.options[self.selected + 1]
-	if option then
-		local name = F(option.name)
-		local description = F(option.description)
-		local icon = option.icon
+	if !option then return end
 
-		if icon and !option.sequence then
-			local size = self:GetTall() * 0.1
+	local name = F(option.name)
+	local description = F(option.description)
+	local icon = option.icon
 
-			surface_SetDrawColor(color_red.r, color_red.g, color_red.b, self.textAlpha)
-			surface_SetMaterial(icon)
-			surface_DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
-		end
+	if icon and !option.sequence then
+		local size = self:GetTall() * 0.1
 
-		draw_SimpleText(name, "arb.Font_FuturaPTDemi_13", w / 2, h / 2, ColorAlpha(color_blur, self.textAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-
-		if description then
-			local descFont = "arb.Font_FuturaPTBook_8"
-			local fontHeight = draw_GetFontHeight(descFont)
-			option.wrap = option.wrap or asterionlib.WrapText(description, self.radialSize, descFont)
-
-			for k, v in ipairs(option.wrap) do
-				draw_SimpleText(v, descFont, w / 2, h / 2 + k * fontHeight, ColorAlpha(color_white, self.textAlpha * 0.9), TEXT_ALIGN_CENTER)
-			end
-		end
+		surface_SetDrawColor(RADIAL_CONFIG.COLORS.RED.r, RADIAL_CONFIG.COLORS.RED.g, RADIAL_CONFIG.COLORS.RED.b, self.textAlpha)
+		surface_SetMaterial(icon)
+		surface_DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
 	end
 
-	do
-		local _, height = draw_SimpleText(L("#radial_button_option"), "arb.Font_FuturaPTBook_8", w / 2 + (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+	draw_SimpleText(name, "arb.Font_FuturaPTDemi_13", w / 2, h / 2, ColorAlpha(RADIAL_CONFIG.COLORS.BLUR, self.textAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-		local iconW = height * 3.5
-		local iconH = iconW * 0.3827
-		surface_SetDrawColor(255, 255, 255)
-		surface_SetMaterial(lmbMat)
-		surface_DrawTexturedRect(w / 2 + (self.radialSize + self.size) - iconW / 2, h / 2 + (self.radialSize + self.size) - height - iconH, iconW, iconH)
+	if description then
+		local descFont = "arb.Font_FuturaPTBook_8"
+		local fontHeight = draw_GetFontHeight(descFont)
+
+		option.wrap = option.wrap or asterionlib.WrapText(description, self.radialSize, descFont)
+		for k, v in ipairs(option.wrap) do
+			draw_SimpleText(v, descFont, w / 2, h / 2 + k * fontHeight, ColorAlpha(RADIAL_CONFIG.COLORS.WHITE, self.textAlpha * 0.9), TEXT_ALIGN_CENTER)
+		end
 	end
+end
+
+function PANEL:DrawControlHints(w, h, ft)
+	self:DrawLeftMouseHint(w, h)
 
 	self.rmbMatAlpha = Lerp(ft * 10, self.rmbMatAlpha, isfunction(self.backFunc) and 1 or 0)
 	if self.rmbMatAlpha > 0.025 then
-		local _, height = draw_SimpleText(L("#radial_button_back"), "arb.Font_FuturaPTBook_8", w / 2 - (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), ColorAlpha(color_white, self.rmbMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-
-		local iconW = height * 3.5
-		local iconH = iconW * 0.3827
-		surface_SetDrawColor(255, 255, 255, self.rmbMatAlpha * 255)
-		surface_SetMaterial(rmbMat)
-		surface_DrawTexturedRect(w / 2 - (self.radialSize + self.size) - iconW / 2, h / 2 + (self.radialSize + self.size) - height - iconH, iconW, iconH)
+		self:DrawRightMouseHint(w, h)
 	end
 
-	self.ambMatAlpha = Lerp(ft * 10, self.ambMatAlpha, (option and option.id) and 1 or 0)
+	self.ambMatAlpha = Lerp(ft * 10, self.ambMatAlpha, (self.options[self.selected + 1] and self.options[self.selected + 1].id) and 1 or 0)
 	if self.ambMatAlpha > 0.025 then
-		local _, height = draw_SimpleText(L("#radial_button_favorites"), "arb.Font_FuturaPTBook_8", w / 2, h / 2 - (self.radialSize + self.size) - 50, ColorAlpha(color_white, self.ambMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-
-		local iconW = height * 3.5
-		local iconH = iconW * 0.3827
-		surface_SetDrawColor(255, 255, 255, self.ambMatAlpha * 255)
-		surface_SetMaterial(ambMat)
-		surface_DrawTexturedRect(w / 2 - iconW / 2, h / 2 - (self.radialSize + self.size) - 50 - height - iconH, iconW, iconH)
+		self:DrawMiddleMouseHint(w, h)
 	end
+end
 
-	if self.selected != self.oldselected then
-		self:OnRotate()
-	end
+function PANEL:DrawLeftMouseHint(w, h)
+	local _, height = draw_SimpleText(L("#radial_button_option"), "arb.Font_FuturaPTBook_8", w / 2 + (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), RADIAL_CONFIG.COLORS.WHITE, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
-	self.oldselected = self.selected
+	local iconW = height * 3.5
+	local iconH = iconW * 0.3827
+	surface_SetDrawColor(255, 255, 255)
+	surface_SetMaterial(lmbMat)
+	surface_DrawTexturedRect(w / 2 + (self.radialSize + self.size) - iconW / 2, h / 2 + (self.radialSize + self.size) - height - iconH, iconW, iconH)
+end
+
+function PANEL:DrawRightMouseHint(w, h)
+	local _, height = draw_SimpleText(L("#radial_button_back"), "arb.Font_FuturaPTBook_8", w / 2 - (self.radialSize + self.size), h / 2 + (self.radialSize + self.size), ColorAlpha(RADIAL_CONFIG.COLORS.WHITE, self.rmbMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+	local iconW = height * 3.5
+	local iconH = iconW * 0.3827
+	surface_SetDrawColor(255, 255, 255, self.rmbMatAlpha * 255)
+	surface_SetMaterial(rmbMat)
+	surface_DrawTexturedRect(w / 2 - (self.radialSize + self.size) - iconW / 2, h / 2 + (self.radialSize + self.size) - height - iconH, iconW, iconH)
+end
+
+function PANEL:DrawMiddleMouseHint(w, h)
+	local _, height = draw_SimpleText(L("#radial_button_favorites"), "arb.Font_FuturaPTBook_8", w / 2, h / 2 - (self.radialSize + self.size) - 50, ColorAlpha(RADIAL_CONFIG.COLORS.WHITE, self.ambMatAlpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+	local iconW = height * 3.5
+	local iconH = iconW * 0.3827
+	surface_SetDrawColor(255, 255, 255, self.ambMatAlpha * 255)
+	surface_SetMaterial(ambMat)
+	surface_DrawTexturedRect(w / 2 - iconW / 2, h / 2 - (self.radialSize + self.size) - 50 - height - iconH, iconW, iconH)
 end
 
 function PANEL:OnRemove()

@@ -22,7 +22,6 @@ local VECTOR = FindMetaTable("Vector")
 local CUSERCMD = FindMetaTable("CUserCmd")
 
 local IsValid = IsValid
-local RealFrameTime = RealFrameTime
 local LerpAngle = LerpAngle
 local Angle = Angle
 local math_Approach = math.Approach

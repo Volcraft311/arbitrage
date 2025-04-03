@@ -611,6 +611,14 @@ Arbitrage.language:Add("ru", {
     ["#status_effects_absolute_luck_desc"] = "Вы обладаете абсолютной удачей.",
     ["#status_effects_gifted_sleeper_title"] = "Одаренный соня",
     ["#status_effects_gifted_sleeper_desc"] = "Возможность спать где угодно.",
+    ["#status_effects_confident_shooter_title"] = "Уверенный стрелок",
+    ["#status_effects_confident_shooter_desc"] = "Ваше дрожание рук практически отсутствует. Идеально контролируете очереду.",
+    ["#status_effects_lethargy_title"] = "Вялость",
+    ["#status_effects_lethargy_desc"] = "Заметное дрожание рук, точность падает при длинной очереди.",
+    ["#status_effects_uncertainty_title"] = "Неуверенность",
+    ["#status_effects_uncertainty_desc"] = "Лёгкая тряска при наведении на врага.",
+    ["#status_effects_alarmist_title"] = "Паникер",
+    ["#status_effects_alarmist_desc"] = "Сильная тряска при прицеливании. Шанс случайного одиночного выстрела",
 
     ["#status_effects_have_effect"] = "Игрок имеет статус эффект",
     ["#status_effects_cant_forever"] = "Данный эффект нельзя установить навсегда",
@@ -2354,5 +2362,7 @@ Arbitrage.language:Add("ru", {
     ["#note_alignment_center"] = "Центр",
 
     ["#leaveplayer_title"] = "Спящий персонаж",
-    ["#leaveplayer_description"] = "Данный персонаж вышел с сервера."
+    ["#leaveplayer_description"] = "Данный персонаж вышел с сервера.",
+
+    ["#itemlist_search"] = "Введите сюда текст..."
 })

@@ -51,7 +51,7 @@ function ENT:Use(client, caller)
 	end)
 end
 
-function ENT:SetContainer(model, name, description, w, h)
+function ENT:SetContainer(model, name, description, w, h, preset_id)
 	self:SetModel(model)
 	self:SetSolid(SOLID_VPHYSICS)
 	self:PhysicsInit(SOLID_VPHYSICS)
@@ -75,6 +75,20 @@ function ENT:SetContainer(model, name, description, w, h)
 	if IsValid(physObj) then
 		physObj:EnableMotion(false)
 		physObj:Wake()
+	end
+
+	if preset_id then
+		local preset = Container.presets[preset_id]
+		local items = preset.items or {}
+
+		for _, info in ipairs(items) do
+			local uniqueID = info.id
+
+			local item = ItemBase.CreateItem(uniqueID)
+			if item then
+				item:Transfer(self.Inventory:GetID())
+			end
+		end
 	end
 end
 

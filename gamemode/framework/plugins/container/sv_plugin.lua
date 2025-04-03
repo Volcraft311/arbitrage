@@ -24,7 +24,7 @@ function Container:LeftClick(data)
     container:SetPos(entity:GetPos())
     container:SetAngles(entity:GetAngles())
 
-    container:SetContainer(entity:GetModel(), data.name, data.description, data.w, data.h)
+    container:SetContainer(entity:GetModel(), data.name, data.description, data.w, data.h, data.preset)
     entity:Remove()
 
     return "#container_created " .. tostring(entity) .. "."

@@ -45,15 +45,14 @@ spawnmenu.AddContentType("Item", function(container, item)
     icon:SetSpawnName(uniqueID)
     icon:SetMaterial(item.icon)
 
-    local path = item.icon
-    if string.isURL(path) then
-        asterionlib.downloader:Image(path, function(mat, path)
+    if string.isURL(item.icon) then
+        asterionlib.downloader:Image(item.icon, function(mat, path)
             if !path then return end
 
             icon:SetMaterial(path)
         end)
     else
-        icon:SetMaterial(path)
+        icon:SetMaterial(item.icon)
     end
 
     icon.DoClick = function()
@@ -107,10 +106,74 @@ timer.Simple(0, function()
         local tree = base.ContentNavBar.Tree
         local categories = {}
 
+        local searchPanel = vgui.Create("DPanel", base.ContentNavBar)
+        searchPanel:Dock(TOP)
+        searchPanel:SetTall(30)
+        searchPanel:DockMargin(0, 0, 0, 5)
+        searchPanel.Paint = function() end
+
+        local searchEntry = vgui.Create("DTextEntry", searchPanel)
+        searchEntry:Dock(FILL)
+        searchEntry:SetPlaceholderText(L("#itemlist_search"))
+        searchEntry.OnEnter = function(this)
+            base:SearchItems(this:GetText())
+        end
+
+        local icon = Material("icon16/magnifier.png")
+        local icon_size = 0.5
+        local searchButton = vgui.Create("DButton", searchPanel)
+        searchButton:Dock(RIGHT)
+        searchButton:SetWide(30)
+        searchButton:SetText("")
+        searchButton.DoClick = function()
+            base:SearchItems(searchEntry:GetText())
+        end
+        searchButton.Paint = function(_, w, h)
+            draw.RoundedBox(0, 0, 0, w, h, Color(60, 60, 60))
+
+            surface.SetDrawColor(color_white)
+            surface.SetMaterial(icon)
+            surface.DrawTexturedRect(w / 2 - h * icon_size / 2, h / 2 - h * icon_size / 2, h * icon_size, h * icon_size)
+        end
+
+        function base:SearchItems(searchText)
+            searchText = searchText:utf8lower():Trim()
+
+            if !IsValid(self.searchResultsContainer) then
+                self.searchResultsContainer = vgui.Create("ContentContainer", base)
+                self.searchResultsContainer:SetVisible(false)
+                self.searchResultsContainer:SetTriggerSpawnlistChange(false)
+            else
+                self.searchResultsContainer:Clear()
+            end
+
+            if searchText == "" then
+                if IsValid(self.searchResultsContainer) then
+                    self.searchResultsContainer:SetVisible(false)
+                end
+
+                if IsValid(tree:Root():GetChildNode(0)) then
+                    tree:Root():GetChildNode(0):InternalDoClick()
+                end
+
+                return
+            end
+
+            for k, v in pairs(ItemBase.list) do
+                if v:GetCategory() == "Converter" then continue end
+
+                local itemName = L(v:GetName()):utf8lower():Trim()
+                if itemName:find(searchText, 1, true) then
+                    spawnmenu.CreateContentIcon("Item", self.searchResultsContainer, v)
+                end
+            end
+
+            base:SwitchPanel(self.searchResultsContainer)
+        end
+
         for k, v in SortedPairsByMemberValue(ItemBase.list, "category") do
             if v:GetCategory() == "Converter" then continue end
             if categories[v:GetCategory()] then continue end
-
 
             local category = v:GetCategory()
             local node = tree:AddNode(L(category), icons[category] and ("icon16/" .. icons[category] .. ".png") or "icon16/brick.png")

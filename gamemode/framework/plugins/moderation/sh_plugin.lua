@@ -22,6 +22,15 @@ Moderation.logs = Moderation.logs or {}
 
 Arbitrage.GM.PhysgunPickup = nil
 function Moderation:PhysgunPickup(client, entity)
+    local bSucc, preCanPhysgunPickup = hook.Run("PreCanPhysgunPickup", client, entity)
+    if bSucc == true then
+        if preCanPhysgunPickup then
+            return preCanPhysgunPickup
+        end
+    elseif bSucc == false then
+        return false
+    end
+
     if !client:IsAdmin() then return false end
 
     if entity:IsPlayer() then
@@ -57,8 +66,12 @@ end
 Arbitrage.GM.CanTool = nil
 function Moderation:CanTool(client, tr, toolname, tool, button)
     local bSucc, preCanTool = hook.Run("PreCanTool", client, tr, toolname, tool, button)
-    if bSucc == true and preCanTool then
-        return preCanTool
+    if bSucc == true then
+        if preCanTool then
+            return preCanTool
+        end
+    elseif bSucc == false then
+        return false
     end
 
     return client:IsAdmin()

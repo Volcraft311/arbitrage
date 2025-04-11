@@ -579,7 +579,8 @@ timer.Simple(1, function()
             if bServerRestart then return client:ChatNotify("#command_restart_request_received") end
 
             delay = delay or 30
-            delay = math.Clamp(delay, 20, 600)
+            delay = math.Clamp(delay, 30, 600)
+            delay = math.floor(delay)
 
             local adminName = client:FullName(true)
 

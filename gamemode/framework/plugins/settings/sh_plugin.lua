@@ -45,6 +45,7 @@ function PLUGIN.options.Add(id, type, default, data)
     PLUGIN.stored.options[id] = {
         id = id,
         type = type,
+        m_type = data.m_type,
         default = default,
         value = bReplace and oldValue or default,
         name = data.name or "Неизвестно",

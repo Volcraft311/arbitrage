@@ -45,7 +45,7 @@ function TOOL:LeftClick()
     local message = Container:LeftClick(data)
 
     if message then
-        client:ChatPrint(message)
+        client:ChatNotify(message)
     end
 end
 
@@ -60,7 +60,7 @@ function TOOL:Reload()
     local message = Container:Reload(data)
 
     if message then
-        client:ChatPrint(message)
+        client:ChatNotify(message)
     end
 end
 

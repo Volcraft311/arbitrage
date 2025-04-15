@@ -253,14 +253,6 @@ do
             end
         })
 
-        workshop:Add("1892549430") -- drp_hopespeak (WIP) Danganronpa map
-
-        workshop:Add("1892565701", { -- drp_hopespeak - Content
-            onCheck = function()
-                return !workshop:ModelIsError("models/monopad/monopad.mdl")
-            end
-        })
-
         -- MODELS
         workshop:Add("1246554779", {  -- Roleplay Props Extended
             onCheck = function()

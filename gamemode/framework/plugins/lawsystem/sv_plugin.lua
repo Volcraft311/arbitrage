@@ -117,6 +117,16 @@ concommand.Add("arb_interruption_cd", function(client, cmd, args)
     client:ChatNotify(L(client, "#notify_changed_camera_interruption", time))
 end)
 
+concommand.Add("arb_sprites_size", function(client, cmd, args)
+    if !client:IsAdmin() then return end
+
+    local size = tonumber(args[1])
+    if !size then return end
+
+    SetNetVar("arb.SpritesSize", size)
+    client:ChatNotify("Вы изменили максимальный размер спрайтов на " .. size .. "!")
+end)
+
 function Arbitrage:StartLaw()
     PLUGIN:EndRebuttalShowdowns()
 

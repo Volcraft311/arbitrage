@@ -265,11 +265,12 @@ function PLUGIN:CreateBullet(data)
     return self.bulletList[#self.bulletList], #self.bulletList
 end
 
-local spriteSize = 1.5
-local spriteW = 45 * spriteSize
-local spriteH = 75 * spriteSize
-local spriteShift = 34
 local function drawing(client, mat)
+    local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
+    local spriteW = 45 * spriteSize
+    local spriteH = 75 * spriteSize
+    local spriteShift = spriteW * 0.5
+
     do
         local ang = Angle(0, client:EyeAngles()[2] + 90, 90)
         local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * spriteShift

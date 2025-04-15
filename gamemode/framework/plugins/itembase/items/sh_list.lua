@@ -1630,6 +1630,89 @@ local data = {
 			maxw = 2,
 		},
 	},
+	base_stack = {
+		toothbruush = {
+			description = "Инструмент для удаления мягких отложений с поверхности зубов и дёсен.",
+			icon = "https://i.imgur.com/u22FApk.png",
+			maxstack = 5,
+			model = "models/props_vtmb/toothbrush.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Зубная щётка",
+		},
+		kostik = {
+			description = "Прочная, жёсткая структура, состоящая из белков и минералов, в частности, кальция.",
+			icon = "https://i.imgur.com/pgeDK17.png",
+			maxstack = 3,
+			model = "models/Gibs/HGIBS_spine.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Кость",
+		},
+		penlol = {
+			description = "Письменная принадлежность в виде удлинённого стержня, на конце которого находится пишущее приспособление.",
+			icon = "https://i.imgur.com/r0UCTWc.png",
+			maxstack = 10,
+			model = "models/props_vtmb/pen.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Ручка",
+		},
+		emptybottletrash = {
+			description = "Обычная пустая бутылка, в простонароде - мусор",
+			icon = "https://i.imgur.com/bH7ozpY.png",
+			maxstack = 5,
+			model = "models/props_junk/garbage_glassbottle002a.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Пустая бутылка",
+		},
+		cpuprocessor = {
+			description = "«Мозг» компьютера и любого другого электронного устройства, который выполняет обработку данных и управление всеми задачами системы.",
+			icon = "https://i.imgur.com/5TBMxFn.png",
+			maxstack = 10,
+			model = "models/beer/wiremod/gate_e2.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Процессор",
+		},
+		vizitcard = {
+			icon = "https://i.imgur.com/w2HBsLn.png",
+			maxstack = 20,
+			stackdefault = 1,
+			category = "#item_category_other",
+			model = "models/cheeze/pcb/pcb0.mdl",
+			name = "Визитка",
+			description = "Визитная карточка, удостоверяющая личность",
+		},
+		ignitionkey = {
+			description = "Устройство, обеспечивающее подачу электроэнергии, необходимой для функционирования двигателя транспортного средства.",
+			icon = "https://i.imgur.com/7PsfWPs.png",
+			maxstack = 5,
+			model = "models/props_vtmb/tattoo_gun.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Ключ зажигания",
+		},
+		staplerr = {
+			description = "Инструмент для скрепления частей того или иного материала при помощи специальных металлических скоб.",
+			icon = "https://i.imgur.com/YUqXJdt.png",
+			maxstack = 10,
+			model = "models/props_vtmb/stapler.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Степлер",
+		},
+		bolttt = {
+			description = "Является одним из самых распространенных средств для крепления.",
+			icon = "https://i.imgur.com/2vkGxrb.png",
+			maxstack = 50,
+			model = "models/props_c17/TrapPropeller_Lever.mdl",
+			category = "#item_category_other",
+			stackdefault = 1,
+			name = "Болт",
+		}
+	},
 	default = {
 		prison_lamp = {
 			icon = "https://i.imgur.com/Yx8Sr5W.png",
@@ -1691,7 +1774,7 @@ local data = {
 			name = "Граммофон",
 			description = "Механический аппарат воспроизводящий звуки с пластинок",
 		},
-		toiletpaper  = {
+		toiletpaper = {
 			icon = "https://i.imgur.com/C2747HY.png",
 			model = "models/props/interior/toiletpaperroll.mdl",
 			name = "Туалетная бумага",
@@ -1769,7 +1852,7 @@ local data = {
 			model = "models/props_c17/doll01.mdl",
 			name = "Кукла",
 		},
-		padlock  = {
+		padlock = {
 			icon = "https://i.imgur.com/GHJzbmo.png",
 			description = "Механическое устройство, устанавливаемое на двери для обеспечения безопасности и защиты от несанкционированного доступа.",
 			model = "models/props_vtmb/padlock1.mdl",
@@ -1859,7 +1942,7 @@ local data = {
 			name = "Средство для очистки стёкол",
 			description = "Моющее средство для эффективного удаления загрязнений, пятен и разводов с окон.",
 		},
-		shlakablock  = {
+		shlakablock = {
 			icon = "https://i.imgur.com/kp8B0Br.png",
 			description = "Искусственный строительный камень, который получают путём заливки и прессовки смеси из шлака и цемента.",
 			model = "models/props_junk/CinderBlock01a.mdl",
@@ -1871,7 +1954,7 @@ local data = {
 			model = "models/cfan/dfan.mdl",
 			name = "Вентилятор",
 		},
-		vial_of_mercury  = {
+		vial_of_mercury = {
 			icon = "https://i.imgur.com/Gp9vEm0.png",
 			model = "models/props_junk/glassjug01.mdl",
 			name = "Флакон с ртутью",

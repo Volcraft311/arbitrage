@@ -1486,7 +1486,7 @@ Arbitrage.language:Add("ru", {
     ["#monomenu_stats_returngame"] = "Вернуть в игру",
     ["#monomenu_stats_setname"] = "Изменить имя",
     ["#monomenu_stats_nameex"] = "Введите имя, которое вы хотите присвоить данному персонажу.\n(Если вы хотите вернуть стандартное имя, то оставьте это поле пустым)",
-    ["#monomenu_stats_respawn"] = "Возродить",
+    ["#monomenu_stats_respawn"] = "Пересоздать",
 
     ["#monomenu_comms_chat"] = "Чат",
     ["#monomenu_comms_globalon"] = "Включить глобальный войс",

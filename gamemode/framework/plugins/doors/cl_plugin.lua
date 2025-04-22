@@ -337,7 +337,7 @@ function PLUGIN:Think()
 		local trace = util_QuickTrace(EyePos(), EyeAngles():Forward() * 999999, LocalPlayer())
 		local entity = trace.Entity
 
-		if !IsValid(entity) then return end
+		if !IsValid(entity) then return MonoMenu:OpenEntityMenu(client, ScrW() / 2, ScrH() / 2) end
 
 		if entity:IsDoor() then
 			return openDoorMenu(entity)

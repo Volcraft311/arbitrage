@@ -97,8 +97,6 @@ function PANEL:SetDescription(description)
     description = description:gsub("#item_left: %d+/%d+", "")
     description = description:gsub("#item_number: %d+", "")
 
-    print(description)
-
     description = F(description)
     description = string.Trim(description)
 

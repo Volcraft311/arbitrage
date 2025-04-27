@@ -149,12 +149,6 @@ do
             end
         })
 
-        workshop:Add("2903072502", { -- Asterion Academy - RadialMenu Assets (beta)
-            onCheck = function()
-                return !workshop:MaterialIsError("danganronpa/radialmenu/ammo.png")
-            end
-        })
-
         -- OTHER
 
         workshop:Add("160250458", { -- Wiremod

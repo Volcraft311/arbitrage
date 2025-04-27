@@ -31,12 +31,9 @@ end
 
 function Arbitrage.language:GetActive()
     local lang_id = self.convar:GetString()
-    local lang = Arbitrage.language:Get(lang_id)
-    if lang then
-        return lang
-    end
+    local lang = self:Get(lang_id)
 
-    return Arbitrage.language:Get(self.default)
+    return lang or self:Get(self.default)
 end
 
 function Arbitrage.language:Format(data, client)
@@ -53,7 +50,7 @@ end
 function Arbitrage.language:FindWord(name)
     name = name:utf8lower()
 
-    for _, lang in pairs(Arbitrage.language.stored) do
+    for _, lang in pairs(self.stored) do
         for idx, word in pairs(lang.data) do
             if isstring(word) then
                 word = word:utf8lower()

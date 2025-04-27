@@ -540,7 +540,7 @@ timer.Simple(1, function()
             local time = asterionlib.IsoDurationToSeconds(delay)
             target:SetDynamicUserGroup("guard", time)
 
-            Arbitrage.command.Notify(target, L(target, "#command_obtaining_admin_rank", delay))
+            target:ChatNotify(L(target, "#command_obtaining_admin_rank", delay))
         end
     })
 

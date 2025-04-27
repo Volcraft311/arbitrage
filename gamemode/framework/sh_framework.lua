@@ -202,12 +202,6 @@ do
             end
         })
 
-        workshop:Add("2938912306", { -- Suppression Mat
-            onCheck = function()
-                return !workshop:MaterialIsError("vignette/vignette.png")
-            end
-        })
-
         workshop:Add("2963988886", { -- more materials
             onCheck = function()
                 return !workshop:MaterialIsError("metal/metalwall1")

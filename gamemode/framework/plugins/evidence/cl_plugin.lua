@@ -21,13 +21,13 @@ local draw_SimpleText = draw.SimpleText
 local draw_DrawText = draw.DrawText
 local select = select
 local math_max = math.max
-local timer_Simple = timer.Simple
 local ipairs = ipairs
 local math_Clamp = math.Clamp
 local math_abs = math.abs
 local math_sin = math.sin
 local EyePos = EyePos
-local ColorAlpha = ColorAlpha
+local timer_Remove = timer.Remove
+local timer_Create = timer.Create
 local draw_NoTexture = draw.NoTexture
 local surface_DrawPoly = surface.DrawPoly
 local netstream = netstream
@@ -236,18 +236,18 @@ local function draw_player_evidences(client)
         -- best animations!!!
         if !(evidence.animID and evidence.animID < 5) then continue end
 
-        if evidence.animID > 0 and evidence.animID < 3 then
+        if evidence.animID > 0 and evidence.animID < 3 and evidence.animSize then
             evidence.animSize = Lerp(ft, evidence.animSize, 50)
         end
 
-        if evidence.animID > 1 and evidence.animID < 4 then
+        if evidence.animID > 1 and evidence.animID < 4 and evidence.animPos then
             evidence.animPos = LerpVector(ft, evidence.animPos, eyePos + eyeAng:Forward() * 200 - eyeAng:Up() * 25)
         end
 
         local position = evidence.animPos or entity:GetPos()
         local position2D = position:ToScreen()
 
-        if evidence.animID > 2 then
+        if evidence.animID > 2 and evidence.animTextAlpha then
             evidence.animTextAlpha = Lerp(ft, evidence.animTextAlpha, evidence.animID > 3 and -255 or 255)
 
             if evidence.animTextAlpha > 0.1 then
@@ -257,7 +257,7 @@ local function draw_player_evidences(client)
                 draw_DrawText(description, "arb.Font_FuturaPTBook_6", position2D.x, position2D.y + height + evidence.animSize, colorText, TEXT_ALIGN_CENTER)
             end
 
-            if evidence.animID > 3 and evidence.animID < 5 then
+            if evidence.animID > 3 and evidence.animID < 5 and evidence.animPos and evidence.animSize then
                 evidence.animPos = LerpVector(ft * 4, evidence.animPos, pos)
                 evidence.animSize = Lerp(ft, evidence.animSize, -2)
 
@@ -316,20 +316,25 @@ netstream.Hook("Evidence:Draw", function(entity)
     evidence.animSize = 0
     evidence.animTextAlpha = 0
 
-    timer_Simple(1, function()
+    timer_Remove("Evidence:DrawTimer1_" .. idx)
+    timer_Remove("Evidence:DrawTimer2_" .. idx)
+    timer_Remove("Evidence:DrawTimer3_" .. idx)
+    timer_Remove("Evidence:DrawTimer4_" .. idx)
+
+    timer_Create("Evidence:DrawTimer1_" .. idx, 1, 1, function()
         evidence.animID = 2
         evidence.animFinal = true
     end)
 
-    timer_Simple(2.5, function()
+    timer_Create("Evidence:DrawTimer2_" .. idx, 2.5, 1, function()
         evidence.animID = 3
     end)
 
-    timer_Simple(6, function()
+    timer_Create("Evidence:DrawTimer3_" .. idx, 6, 1, function()
         evidence.animID = 4
     end)
 
-    timer_Simple(9, function()
+    timer_Create("Evidence:DrawTimer4_" .. idx, 9, 1, function()
         evidence.animID = 5
 
         evidence.animTextAlpha = nil

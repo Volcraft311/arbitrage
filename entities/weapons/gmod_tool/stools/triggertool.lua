@@ -50,6 +50,10 @@ local trigger_actions = {
 	}
 }
 
+local color_text_background = Color(0,0,0,100)
+local color_first_point 	= Color(0,255,98)
+local color_second_point 	= Color(255,0,0)
+
 if SERVER then
 	function TOOL:Reload(trace)
 		if !IsFirstTimePredicted() then return false end
@@ -111,6 +115,34 @@ function TOOL:RightClick(trace)
 	end
 	trigger:SetPoint(SECOND_POINT, trace.HitPos)
 	return true
+end
+
+
+function TOOL:DrawHUD()
+	for id, trigger in pairs(Trigger.instances) do
+		local point = (trigger.points[1] + trigger.points[2]) / 2
+
+		local data2D = point:ToScreen()
+		if !data2D.visible then continue end
+
+		draw.RoundedBox(1, data2D.x - 20, data2D.y - 20, 40, 40, color_text_background)
+		draw.SimpleText(trigger.name .. "(" .. id .. ")", "Trebuchet24", data2D.x, data2D.y, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+
+	local trigger = Trigger:GetSelected()
+	if trigger then
+		local point1 = trigger.points[1]:ToScreen()
+		if point1.visible then
+			draw.RoundedBox(1, point1.x - 10, point1.y - 10, 20, 20, color_first_point)
+			draw.SimpleText("1", "Trebuchet24", point1.x, point1.y, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
+
+		local point2 = trigger.points[2]:ToScreen()
+		if point2.visible then
+			draw.RoundedBox(1, point2.x - 10, point2.y - 10, 20, 20, color_second_point)
+			draw.SimpleText("2", "Trebuchet24", point2.x, point2.y, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
+	end
 end
 
 function TOOL:Reload()

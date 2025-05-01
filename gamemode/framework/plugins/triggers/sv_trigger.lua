@@ -13,18 +13,18 @@
 ]]--
 
 
-function Trigger:SyncAll(receivers)
+function Trigger:SyncAllTriggers(receivers)
     local info = {}
     for id, trigger in pairs(self.instances) do
         info[id] = trigger:GetSyncData()
     end
 
-    netstream.Heavy(receivers, "Trigger:SyncAll", info)
+    netstream.Heavy(receivers, "Trigger:SyncAllTriggers", info)
 end
 
 
 function Trigger:PlayerInitialSpawnForRealz(client)
-    self:SyncAll(client)
+    self:SyncAllTriggers(client)
 end
 
 
@@ -56,7 +56,7 @@ netstream.Hook("Trigger:PlayerInteracted", function(client, id)
     trigger:PlayerInteracted(client)
 end)
 
-netstream.Hook("Trigger:SetPos", function(client, id, point, vector)
+netstream.Hook("Trigger:SetPoint", function(client, id, point, vector)
     if !client:IsAdmin() then return end
 
     local trigger = Trigger:GetByID(id)
@@ -198,7 +198,7 @@ netstream.Hook("Trigger:LoadConfig", function(client, info)
         Trigger:Create(base)
     end
 
-    Trigger:SyncAll()
+    Trigger:SyncAllTriggers()
 
     AdminNotify:SendNotify("triggerloadconfig", client:FullName())
 end)

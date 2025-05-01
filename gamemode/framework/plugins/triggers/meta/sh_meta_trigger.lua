@@ -61,6 +61,8 @@ function TRIGGER:SetPoint(point, vector)
         if IsValid(entity) then
             entity:SetPos(self.points[1])
         end
+    else 
+        netstream.Start("Trigger:SetPoint", self.id, point, vector)
     end
 end
 
@@ -112,20 +114,19 @@ function TRIGGER:GetOneShot()
 end
 
 function TRIGGER:IsPlayerInside(client)
+    if (client:GetMoveType() == MOVETYPE_NOCLIP) then return false end
+
     client = client or LocalPlayer()
 
-    if client:GetMoveType() == MOVETYPE_NOCLIP or client:IsRagdolling() then
-        return false
-    end
-
+    local dummy = client:IsRagdolling() and client:GetRagdoll() or client 
     local _, max = client:GetHull()
-    local pos = client:GetPos()
+    local pos = dummy:GetPos()
     pos.z = pos.z + max.z / 2
 
     return self:IsVectorInside(pos)
 end
 
-function TRIGGER:IsVectorInside(vector) -- Используется в проверках - нажатия, нахождения игрока внутри.
+function TRIGGER:IsVectorInside(vector)
     return vector:WithinAABox(self.points[1], self.points[2])
 end
 

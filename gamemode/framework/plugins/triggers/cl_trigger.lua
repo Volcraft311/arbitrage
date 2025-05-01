@@ -23,8 +23,29 @@ Trigger.files = {
     map = "academy_triggertool_configs/" .. game.GetMap()
 }
 
+local selected_trigger_color = Color(255, 247, 0, 39)
+
+
 file.CreateDir(Trigger.files.config)
 file.CreateDir(Trigger.files.map)
+
+
+hook.Add("OnTriggerUpdate", "UpdateTriggerUI", function()
+    pcall(Trigger.UpdateTriggerList, Trigger)
+    pcall(Trigger.UpdateActionList, Trigger)
+end)
+
+hook.Add("PostDrawTranslucentRenderables","DrawTriggers", function()
+    if !Trigger.drawTriggers then return end
+    render.DepthRange(0, 0)
+    
+    Trigger:DrawAll()
+
+    local trigger = Trigger:GetSelected()
+    if !trigger then return end
+
+    trigger:Draw(selected_trigger_color)
+end)
 
 function Trigger:DrawAll()
     for _, trigger in pairs(self.instances) do
@@ -32,10 +53,15 @@ function Trigger:DrawAll()
     end
 end
 
+function Trigger:GetSelected()
+    return self:GetByID(self.selectedID)
+end
+
+
 function Trigger:UpdateActionLists()
     local tr = self:GetSelected()
-    if !tr then return end
 
+    if !tr then return end
     for _act, _list in pairs(self.ActionLists) do
         if !IsValid(_list) then continue end
 
@@ -78,34 +104,9 @@ function Trigger:Load(name)
         chat.AddText("Файл сохранения повреждён.")
         return
     end
-    -------- Вырезать позже
-    if Trigger:IsOutdated(data) then
-        file.Delete(self.files.map .. "/" .. name, "DATA")
-        return chat.AddText("Файл сохранения устарел и был удалён.")
-    end
-    --------
     netstream.Heavy("Trigger:LoadConfig", data)
 end
 
----------------------------------------------------------------------------------- Старый формат(Вырезать позже)
-function Trigger:IsOutdated(data)
-    if data[1][1] then return true end
-    return false
-end
-----------------------------------------------------------------------------------
-
-
-local selected_trigger_color = Color(255, 247, 0, 100)
-function Trigger:PostDrawTranslucentRenderables()
-    if !self.drawTriggers then return end
-
-    self:DrawAll()
-
-    local trigger = self:GetSelected()
-    if !trigger then return end
-
-    trigger:Draw(selected_trigger_color)
-end
 
 function Trigger:PlayerBindPress(client, bind, pressed)
     if bind != "+use" then return end
@@ -136,20 +137,16 @@ end)
 
 netstream.Hook("Trigger:Sync", function(id, data)
     Trigger:Create(data, id)
-
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
+    hook.Call("OnTriggerUpdate")
 end)
 
-netstream.Hook("Trigger:SyncAll", function(info)
+netstream.Hook("Trigger:SyncAllTriggers", function(info)
     Trigger:RemoveAll()
 
     for id, data in pairs(info) do
         Trigger:Create(data, id)
     end
-
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
+    hook.Call("OnTriggerUpdate")
 end)
 
 netstream.Hook("Trigger:SelectTool", function(id)
@@ -166,16 +163,12 @@ netstream.Hook("Trigger:Remove", function(id)
 
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
-
     trigger:Remove()
 
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
+    hook.Call("OnTriggerUpdate")
 end)
 
 netstream.Hook("Trigger:RemoveAll", function()
     Trigger:RemoveAll()
-
-    Trigger:UpdateActionLists()
-    Trigger:UpdateTriggerList()
+    hook.Call("OnTriggerUpdate")
 end)

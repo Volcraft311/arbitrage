@@ -17,6 +17,8 @@ local PLUGIN = PLUGIN
 Trigger = PLUGIN
 
 Trigger.name = "Trigger"
+Trigger.prefix = "[Asterion Triggers]"
+Trigger.prefixColor = Color(136,255,15)
 
 Trigger.meta = Trigger.meta or {}
 Trigger.instances = Trigger.instances or {}

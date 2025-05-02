@@ -559,6 +559,10 @@ function Arbitrage.IsStartGame()
     return GetNetVar("arb.StartGame", false)
 end
 
+function Arbitrage.IsDev()
+    return GetNetVar("arb.IsDev", false)
+end
+
 function Arbitrage.IsStartLaw()
     return GetNetVar("arb.StartLaw", false)
 end

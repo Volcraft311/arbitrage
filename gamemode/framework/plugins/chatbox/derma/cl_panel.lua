@@ -540,7 +540,18 @@ function PANEL:Init()
 	self.entry.PaintOver = function(_, w, h)
 		surface.SetDrawColor(color_black)
 		surface.DrawOutlinedRect(0, 0, w, h, 2)
+
+		if _.autocomplete.index > 0 and #_.autocomplete.commands > 0 then
+			local text = string.format("%d/%d", _.autocomplete.index, #_.autocomplete.commands)
+			draw.SimpleText(text, "arb.Font_FuturaPTBook_7", w - 5, h / 2, Color(255, 255, 255, 150), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+		end
 	end
+	self.entry.autocomplete = {
+		commands = {},
+		index = 0,
+		prefix = "",
+		bCheck = false
+	}
 
 	self.commandsPanel = self:Add("DPanel")
 	self.commandsPanel:SetPos(0, 0)
@@ -567,7 +578,44 @@ function PANEL:Init()
 
 		if code == KEY_ENTER then
 			entry:OnEnter()
+			entry.autocomplete.index = 0
 			return true
+		elseif code == KEY_TAB then
+			if !entry.autocomplete.bCheck then
+				entry.autocomplete.bCheck = true
+
+				local text = entry:GetText()
+				if text:utf8sub(1, 1) == "." then
+					text = Arbitrage.commands.ConvertRusToEng(text)
+				end
+
+				local prefix = text:utf8sub(2, text:utf8len())
+
+				entry.autocomplete.prefix = prefix
+
+				entry.autocomplete.commands = {}
+				for cmd, _ in pairs(Arbitrage.commands.stored) do
+					if cmd:utf8lower():find(prefix:utf8lower()) then
+						table.insert(entry.autocomplete.commands, cmd)
+					end
+				end
+			end
+
+			if #entry.autocomplete.commands > 0 then
+				entry.autocomplete.index = entry.autocomplete.index + 1
+
+				if entry.autocomplete.index > #entry.autocomplete.commands then
+					entry.autocomplete.index = 1
+				end
+
+				local cmd = entry.autocomplete.commands[entry.autocomplete.index]
+				local message = "/" .. cmd .. " "
+
+				entry:SetText(message)
+				entry:SetCaretPos(message:utf8len())
+
+				return true
+			end
 		elseif code == KEY_DOWN then
 			if entry.last_index == 1 then
 				entry.last_index = #entry.history
@@ -582,6 +630,13 @@ function PANEL:Init()
 				entry.last_index = math.Clamp(entry.last_index + 1, 1, #entry.history)
 			end
 			should_set = true
+		else
+			if code != KEY_LSHIFT and code != KEY_RSHIFT and code != KEY_LCONTROL and code != KEY_RCONTROL then
+				entry.autocomplete.commands = {}
+				entry.autocomplete.index = 0
+				entry.autocomplete.prefix = ""
+				entry.autocomplete.bCheck = false
+			end
 		end
 
 		local history_entry = entry.history[entry.last_index]
@@ -677,6 +732,8 @@ function PANEL:SetActive(bActive)
 		self:SetKeyboardInputEnabled(false)
 
 		self.entry.last_index = 0
+		self.entry.autocomplete.index = 0
+		self.entry.autocomplete.prefix = ""
 
 		CloseDermaMenus()
 		gui.EnableScreenClicker(false)
@@ -823,7 +880,7 @@ local function GetAllCommands(text, originalText)
 	local data = {}
 
 	for command, stored in pairs(Arbitrage.commands.stored) do
-		if command:lower():find(text:lower(), nil, true) then
+		if command:utf8lower():find(text:utf8lower(), nil, true) then
 			data[command] = {
 				stored.arguments or {},
 				stored.optionalArguments or {},
@@ -902,7 +959,7 @@ local function GetChatType(value)
 		return 11
 	end
 
-	if (utf1sum == "/" or utf1sum == "!" or utf1sum == ".") and value:len() > 1 then
+	if (utf1sum == "/" or utf1sum == "!" or utf1sum == ".") and value:utf8len() > 1 then
 		local explode = string.Explode(" ", value)
 
 		if #explode > 1 then
@@ -1114,82 +1171,75 @@ function PANEL:OnTabUpdated(id, filter, newID)
 	self.tabs:RenameTab(id, newID)
 end
 
-local listAction = {
+local tabFilters = {
 	["#chat_chatbox_tab_general"] = function(data)
 		return true
 	end,
 	["#chat_chatbox_tab_rp"] = function(data)
-		local loocSyntax = L("#chat_lnrp_type")
-		local oocSyntax = L("#chat_gnrp_type")
-		local pmSyntax = L("#chat_pm_type")
-		local helpSyntax = L("#chat_help_type")
-		local adminsSyntex = L("#chat_admin_type")
+		local rpTypes = {
+			L("#chat_lnrp_type"),
+			L("#chat_gnrp_type"),
+			L("#chat_pm_type"),
+			L("#chat_help_type"),
+			L("#chat_admin_type")
+		}
 
-		if data[2] != loocSyntax .. " " and data[2] != oocSyntax .. " " and data[2] != pmSyntax .. " " and data[2] != helpSyntax .. " " and data[2] != adminsSyntex .. " " and
-			data[3] != loocSyntax .. " " and data[3] != oocSyntax .. " " and data[3] != pmSyntax .. " " and data[3] != helpSyntax .. " " and data[3] != adminsSyntex .. " " then
-
-			return true
+		for _, s_type in ipairs(rpTypes) do
+			if data[2] == s_type .. " " or data[3] == s_type .. " " then
+				return false
+			end
 		end
+		return true
 	end,
 	["#chat_chatbox_tab_nonrp"] = function(data)
-		local loocSyntax = L("#chat_lnrp_type")
-		local oocSyntax = L("#chat_gnrp_type")
+		local nonRpTypes = {
+			L("#chat_lnrp_type"),
+			L("#chat_gnrp_type")
+		}
 
-		if data[2] == loocSyntax .. " " or data[2] == oocSyntax .. " " or
-			data[3] == loocSyntax .. " " or data[3] == oocSyntax .. " " then
-
-			return true
+		for _, s_type in ipairs(nonRpTypes) do
+			if data[2] == s_type .. " " or data[3] == s_type .. " " then
+				return true
+			end
 		end
+		return false
 	end,
 	["#chat_chatbox_tab_personal"] = function(data)
-		local pmSyntax = L("#chat_pm_type")
-
-		if data[2] == pmSyntax .. " " or
-			data[3] == pmSyntax .. " " then
-
-			return true
-		end
+		local pmType = L("#chat_pm_type")
+		return data[2] == pmType .. " " or data[3] == pmType .. " "
 	end,
 	["#chat_chatbox_tab_admin"] = function(data)
-		local helpSyntax = L("#chat_help_type")
-		local adminsSyntex = L("#chat_admin_type")
+		local adminTypes = {
+			L("#chat_help_type"),
+			L("#chat_admin_type")
+		}
 
-		if data[2] == helpSyntax .. " " or data[2] == adminsSyntex .. " " or
-			data[3] == helpSyntax .. " " or data[3] == adminsSyntex .. " " then
-
-			return true
+		for _, s_type in ipairs(adminTypes) do
+			if data[2] == s_type .. " " or data[3] == s_type .. " " then
+				return true
+			end
 		end
+		return false
 	end
 }
 
 function PANEL:AddMessage(...)
 	local activeTab = self.tabs:GetActiveTab()
 
-	local bShown = false
+	for _, tab in pairs(self.tabs:GetTabs()) do
+		local id = tab:GetID()
+		local filter = tabFilters[id]
 
-	for _, v in pairs(self.tabs:GetTabs()) do
-		local id = v:GetID()
-		local info = {...}
-
-		local action = listAction[id]
-		if action then
-			local allow = action(info)
-			if !allow then continue end
-
-			v:AddLine(info)
+		if filter and filter({...}) then
+			tab:AddLine({...})
 
 			if activeTab and id != activeTab:GetID() then
-				local button = v:GetButton()
-				button.unread = true
-			else
-				bShown = true
+				tab:GetButton().unread = true
 			end
 		end
 	end
 
-	if bShown then
-		chat.PlaySound()
-	end
+	chat.PlaySound()
 end
 
 vgui.Register("arbChatbox", PANEL, "EditablePanel")

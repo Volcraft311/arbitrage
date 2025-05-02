@@ -1,6 +1,10 @@
 local MINUTES_PER_HOUR = 60
 local MINUTES_PER_DAY = MINUTES_PER_HOUR * 24
 
+function Time:ToUnformated(time)
+    return time.hours * MINUTES_PER_HOUR + time.minutes
+end
+
 function Time:GetUnformated()
     return GetNetVar("arb.Time", 0)
 end
@@ -44,8 +48,3 @@ function Time:ToFormated(time)
 
     return Format("%s:%s", _h, _m)
 end
-
-function Time:ToUnformated(time)
-    return time.hours * MINUTES_PER_HOUR + time.minutes
-end
-

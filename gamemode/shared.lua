@@ -29,5 +29,8 @@ Arbitrage = Arbitrage or {}
 Arbitrage.version = "0.155 (27.04.2025)"
 Arbitrage.GM = GM
 
+include("dev.lua")
+AddCSLuaFile("dev.lua")
+
 include("framework/sh_batch.lua")
 AddCSLuaFile("framework/sh_batch.lua")

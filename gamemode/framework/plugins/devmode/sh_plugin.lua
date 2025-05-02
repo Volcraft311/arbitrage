@@ -1,8 +1,7 @@
 DevMode = PLUGIN
 
-
 function DevMode:IsDev()
-    return GetConVar("developer"):GetInt() > 0
+    return Arbitrage.IsDeveloper 
 end
 
 if SERVER then

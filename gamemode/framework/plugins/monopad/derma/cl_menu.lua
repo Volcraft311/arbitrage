@@ -538,7 +538,7 @@ function PANEL:TaskBar()
 		surface.SetDrawColor(0, 0, 0, 255)
 		surface.DrawRect(0, 0, w, h)
 
-		draw.SimpleText(chapter .. ", " .. Arbitrage.GetTime(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
+		draw.SimpleText(chapter .. ", " .. Time:GetFormated(), MonoPad:GetFont("task"), w - 50, 10, color_white, TEXT_ALIGN_RIGHT)
 	end
 
 	local monopad = MonoPad:GetObject()

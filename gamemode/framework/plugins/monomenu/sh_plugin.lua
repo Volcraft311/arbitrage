@@ -312,6 +312,14 @@ MonoMenu:AddGameFunction("#monomenu_gm_clearchat", "icon16/application_delete.pn
     end
 })
 
+MonoMenu:AddGameFunction("Изменить время", "icon16/time.png", {
+    onRun = function(client)
+        if SERVER then return end
+        vgui.Create("arb.timeChangeMenu")
+    end
+})
+
+
 MonoMenu:AddGameFunction("#monomenu_gm_mapreversion", "icon16/script_code_red.png", {
     isCheckBox = true,
     onEnable = function(client)

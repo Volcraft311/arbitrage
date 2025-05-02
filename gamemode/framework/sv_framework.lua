@@ -1002,13 +1002,6 @@ concommand.Add("arb_join_notcharacter", function(client, command, arguments)
     end
 end)
 
-Arbitrage.TickTime = 17
-timer.Create("arb.CurTime", 2, 0, function()
-    local data = Arbitrage.ReturnTime()
-
-    SetNetVar("arb.Time", data + Arbitrage.TickTime)
-end)
-
 local dayTheme = "freetime_day"
 local nightTheme = "freetime_night"
 timer.Create("arb.UpdateTheme", 10, 0, function()
@@ -1016,7 +1009,7 @@ timer.Create("arb.UpdateTheme", 10, 0, function()
 
     local theme = ScriptMusic:GetTheme()
     if theme == "none" or theme == dayTheme or theme == nightTheme then
-        local isDay = Arbitrage.IsDay()
+        local isDay = Time:IsDay()
 
         if isDay then
             if theme != dayTheme then

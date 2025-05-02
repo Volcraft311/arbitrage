@@ -251,7 +251,7 @@ function PANEL:Paint(w, h)
             surface.DrawTexturedRect(w / 2 - sizeW / 2, h - sizeH, sizeW, sizeH)
         end
 
-        draw.SimpleText(("%s | %s"):format(Arbitrage.GetTime(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+        draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
         draw.SimpleText(L(self.faction:GetTitle()), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 

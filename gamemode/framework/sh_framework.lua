@@ -516,52 +516,6 @@ function Arbitrage:ReplaceVariables()
 end
 Arbitrage:ReplaceVariables()
 
-function Arbitrage.FormatTime(time)
-    local hours = math.floor(math.fmod(time, 86400) / 3600)
-    local minutes = math.floor(math.fmod(time, 3600) / 60)
-
-    local _h = ("%d"):format(hours)
-    local _m = ("%d"):format(minutes)
-
-    if tonumber(_h) < 10 then _h = "0" .. _h end
-    if tonumber(_m) < 10 then _m = "0" .. _m end
-
-    return Format("%s:%s", _h, _m)
-end
-
-function Arbitrage.GetTime()
-    local thisTime = Arbitrage.ReturnTime()
-
-    return Arbitrage.FormatTime(thisTime)
-end
-
--- 08:00 - 22:00 - дневная
--- 8:00 — 104400
--- 22:00 — 154800
-function Arbitrage.IsDay()
-    local arb_time = Arbitrage.ReturnTime()
-
-    local hours = math.floor(math.fmod(arb_time, 86400) / 3600)
-    local minutes = math.floor(math.fmod(arb_time, 3600) / 60)
-    local seconds = math.floor(math.fmod(arb_time, 60))
-
-    local h = ("%2d"):format(hours)
-    local m = ("%2d"):format(minutes)
-    local s = ("%2d"):format(seconds)
-
-    local time = os.time({day = 2, month = 1, wday = 1, yday = 1, year = 1970,
-        hour = h,
-        min = m,
-        sec = s,
-    })
-
-    if time >= 104400 and time <= 154800 then
-        return true
-    end
-
-    return false
-end
-
 function Arbitrage:ExtractArgs(text)
     local skip = 0
     local arguments = {}
@@ -599,15 +553,6 @@ function Arbitrage:ExtractArgs(text)
     end
 
     return arguments
-end
-
-function Arbitrage.ReturnTime()
-    return GetNetVar("arb.Time", 0)
-end
-
--- 22:00 - 08:00 - ночная
-function Arbitrage.IsNight()
-    return !Arbitrage.IsDay()
 end
 
 function Arbitrage.IsStartGame()

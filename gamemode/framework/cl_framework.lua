@@ -144,7 +144,7 @@ do
     hook.Add("asterionlib.rpc:Update", "asterionlib.rpc", function()
     	local client = LocalPlayer()
         local upperText = ("%s (%s/%s)"):format(L(Arbitrage.GetChapter()), #player.GetAll(), game.MaxPlayers())
-        local lowerText = ("%s [%s]"):format(L(Arbitrage.GetTheme()), Arbitrage.IsDay() and L("#discord_rpc_day") or L("#discord_rpc_night"))
+        local lowerText = ("%s [%s]"):format(L(Arbitrage.GetTheme()), Time:IsDay() and L("#discord_rpc_day") or L("#discord_rpc_night"))
 
     	rpc:Set("details", upperText)
         rpc:Set("state", lowerText)
@@ -507,7 +507,7 @@ end)
 
 local function DingDongBingBong()
     timer.Simple(2, function() -- Исправление проблемы с текстом
-        local data = Arbitrage.IsDay() and "#day_notification" or "#night_notification"
+        local data = Time:IsDay() and "#day_notification" or "#night_notification"
         LocalPlayer():ChatNotify(data)
 
         if !Arbitrage.lawEnable then
@@ -516,19 +516,19 @@ local function DingDongBingBong()
     end)
 end
 
-local oldType = Arbitrage.IsDay()
+local oldType = Time:IsDay()
 timer.Create("arb.DayChangeNotifications", 1, 0, function()
     if !Arbitrage.IsStartGame() then return end
     if LocalPlayer().IsPlaying and !LocalPlayer():IsPlaying() then return end
     if Arbitrage.OffSoundNightAndDay() then return end
 
-    if oldType != Arbitrage.IsDay() and (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
+    if oldType != Time:IsDay() and (!Arbitrage.DingDongBingBongCD or CurTime() >= Arbitrage.DingDongBingBongCD) then
         DingDongBingBong()
 
         Arbitrage.DingDongBingBongCD = CurTime() + 5
     end
 
-    oldType = Arbitrage.IsDay()
+    oldType = Time:IsDay()
 end)
 
 timer.Create("arb.BillSound", 1, 1, function()

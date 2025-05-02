@@ -122,7 +122,7 @@ function PANEL:Paint()
 
     asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, alpha)
 
-    draw.SimpleText(Format("%s | %s", Arbitrage.GetTime(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.SimpleText(Format("%s | %s", Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("InventoryBase:Container", PANEL, "EditablePanel")

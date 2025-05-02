@@ -352,7 +352,7 @@ function PANEL:CreateMiddlePanel()
     gamePanel:Dock(TOP)
     gamePanel.Paint = P
     gamePanel.Paint = function(this, w, h)
-        draw.SimpleText(("%s | %s"):format(Arbitrage.GetTime(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_11", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+        draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_11", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
     end
 
     self:CreatePlayersPanel(panel)

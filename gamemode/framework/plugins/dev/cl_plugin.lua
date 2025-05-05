@@ -7,11 +7,11 @@
         
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
+            Volcraft - https://steamcommunity.com/id/boobsgunner
 
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
 
 local draw_SimpleText = draw.SimpleText
 local Color = Color
@@ -19,21 +19,29 @@ local Color = Color
 local version_color = Color(255, 255, 255, 25)
 local title_color = Color(255, 255, 255, 70)
 
-function PLUGIN:HUDPaint()
-    if SETTINGS.options.Get("show_gamemode_info") then
-        local a = ScrW() - 10
-        local y = 8
+hook("HUDPaint", function()
+    if !SETTINGS.options.Get("show_gamemode_info") then return end
 
-        do
-            local w, h = draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", a, y, version_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-            draw_SimpleText("Arbitrage Framework", "arb.Font_FuturaPTBook_6", a - w - 10, y, title_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    local a = ScrW() - 10
+    local y = 8
 
-            y = y + h
-        end
+    do
+        local w, h = draw_SimpleText("v" .. Arbitrage.version, "arb.Font_FuturaPTBook_5", a, y, version_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw_SimpleText("Arbitrage Framework", "arb.Font_FuturaPTBook_6", a - w - 10, y, title_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-        do
-            local w = draw_SimpleText("v" .. asterionlib.version, "arb.Font_FuturaPTBook_5", a, y, version_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-            draw_SimpleText("AsterionLibrary", "arb.Font_FuturaPTBook_6", a - w - 10, y, title_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-        end
+        y = y + h
     end
-end
+
+    do
+        local w = draw_SimpleText("v" .. asterionlib.version, "arb.Font_FuturaPTBook_5", a, y, version_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw_SimpleText("AsterionLibrary", "arb.Font_FuturaPTBook_6", a - w - 10, y, title_color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    end
+end)
+
+hook("InitPostEntity", function()
+    timer.Simple(0, function()
+        if Arbitrage.IsDeveloper and IsValid(Arbitrage.menu) then
+            Arbitrage.menu:Remove()
+        end
+    end)
+end)

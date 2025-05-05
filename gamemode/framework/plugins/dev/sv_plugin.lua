@@ -13,23 +13,10 @@
 ]]--
 
 
-local PLUGIN = PLUGIN
-
-Dev = PLUGIN
-Dev.name = "Dev"
-
-hook("asterionlib.workshop:OnDownload", function(id)
+hook("PlayerInitialSpawnForRealz", function(client)
     if Arbitrage.IsDeveloper then
-        return false
+        client:SetNetVar("moderation_dynamicusergroup", "guard")
+        client:Give("weapon_physgun")
+        client:Give("gmod_tool")
     end
 end)
-
--- В этом случае при заходе на dev сервер, вся сборка будет в эмо-текстурах
--- hook("asterionlib.workshop:OnCanAddResource", function(id)
-    -- if Arbitrage.IsDeveloper then
-    --     return false
-    -- end
--- end)
-
-Arbitrage.base.Include("cl_plugin.lua")
-Arbitrage.base.Include("sv_plugin.lua")

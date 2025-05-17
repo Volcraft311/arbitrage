@@ -135,7 +135,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
                 sound.PlayFile("sound/discoveryannounce.wav", "", function(station)
                     if IsValid(station) then
                         station:SetVolume(0.5)
-                    endЫ
+                    end
                 end)
             ]])
         end

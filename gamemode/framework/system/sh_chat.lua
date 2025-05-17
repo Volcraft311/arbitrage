@@ -244,8 +244,11 @@ Arbitrage.chat.List = {
     },
     ["looc"] = {
         OnCreate = function(client, sender, data)
+            local usergroup = sender:GetDynamicUserGroup()
+            local rank_color = Moderation.instances[usergroup].color
+
             local bSpectate = sender:IsSpectate()
-            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or (rank_color or Arbitrage.chat.Colors.player)
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
             return Arbitrage.chat.Colors.looc, "#chat_lnrp_type ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
@@ -262,8 +265,11 @@ Arbitrage.chat.List = {
     },
     ["ooc"] = {
         OnCreate = function(client, sender, data)
+            local usergroup = sender:GetDynamicUserGroup()
+            local rank_color = Moderation.instances[usergroup].color
+
             local bSpectate = sender:IsSpectate()
-            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
+            local c_player = bSpectate and Arbitrage.chat.Colors.spectate or (rank_color or Arbitrage.chat.Colors.player)
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
             return Arbitrage.chat.Colors.ooc, "#chat_gnrp_type ", c_player, sender:SteamName(), c_other, ": ", "" .. data[1] .. ""

@@ -23,7 +23,7 @@ Moderation:RegisterRank("founder", {
 Moderation:RegisterRank("curator", {
     name = "Куратор",
     description = "curator description todo...",
-    color = Color(255, 102, 0),
+    color = Color(255, 64, 144),
     icon = "asterion/academy/ui/icons/rank_curator.png",
     permission_superadmin = true
 })
@@ -55,6 +55,6 @@ Moderation:RegisterRank("developer", {
 Moderation:RegisterRank("user", {
     name = "Пользователь",
     description = "user description todo...",
-    color = Color(255, 255, 255),
+    color = Color(240, 201, 73),
     icon = nil
 })

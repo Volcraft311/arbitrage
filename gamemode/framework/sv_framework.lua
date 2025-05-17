@@ -665,6 +665,7 @@ end)
 local function syncvars()
     Arbitrage.startgame = true
     SetNetVar("arb.StartGame", Arbitrage.startgame)
+    SetNetVar("arb.StartGameTime", CurTime())
     for k, v in ipairs(player.GetAll()) do
         v:SyncVars()
     end
@@ -857,6 +858,7 @@ end
 function Arbitrage:StopGame()
     Arbitrage.startgame = false
     SetNetVar("arb.StartGame", Arbitrage.startgame)
+    SetNetVar("arb.StartGameTime", nil)
 
     Arbitrage.lawEnable = false
     SetNetVar("arb.StartLaw", Arbitrage.lawEnable)

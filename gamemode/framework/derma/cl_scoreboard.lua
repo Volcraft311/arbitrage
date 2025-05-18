@@ -1,5 +1,5 @@
 --[[
-        © AsterionStaff 2022.
+        © AsterionStaff 2025.
         This script was created from the developers of the Asterion Staff.
         You can get more information from one of the links below:
             Site - https://asterion.games
@@ -11,12 +11,6 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PANEL = {}
-
-local function P(this, w, h)
-    surface.SetDrawColor(255, 0, 0, 255)
-    -- surface.DrawOutlinedRect(0, 0, w, h)
-end
 
 local function getCasteCount()
     local casteCount = 0
@@ -29,66 +23,53 @@ local function getCasteCount()
     return casteCount
 end
 
-local function getHostName()
-    local name = GetHostName()
+local function getServerUptime(time)
+    local hours = math.floor(time / 3600)
+    local minutes = math.floor((time % 3600) / 60)
 
-    -- eh...
-
-    return name
+    return ("%02dч. %02dм."):format(hours, minutes)
 end
 
-local path = "danganronpa/scoreboard/%s.png"
-local pingData = {
-    {
-        data = Format(path, "connect_5"),
-        min = 1,
-        max = 49
-    },
-    {
-        data = Format(path, "connect_4"),
-        min = 50,
-        max = 99
-    },
-    {
-        data = Format(path, "connect_3"),
-        min = 100,
-        max = 149
-    },
-    {
-        data = Format(path, "connect_2"),
-        min = 150,
-        max = 249
-    }
-}
+local color_shadow = Color(0, 0, 0, 150)
+local function drawText(text, font, x, y, color, xAlign, yAlign)
+    draw.SimpleText(text, font, x + 2, y + 2, color_shadow, xAlign, yAlign)
+    draw.SimpleText(text, font, x, y, color, xAlign, yAlign)
+end
 
-local function getMatPing(ping)
-    local matPing = Format(path, "connect_1")
-    for k2, v2 in ipairs(pingData) do
-        if ping >= v2.min and ping <= v2.max then
-            matPing = v2.data
-            break
+local cornerRadius = 5
+local function paintMenu(panel)
+    panel.Paint = function(_, w, h)
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
+    end
+end
+
+local function paintOption(panel)
+    panel:SetFont("arb.Font_FuturaPTBook_6")
+    panel.Paint = function(_, w, h)
+        local alpha = 130
+
+        if _:IsHovered() and _:IsEnabled() then
+            surface.SetDrawColor(27, 10, 13, 200)
+            surface.DrawRect(2, 2, w - 4, h - 4)
+
+            alpha = 255
         end
-    end
 
-    return Material(matPing)
+        if !_:IsEnabled() then
+            surface.SetDrawColor(255, 0, 0, 20)
+            surface.DrawRect(2, 0, w - 4, h)
+
+            alpha = 255
+        end
+
+        panel:SetTextColor(Color(240, 240, 240, alpha))
+    end
 end
 
-local groupData = {
-    founder = "#rank_owner",
-    curator = "#rank_curator",
-    gamemaster = "#rank_gamemaster",
-    guard = "#rank_guard",
-    developer = "#rank_developer"
-}
 
-local function getGroupName(name)
-    local newName = groupData[name:lower()]
-    if newName then
-        return L(newName)
-    end
-
-    return name
-end
+---@class EditablePanel
+local PANEL = {}
 
 function PANEL:Init()
     Arbitrage.gui.scoreboard = self
@@ -101,271 +82,213 @@ function PANEL:Init()
 
     self:SetKeyboardInputEnabled(false)
 
-    self.countProgressPanel = 0
-
-    self:CreateLeftPanel()
-    self:CreateMiddlePanel()
-    self:CreateRightPanel()
-
-    self:CreateTooltip()
+    self:CreatePanel()
 end
 
-function PANEL:CreateTooltip()
-    self.tooltip = self:Add("DPanel")
-    self.tooltip:SetAlpha(0)
-    self.tooltip:SetPos(0, 0)
-    self.tooltip:SetSize(100, 100)
-    self.tooltip.select_panel = nil
-    self.tooltip.panels = {}
-    self.tooltip.UpdateWide = function(this, wide)
-        this:SetWide(math.max(wide * 5, W(200)))
+local padding = H(310)
+function PANEL:CreatePanel()
+    local serverstat = asterionlib.serverstat:Get()
+
+    self.panel = self:Add("Panel")
+    self.panel:Dock(FILL)
+    self.panel:DockMargin(padding, H(225), padding, H(237))
+
+    local scrollPanel = self.panel:Add("DScrollPanel")
+    scrollPanel:Dock(FILL)
+    ApplySmoothScroll(scrollPanel)
+
+    local bar = scrollPanel:GetVBar()
+    bar:SetWide(15)
+    bar:DockMargin(0, 0, 0, 0)
+
+    bar.Paint = function(_, w, h)
+        surface.SetDrawColor(0, 0, 0, 220)
+        surface.DrawRect(w - 3, 0, w, h)
     end
-    self.tooltip.UpdateTall = function(this)
-        local tall = 0
 
-        for k, v in ipairs(this.panels) do
-            local _, t_margin, _, b_margin = v:GetDockMargin()
+    bar.btnUp.Paint = function(_, w, h) end
+    bar.btnDown.Paint = function(_, w, h) end
+    bar.btnGrip.Paint = function(_, w, h)
+        local informationColor = Arbitrage.theme:GetInformation()
 
-            tall = tall + v:GetTall() + t_margin + b_margin
-        end
-
-        this:SetTall(tall)
+        surface.SetDrawColor(informationColor.r, informationColor.g, informationColor.b)
+        surface.DrawRect(w - 3, 0, w, h)
     end
-    self.tooltip.AddPanel = function(this, name, parent)
-        local panel = this:Add(name, parent)
-        this.panels[#this.panels + 1] = panel
 
-        return panel
+    local user_info = LocalPlayer():GetNetVar("user_info", {})
+    local banner_big_url = user_info.banner_big
+    local banner_big = nil
+    if banner_big_url then
+        asterionlib.downloader:Image(banner_big_url, function(mat, path)
+            banner_big = mat
+        end)
     end
-    self.tooltip.ClearPanels = function(this)
-        for k, v in ipairs(this.panels) do
-            if IsValid(v) then
-                v:Remove()
-            end
-        end
 
-        this.panels = {}
-    end
-    self.tooltip.Paint = function(this, w, h)
-        asterionlib.DrawBlur(this, 6)
-
+    local banner_mat = Material("asterion/academy/ui/scoreboard/banner_big_mat.png")
+    local banner_big_mask = BMASKS.CreateMask("banner_big_mask", "asterion/academy/ui/scoreboard/banner_big_mask.png")
+    self.info = self.panel:Add("Panel")
+    self.info:SetAlpha(0)
+    self.info:AlphaTo(255, 0.5)
+    self.info:SetWide((ScrW() - padding * 2) * 0.285)
+    self.info:Dock(RIGHT)
+    self.info:DockMargin(H(15), 0, 0, 0)
+    self.info.Paint = function(this, w, h)
         surface.SetDrawColor(0, 0, 0, 100)
         surface.DrawRect(0, 0, w, h)
 
-        local x, y = gui.MouseX() + 15, gui.MouseY() - 15
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(banner_mat)
+        surface.DrawTexturedRect(0, 0, w, h)
 
-        if x + w >= ScrW() - 10 then x = ScrW() - w - 10 end
-        if x <= 10 then x = 10 end
+        surface.SetDrawColor(0, 0, 0, 125)
+        surface.DrawRect(0, 0, w, h)
 
-        if y + h >= ScrH() - 10 then y = ScrH() - h - 10 end
-        if y <= 10 then y = 10 end
+        if banner_big then
+            local mask_h = h
+            local mask_w = mask_h * banner_big:Width() / banner_big:Height()
 
-        this:SetPos(x, y)
-    end
-    self.tooltip.Think = function(this)
-        local panel = vgui.GetHoveredPanel()
-        if IsValid(this.select_panel) then
-            if panel != this.select_panel then
-                this:SetAlpha(this:GetAlpha() - FrameTime() * 400)
+            BMASKS.BeginMask(banner_big_mask)
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(banner_big)
+                surface.DrawTexturedRect(w / 2 - mask_w / 2, h / 2 - mask_h / 2, mask_w, mask_h)
+            BMASKS.EndMask(banner_big_mask, 0, 0, w, h)
 
-                if this:GetAlpha() <= 0 then
-                    this.select_panel = nil
-                end
-            else
-                if RealTime() >= this.openTime then
-                    this:SetAlpha(math.Clamp(this:GetAlpha() + FrameTime() * 500, 0, 255))
-                end
-            end
-        end
-
-        if IsValid(panel) then
-            if !isfunction(panel.TooltipInfo) then return end
-
-            if this.select_panel != panel and this:GetAlpha() <= 0 then
-                this:Draw(panel)
-            end
+            surface.SetDrawColor(0, 0, 0, 100)
+            surface.DrawRect(0, 0, w, h)
         end
     end
-    self.tooltip.Draw = function(this, panel)
-        this.select_panel = panel
 
-        this:SetAlpha(0)
-        this:ClearPanels()
-        panel:TooltipInfo(this)
-        this:UpdateTall()
+    local serverNameLabel = self.info:Add("DLabel")
+    serverNameLabel:SetText(GetHostName()) -- "«Эфир» / Официальный × Сессии"
+    serverNameLabel:SetFont("arb.Font_FuturaPTDemi_9")
+    serverNameLabel:SetTextColor(color_white)
+    serverNameLabel:Dock(TOP)
+    serverNameLabel:DockMargin(25, 15, 0, 0)
+    serverNameLabel:SizeToContents()
 
-        this.openTime = RealTime() + 0.5
-    end
-    self.tooltip.Clear = function()
-    end
-end
+    local playersLabel = self.info:Add("DLabel")
+    playersLabel:SetText(L("#tab_onserver"):format(player.GetCount(), game.MaxPlayers()))
+    playersLabel:SetFont("arb.Font_FuturaPTBook_8")
+    playersLabel:SetTextColor(color_white)
+    playersLabel:Dock(TOP)
+    playersLabel:DockMargin(25, 30, 0, 0)
+    playersLabel:SizeToContents()
 
-function PANEL:CreateLeftPanel()
-    local mainPanel = self:Add("DPanel")
-    mainPanel:SetWide(W(500))
-    mainPanel:Dock(LEFT)
-    mainPanel:DockMargin(50, 50, 0, 50)
-    mainPanel.Paint = P
+    local playersCastLabel = self.info:Add("DLabel")
+    playersCastLabel:SetText(L("#tab_incast"):format(getCasteCount()))
+    playersCastLabel:SetFont("arb.Font_FuturaPTBook_8")
+    playersCastLabel:SetTextColor(color_white)
+    playersCastLabel:Dock(TOP)
+    playersCastLabel:DockMargin(25, 0, 0, 0)
+    playersCastLabel:SizeToContents()
 
-    local topPanel = mainPanel:Add("DPanel")
-    topPanel:SetTall(ScrH() * 0.3)
-    topPanel:Dock(TOP)
-    topPanel.Paint = P
+    local curTime = CurTime()
+    local curTimeLabel = self.info:Add("DLabel")
+    curTimeLabel:SetText("Время работы сервера: " .. getServerUptime(curTime))
+    curTimeLabel:SetFont("arb.Font_FuturaPTBook_8")
+    curTimeLabel:SetTextColor(color_white)
+    curTimeLabel:Dock(TOP)
+    curTimeLabel:DockMargin(25, 20, 0, 5)
+    curTimeLabel:SizeToContents()
 
+    local sessionTime = GetNetVar("arb.StartGameTime", nil)
+    local sessionTimeLabel = self.info:Add("DLabel")
+    sessionTimeLabel:SetText("Время с начала игры: " .. (sessionTime and getServerUptime(curTime - sessionTime) or "Игра не запущена!"))
+    sessionTimeLabel:SetFont("arb.Font_FuturaPTBook_8")
+    sessionTimeLabel:SetTextColor(color_white)
+    sessionTimeLabel:Dock(TOP)
+    sessionTimeLabel:DockMargin(25, 0, 0, 5)
+    sessionTimeLabel:SizeToContents()
 
-    self:CreateText(topPanel, getHostName(), "arb.Font_FuturaPTDemi_13")
-    self:CreateText(topPanel, game.GetMap(), "arb.Font_FuturaPTBook_8")
+    local gameTimeLabel = self.info:Add("DLabel")
+    gameTimeLabel:SetText("Время вашей сессии: " .. getServerUptime(curTime - LocalPlayer():GetNetVar("connectedTime", curTime)))
+    gameTimeLabel:SetFont("arb.Font_FuturaPTBook_8")
+    gameTimeLabel:SetTextColor(color_white)
+    gameTimeLabel:Dock(TOP)
+    gameTimeLabel:DockMargin(25, 0, 0, 0)
+    gameTimeLabel:SizeToContents()
 
-    self:CreateEmptiness(topPanel, 100)
+    local mp_c = asterionlib.modelprecache:GetCount()
+    local mp_mc = asterionlib.modelprecache:GetMaxCount()
+    local precachedModelsLabel = self.info:Add("DLabel")
+    precachedModelsLabel:SetText("Precached Models: " .. mp_c .. "/" .. mp_mc)
+    precachedModelsLabel:SetFont("arb.Font_FuturaPTBook_7")
+    precachedModelsLabel:SetTextColor(color_white)
+    precachedModelsLabel:Dock(BOTTOM)
+    precachedModelsLabel:DockMargin(25, 0, 0, 30)
+    precachedModelsLabel:SizeToContents()
 
-    self:CreateText(topPanel, L("#tab_onserver"):format(#player.GetAll(), game.MaxPlayers()), "arb.Font_FuturaPTBook_7")
-    self:CreateText(topPanel, L("#tab_incast"):format(getCasteCount()), "arb.Font_FuturaPTBook_7")
-
-
-    local bottomPanel = mainPanel:Add("DPanel")
-    bottomPanel:Dock(FILL)
-    bottomPanel.Paint = P
-
-    local serverstat = asterionlib.serverstat:Get()
-    -- local p_cpu = math.floor(serverstat.ProcessCPUUsage)
-    local s_cpu = math.Clamp(math.floor(serverstat.SystemCPUUsage) * 2, 0, 100)
     local s_m = math.floor(serverstat.SystemMemoryUsage)
     local s_tm = math.floor(serverstat.SystemTotalMemory)
-    local s_m_interest = math.floor(100 / (s_tm / s_m))
+    local systemMemoryUsageLabel = self.info:Add("DLabel")
+    systemMemoryUsageLabel:SetText("System Memory Usage: " .. s_m .. "/" .. s_tm)
+    systemMemoryUsageLabel:SetFont("arb.Font_FuturaPTBook_7")
+    systemMemoryUsageLabel:SetTextColor(color_white)
+    systemMemoryUsageLabel:Dock(BOTTOM)
+    systemMemoryUsageLabel:DockMargin(25, 0, 0, 15)
+    systemMemoryUsageLabel:SizeToContents()
 
-    self:CreateProgressPanel(bottomPanel, "System Memory: " .. s_m_interest .. "% (" .. s_m .. "/" .. s_tm .. " MiB)", s_m_interest, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
-    self:CreateProgressPanel(bottomPanel, "System CPU: " .. s_cpu .. "%", s_cpu, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
-    -- self:CreateProgressPanel(bottomPanel, "Process CPU: " .. p_cpu .. "%", p_cpu, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)})
+    local s_cpu = math.Clamp(math.floor(serverstat.SystemCPUUsage) * 2, 0, 100)
+    local systemCPUUsageLabel = self.info:Add("DLabel")
+    systemCPUUsageLabel:SetText("System CPU Usage: " .. s_cpu .. "%")
+    systemCPUUsageLabel:SetFont("arb.Font_FuturaPTBook_7")
+    systemCPUUsageLabel:SetTextColor(color_white)
+    systemCPUUsageLabel:Dock(BOTTOM)
+    systemCPUUsageLabel:DockMargin(25, 0, 0, 15)
+    systemCPUUsageLabel:SizeToContents()
+
+    local edict_c = asterionlib.GetEdictCount()
+    local edict_mc = asterionlib.GetMaxEdictCount()
+    local entityLimitLabel = self.info:Add("DLabel")
+    entityLimitLabel:SetText("Entity Limit: " .. edict_c .. "/" .. edict_mc)
+    entityLimitLabel:SetFont("arb.Font_FuturaPTBook_7")
+    entityLimitLabel:SetTextColor(color_white)
+    entityLimitLabel:Dock(BOTTOM)
+    entityLimitLabel:DockMargin(25, 0, 0, 15)
+    entityLimitLabel:SizeToContents()
+
+    self:CreatePlayers(scrollPanel)
 end
 
-function PANEL:CreateText(parent, data, font, bReverse)
-    local dataFunc = isfunction(data)
+local priority = {
+    founder = 1,
+    curator = 2,
+    gamemaster = 3,
+    guard = 4,
+    developer = 5
+}
+function PANEL:SortPlayers()
+    local players = player.GetAll()
 
-    local panel = parent:Add("DLabel")
-    panel:Dock(TOP)
-    panel:SetText(dataFunc and data() or data)
-    panel:SetFont(font)
-    panel:SetContentAlignment(bReverse and 6 or 4)
-    panel:SizeToContents()
+    -- for i = 1, 15 do
+    --     players[#players + 1] = players[1]
+    -- end
 
-    if dataFunc then
-        panel.Paint = function(this)
-            this:SetText(data())
-        end
-    end
+    table.sort(players, function(a, b)
+        local aGroup = a:GetUserGroup()
+        local bGroup = b:GetUserGroup()
 
-    return panel
-end
+        local aPriority = priority[aGroup] or math.huge
+        local bPriority = priority[bGroup] or math.huge
 
-function PANEL:CreateEmptiness(parent, tall)
-    local panel = parent:Add("DPanel")
-    panel:SetTall(tall)
-    panel:Dock(TOP)
-    panel.Paint = P
-
-    return panel
-end
-
-local font = "arb.Font_FuturaPTBook_7"
-local heightFont = draw.GetFontHeight(font)
-function PANEL:CreateProgressPanel(parent, data, maxAngles, colorsList, bReverse)
-    local panel = parent:Add("DPanel")
-    panel:SetAlpha(0)
-    panel:SetTall(heightFont * 2)
-    panel:Dock(BOTTOM)
-    panel:DockMargin(0, 10, 0, 0)
-    panel.Paint = P
-
-    local fCol = colorsList[1]
-    local color = Color(fCol.r, fCol.g, fCol.b)
-    local angles = 0
-    local r, x, y = 20, panel:GetTall() / 2, panel:GetTall() / 2
-
-    local background = asterionlib.Circles.New(CIRCLE_FILLED, r, x, y, 5)
-    background:SetMaterial(true)
-    background:SetColor(Color(0, 0, 0, 180))
-
-    local outlined = asterionlib.Circles.New(CIRCLE_OUTLINED, r, x, y, 5)
-    outlined:SetMaterial(true)
-    outlined:SetColor(fCol)
-    outlined:SetEndAngle(0)
-
-    local progressPanel = panel:Add("Panel")
-    progressPanel:Dock(bReverse and RIGHT or LEFT)
-    progressPanel:SetWide(panel:GetTall())
-
-    self.countProgressPanel = self.countProgressPanel + 1
-    timer.Simple(self.countProgressPanel * 0.1, function()
-        if !IsValid(panel) then return end
-        if !IsValid(progressPanel) then return end
-
-        panel:AlphaTo(255, 0.5)
-
-        progressPanel.Paint = function()
-            background()
-
-            local selectColor = 2
-            if maxAngles < 50 then
-                selectColor = 1
-            elseif maxAngles > 85 then
-                selectColor = 3
-            end
-
-            color = LerpColor(FrameTime() * 2, color, colorsList[selectColor])
-            angles = Lerp(FrameTime() * 2, angles, maxAngles * 36 / 10)
-
-            outlined:SetEndAngle(angles)
-            outlined:SetColor(color)
-
-            outlined()
-        end
-
-        local wideLabel = 0
-        local labelPanel = panel:Add("DPanel")
-        labelPanel:Dock(FILL)
-        labelPanel:DockMargin(bReverse and 0 or 10, 0, bReverse and 10 or 0, 0)
-        labelPanel.Paint = function(this, w, h)
-            wideLabel = Lerp(FrameTime() * 0.45, wideLabel, w)
-
-            asterionlib.DrawRender(function()
-                surface.SetDrawColor(255, 255, 255)
-                if bReverse then
-                    surface.DrawRect(w - wideLabel, 0, w, h)
-                else
-                    surface.DrawRect(0, 0, wideLabel, h)
-                end
-            end, function()
-                draw.SimpleText(data, font, bReverse and w or 0, h / 2, color_white, bReverse and TEXT_ALIGN_RIGHT or TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            end)
-        end
+        return aPriority < bPriority
     end)
+
+    return players
 end
 
-function PANEL:CreateMiddlePanel()
-    local panel = self:Add("DPanel")
-    panel:Dock(FILL)
-    panel:DockMargin(0, 50, 0, 50)
-    panel.Paint = P
+---@param scrollPanel DScrollPanel
+function PANEL:CreatePlayers(scrollPanel)
+    local fontLabel = "arb.Font_FuturaPTBook_10"
+    local fontHeight = draw.GetFontHeight(fontLabel)
 
-    local gamePanel = panel:Add("DPanel")
-    gamePanel:SetTall(H(80))
-    gamePanel:Dock(TOP)
-    gamePanel.Paint = P
-    gamePanel.Paint = function(this, w, h)
-        draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_11", w / 2, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
-    end
-
-    self:CreatePlayersPanel(panel)
-end
-
-function PANEL:CreatePlayersPanel(parent)
     if Arbitrage.OffShowFactions() then
-        local errorPanel = parent:Add("DPanel")
-        errorPanel:SetTall(self:GetTall())
+        local errorPanel = scrollPanel:Add("DPanel")
+        errorPanel:SetTall(fontHeight * 10)
         errorPanel:Dock(TOP)
         errorPanel:DockMargin(0, 0, 0, H(30))
         errorPanel.Paint = function(this, w, h)
-            draw.DrawText(L("#tab_hidden"), "arb.Font_FuturaPTBook_11", w / 2, h * 0.35, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.DrawText(L("#tab_hidden"), fontLabel, w / 2, h * 0.35, color_white, TEXT_ALIGN_CENTER)
         end
 
         if !LocalPlayer():IsAdmin() then -- даем админу использовать ТАБ
@@ -375,173 +298,105 @@ function PANEL:CreatePlayersPanel(parent)
         errorPanel:SetTall(H(100))
     end
 
-    local scrollPanel = parent:Add("DScrollPanel")
-    scrollPanel:Dock(FILL)
+    local role_mat = Material("asterion/academy/ui/scoreboard/role.png")
+    local banner_mini_mask = BMASKS.CreateMask("banner_mini_mask", "asterion/academy/ui/scoreboard/banner_mini_mask.png")
+    local players = self:SortPlayers()
 
-    local bar = scrollPanel:GetVBar()
-    bar:SetWide(10)
-    bar:DockMargin(0, 0, 0, 0)
+    ---@param client Player
+    Throttle(players, 1, 0.01, function(client)
+        if !IsValid(self) then return end
+        if !IsValid(client) then return end
 
-    bar.Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255, 3)
-        surface.DrawRect(7, 10, w, h - 20)
-    end
-    bar.btnUp.Paint = function() end
-    bar.btnDown.Paint = function() end
-    bar.btnGrip.Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255)
-        surface.DrawRect(7, 10, w, h - 20)
-    end
+        local steamName = client:SteamName()
+        local characterName = client:Name()
+        local steamID = client:SteamID()
+        local ping = client:Ping()
+        local rank = client:GetUserGroup()
 
-    for k, v in ipairs(player.GetAll()) do
+        local user_info = client:GetNetVar("user_info", {})
+        local banner_mini_url = user_info.banner_mini
+        local banner_mini = nil
+        if banner_mini_url then
+            asterionlib.downloader:Image(banner_mini_url, function(mat, path)
+                banner_mini = mat
+            end)
+        end
+
         local panel = scrollPanel:Add("Panel")
-        panel:SetTall(H(35))
+        panel:SetAlpha(0)
+        panel:AlphaTo(255, 0.5)
+        panel:SetTall(fontHeight + 12)
         panel:Dock(TOP)
         panel:DockMargin(0, 0, 0, 5)
-
-        -- local statusPanel = panel:Add("DPanel")
-        -- statusPanel:Dock(LEFT)
-        -- statusPanel:SetWide(panel:GetTall())
-        -- statusPanel:DockMargin(0, 0, 5, 0)
-
-        local playerPanel = panel:Add("Panel")
-        playerPanel:Dock(FILL)
-
-        local avatar = playerPanel:Add("AvatarImage")
-        avatar:Dock(LEFT)
-        avatar:SetWide(panel:GetTall())
-        avatar:SetPlayer(v, 64)
-
-        local name = v:GetName()
-        local steamid = v:SteamID()
-        local faction = v:Team()
-        local character = Character.team:GetByID(faction)
-        local steamName = v:SteamName()
-        local ping = v:Ping()
-        local matPing = getMatPing(ping)
-        local userGroup = v:GetUserGroup()
-        local groupName = userGroup != "user" and userGroup
-        if groupName then
-            groupName = getGroupName(groupName)
-        end
-
-        local infoPanel = playerPanel:Add("DPanel")
-        infoPanel:Dock(FILL)
-        infoPanel.Paint = function(this, w, h)
-            surface.SetDrawColor(15, 6, 7, 255 * 0.9)
+        panel.Paint = function(this, w, h)
+            surface.SetDrawColor(0, 0, 0, 220)
             surface.DrawRect(0, 0, w, h)
 
-            draw.SimpleText(steamName, "arb.Font_FuturaPTBook_9", 10, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            if banner_mini then
+                local mask_w = w
+                local mask_h = mask_w * banner_mini:Height() / banner_mini:Width()
 
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(matPing)
-            surface.DrawTexturedRect(w - h, 0, h, h)
+                BMASKS.BeginMask(banner_mini_mask)
+                    surface.SetDrawColor(255, 255, 255)
+                    surface.SetMaterial(banner_mini)
+                    surface.DrawTexturedRect(h + w / 2 - mask_w / 2, h / 2 - mask_h / 2, mask_w, mask_h)
+                BMASKS.EndMask(banner_mini_mask, h, 0, w, h)
 
-            draw.SimpleText(ping, "arb.Font_FuturaPTBook_7", w - h, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-
-            if groupName then
-                draw.SimpleText(groupName, "arb.Font_FuturaPTBook_8", w / 2, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                surface.SetDrawColor(0, 0, 0, 50)
+                surface.DrawRect(0, 0, w, h)
             end
         end
 
-        local buttonPanel = playerPanel:Add("DButton")
-        buttonPanel:SetText("")
-        buttonPanel:SetPos(0, 0)
-        buttonPanel:SetSize(self:GetWide(), self:GetTall())
-        buttonPanel.TooltipInfo = function(this, tooltip)
-            local tooltipTitle = tooltip:AddPanel("DPanel")
-            tooltipTitle:SetTall(H(35))
-            tooltipTitle:Dock(TOP)
-            tooltipTitle.Paint = function(_, w, h)
-                local width, height = draw.SimpleText(steamName, "arb.Font_FuturaPTBook_7", h + 5, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        local avatar = panel:Add("AvatarImage")
+        avatar:Dock(LEFT)
+        avatar:SetWide(panel:GetTall())
+        avatar:SetPlayer(client, 64)
 
-                draw.SimpleText(steamid, "arb.Font_FuturaPTBook_5", h + 5, height, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        local button = panel:Add("DButton")
+        button:SetText("")
+        button:SetPos(0, 0)
+        button:SetSize(ScrW() - padding * 2 - self.info:GetWide() - 15, panel:GetTall())
+        button.alpha = 0
+        button.Paint = function(this, w, h)
+            this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 0.7 or 0)
+            w = panel:GetWide()
 
-                tooltip:UpdateWide(width)
-            end
+            surface.SetDrawColor(0, 0, 0, this.alpha * 255)
+            surface.DrawRect(h, 0, w - h, h)
 
-            local tooltipAvatar = tooltipTitle:Add("AvatarImage")
-            tooltipAvatar:Dock(LEFT)
-            tooltipAvatar:SetWide(tooltipTitle:GetTall())
-            tooltipAvatar:SetPlayer(v, 64)
+            drawText(steamName, fontLabel, panel:GetTall() + 15, h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            drawText(characterName, fontLabel, w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            drawText(ping, fontLabel, w - 20, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-            local tooltipLine = tooltip:AddPanel("DPanel")
-            tooltipLine:SetTall(1)
-            tooltipLine:Dock(TOP)
-            tooltipLine:DockMargin(0, 5, 0, 5)
-            tooltipLine.Paint = function(_, w, h)
-                surface.SetDrawColor(color_white)
-                surface.DrawRect(0, 0, tooltip:GetAlpha() / 255 * w, h)
-            end
+            if priority[rank] then
+                local rank_color = Moderation.instances[rank].color
 
-            local pixel = character:GetAssets().pixel
-            local pixelMat = pixel and Material(pixel)
-
-            local tootipFaction = tooltip:AddPanel("DPanel")
-            tootipFaction:SetTall(H(30))
-            tootipFaction:Dock(TOP)
-            tootipFaction.Paint = function(_, w, h)
-                surface.SetDrawColor(color_white)
-
-                local tall = 0
-                if pixelMat then
-                    surface.SetMaterial(pixelMat)
-                    surface.DrawTexturedRect(0, 0, h, h)
-
-                    tall = tall + h
+                if rank_color then
+                    surface.SetDrawColor(rank_color.r, rank_color.g, rank_color.b)
+                    surface.SetMaterial(role_mat)
+                    surface.DrawTexturedRect(w - h, 0, h, h)
                 end
-
-                draw.SimpleText(name, "arb.Font_FuturaPTBook_6", tall + 5, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            end
-
-            local rankMat = Arbitrage.chat:GetIcon(v)
-
-            local tootipRank = tooltip:AddPanel("DPanel")
-            tootipRank:SetTall(H(30))
-            tootipRank:Dock(TOP)
-            tootipRank.Paint = function(_, w, h)
-                surface.SetDrawColor(color_white)
-
-                local tall = 0
-                if rankMat then
-                    local size = 0.55
-                    surface.SetMaterial(rankMat)
-                    surface.DrawTexturedRect(h * 0.25, h * 0.25, h * size, h * size)
-
-                    tall = tall + h
-                end
-
-                draw.SimpleText(userGroup, "arb.Font_FuturaPTBook_6", tall + 5, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            end
-
-            local timeMat = Material("icon16/clock.png")
-
-            local tootipTime = tooltip:AddPanel("DPanel")
-            tootipTime:SetTall(H(30))
-            tootipTime:Dock(TOP)
-            tootipTime.Paint = function(_, w, h)
-                local size = 0.55
-
-                surface.SetDrawColor(color_white)
-                surface.SetMaterial(timeMat)
-                surface.DrawTexturedRect(h * 0.25, h * 0.25, h * size, h * size)
-
-                local curtime = CurTime()
-                local a_isvalid = IsValid(v)
-                local time = string.FormattedTime(curtime - (a_isvalid and v:GetNetVar("connectedTime", curtime) or curtime))
-                local m_time = ("%s:%s:%s"):format(time.h, time.m, time.s)
-
-                draw.SimpleText(m_time, "arb.Font_FuturaPTBook_6", h + 5, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
         end
-
-        -- hide button!
-        buttonPanel.Paint = nil
-        buttonPanel.DoClick = function()
+        button.Click = function()
             local menu = DermaMenu(false, self)
-            menu:AddOption(L("#tab_copyid"), function() SetClipboardText(steamid) end)
-            menu:AddOption(L("#tab_checkprofile"), function() gui.OpenURL(Format("https://steamcommunity.com/profiles/%s", util.SteamIDTo64(steamid))) end)
-            menu:AddOption(L("#tab_pm"), function()
+            menu:SetAlpha(0)
+            menu:AlphaTo(255, 0.25)
+            paintMenu(menu)
+
+            local tabCopyID = menu:AddOption(L("#tab_copyid"), function()
+                SetClipboardText(steamID)
+            end)
+            tabCopyID:SetIcon("icon16/book_link.png")
+            paintOption(tabCopyID)
+
+            local tabCheckProfile = menu:AddOption(L("#tab_checkprofile"), function()
+                gui.OpenURL(Format("https://steamcommunity.com/profiles/%s", util.SteamIDTo64(steamID)))
+            end)
+            tabCheckProfile:SetIcon("icon16/page_green.png")
+            paintOption(tabCheckProfile)
+
+            local tabPM = menu:AddOption(L("#tab_pm"), function()
                 local chatbox = Arbitrage.gui.chat
                 if !IsValid(chatbox) then return end
 
@@ -549,7 +404,7 @@ function PANEL:CreatePlayersPanel(parent)
                 chatbox.entry:SetValue("")
 
                 timer.Simple(0.3, function()
-                    local text = ("/pm %s "):format(steamid)
+                    local text = ("/pm %s "):format(steamID)
 
                     chatbox:SetActive(true)
                     chatbox.entry:SetValue(text)
@@ -557,52 +412,31 @@ function PANEL:CreatePlayersPanel(parent)
                     chatbox.entry:SetCaretPos(utf8.len(text))
                 end)
             end)
+            tabPM:SetIcon("icon16/layout_add.png")
+            paintOption(tabPM)
 
             menu:SetPos(gui.MouseX(), gui.MouseY())
         end
-    end
+        button.DoClick = button.Click
+        button.DoRightClick = button.Click
+    end)
 end
 
-function PANEL:CreateRightPanel()
-    local mainPanel = self:Add("DPanel")
-    mainPanel:SetWide(W(500))
-    mainPanel:Dock(RIGHT)
-    mainPanel:DockMargin(0, 50, 50, 50)
-    mainPanel.Paint = P
+local screenMat = Material("asterion/academy/ui/radial/screen.png")
 
-    local topPanel = mainPanel:Add("DPanel")
-    topPanel:SetTall(ScrH() * 0.3)
-    topPanel:Dock(TOP)
-    topPanel.Paint = P
-
-    local time = os.time()
-    self:CreateText(topPanel, os.date("%H:%M", time), "arb.Font_FuturaPTBook_13", true)
-    self:CreateText(topPanel, os.date("%d/%m/%Y", time), "arb.Font_FuturaPTBook_8", true)
-
-    local bottomPanel = mainPanel:Add("DPanel")
-    bottomPanel:Dock(FILL)
-    bottomPanel.Paint = P
-
-    local mp_c = asterionlib.modelprecache:GetCount()
-    local mp_mc = asterionlib.modelprecache:GetMaxCount()
-    local mp_interest = math.floor(100 / (mp_mc / mp_c))
-    local edict_c = asterionlib.GetEdictCount()
-    local edict_mc = asterionlib.GetMaxEdictCount()
-    local edict_interest = math.floor(100 / (edict_mc / edict_c))
-    -- local fps_c = asterionlib.GetServerFPS()
-    -- local fps_mc = asterionlib.GetMaxServerFPS()
-    -- local fps_interest = math.floor(100 / (fps_mc / fps_c))
-
-    self:CreateProgressPanel(bottomPanel, "Precached Models: " .. mp_interest .. "% (" .. mp_c .. "/" .. mp_mc .. ")", mp_interest, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)}, true)
-    self:CreateProgressPanel(bottomPanel, "Entity Limit: " .. edict_interest .. "% (" .. edict_c .. "/" .. edict_mc .. ")", edict_interest, {Color(106, 230, 106), Color(255, 187, 0), Color(255, 57, 57)}, true)
-    -- self:CreateProgressPanel(bottomPanel, "Server FPS: " .. fps_interest .. "% (" .. fps_c .. "/" .. fps_mc .. ")", fps_interest, {Color(255, 57, 57), Color(255, 187, 0), Color(106, 230, 106)}, true)
-end
-
+---@param w number
+---@param h number
 function PANEL:Paint(w, h)
-    surface.SetDrawColor(15, 6, 7, 255 * 0.9)
+    asterionlib.DrawBlur(self, 1)
+
+    surface.SetDrawColor(0, 0, 0, 50)
     surface.DrawRect(0, 0, w, h)
 
-    asterionlib.DrawBlurAt(0, 0, w, h, 5, nil, 255)
+    surface.SetDrawColor(255, 255, 255, 255)
+    surface.SetMaterial(screenMat)
+    surface.DrawTexturedRect(0, 0, w, h)
+
+    draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255), TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("arb.ScoreBoard", PANEL, "EditablePanel")

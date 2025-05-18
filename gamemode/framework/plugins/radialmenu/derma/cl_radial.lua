@@ -37,9 +37,7 @@ local RADIAL_CONFIG = {
 
 	COLORS = {
 		BLACK = Color(0, 0, 0),
-		RED = Color(255, 41, 76),
-		BLUR = Color(218, 19, 40),
-		WHITE = color_white
+		WHITE = Color(255, 255, 255)
 	},
 
 	DEFAULTS = {
@@ -632,9 +630,9 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:DrawBackground(w, h)
-	asterionlib.DrawBlur(self, 1)
+	asterionlib.DrawBlur(self, 3)
 
-	surface_SetDrawColor(0, 0, 0, 50)
+	surface_SetDrawColor(0, 0, 0, 160)
 	surface_DrawRect(0, 0, w, h)
 
 	surface_SetDrawColor(255, 255, 255, 255)
@@ -682,8 +680,10 @@ function PANEL:DrawSelectionGradient(w, h)
 
 	self.angleGradient = angleDegrees
 
+	local informationColor = Arbitrage.theme:GetInformation()
+
 	local size_gradient = (self.panelWide + self.size) * 2 + 5
-	surface_SetDrawColor(RADIAL_CONFIG.COLORS.BLUR)
+	surface_SetDrawColor(informationColor.r, informationColor.g, informationColor.b)
 	surface_SetMaterial(gradient_selectMat)
 	surface_DrawTexturedRectRotated(w / 2, h / 2, size_gradient, size_gradient, -self.angleGradient)
 end
@@ -705,7 +705,7 @@ function PANEL:DrawMenuOptions(w, h, ft)
 		local a = math_rad(segment_size * i + segment_size / 2)
 		local x = self.centerX + math_cos(a) * self.panelWide
 		local y = self.centerY + math_sin(a) * self.panelWide
-		local color = RADIAL_CONFIG.COLORS.BLUR
+		local color = Arbitrage.theme:GetInformation()
 
 		option.fill_alpha = option.fill_alpha or 0
 		option.fill_alpha = Lerp(ft * 20, option.fill_alpha, self.selected == i and 257 or -2)
@@ -750,8 +750,10 @@ function PANEL:DrawMenuOptions(w, h, ft)
 			draw_SimpleText(F(option.name), "arb.Font_FuturaPTBook_10", x, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
+		local informationColor = Arbitrage.theme:GetInformation()
+
 		local b = self.panelWide * 0.8
-		draw_SimpleText(i + 1, "arb.Font_FuturaPTDemi_5", self.centerX + math_cos(a) * b, self.centerY + math_sin(a) * b, RADIAL_CONFIG.COLORS.RED, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw_SimpleText(i + 1, "arb.Font_FuturaPTDemi_5", self.centerX + math_cos(a) * b, self.centerY + math_sin(a) * b, informationColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 end
 
@@ -763,15 +765,17 @@ function PANEL:DrawSelectedOptionInfo(w, h, ft)
 	local description = F(option.description)
 	local icon = option.icon
 
+	local informationColor = Arbitrage.theme:GetInformation()
+
 	if icon and !option.sequence then
 		local size = self:GetTall() * 0.1
 
-		surface_SetDrawColor(RADIAL_CONFIG.COLORS.RED.r, RADIAL_CONFIG.COLORS.RED.g, RADIAL_CONFIG.COLORS.RED.b, self.textAlpha)
+		surface_SetDrawColor(informationColor.r, informationColor.g, informationColor.b, self.textAlpha)
 		surface_SetMaterial(icon)
 		surface_DrawTexturedRect(w / 2 - size / 2, h / 2 - size / 2 - size * 0.7, size, size)
 	end
 
-	draw_SimpleText(name, "arb.Font_FuturaPTDemi_13", w / 2, h / 2, ColorAlpha(RADIAL_CONFIG.COLORS.BLUR, self.textAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	draw_SimpleText(name, "arb.Font_FuturaPTDemi_13", w / 2, h / 2, Color(informationColor.r, informationColor.g, informationColor.b, self.textAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 	if description then
 		local descFont = "arb.Font_FuturaPTBook_8"

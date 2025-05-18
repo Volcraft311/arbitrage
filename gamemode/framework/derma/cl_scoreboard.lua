@@ -434,9 +434,9 @@ local screenMat = Material("asterion/academy/ui/radial/screen.png")
 ---@param w number
 ---@param h number
 function PANEL:Paint(w, h)
-    asterionlib.DrawBlur(self, 1)
+    asterionlib.DrawBlur(self, 3)
 
-    surface.SetDrawColor(0, 0, 0, 50)
+    surface.SetDrawColor(0, 0, 0, 160)
     surface.DrawRect(0, 0, w, h)
 
     surface.SetDrawColor(255, 255, 255, 255)

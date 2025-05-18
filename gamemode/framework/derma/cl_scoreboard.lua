@@ -124,12 +124,15 @@ function PANEL:CreatePanel()
         end)
     end
 
+    local fontTitle = "arb.Font_FuturaPTDemi_9"
+    local fontHeight = draw.GetFontHeight(fontTitle)
+
     local banner_mat = Material("asterion/academy/ui/scoreboard/banner_big_mat.png")
     local banner_big_mask = BMASKS.CreateMask("banner_big_mask", "asterion/academy/ui/scoreboard/banner_big_mask.png")
     self.info = self.panel:Add("Panel")
     self.info:SetAlpha(0)
     self.info:AlphaTo(255, 0.5)
-    self.info:SetWide((ScrW() - padding * 2) * 0.285)
+    self.info:SetWide(fontHeight * 13.722222222222)
     self.info:Dock(RIGHT)
     self.info:DockMargin(H(15), 0, 0, 0)
     self.info.Paint = function(this, w, h)
@@ -144,13 +147,13 @@ function PANEL:CreatePanel()
         surface.DrawRect(0, 0, w, h)
 
         if banner_big then
-            local mask_h = h
-            local mask_w = mask_h * banner_big:Width() / banner_big:Height()
+            local mask_w = w
+            local mask_h = mask_w * banner_big:Height() / banner_big:Width()
 
             BMASKS.BeginMask(banner_big_mask)
                 surface.SetDrawColor(255, 255, 255)
                 surface.SetMaterial(banner_big)
-                surface.DrawTexturedRect(w / 2 - mask_w / 2, h / 2 - mask_h / 2, mask_w, mask_h)
+                surface.DrawTexturedRect(w / 2 - mask_w / 2, 0, mask_w, mask_h)
             BMASKS.EndMask(banner_big_mask, 0, 0, w, h)
 
             surface.SetDrawColor(0, 0, 0, 100)
@@ -160,7 +163,7 @@ function PANEL:CreatePanel()
 
     local serverNameLabel = self.info:Add("DLabel")
     serverNameLabel:SetText(GetHostName()) -- "«Эфир» / Официальный × Сессии"
-    serverNameLabel:SetFont("arb.Font_FuturaPTDemi_9")
+    serverNameLabel:SetFont(fontTitle)
     serverNameLabel:SetTextColor(color_white)
     serverNameLabel:Dock(TOP)
     serverNameLabel:DockMargin(25, 15, 0, 0)
@@ -360,6 +363,10 @@ function PANEL:CreatePlayers(scrollPanel)
         button.Paint = function(this, w, h)
             this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 0.7 or 0)
             w = panel:GetWide()
+
+            if button:GetWide() != w then
+                button:SetWide(w)
+            end
 
             surface.SetDrawColor(0, 0, 0, this.alpha * 255)
             surface.DrawRect(h, 0, w - h, h)

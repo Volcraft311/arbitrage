@@ -372,7 +372,11 @@ function PANEL:CreatePlayers(scrollPanel)
             surface.DrawRect(h, 0, w - h, h)
 
             drawText(steamName, fontLabel, panel:GetTall() + 15, h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            drawText(characterName, fontLabel, w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+            if steamName != characterName then
+                drawText(characterName, fontLabel, w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            end
+
             drawText(ping, fontLabel, w - 20, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
             if priority[rank] then

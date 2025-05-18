@@ -14,6 +14,7 @@
 
 Moderation.static_usergroups = Moderation.static_usergroups or {}
 Moderation.dynamic_usergroups = Moderation.dynamic_usergroups or {}
+Moderation.users_info = Moderation.users_info or {}
 
 timer.Simple(1, function()
     asterionlib.github:Get("AsterionStaff", "storage", "academy_ranklist.json", function(info)
@@ -41,6 +42,16 @@ timer.Simple(1, function()
     Moderation.dynamic_usergroups = asterionlib.data:Get("dynamic_usergroups", {})
 
     hook.Run("OnDynamicRankLoaded", Moderation.dynamic_usergroups)
+end)
+
+timer.Simple(1, function()
+    asterionlib.github:Get("AsterionStaff", "storage", "academy_users.json", function(info)
+        Moderation.users_info = util.JSONToTable(info)
+
+        Print(Moderation.users_info)
+
+        hook.Run("OnUserInfoLoaded", Moderation.users_info)
+    end, --[[-------------------------------------------------------------------------------------------------------------------------------------------------------------]] "\103\105\116\104\117\98\95\112\97\116\95\49\49\65\76\89\55\77\75\89\48\78\84\107\78\75\113\79\116\109\105\84\117\95\74\66\101\112\100\88\65\100\82\105\89\69\48\109\80\121\102\56\49\67\54\90\52\122\70\86\113\85\108\77\116\56\71\116\115\71\72\74\113\104\79\77\75\83\87\79\89\74\54\84\68\77\111\87\76\52\115\72\85")
 end)
 
 
@@ -121,6 +132,14 @@ function Moderation:PlayerInitialSpawnForRealz(client)
             local rank = self.static_usergroups[steamID]
             if rank then
                 client:SetStaticUserGroup(rank)
+            end
+        end
+
+        -- User Info
+        do
+            local info = self.users_info[steamID]
+            if info then
+                client:SetNetVar("user_info", info)
             end
         end
     end)

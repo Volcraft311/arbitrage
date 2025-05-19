@@ -11,9 +11,161 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
-local PLUGIN = PLUGIN
-PLUGIN.deathPlaques = PLUGIN.deathPlaques or {}
-PLUGIN.disconnectPlayers = PLUGIN.disconnectPlayers or {}
+
+DataBase.deathPlaques = DataBase.deathPlaques or {}
+DataBase.disconnectPlayers = DataBase.disconnectPlayers or {}
+DataBase.MapCreationEntities = DataBase.MapCreationEntities or {}
+
+function DataBase:UpdateMapCreationEntities()
+    local entities = {}
+
+    for _, entity in ipairs(ents.GetAll()) do
+        if IsValid(entity) then
+            local creationID = entity:MapCreationID()
+            local model = entity:GetModel()
+
+            if creationID > 0 and model then
+                entities[creationID] = entity
+            end
+        end
+    end
+
+    self.MapCreationEntities = entities
+end
+
+---@param state_name string
+---@param save table
+function DataBase:SaveServerState(state_name, save)
+    local state = {
+        props = {},
+        removed_creation_entities = {},
+        net_globals = {},
+        net_players_globals = {},
+        net_players_locals = {},
+        items_world = {},
+        inventories = {}
+    }
+
+    if save.props then
+        for _, entity in ipairs(ents.GetAll()) do
+            local class = entity:GetClass()
+            local idx = entity:EntIndex()
+
+            if IsValid(entity) and entity:GetModel() and (entity.CreatedBy or class:find("arb_")) then
+                local Tab = AdvDupe2.duplicator.Copy(nil, entity, {}, {}, Vector(0, 0, 0))
+
+                if Tab and Tab[idx] then
+                    Tab[idx].Nets = asterionlib.net.list[idx] or {}
+
+                    state.props[#state.props + 1] = Tab[idx]
+                end
+            end
+        end
+    end
+
+    if save.removedCreationEntities then
+        for creationID, entity in pairs(self.MapCreationEntities) do
+            if !IsValid(entity) then
+                state.removed_creation_entities[#state.removed_creation_entities + 1] = creationID
+            end
+        end
+    end
+
+    if save.netGlobals then
+        local nets = table.Copy(asterionlib.net.globals)
+
+        nets.serverstat = nil
+
+        state.net_globals = nets
+    end
+
+    if save.netPlayers then
+        for idx, data in pairs(asterionlib.net.list) do
+            local entity = Entity(idx)
+
+            if IsValid(entity) and entity:IsPlayer() then
+                local nets = table.Copy(data)
+
+                nets.moderation_staticusergroup = nil
+                nets.moderation_dynamicusergroup = nil
+                nets.user_info = nil
+                nets.connectedTime = nil
+                nets["esp.position"] = nil
+
+                state.net_players_globals[entity:SteamID()] = nets
+            end
+        end
+
+        for idx, data in pairs(asterionlib.net.locals) do
+            local entity = Entity(idx)
+
+            if IsValid(entity) and entity:IsPlayer() then
+                local nets = table.Copy(data)
+
+                state.net_players_locals[entity:SteamID()] = nets
+            end
+        end
+    end
+
+    return state
+end
+
+function DataBase:LoadServerState(client, state)
+    for _, tab in ipairs(state.props or {}) do
+        local entities = AdvDupe2.duplicator.Paste(nil, {tab}, {}, nil, nil, Vector(0, 0, 0), true)
+        local entity = entities[1]
+
+        if IsValid(entity) then
+            local idx = entity:EntIndex()
+
+            entity.CreatedBy = client:SteamID()
+
+            for key, value in pairs(tab.Nets) do
+                asterionlib.net.list[idx] = asterionlib.net.list[idx] or {}
+                asterionlib.net.list[idx][key] = value
+            end
+        end
+    end
+
+    for _, creationID in ipairs(state.removed_creation_entities or {}) do
+        local entity = self.MapCreationEntities[creationID]
+
+        if IsValid(entity) then
+            entity:Remove()
+        end
+    end
+
+    for key, value in pairs(state.net_globals or {}) do
+        asterionlib.net.globals[key] = value
+    end
+
+    for steamID, data in pairs(state.net_players_globals or {}) do
+        local entity = player.GetBySteamID(steamID)
+
+        if IsValid(entity) then
+            local idx = entity:EntIndex()
+
+            for key, value in pairs(data or {}) do
+                asterionlib.net.list[idx] = asterionlib.net.list[idx] or {}
+                asterionlib.net.list[idx][key] = value
+            end
+        end
+    end
+
+    for steamID, data in pairs(state.net_players_locals or {}) do
+        local entity = player.GetBySteamID(steamID)
+
+        if IsValid(entity) then
+            local idx = entity:EntIndex()
+
+            for key, value in pairs(data or {}) do
+                asterionlib.net.list[idx] = asterionlib.net.list[idx] or {}
+                asterionlib.net.list[idx][key] = value
+            end
+        end
+    end
+end
+
 
 local lifting = Vector(0, 0, 64)
 timer.Create("Arbitrage:DeadTablets", 5, 0, function()
@@ -24,7 +176,7 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
         if IsValid(client) and client:Alive() and client:InGame() then
-            local entity = PLUGIN.deathPlaques[k]
+            local entity = DataBase.deathPlaques[k]
             if IsValid(entity) then
                 entity:Remove()
             end
@@ -38,7 +190,7 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
         local placeList = Arbitrage.placesList[place]
         if !placeList then continue end
 
-        local entity = PLUGIN.deathPlaques[k]
+        local entity = DataBase.deathPlaques[k]
         if IsValid(entity) then continue end
 
         local stored = placeList
@@ -55,11 +207,62 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
             faction = v.faction
         })
 
-        PLUGIN.deathPlaques[k] = entity
+        DataBase.deathPlaques[k] = entity
     end
 end)
 
-function PLUGIN:PlayerDisconnected(client)
+timer.Create("DataBase:Saver", 60, 0, function()
+    for _, client in ipairs(player.GetAll()) do
+        client:SaveSaverInfo()
+    end
+end)
+
+
+---@param client Player
+hook("PlayerSpawnedEffect", function(client, model, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+---@param client Player
+hook("PlayerSpawnedNPC", function(client, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+---@param client Player
+hook("PlayerSpawnedProp", function(client, model, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+---@param client Player
+hook("PlayerSpawnedRagdoll", function(client, model, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+---@param client Player
+hook("PlayerSpawnedSENT", function(client, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+---@param client Player
+hook("PlayerSpawnedSWEP", function(client, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+---@param client Player
+hook("PlayerSpawnedVehicle", function(client, entity)
+    entity.CreatedBy = client:SteamID()
+end)
+
+hook("InitPostEntity", function()
+    DataBase:UpdateMapCreationEntities()
+end)
+
+hook("PostCleanupMap", function()
+    DataBase:UpdateMapCreationEntities()
+end)
+
+---@param client Player
+hook("PlayerDisconnected", function(client)
     if client:Alive() and client:InGame() then
         local entity = ents.Create("arb_player")
         entity:SetPos(client:GetPos() - Vector(0, 0, 3))
@@ -133,20 +336,16 @@ function PLUGIN:PlayerDisconnected(client)
         entity._containerTime = 15
         entity._containerName = client:Name()
         entity._containerInventory = inventory
-        self.disconnectPlayers[client:SteamID()] = entity
-    end
-end
 
-timer.Create("DataBase:Saver", 60, 0, function()
-    for _, client in ipairs(player.GetAll()) do
-        client:SaveSaverInfo()
+        DataBase.disconnectPlayers[client:SteamID()] = entity
     end
 end)
 
+---@param client Player
 hook("OnPlayerInitialize", function(client)
     local steamid = client:SteamID()
 
-    local leaveEntity = PLUGIN.disconnectPlayers[steamid]
+    local leaveEntity = DataBase.disconnectPlayers[steamid]
     if !IsValid(leaveEntity) then return end
 
     local data = leaveEntity.data
@@ -183,7 +382,8 @@ hook("OnPlayerInitialize", function(client)
         client:Give(v, true)
     end
 
-    client:StripAmmo()
+    client:RemoveAllAmmo()
+
     for k, v in pairs(data.ammo) do
         client:SetAmmo(v, k)
     end
@@ -191,10 +391,11 @@ hook("OnPlayerInitialize", function(client)
     client.saveData = data
 
     leaveEntity:Remove()
-    PLUGIN.disconnectPlayers[steamid] = nil
+    DataBase.disconnectPlayers[steamid] = nil
 end)
 
-function PLUGIN:PlayerInitialSpawnForRealz(client)
+---@param client Player
+hook("PlayerInitialSpawnForRealz", function(client)
     local data = client.saveData
     if !data then return end
 
@@ -238,9 +439,10 @@ function PLUGIN:PlayerInitialSpawnForRealz(client)
     end)
 
     client.saveData = nil
-end
+end)
 
-local meta = FindMetaTable("Entity")
+
+local meta = FindMetaTable("Entity") ---@class Entity
 
 function meta:GetSaverInfo()
     return table.Copy(self._saver or {})

@@ -12,6 +12,8 @@
 ]]--
 
 local PLUGIN = PLUGIN
-PLUGIN.name = "DataBase"
+
+DataBase = PLUGIN
+DataBase.name = "DataBase"
 
 Arbitrage.base.Include("sv_plugin.lua")

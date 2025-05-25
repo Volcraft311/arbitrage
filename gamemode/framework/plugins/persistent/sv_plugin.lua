@@ -155,7 +155,7 @@ netstream.Hook("fb:TraceBody", function(client, entity)
                     Arbitrage.GetChapter(),
                     2, -- Расследование self.investigationID
                     nil,
-                    Arbitrage.ReturnTime()
+                    Time:GetUnformated()
                 })
 
                 SetNetVar("arb.GameLogs", data)

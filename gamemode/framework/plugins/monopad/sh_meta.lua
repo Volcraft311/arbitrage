@@ -114,7 +114,7 @@ end
 function MONOPAD:AddEvidence(idx, time)
 	if self.evidences[idx] then return end
 
-	time = tonumber(time) or Arbitrage.ReturnTime()
+	time = tonumber(time) or Time:GetUnformated()
 	self.evidences[idx] = time
 end
 

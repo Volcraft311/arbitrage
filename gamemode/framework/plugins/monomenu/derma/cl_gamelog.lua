@@ -319,7 +319,7 @@ function PANEL:Init()
         end
 
         if !e then
-            e = Arbitrage.ReturnTime()
+            e = Time:GetUnformated()
         end
 
         netstream.Start(f and "arb.MonoEditGameLog" or "arb.MonoAddGameLog", {a, b, c, d, e, f})
@@ -366,7 +366,7 @@ function PANEL:SetData(inflictorID, chapterTitle, investigationType, attackerID,
 
     if self.id then
         self.timeEntry = self.main:Add("DTextEntry")
-        self.timeEntry:SetValue(time or Arbitrage.ReturnTime())
+        self.timeEntry:SetValue(time or Time:GetUnformated())
         self.timeEntry:SetPos(W(5), H(395))
         self.timeEntry:SetSize(self.main:GetWide() - W(10), H(25))
         self.timeEntry:SetPlaceholderText(L("#monomenu_gamelog_time"))

@@ -699,7 +699,7 @@ netstream.Hook("arb.MonoAddGameLog", function(client, array)
     if !client:IsAdmin() then return end
 
     local a, b, c, d, e = array[1], array[2], array[3], array[4], array[5]
-    e = e or Arbitrage.ReturnTime()
+    e = e or Time:GetUnformated()
 
     local data = Arbitrage.GetGameLogs()
     table.insert(data, {a, b, c, d, e})
@@ -714,7 +714,7 @@ netstream.Hook("arb.MonoEditGameLog", function(client, array)
     if !client:IsAdmin() then return end
 
     local a, b, c, d, e, f = array[1], array[2], array[3], array[4], array[5], array[6]
-    e = e or Arbitrage.ReturnTime()
+    e = e or Time:GetUnformated()
 
     local data = Arbitrage.GetGameLogs()
     if !data[f] then return end

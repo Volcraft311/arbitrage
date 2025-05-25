@@ -23,13 +23,12 @@ function Time:GetHours(time)
     return math.floor(math.fmod(time, MINUTES_PER_DAY) / MINUTES_PER_HOUR)
 end
 
-Time.dayTime = Time.dayTime or Time:ToUnformated({hours = 8, minutes = 0})
-Time.nightTime = Time.nightTime or Time:ToUnformated({hours = 22, minutes = 0})
+Time.dayTime = 8
+Time.nightTime = 22
 
 function Time:IsDay()
-    local time = self:GetUnformated()
-
-    return (time > self.dayTime and time < self.nightTime)
+    local hours = self:GetHours()
+    return (hours > self.dayTime and hours < self.nightTime)
 end
 
 function Time:IsNight()

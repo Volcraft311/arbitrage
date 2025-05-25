@@ -242,10 +242,8 @@ Arbitrage.commands.Add("settime", {
     },
     OnAction = function(client, time)
         if !client:IsAdmin() then return end
-
-        local value = asterionlib.IsoDurationToSeconds(time)
-
-        SetNetVar("arb.Time", value)
+        local value = Time:IsoDurationToGameMinutes(time)
+        Time:SetUnformated(value)
         client:ChatNotify(L(client, "#settime_success", time))
     end
 })
@@ -411,15 +409,14 @@ Arbitrage.commands.Add("settimespeed", {
     arguments = {
         [1] = {
             name = "Скорость времени",
-            type = "string",
+            type = "number",
             important = true
         }
     },
     OnAction = function(client, speed)
         if !client:IsAdmin() then return end
 
-        speed = tonumber(speed)
-        Arbitrage.TickTime = speed
+        Time:SetSpeed(speed)
 
         client:ChatNotify(L(client, "#settimespeed_success", speed))
     end

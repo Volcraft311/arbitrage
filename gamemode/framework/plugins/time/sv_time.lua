@@ -30,9 +30,10 @@ function Time:Pause()
 end
 
 function Time:SetSpeed(speed)
-    if (speed == 0) then
-        error("TIME SPEED CANNOT BE EQUAL TO ZERO")
+    if (speed <= 0) then
+        error("TIME SPEED CANNOT BE EQUAL OR LOWER TO ZERO")
     end
+
     SetNetVar("arb.TimeSpeed", speed)
     self.Speed = speed
 end
@@ -54,6 +55,7 @@ function Time:AddUnformated(time)
 end
 
 function Time:SetUnformated(time)
+    if !isnumber(time) then error("Time cannot be string") end
     SetNetVar("arb.Time", time)
 end
 

@@ -28,11 +28,15 @@ Time.nightTime = 22
 
 function Time:IsDay()
     local hours = self:GetHours()
-    return (hours > self.dayTime and hours < self.nightTime)
+    return (hours >= self.dayTime and hours < self.nightTime)
 end
 
 function Time:IsNight()
     return !self:IsDay()
+end
+
+function Time:IsoDurationToGameMinutes(time)
+    return asterionlib.IsoDurationToSeconds(time) / 60
 end
 
 function Time:ToFormated(time)

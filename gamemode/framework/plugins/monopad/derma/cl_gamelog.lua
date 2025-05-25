@@ -89,7 +89,7 @@ function PANEL:AddLogs(id, inflictorID, chapterTitle, investigationType, attacke
 		end
 	end
 
-	local stringTime = Arbitrage.FormatTime(time)
+	local stringTime = Time:ToFormated(time)
 
 	local attackerName = L("#monopad_unknown")
 	if attackerID then

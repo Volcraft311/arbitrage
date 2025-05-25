@@ -177,7 +177,7 @@ local function createEvidenceButton(panel, id, time)
     local evidenceMat, ribbonMat, name, data = getEvidence(id)
 
     local showText = "#law_nobody_showed_evidence"
-    local timeText = "#law_find_in " .. Arbitrage.FormatTime(time)
+    local timeText = "#law_find_in " .. Time:ToFormated(time)
 
     local evidencesList = Arbitrage.GetShowEvidences()
     if evidencesList[id] then

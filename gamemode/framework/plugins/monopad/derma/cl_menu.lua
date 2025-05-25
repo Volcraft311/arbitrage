@@ -411,7 +411,7 @@ function PANEL:DrawCursor()
 			this.isHide = false
 			this:AlphaTo(255, 0.3)
 
-			time = L("#monopad_foundin") .. " " .. Arbitrage.FormatTime(time)
+			time = L("#monopad_foundin") .. " " .. Time:ToFormated(time)
 
 			local w1, _ = draw.SimpleText(title, MonoPad:GetFont("tooltip_text"), 0, 0, color_white, TEXT_ALIGN_LEFT)
 			local w2, _ = draw.SimpleText(description, MonoPad:GetFont("tooltip_text"), 0, 0, color_white, TEXT_ALIGN_LEFT)

@@ -517,7 +517,7 @@ function PANEL:InitMessages(id)
 			local font = MonoPad:GetFont("messenger_text")
 			local fontHeight = draw.GetFontHeight(font)
 
-			local titleText = L(faction:GetName()) .. ", " .. Arbitrage.FormatTime(v.time)
+			local titleText = L(faction:GetName()) .. ", " .. Time:ToFormated(v.time)
 			local textData = {}
 
 			local panel = docker:Add("DButton")
@@ -837,7 +837,7 @@ function PANEL:SetEvidence(id)
 	local time = LocalPlayer():HasEvidence(id)
 	if !time then return end
 
-	self.time = L("#monopad_foundin") .. " " .. Arbitrage.FormatTime(time)
+	self.time = L("#monopad_foundin") .. " " .. Time:ToFormated(time)
 
 	local description = L("#monopad_cluenumber") .. id .. ". " .. evidence.description
 

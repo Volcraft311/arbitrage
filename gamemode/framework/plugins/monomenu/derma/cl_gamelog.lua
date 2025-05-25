@@ -86,7 +86,7 @@ function PANEL:SetData()
         local info = MonoPad.chapterTypes[investigationType]
 
         local inflictorFaction = Character.team:GetByID(inflictorID)
-        local timeString = Arbitrage.FormatTime(time)
+        local timeString = Time:ToUnformated(time)
 
         local panel = self.gamelogPanel:Add("DPanel")
         panel:SetTall(H(30))

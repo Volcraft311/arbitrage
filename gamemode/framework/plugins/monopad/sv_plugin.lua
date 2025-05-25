@@ -156,7 +156,7 @@ netstream.Hook("MonoPad:SendMessage", function(client, targetID, message)
 	local data = {
 		type = 1,
 		faction = senderID,
-		time = Arbitrage.ReturnTime(),
+		time = Time:GetUnformated(),
 		data = message
 	}
 
@@ -180,7 +180,7 @@ netstream.Hook("MonoPad:SendEvidence", function(client, targetID, id)
 	local data = {
 		type = 2,
 		faction = senderID,
-		time = Arbitrage.ReturnTime(),
+		time = Time:GetUnformated(),
 		data = id
 	}
 

@@ -11,6 +11,9 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+util.AddNetworkString("EPaint_Save")
+util.AddNetworkString("EPaint_Load")
+util.AddNetworkString("EPaint_Open")
 
 EPaint.stored = EPaint.stored or {}
 
@@ -21,7 +24,12 @@ function EPaint:PlayerUse(client, entity)
 		local idx = entity:EntIndex()
 		local array = self.stored[idx] or {}
 
-		netstream.Heavy(client, "EPaint:OpenEditor", idx, array)
+		local compressed = self:CompressData(array)
+
+		net.Start("EPaint_Open")
+			net.WriteUInt(idx, 16)
+			net.WriteString(compressed)
+		net.Send(client)
 
 		client.EPaintCD = CurTime() + 2
 	end
@@ -33,16 +41,26 @@ function EPaint:PlayerInitialSpawnForRealz(client)
 	end
 end
 
+net.Receive("EPaint_Save", function(len, client)
+	local idx = net.ReadUInt(16)
+	local compressed = net.ReadString()
 
-netstream.Hook("EPaint:Save", function(client, idx, array)
 	local entity = Entity(idx)
-	if !IsValid(entity) then return end
+	if !IsValid(entity) or !EPaint:AllowEntity(entity) then
+		return
+	end
 
-	if !EPaint:AllowEntity(entity) then return end
+	if client:GetPos():Distance(entity:GetPos()) >= 200 then
+		return
+	end
 
-	local dist = client:GetPos():Distance(entity:GetPos())
-	if dist >= 200 then return end
+	local decompressed = EPaint:DecompressData(compressed)
+	if #decompressed > 5000 then return end
 
-	EPaint.stored[idx] = array
-	netstream.Heavy(nil, "EPaint:Load", idx, array)
+	EPaint.stored[idx] = decompressed
+
+	net.Start("EPaint_Load")
+		net.WriteUInt(idx, 16)
+		net.WriteString(compressed)
+	net.Broadcast()
 end)

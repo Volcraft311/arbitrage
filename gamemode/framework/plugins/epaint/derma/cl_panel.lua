@@ -138,8 +138,18 @@ function PANEL:Init()
 		if LocalPlayer().EPaint_Sending then return end
 		Arbitrage.notify.Add("#epaint_send")
 
+		if #self.array > 5000 then
+			return Arbitrage.notify.Add("Нельзя отправить так много данных! Лимит " .. #self.array .. "/5000.")
+		end
+
 		LocalPlayer().EPaint_Sending = true
-		netstream.Heavy("EPaint:Save", self.idx, self.array)
+
+		local compressedData = EPaint:CompressData(self.array)
+
+		net.Start("EPaint_Save")
+			net.WriteUInt(self.idx, 16)
+			net.WriteString(compressedData)
+		net.SendToServer()
 	end
 	saveButton.alpha = 0
 	saveButton.Paint = function(_, w, h)
@@ -291,6 +301,8 @@ function PANEL:Init()
 
 		surface.SetDrawColor(255, 61, 96, 165.75)
 		surface.DrawOutlinedRect(0, 0, EPaint.Width, EPaint.Height)
+
+		draw.SimpleText("Лимит: " .. #self.array .. "/5000", "Default", 10, EPaint.Height - 10, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	end
 	drawPanel.OnMouseWheeled = function(this, value)
 		self.sizeSlider:SetValue(self.sizeSlider:GetValue() + value * 2)

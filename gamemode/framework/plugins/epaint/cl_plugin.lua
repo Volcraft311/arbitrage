@@ -167,12 +167,22 @@ function EPaint:PostDrawOpaqueRenderables()
 end
 
 
-netstream.Hook("EPaint:OpenEditor", function(idx, array)
-	local panel = vgui_Create("EPaint:Editor")
-	panel:SetData(idx, array)
+net.Receive("EPaint_Open", function()
+	local idx = net.ReadUInt(16)
+	local compressed = net.ReadString()
+
+	local decompressed = EPaint:DecompressData(compressed)
+
+	local panel = vgui.Create("EPaint:Editor")
+	panel:SetData(idx, decompressed)
 end)
 
-netstream.Hook("EPaint:Load", function(idx, array)
+net.Receive("EPaint_Load", function()
+	local idx = net.ReadUInt(16)
+	local compressed = net.ReadString()
+
+	local decompressed = EPaint:DecompressData(compressed)
+
 	LocalPlayer().EPaint_Sending = false
 	local w, h = EPaint.Width, EPaint.Height
 
@@ -184,9 +194,9 @@ netstream.Hook("EPaint:Load", function(idx, array)
 			render_Clear(0, 0, 0, 0)
 
 			cam_Start2D()
-				EPaint:Drawing(array)
+				EPaint:Drawing(decompressed)
 			cam_End2D()
-		render_OverrideAlphaWriteEnable(false)
+		render_OverrideAlphaWriteEnable(false, false)
 	render_PopRenderTarget()
 
 	local material = CreateMaterial(uniqueID .. "_mat", "UnlitGeneric", {

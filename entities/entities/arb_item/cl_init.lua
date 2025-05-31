@@ -30,4 +30,8 @@ function ENT:OnCanTooltip()
     if stored[self] then
         return false
     end
+
+    if LocalPlayer():GetNetVar("bIsHoldingObject", false) then
+        return false
+    end
 end

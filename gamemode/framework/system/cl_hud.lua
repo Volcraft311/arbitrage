@@ -129,6 +129,40 @@ do
 		["weapon_broom"] = true
 	}
 
+	local crossHairData = {
+		default = {
+			[1] = {x = 0, y = -1},
+			[2] = {x = 1, y = 0},
+			[3] = {x = 0, y = 1},
+			[4] = {x = -1, y = 0}
+		},
+		selected = {
+			[1] = {x = 1, y = -1},
+			[2] = {x = 1, y = 1},
+			[3] = {x = -1, y = 1},
+			[4] = {x = -1, y = -1}
+		},
+		holding = {
+			[1] = {x = 0, y = 0},
+			[2] = {x = 0, y = 0},
+			[3] = {x = 0, y = 0},
+			[4] = {x = 0, y = 0}
+		},
+		rotate = {
+			[1] = {x = 0, y = -1},
+			[2] = {x = 0, y = 0},
+			[3] = {x = 0, y = 1},
+			[4] = {x = 0, y = 0}
+		}
+	}
+
+	local crossHairPositions = {
+		[1] = {x = 0, y = -1},
+		[2] = {x = 1, y = 0},
+		[3] = {x = 0, y = 1},
+		[4] = {x = -1, y = 0}
+	}
+
 	local disableCrossHair = false
 	local function isAllow(client)
 		if !IsValid(client) then return false end
@@ -187,6 +221,7 @@ do
 		if !allow then return end
 		if table_Count(ItemBase.actionMenu.stored) > 0 then return end
 
+		local crosshair = crossHairData.default
 		local client = LocalPlayer()
 
 		local trace = getTrace(client)
@@ -194,17 +229,21 @@ do
 		local drawColor = color_white
 		local realGap = math_Round(gap * math_Clamp(distance / 400, 0.5, 1))
 
-		if isUseFirst and client:GetNetVar("bIsHoldingObject", false) then
-			drawColor = color_red
-
-			if client:KeyDown(IN_ATTACK2) then
-				realGap = math_Round(gap * 2)
-			end
-		end
-
 		local tr = trace.Entity
 		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or (tr.Tooltip or tr.TooltipMini)) then
 			drawColor = color_red
+
+			crosshair = crossHairData.selected
+		end
+
+		if isUseFirst and client:GetNetVar("bIsHoldingObject", false) then
+			drawColor = color_red
+			crosshair = crossHairData.holding
+
+			if client:KeyDown(IN_ATTACK2) then
+				realGap = math_Round(gap * 2)
+				crosshair = crossHairData.rotate
+			end
 		end
 
 		local ft = FrameTime()
@@ -217,13 +256,48 @@ do
 
 		local x, y, z = trace.HitPos.x, trace.HitPos.y, trace.HitPos.z
 
-		Arbitrage.hud.lerpX = isNoAnim and Lerp(ft * 10, Arbitrage.hud.lerpX, x) or x
-		Arbitrage.hud.lerpY = isNoAnim and Lerp(ft * 10, Arbitrage.hud.lerpY, y) or y
-		Arbitrage.hud.lerpZ = isNoAnim and Lerp(ft * 10, Arbitrage.hud.lerpZ, z) or z
+		if isNoAnim then
+			local speed = ft * 10
+
+			if math.abs(Arbitrage.hud.lerpX - x) > 0.1 then
+				Arbitrage.hud.lerpX = Lerp(speed, Arbitrage.hud.lerpX, x)
+			end
+
+			if math.abs(Arbitrage.hud.lerpY - y) > 0.1 then
+				Arbitrage.hud.lerpY = Lerp(speed, Arbitrage.hud.lerpY, y)
+			end
+
+			if math.abs(Arbitrage.hud.lerpZ - z) > 0.1 then
+				Arbitrage.hud.lerpZ = Lerp(speed, Arbitrage.hud.lerpZ, z)
+			end
+		else
+			Arbitrage.hud.lerpX = x
+			Arbitrage.hud.lerpY = y
+			Arbitrage.hud.lerpZ = z
+		end
 
 		local trace2D = Vector(Arbitrage.hud.lerpX, Arbitrage.hud.lerpY, Arbitrage.hud.lerpZ):ToScreen()
+		local size = 2
 
-		surface_DrawCircle(trace2D.x, trace2D.y, curGap, drawColor)
+		for i = 1, 4 do
+			local info = crosshair[i]
+
+			local newPosX = info.x * curGap * 0.8
+			local newPosY = info.y * curGap * 0.8
+
+			local pos = crossHairPositions[i]
+
+			if math.abs(pos.x - newPosX) > 0.1 then
+				pos.x = Lerp(ft * 8, pos.x, newPosX)
+			end
+
+			if math.abs(pos.y - newPosY) > 0.1 then
+				pos.y = Lerp(ft * 8, pos.y, newPosY)
+			end
+
+			surface.SetDrawColor(drawColor.r, drawColor.g, drawColor.b)
+			surface.DrawRect(trace2D.x + pos.x - size / 2, trace2D.y + pos.y - size / 2, size, size)
+		end
 	end
 end
 

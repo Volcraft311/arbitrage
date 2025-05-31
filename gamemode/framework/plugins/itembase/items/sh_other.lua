@@ -204,7 +204,7 @@ do
     ITEM.name = "#item_monopad_name"
     ITEM.icon = "https://cdn-icons-png.flaticon.com/512/8818/8818724.png"
     ITEM.description = "#item_monopad_description"
-    ITEM.model = "models/asterion/academy/props/monopad/monopad.mdl"
+    ITEM.model = "models/asterion/academy/props/monopad.mdl"
     ITEM.class = "academy_monopad"
 
     ITEM:HookAdd("equip", function(item, client)

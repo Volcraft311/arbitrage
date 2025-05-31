@@ -162,11 +162,11 @@ function SWEP:Holster()
 end
 
 if CLIENT then
-    SWEP.Pos = Vector(1.2, 6.5, 1)
-    SWEP.Ang = Angle(10, 180, 42)
+    SWEP.Pos = Vector(-7, 1, -2.3)
+    SWEP.Ang = Angle(10, 180, 42 - 90)
 
     function SWEP:CreateWorldModel()
-        self.WorldModel = "models/asterion/academy/props/monopad/monopad.mdl"
+        self.WorldModel = "models/asterion/academy/props/monopad.mdl"
 
         if !self.WModel then
             self.WModel = ClientsideModel(self.WorldModel, RENDERGROUP_OPAQUE)

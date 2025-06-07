@@ -36,8 +36,13 @@ function EPaint:PlayerUse(client, entity)
 end
 
 function EPaint:PlayerInitialSpawnForRealz(client)
-	for idx, array in pairs(self.stored) do
-		netstream.Heavy(client, "EPaint:Load", idx, array)
+	for idx, data in pairs(self.stored) do
+		local compressed = self:CompressData(data)
+
+		net.Start("EPaint_Load")
+			net.WriteUInt(idx, 16)
+			net.WriteString(compressed)
+		net.Send(client)
 	end
 end
 
@@ -46,13 +51,9 @@ net.Receive("EPaint_Save", function(len, client)
 	local compressed = net.ReadString()
 
 	local entity = Entity(idx)
-	if !IsValid(entity) or !EPaint:AllowEntity(entity) then
-		return
-	end
+	if !IsValid(entity) or !EPaint:AllowEntity(entity) then return end
 
-	if client:GetPos():Distance(entity:GetPos()) >= 200 then
-		return
-	end
+	if client:GetPos():Distance(entity:GetPos()) >= 200 then return end
 
 	local decompressed = EPaint:DecompressData(compressed)
 	if #decompressed > 5000 then return end

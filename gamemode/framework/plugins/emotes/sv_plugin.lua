@@ -215,7 +215,15 @@ timer.Create("Emotes:StandAnimations", 0.4, 0, function()
 			class = weapon:GetClass()
 		end
 
-		if len2D <= 0 and (class == "academy_key" or class == "academy_first") and holdType == "normal" and !client:GetAction() and !client:GetSitting() then
+		local bIsNormalWeapon = class == "academy_key" or class == "academy_first"
+		local bIsAction = client:GetAction()
+		local bIsSitting = client:GetSitting()
+		local bIsCrouching = client:Crouching()
+		local bIsOnGround = client:IsOnGround()
+		local bIsInVehicle = client:InVehicle()
+		local bIsBed = client.inBed
+
+		if len2D <= 0 and bIsNormalWeapon and holdType == "normal" and !bIsAction and !bIsSitting and !bIsCrouching and !bIsInVehicle and !bIsBed and bIsOnGround then
 			if client.delayStartAnimation == nil then
 				client.delayStartAnimation = curTime + 100 + math.random(1, 60)
 			else

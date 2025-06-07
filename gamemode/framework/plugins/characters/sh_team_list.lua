@@ -386,9 +386,9 @@ Character.team:Create({
 })
 
 Character.team:Create({
-    name = "#char_dr__hiyoko_name",
-    title = "#char_dr__hiyoko_title",
-    description = "#char_dr__hiyoko_desc",
+    name = "#char_dr_hiyoko_name",
+    title = "#char_dr_hiyoko_title",
+    description = "#char_dr_hiyoko_desc",
     color = Color(206, 184, 172),
     category = "goodbye_despair",
     model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl",

@@ -337,7 +337,15 @@ function PLUGIN:Think()
 		local trace = util_QuickTrace(EyePos(), EyeAngles():Forward() * 999999, LocalPlayer())
 		local entity = trace.Entity
 
-		if !IsValid(entity) then return MonoMenu:OpenEntityMenu(client, ScrW() / 2, ScrH() / 2) end
+		if !IsValid(entity) then
+			local Menu = MonoMenu:OpenEntityMenu(client, ScrW() / 2, ScrH() / 2)
+			Menu.Paint = function(_, w, h)
+				draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(61, 139, 255, 165.75))
+				draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(16, 29, 38))
+			end
+
+			return
+		end
 
 		if entity:IsDoor() then
 			return openDoorMenu(entity)

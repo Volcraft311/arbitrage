@@ -63,7 +63,7 @@ do
             end)
 
             for k, v in SortedPairsByMemberValue(Character.team.instances, "name") do
-                local panel = parent:AddOption(v.name, function()
+                local panel = parent:AddOption(L(v.name), function()
                     netstream.Start("ItemBase:CreateKey", id, k)
                 end)
 

@@ -17,7 +17,7 @@ function PLUGIN:SendDoorData(client, data)
 	netstream.Start(client, "arb.DoorGetData", data)
 end
 
-netstream.Hook("arb.DoorAddOwner", function(client, faction)
+function PLUGIN:DoorAddOwner(client, faction)
 	if !client:IsAdmin() then return end
 	if !faction then return end
 
@@ -41,6 +41,10 @@ netstream.Hook("arb.DoorAddOwner", function(client, faction)
 
 	client:ChatNotify("#doors_provided " .. factionData.name .. " #doors_access")
 	PLUGIN:SendDoorData(nil, PLUGIN.DoorsData)
+end
+
+netstream.Hook("arb.DoorAddOwner", function(client, faction)
+	PLUGIN:DoorAddOwner(client, faction)
 end)
 
 netstream.Hook("arb.DoorRemoveOwner", function(client, faction)
@@ -90,6 +94,8 @@ netstream.Hook("arb.DoorAddIcon", function(client, entity, id)
 	entity:SetNetVar("arb.image", data)
 
 	client:ChatNotify("#doors_addedicon")
+
+	PLUGIN:DoorAddOwner(client, id)
 end)
 
 netstream.Hook("arb.DoorRemoveIcon", function(client, entity, indx)

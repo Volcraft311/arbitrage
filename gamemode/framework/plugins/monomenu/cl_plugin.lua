@@ -996,6 +996,8 @@ function PLUGIN:OpenEntityMenu(entity, w, h)
 
     Menu:SetAlpha(0)
     Menu:AlphaTo(255, 0.3)
+
+    return Menu
 end
 
 local function OnScreenClick(eyepos, eyevec)

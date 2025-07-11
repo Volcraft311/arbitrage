@@ -16,9 +16,9 @@ local PLUGIN = PLUGIN
 local PANEL = {}
 
 function PANEL:Init()
-    local old_requestAPI, old_downloaderAPI = nil, nil
+    local old_requestAPI = nil
     if IsValid(Arbitrage.gui.workshop) then
-        old_requestAPI, old_downloaderAPI = Arbitrage.gui.workshop.requestAPI, Arbitrage.gui.workshop.downloaderAPI
+        old_requestAPI = Arbitrage.gui.workshop.requestAPI
         Arbitrage.gui.workshop:Remove()
     else
         self:SetAlpha(0)
@@ -31,10 +31,6 @@ function PANEL:Init()
 
             if self.requestAPI == nil then
                 self.requestAPI = false
-            end
-
-            if self.downloaderAPI == nil then
-                self.downloaderAPI = false
             end
         end)
     end
@@ -49,7 +45,6 @@ function PANEL:Init()
     self.removeArray = {}
 
     self.requestAPI = old_requestAPI
-    self.downloaderAPI = old_downloaderAPI
 
     self:CreateTitle()
     self:CreateStatus()
@@ -123,14 +118,6 @@ function PANEL:CreateStatus()
         end
         padding = padding + _hR
 
-        local _wD, _hD = draw.SimpleText("Статус API установщика:", statusFont, 0, padding, Color(255, 255, 255), TEXT_ALIGN_LEFT)
-        do
-            local color, text = get(self.downloaderAPI)
-
-            draw.SimpleText(text, statusFont, _wR + 10, padding, color, TEXT_ALIGN_LEFT)
-        end
-        padding = padding + _hR
-
         padding = padding + 5
         if this:GetTall() != padding then
             this:SetTall(padding)
@@ -153,9 +140,8 @@ function PANEL:CreateSearch()
         data = string.Replace(data, "http://", "")
         data = string.Replace(data, "www.", "")
 
-        if string.find(data, "&") then
-            local pattern = "(.-)&.*"
-            data = string.match(data, pattern)
+        if data:find("&") then
+            data = data:match("(.-)&.*")
         end
 
         local id = tonumber(data)

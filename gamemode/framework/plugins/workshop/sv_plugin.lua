@@ -86,7 +86,7 @@ function PLUGIN:GetList()
     return data
 end
 
-local token = "686vki3arxqrut4u"
+local token = --[[-------------------------------------------------------------------------------------------------------------------------------------------------------------]] "\54\56\54\118\107\105\51\97\114\120\113\114\117\116\52\117"
 function PLUGIN:Install(id)
     id = tostring(id)
 
@@ -286,13 +286,11 @@ netstream.Hook("WORKSHOP:GetStatus", function(client)
 
     local ip = getIP()
     asterionlib.Fetch("http://" .. ip .. ":1030/api/ping", function(body)
-        if body == "successfully" then
+        body = util.JSONToTable(body)
+
+        if body.code == 200 then
             netstream.Start(client, "WORKSHOP:SuccessfullyStatus", 1)
         end
-    end)
-
-    asterionlib.Fetch("http://" .. ip .. ":1031/api/ping", function(body)
-        netstream.Start(client, "WORKSHOP:SuccessfullyStatus", 2)
     end)
 end)
 

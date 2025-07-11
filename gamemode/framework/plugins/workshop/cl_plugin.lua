@@ -78,8 +78,6 @@ netstream.Hook("WORKSHOP:SuccessfullyStatus", function(state)
 
     if state == 1 then
         panel.requestAPI = true
-    elseif state == 2 then
-        panel.downloaderAPI = true
     end
 end)
 

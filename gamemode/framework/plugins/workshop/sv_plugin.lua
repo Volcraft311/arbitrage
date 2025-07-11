@@ -303,7 +303,7 @@ end
 
 local attempt = 0
 local function findAddon(id)
-    if attempt >= 10 then
+    if attempt >= 20 then
         PLUGIN:AddLog("skip", {id})
 
         return skip()

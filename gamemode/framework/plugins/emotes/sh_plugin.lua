@@ -31,6 +31,7 @@ Emotes.ActionList = {
 			{name = "#emotes_action_stand_1", icon = "asterion/academy/ui/emotes/lineidle01.png", info = "LineIdle01"},
 			{name = "#emotes_action_stand_2", icon = "asterion/academy/ui/emotes/lineidle02.png", info = "LineIdle02"},
 			{name = "#emotes_action_stand_3", icon = "asterion/academy/ui/emotes/lineidle03.png", info = "LineIdle03"},
+			-- {name = "Стойка 4", icon = nil, info = "menu_combine"},
 			{name = "#emotes_action_stand_4", icon = "asterion/academy/ui/emotes/pose_standing_02.png", info = "pose_standing_02"},
 			{name = "#emotes_action_stand_5", icon = "asterion/academy/ui/emotes/standpose_1.png", info = "standpose_1"},
 			{name = "#emotes_action_stand_6", icon = "asterion/academy/ui/emotes/standpose_3.png", info = "standpose_3"},
@@ -39,7 +40,20 @@ Emotes.ActionList = {
 			{name = "#emotes_action_stand_9", icon = "asterion/academy/ui/emotes/lineidle04.png", info = "LineIdle04"},
 			{name = "#emotes_action_stand_10", icon = "asterion/academy/ui/emotes/pose_standing_01.png", info = "pose_standing_01"},
 			{name = "#emotes_action_stand_11", icon = "asterion/academy/ui/emotes/standpose_2.png", info = "standpose_2"},
-			{name = "#emotes_action_stand_12", icon = "asterion/academy/ui/emotes/standpose_4.png", info = "standpose_4"}
+			{name = "#emotes_action_stand_12", icon = "asterion/academy/ui/emotes/standpose_4.png", info = "standpose_4"},
+			{name = "#emotes_action_stand_13", icon = "asterion/academy/ui/emotes/pose_standing_03.png", info = "pose_standing_03"},
+			{name = "#emotes_action_stand_14", icon = "asterion/academy/ui/emotes/pose_standing_04.png", info = "pose_standing_04"},
+			{name = "#emotes_action_stand_15", icon = "asterion/academy/ui/emotes/scaredidle.png", info = "scaredidle"},
+			{name = "#emotes_action_stand_16", icon = "asterion/academy/ui/emotes/d1_t02_playground_cit1_arms_crossed.png", info = "d1_t02_Playground_Cit1_Arms_Crossed"},
+			{name = "#emotes_action_stand_17", icon = "asterion/academy/ui/emotes/d1_t02_playground_cit2_pockets.png", info = "d1_t02_Playground_Cit2_Pockets"},
+			{name = "#emotes_action_stand_15", icon = "asterion/academy/ui/emotes/canals_arlene_pourgas.png", info = "canals_arlene_pourgas"},
+			{name = "#emotes_action_stand_18", icon = "asterion/academy/ui/emotes/2_coast03_postBattle_idle02.png", info = {
+				start = {"d2_coast03_postbattle_idle02_entry"},
+				sequence = {"d2_coast03_PostBattle_Idle02", duration = -1}
+			}},
+			{name = "#emotes_action_stand_19", icon = "asterion/academy/ui/emotes/cower_idle.png", info = "cower_Idle"},
+			{name = "#emotes_action_stand_20", icon = "asterion/academy/ui/emotes/stand_villagebase.png", info = "stand_villagebase"},
+			{name = "#emotes_action_stand_15", icon = "asterion/academy/ui/emotes/stand_meleebase.png", info = "stand_meleebase"}
 		}
 	},
 	{
@@ -55,23 +69,31 @@ Emotes.ActionList = {
 			{name = "#emotes_action_wall_4", icon = "asterion/academy/ui/emotes/lean_left.png", info = "Lean_Left"},
 			{name = "#emotes_action_wall_5", icon = "asterion/academy/ui/emotes/idle_to_lean_back.png", info = {
 				start = {"idle_to_lean_back"},
-				sequence = {"Lean_Back", duration = -1}
-			}}
+				sequence = {"Lean_Back", duration = -1},
+			}},
+			{name = "#emotes_action_wall_6", icon = "asterion/academy/ui/emotes/plazaidle1.png", info = "plazaidle1"},
+			{name = "#emotes_action_wall_7", icon = "asterion/academy/ui/emotes/plazaidle2.png", info = "plazaidle2"}
 		}
 	},
 	{
 		name = "#emotes_category_sit",
 		icon = nil,
 		data = {
-			{name = "#emotes_action_sit_1", icon = "asterion/academy/ui/emotes/base_cit_medic_postanim.png", info = "citizen4_preaction"},
-			{name = "#emotes_action_sit_2", icon = "asterion/academy/ui/emotes/base_cit_medic_postanim.png", info = "base_cit_medic_postanim"},
-			{name = "#emotes_action_sit_3", icon = "asterion/academy/ui/emotes/lookoutidle.png", info = "lookoutidle"},
-			{name = "#emotes_action_sit_4", icon = "asterion/academy/ui/emotes/canals_mary_postidle.png", info = "canals_mary_postidle"},
+			{name = "#emotes_action_sit_1", icon = "asterion/academy/ui/emotes/base_cit_medic_postanim.png", info = "citizen4_preaction"}, -- мужская
+			{name = "#emotes_action_sit_1", icon = "asterion/academy/ui/emotes/base_cit_medic_postanim.png", info = "base_cit_medic_postanim"}, -- женская
+			{name = "#emotes_action_sit_2", icon = "asterion/academy/ui/emotes/lookoutidle.png", info = "lookoutidle"},
+			{name = "#emotes_action_sit_3", icon = "asterion/academy/ui/emotes/canals_mary_postidle.png", info = "canals_mary_postidle"},
+			{name = "#emotes_action_sit_4", icon = "asterion/academy/ui/emotes/canals_mary_preidle.png", info = "canals_mary_preidle"},
+			{name = "#emotes_action_sit_5", icon = "asterion/academy/ui/emotes/checkmalepost.png", info = "checkmalepost"},
+			{name = "#emotes_action_sit_6", icon = "asterion/academy/ui/emotes/d1_town05_daniels_kneel_idle.png", info = "d1_town05_Daniels_Kneel_Idle"}, -- мужская
+			{name = "#emotes_action_sit_6", icon = "asterion/academy/ui/emotes/d1_town05_jacobs_heal.png", info = "d1_town05_Jacobs_Heal"}, -- женская
 			{name = "#emotes_action_sit_5", icon = "asterion/academy/ui/emotes/idle_to_sit_ground.png", info = {
 				start = {"idle_to_sit_ground"},
 				sequence = {"sit_ground", duration = -1},
 				finish = {"sit_ground_to_idle", duration = 2.1}
-			}}
+			}},
+			{name = "#emotes_action_sit_8", icon = "asterion/academy/ui/emotes/plazaidle4.png", info = "plazaidle4"},
+			{name = "#emotes_action_sit_9", icon = "asterion/academy/ui/emotes/sit_zen.png", info = "sit_zen"},
 		}
 	},
 	{
@@ -82,7 +104,12 @@ Emotes.ActionList = {
 			{name = "#emotes_action_lie_2", icon = "asterion/academy/ui/emotes/d1_town05_winston_down.png", info = "d1_town05_Winston_Down"},
 			{name = "#emotes_action_lie_3", icon = "asterion/academy/ui/emotes/d1_town05_wounded_idle_2.png", info = "d1_town05_Wounded_Idle_2"},
 			{name = "#emotes_action_lie_4", icon = "asterion/academy/ui/emotes/injured1.png", info = "injured1"},
-			{name = "#emotes_action_lie_5", icon = "asterion/academy/ui/emotes/lying_down.png", info = "Lying_Down"}
+			{name = "#emotes_action_lie_5", icon = "asterion/academy/ui/emotes/injured2.png", info = "injured2"},
+			{name = "#emotes_action_lie_6", icon = "asterion/academy/ui/emotes/injured3.png", info = "injured3"},
+			{name = "#emotes_action_lie_7", icon = "asterion/academy/ui/emotes/sniper_victim_pre.png", info = "sniper_victim_pre"},
+			{name = "#emotes_action_lie_8", icon = "asterion/academy/ui/emotes/d2_coast11_tobias.png", info = "d2_coast11_Tobias"},
+			{name = "emotes_action_lie_5", icon = "asterion/academy/ui/emotes/lying_down.png", info = "Lying_Down"},
+			{name = "#emotes_action_lie_10", icon = "asterion/academy/ui/emotes/d1_town05_wounded_idle_1.png", info = "d1_town05_Wounded_Idle_1"},
 		}
 	},
 	{
@@ -92,7 +119,7 @@ Emotes.ActionList = {
 			{name = "#emotes_action_other_1", icon = "asterion/academy/ui/emotes/stopwomanpre.png", info = "stopwomanpre"},
 			{name = "#emotes_action_other_2", icon = "asterion/academy/ui/emotes/d1_t01_clutch_chainlink_idle.png", info = "d1_t01_Clutch_Chainlink_Idle"},
 			{name = "#emotes_action_other_3", icon = "asterion/academy/ui/emotes/luggageidle.png", info = "luggageidle"},
-			{name = "#emotes_action_other_4", icon = "asterion/academy/ui/emotes/d2_coast03_odessa_rpg_give_idle.png", info = "d2_coast03_Odessa_RPG_Give_Idle"}
+			{name = "#emotes_action_other_4", icon = "asterion/academy/ui/emotes/d2_coast03_odessa_rpg_give_idle.png", info = "d2_coast03_Odessa_RPG_Give_Idle"},
 		}
 	},
 	{
@@ -104,7 +131,7 @@ Emotes.ActionList = {
 			{name = "#emotes_action_animated_3", icon = "asterion/academy/ui/emotes/idle_afk_1.png", info = "idle_afk_1"},
 			{name = "#emotes_action_animated_4", icon = "asterion/academy/ui/emotes/idle_afk_2.png", info = "idle_afk_2"},
 			{name = "#emotes_action_animated_5", icon = "asterion/academy/ui/emotes/idle_afk_3.png", info = "idle_afk_3"},
-			{name = "#emotes_action_animated_6", icon = "asterion/academy/ui/emotes/stand_allbase.png", info = "stand_allbase"}
+			{name = "#emotes_action_animated_6", icon = "asterion/academy/ui/emotes/stand_allbase.png", info = "stand_allbase"},
 		}
 	}
 }

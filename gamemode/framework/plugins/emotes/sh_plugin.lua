@@ -108,7 +108,7 @@ Emotes.ActionList = {
 			{name = "#emotes_action_lie_6", icon = "asterion/academy/ui/emotes/injured3.png", info = "injured3"},
 			{name = "#emotes_action_lie_7", icon = "asterion/academy/ui/emotes/sniper_victim_pre.png", info = "sniper_victim_pre"},
 			{name = "#emotes_action_lie_8", icon = "asterion/academy/ui/emotes/d2_coast11_tobias.png", info = "d2_coast11_Tobias"},
-			{name = "emotes_action_lie_5", icon = "asterion/academy/ui/emotes/lying_down.png", info = "Lying_Down"},
+			{name = "#emotes_action_lie_5", icon = "asterion/academy/ui/emotes/lying_down.png", info = "Lying_Down"},
 			{name = "#emotes_action_lie_10", icon = "asterion/academy/ui/emotes/d1_town05_wounded_idle_1.png", info = "d1_town05_Wounded_Idle_1"},
 		}
 	},

@@ -262,3 +262,10 @@ function Emotes:AcceptInput(entity, input, client, caller, value)
 		client:PlaySequence("new_open_door")
 	end
 end
+
+hook("KeyPressID", function(client, id, bIsVisibleGUI)
+	if id != "finger_anim" then return end
+	if bIsVisibleGUI then return end
+
+	client:SetNetVar("use_finger", !client:GetNetVar("use_finger", false))
+end)

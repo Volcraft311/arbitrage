@@ -120,3 +120,9 @@ SETTINGS.binds.Add("closerlook", KEY_LALT, {
     title = "#binds_closerlook_title",
     description = "#binds_closerlook_desc"
 })
+
+SETTINGS.binds.Add("finger_anim", KEY_G, {
+    name = "Указать пальцем",
+    title = "Указать пальцем",
+    description = "Войти в анимацию показания пальцем"
+})

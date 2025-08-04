@@ -289,6 +289,63 @@ function Emotes:CalcMainActivity(client, velocity)
 		end
 	end
 
+	-- Жест пальца
+	do
+		local bFinger = GetNetVar(client, "use_finger")
+
+		if bFinger then
+			local sequence = nil
+			local bCrouch = client:Crouching()
+			local bJump = !client:IsOnGround()
+
+			if len2D < 10 then
+				local seq = "idle_finger"
+
+				if bCrouch then
+					seq = "cidle_finger"
+				elseif bJump then
+					seq = "jump_finger"
+				end
+
+				local sequenceID = LookupSequence(client, seq)
+
+				if sequenceID then
+					sequence = sequenceID
+				end
+			elseif len2D >= 140 then
+				local seq = "run_finger"
+
+				if bCrouch then
+					seq = "cwalk_finger"
+				elseif bJump then
+					seq = "jump_finger"
+				end
+
+				local sequenceID = LookupSequence(client, seq)
+				if sequenceID then
+					sequence = sequenceID
+				end
+			else
+				local seq = "walk_finger"
+
+				if bCrouch then
+					seq = "cwalk_finger"
+				elseif bJump then
+					seq = "jump_finger"
+				end
+
+				local sequenceID = LookupSequence(client, seq)
+				if sequenceID then
+					sequence = sequenceID
+				end
+			end
+
+			if sequence > -1 then
+				return ACT_MP_STAND_IDLE, sequence
+			end
+		end
+	end
+
 	-- Настроение
 	do
 		local mood = client:GetMood()

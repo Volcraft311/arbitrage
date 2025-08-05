@@ -105,7 +105,7 @@ Emotes.ActionList = {
 			{name = "#emotes_action_lie_3", icon = "asterion/academy/ui/emotes/d1_town05_wounded_idle_2.png", info = "d1_town05_Wounded_Idle_2"},
 			{name = "#emotes_action_lie_4", icon = "asterion/academy/ui/emotes/injured1.png", info = "injured1"},
 			{name = "#emotes_action_lie_5", icon = "asterion/academy/ui/emotes/injured2.png", info = "injured2"},
-			{name = "#emotes_action_lie_6", icon = "asterion/academy/ui/emotes/injured3.png", info = "injured3"},
+			{name = "#emotes_action_lie_6", icon = nil, info = "injured3"},
 			{name = "#emotes_action_lie_7", icon = "asterion/academy/ui/emotes/sniper_victim_pre.png", info = "sniper_victim_pre"},
 			{name = "#emotes_action_lie_8", icon = "asterion/academy/ui/emotes/d2_coast11_tobias.png", info = "d2_coast11_Tobias"},
 			{name = "#emotes_action_lie_5", icon = "asterion/academy/ui/emotes/lying_down.png", info = "Lying_Down"},
@@ -209,19 +209,29 @@ Emotes.MoodList = {
 	}
 }
 
-for k, v in ipairs(Emotes.ActionList) do
-	for k2, v2 in ipairs(v.data or {}) do
-		local data = nil
-		if istable(v2.info) then
-			data = v2.info
+local function ProcessEmoteData(dataTable)
+	for _, item in ipairs(dataTable) do
+		if item.data then
+			ProcessEmoteData(item.data)
 		else
-			data = {
-				sequence = {v2.info, duration = -1}
-			}
-		end
+			local data = nil
+			if istable(item.info) then
+				data = item.info
+			else
+				data = {
+					sequence = {item.info, duration = -1}
+				}
+			end
 
-		local id = data.sequence[1]
-		Emotes.action:Register(id, data)
+			local id = data.sequence[1]
+			Emotes.action:Register(id, data)
+		end
+	end
+end
+
+for _, category in ipairs(Emotes.ActionList) do
+	if category.data then
+		ProcessEmoteData(category.data)
 	end
 end
 

@@ -338,51 +338,66 @@ function PLUGIN:StaticAnimationsOption()
 		}
 	}
 
-	for k, v in ipairs(Emotes.ActionList) do
-		local function stored()
-			local info = {
-				{
-					name = "#radial_option_back",
-					description = "#radial_option_back_desc",
-					icon = Material("danganronpa/radialmenu/back.png"),
-					action = self.StaticAnimationsOption
-				}
+	local function ProcessCategory(category, parentAction)
+		local categoryData = {
+			{
+				name = "#radial_option_back",
+				description = "#radial_option_back_desc",
+				icon = Material("danganronpa/radialmenu/back.png"),
+				action = parentAction
 			}
+		}
 
-			for k2, v2 in ipairs(v.data) do
-				local sequnce = v2.info
-				if istable(sequnce) then
-					sequnce = sequnce.sequence[1]
-
-					local seqID = LocalPlayer():LookupSequence(sequnce)
-					if seqID <= -1 then continue end
-				else
-					local seqID = LocalPlayer():LookupSequence(sequnce)
-					if seqID <= -1 then continue end
+		for _, item in ipairs(category.data) do
+			if item.data then
+				categoryData[#categoryData + 1] = {
+					name = item.name,
+					description = item.description or ("#radial_option_action_desc '" .. item.name .. "'"),
+					icon = item.icon and Material(item.icon) or nil,
+					iscategory = true,
+					action = function()
+						return ProcessCategory(item, function()
+							return categoryData, parentAction
+						end)
+					end
+				}
+			else
+				local sequence = item.info
+				if istable(sequence) then
+					sequence = sequence.sequence[1]
 				end
 
-				info[#info + 1] = {
-					name = v2.name,
-					id = "saction_" .. sequnce,
-					description = "#radial_option_saction_desc '" .. v2.name .. "'",
-					icon = v2.icon and Material(v2.icon) or nil,
-					sequence = sequnce,
+				local seqID = LocalPlayer():LookupSequence(sequence)
+				if seqID <= -1 then continue end
+
+				categoryData[#categoryData + 1] = {
+					name = item.name,
+					id = "saction_" .. sequence,
+					description = "#radial_option_saction_desc '" .. item.name .. "'",
+					icon = item.icon and Material(item.icon) or nil,
+					sequence = sequence,
 					action = function()
-						RunConsoleCommand("say", "/action " .. sequnce)
+						RunConsoleCommand("say", "/action " .. sequence)
 					end
 				}
 			end
-
-			return info, self.StaticAnimationsOption
 		end
 
-		data[#data + 1] = {
-			name = v.name,
-			description = "#radial_option_action_desc '" .. v.name .. "'",
-			icon = v.icon and Material(v.icon) or nil,
-			iscategory = true,
-			action = stored
-		}
+		return categoryData, parentAction
+	end
+
+	for _, category in ipairs(Emotes.ActionList) do
+		if category.data then
+			data[#data + 1] = {
+				name = category.name,
+				description = "#radial_option_action_desc '" .. category.name .. "'",
+				icon = category.icon and Material(category.icon) or nil,
+				iscategory = true,
+				action = function()
+					return ProcessCategory(category, self.StaticAnimationsOption)
+				end
+			}
+		end
 	end
 
 	return data, self.MainOption

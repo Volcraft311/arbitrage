@@ -460,7 +460,8 @@ hook("ArbitrageVoiceEnd", function(speaker)
 end)
 
 hook("UpdateAnimation", function(client)
-	-- Глаза
+	-- Глаза (НА БУДУЩИЕ МОДЕЛИ ПОКА ИХ НЕТУ)
+	--[[
 	do
 		local pos = client:GetPos()
 		local dist = EyePos():DistToSqr(pos)
@@ -483,6 +484,7 @@ hook("UpdateAnimation", function(client)
 			end
 		end
 	end
+	]]--
 
 	-- Голова
 	do

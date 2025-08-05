@@ -436,12 +436,14 @@ end)
 hook("ArbitrageVoiceEnd", function(speaker)
 	for client, target in pairs(lookAtTargets) do
 		if target == speaker then
+			local idx = "LookAtPlayerStop_" .. client:EntIndex()
+
 			lookAtTargets[client] = nil
 
-			hook.Add("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex(), function()
-				if !IsValid(client) then return hook.Remove("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex()) end
+			hook.Add("UpdateAnimation", idx, function()
+				if !IsValid(client) then return hook.Remove("UpdateAnimation", idx) end
 
-				if (lerpAtTargetsYaw[client] and lerpAtTargetsPitch[client]) and (math.abs(lerpAtTargetsYaw[client]) > 0.05 and math.abs(lerpAtTargetsPitch[client]) > 0.05) then
+				if (lerpAtTargetsYaw[client] and lerpAtTargetsPitch[client]) and (math.abs(lerpAtTargetsYaw[client]) > 0.05 or math.abs(lerpAtTargetsPitch[client]) > 0.05) then
 					local ft = FrameTime()
 
 					lerpAtTargetsYaw[client] = Lerp(ft * 3.5, lerpAtTargetsYaw[client], 0)
@@ -452,7 +454,10 @@ hook("ArbitrageVoiceEnd", function(speaker)
 
 					client:InvalidateBoneCache()
 				else
-					hook.Remove("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex())
+					lerpAtTargetsYaw[client] = nil
+					lerpAtTargetsPitch[client] = nil
+
+					hook.Remove("UpdateAnimation", idx)
 				end
 			end)
 		end

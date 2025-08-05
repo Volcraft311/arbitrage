@@ -12,6 +12,70 @@
 ]]--
 
 
+local heelsFootsteps = {
+    concrete = {
+        "player/footsteps/heels/concrete1.wav",
+        "player/footsteps/heels/concrete2.wav",
+        "player/footsteps/heels/concrete3.wav",
+        "player/footsteps/heels/concrete4.wav"
+    },
+    dirt = {
+        "player/footsteps/heels/dirt1.wav",
+        "player/footsteps/heels/dirt2.wav",
+        "player/footsteps/heels/dirt3.wav",
+        "player/footsteps/heels/dirt4.wav"
+    },
+    metalbox = {
+        "player/footsteps/heels/duct1.wav",
+        "player/footsteps/heels/duct2.wav",
+        "player/footsteps/heels/duct3.wav",
+        "player/footsteps/heels/duct4.wav"
+    },
+    grass = {
+        "player/footsteps/heels/grass1.wav",
+        "player/footsteps/heels/grass2.wav",
+        "player/footsteps/heels/grass3.wav",
+        "player/footsteps/heels/grass4.wav"
+    },
+    gravel = {
+        "player/footsteps/heels/gravel1.wav",
+        "player/footsteps/heels/gravel2.wav",
+        "player/footsteps/heels/gravel3.wav",
+        "player/footsteps/heels/gravel4.wav"
+    },
+    metalbar = {
+        "player/footsteps/heels/metal1.wav",
+        "player/footsteps/heels/metal2.wav",
+        "player/footsteps/heels/metal3.wav",
+        "player/footsteps/heels/metal4.wav"
+    },
+    sand = {
+        "player/footsteps/heels/sand1.wav",
+        "player/footsteps/heels/sand2.wav",
+        "player/footsteps/heels/sand3.wav",
+        "player/footsteps/heels/sand4.wav"
+    },
+    marble = {
+        "player/footsteps/heels/tile1.wav",
+        "player/footsteps/heels/tile2.wav",
+        "player/footsteps/heels/tile3.wav",
+        "player/footsteps/heels/tile4.wav"
+    },
+    wood = {
+        "player/footsteps/heels/wood1.wav",
+        "player/footsteps/heels/wood2.wav",
+        "player/footsteps/heels/wood3.wav",
+        "player/footsteps/heels/wood4.wav"
+    },
+    squeakywood = {
+        "player/footsteps/heels/woodpanel1.wav",
+        "player/footsteps/heels/woodpanel2.wav",
+        "player/footsteps/heels/woodpanel3.wav",
+        "player/footsteps/heels/woodpanel4.wav"
+    },
+}
+
+
 -- TRIGGER HAPPY HAVOC
 Character.team:Create({
     name = "#char_dr_aoi_name",
@@ -65,7 +129,8 @@ Character.team:Create({
     hullscale = 0.9,
     hullduckscale = 1.123,
     inventory = {w = 4, h = 2},
-    status_effects = {"luck"}
+    status_effects = {"luck"},
+    footsteps = heelsFootsteps
 })
 
 Character.team:Create({
@@ -121,7 +186,8 @@ Character.team:Create({
     scale = 1.09,
     hullscale = 0.851,
     hullduckscale = 1.062,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    footsteps = heelsFootsteps
 })
 
 Character.team:Create({
@@ -157,7 +223,8 @@ Character.team:Create({
     scale = 0.968,
     hullscale = 0.95,
     hullduckscale = 1.225,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    footsteps = heelsFootsteps
 })
 
 Character.team:Create({
@@ -547,7 +614,8 @@ Character.team:Create({
     scale = 1.014,
     hullscale = 0.935,
     hullduckscale = 1.21,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    footsteps = heelsFootsteps
 })
 
 Character.team:Create({
@@ -719,7 +787,8 @@ Character.team:Create({
     scale = 0.998,
     hullscale = 0.956,
     hullduckscale = 1.28,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    footsteps = heelsFootsteps
 })
 
 Character.team:Create({
@@ -792,7 +861,8 @@ Character.team:Create({
     scale = 0.96,
     hullscale = 0.985,
     hullduckscale = 1.31,
-    inventory = {w = 4, h = 2}
+    inventory = {w = 4, h = 2},
+    footsteps = heelsFootsteps
 })
 
 Character.team:Create({
@@ -943,6 +1013,7 @@ Character.team:Create({
     hullscale = 0.638,
     hullduckscale = 0.634,
     inventory = {w = 4, h = 2},
+    footsteps = heelsFootsteps,
 
     allowProne = false
 })

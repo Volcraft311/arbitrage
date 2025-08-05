@@ -16,6 +16,7 @@ local PLAYER = FindMetaTable("Player")
 local ENTITY = FindMetaTable("Entity")
 local CUSERCMD = FindMetaTable("CUserCmd")
 local VECTOR = FindMetaTable("Vector")
+local WEAPON = FindMetaTable("Weapon")
 
 local select = select
 local RunConsoleCommand = RunConsoleCommand
@@ -27,11 +28,20 @@ local FrameTime = FrameTime
 local timer_Simple = timer.Simple
 local CurTime = CurTime
 local IsValid = IsValid
+local math_AngleDifference = math.AngleDifference
+local math_Clamp = math.Clamp
+local EyePos = EyePos
+local pairs = pairs
+local ipairs = ipairs
+local math_abs = math.abs
+local hook_Remove = hook.Remove
 
 local GetAction = PLAYER.GetAction
 local InVehicle = PLAYER.InVehicle
 local Crouching = PLAYER.Crouching
 local GetActiveWeapon = PLAYER.GetActiveWeapon
+local VoiceVolume = PLAYER.VoiceVolume
+local IsSpeaking = PLAYER.IsSpeaking
 
 local GetBoneCount = ENTITY.GetBoneCount
 local GetBoneName = ENTITY.GetBoneName
@@ -42,14 +52,28 @@ local SetPlaybackRate = ENTITY.SetPlaybackRate
 local GetNetVar = ENTITY.GetNetVar
 local OnGround = ENTITY.OnGround
 local GetClass = ENTITY.GetClass
+local SetPoseParameter = ENTITY.SetPoseParameter
+local InvalidateBoneCache = ENTITY.InvalidateBoneCache
+local GetPoseParameter = ENTITY.GetPoseParameter
+local GetPos = ENTITY.GetPos
+local GetFlexIDByName = ENTITY.GetFlexIDByName
+local SetFlexWeight = ENTITY.SetFlexWeight
+local EyeAngles = ENTITY.EyeAngles
+local EntIndex = ENTITY.EntIndex
+local IsOnGround = ENTITY.IsOnGround
 
 local RemoveKey = CUSERCMD.RemoveKey
 local ClearMovement = CUSERCMD.ClearMovement
 
 local Length2D = VECTOR.Length2D
+local DistToSqr = VECTOR.DistToSqr
+local VAngle = VECTOR.Angle
+local VNormalize = VECTOR.Normalize
+
+local GetHoldType = WEAPON.GetHoldType
 
 
-function Emotes:PlayerBindPress(client, bind, bPressed)
+hook("PlayerBindPress", function(client, bind, bPressed)
 	local bThirdPerson = select(3, GetAction(client))
 	if !bThirdPerson then return end
 
@@ -58,15 +82,15 @@ function Emotes:PlayerBindPress(client, bind, bPressed)
 
 		return true
 	end
-end
+end)
 
-function Emotes:ShouldDrawLocalPlayer(client)
+hook("ShouldDrawLocalPlayer", function(client)
 	local bThirdPerson = select(3, GetAction(client))
 
 	if bThirdPerson then
 		return true
 	end
-end
+end)
 
 local function GetHeadBone(client)
 	for i = 1, GetBoneCount(client) do
@@ -88,7 +112,7 @@ local GROUND_PADDING = Vector(0, 0, 8)
 local PLAYER_OFFSET = Vector(0, 0, 72 - 20)
 local nCameraType = 1
 local bKeyDown = false
-function Emotes:CalcView(client, origin)
+hook("CalcView", function(client, origin)
 	if Arbitrage.lawEnable then return end
 	if client:IsSpectating() then return end
 	if Arbitrage.IsThirdPerson() then return end
@@ -97,9 +121,9 @@ function Emotes:CalcView(client, origin)
 	if bThirdPerson then
 		Hints:AddKeyDraw("#hintsdraw_exit_action", "+jump")
 
-		local ang = client:EyeAngles()
+		local ang = EyeAngles(client)
 
-		local startPos = client:GetPos() + PLAYER_OFFSET
+		local startPos = GetPos(client) + PLAYER_OFFSET
 		local endPos = startPos - ang:Forward() * lerpCameraShift
 		local endPosMax = startPos - ang:Forward() * cameraShift
 
@@ -142,7 +166,7 @@ function Emotes:CalcView(client, origin)
 		Hints:AddKeyDraw("#hintsdraw_camera_pos", "+duck")
 		Hints:AddKeyDraw("#hintsdraw_back_feet", "+use")
 
-		if client:GetPos():DistToSqr(Vector(0, 0, 0)) <= 150 then
+		if DistToSqr(GetPos(client), Vector(0, 0, 0)) <= 150 then
 			RunConsoleCommand("+use")
 			timer_Simple(0.2, function()
 				RunConsoleCommand("-use")
@@ -176,7 +200,7 @@ function Emotes:CalcView(client, origin)
 			x, y, z = -campos.x, -campos.y, -campos.z
 		end
 
-		local pos, ang = origin, client:EyeAngles()
+		local pos, ang = origin, EyeAngles(client)
 
 		pos = pos + client:GetAngles():Forward() * x + client:GetAngles():Right() * y + client:GetAngles():Up() * z
 
@@ -222,7 +246,7 @@ function Emotes:CalcView(client, origin)
 		view.filter = client
 		return view
 	end
-end
+end)
 
 local function getSequenceID(array, id, client)
 	local sequence = array[id]
@@ -233,7 +257,8 @@ local function getSequenceID(array, id, client)
 	end
 end
 
-function Emotes:CalcMainActivity(client, velocity)
+-- function Emotes:CalcMainActivity(client, velocity)
+hook("CalcMainActivity", function(client, velocity)
 	local isProne = client.IsProne and client:IsProne()
 	if isProne then return end
 
@@ -295,8 +320,8 @@ function Emotes:CalcMainActivity(client, velocity)
 
 		if bFinger then
 			local sequence = nil
-			local bCrouch = client:Crouching()
-			local bJump = !client:IsOnGround()
+			local bCrouch = Crouching(client)
+			local bJump = !IsOnGround(client)
 
 			if len2D < 10 then
 				local seq = "idle_finger"
@@ -355,7 +380,7 @@ function Emotes:CalcMainActivity(client, velocity)
 			local holdType = "normal"
 			local class = nil
 			if IsValid(weapon) then
-				holdType = weapon.HoldType or weapon:GetHoldType()
+				holdType = weapon.HoldType or GetHoldType(weapon)
 				class = GetClass(weapon)
 			end
 
@@ -386,31 +411,31 @@ function Emotes:CalcMainActivity(client, velocity)
 			end
 		end
 	end
-end
+end)
 
 local ShapeKeyEyeData = {
 	right = {
 		data = {"lookright", "look_right", "eyes_look_right"},
 		func = function(headYaw, headPitch)
-			return math.Clamp((headYaw - 0.5) * -2, 0, 1) * 0.8
+			return math_Clamp((headYaw - 0.5) * -2, 0, 1) * 0.8
 		end
 	},
 	left = {
 		data = {"lookleft", "look_left", "eyes_look_left"},
 		func = function(headYaw, headPitch)
-			return math.Clamp((headYaw - 0.5) * 2, 0, 1) * 2.5
+			return math_Clamp((headYaw - 0.5) * 2, 0, 1) * 2.5
 		end
 	},
 	up = {
 		data = {"lookup", "look_up", "eyes_look_up"},
 		func = function(headYaw, headPitch)
-			return math.Clamp((headPitch - 0.5) * -2, 0, 1) * 0.8
+			return math_Clamp((headPitch - 0.5) * -2, 0, 1) * 0.8
 		end
 	},
 	down = {
 		data = {"lookdown", "look_down", "eyes_look_down"},
 		func = function(headYaw, headPitch)
-			return math.Clamp((headPitch - 0.5) * 2, 0, 1) * 2.5
+			return math_Clamp((headPitch - 0.5) * 2, 0, 1) * 2.5
 		end
 	}
 }
@@ -422,12 +447,12 @@ local lerpAtTargetsPitch = {}
 hook("ArbitrageVoiceStart", function(speaker)
 	for _, client in ipairs(player.GetAll()) do
 		if client != speaker then
-			local dist = speaker:GetPos():DistToSqr(client:GetPos())
+			local dist = DistToSqr(GetPos(speaker), GetPos(client))
 
 			if dist <= 100000 then
 				lookAtTargets[client] = speaker
 
-				hook.Remove("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex())
+				hook_Remove("UpdateAnimation", "LookAtPlayerStop_" .. EntIndex(client))
 			end
 		end
 	end
@@ -436,28 +461,28 @@ end)
 hook("ArbitrageVoiceEnd", function(speaker)
 	for client, target in pairs(lookAtTargets) do
 		if target == speaker then
-			local idx = "LookAtPlayerStop_" .. client:EntIndex()
+			local idx = "LookAtPlayerStop_" .. EntIndex(client)
 
 			lookAtTargets[client] = nil
 
 			hook.Add("UpdateAnimation", idx, function()
-				if !IsValid(client) then return hook.Remove("UpdateAnimation", idx) end
+				if !IsValid(client) then return hook_Remove("UpdateAnimation", idx) end
 
-				if (lerpAtTargetsYaw[client] and lerpAtTargetsPitch[client]) and (math.abs(lerpAtTargetsYaw[client]) > 0.05 or math.abs(lerpAtTargetsPitch[client]) > 0.05) then
+				if (lerpAtTargetsYaw[client] and lerpAtTargetsPitch[client]) and (math_abs(lerpAtTargetsYaw[client]) > 0.05 or math_abs(lerpAtTargetsPitch[client]) > 0.05) then
 					local ft = FrameTime()
 
 					lerpAtTargetsYaw[client] = Lerp(ft * 3.5, lerpAtTargetsYaw[client], 0)
 					lerpAtTargetsPitch[client] = Lerp(ft * 3.5, lerpAtTargetsPitch[client], 0)
 
-					client:SetPoseParameter("head_yaw", lerpAtTargetsYaw[client])
-					client:SetPoseParameter("head_pitch", lerpAtTargetsPitch[client])
+					SetPoseParameter(client, "head_yaw", lerpAtTargetsYaw[client])
+					SetPoseParameter(client, "head_pitch", lerpAtTargetsPitch[client])
 
-					client:InvalidateBoneCache()
+					InvalidateBoneCache(client)
 				else
 					lerpAtTargetsYaw[client] = nil
 					lerpAtTargetsPitch[client] = nil
 
-					hook.Remove("UpdateAnimation", idx)
+					hook_Remove("UpdateAnimation", idx)
 				end
 			end)
 		end
@@ -468,20 +493,21 @@ hook("UpdateAnimation", function(client)
 	-- Глаза (НА БУДУЩИЕ МОДЕЛИ ПОКА ИХ НЕТУ)
 	--[[
 	do
-		local pos = client:GetPos()
-		local dist = EyePos():DistToSqr(pos)
+		local eyePos = EyePos()
+		local pos = GetPos(client)
+		local dist = DistToSqr(eyePos, pos)
 
 		if dist < 50000 then
-			local headYaw = client:GetPoseParameter("head_yaw")
-			local headPitch = client:GetPoseParameter("head_pitch")
+			local headYaw = GetPoseParameter(client, "head_yaw")
+			local headPitch = GetPoseParameter(client, "head_pitch")
 
 			for _, info in pairs(ShapeKeyEyeData) do
 				for _, flexID in ipairs(info.data) do
-					local flex = client:GetFlexIDByName(flexID)
+					local flex = GetFlexIDByName(client, flexID)
 
 					if flex then
 						local value = info.func(headYaw, headPitch)
-						client:SetFlexWeight(flex, value)
+						SetFlexWeight(client, flex, value)
 
 						break
 					end
@@ -495,41 +521,66 @@ hook("UpdateAnimation", function(client)
 	do
 		local speaker = lookAtTargets[client]
 		if IsValid(speaker) then
-			local targetPos = speaker:EyePos()
-			local plyPos = client:EyePos()
+			local targetPos = GetPos(speaker)
+			local pos = GetPos(client)
 
-			local direction = targetPos - plyPos
-			direction:Normalize()
+			local direction = targetPos - pos
+			VNormalize(direction)
 
-			local angles = direction:Angle()
-			local plyAngles = client:EyeAngles()
+			local angles = VAngle(direction)
+			local plyAngles = EyeAngles(client)
 
-			local yaw = math.AngleDifference(angles.y, plyAngles.y)
-			local pitch = math.AngleDifference(angles.p, plyAngles.p)
+			local yaw = math_AngleDifference(angles.y, plyAngles.y)
+			local pitch = math_AngleDifference(angles.p, plyAngles.p)
 
-			yaw = math.Clamp(yaw, -60, 60)
-			pitch = math.Clamp(pitch, -60, 60)
+			yaw = math_Clamp(yaw, -60, 60)
+			pitch = math_Clamp(pitch, -60, 60)
 
-			lerpAtTargetsYaw[client] = lerpAtTargetsYaw[client] or (client:GetPoseParameter("head_yaw") or 0)
-			lerpAtTargetsPitch[client] = lerpAtTargetsPitch[client] or (client:GetPoseParameter("head_pitch") or 0)
+			lerpAtTargetsYaw[client] = lerpAtTargetsYaw[client] or (GetPoseParameter(client, "head_yaw") or 0)
+			lerpAtTargetsPitch[client] = lerpAtTargetsPitch[client] or (GetPoseParameter(client, "head_pitch") or 0)
 
-			local ft = FrameTime()
+			if math_abs(lerpAtTargetsYaw[client] - yaw) > 0.05 or math_abs(lerpAtTargetsPitch[client] - pitch) > 0.05 then
+				local ft = FrameTime()
 
-			lerpAtTargetsYaw[client] = Lerp(ft * 3.5, lerpAtTargetsYaw[client], yaw)
-			lerpAtTargetsPitch[client] = Lerp(ft * 3.5, lerpAtTargetsPitch[client], pitch)
+				lerpAtTargetsYaw[client] = Lerp(ft * 3.5, lerpAtTargetsYaw[client], yaw)
+				lerpAtTargetsPitch[client] = Lerp(ft * 3.5, lerpAtTargetsPitch[client], pitch)
+			end
 
-			client:SetPoseParameter("head_yaw", lerpAtTargetsYaw[client])
-			client:SetPoseParameter("head_pitch", lerpAtTargetsPitch[client])
+			SetPoseParameter(client, "head_yaw", lerpAtTargetsYaw[client])
+			SetPoseParameter(client, "head_pitch", lerpAtTargetsPitch[client])
 
-			client:InvalidateBoneCache()
+			InvalidateBoneCache(client)
+		end
+	end
+
+	-- Открытие рта
+	do
+		local eyePos = EyePos()
+		local pos = GetPos(client)
+		local dist = DistToSqr(eyePos, pos)
+
+		if dist < 100000 then
+			local flexes = {
+				GetFlexIDByName(client, "jaw_drop"),
+				GetFlexIDByName(client, "left_part"),
+				GetFlexIDByName(client, "right_part"),
+				GetFlexIDByName(client, "left_mouth_drop"),
+				GetFlexIDByName(client, "right_mouth_drop")
+			}
+
+			local voiceVolume = LocalPlayer() == client and 0.4 or VoiceVolume(client)
+			local weight = IsSpeaking(client) and math_Clamp(voiceVolume * 2, 0, 2) or 0
+			for _, flex in ipairs(flexes) do
+				SetFlexWeight(client, flex, weight)
+			end
 		end
 	end
 end)
 
 local keyBlacklist = IN_ATTACK + IN_ATTACK2 + IN_JUMP + IN_DUCK
-function Emotes:StartCommand(client, command)
+hook("StartCommand", function(client, command)
 	if select(3, GetAction(client)) then
 		RemoveKey(command, keyBlacklist)
 		ClearMovement(command)
 	end
-end
+end)

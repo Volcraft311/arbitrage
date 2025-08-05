@@ -388,6 +388,137 @@ function Emotes:CalcMainActivity(client, velocity)
 	end
 end
 
+local ShapeKeyEyeData = {
+	right = {
+		data = {"lookright", "look_right", "eyes_look_right"},
+		func = function(headYaw, headPitch)
+			return math.Clamp((headYaw - 0.5) * -2, 0, 1) * 0.8
+		end
+	},
+	left = {
+		data = {"lookleft", "look_left", "eyes_look_left"},
+		func = function(headYaw, headPitch)
+			return math.Clamp((headYaw - 0.5) * 2, 0, 1) * 2.5
+		end
+	},
+	up = {
+		data = {"lookup", "look_up", "eyes_look_up"},
+		func = function(headYaw, headPitch)
+			return math.Clamp((headPitch - 0.5) * -2, 0, 1) * 0.8
+		end
+	},
+	down = {
+		data = {"lookdown", "look_down", "eyes_look_down"},
+		func = function(headYaw, headPitch)
+			return math.Clamp((headPitch - 0.5) * 2, 0, 1) * 2.5
+		end
+	}
+}
+
+local lookAtTargets = {}
+local lerpAtTargetsYaw = {}
+local lerpAtTargetsPitch = {}
+
+hook("ArbitrageVoiceStart", function(speaker)
+	for _, client in ipairs(player.GetAll()) do
+		if client != speaker then
+			local dist = speaker:GetPos():DistToSqr(client:GetPos())
+
+			if dist <= 100000 then
+				lookAtTargets[client] = speaker
+
+				hook.Remove("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex())
+			end
+		end
+	end
+end)
+
+hook("ArbitrageVoiceEnd", function(speaker)
+	for client, target in pairs(lookAtTargets) do
+		if target == speaker then
+			lookAtTargets[client] = nil
+
+			hook.Add("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex(), function()
+				if !IsValid(client) then return hook.Remove("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex()) end
+
+				if (lerpAtTargetsYaw[client] and lerpAtTargetsPitch[client]) and (math.abs(lerpAtTargetsYaw[client]) > 0.05 and math.abs(lerpAtTargetsPitch[client]) > 0.05) then
+					local ft = FrameTime()
+
+					lerpAtTargetsYaw[client] = Lerp(ft * 3.5, lerpAtTargetsYaw[client], 0)
+					lerpAtTargetsPitch[client] = Lerp(ft * 3.5, lerpAtTargetsPitch[client], 0)
+
+					client:SetPoseParameter("head_yaw", lerpAtTargetsYaw[client])
+					client:SetPoseParameter("head_pitch", lerpAtTargetsPitch[client])
+
+					client:InvalidateBoneCache()
+				else
+					hook.Remove("UpdateAnimation", "LookAtPlayerStop_" .. client:EntIndex())
+				end
+			end)
+		end
+	end
+end)
+
+hook("UpdateAnimation", function(client)
+	-- Глаза
+	do
+		local pos = client:GetPos()
+		local dist = EyePos():DistToSqr(pos)
+
+		if dist < 50000 then
+			local headYaw = client:GetPoseParameter("head_yaw")
+			local headPitch = client:GetPoseParameter("head_pitch")
+
+			for _, info in pairs(ShapeKeyEyeData) do
+				for _, flexID in ipairs(info.data) do
+					local flex = client:GetFlexIDByName(flexID)
+
+					if flex then
+						local value = info.func(headYaw, headPitch)
+						client:SetFlexWeight(flex, value)
+
+						break
+					end
+				end
+			end
+		end
+	end
+
+	-- Голова
+	do
+		local speaker = lookAtTargets[client]
+		if IsValid(speaker) then
+			local targetPos = speaker:EyePos()
+			local plyPos = client:EyePos()
+
+			local direction = targetPos - plyPos
+			direction:Normalize()
+
+			local angles = direction:Angle()
+			local plyAngles = client:EyeAngles()
+
+			local yaw = math.AngleDifference(angles.y, plyAngles.y)
+			local pitch = math.AngleDifference(angles.p, plyAngles.p)
+
+			yaw = math.Clamp(yaw, -60, 60)
+			pitch = math.Clamp(pitch, -60, 60)
+
+			lerpAtTargetsYaw[client] = lerpAtTargetsYaw[client] or (client:GetPoseParameter("head_yaw") or 0)
+			lerpAtTargetsPitch[client] = lerpAtTargetsPitch[client] or (client:GetPoseParameter("head_pitch") or 0)
+
+			local ft = FrameTime()
+
+			lerpAtTargetsYaw[client] = Lerp(ft * 3.5, lerpAtTargetsYaw[client], yaw)
+			lerpAtTargetsPitch[client] = Lerp(ft * 3.5, lerpAtTargetsPitch[client], pitch)
+
+			client:SetPoseParameter("head_yaw", lerpAtTargetsYaw[client])
+			client:SetPoseParameter("head_pitch", lerpAtTargetsPitch[client])
+
+			client:InvalidateBoneCache()
+		end
+	end
+end)
+
 local keyBlacklist = IN_ATTACK + IN_ATTACK2 + IN_JUMP + IN_DUCK
 function Emotes:StartCommand(client, command)
 	if select(3, GetAction(client)) then

@@ -618,7 +618,11 @@ Arbitrage.language:Add("ru", {
     ["#status_effects_uncertainty_title"] = "Неуверенность",
     ["#status_effects_uncertainty_desc"] = "Лёгкая тряска при наведении на врага.",
     ["#status_effects_alarmist_title"] = "Паникер",
-    ["#status_effects_alarmist_desc"] = "Сильная тряска при прицеливании. Шанс случайного одиночного выстрела",
+    ["#status_effects_alarmist_desc"] = "Сильная тряска при прицеливании. Шанс случайного одиночного выстрела.",
+    ["#status_effects_choreographer_title"] = "Хореограф",
+    ["#status_effects_choreographer_desc"] = "Вам доступны уникальные танцевальные анимации и вы можете обучать других персонажей танцам.",
+    ["#status_effects_dancer_title"] = "Танцор",
+    ["#status_effects_dancer_desc"] = "Вам доступны уникальные танцевальные анимации.",
 
     ["#status_effects_have_effect"] = "Игрок имеет статус эффект",
     ["#status_effects_cant_forever"] = "Данный эффект нельзя установить навсегда",

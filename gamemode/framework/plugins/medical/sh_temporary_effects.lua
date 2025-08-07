@@ -985,3 +985,28 @@ Medical:TemporaryStatusEffects("gifted_sleeper", {
 		end
 	}
 })
+
+Medical:TemporaryStatusEffects("choreographer", {
+	name = "#status_effects_choreographer_title",
+	icon = "asterion/academy/ui/health/error.png",
+	description = "#status_effects_choreographer_desc",
+	hooks = {
+		PermissionToDance = function(client, id)
+			return true
+		end,
+		TeachDancing = function(client, target)
+			return true
+		end
+	}
+})
+
+Medical:TemporaryStatusEffects("dancer", {
+	name = "#status_effects_dancer_title",
+	icon = "asterion/academy/ui/health/error.png",
+	description = "#status_effects_dancer_desc",
+	hooks = {
+		PermissionToDance = function(client, id)
+			return true
+		end
+	}
+})

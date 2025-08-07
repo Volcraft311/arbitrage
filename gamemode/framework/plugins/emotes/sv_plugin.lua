@@ -127,6 +127,15 @@ function playerMeta:StartAction(uniqueID)
 	local data = Emotes.action.stored[uniqueID]
 	if !data then return self:ChatNotify("#notify_animation_not_valid") end
 
+	local onCanRun = data.onCanRun
+	if onCanRun then
+		local succ, message = onCanRun(self, uniqueID)
+
+		if succ == false then
+			return self:ChatNotify(message)
+		end
+	end
+
 	local startSeq, startTime, normalSeq, normalTime, finishSeq, finishTime
 	if data.start then startSeq, startTime = data.start[1], data.start.duration end
 	if data.sequence then normalSeq, normalTime = data.sequence[1], data.sequence.duration end
@@ -149,11 +158,23 @@ function playerMeta:StartAction(uniqueID)
 
 	local function startNormalSeq()
 		self.EmotesActiveAction = uniqueID
-
 		normalTime = select(3, checking(self, normalSeq, normalTime))
+
+		local bLoop = data and data.bLoop
+		local idx = self:UserID()
+
 		self:SetAction(normalSeq, normalTime, true, function()
-			self:ExitAction(true)
-		end)
+			if bLoop then
+				timer.Simple(0.1, function()
+					-- мне немного в падлу создавать новый метод для передачи loop анимации, по этому сделаем вот так
+					BroadcastLua([[Player(]] .. idx .. [[):SetCycle(0)]])
+
+					startNormalSeq()
+				end)
+			else
+				self:ExitAction(true)
+			end
+		end, bLoop and false or true)
 	end
 
 	if startSeq then
@@ -262,6 +283,22 @@ function Emotes:AcceptInput(entity, input, client, caller, value)
 		client:PlaySequence("new_open_door")
 	end
 end
+
+hook("PermissionToDance", function(client, id)
+	local t_status_effects = client:GetTemporaryStatusEffects()
+	for _, array in ipairs(t_status_effects) do
+		local uniqueID = array.uniqueID
+		local info = Medical.t_status_effects[uniqueID]
+
+		local _hook = info.hooks.PermissionToDance
+		if !_hook then continue end
+
+		local value = _hook(client, id)
+		if value != nil then
+			return value
+		end
+	end
+end)
 
 hook("KeyPressID", function(client, id, bIsVisibleGUI)
 	if id != "finger_anim" then return end

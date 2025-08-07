@@ -23,6 +23,15 @@ function Emotes.action:Register(uniqueID, data)
 	Emotes.action.stored[uniqueID:lower()] = data
 end
 
+local function danceStatusEffectCallback(client, id)
+	local permissionDance = hook.Run("PermissionToDance", client, id)
+	if permissionDance == true then
+		return permissionDance
+	end
+
+	return false, "Ваш персонаж не обучен танцам!"
+end
+
 Emotes.ActionList = {
 	{
 		name = "#emotes_category_stand",
@@ -219,9 +228,15 @@ local function ProcessEmoteData(dataTable)
 				data = item.info
 			else
 				data = {
-					sequence = {item.info, duration = -1}
+					sequence = {
+						item.info,
+						duration = -1
+					}
 				}
 			end
+
+			data.onCanRun = item.onCanRun
+			data.bLoop = item.bLoop
 
 			local id = data.sequence[1]
 			Emotes.action:Register(id, data)

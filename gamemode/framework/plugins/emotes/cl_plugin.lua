@@ -518,6 +518,7 @@ hook("UpdateAnimation", function(client)
 	]]--
 
 	-- Голова
+	--[[
 	do
 		local speaker = lookAtTargets[client]
 		if IsValid(speaker) then
@@ -552,6 +553,7 @@ hook("UpdateAnimation", function(client)
 			InvalidateBoneCache(client)
 		end
 	end
+	]]--
 
 	-- Открытие рта
 	do

@@ -354,6 +354,9 @@ function PLUGIN:PlayerInitialSpawn(client)
         client:SetMoveType(MOVETYPE_WALK)
         client:SelectWeapon("academy_key")
 
+        client.oldScale = client:GetModelScale()
+        client:SetModelScale(0.1)
+
         netstream.Start(client, "arb.StartLaw")
 
         if Arbitrage.players[steamid] then

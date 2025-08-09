@@ -292,7 +292,7 @@ hook("PlayerDisconnected", function(client)
             evidence = client:GetEvidences(),
             inventoryID = inventory:GetID(),
             ammo = client:GetAmmo(),
-            scale = client:GetModelScale(),
+            scale = client.oldScale or client:GetModelScale(),
             hullscale = {hullMin, hullMax},
             hullduckscale = {hullduckMin, hullduckMax},
             speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
@@ -455,7 +455,7 @@ function meta:SaveSaverInfo(bDelay)
         self._saver = {}
 
         self._saver.Model = self:GetModel()
-        self._saver.Scale = self:GetModelScale()
+        self._saver.Scale = self.oldScale or self:GetModelScale()
         self._saver.Skin = self:GetSkin()
         self._saver.RenderMode = self:GetRenderMode()
         self._saver.Color = self:GetColor()

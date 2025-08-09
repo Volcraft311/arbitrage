@@ -357,9 +357,6 @@ hook("OnPlayerInitialize", function(client)
     Character.team:Join(client, data.faction)
 
     client:SetModel(leaveEntity:GetModel())
-    client:SetHealth(data.health)
-    client:SetArmor(data.armor)
-
     client:SetModelScale(data.scale)
     client:SetHull(data.hullscale[1], data.hullscale[2], true)
     client:SetHullDuck(data.hullduckscale[1], data.hullduckscale[2], true)
@@ -429,6 +426,9 @@ hook("PlayerInitialSpawnForRealz", function(client)
     end
 
     timer.Simple(1, function()
+        client:SetHealth(data.health)
+        client:SetArmor(data.armor)
+
         for k, v in pairs(data.t_status_effects) do
             client:SetTemporaryStatusEffect(k, v)
         end

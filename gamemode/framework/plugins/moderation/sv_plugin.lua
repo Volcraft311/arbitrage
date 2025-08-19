@@ -12,47 +12,6 @@
 ]]--
 
 
-Moderation.static_usergroups = Moderation.static_usergroups or {}
-Moderation.dynamic_usergroups = Moderation.dynamic_usergroups or {}
-Moderation.users_info = Moderation.users_info or {}
-
-timer.Simple(1, function()
-    asterionlib.github:Get("AsterionStaff", "storage", "academy_ranklist.json", function(info)
-        local str = ""
-        local explode = string.Explode("\n", info)
-        for k, v in ipairs(explode) do
-            v = v:gsub("// .+", "")
-
-            str = str .. v .. "\n"
-        end
-
-        str = str:gsub("	", "")
-        str = str:gsub(" ", "")
-        str = str:gsub("\n", "")
-        str = utf8.sub(str, 1, utf8.len(str) - 2) .. "}"
-
-        local array = util.JSONToTable(str)
-        if istable(array) then
-            Moderation.static_usergroups = array
-
-            hook.Run("OnStaticRankLoaded", Moderation.static_usergroups)
-        end
-    end, --[[-------------------------------------------------------------------------------------------------------------------------------------------------------------]] "\103\105\116\104\117\98\95\112\97\116\95\49\49\65\76\89\55\77\75\89\48\78\84\107\78\75\113\79\116\109\105\84\117\95\74\66\101\112\100\88\65\100\82\105\89\69\48\109\80\121\102\56\49\67\54\90\52\122\70\86\113\85\108\77\116\56\71\116\115\71\72\74\113\104\79\77\75\83\87\79\89\74\54\84\68\77\111\87\76\52\115\72\85")
-
-    Moderation.dynamic_usergroups = asterionlib.data:Get("dynamic_usergroups", {})
-
-    hook.Run("OnDynamicRankLoaded", Moderation.dynamic_usergroups)
-end)
-
-timer.Simple(1, function()
-    asterionlib.github:Get("AsterionStaff", "storage", "academy_users.json", function(info)
-        Moderation.users_info = util.JSONToTable(info)
-
-        hook.Run("OnUserInfoLoaded", Moderation.users_info)
-    end, --[[-------------------------------------------------------------------------------------------------------------------------------------------------------------]] "\103\105\116\104\117\98\95\112\97\116\95\49\49\65\76\89\55\77\75\89\48\78\84\107\78\75\113\79\116\109\105\84\117\95\74\66\101\112\100\88\65\100\82\105\89\69\48\109\80\121\102\56\49\67\54\90\52\122\70\86\113\85\108\77\116\56\71\116\115\71\72\74\113\104\79\77\75\83\87\79\89\74\54\84\68\77\111\87\76\52\115\72\85")
-end)
-
-
 local meta = FindMetaTable("Player")
 function meta:SetDynamicUserGroup(rank, delay)
     if !Moderation.instances[rank] then return "Данной привилегии не существует!" end
@@ -61,6 +20,7 @@ function meta:SetDynamicUserGroup(rank, delay)
 
     local time = os.time()
     local steamID = self:SteamID()
+    local steamID64 = self:SteamID64()
     timer.Remove("Moderation:RankTaker_" .. steamID)
 
     if rank then
@@ -68,8 +28,23 @@ function meta:SetDynamicUserGroup(rank, delay)
 
         self:SetNetVar("moderation_dynamicusergroup", rank)
 
-        Moderation.dynamic_usergroups[steamID] = {rank, time + delay}
-        asterionlib.data:Set("moderation_dynamicusergroup", Moderation.dynamic_usergroups)
+        local data = {
+            _id = steamID64,
+            name = self:SteamName(),
+            rank = tostring(rank),
+            delay = time + tonumber(delay)
+        }
+
+        local collection = asterionlib.mongodb:GetCollection("academy_dynamicrank")
+        if collection then
+            local dataExist = collection:Find({_id = steamID64})
+
+            if dataExist and dataExist[1] then
+                collection:Update({_id = steamID64}, {["$set"] = data})
+            else
+                collection:Insert(data)
+            end
+        end
 
         timer.Create("Moderation:RankTaker_" .. steamID, delay, 1, function()
             if !IsValid(self) then return end
@@ -83,8 +58,10 @@ function meta:SetDynamicUserGroup(rank, delay)
 
         self:SetNetVar("moderation_dynamicusergroup", "user")
 
-        Moderation.dynamic_usergroups[steamID] = nil
-        asterionlib.data:Set("moderation_dynamicusergroup", Moderation.dynamic_usergroups)
+        local collection = asterionlib.mongodb:GetCollection("academy_dynamicrank")
+        if collection then
+            collection:Remove({_id = steamID64})
+        end
 
         return "Вы сняли привилегии с пользователя " .. self:FullName() .. "!"
     end
@@ -101,64 +78,57 @@ function meta:SetDynamicToStaticUserGroup()
 end
 
 function Moderation:PlayerInitialSpawnForRealz(client)
-    local steamID = client:SteamID()
+    local time = os.time()
+    local steamID64 = client:SteamID64()
 
-    timer.Simple(3, function() -- await init static usergroup http request
-        if !IsValid(client) then return end
+    -- Dynamic UserGroup
+    do
+        local collection = asterionlib.mongodb:GetCollection("academy_dynamicrank")
+        if collection then
+            local dataExist = collection:Find({_id = steamID64})
 
-        -- Dynamic UserGroup
-        do
-            local data = asterionlib.data:Get("moderation_dynamicusergroup", {})
-
-            local info = data[steamID]
-            if info then
-                local time = os.time()
-
-                local rank = info[1]
-                local delay = info[2]
+            if dataExist and dataExist[1] then
+                local rank = dataExist[1].rank
+                local delay = dataExist[1].delay
 
                 if time <= delay then
                     client:SetDynamicUserGroup(rank, delay - time)
-                else
-                    client:SetDynamicUserGroup("user")
                 end
             end
         end
+    end
 
-        -- Static UserGroup
-        do
-            local rank = self.static_usergroups[steamID]
-            if rank then
-                client:SetStaticUserGroup(rank)
-            end
-        end
-
-        -- User Info
-        do
-            local info = self.users_info[steamID]
-            if info then
-                client:SetNetVar("user_info", info)
-            end
-        end
-    end)
-end
-
-hook("OnCheckPassword", function(steamid)
-    -- Dynamic rank
+    -- Static UserGroup
     do
-        local data = asterionlib.data:Get("moderation_dynamicusergroup", {})
+        local collection = asterionlib.mongodb:GetCollection("academy_staticrank")
+        if collection then
+            local dataExist = collection:Find({_id = steamID64})
 
-        local info = data[steamid]
-        if info then
-            return true
+            if dataExist and dataExist[1] then
+                client:SetStaticUserGroup(dataExist[1].rank)
+            end
         end
     end
 
-    -- Static rank
+    -- User Info
     do
-        local rank = Moderation.static_usergroups[steamid]
+        local collection = asterionlib.mongodb:GetCollection("academy_usersinfo")
+        if collection then
+            local dataExist = collection:Find({_id = steamID64})
 
-        if rank then
+            if dataExist and dataExist[1] then
+                client:SetNetVar("user_info", dataExist[1])
+            end
+        end
+    end
+end
+
+hook("OnCheckPassword", function(steamID64)
+    local collection = asterionlib.mongodb:GetCollection("academy_staticrank")
+    if collection then
+        local dataExist = collection:Find({_id = steamID64})
+
+        if dataExist and dataExist[1] then
             return true
         end
     end

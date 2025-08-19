@@ -25,7 +25,7 @@ function PLUGIN:CheckPassword(steamID64)
 	local data = asterionlib.data:Get("whitelist", {}, true)
 
 	if !data[steamid] and !self:IsPublic() then
-		local bSucc = hook.Run("OnCheckPassword", steamid)
+		local bSucc = hook.Run("OnCheckPassword", steamID64)
 		if bSucc == true then
 			return true
 		end
@@ -51,24 +51,6 @@ function PLUGIN:InitPostEntity()
 		asterionlib.data:Set("whitelist", data)
 	end
 end
-
-hook("OnStaticRankLoaded", function(info)
-	local data = asterionlib.data:Get("whitelist", {}, true)
-
-	for id in pairs(info) do
-		local steamid, bValid = util.SteamIDFormatFixed(id)
-		if !bValid then continue end
-
-		data[steamid] = {
-			0,
-			os.time(),
-			true,
-			"Storage Auto-Whitelist"
-		}
-	end
-
-	asterionlib.data:Set("whitelist", data)
-end)
 
 
 netstream.Hook("Whitelist:Add", function(client, id, time)

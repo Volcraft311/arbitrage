@@ -90,7 +90,9 @@ Moderation:AddLog("itemDestroy", {
 })
 
 hook("OnItemDestroy", function(client, item)
-    Moderation:SendLog(client, "itemDestroy", item)
+    if IsValid(client) and client:IsPlayer() then
+        Moderation:SendLog(client, "itemDestroy", item)
+    end
 end)
 
 Moderation:AddLog("itemDrop", {

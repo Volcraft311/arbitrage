@@ -35,7 +35,7 @@ function meta:SetDynamicUserGroup(rank, delay)
             delay = time + tonumber(delay)
         }
 
-        local collection = asterionlib.mongodb:GetCollection("academy_dynamicrank")
+        local collection = asterionlib.mongodb:GetCollection("academy", "dynamicrank")
         if collection then
             local dataExist = collection:Find({_id = steamID64})
 
@@ -58,7 +58,7 @@ function meta:SetDynamicUserGroup(rank, delay)
 
         self:SetNetVar("moderation_dynamicusergroup", "user")
 
-        local collection = asterionlib.mongodb:GetCollection("academy_dynamicrank")
+        local collection = asterionlib.mongodb:GetCollection("academy", "dynamicrank")
         if collection then
             collection:Remove({_id = steamID64})
         end
@@ -78,53 +78,51 @@ function meta:SetDynamicToStaticUserGroup()
 end
 
 function Moderation:PlayerInitialSpawnForRealz(client)
-    local time = os.time()
     local steamID64 = client:SteamID64()
 
     -- Dynamic UserGroup
-    do
-        local collection = asterionlib.mongodb:GetCollection("academy_dynamicrank")
-        if collection then
-            local dataExist = collection:Find({_id = steamID64})
+    asterionlib.mongodb:FindAsync("academy", "dynamicrank", {_id = steamID64}, function(data)
+        if !IsValid(client) then return end
 
-            if dataExist and dataExist[1] then
-                local rank = dataExist[1].rank
-                local delay = dataExist[1].delay
+        local user = data[1]
 
-                if time <= delay then
-                    client:SetDynamicUserGroup(rank, delay - time)
-                end
+        if user then
+            local time = os.time()
+            local rank = user.rank
+            local delay = user.delay
+
+            if time <= delay then
+                client:SetDynamicUserGroup(rank, delay - time)
             end
         end
-    end
+    end)
 
     -- Static UserGroup
-    do
-        local collection = asterionlib.mongodb:GetCollection("academy_staticrank")
-        if collection then
-            local dataExist = collection:Find({_id = steamID64})
+    asterionlib.mongodb:FindAsync("academy", "staticrank", {_id = steamID64}, function(data)
+        if !IsValid(client) then return end
 
-            if dataExist and dataExist[1] then
-                client:SetStaticUserGroup(dataExist[1].rank)
-            end
+        local user = data[1]
+
+        if user then
+            client:SetStaticUserGroup(user.rank)
         end
-    end
+    end)
 
     -- User Info
-    do
-        local collection = asterionlib.mongodb:GetCollection("academy_usersinfo")
-        if collection then
-            local dataExist = collection:Find({_id = steamID64})
+    asterionlib.mongodb:FindAsync("academy", "users_nw", {_id = steamID64}, function(data)
+        if !IsValid(client) then return end
 
-            if dataExist and dataExist[1] then
-                client:SetNetVar("user_info", dataExist[1])
-            end
+        local user = data[1]
+
+        if user then
+            client:SetNetVar("user_info", user)
         end
-    end
+    end)
 end
 
 hook("OnCheckPassword", function(steamID64)
-    local collection = asterionlib.mongodb:GetCollection("academy_staticrank")
+    local collection = asterionlib.mongodb:GetCollection("academy", "staticrank")
+
     if collection then
         local dataExist = collection:Find({_id = steamID64})
 

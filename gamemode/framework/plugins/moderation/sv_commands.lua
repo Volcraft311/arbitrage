@@ -99,6 +99,9 @@ timer.Simple(1, function()
             OnAction = function(client, message)
                 if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
 
+                message = message:Trim()
+                if message == "" then return end
+
                 Arbitrage.chat.SendCommand("admin", client, message)
             end
         })
@@ -115,6 +118,9 @@ timer.Simple(1, function()
             },
             OnAction = function(client, message)
                 if client:IsAdmin() then return client:ChatNotify("#command_pm_already_admin") end
+
+                message = message:Trim()
+                if message == "" then return end
 
                 Arbitrage.chat.SendCommand("help", client, message)
                 netstream.Start(player.GetAdmins(), "Moderation:HelpTarget", client:SteamID())

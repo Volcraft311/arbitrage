@@ -80,7 +80,7 @@ function PANEL:Init()
             surface.DrawTexturedRect(h / 2 - size / 2, h / 2 - size / 2, size, size)
         end
 
-        local _w = draw.SimpleText(self.titleText, titleFont, 30, h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        local _w = draw.SimpleText(F(self.titleText), titleFont, 30, h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         if self.ticket then
             draw.SimpleText("(" .. string.FormattedTime(os.time() - self.ticket.time, "%02i:%02i") .. ")", timeFont, 30 + _w + 10, h / 2, timeColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end

@@ -26,6 +26,7 @@ function Ticket:SyncTicket(id, data)
     ticket.type = data.type
     ticket.messages = data.messages
     ticket.time = data.time
+    ticket.owner = data.owner
 
     local client = player.GetBySteamID(data.owner)
     if IsValid(client) and client:IsPlayer() then

@@ -447,3 +447,50 @@ function Moderation:PlayerHurt(client, attacker, health, damage)
 
     self:SendLog(client, "playerHurt", math.floor(damage), attackerEntity, attackerWeapon)
 end
+
+Moderation:AddLog("ticketCreate", {
+    name = "Создание тикета",
+    color = 5763719,
+    format = function(client, ticket, message)
+        return ("%s создал тикет %s: %s"):format(
+            Moderation:HighlightPlayer(client),
+            Moderation:HighlightPrimary(tostring(ticket)),
+            Moderation:HighlightPrimary(message)
+        )
+    end
+})
+
+hook("OnTicketCreate", function(client, ticket, message)
+    Moderation:SendLog(client, "ticketCreate", ticket, message)
+end)
+
+Moderation:AddLog("ticketSendMessage", {
+    name = "Отправка сообщения в тикет",
+    color = 5763719,
+    format = function(client, ticket, message)
+        return ("%s отправил в тикет %s: %s"):format(
+            Moderation:HighlightPlayer(client),
+            Moderation:HighlightPrimary(tostring(ticket)),
+            Moderation:HighlightPrimary(message)
+        )
+    end
+})
+
+hook("OnTicketSendMessage", function(client, ticket, message)
+    Moderation:SendLog(client, "ticketSendMessage", ticket, message)
+end)
+
+Moderation:AddLog("ticketClose", {
+    name = "Закрытие тикета",
+    color = 5763719,
+    format = function(client, ticket)
+        return ("%s закрыл тикет %s"):format(
+            Moderation:HighlightPlayer(client),
+            Moderation:HighlightPrimary(tostring(ticket))
+        )
+    end
+})
+
+hook("OnTicketClose", function(client, ticket)
+    Moderation:SendLog(client, "ticketClose", ticket)
+end)

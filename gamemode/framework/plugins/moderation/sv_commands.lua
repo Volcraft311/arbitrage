@@ -103,7 +103,8 @@ timer.Simple(1, function()
                 if message == "" then return end
 
                 Arbitrage.chat.SendCommand("admin", client, message)
-            end
+            end,
+            bNoLog = true
         })
     end
 
@@ -124,7 +125,22 @@ timer.Simple(1, function()
 
                 Arbitrage.chat.SendCommand("help", client, message)
                 netstream.Start(player.GetAdmins(), "Moderation:HelpTarget", client:SteamID())
-            end
+
+                for _, ticket in pairs(Ticket.instances) do
+                    local owner = ticket:GetOwner()
+
+                    if owner == client then
+                        return ticket:AddMessage(client, message)
+                    end
+                end
+
+                local ticket = Ticket:Create({
+                    owner = client,
+                    message = message
+                })
+                ticket:Sync()
+            end,
+            bNoLog = true
         })
     end
 
@@ -161,6 +177,8 @@ timer.Simple(1, function()
 
                 client:SetDynamicToStaticUserGroup()
                 client:ChatNotify("#command_notify_give_static_rank")
+
+                Ticket:SyncAll(client)
             end
         })
     end
@@ -547,6 +565,8 @@ timer.Simple(1, function()
             target:SetDynamicUserGroup("guard", time)
 
             target:ChatNotify(L(target, "#command_obtaining_admin_rank", delay))
+
+            Ticket:SyncAll(target)
         end
     })
 

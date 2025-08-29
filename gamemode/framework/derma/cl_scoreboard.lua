@@ -450,4 +450,4 @@ function PANEL:Paint(w, h)
     draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255), TEXT_ALIGN_CENTER)
 end
 
-vgui.Register("arb.ScoreBoard", PANEL, "EditablePanel")
+vgui.Register("arb.ScoreBoard", PANEL, "Panel")

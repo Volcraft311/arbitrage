@@ -418,6 +418,10 @@ Arbitrage.language:Add("ru", {
     ["#radial_option_search_desc"] = "Посмотреть содержимое инвентаря данного игрока",
     ["#radial_option_standup"] = "Поднять",
     ["#radial_option_standup_desc"] = "Поднять игрока на ноги",
+    ["#radial_option_kiss"] = "Поцеловать",
+    ["#radial_option_kiss_desc"] = "Поцеловать игрока на против вас",
+    ["#radial_option_hug"] = "Обнять",
+    ["#radial_option_hug_desc"] = "Обнять игрока на против вас",
 
     -- КОНТЕКСТНЫЕ АНИМАЦИИ
     ["#emotes_category_stand"] = "Встать",

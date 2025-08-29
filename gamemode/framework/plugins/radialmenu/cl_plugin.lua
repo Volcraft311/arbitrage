@@ -527,6 +527,24 @@ function PLUGIN:PlayerOption()
 				netstream.Start("RadialMenu:DragPlayerAction")
 			end
 		},
+		{
+			name = "#radial_option_kiss",
+			id = "kiss",
+			description = "#radial_option_kiss_desc",
+			icon = Material("asterion/academy/ui/radial/action/kiss.png"),
+			action = function()
+				netstream.Start("RadialMenu:KissPlayerAction")
+			end
+		},
+		{
+			name = "#radial_option_hug",
+			id = "hug",
+			description = "#radial_option_hug_desc",
+			icon = Material("asterion/academy/ui/radial/action/hug.png"),
+			action = function()
+				netstream.Start("RadialMenu:HugPlayerAction")
+			end
+		}
 	}
 
 	local inventory = LocalPlayer():GetInventory()

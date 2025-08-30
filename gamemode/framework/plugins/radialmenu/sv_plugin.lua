@@ -346,6 +346,9 @@ netstream.Hook("RadialMenu:KissPlayerAction", function(client)
                     client.bIsAnim = true
                     target.bIsAnim = true
 
+                    TypingDraw:SendSphere(0.5, client, "Поцеловал(а) '" .. targetName .. "'", Color(255, 170, 23))
+                    TypingDraw:SendSphere(0.5, target, "Поцеловал(а) '" .. clientName .. "'", Color(255, 170, 23))
+
                     local min1, max1 = client:GetHull()
                     local min2, max2 = target:GetHull()
 
@@ -440,6 +443,9 @@ netstream.Hook("RadialMenu:HugPlayerAction", function(client)
 
                     client.bIsAnim = true
                     target.bIsAnim = true
+
+                    TypingDraw:SendSphere(0.5, client, "Обнял(а) '" .. targetName .. "'", Color(255, 170, 23))
+                    TypingDraw:SendSphere(0.5, target, "Обнял(а) '" .. clientName .. "'", Color(255, 170, 23))
 
                     local min1, max1 = client:GetHull()
                     local min2, max2 = target:GetHull()

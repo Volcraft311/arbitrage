@@ -41,11 +41,14 @@ function TICKET:GetOwner()
         return self._owner
     end
 
-    local client = player.GetBySteamID(self.owner)
-    if client and IsValid(client) then
-        self._owner = client
+    if self.owner then
+        local client = player.GetBySteamID(self.owner)
 
-        return client
+        if client and IsValid(client) then
+            self._owner = client
+
+            return client
+        end
     end
 end
 

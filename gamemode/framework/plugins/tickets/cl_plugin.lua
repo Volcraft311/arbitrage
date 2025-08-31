@@ -40,6 +40,42 @@ function Ticket:SyncTicket(id, data)
 end
 
 
+hook("HUDPaint", function()
+    local client = LocalPlayer()
+    if !client:IsAdmin() then return end
+
+    local entities = {}
+    local color = Arbitrage.theme:GetInformation()
+
+    for _, ticket in pairs(Ticket.instances) do
+        local panel = ticket:GetPanel()
+
+        if IsValid(panel) then
+            local disclosureButton = panel.disclosureButton
+
+            if IsValid(disclosureButton) and disclosureButton.bOpen then
+                local owner = ticket:GetOwner()
+
+                if IsValid(owner) and client != owner then
+                    local point = owner:GetPos() + owner:OBBCenter()
+                    local data2D = point:ToScreen()
+
+                    surface.SetDrawColor(color.r, color.g, color.b, 255)
+                    surface.DrawLine(ScrW() / 2, ScrH(), data2D.x, data2D.y)
+
+                    entities[#entities + 1] = owner
+                end
+            end
+        end
+    end
+
+    if #entities > 0 then
+        outline.Add(entities, color, 0)
+    end
+end)
+
+
+
 netstream.Hook("Ticket:AddMessage", function(id, data)
     local ticket = Ticket:GetByID(id)
     if !ticket then return end

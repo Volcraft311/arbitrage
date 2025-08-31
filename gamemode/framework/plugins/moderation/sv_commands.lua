@@ -124,7 +124,6 @@ timer.Simple(1, function()
                 if message == "" then return end
 
                 Arbitrage.chat.SendCommand("help", client, message)
-                netstream.Start(player.GetAdmins(), "Moderation:HelpTarget", client:SteamID())
 
                 for _, ticket in pairs(Ticket.instances) do
                     local owner = ticket:GetOwner()

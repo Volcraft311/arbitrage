@@ -35,7 +35,6 @@ local Color = Color
 local math_Clamp = math.Clamp
 local math_Round = math.Round
 local Vector = Vector
-local surface_DrawCircle = surface.DrawCircle
 local math_Approach = math.Approach
 local surface_GetTextureID = surface.GetTextureID
 local surface_SetTexture = surface.SetTexture
@@ -118,7 +117,6 @@ do
 end
 
 do
-	local color_red = Color(255, 61, 96)
 	local gap = 8
 	local curGap = gap
 	local weaponData = {
@@ -231,13 +229,13 @@ do
 
 		local tr = trace.Entity
 		if IsValid(tr) and (tr:IsPlayer() or tr:IsNPC() or tr:IsDoor() or (tr.Tooltip or tr.TooltipMini)) then
-			drawColor = color_red
+			drawColor = Arbitrage.theme:GetInformation()
 
 			crosshair = crossHairData.selected
 		end
 
 		if isUseFirst and client:GetNetVar("bIsHoldingObject", false) then
-			drawColor = color_red
+			drawColor = Arbitrage.theme:GetInformation()
 			crosshair = crossHairData.holding
 
 			if client:KeyDown(IN_ATTACK2) then

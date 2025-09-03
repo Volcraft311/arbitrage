@@ -55,21 +55,29 @@ function Arbitrage.theme:GetBackground()
     return Color(backgroundColor.r, backgroundColor.g, backgroundColor.b)
 end
 
+function Arbitrage.theme:GetPrimaryBackground()
+    local theme = Arbitrage.theme:GetActive()
+
+    return Material(theme.images.primary_bg)
+end
+
 -- Основная тема красного цвета
 Arbitrage.theme:Add("red", {
+    name = "Asterion Academy",
     information = Color(218, 19, 40),
     foreground = Color(255, 255, 255),
     background = Color(255, 255, 255),
     images = {
-
+        primary_bg = "asterion/academy/ui/themes/red_background.png"
     }
 })
 
-Arbitrage.theme:Add("test", {
+Arbitrage.theme:Add("kirigiri", {
+    name = "Danganronpa Kirigiri",
     information = Color(255, 211, 116),
     foreground = Color(255, 255, 255),
     background = Color(255, 255, 255),
     images = {
-
+        primary_bg = "asterion/academy/ui/themes/kirigiri_background.png"
     }
 })

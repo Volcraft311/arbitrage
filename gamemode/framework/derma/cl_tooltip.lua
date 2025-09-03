@@ -18,8 +18,6 @@ local fontTitleHeight = draw.GetFontHeight(fontTitle)
 local fontDescription = "arb.Font_FuturaPTBook_6"
 local fontDescriptionHeight = draw.GetFontHeight(fontDescription)
 
-local colorTitle = Color(255, 18, 61)
-
 local PANEL = {}
 
 function PANEL:Init()
@@ -48,7 +46,9 @@ function PANEL:Init()
     self.title:Dock(TOP)
     self.title:SetTall(fontTitleHeight)
     self.title.Paint = function(_, w, h)
-        surface.SetDrawColor(colorTitle)
+        local color = Arbitrage.theme:GetInformation()
+
+        surface.SetDrawColor(color)
         surface.DrawRect(0, 0, w, h)
     end
 
@@ -168,16 +168,16 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 160)
     surface.DrawRect(0, 0, w, h)
 
+    local color = Arbitrage.theme:GetInformation()
     local x, y = self:ScreenToLocal(self.arrowX, self.arrowY)
+    local newX, newY = x * self.fraction, y * self.fraction
 
     local old = DisableClipping(true)
-        local newX, newY = x * self.fraction, y * self.fraction
-
-        surface.SetDrawColor(colorTitle)
+        surface.SetDrawColor(color)
         surface.DrawLine(0, self.title:GetTall() / 2, newX, newY)
         surface.DrawLine(0, self.title:GetTall() / 2 - 1, newX, newY - 1)
 
-        surface.SetDrawColor(colorTitle)
+        surface.SetDrawColor(color)
         surface.DrawRect(newX - cubeSize + 2, newY + 2 - 1, cubeSize, cubeSize)
 
         surface.SetDrawColor(0, 0, 0, 255)

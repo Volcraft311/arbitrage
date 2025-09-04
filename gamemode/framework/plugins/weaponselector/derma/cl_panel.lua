@@ -92,19 +92,21 @@ function PANEL:InitWeapons()
 			if !IsValid(self.weapons[k]) then return end
 			if self.alpha <= 0.1 then return end
 
+			local color = Arbitrage.theme:GetInformation()
+
 			surface.SetDrawColor(25, 25, 25, 240)
 			surface.DrawRect(0, 0, w, h)
 
 			local isSelect = self.select.x == _.x and self.select.y == _.y
 
 			if PLUGIN.icons[k] then
-				surface.SetDrawColor(isSelect and Color(255, 61, 96) or Color(255, 234, 238))
+				surface.SetDrawColor(isSelect and color or Color(255, 234, 238))
 				surface.SetMaterial(Material(PLUGIN.icons[k]))
 				surface.DrawTexturedRect(W(12) + 5, 5, h - 10, h - 10)
 			end
 
 			if isSelect then
-				surface.SetDrawColor(255, 61, 96)
+				surface.SetDrawColor(color)
 				surface.DrawOutlinedRect(0, 0, w, h, 3)
 			end
 
@@ -113,7 +115,7 @@ function PANEL:InitWeapons()
 				description = description:utf8sub(1, 12) .. "..."
 			end
 
-			draw.SimpleText(description, "arb.Font_FuturaPTBook_9", h + W(12 + 5), h / 2 - H(15), isSelect and Color(255, 61, 96) or Color(255, 234, 238), TEXT_ALIGN_LEFT)
+			draw.SimpleText(description, "arb.Font_FuturaPTBook_9", h + W(12 + 5), h / 2 - H(15), isSelect and color or Color(255, 234, 238), TEXT_ALIGN_LEFT)
 		end
 
 		self.weaponsCategory[k] = weapon

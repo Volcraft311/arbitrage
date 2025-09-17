@@ -722,7 +722,11 @@ function PANEL:SetActive(bActive)
 
 		input.SetCursorPos(self:LocalToScreen(-1, -1))
 
-		hook.Run("StartChat")
+		hook.Run("ArbitrageStartChat")
+
+		net.Start("arb.ChatIsTyping")
+			net.WriteBool(true)
+		net.SendToServer()
 	else
 		if self.bSizing or self.DragOffset then
 			self:OnMouseReleased(MOUSE_LEFT)
@@ -739,7 +743,11 @@ function PANEL:SetActive(bActive)
 		CloseDermaMenus()
 		gui.EnableScreenClicker(false)
 
-		hook.Run("FinishChat")
+		hook.Run("ArbitrageFinishChat")
+
+		net.Start("arb.ChatIsTyping")
+			net.WriteBool(false)
+		net.SendToServer()
 	end
 
 	local tab = self.tabs:GetActiveTab()

@@ -56,25 +56,6 @@ function ChatBox:ChatText(index, name, text, messageType)
     end
 end
 
-local bChatIsOpen = false
-hook("StartChat", function()
-    bChatIsOpen = true
-
-    net.Start("arb.ChatIsTyping")
-        net.WriteBool(true)
-    net.SendToServer()
-end)
-
-hook("FinishChat", function()
-    if !bChatIsOpen then return end
-
-    bChatIsOpen = false
-
-    net.Start("arb.ChatIsTyping")
-        net.WriteBool(false)
-    net.SendToServer()
-end)
-
 hook("OnLanguageUpdate", function()
     ChatBox:CreateChat()
 end)

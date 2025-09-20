@@ -26,11 +26,18 @@ function Arbitrage.doing.Send(client, data)
 end
 
 netstream.Hook("Doing:Action", function(client, name)
+    if !client._doingActions then return end
+
     local action = client._doingActions[name]
     if !action then return end
 
     if action.func then
-        action.func(client, client._doingEntity)
+        local entity = client._doingEntity
+        if !IsValid(entity) then
+            entity = nil
+        end
+
+        action.func(client, entity)
     end
 
     client._doingEntity = nil

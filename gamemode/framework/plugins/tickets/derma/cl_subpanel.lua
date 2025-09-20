@@ -105,6 +105,8 @@ function PANEL:Init()
         paintOption(textButton)
 
         local yesButton = menu:AddOption("Да", function()
+            if !self.ticket then return end
+
             self.ticket:CloseRequest()
         end)
         yesButton:SetIcon("icon16/accept.png")

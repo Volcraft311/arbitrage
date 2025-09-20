@@ -103,6 +103,15 @@ netstream.Hook("Ticket:Remove", function(id)
     local ticket = Ticket:GetByID(id)
     if !ticket then return end
 
+    local owner = ticket:GetOwner()
+    if owner == LocalPlayer() then
+        local data = ticket.messages[#ticket.messages]
+
+        if data and data.message then
+            LocalPlayer():ChatNotify(("Администрация закрыла ваш тикет. Последнее сообщение: \"%s\""):format(data.message))
+        end
+    end
+
     ticket:Remove()
 
     Ticket:SetDraggblePanel()

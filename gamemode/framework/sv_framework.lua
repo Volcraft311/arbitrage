@@ -835,7 +835,7 @@ end
 
 function Arbitrage:StartGame()
     netstream.Start(nil, "Character:Caching")
-    SetNetVar("arb.Time", 28800)
+    SetNetVar("arb.Time", 480)
 
     syncvars()
     changetheme()

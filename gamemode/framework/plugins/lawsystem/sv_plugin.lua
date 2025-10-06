@@ -404,6 +404,7 @@ end)
 
 netstream.Hook("arb.StartVoice", function(client)
     if !Arbitrage.lawEnable then return end
+    if client:GetNetVar("arb.MuteVoice") then return end
 
     if client:InGame() and client:Alive() then
         PLUGIN:StartVoice(client, randomID(PLUGIN.oldAnimID))
@@ -428,6 +429,7 @@ end)
 
 netstream.Hook("arb.EndVoice", function(client)
     if !Arbitrage.lawEnable then return end
+    if client:GetNetVar("arb.MuteVoice") then return end
 
     if client:InGame() and client:Alive() then
         -- other
@@ -440,6 +442,7 @@ end)
 
 netstream.Hook("arb.LawFocus", function(client)
     if !Arbitrage.lawEnable then return end
+    if client:GetNetVar("arb.MuteVoice") then return end
 
     if client:InGame() and client:Alive() then
         PLUGIN:Focus(client, randomID(PLUGIN.oldAnimID))
@@ -448,6 +451,7 @@ end)
 
 netstream.Hook("arb.LawInterruption", function(client)
     if !Arbitrage.lawEnable then return end
+    if client:GetNetVar("arb.MuteVoice") then return end
 
     if client:InGame() and client:Alive() then
         PLUGIN:Interruption(client, randomID(PLUGIN.oldAnimID))

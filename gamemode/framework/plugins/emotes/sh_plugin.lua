@@ -96,7 +96,7 @@ Emotes.ActionList = {
 			{name = "#emotes_action_sit_5", icon = "asterion/academy/ui/emotes/checkmalepost.png", info = "checkmalepost"},
 			{name = "#emotes_action_sit_6", icon = "asterion/academy/ui/emotes/d1_town05_daniels_kneel_idle.png", info = "d1_town05_Daniels_Kneel_Idle"}, -- мужская
 			{name = "#emotes_action_sit_6", icon = "asterion/academy/ui/emotes/d1_town05_jacobs_heal.png", info = "d1_town05_Jacobs_Heal"}, -- женская
-			{name = "#emotes_action_sit_5", icon = "asterion/academy/ui/emotes/idle_to_sit_ground.png", info = {
+			{name = "#emotes_action_sit_7", icon = "asterion/academy/ui/emotes/idle_to_sit_ground.png", info = {
 				start = {"idle_to_sit_ground"},
 				sequence = {"sit_ground", duration = -1},
 				finish = {"sit_ground_to_idle", duration = 2.1}

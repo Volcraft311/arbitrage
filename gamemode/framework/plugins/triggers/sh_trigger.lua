@@ -77,11 +77,15 @@ function Trigger:GetLast()
 end
 
 function Trigger:FindInPos(pos)
+    local collect = {}
+
     for _, trigger in pairs(Trigger.instances) do
         if trigger:IsVectorInside(pos) then
-            return trigger
+            collect[trigger] = true
         end
     end
+
+    return collect
 end
 
 function Trigger:FindInTraceLine(client)
@@ -108,10 +112,11 @@ function Trigger:FindInTraceLine(client)
     end
 
     for _, point in ipairs(points) do
-        local trigger = self:FindInPos(point)
-        if !trigger then continue end
+        local triggers = self:FindInPos(point)
 
-        collect[trigger] = true
+        for trigger in pairs(triggers) do
+            collect[trigger] = true
+        end
     end
 
     return collect

@@ -111,7 +111,7 @@ function Trigger:FindInTraceLine(client)
         local trigger = self:FindInPos(point)
         if !trigger then continue end
 
-        collect[#collect + 1] = trigger
+        collect[trigger] = true
     end
 
     return collect

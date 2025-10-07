@@ -85,6 +85,8 @@ function Trigger:FindInPos(pos)
 end
 
 function Trigger:FindInTraceLine(client)
+    local collect = {}
+
     local eyePos = client:EyePos()
     local eyeAngles = client:EyeAngles()
 
@@ -109,8 +111,10 @@ function Trigger:FindInTraceLine(client)
         local trigger = self:FindInPos(point)
         if !trigger then continue end
 
-        return trigger
+        collect[#collect + 1] = trigger
     end
+
+    return collect
 end
 
 function Trigger:RemoveAll()

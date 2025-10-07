@@ -50,8 +50,9 @@ netstream.Hook("Trigger:PlayerInteracted", function(client, id)
     local trigger = Trigger:GetByID(id)
     if !trigger then return end
 
-    local traceTrigger = Trigger:FindInTraceLine(client)
-    if traceTrigger != trigger then return end
+    -- По какой то причине результат расходится у клиента и сервера...
+    -- local traceTrigger = Trigger:FindInTraceLine(client)
+    -- if traceTrigger != trigger then return end
 
     trigger:PlayerInteracted(client)
 end)

@@ -111,10 +111,10 @@ end
 function Trigger:PlayerBindPress(client, bind, pressed)
     if bind != "+use" then return end
 
-    local trigger = self:FindInTraceLine(client)
-    if !trigger then return end
-
-    trigger:PlayerInteracted()
+    local collect = self:FindInTraceLine(client)
+    for _, trigger in ipairs(collect) do
+        trigger:PlayerInteracted()
+    end
 end
 
 

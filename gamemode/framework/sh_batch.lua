@@ -166,6 +166,17 @@ function Arbitrage.Initialize()
 		end
 
 		properties.List.drive = nil
+	else
+		-- Fix MR error
+		timer.Simple(1, function()
+			local mapRetexturizer = MR
+
+			if mapRetexturizer and mapRetexturizer.Materials then
+				mapRetexturizer.Materials.AreManageable = function()
+					return true
+				end
+			end
+		end)
 	end
 
 	Arbitrage.util.WriteMessage("BATCH has been successfully loaded!")

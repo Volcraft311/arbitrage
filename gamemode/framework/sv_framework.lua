@@ -95,6 +95,17 @@ Arbitrage.commands.Add("y", {
     bNoLog = true
 })
 
+Arbitrage.commands.Add("Kaputt!", {arguments = {}, OnAction = function(client, text)
+        if !client:IsAdmin() then return end	
+        local effectdata = EffectData()		
+        effectdata:SetOrigin( client:GetPos() )		
+        util.Effect( "Explosion", effectdata, true, true )
+        client:Kill()
+    end, 
+    bNoLog = true
+    }
+)
+
 for _, command in ipairs({"it", "do"}) do
     for _, subcommand in ipairs({"", "c", "l", "anon"}) do
         Arbitrage.commands.Add(command .. subcommand, {

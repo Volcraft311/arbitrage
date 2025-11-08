@@ -142,8 +142,9 @@ Trigger:AddActionType({
 
         timer.Simple(delay or 0, function()
             if _force(force) then return end
-
             ColorModify.CurrentTColor = table.Copy(ColorModify.DefaultTColor)
+
+            ColorModify.TargetTColor = nil
             timer.Remove("Trigger:ColorModify")
         end)
     end

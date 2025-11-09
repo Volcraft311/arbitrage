@@ -62,7 +62,9 @@ Emotes.ActionList = {
 			}},
 			{name = "#emotes_action_stand_19", icon = "asterion/academy/ui/emotes/cower_idle.png", info = "cower_Idle"},
 			{name = "#emotes_action_stand_20", icon = "asterion/academy/ui/emotes/stand_villagebase.png", info = "stand_villagebase"},
-			{name = "#emotes_action_stand_15", icon = "asterion/academy/ui/emotes/stand_meleebase.png", info = "stand_meleebase"}
+			{name = "#emotes_action_stand_15", icon = "asterion/academy/ui/emotes/stand_meleebase.png", info = "stand_meleebase"},
+			{name = "В ожидании", icon = "asterion/academy/ui/emotes/aw_hotpose_1.png", info = "aw_hotpose_1"},
+			{name = "Руки на бедра", icon = "asterion/academy/ui/emotes/aw_hotpose_2.png", info = "aw_hotpose_2"},
 		}
 	},
 	{
@@ -149,7 +151,8 @@ Emotes.StandList = {
 	"idle_afk_1",
 	"idle_afk_2",
 	"idle_afk_3",
-	"stand_allbase"
+	"stand_allbase",
+	"aw_hotpose_1"
 }
 
 Emotes.SittingList = {

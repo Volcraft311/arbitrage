@@ -39,8 +39,10 @@ end
 local cornerRadius = 5
 local function paintMenu(panel)
     panel.Paint = function(_, w, h)
-        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
-        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
+        local color = Arbitrage.theme:GetInformation()
+
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(color.r, color.g, color.b, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(color.r * 0.15, color.g * 0.15, color.b * 0.15))
     end
 end
 
@@ -443,7 +445,9 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(0, 0, 0, 160)
     surface.DrawRect(0, 0, w, h)
 
-    surface.SetDrawColor(255, 255, 255, 255)
+    local color = Arbitrage.theme:GetInformation()
+
+    surface.SetDrawColor(color.r, color.g, color.b)
     surface.SetMaterial(screenMat)
     surface.DrawTexturedRect(0, 0, w, h)
 

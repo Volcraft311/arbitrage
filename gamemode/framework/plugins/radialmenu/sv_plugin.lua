@@ -163,6 +163,19 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
     if client.bIsAnim then return end
     if target.bIsAnim then return end
 
+    if target.ignorePlayersTrade then
+        local data = target.ignorePlayersTrade[client]
+
+        if data then
+            local delay = data.delay
+            local time = CurTime()
+
+            if delay > time then
+                return client:ChatNotify(("Данный игрок уже отказал вам в данном действие. Повторите попытку через %s секунд!"):format(math.floor(delay - time)))
+            end
+        end
+    end
+
     local clientName = client:Name()
     local targetName = target:Name()
 
@@ -183,6 +196,12 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
                     if client:GetPos():Distance(target:GetPos()) > 150 then return end
                     if client.bIsAnim then return end
                     if target.bIsAnim then return end
+
+                    target.ignorePlayersTrade = target.ignorePlayersTrade or {}
+                    target.ignorePlayersTrade[client] = {count = 0, delay = 0}
+
+                    client.ignorePlayersTrade = client.ignorePlayersTrade or {}
+                    client.ignorePlayersTrade[target] = {count = 0, delay = 0}
 
                     client.bIsAnim = true
                     target.bIsAnim = true
@@ -219,7 +238,19 @@ netstream.Hook("RadialMenu:ExchangeAction", function(client)
             },
             no = {
                 name = "Нет",
-                func = nil
+                func = function()
+                    if !IsValid(client) then return end
+                    if !IsValid(target) then return end
+
+                    target.ignorePlayersTrade = target.ignorePlayersTrade or {}
+                    target.ignorePlayersTrade[client] = target.ignorePlayersTrade[client] or {
+                        count = 0,
+                        delay = 0
+                    }
+
+                    target.ignorePlayersTrade[client].count = target.ignorePlayersTrade[client].count + 1
+                    target.ignorePlayersTrade[client].delay = CurTime() + (target.ignorePlayersTrade[client].count * 60)
+                end
             }
         }
     })
@@ -322,6 +353,19 @@ netstream.Hook("RadialMenu:KissPlayerAction", function(client)
     if client.bIsAnim then return end
     if target.bIsAnim then return end
 
+    if target.ignorePlayersKiss then
+        local data = target.ignorePlayersKiss[client]
+
+        if data then
+            local delay = data.delay
+            local time = CurTime()
+
+            if delay > time then
+                return client:ChatNotify(("Данный игрок уже отказал вам в данном действие. Повторите попытку через %s секунд!"):format(math.floor(delay - time)))
+            end
+        end
+    end
+
     local clientName = client:Name()
     local targetName = target:Name()
 
@@ -342,6 +386,12 @@ netstream.Hook("RadialMenu:KissPlayerAction", function(client)
                     if client:GetPos():Distance(target:GetPos()) > 150 then return end
                     if client.bIsAnim then return end
                     if target.bIsAnim then return end
+
+                    target.ignorePlayersKiss = target.ignorePlayersKiss or {}
+                    target.ignorePlayersKiss[client] = {count = 0, delay = 0}
+
+                    client.ignorePlayersKiss = client.ignorePlayersKiss or {}
+                    client.ignorePlayersKiss[target] = {count = 0, delay = 0}
 
                     client.bIsAnim = true
                     target.bIsAnim = true
@@ -395,7 +445,19 @@ netstream.Hook("RadialMenu:KissPlayerAction", function(client)
             },
             no = {
                 name = "Нет",
-                func = nil
+                func = function()
+                    if !IsValid(client) then return end
+                    if !IsValid(target) then return end
+
+                    target.ignorePlayersKiss = target.ignorePlayersKiss or {}
+                    target.ignorePlayersKiss[client] = target.ignorePlayersKiss[client] or {
+                        count = 0,
+                        delay = 0
+                    }
+
+                    target.ignorePlayersKiss[client].count = target.ignorePlayersKiss[client].count + 1
+                    target.ignorePlayersKiss[client].delay = CurTime() + (target.ignorePlayersKiss[client].count * 60)
+                end
             }
         }
     })
@@ -420,6 +482,19 @@ netstream.Hook("RadialMenu:HugPlayerAction", function(client)
     if client.bIsAnim then return end
     if target.bIsAnim then return end
 
+    if target.ignorePlayersHug then
+        local data = target.ignorePlayersHug[client]
+
+        if data then
+            local delay = data.delay
+            local time = CurTime()
+
+            if delay > time then
+                return client:ChatNotify(("Данный игрок уже отказал вам в данном действие. Повторите попытку через %s секунд!"):format(math.floor(delay - time)))
+            end
+        end
+    end
+
     local clientName = client:Name()
     local targetName = target:Name()
 
@@ -440,6 +515,12 @@ netstream.Hook("RadialMenu:HugPlayerAction", function(client)
                     if client:GetPos():Distance(target:GetPos()) > 150 then return end
                     if client.bIsAnim then return end
                     if target.bIsAnim then return end
+
+                    target.ignorePlayersHug = target.ignorePlayersHug or {}
+                    target.ignorePlayersHug[client] = {count = 0, delay = 0}
+
+                    client.ignorePlayersHug = client.ignorePlayersHug or {}
+                    client.ignorePlayersHug[target] = {count = 0, delay = 0}
 
                     client.bIsAnim = true
                     target.bIsAnim = true
@@ -493,7 +574,19 @@ netstream.Hook("RadialMenu:HugPlayerAction", function(client)
             },
             no = {
                 name = "Нет",
-                func = nil
+                func = function()
+                    if !IsValid(client) then return end
+                    if !IsValid(target) then return end
+
+                    target.ignorePlayersHug = target.ignorePlayersHug or {}
+                    target.ignorePlayersHug[client] = target.ignorePlayersHug[client] or {
+                        count = 0,
+                        delay = 0
+                    }
+
+                    target.ignorePlayersHug[client].count = target.ignorePlayersHug[client].count + 1
+                    target.ignorePlayersHug[client].delay = CurTime() + (target.ignorePlayersHug[client].count * 60)
+                end
             }
         }
     })

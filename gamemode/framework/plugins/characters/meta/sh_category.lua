@@ -20,6 +20,8 @@ CATEGORY.id = 0
 CATEGORY.uniqueID = 0
 CATEGORY.icon = "icon16/contrast.png"
 CATEGORY.background = nil
+CATEGORY.backdrop = nil
+CATEGORY.title = nil
 CATEGORY.allow_creation = false
 
 function CATEGORY:__tostring()
@@ -52,6 +54,14 @@ end
 
 function CATEGORY:GetBackground()
 	return self.background
+end
+
+function CATEGORY:GetBackdrop()
+	return self.backdrop
+end
+
+function CATEGORY:GetTitle()
+	return self.title
 end
 
 

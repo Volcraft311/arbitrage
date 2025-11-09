@@ -72,14 +72,21 @@ function PANEL:Init()
     end)
 end
 
-function PANEL:Paint()
+local screenMat = Material("asterion/academy/ui/radial/screen.png")
+function PANEL:Paint(w, h)
     local client = LocalPlayer()
     local alpha = self:GetAlpha()
 
-    surface.SetDrawColor(15, 6, 7, alpha * 0.9)
-    surface.DrawRect(0, 0, ScrW(), ScrH())
+    asterionlib.DrawBlur(self, 3)
 
-    asterionlib.DrawBlurAt(0, 0, ScrW(), ScrH(), 5, nil, alpha)
+    surface.SetDrawColor(0, 0, 0, 160)
+    surface.DrawRect(0, 0, w, h)
+
+    local color = Arbitrage.theme:GetInformation()
+
+    surface.SetDrawColor(color.r, color.g, color.b)
+    surface.SetMaterial(screenMat)
+    surface.DrawTexturedRect(0, 0, w, h)
 
     draw.SimpleText(Format("%s | %s", Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", ScrW() / 2, 50, Color( 255, 255, 255), TEXT_ALIGN_CENTER)
 

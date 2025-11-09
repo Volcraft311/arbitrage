@@ -232,71 +232,76 @@ function PANEL:CreateCircle(index, x, status, color, png)
     surface.DrawTexturedRect(position - size / 2, ScrH() - 70 - size / 2, size, size )
 end
 
+local screenMat = Material("asterion/academy/ui/radial/screen.png")
 function PANEL:Paint(w, h)
     self.alpha = Lerp(FrameTime() * 7, self.alpha, self.bClose and 0 or 255)
     self.y = 0
 
-    if self.alpha > 0.01 then
-        asterionlib.DrawBlurAt(0, 0, w, h, 5, nil, self.alpha)
+    asterionlib.DrawBlur(self, 3)
 
-        surface.SetDrawColor(15, 6, 7, self.alpha * 0.9)
-        surface.DrawRect(0, 0, w, h)
+    surface.SetDrawColor(0, 0, 0, 160)
+    surface.DrawRect(0, 0, w, h)
 
-        if self.icon then
-            local size = h * 0.00047
-            local sizeW, sizeH = W(self.mat:Width() * size), H(self.mat:Height() * size)
+    local color = Arbitrage.theme:GetInformation()
 
-            surface.SetDrawColor(255, 255, 255, self.alpha * 0.6)
-            surface.SetMaterial(self.mat)
-            surface.DrawTexturedRect(w / 2 - sizeW / 2, h - sizeH, sizeW, sizeH)
-        end
+    surface.SetDrawColor(color.r, color.g, color.b)
+    surface.SetMaterial(screenMat)
+    surface.DrawTexturedRect(0, 0, w, h)
 
-        draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
-        draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
-        draw.SimpleText(L(self.faction:GetTitle()), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+    if self.icon then
+        local size = h * 0.00047
+        local sizeW, sizeH = W(self.mat:Width() * size), H(self.mat:Height() * size)
 
-        for k, v in ipairs(self.descriptionData or {}) do
-            local padding = #self.descriptionData * self.descriptionHeight
+        surface.SetDrawColor(255, 255, 255, self.alpha * 0.6)
+        surface.SetMaterial(self.mat)
+        surface.DrawTexturedRect(w / 2 - sizeW / 2, h - sizeH, sizeW, sizeH)
+    end
 
-            draw.SimpleText(v, self.descriptionFont, w / 2, h - 200 - 80 - padding + (k - 1) * self.descriptionHeight, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
-        end
+    draw.SimpleText(("%s | %s"):format(Time:GetFormated(), L(Arbitrage.GetChapter())), "arb.Font_FuturaPTBook_10", w / 2, 50, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.client:Name(), "arb.Font_OpenSansLight_15", w / 2, h - 200 - 60, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+    draw.SimpleText(L(self.faction:GetTitle()), "arb.Font_OpenSansLight_8", w / 2, h - 200 + 20, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
 
-        local info = {}
-        for k, v in ipairs(Arbitrage.hud.CircleData or {}) do
-            local name = v[1]
-            local dataTable = v[2]
+    for k, v in ipairs(self.descriptionData or {}) do
+        local padding = #self.descriptionData * self.descriptionHeight
 
-            local statistics = Arbitrage.statistics.list[name]
-            if statistics then
-                if statistics.OnCanRun then
-                    local allow = statistics.OnCanRun(self.client, statistics)
+        draw.SimpleText(v, self.descriptionFont, w / 2, h - 200 - 80 - padding + (k - 1) * self.descriptionHeight, Color(255, 255, 255, self.alpha), TEXT_ALIGN_CENTER)
+    end
 
-                    if allow == false then
-                        continue
-                    end
-                end
+    local info = {}
+    for k, v in ipairs(Arbitrage.hud.CircleData or {}) do
+        local name = v[1]
+        local dataTable = v[2]
 
-                local vtime = statistics.time
-                local time = isfunction(vtime) and (tonumber(vtime(self.client)) or 40) or tonumber(vtime)
-                if time <= -1 then
+        local statistics = Arbitrage.statistics.list[name]
+        if statistics then
+            if statistics.OnCanRun then
+                local allow = statistics.OnCanRun(self.client, statistics)
+
+                if allow == false then
                     continue
                 end
             end
 
-            info[#info + 1] = {
-                name,
-                math.Clamp(dataTable.value() * 3.6, 0, 360),
-                dataTable.color,
-                dataTable.image
-            }
+            local vtime = statistics.time
+            local time = isfunction(vtime) and (tonumber(vtime(self.client)) or 40) or tonumber(vtime)
+            if time <= -1 then
+                continue
+            end
         end
 
-        local moved = (-#info * 120 + 120) / 2
-        for k, v in ipairs(info) do
-            self:CreateCircle(v[1], moved, v[2], v[3], v[4])
+        info[#info + 1] = {
+            name,
+            math.Clamp(dataTable.value() * 3.6, 0, 360),
+            dataTable.color,
+            dataTable.image
+        }
+    end
 
-            moved = moved + 120
-        end
+    local moved = (-#info * 120 + 120) / 2
+    for k, v in ipairs(info) do
+        self:CreateCircle(v[1], moved, v[2], v[3], v[4])
+
+        moved = moved + 120
     end
 end
 

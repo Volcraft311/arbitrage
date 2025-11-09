@@ -296,7 +296,9 @@ function PANEL:InitializeBackground()
 	self.background_blur = circles.New(CIRCLE_FILLED, self.panelWide + self.size, self.centerX, self.centerY, self.size * 2)
 
 	self.background_blur:SetMaterial(circle_blurMat)
-	self.background_blur:SetColor(RADIAL_CONFIG.COLORS.WHITE)
+
+	local color = Arbitrage.theme:GetInformation()
+	self.background_blur:SetColor(color)
 end
 
 function PANEL:PlaySound(soundData)
@@ -516,6 +518,8 @@ function PANEL:HandleKeyboardInput()
 end
 
 function PANEL:EntityLighting()
+	local color = Arbitrage.theme:GetInformation()
+
 	render_SuppressEngineLighting(true)
 	render_SetLightingOrigin(self.activeCharacter:GetPos())
 	render_ResetModelLighting(120 / 255, 120 / 255, 120 / 255)
@@ -528,7 +532,7 @@ function PANEL:EntityLighting()
 	end
 
 	render_SetModelLighting(5, 0.04, 0.04, 0.04)
-	render_SetModelLighting(4, 5, 0, 0)
+	render_SetModelLighting(4, color.r / 255, color.g / 255, color.b / 255)
 end
 
 function PANEL:EntityDisableIK()
@@ -635,7 +639,9 @@ function PANEL:DrawBackground(w, h)
 	surface_SetDrawColor(0, 0, 0, 160)
 	surface_DrawRect(0, 0, w, h)
 
-	surface_SetDrawColor(255, 255, 255, 255)
+	local color = Arbitrage.theme:GetInformation()
+
+	surface_SetDrawColor(color.r, color.g, color.b)
 	surface_SetMaterial(screenMat)
 	surface_DrawTexturedRect(0, 0, w, h)
 
@@ -690,8 +696,9 @@ end
 
 function PANEL:DrawCursorArrow(w, h)
 	local size_arrow = self:GetTall() * 0.45
+	local color = Arbitrage.theme:GetInformation()
 
-	surface_SetDrawColor(255, 255, 255)
+	surface_SetDrawColor(color.r, color.g, color.b)
 	surface_SetMaterial(arrowMat)
 	surface_DrawTexturedRectRotated(w / 2, h / 2, size_arrow, size_arrow, -self.angleDegrees)
 end
@@ -807,7 +814,9 @@ function PANEL:DrawLeftMouseHint(w, h)
 
 	local iconW = height * 3.5
 	local iconH = iconW * 0.3827
-	surface_SetDrawColor(255, 255, 255)
+	local color = Arbitrage.theme:GetInformation()
+
+	surface_SetDrawColor(color.r, color.g, color.b)
 	surface_SetMaterial(lmbMat)
 	surface_DrawTexturedRect(w / 2 + (self.radialSize + self.size) - iconW / 2, h / 2 + (self.radialSize + self.size) - height - iconH, iconW, iconH)
 end
@@ -817,7 +826,9 @@ function PANEL:DrawRightMouseHint(w, h)
 
 	local iconW = height * 3.5
 	local iconH = iconW * 0.3827
-	surface_SetDrawColor(255, 255, 255, self.rmbMatAlpha * 255)
+	local color = Arbitrage.theme:GetInformation()
+
+	surface_SetDrawColor(color.r, color.g, color.b, self.rmbMatAlpha * 255)
 	surface_SetMaterial(rmbMat)
 	surface_DrawTexturedRect(w / 2 - (self.radialSize + self.size) - iconW / 2, h / 2 + (self.radialSize + self.size) - height - iconH, iconW, iconH)
 end
@@ -827,7 +838,9 @@ function PANEL:DrawMiddleMouseHint(w, h)
 
 	local iconW = height * 3.5
 	local iconH = iconW * 0.3827
-	surface_SetDrawColor(255, 255, 255, self.ambMatAlpha * 255)
+	local color = Arbitrage.theme:GetInformation()
+
+	surface_SetDrawColor(color.r, color.g, color.b, self.ambMatAlpha * 255)
 	surface_SetMaterial(ambMat)
 	surface_DrawTexturedRect(w / 2 - iconW / 2, h / 2 - (self.radialSize + self.size) - 50 - height - iconH, iconW, iconH)
 end

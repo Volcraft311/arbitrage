@@ -58,7 +58,7 @@ function PLUGIN:FacialEmotesOption()
 		{
 			name = "#radial_option_back",
 			description = "#radial_option_back_desc",
-			icon = Material("danganronpa/radialmenu/back.png"),
+			icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 			action = self.MainOption
 		}
 	}
@@ -94,7 +94,7 @@ function PLUGIN:MoodsOption()
 		{
 			name = "#radial_option_back",
 			description = "#radial_option_back_desc",
-			icon = Material("danganronpa/radialmenu/back.png"),
+			icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 			action = self.MainOption
 		}
 	}
@@ -103,7 +103,7 @@ function PLUGIN:MoodsOption()
 		data[#data + 1] = {
 			name = v.name,
 			id = "mood_" .. k,
-			icon = v.icon and Material(v.icon) or nil,
+			icon = v.icon and Material(v.icon, "smooth") or nil,
 			sequence = v.sequences and (LocalPlayer():LookupSequence(v.sequences.idle) >= 0 and v.sequences.idle) or "idle_all_01",
 			description = "#radial_option_mood_desc '" .. v.name .. "'",
 			action = function()
@@ -120,14 +120,14 @@ function PLUGIN:ActionsOption()
 		{
 			name = "#radial_option_back",
 			description = "#radial_option_back_desc",
-			icon = Material("danganronpa/radialmenu/back.png"),
+			icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 			action = self.MainOption
 		},
 		{
 			name = "#radial_option_wardrobe",
 			id = "wardrobe",
 			description = "#radial_option_wardrobe_desc",
-			icon = Material("danganronpa/radialmenu/fashion.png"),
+			icon = Material("danganronpa/radialmenu/fashion.png", "smooth"),
 			action = function()
 				local panel = vgui_Create("arb.OpenWardrobe")
 				panel:SetData(LocalPlayer():GetModel())
@@ -137,7 +137,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_hidestatus",
 			id = "hidestatus",
 			description = "#radial_option_hidestatus_desc",
-			icon = Material("danganronpa/radialmenu/hide.png"),
+			icon = Material("danganronpa/radialmenu/hide.png", "smooth"),
 			action = function()
 				local a = !LocalPlayer():GetNetVar("hideStatus", false)
 				netstream.Start("arb.HideState", a)
@@ -147,7 +147,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_hidename",
 			id = "hidename",
 			description = "#radial_option_hidename_desc",
-			icon = Material("danganronpa/radialmenu/hidden.png"),
+			icon = Material("danganronpa/radialmenu/hidden.png", "smooth"),
 			action = function()
 				netstream.Start("arb.HideName")
 			end
@@ -156,7 +156,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_description",
 			id = "description",
 			description = "#radial_option_description_desc",
-			icon = Material("danganronpa/radialmenu/loupe.png"),
+			icon = Material("danganronpa/radialmenu/loupe.png", "smooth"),
 			action = function()
 				vgui_Create("arb.OpenEditorDescription")
 			end
@@ -165,7 +165,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_lookaround",
 			id = "lookaround",
 			description = "#radial_option_lookaround_desc",
-			icon = Material("danganronpa/radialmenu/focus.png"),
+			icon = Material("danganronpa/radialmenu/focus.png", "smooth"),
 			action = function()
 				RunConsoleCommand("say", "/lookaround")
 			end
@@ -174,7 +174,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_roll",
 			id = "roll",
 			description = "#radial_option_roll_desc",
-			icon = Material("danganronpa/radialmenu/dice.png"),
+			icon = Material("danganronpa/radialmenu/dice.png", "smooth"),
 			action = function()
 				RunConsoleCommand("say", "/roll")
 			end
@@ -183,7 +183,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_fallover",
 			id = "fallover",
 			description = "#radial_option_fallover_desc",
-			icon = Material("danganronpa/radialmenu/d_animation.png"),
+			icon = Material("danganronpa/radialmenu/d_animation.png", "smooth"),
 			action = function()
 				RunConsoleCommand("say", "/fallover")
 			end
@@ -195,7 +195,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_tokotazer",
 			id = "tazer",
 			description = "#radial_option_tokotazer_desc",
-			icon = Material("danganronpa/radialmenu/sneeze.png"),
+			icon = Material("danganronpa/radialmenu/sneeze.png", "smooth"),
 			action = function()
 				netstream.Start("arb.TokoSneezing")
 			end
@@ -209,7 +209,7 @@ function PLUGIN:ActionsOption()
 				{
 					name = "#radial_option_back",
 					description = "#radial_option_back_desc",
-					icon = Material("danganronpa/radialmenu/back.png"),
+					icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 					action = self.ActionsOption
 				}
 			}
@@ -279,7 +279,7 @@ function PLUGIN:ActionsOption()
 		data[#data + 1] = {
 			name = "#radial_option_unquipammob",
 			description = "#radial_option_unquipammob_desc",
-			icon = Material("danganronpa/radialmenu/ammo.png"),
+			icon = Material("danganronpa/radialmenu/ammo.png", "smooth"),
 			iscategory = true,
 			action = stored,
 		}
@@ -306,7 +306,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_sleep",
 			id = "sleep",
 			description = "#radial_option_sleep_desc",
-			icon = Material("danganronpa/radialmenu/sleep.png"),
+			icon = Material("danganronpa/radialmenu/sleep.png", "smooth"),
 			action = function()
 				netstream.Start("arb.Sleeping")
 			end
@@ -318,7 +318,7 @@ function PLUGIN:ActionsOption()
 			name = "#radial_option_thirdperson",
 			id = "thirdperson",
 			description = "#radial_option_thirdperson_desc",
-			icon = Material("danganronpa/radialmenu/thirdperson.png"),
+			icon = Material("danganronpa/radialmenu/thirdperson.png", "smooth"),
 			action = function()
 				Arbitrage.ThirdPerson = !Arbitrage.ThirdPerson
 			end
@@ -333,7 +333,7 @@ function PLUGIN:StaticAnimationsOption()
 		{
 			name = "#radial_option_back",
 			description = "#radial_option_back_desc",
-			icon = Material("danganronpa/radialmenu/back.png"),
+			icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 			action = self.MainOption
 		}
 	}
@@ -343,7 +343,7 @@ function PLUGIN:StaticAnimationsOption()
 			{
 				name = "#radial_option_back",
 				description = "#radial_option_back_desc",
-				icon = Material("danganronpa/radialmenu/back.png"),
+				icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 				action = parentAction
 			}
 		}
@@ -353,7 +353,7 @@ function PLUGIN:StaticAnimationsOption()
 				categoryData[#categoryData + 1] = {
 					name = item.name,
 					description = item.description or ("#radial_option_action_desc '" .. item.name .. "'"),
-					icon = item.icon and Material(item.icon) or nil,
+					icon = item.icon and Material(item.icon, "smooth") or nil,
 					iscategory = true,
 					action = function()
 						return ProcessCategory(item, function()
@@ -374,7 +374,7 @@ function PLUGIN:StaticAnimationsOption()
 					name = item.name,
 					id = "saction_" .. sequence,
 					description = "#radial_option_saction_desc '" .. item.name .. "'",
-					icon = item.icon and Material(item.icon) or nil,
+					icon = item.icon and Material(item.icon, "smooth") or nil,
 					sequence = sequence,
 					action = function()
 						RunConsoleCommand("say", "/action " .. sequence)
@@ -391,7 +391,7 @@ function PLUGIN:StaticAnimationsOption()
 			data[#data + 1] = {
 				name = category.name,
 				description = "#radial_option_action_desc '" .. category.name .. "'",
-				icon = category.icon and Material(category.icon) or nil,
+				icon = category.icon and Material(category.icon, "smooth") or nil,
 				iscategory = true,
 				action = function()
 					return ProcessCategory(category, self.StaticAnimationsOption)
@@ -427,7 +427,7 @@ function PLUGIN:DynamicAnimationsOption()
 		{
 			name = "#radial_option_back",
 			description = "#radial_option_back_desc",
-			icon = Material("danganronpa/radialmenu/back.png"),
+			icon = Material("danganronpa/radialmenu/back.png", "smooth"),
 			action = self.MainOption
 		}
 	}
@@ -437,7 +437,7 @@ function PLUGIN:DynamicAnimationsOption()
 			name = v[1],
 			id = "daction_" .. k,
 			description = "#radial_option_daction_desc '" .. v[1] .. "'",
-			icon = v[3] and Material(v[3]) or nil,
+			icon = v[3] and Material(v[3], "smooth") or nil,
 			-- sequence = "idle_all_01",
 			-- weightedSequence = v[2],
 			action = function()
@@ -454,35 +454,35 @@ function PLUGIN:MainOption()
 		{
 			name = "#radial_option_emotions",
 			description = "#radial_option_emotions_desc",
-			icon = Material("danganronpa/radialmenu/emoticons.png"),
+			icon = Material("danganronpa/radialmenu/emoticons.png", "smooth"),
 			iscategory = true,
 			action = self.FacialEmotesOption
 		},
 		{
 			name = "#radial_option_staticanim",
 			description = "#radial_option_staticanim_desc",
-			icon = Material("danganronpa/radialmenu/s_animation.png"),
+			icon = Material("danganronpa/radialmenu/s_animation.png", "smooth"),
 			iscategory = true,
 			action = self.StaticAnimationsOption
 		},
 		{
 			name = "#radial_option_dynamicanim",
 			description = "#radial_option_dynamicanim_desc",
-			icon = Material("danganronpa/radialmenu/d_animation.png"),
+			icon = Material("danganronpa/radialmenu/d_animation.png", "smooth"),
 			iscategory = true,
 			action = self.DynamicAnimationsOption
 		},
 		{
 			name = "#radial_option_moods",
 			description = "#radial_option_moods_desc",
-			icon = Material("danganronpa/radialmenu/mood.png"),
+			icon = Material("danganronpa/radialmenu/mood.png", "smooth"),
 			iscategory = true,
 			action = self.MoodsOption
 		},
 		{
 			name = "#radial_option_actionsanim",
 			description = "#radial_option_actionsanim_desc",
-			icon = Material("danganronpa/radialmenu/settings.png"),
+			icon = Material("danganronpa/radialmenu/settings.png", "smooth"),
 			iscategory = true,
 			action = self.ActionsOption
 		}
@@ -495,7 +495,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_search",
 			id = "search",
 			description = "#radial_option_search_desc",
-			icon = Material("danganronpa/radialmenu/search.png"),
+			icon = Material("danganronpa/radialmenu/search.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:SearchAction")
 			end
@@ -504,7 +504,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_exchange",
 			id = "exchange",
 			description = "#radial_option_exchange_desc",
-			icon = Material("danganronpa/radialmenu/exchange.png"),
+			icon = Material("danganronpa/radialmenu/exchange.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:ExchangeAction")
 			end
@@ -513,7 +513,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_push",
 			id = "push",
 			description = "#radial_option_push_desc",
-			icon = Material("danganronpa/radialmenu/push.png"),
+			icon = Material("danganronpa/radialmenu/push.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:PushAction")
 			end
@@ -522,7 +522,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_drag",
 			id = "drag",
 			description = "#radial_option_drag_desc",
-			icon = Material("asterion/academy/ui/radial/action/drag.png"),
+			icon = Material("asterion/academy/ui/radial/action/drag.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:DragPlayerAction")
 			end
@@ -531,7 +531,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_kiss",
 			id = "kiss",
 			description = "#radial_option_kiss_desc",
-			icon = Material("asterion/academy/ui/radial/action/kiss.png"),
+			icon = Material("asterion/academy/ui/radial/action/kiss.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:KissPlayerAction")
 			end
@@ -540,7 +540,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_hug",
 			id = "hug",
 			description = "#radial_option_hug_desc",
-			icon = Material("asterion/academy/ui/radial/action/hug.png"),
+			icon = Material("asterion/academy/ui/radial/action/hug.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:HugPlayerAction")
 			end
@@ -557,7 +557,7 @@ function PLUGIN:PlayerOption()
 					name = "#radial_option_cure",
 					id = "cure",
 					description = "#radial_option_cure_desc",
-					icon = Material("danganronpa/radialmenu/cure.png"),
+					icon = Material("danganronpa/radialmenu/cure.png", "smooth"),
 					action = function()
 						netstream.Start("ItemBase:SendAction", item:GetID(), "#item_action_use_another_player")
 					end
@@ -572,7 +572,7 @@ function PLUGIN:PlayerOption()
 					name = "#radial_option_cuff",
 					id = "cuff",
 					description = "#radial_option_cuff_desc",
-					icon = Material("danganronpa/radialmenu/cuff.png"),
+					icon = Material("danganronpa/radialmenu/cuff.png", "smooth"),
 					action = function()
 						netstream.Start("ItemBase:SendAction", item:GetID(), "#item_action_tie")
 					end
@@ -588,7 +588,7 @@ function PLUGIN:PlayerOption()
 			name = "#radial_option_uncuff",
 			id = "uncuff",
 			description = "#radial_option_uncuff_desc",
-			icon = Material("danganronpa/radialmenu/uncuff.png"),
+			icon = Material("danganronpa/radialmenu/uncuff.png", "smooth"),
 			action = function()
 				net_Start("Cuffs_FreePlayer")
 					net_WriteEntity(target)
@@ -606,7 +606,7 @@ function PLUGIN:RagdollOption()
 			name = "#radial_option_search",
 			id = "search",
 			description = "#radial_option_search_desc",
-			icon = Material("danganronpa/radialmenu/search.png"),
+			icon = Material("danganronpa/radialmenu/search.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:SearchAction")
 			end
@@ -615,7 +615,7 @@ function PLUGIN:RagdollOption()
 			name = "#radial_option_standup",
 			id = "standup",
 			description = "#radial_option_standup_desc",
-			icon = Material("danganronpa/radialmenu/push.png"),
+			icon = Material("danganronpa/radialmenu/push.png", "smooth"),
 			action = function()
 				netstream.Start("RadialMenu:StandUp")
 			end

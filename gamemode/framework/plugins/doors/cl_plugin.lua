@@ -51,12 +51,13 @@ local cam_Start3D = cam.Start3D
 local cam_End3D = cam.End3D
 local timer_Simple = timer.Simple
 
-
 local cornerRadius = 5
 local function paintMenu(panel)
     panel.Paint = function(_, w, h)
-        draw_RoundedBox(cornerRadius, 0, 0, w, h, Color(255, 61, 96, 165.75))
-        draw_RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(41, 22, 25))
+        local color = Arbitrage.theme:GetInformation()
+
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(color.r, color.g, color.b, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(color.r * 0.15, color.g * 0.15, color.b * 0.15))
     end
 end
 

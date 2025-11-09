@@ -51,6 +51,7 @@ function PLUGIN.options.Add(id, type, default, data)
         name = data.name or "Неизвестно",
         title = data.title or "Не указано",
         description = data.description or "Не указано",
+        category = data.category or "#option_g_other",
         image = data.image or nil,
         min = data.min or 0,
         max = data.max or 100,
@@ -108,6 +109,7 @@ function PLUGIN.binds.Add(id, default, data)
         name = data.name or "Неизвестно",
         title = data.title or "Не указано",
         description = data.description or "Не указано",
+        category = data.category or "#option_g_other",
         image = data.image or nil,
         IsHidden = data.IsHidden or nil,
         OnChanged = data.OnChanged or nil

@@ -655,6 +655,10 @@ function Arbitrage.OnMapReversion()
     return GetNetVar("arb.OnMapReversion", false)
 end
 
+function Arbitrage.OnGamemasterTheme()
+    return GetNetVar("arb.OnGamemasterTheme", false)
+end
+
 Arbitrage.DefaultRules = {
     {"https://i.imgur.com/WqrdPdz.png", "#rules_1_title", "#rules_1_description"},
     {"https://i.imgur.com/5BEGz5S.png", "#rules_2_title", "#rules_2_description"},

@@ -233,13 +233,14 @@ do
 
                 local x, y = padding, padding + (i - 1) * sizeH + (i - 1) * padding
                 local w, h = titleHeight * 17.5, sizeH
+                local progressColor = Arbitrage.theme:GetInformation()
 
                 asterionlib.DrawBlurAt(x, y, w, h, 2)
 
                 surface.SetDrawColor(0, 0, 0, 180)
                 surface.DrawRect(x, y, w, h)
 
-                surface.SetDrawColor(255, 255, 255, 60)
+                surface.SetDrawColor(progressColor.r, progressColor.g, progressColor.b, 60)
                 surface.SetMaterial(data.material)
                 surface.DrawTexturedRect(x, y, h, h)
 

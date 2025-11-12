@@ -188,6 +188,16 @@ local function getClient(client, steamid)
     return client
 end
 
+local cornerRadius = 5
+local function paintMenu(panel)
+    panel.Paint = function(_, w, h)
+        local color = Arbitrage.theme:GetInformation()
+
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(color.r, color.g, color.b, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(color.r * 0.15, color.g * 0.15, color.b * 0.15))
+    end
+end
+
 local function getActionList(clientinfo)
     if clientinfo.IsPlayer and clientinfo:IsPlayer() then
         clientinfo = {
@@ -825,6 +835,261 @@ local function getActionList(clientinfo)
 
                             return a_isvalid and data[m_steamid]
                         end
+                    },
+                    {
+                        name = "Включить отображение камеры",
+                        icon = "icon16/camera_link.png",
+                        data = function()
+                            local frame = vgui.Create("DFrame")
+                            frame:SetDrawOnTop(true)
+                            frame:SetTitle(client:FullName(true))
+                            frame:SetSize(300, 300)
+                            frame:Center()
+                            frame.Paint = function(this, w, h)
+                                if !IsValid(client) then
+                                    return this:Remove()
+                                end
+
+                                local eyeAng = client:EyeAngles()
+                                local eyePos = client:EyePos() + client:GetAimVector() * 20
+
+                                local x, y = this:GetPos()
+                                local old = DisableClipping(true)
+                                    render.RenderView({
+                                        origin = eyePos,
+                                        angles = eyeAng,
+                                        x = x,
+                                        y = y,
+                                        w = w,
+                                        h = h,
+                                        drawviewer = true,
+                                        drawviewmodel = false,
+                                        fov = 90
+                                    })
+                                DisableClipping(old)
+                            end
+                            frame.SizingInBounds = function(this)
+                                local screenX, screenY = this:LocalToScreen(0, 0)
+                                local mouseX, mouseY = gui.MousePos()
+
+                                return (mouseX > screenX + this:GetWide() - 40 and mouseY > screenY + this:GetTall() - 40) and (mouseX < screenX + this:GetWide() + 40 and mouseY < screenY + this:GetTall() + 40)
+                            end
+                            frame.DraggingInBounds = function(this)
+                                local _, screenY = this:LocalToScreen(0, 0)
+                                local mouseY = gui.MouseY()
+
+                                return mouseY > screenY and mouseY < screenY + 20
+                            end
+                            frame.OnMousePressed = function(this, key)
+                                if this:SizingInBounds() then
+                                    this.bSizing = true
+                                    this:MouseCapture(true)
+                                elseif this:DraggingInBounds() then
+                                    local mouseX, mouseY = this:ScreenToLocal(gui.MousePos())
+
+                                    this.DragOffset = {mouseX, mouseY}
+                                    this:MouseCapture(true)
+                                end
+                            end
+                            frame.OnMouseReleased = function(this)
+                                this:MouseCapture(false)
+                                this:SetCursor("arrow")
+
+                                if this.bSizing or this.DragOffset then
+                                    this.bSizing = nil
+                                    this.DragOffset = nil
+                                end
+                            end
+                            frame.Think = function(this)
+                                local mouseX = math.Clamp(gui.MouseX(), 0, ScrW())
+                                local mouseY = math.Clamp(gui.MouseY(), 0, ScrH())
+
+                                this:MouseCapture(false)
+
+                                if this.DragOffset then
+                                    local x = math.Clamp(mouseX - this.DragOffset[1], 0, ScrW() - this:GetWide())
+                                    local y = math.Clamp(mouseY - this.DragOffset[2], 0, ScrH() - this:GetTall())
+
+                                    this:SetPos(x, y)
+                                elseif this:SizingInBounds() or this.bSizing then
+                                    this:SetCursor("sizenwse")
+                                    this:MouseCapture(true)
+
+                                    local press = input.IsMouseDown(MOUSE_LEFT)
+                                    if press then
+                                        local x, y = this:GetPos()
+                                        local width = math.Clamp(mouseX - x, 32, ScrW() - 32 * 2)
+                                        local height = math.Clamp(mouseY - y, 32, ScrH() - 32 * 2)
+
+                                        this:SetSize(width, height)
+                                        this:SetCursor("sizenwse")
+                                    else
+                                        if this.bSizing then
+                                            this:OnMouseReleased()
+                                        end
+                                    end
+                                elseif this:DraggingInBounds() then
+                                    this:SetCursor("sizeall")
+                                else
+                                    this:SetCursor("arrow")
+                                end
+                            end
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
+                    },
+                    {
+                        name = "Включить отображение инвентаря",
+                        icon = "icon16/package_link.png",
+                        data = function()
+                            netstream.Request("arb.StartSpectateInventory", client, function(inventoryID)
+                                local frame = vgui.Create("DFrame")
+                                frame:SetDrawOnTop(true)
+                                frame:SetTitle(client:FullName(true))
+                                frame:SetSize(300, 300)
+                                frame:Center()
+                                frame.inventoryID = inventoryID
+                                frame.items = {}
+                                paintMenu(frame)
+                                frame.OnInventoryUpdate = function(this, items)
+                                    this.items = items
+
+                                    for _, panel in ipairs(frame.iconLayout.panels) do
+                                        if IsValid(panel) then
+                                            panel:Remove()
+                                        end
+                                    end
+                                    frame.iconLayout.panels = {}
+
+                                    for _, item in pairs(items) do
+                                        local path = item:GetIcon()
+                                        local icon = nil
+                                        if string.isURL(path) then
+                                            asterionlib.downloader:Image(path, function(mat)
+                                                icon = mat
+                                            end)
+                                        else
+                                            icon = Material(path)
+                                        end
+
+                                        local panel = frame.iconLayout:Add("DButton")
+                                        panel:SetTooltip(F(item:GetName()) .. "\n" .. F(item:GetDescription()))
+                                        panel:SetText("")
+                                        panel:SetSize(40, 40)
+                                        panel.Paint = function(this2, w, h)
+                                            surface.SetDrawColor(27, 10, 13, 200)
+                                            surface.DrawRect(0, 0, w, h)
+
+                                            if icon then
+                                                surface.SetDrawColor(255, 255, 255)
+                                                surface.SetMaterial(icon)
+                                                surface.DrawTexturedRect(0, 0, w, h)
+                                            end
+
+                                            local color = Arbitrage.theme:GetInformation()
+                                            surface.SetDrawColor(color.r, color.g, color.b)
+                                            surface.DrawOutlinedRect(0, 0, w, h, 1)
+                                        end
+
+                                        frame.iconLayout.panels[#frame.iconLayout.panels + 1] = panel
+                                    end
+                                end
+                                frame.OnThinkInventory = function(this)
+                                    local inventory = InventoryBase.instances[this.inventoryID]
+                                    if !inventory then return end
+
+                                    local items = inventory:GetItems()
+                                    if !table.equal(items, this.items) then
+                                        this:OnInventoryUpdate(items)
+                                    end
+                                end
+                                frame.SizingInBounds = function(this)
+                                    local screenX, screenY = this:LocalToScreen(0, 0)
+                                    local mouseX, mouseY = gui.MousePos()
+
+                                    return (mouseX > screenX + this:GetWide() - 40 and mouseY > screenY + this:GetTall() - 40) and (mouseX < screenX + this:GetWide() + 40 and mouseY < screenY + this:GetTall() + 40)
+                                end
+                                frame.DraggingInBounds = function(this)
+                                    local _, screenY = this:LocalToScreen(0, 0)
+                                    local mouseY = gui.MouseY()
+
+                                    return mouseY > screenY and mouseY < screenY + 20
+                                end
+                                frame.OnMousePressed = function(this, key)
+                                    if this:SizingInBounds() then
+                                        this.bSizing = true
+                                        this:MouseCapture(true)
+                                    elseif this:DraggingInBounds() then
+                                        local mouseX, mouseY = this:ScreenToLocal(gui.MousePos())
+
+                                        this.DragOffset = {mouseX, mouseY}
+                                        this:MouseCapture(true)
+                                    end
+                                end
+                                frame.OnMouseReleased = function(this)
+                                    this:MouseCapture(false)
+                                    this:SetCursor("arrow")
+
+                                    if this.bSizing or this.DragOffset then
+                                        this.bSizing = nil
+                                        this.DragOffset = nil
+                                    end
+                                end
+                                frame.Think = function(this)
+                                    if !IsValid(client) then
+                                        return this:Remove()
+                                    end
+
+                                    this:OnThinkInventory()
+
+                                    local mouseX = math.Clamp(gui.MouseX(), 0, ScrW())
+                                    local mouseY = math.Clamp(gui.MouseY(), 0, ScrH())
+
+                                    this:MouseCapture(false)
+
+                                    if this.DragOffset then
+                                        local x = math.Clamp(mouseX - this.DragOffset[1], 0, ScrW() - this:GetWide())
+                                        local y = math.Clamp(mouseY - this.DragOffset[2], 0, ScrH() - this:GetTall())
+
+                                        this:SetPos(x, y)
+                                    elseif this:SizingInBounds() or this.bSizing then
+                                        this:SetCursor("sizenwse")
+                                        this:MouseCapture(true)
+
+                                        local press = input.IsMouseDown(MOUSE_LEFT)
+                                        if press then
+                                            local x, y = this:GetPos()
+                                            local width = math.Clamp(mouseX - x, 32, ScrW() - 32 * 2)
+                                            local height = math.Clamp(mouseY - y, 32, ScrH() - 32 * 2)
+
+                                            this:SetSize(width, height)
+                                            this:SetCursor("sizenwse")
+                                        else
+                                            if this.bSizing then
+                                                this:OnMouseReleased()
+                                            end
+                                        end
+                                    elseif this:DraggingInBounds() then
+                                        this:SetCursor("sizeall")
+                                    else
+                                        this:SetCursor("arrow")
+                                    end
+                                end
+                                frame.OnRemove = function(this)
+                                    netstream.Start("arb.StopSpectateInventory", this.inventoryID)
+                                end
+
+                                frame.iconLayout = frame:Add("DIconLayout")
+                                frame.iconLayout:Dock(FILL)
+                                frame.iconLayout:SetSpaceY(5)
+                                frame.iconLayout:SetSpaceX(5)
+                                frame.iconLayout.panels = {}
+                            end)
+                        end,
+                        check = function()
+                            return a_isvalid
+                        end
                     }
                 }
             },
@@ -876,16 +1141,6 @@ local function getActionList(clientinfo)
             }
         }
     }
-end
-
-local cornerRadius = 5
-local function paintMenu(panel)
-    panel.Paint = function(_, w, h)
-        local color = Arbitrage.theme:GetInformation()
-
-        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(color.r, color.g, color.b, 165.75))
-        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(color.r * 0.15, color.g * 0.15, color.b * 0.15))
-    end
 end
 
 local function paintOption(panel, drawline)

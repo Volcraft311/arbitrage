@@ -818,3 +818,27 @@ netstream.Hook("arb.SendVote", function(client, data)
 
     PLUGIN.votingData[client:SteamID()] = data
 end)
+
+netstream.Listen("arb.StartSpectateInventory", function(client, target)
+    if !client:IsAdmin() then return end
+    if !IsValid(target) then return end
+
+    local inventory = target:GetInventory()
+    if !inventory then return end
+
+    inventory.receivers[client] = true
+    inventory:Sync(client)
+
+    return true, inventory.id
+end)
+
+netstream.Hook("arb.StopSpectateInventory", function(client, inventoryID)
+    if !client:IsAdmin() then return end
+
+    local inventory = InventoryBase.instances[inventoryID]
+    if !inventory then return end
+
+    if inventory.receivers[client] then
+        inventory.receivers[client] = false
+    end
+end)

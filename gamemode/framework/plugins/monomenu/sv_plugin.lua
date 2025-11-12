@@ -156,7 +156,23 @@ netstream.Hook("arb.OpenMonoMenu", function(client)
     PLUGIN:OpenMonoMenu(client)
 end)
 
+local filters = {
+    "/sitting",
+    "/action",
+    "/exitaction",
+    "/sg",
+    "/mood"
+}
 hook("ChatAddText", function(client, message)
+    local info = message:utf8lower():Trim()
+    for _, filter in ipairs(filters) do
+        local len = filter:len()
+
+        if info:Left(len) == filter then
+            return
+        end
+    end
+
     for k, v in ipairs(player.GetAdmins()) do
         local data = v:GetLocalVar("spectatescommand", {})
 

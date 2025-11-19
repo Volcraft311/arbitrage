@@ -114,10 +114,8 @@ function PANEL:OnRemove()
     end
 end
 
-local screenMat = Material("asterion/academy/ui/radial/screen.png")
+local screenMat = Material("asterion/academy/ui/radial/screen.png", "smooth")
 function PANEL:Paint(w, h)
-    local alpha = self:GetAlpha()
-
     asterionlib.DrawBlur(self, 3)
 
     surface.SetDrawColor(0, 0, 0, 160)

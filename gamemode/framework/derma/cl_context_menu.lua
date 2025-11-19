@@ -24,7 +24,6 @@ function PANEL:Init()
     self:SetKeyboardInputEnabled(false)
 
     self.HUDElement = {}
-    self.bClose = false
     self.alpha = 0
     self.y = 0
 
@@ -32,7 +31,7 @@ function PANEL:Init()
     self.faction = Character.team:GetByID(self.client:Team())
     self.icon = self.faction:GetAssets().hud
     if self.icon then
-        self.mat = Material(self.icon)
+        self.mat = Material(self.icon, "smooth")
     end
 
     self.description = self.client:GetNetVar("description")
@@ -69,7 +68,7 @@ function PANEL:Init()
         if info.isHidden then continue end
 
         local material = isfunction(info.icon) and info.icon(self.client) or info.icon
-        material = Material(material)
+        material = Material(material, "smooth")
 
         local isHover = false
         local tooltip = self:Add("DLabel")
@@ -232,9 +231,9 @@ function PANEL:CreateCircle(index, x, status, color, png)
     surface.DrawTexturedRect(position - size / 2, ScrH() - 70 - size / 2, size, size )
 end
 
-local screenMat = Material("asterion/academy/ui/radial/screen.png")
+local screenMat = Material("asterion/academy/ui/radial/screen.png", "smooth")
 function PANEL:Paint(w, h)
-    self.alpha = Lerp(FrameTime() * 7, self.alpha, self.bClose and 0 or 255)
+    self.alpha = Lerp(FrameTime() * 7, self.alpha, 255)
     self.y = 0
 
     asterionlib.DrawBlur(self, 3)

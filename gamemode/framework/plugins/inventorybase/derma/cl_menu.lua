@@ -72,10 +72,9 @@ function PANEL:Init()
     end)
 end
 
-local screenMat = Material("asterion/academy/ui/radial/screen.png")
+local screenMat = Material("asterion/academy/ui/radial/screen.png", "smooth")
 function PANEL:Paint(w, h)
     local client = LocalPlayer()
-    local alpha = self:GetAlpha()
 
     asterionlib.DrawBlur(self, 3)
 

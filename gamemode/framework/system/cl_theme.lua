@@ -41,7 +41,7 @@ function Arbitrage.theme:ProcessMaterial(mat)
             return self.cached[mat]
         end
     else
-        return Material(mat)
+        return Material(mat, "smooth")
     end
 end
 

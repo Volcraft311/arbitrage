@@ -121,15 +121,15 @@ local vgui_Register = vgui.Register
 local circles = asterionlib.Circles
 local CIRCLE_FILLED = CIRCLE_FILLED
 
-local circle_blurMat = Material(RADIAL_CONFIG.MATERIALS.CIRCLE_BLUR)
-local screenMat = Material(RADIAL_CONFIG.MATERIALS.SCREEN)
-local arrowMat = Material(RADIAL_CONFIG.MATERIALS.ARROW)
-local gradient_selectMat = Material(RADIAL_CONFIG.MATERIALS.GRADIENT)
-local fill_blurMat = Material(RADIAL_CONFIG.MATERIALS.FILL_BLUR)
-local ambMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.AMB)
-local lmbMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.LMB)
-local rmbMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.RMB)
-local starMat = Material(RADIAL_CONFIG.MATERIALS.STAR)
+local circle_blurMat = Material(RADIAL_CONFIG.MATERIALS.CIRCLE_BLUR, "smooth")
+local screenMat = Material(RADIAL_CONFIG.MATERIALS.SCREEN, "smooth")
+local arrowMat = Material(RADIAL_CONFIG.MATERIALS.ARROW, "smooth")
+local gradient_selectMat = Material(RADIAL_CONFIG.MATERIALS.GRADIENT, "smooth")
+local fill_blurMat = Material(RADIAL_CONFIG.MATERIALS.FILL_BLUR, "smooth")
+local ambMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.AMB, "smooth")
+local lmbMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.LMB, "smooth")
+local rmbMat = Material(RADIAL_CONFIG.MATERIALS.MOUSE.RMB, "smooth")
+local starMat = Material(RADIAL_CONFIG.MATERIALS.STAR, "smooth")
 
 local PANEL = {}
 

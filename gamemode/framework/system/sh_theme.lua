@@ -343,6 +343,15 @@ function Arbitrage.theme:GetPrimaryBackgroundParallaxSecondary()
     end
 end
 
+function Arbitrage.theme:GetPrimaryBackgroundSelectLine()
+    local theme = Arbitrage.theme:GetActive()
+
+    local mat = Arbitrage.theme:ProcessMaterial(theme.images.primary_bg_select_line)
+    if mat then
+        return mat
+    end
+end
+
 -- Основная тема красного цвета
 do
     local main_color = Color(217, 26, 44) -- ЭТО (218, 19, 40) НЕ В ГМОДЕ
@@ -378,9 +387,9 @@ do
             vis_details_title = main_color, --  детализация (полосы)
             vis_details_main = main_color, -- детализация
             vis_category_selected = main_color, --  выделение выбранной категории (выбранная тема, настройка)
-            vis_category_unselected = Color(255, 255, 255), -- не выбранная категория
-            vis_scrollbar = Color(255, 242, 245, 15), --  область скроллбара
-            vis_button_background = Color(0, 0, 0, 50),
+            vis_category_unselected = white_color, -- не выбранная категория
+            vis_scrollbar = ColorAlpha(white_color, 15), --  область скроллбара
+            vis_button_background = ColorAlpha(black_color, 50),
             vis_button_selected = main_color,
             vis_button_unselected = ColorAlpha(main_color, 50),
             vis_background = black_color,
@@ -393,7 +402,8 @@ do
             primary_bg_active = "asterion/academy/ui/themes/red_background_active.png",
             primary_bg_character = "asterion/academy/ui/themes/red_background_character.png",
             primary_bg_parallax_p = "asterion/academy/ui/themes/red_background_parallax_p.png",
-            primary_bg_parallax_s = "asterion/academy/ui/themes/red_background_parallax_s.png"
+            primary_bg_parallax_s = "asterion/academy/ui/themes/red_background_parallax_s.png",
+            primary_bg_select_line = ""
         }
     })
 end
@@ -433,9 +443,9 @@ do
             vis_details_title = main_color,
             vis_details_main = main_color,
             vis_category_selected = main_color,
-            vis_category_unselected = Color(255, 255, 255),
-            vis_scrollbar = Color(255, 242, 245, 15),
-            vis_button_background = Color(0, 0, 0, 50),
+            vis_category_unselected = white_color,
+            vis_scrollbar = ColorAlpha(white_color, 15),
+            vis_button_background = ColorAlpha(black_color, 50),
             vis_button_selected = main_color,
             vis_button_unselected = ColorAlpha(main_color, 50),
             vis_background = black_color,
@@ -448,7 +458,8 @@ do
             primary_bg_active = "asterion/academy/ui/themes/kirigiri_background_active.png",
             primary_bg_character = "asterion/academy/ui/themes/kirigiri_background_character.png",
             primary_bg_parallax_p = "",
-            primary_bg_parallax_s = ""
+            primary_bg_parallax_s = "",
+            primary_bg_select_line = ""
         }
     })
 end
@@ -488,9 +499,9 @@ do
             vis_details_title = main_color,
             vis_details_main = main_color,
             vis_category_selected = main_color,
-            vis_category_unselected = Color(255, 255, 255),
-            vis_scrollbar = Color(255, 242, 245, 15),
-            vis_button_background = Color(0, 0, 0, 50),
+            vis_category_unselected = white_color,
+            vis_scrollbar = ColorAlpha(white_color, 15),
+            vis_button_background = ColorAlpha(black_color, 50),
             vis_button_selected = main_color,
             vis_button_unselected = ColorAlpha(main_color, 50),
             vis_background = black_color,
@@ -503,7 +514,8 @@ do
             primary_bg_active = "asterion/academy/ui/themes/example_background_active.png",
             primary_bg_character = "",
             primary_bg_parallax_p = "",
-            primary_bg_parallax_s = "asterion/academy/ui/themes/example_background_parallax_p.png"
+            primary_bg_parallax_s = "asterion/academy/ui/themes/example_background_parallax_p.png",
+            primary_bg_select_line = ""
         },
         onInitialized = function(this)
         end,
@@ -572,9 +584,9 @@ do
             vis_details_title = main_color,
             vis_details_main = main_color,
             vis_category_selected = main_color,
-            vis_category_unselected = Color(255, 255, 255),
-            vis_scrollbar = Color(255, 242, 245, 15),
-            vis_button_background = Color(0, 0, 0, 50),
+            vis_category_unselected = white_color,
+            vis_scrollbar = ColorAlpha(white_color, 15),
+            vis_button_background = ColorAlpha(black_color, 50),
             vis_button_selected = main_color,
             vis_button_unselected = ColorAlpha(main_color, 50),
             vis_background = black_color,
@@ -587,7 +599,8 @@ do
             primary_bg_active = "asterion/academy/ui/themes/example_background_active.png",
             primary_bg_character = "",
             primary_bg_parallax_p = "",
-            primary_bg_parallax_s = "asterion/academy/ui/themes/example_background_parallax_p.png"
+            primary_bg_parallax_s = "asterion/academy/ui/themes/example_background_parallax_p.png",
+            primary_bg_select_line = ""
         },
         onInitialized = function(this)
             local data = asterionlib.data:Get("theme_user", {})

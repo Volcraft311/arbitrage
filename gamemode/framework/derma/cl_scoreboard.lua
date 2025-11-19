@@ -129,7 +129,7 @@ function PANEL:CreatePanel()
     local fontTitle = "arb.Font_FuturaPTDemi_9"
     local fontHeight = draw.GetFontHeight(fontTitle)
 
-    local banner_mat = Material("asterion/academy/ui/scoreboard/banner_big_mat.png")
+    local banner_mat = Material("asterion/academy/ui/scoreboard/banner_big_mat.png", "smooth")
     local banner_big_mask = BMASKS.CreateMask("banner_big_mask", "asterion/academy/ui/scoreboard/banner_big_mask.png")
     self.info = self.panel:Add("Panel")
     self.info:SetAlpha(0)
@@ -303,7 +303,7 @@ function PANEL:CreatePlayers(scrollPanel)
         errorPanel:SetTall(H(100))
     end
 
-    local role_mat = Material("asterion/academy/ui/scoreboard/role.png")
+    local role_mat = Material("asterion/academy/ui/scoreboard/role.png", "smooth")
     local banner_mini_mask = BMASKS.CreateMask("banner_mini_mask", "asterion/academy/ui/scoreboard/banner_mini_mask.png")
     local players = self:SortPlayers()
 
@@ -435,7 +435,7 @@ function PANEL:CreatePlayers(scrollPanel)
     end)
 end
 
-local screenMat = Material("asterion/academy/ui/radial/screen.png")
+local screenMat = Material("asterion/academy/ui/radial/screen.png", "smooth")
 
 ---@param w number
 ---@param h number

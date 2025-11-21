@@ -84,7 +84,6 @@ function Hints:InitHints()
     self:Add("#hint_2")
     self:Add("#hint_3")
 
-    self:Add("#hint_4 '" .. input_GetKeyName(SETTINGS.binds.Get("open_mainmenu_ui")) .. "'")
     self:Add("#hint_5 '" .. input_GetKeyName(SETTINGS.binds.Get("voice_up")) .. "' , '" .. input_GetKeyName(SETTINGS.binds.Get("voice_down")) .. "', #hint_5_1")
 
     self:Add("#hint_6")

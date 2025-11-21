@@ -13,6 +13,65 @@
 
 local PLUGIN = PLUGIN
 
+local cornerRadius = 5
+local function paintMenu(panel)
+    panel.Paint = function(_, w, h)
+        local color = Arbitrage.theme:GetInformation()
+
+        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(color.r, color.g, color.b, 165.75))
+        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(color.r * 0.15, color.g * 0.15, color.b * 0.15))
+    end
+end
+
+local function paintOption(panel, drawline)
+    panel:SetFont("arb.Font_FuturaPTBook_6")
+    panel.Paint = function(_, w, h)
+        local alpha = 130
+
+        if _:IsHovered() and _:IsEnabled() then
+            surface.SetDrawColor(27, 10, 13, 200)
+            surface.DrawRect(2, 2, w - 4, h - 4)
+
+            alpha = 255
+        end
+
+        if !_:IsEnabled() then
+            surface.SetDrawColor(255, 0, 0, 20)
+            surface.DrawRect(2, 0, w - 4, h)
+
+            alpha = 255
+        end
+
+        panel:SetTextColor(Color(240, 240, 240, alpha))
+
+        if drawline then
+            surface.SetDrawColor(255, 255, 255, 50)
+            surface.DrawRect(w * 0.1, h - 2, w - w * 0.2, 2)
+        end
+    end
+end
+
+local barMargin = 23
+local function paintBar(panel)
+    local children = panel:GetChildren()
+    local bar = children[2]
+    if !IsValid(bar) then return end
+
+    bar:SetWide(30)
+    bar:DockMargin(0, 0, 0, 0)
+
+    bar.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 255, 255, 3)
+        surface.DrawRect(barMargin, 30, w - barMargin - 4, h - 60)
+    end
+    bar.btnUp.Paint = function(_, w, h) end
+    bar.btnDown.Paint = function(_, w, h) end
+    bar.btnGrip.Paint = function(_, w, h)
+        surface.SetDrawColor(255, 255, 255)
+        surface.DrawRect(barMargin, 0, w - barMargin - 4, h)
+    end
+end
+
 local function GetHovered( eyepos, eyevec )
     local ply = LocalPlayer()
     local filter = ply:GetViewEntity()
@@ -110,12 +169,13 @@ local function getPlaces(steamid)
     return data
 end
 
-local function getAllTemporaryStatusEffects(client)
+local function getEffects(client)
     local disable = GetNetVar("medical:statuseffects_disable", {})
     local all_effects = {}
     for k, v in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
         all_effects[#all_effects + 1] = {
             name = v.name,
+            uniqueID = k,
             icon = isfunction(v.icon) and v.icon(client) or v.icon,
             data = function()
                 Derma_StringRequest(L("#monomenu_ply_status_givestatus"), L("#monomenu_ply_status_timestatus"), "", function(text)
@@ -140,6 +200,7 @@ local function getAllTemporaryStatusEffects(client)
 
             client_effects[#client_effects + 1] = {
                 name = info.name .. " (" .. delay .. " sec)",
+                uniqueID = uniqueID,
                 icon = isfunction(info.icon) and info.icon(client) or info.icon,
                 data = function()
                     runAction("removetemporarystatuseffect", client, uniqueID)
@@ -147,6 +208,12 @@ local function getAllTemporaryStatusEffects(client)
             }
         end
     end
+
+    return all_effects, client_effects
+end
+
+local function getAllTemporaryStatusEffects(client)
+    local all_effects, client_effects = getEffects(client)
 
     local data = {
         {
@@ -168,6 +235,309 @@ local function getAllTemporaryStatusEffects(client)
             check = function()
                 return IsValid(client) and #client_effects > 0
             end
+        },
+        {
+            name = "Выдать выборочно",
+            icon = "icon16/pill_go.png",
+            data = function()
+                local dframe = vgui.Create("DFrame")
+                dframe:SetTitle("Установите нужные вам параметры")
+                dframe:SetSize(ScrW() * 0.4, ScrH() * 0.4)
+                dframe:Center()
+                dframe:MakePopup()
+                paintMenu(dframe)
+
+                local topPanels = dframe:Add("Panel")
+                topPanels:Dock(FILL)
+
+                local playersPanel = topPanels:Add("DScrollPanel")
+                playersPanel:Dock(LEFT)
+                playersPanel:SetWide(dframe:GetWide() * 0.5)
+                playersPanel.panels = {}
+
+                ApplySmoothScroll(playersPanel)
+
+                local bar = playersPanel:GetVBar()
+                bar:SetWide(30)
+                bar:DockMargin(0, 0, 0, 0)
+
+                bar.Paint = function(_, w, h)
+                    surface.SetDrawColor(255, 255, 255, 3)
+                    surface.DrawRect(20 + 7, 30, w, h - 60)
+                end
+                bar.btnUp.Paint = function(_, w, h) end
+                bar.btnDown.Paint = function(_, w, h) end
+                bar.btnGrip.Paint = function(_, w, h)
+                    local informationColor = Arbitrage.theme:GetInformation()
+
+                    surface.SetDrawColor(informationColor.r, informationColor.g, informationColor.b)
+                    surface.DrawRect(20 + 7, 0, w, h)
+                end
+
+                local titleFont = "arb.Font_FuturaPTDemi_8"
+                local titleHeight = draw.GetFontHeight(titleFont)
+
+                local textFont = "arb.Font_FuturaPTBook_5"
+                local textHeight = draw.GetFontHeight(textFont)
+
+                local descriptionFont = "arb.Font_FuturaPTBook_6"
+                local descriptionHeight = draw.GetFontHeight(descriptionFont)
+
+                for _, v in ipairs(player.GetAll()) do
+                    local name = v:Name()
+                    local steamname = v:SteamName()
+                    local steamid = v:SteamID()
+
+                    local panel = playersPanel:Add("Panel")
+                    panel.client = v
+                    panel.gives = {}
+                    panel.takes = {}
+                    panel:Dock(TOP)
+                    panel:DockMargin(0, 0, 0, 5)
+                    panel:SetTall(titleHeight + textHeight + descriptionHeight + descriptionHeight)
+
+                    local infoPanel = panel:Add("Panel")
+                    infoPanel:Dock(TOP)
+                    infoPanel:SetTall(titleHeight + textHeight)
+                    infoPanel.Paint = function(_, w, h)
+                        draw.SimpleText(name, titleFont, titleHeight + 5, 0, color_white, TEXT_ALIGN_LEFT)
+                        draw.SimpleText(steamname .. " " .. steamid, textFont, 0, titleHeight, Color(255, 255, 255, 100), TEXT_ALIGN_LEFT)
+                    end
+
+                    local avatar = infoPanel:Add("AvatarImage")
+                    avatar:SetWide(titleHeight)
+                    avatar:SetTall(titleHeight)
+                    avatar:SetPlayer(v, 32)
+
+                    local takesPanel = panel:Add("DPanel")
+                    takesPanel:Dock(BOTTOM)
+                    takesPanel:SetTall(descriptionHeight)
+                    takesPanel.Paint = function(_, w, h)
+                        local width = draw.SimpleText("Забрано:", descriptionFont, 0, 0, color_white, TEXT_ALIGN_LEFT)
+
+                        local c = 0
+                        for uniqueID in pairs(panel.takes) do
+                            local info = Medical.t_status_effects[uniqueID]
+                            local icon = isfunction(info.icon) and info.icon(v) or info.icon
+
+                            surface.SetDrawColor(255, 255, 255)
+                            surface.SetMaterial(Material(icon))
+                            surface.DrawTexturedRect(width + 5 + c * h + c * 2, 0, h, h)
+
+                            c = c + 1
+                        end
+                    end
+
+                    local givesPanel = panel:Add("DPanel")
+                    givesPanel:Dock(BOTTOM)
+                    givesPanel:SetTall(descriptionHeight)
+                    givesPanel.Paint = function(_, w, h)
+                        local width = draw.SimpleText("Выдано:", descriptionFont, 0, 0, color_white, TEXT_ALIGN_LEFT)
+
+                        local c = 0
+                        for uniqueID in pairs(panel.gives) do
+                            local info = Medical.t_status_effects[uniqueID]
+                            local icon = isfunction(info.icon) and info.icon(v) or info.icon
+
+                            surface.SetDrawColor(255, 255, 255)
+                            surface.SetMaterial(Material(icon))
+                            surface.DrawTexturedRect(width + 5 + c * h + c * 2, 0, h, h)
+
+                            c = c + 1
+                        end
+                    end
+
+                    local click = panel:Add("DButton")
+                    click:SetText("")
+                    click:SetSize(playersPanel:GetWide(), panel:GetTall())
+                    click.alpha = 0
+                    click.Paint = function(this, w, h)
+                        this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 0.5 or 0)
+
+                        surface.SetDrawColor(0, 0, 0, this.alpha * 255)
+                        surface.DrawRect(0, 0, w, h)
+                    end
+                    click.DoClick = function()
+                        local all_effects, client_effects = getEffects(v)
+
+                        local Menu = DermaMenu()
+                        paintMenu(Menu)
+                        paintBar(Menu)
+
+                        local givesMenu, a = Menu:AddSubMenu("Выдать")
+                        paintMenu(givesMenu)
+                        paintOption(a)
+                        for _, effect in ipairs(all_effects) do
+                            local option = givesMenu:AddOption(F(effect.name), function()
+                                Derma_StringRequest(L("#monomenu_ply_status_givestatus"), L("#monomenu_ply_status_timestatus"), "", function(text)
+                                    text = tonumber(text)
+                                    if !text then return end
+
+                                    panel.gives[effect.uniqueID] = text
+                                end)
+                            end)
+
+                            option:SetIcon(effect.icon)
+                            paintOption(option)
+                        end
+
+                        local takesMenu, b = Menu:AddSubMenu("Забрать")
+                        paintMenu(takesMenu)
+                        paintOption(b)
+                        for _, effect in ipairs(client_effects) do
+                            local option = takesMenu:AddOption(F(effect.name), function()
+                                panel.takes[effect.uniqueID] = true
+                            end)
+
+                            option:SetIcon(effect.icon)
+                            paintOption(option)
+                        end
+
+                        local removesMenu, c = Menu:AddSubMenu("Удалить")
+                        paintMenu(removesMenu)
+                        paintOption(c)
+
+                        local gSubMenu, d = removesMenu:AddSubMenu("Из выданных")
+                        paintMenu(gSubMenu)
+                        paintOption(d)
+
+                        for uniqueID in pairs(panel.gives) do
+                            local info = Medical.t_status_effects[uniqueID]
+                            local icon = isfunction(info.icon) and info.icon(client) or info.icon
+
+                            local option = gSubMenu:AddOption(F(info.name), function()
+                                panel.gives[uniqueID] = nil
+                            end)
+                            option:SetIcon(icon)
+                            paintOption(option)
+                        end
+
+                        local tSubMenu, e = removesMenu:AddSubMenu("Из забранных")
+                        paintMenu(tSubMenu)
+                        paintOption(e)
+
+                        for uniqueID in pairs(panel.takes) do
+                            local info = Medical.t_status_effects[uniqueID]
+                            local icon = isfunction(info.icon) and info.icon(client) or info.icon
+
+                            local option = tSubMenu:AddOption(F(info.name), function()
+                                panel.takes[uniqueID] = nil
+                            end)
+                            option:SetIcon(icon)
+                            paintOption(option)
+                        end
+
+                        Menu:Open()
+                    end
+
+                    playersPanel.panels[steamid] = panel
+                end
+
+                local effectsPanel = topPanels:Add("DScrollPanel")
+                effectsPanel:Dock(FILL)
+                effectsPanel:SetWide(dframe:GetWide() * 0.5)
+
+                ApplySmoothScroll(effectsPanel)
+
+                local bar = effectsPanel:GetVBar()
+                bar:SetWide(30)
+                bar:DockMargin(0, 0, 0, 0)
+
+                bar.Paint = function(_, w, h)
+                    surface.SetDrawColor(255, 255, 255, 3)
+                    surface.DrawRect(20 + 7, 30, w, h - 60)
+                end
+                bar.btnUp.Paint = function(_, w, h) end
+                bar.btnDown.Paint = function(_, w, h) end
+                bar.btnGrip.Paint = function(_, w, h)
+                    local informationColor = Arbitrage.theme:GetInformation()
+
+                    surface.SetDrawColor(informationColor.r, informationColor.g, informationColor.b)
+                    surface.DrawRect(20 + 7, 0, w, h)
+                end
+
+                for uniqueID, effect in SortedPairsByMemberValue(Medical.t_status_effects, "name") do
+                    local name = F(effect.name)
+                    local icon = isfunction(effect.icon) and effect.icon(LocalPlayer()) or effect.icon
+
+                    local panel = effectsPanel:Add("DPanel")
+                    panel:Dock(TOP)
+                    panel:DockMargin(0, 0, 0, 5)
+                    panel:SetTall(titleHeight)
+                    panel.Paint = function(this, w, h)
+                        surface.SetDrawColor(255, 255, 255)
+                        surface.SetMaterial(Material(icon))
+                        surface.DrawTexturedRect(0, 0, h, h)
+
+                        draw.SimpleText(name, titleFont, h + 5, 0, color_white, TEXT_ALIGN_LEFT)
+                    end
+
+                    local click = panel:Add("DButton")
+                    click:SetText("")
+                    click:SetSize(effectsPanel:GetWide(), panel:GetTall())
+                    click.alpha = 0
+                    click.Paint = function(this, w, h)
+                        this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 0.5 or 0)
+
+                        surface.SetDrawColor(0, 0, 0, this.alpha * 255)
+                        surface.DrawRect(0, 0, w, h)
+                    end
+                    click.DoClick = function()
+                        local Menu = DermaMenu()
+                        paintMenu(Menu)
+
+                        local primaryOption = Menu:AddOption("Выдать всем", function()
+                            Derma_StringRequest(L("#monomenu_ply_status_givestatus"), L("#monomenu_ply_status_timestatus"), "", function(text)
+                                text = tonumber(text)
+                                if !text then return end
+
+                                for _, panel in pairs(playersPanel.panels) do
+                                    if !IsValid(panel) then continue end
+
+                                    panel.gives[uniqueID] = text
+                                end
+                            end)
+                        end)
+                        paintOption(primaryOption)
+
+                        local secondaryOption = Menu:AddOption("Забрать у всех", function()
+                            for _, panel in pairs(playersPanel.panels) do
+                                if !IsValid(panel) then continue end
+
+                                panel.takes[uniqueID] = true
+                            end
+                        end)
+                        paintOption(secondaryOption)
+
+                        Menu:Open()
+                    end
+                end
+
+                local dbutton = dframe:Add("DButton")
+                dbutton:SetText("Установить")
+                dbutton:Dock(BOTTOM)
+                dbutton.DoClick = function()
+                    for _, panel in pairs(playersPanel.panels) do
+                        if !IsValid(panel) then continue end
+
+                        local target = panel.client
+                        if !IsValid(target) then continue end
+
+                        local gives = panel.gives
+                        local takes = panel.takes
+
+                        for uniqueID, time in pairs(gives) do
+                            runAction("addtemporarystatuseffect", target, uniqueID, time)
+                        end
+
+                        for uniqueID, time in pairs(takes) do
+                            runAction("removetemporarystatuseffect", target, uniqueID)
+                        end
+                    end
+
+                    dframe:Remove()
+                end
+            end
         }
     }
 
@@ -186,16 +556,6 @@ local function getClient(client, steamid)
     end
 
     return client
-end
-
-local cornerRadius = 5
-local function paintMenu(panel)
-    panel.Paint = function(_, w, h)
-        local color = Arbitrage.theme:GetInformation()
-
-        draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(color.r, color.g, color.b, 165.75))
-        draw.RoundedBox(cornerRadius, 2, 2, w - 4, h - 4, Color(color.r * 0.15, color.g * 0.15, color.b * 0.15))
-    end
 end
 
 local function getActionList(clientinfo)
@@ -1141,55 +1501,6 @@ local function getActionList(clientinfo)
             }
         }
     }
-end
-
-local function paintOption(panel, drawline)
-    panel:SetFont("arb.Font_FuturaPTBook_6")
-    panel.Paint = function(_, w, h)
-        local alpha = 130
-
-        if _:IsHovered() and _:IsEnabled() then
-            surface.SetDrawColor(27, 10, 13, 200)
-            surface.DrawRect(2, 2, w - 4, h - 4)
-
-            alpha = 255
-        end
-
-        if !_:IsEnabled() then
-            surface.SetDrawColor(255, 0, 0, 20)
-            surface.DrawRect(2, 0, w - 4, h)
-
-            alpha = 255
-        end
-
-        panel:SetTextColor(Color(240, 240, 240, alpha))
-
-        if drawline then
-            surface.SetDrawColor(255, 255, 255, 50)
-            surface.DrawRect(w * 0.1, h - 2, w - w * 0.2, 2)
-        end
-    end
-end
-
-local barMargin = 23
-local function paintBar(panel)
-    local children = panel:GetChildren()
-    local bar = children[2]
-    if !IsValid(bar) then return end
-
-    bar:SetWide(30)
-    bar:DockMargin(0, 0, 0, 0)
-
-    bar.Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255, 3)
-        surface.DrawRect(barMargin, 30, w - barMargin - 4, h - 60)
-    end
-    bar.btnUp.Paint = function(_, w, h) end
-    bar.btnDown.Paint = function(_, w, h) end
-    bar.btnGrip.Paint = function(_, w, h)
-        surface.SetDrawColor(255, 255, 255)
-        surface.DrawRect(barMargin, 0, w - barMargin - 4, h)
-    end
 end
 
 local function CreateMenu(info, parent, drawline)

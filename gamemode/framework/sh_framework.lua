@@ -849,6 +849,12 @@ do
         end
 
         function playerMeta:SetFakeName(name)
+            name = name:Trim()
+
+            if name == "" then
+                name = nil
+            end
+
             self:SetNetVar("fakename", name)
         end
     end

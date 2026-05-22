@@ -865,6 +865,71 @@ Medical:TemporaryStatusEffects("flashbang", {
 	end
 })
 
+Medical:TemporaryStatusEffects("confident_shooter", {
+	name = "#status_effects_confident_shooter_title",
+	icon = "asterion/academy/ui/health/error.png",
+	description = "#status_effects_confident_shooter_desc",
+	hooks = {
+		MultiplierHandShaking = function(client)
+			return 0.1  -- Остается только 10% от базовой тряски
+		end,
+		MultiplierFear = function(client)
+			return 0.1  -- Остается 10% страха (для эффекта прицеливания)
+		end,
+		MultiplierRecoil = function(client)
+			return 0.1  -- Остается 10% отдачи
+		end
+	}
+})
+
+Medical:TemporaryStatusEffects("lethargy", {
+	name = "#status_effects_lethargy_title",
+	icon = "asterion/academy/ui/health/error.png",
+	description = "#status_effects_lethargy_desc",
+	hooks = {
+		MultiplierHandShaking = function(client)
+			return 1.5  -- 150% тряски
+		end,
+		MultiplierRecoil = function(client)
+			return 1.5  -- 150% отдачи
+		end
+	}
+})
+
+Medical:TemporaryStatusEffects("uncertainty", {
+	name = "#status_effects_uncertainty_title",
+	icon = "asterion/academy/ui/health/error.png",
+	description = "#status_effects_uncertainty_desc",
+	hooks = {
+		MultiplierHandShaking = function(client)
+			return 2.0  -- Удваивает тряску
+		end,
+		MultiplierFear = function(client)
+			return 1.5  -- 150% страха (влияет на тряску при прицеливании)
+		end
+	}
+})
+
+Medical:TemporaryStatusEffects("alarmist", {
+	name = "#status_effects_alarmist_title",
+	icon = "asterion/academy/ui/health/error.png",
+	description = "#status_effects_alarmist_desc",
+	hooks = {
+		MultiplierHandShaking = function(client)
+			return 2.5  -- 250% тряски
+		end,
+		MultiplierFear = function(client)
+			return 2.5  -- 250% страха
+		end,
+		MultiplierRecoil = function(client)
+			return 1.5  -- 150% отдачи
+		end,
+		ChanceRandomShot = function(client)
+			return 0.0025
+		end
+	}
+})
+
 -- Для Селестии
 Medical:TemporaryStatusEffects("luck", {
 	name = "#status_effects_luck_title",

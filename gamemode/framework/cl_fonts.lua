@@ -67,7 +67,7 @@ local function fontIterator(array, count)
 				return {
 					fontName, {
 						font = el[1],
-						size = ScreenScale(size),
+						size = ScreenScaleH(size * 1.33333333333),
 						weight = data.weight or 400,
 						extended = data.extended or true,
 						antialias = data.antialias or true,

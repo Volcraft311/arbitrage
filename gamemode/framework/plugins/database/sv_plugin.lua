@@ -298,6 +298,11 @@ hook("PlayerDisconnected", function(client)
             speed = {[1] = client.arb_walkSpeed, [2] = client.arb_runSpeed},
             description = client:GetNetVar("description"),
             forced_description = client:GetNetVar("forced_description"),
+            fake_name = client:GetNetVar("fakename"),
+            recognize_name = client:GetNetVar("recognizeName"),
+            recognize_disclosed = client:GetNetVar("recognizeDisclosed"),
+            recognize_knowledge_all = client:GetNetVar("recognizeKnowledgeAll"),
+            recognize_data = client:GetNetVar("recognizeData"),
             t_status_effects = {},
             t_remove_status_effects = {},
 
@@ -364,13 +369,36 @@ hook("OnPlayerInitialize", function(client)
     client.arb_walkSpeed = data.speed[1]
     client.arb_runSpeed = data.speed[2]
 
-    if data.description then
-        client:SetNetVar("description", data.description)
-    end
 
-    if data.forced_description then
-        client:SetNetVar("forced_description", data.forced_description)
-    end
+    timer.Simple(0, function()
+        if data.description then
+            client:SetNetVar("description", data.description)
+        end
+
+        if data.forced_description then
+            client:SetNetVar("forced_description", data.forced_description)
+        end
+
+        if data.fake_name then
+            client:SetNetVar("fakename", data.fake_name)
+        end
+
+        if data.recognize_name then
+            client:SetNetVar("recognizeName", data.recognize_name)
+        end
+
+        if data.recognize_disclosed then
+            client:SetNetVar("recognizeDisclosed", data.recognize_disclosed)
+        end
+
+        if data.recognize_knowledge_all then
+            client:SetNetVar("recognizeKnowledgeAll", data.recognize_knowledge_all)
+        end
+
+        if data.recognize_data then
+            client:SetNetVar("recognizeData", data.recognize_data)
+        end
+    end)
 
     client:LoadSaverInfo(data.saver, true)
 

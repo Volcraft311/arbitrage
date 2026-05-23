@@ -146,7 +146,7 @@ function Moderation:HighlightSecondary(original)
 end
 
 function Moderation:HighlightPlayer(client, fullname)
-    return ("[%s](<%s>)"):format(fullname and client:FullName() or client:Name(), "https://steamcommunity.com/profiles/" .. client:SteamID64())
+    return ("[%s](<%s>)"):format(fullname and client:FullName() or client:RealName(), "https://steamcommunity.com/profiles/" .. client:SteamID64())
 end
 
 function Moderation:SendLog(client, uniqueID, ...)

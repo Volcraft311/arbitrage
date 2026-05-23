@@ -43,67 +43,78 @@ end
 SETTINGS.binds.Add("open_interface", KEY_Q, {
     name = "#binds_open_interface_name",
     title = "#binds_open_interface_title",
-    description = "#binds_open_interface_desc"
+    description = "#binds_open_interface_desc",
+    category = "#option_b_interface"
 })
 
 SETTINGS.binds.Add("open_context", KEY_C, {
     name = "#binds_open_context_name",
     title = "#binds_open_context_title",
-    description = "#binds_open_context_desc"
+    description = "#binds_open_context_desc",
+    category = "#option_b_interface"
 })
 
 SETTINGS.binds.Add("open_scoreboard", KEY_TAB, {
     name = "#binds_open_scoreboard_name",
     title = "#binds_open_scoreboard_title",
-    description = "#binds_open_scoreboard_desc"
+    description = "#binds_open_scoreboard_desc",
+    category = "#option_b_interface"
 })
 
-SETTINGS.binds.Add("open_mainmenu_ui", KEY_F1, {
-    name = "#binds_open_mainmenu_ui_name",
-    title = "#binds_open_mainmenu_ui_title",
-    description = "#binds_open_mainmenu_ui_desc"
+SETTINGS.binds.Add("pinning_mouse", KEY_F1, {
+    name = "#binds_pinning_mouse_name",
+    title = "#binds_pinning_mouse_title",
+    description = "#binds_pinning_mouse_desc",
+    category = "#option_b_interface"
 })
 
 SETTINGS.binds.Add("open_monomenu_ui", KEY_F3, {
     name = "#binds_open_monomenu_ui_name",
     title = "#binds_open_monomenu_ui_title",
-    description = "#binds_open_monomenu_ui_desc"
+    description = "#binds_open_monomenu_ui_desc",
+    category = "#option_h_admin"
 })
 
 SETTINGS.binds.Add("open_material_ui", KEY_F4, {
     name = "#binds_open_material_ui_name",
     title = "#binds_open_material_ui_title",
-    description = "#binds_open_material_ui_desc"
+    description = "#binds_open_material_ui_desc",
+    category = "#option_a_actions"
 })
 
 SETTINGS.binds.Add("voice_up", KEY_RBRACKET, {
     name = "#binds_voice_up_name",
     title = "#binds_voice_up_title",
-    description = "#binds_voice_up_desc"
+    description = "#binds_voice_up_desc",
+    category = "#option_a_actions"
 })
 
 SETTINGS.binds.Add("voice_down", KEY_LBRACKET, {
     name = "#binds_voice_down_name",
     title = "#binds_voice_down_title",
-    description = "#binds_voice_down_desc"
+    description = "#binds_voice_down_desc",
+    category = "#option_a_actions"
 })
 
 SETTINGS.binds.Add("sitting", KEY_N, {
     name = "#binds_sitting_name",
     title = "#binds_sitting_title",
-    description = "#binds_sitting_desc"
+    description = "#binds_sitting_desc",
+    category = "#option_a_actions"
 })
 
 SETTINGS.binds.Add("radialmenu", KEY_H, {
     name = "#binds_radialmenu_name",
     title = "#binds_radialmenu_title",
-    description = "#binds_radialmenu_desc"
+    description = "#binds_radialmenu_desc",
+    category = "#option_b_interface"
 })
 
 SETTINGS.binds.Add("spectating", KEY_B, {
     name = "#binds_spectating_name",
     title = "#binds_spectating_title",
     description = "#binds_spectating_desc",
+    category = "#option_h_admin",
     IsHidden = function(client)
         return client:IsAdmin()
     end
@@ -112,17 +123,20 @@ SETTINGS.binds.Add("spectating", KEY_B, {
 SETTINGS.binds.Add("prone", KEY_SLASH, {
     name = "#binds_prone_name",
     title = "#binds_prone_title",
-    description = "#binds_prone_desc"
+    description = "#binds_prone_desc",
+    category = "#option_a_actions"
 })
 
 SETTINGS.binds.Add("closerlook", KEY_LALT, {
     name = "#binds_closerlook_name",
     title = "#binds_closerlook_title",
-    description = "#binds_closerlook_desc"
+    description = "#binds_closerlook_desc",
+    category = "#option_a_actions"
 })
 
 SETTINGS.binds.Add("finger_anim", KEY_G, {
     name = "Указать пальцем",
     title = "Указать пальцем",
-    description = "Войти в анимацию показания пальцем"
+    description = "Войти в анимацию показания пальцем",
+    category = "#option_a_actions"
 })

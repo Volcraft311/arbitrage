@@ -337,6 +337,40 @@ MonoMenu:AddGameFunction("#monomenu_gm_mapreversion", "icon16/script_code_red.pn
     end
 })
 
+MonoMenu:AddGameFunction("Система знакомств", "icon16/heart_add.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnRecognizeDisable", false)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnRecognizeDisable", true)
+    end,
+    OnCheck = function(client)
+        return !Arbitrage.OnRecognizeDisable()
+    end
+})
+
+MonoMenu:AddGameFunction("#monomenu_gm_gmtheme", "icon16/css.png", {
+    isCheckBox = true,
+    onEnable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnGamemasterTheme", true)
+    end,
+    onDisable = function(client)
+        if CLIENT then return end
+
+        SetNetVar("arb.OnGamemasterTheme", false)
+    end,
+    OnCheck = function(client)
+        return Arbitrage.OnGamemasterTheme()
+    end
+})
+
 MonoMenu:AddGameFunction("#monomenu_gm_tabmenu", "icon16/information.png", {
     isCheckBox = true,
     onEnable = function(client)

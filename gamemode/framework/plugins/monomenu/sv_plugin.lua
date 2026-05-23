@@ -598,6 +598,30 @@ local actionList = {
         target:StandUp()
 
         AdminNotify:SendNotify("setstandup", client:FullName(), target:FullName())
+    end,
+    ["recognize"] = function(client, target, sender)
+        sender:Recognize(target)
+    end,
+    ["unrecognize"] = function(client, target, steamid)
+        target:UnRecognize(steamid)
+    end,
+    ["setrecognizename"] = function(client, target, name)
+        target:SetRecognizeName(name)
+    end,
+    ["recognizedisclosed"] = function(client, target, bValue)
+        bValue = tobool(bValue)
+        if bValue == nil then return end
+
+        target:SetNetVar("recognizeDisclosed", bValue)
+    end,
+    ["recognizeknowledgeall"] = function(client, target, bValue)
+        bValue = tobool(bValue)
+        if bValue == nil then return end
+
+        target:SetNetVar("recognizeKnowledgeAll", bValue)
+    end,
+    ["recognizesphere"] = function(client, target, option)
+        target:RecognizeSphere(option)
     end
 }
 

@@ -359,7 +359,7 @@ do
     local black_color = Color(0, 0, 0)
 
     Arbitrage.theme:Add("red", {
-        name = "Asterion Academy",
+        name = "PUMP",
         information = main_color,
         colors = {
             text_title = main_color,  --  текст заглавлений в тексте (главы в руководстве)

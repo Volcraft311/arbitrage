@@ -46,7 +46,6 @@ function PANEL:Init()
             end
         else
             parent:UnHideUI()
-            Arbitrage:StopMainMusic()
             self:AlphaTo(0, 0.5, 0, function()
                 self:Remove()
             end)

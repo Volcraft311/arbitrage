@@ -40,7 +40,7 @@ function PANEL:Init()
     timer.Simple(0.2, function()
         sound.PlayFile("sound/main_music.mp3", "", function(channel, _, _)
             musicChanel = channel
-            channel:SetVolume(0.3)
+            channel:SetVolume(0.1)
         end)
     end)
 end

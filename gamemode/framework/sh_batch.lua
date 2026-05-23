@@ -21,7 +21,7 @@ Arbitrage.meta = Arbitrage.meta or {}
 
 function Arbitrage.Initialize()
 	function Arbitrage.GM:GetGameDescription()
-		return "Asterion Academy"
+		return Arbitrage.Config.Name
 	end
 
 	local commandData = {

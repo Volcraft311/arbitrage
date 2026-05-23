@@ -870,7 +870,7 @@ Arbitrage.language:Add("en", {
     ["#content_welcome"] = "Welcome!",
     ["#content_checked"] = "Checked items:",
     ["#content_profile"] = "Profile:",
-    ["#content_desc"] = "You are on Asterion Academy!",
+    ["#content_desc"] = "You are on " .. Arbitrage.Config.Name,
     ["#content_recs"] = "RECOMMENDATIONS",
     ["#content_error"] = "Issues were detected with the server content. Please install the following addons:",
     ["#content_optional"] = "Optional",

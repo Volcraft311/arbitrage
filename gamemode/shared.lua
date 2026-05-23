@@ -26,11 +26,14 @@ for k, v in pairs(gamemode_table) do
 end
 
 Arbitrage = Arbitrage or {}
-Arbitrage.version = "0.162 (09.11.2025)"
+Arbitrage.version = "0.163 (23.05.2026)"
 Arbitrage.GM = GM
 
 include("dev.lua")
 AddCSLuaFile("dev.lua")
+
+include("config.lua")
+AddCSLuaFile("config.lua")
 
 include("framework/sh_batch.lua")
 AddCSLuaFile("framework/sh_batch.lua")

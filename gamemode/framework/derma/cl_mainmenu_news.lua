@@ -105,8 +105,8 @@ function PANEL:Init()
 end
 
 function PANEL:InitNews()
-    self:AddNew(1, "https://i.ibb.co/VpNwFLmf/image.png", function()
-        gui.OpenURL("https://discord.com/channels/744899300277878796/1116322080531697706/1305513992701345824")
+    self:AddNew(1, "https://i.ibb.co/4Rvj4ddQ/Max-Payne-RELEASE.png", function()
+        gui.OpenURL("https://discord.gg/rappumped")
     end)
 
     -- self:AddNew(2, "https://i.ibb.co/hFF4mk3s/image.png", function()

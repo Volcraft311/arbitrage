@@ -39,7 +39,7 @@ hook.Add("Think", "arb.OpenMainMenu", function()
                 if IsValid(Arbitrage.menu.settings) then return end
                 if IsValid(Arbitrage.menu.customization) then return end
                 if IsValid(Arbitrage.menu.lang) then return end
-
+                
                 Arbitrage.menu:AlphaTo(0, 0.25, 0, function()
                     Arbitrage.menu:Remove()
                 end)

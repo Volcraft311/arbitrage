@@ -1,5 +1,7 @@
 local PANEL = {}
 
+local musicChanel = nil
+
 function PANEL:Init()
     if IsValid(Arbitrage.menu) then
         Arbitrage.menu:Remove()
@@ -16,6 +18,7 @@ function PANEL:Init()
     self.padding = 0.07
     self.speed = 1
     self.activeAlpha = 0
+    self.music = nil
 
     self.parallaxPrimary = {
         speed = 0.75,
@@ -30,6 +33,33 @@ function PANEL:Init()
         lerpX = 0,
         lerpY = 0
     }
+    if (musicChanel) then
+        self:StopMusic()
+        musicChanel = nil
+    end
+    timer.Simple(0.2, function()
+        sound.PlayFile("sound/main_music.mp3", "", function(channel, _, _)
+            musicChanel = channel
+            channel:SetVolume(0.3)
+        end)
+    end)
+end
+
+function PANEL:StopMusic()
+    if musicChanel != nil then
+        timer.Create("Arb.MenuMusicFade", 0.1, 8, function()
+            if ! musicChanel then return end
+            musicChanel:SetVolume(math.Clamp(musicChanel:GetVolume() - 0.05, 0, 1))
+        end)
+        timer.Simple(1, function()
+            musicChanel:Stop()
+            musicChanel = nil
+        end)
+    end
+end
+
+function PANEL:OnRemove()
+    self:StopMusic()
 end
 
 function PANEL:Paint(w, h)
@@ -74,7 +104,8 @@ function PANEL:Paint(w, h)
 
         surface.SetDrawColor(255, 255, 255, 230)
         surface.SetMaterial(material_parallax_p)
-        surface.DrawTexturedRect(w / 2 - width / 2 - self.parallaxPrimary.lerpX * 0.5, h / 2 - heigth / 2 - self.parallaxPrimary.lerpY * 0.5, width, heigth)
+        surface.DrawTexturedRect(w / 2 - width / 2 - self.parallaxPrimary.lerpX * 0.5,
+            h / 2 - heigth / 2 - self.parallaxPrimary.lerpY * 0.5, width, heigth)
     end
 
     local material_parallax_s = Arbitrage.theme:GetPrimaryBackgroundParallaxSecondary()
@@ -87,7 +118,8 @@ function PANEL:Paint(w, h)
 
         surface.SetDrawColor(255, 255, 255, 230)
         surface.SetMaterial(material_parallax_s)
-        surface.DrawTexturedRect(w / 2 - width / 2 - self.parallaxSecondary.lerpX * 0.25, h / 2 - heigth / 2 - self.parallaxSecondary.lerpY * 0.25, width, heigth)
+        surface.DrawTexturedRect(w / 2 - width / 2 - self.parallaxSecondary.lerpX * 0.25,
+            h / 2 - heigth / 2 - self.parallaxSecondary.lerpY * 0.25, width, heigth)
     end
 end
 

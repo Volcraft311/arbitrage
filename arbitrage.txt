@@ -1,7 +1,7 @@
 "arbitrage"
 {
 	"base"		"base"
-	"title"		"Asterion Academy"
+	"title"		"PUMP"
 	"maps"		"^arb_"
 	"menusystem"	"1"
 }

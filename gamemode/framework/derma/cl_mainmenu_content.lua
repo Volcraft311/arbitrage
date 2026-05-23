@@ -436,7 +436,7 @@ function PANEL:ErrorMenu(errors)
         surface.SetDrawColor(informationColor.r, informationColor.g, informationColor.b)
         surface.DrawRect(w - w * 0.5 + 20 + width, titleFontHeight - rectHeigth * 1.25, w, rectHeigth)
 
-        draw.DrawText("Если ошибка не решилась, то рекомендуем обратиться к администрации\nпроекта Asterion Academy. Сделать это можно в соц. сетях:", descriptionFont, w - w * 0.5, titleFontHeight + 20, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Если ошибка не решилась, то рекомендуем обратиться к администрации\nпроекта " .. Arbitrage.Config.Name .. ". Сделать это можно в соц. сетях:", descriptionFont, w - w * 0.5, titleFontHeight + 20, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     local vkButton = bottomPanel:Add("DButton")
@@ -456,7 +456,7 @@ function PANEL:ErrorMenu(errors)
         surface.DrawTexturedRect(0, 0, w, h)
     end
     vkButton.DoClick = function()
-        gui.OpenURL("https://vk.com/asterionacademy")
+        -- gui.OpenURL("https://vk.com/asterionacademy")
     end
 
     local discordButton = bottomPanel:Add("DButton")

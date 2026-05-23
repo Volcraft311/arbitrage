@@ -659,6 +659,10 @@ function Arbitrage.OnGamemasterTheme()
     return GetNetVar("arb.OnGamemasterTheme", false)
 end
 
+function Arbitrage.OnRecognizeDisable()
+    return GetNetVar("arb.OnRecognizeDisable", false)
+end
+
 Arbitrage.DefaultRules = {
     {"https://i.imgur.com/WqrdPdz.png", "#rules_1_title", "#rules_1_description"},
     {"https://i.imgur.com/5BEGz5S.png", "#rules_2_title", "#rules_2_description"},
@@ -710,52 +714,6 @@ end
 
 do
     local playerMeta = FindMetaTable("Player")
-
-    function playerMeta:FakeName()
-        local name = self:GetNetVar("fakename")
-        return (name != "" and name != " ") and name or nil
-    end
-
-    playerMeta.GetFakeName = playerMeta.FakeName
-
-    function playerMeta:GetName()
-        if self == NULL then return "" end -- Tried to use a NULL entity
-
-        if CLIENT and self != LocalPlayer() and self:GetNetVar("hideName") then
-            return L("#player_unknown")
-        end
-
-        local fakeName = self:FakeName()
-        if fakeName then
-            return fakeName
-        end
-
-        if self:IsTokoGenocide() then
-            local name = "#genocide_name"
-            if CLIENT then
-                return F(name)
-            end
-
-        	return name
-        end
-
-        local faction = self:Team()
-        local data = Character.team:GetByID(faction)
-
-        if faction and self:IsPlaying() and data then
-            local name = data.name or self:SteamName()
-            if CLIENT then
-                return F(name)
-            end
-
-            return name
-        end
-
-        return self:SteamName()
-    end
-
-    playerMeta.Nick = playerMeta.GetName
-    playerMeta.Name = playerMeta.GetName
 
     function IsHost(steamid)
         local data = GetNetVar("hostList", {})

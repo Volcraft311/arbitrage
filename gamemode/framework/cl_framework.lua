@@ -205,7 +205,6 @@ do
 
         local progressFont = "arb.Font_FuturaPTHeavy_4"
         local progressHeight = 3
-        local progressColor = Color(218, 19, 40)
 
         local padding = 15
         local sizeH = titleHeight + descriptionHeight + progressHeight + padding * 2
@@ -289,6 +288,9 @@ hook("ContextMenuOpen", function()
     return LocalPlayer():IsHoldingSBoxTool()
 end)
 
+local isMenuOpen = false
+local savedMousePos = {x = ScrW() / 2, y = ScrH() / 2}
+local animationPanel = nil
 local ActionPressIDList = {
     ["open_context"] = function(client, id, bIsVisibleGUI)
         if bIsVisibleGUI then return end
@@ -309,19 +311,65 @@ local ActionPressIDList = {
 
         vgui.Create("arb.ScoreBoard")
     end,
-    ["open_mainmenu_ui"] = function(client, id, bIsVisibleGUI)
-        if IsValid(Arbitrage.menu) then
-            if IsValid(Arbitrage.menu.content) then return end
+    ["pinning_mouse"] = function(client, id, bIsVisibleGUI)
+        if isMenuOpen then
+            gui.EnableScreenClicker(false)
 
-            Arbitrage.menu:AlphaTo(0, 0.3, 0, function()
-                Arbitrage.menu:Remove()
-            end)
+            local currentX, currentY = input.GetCursorPos()
+            savedMousePos.x, savedMousePos.y = currentX, currentY
 
-            return
+            if IsValid(animationPanel) then
+                animationPanel.startTime = CurTime()
+                animationPanel.animationType = "close"
+                animationPanel.cursorX, animationPanel.cursorY = currentX, currentY
+            end
+        else
+            gui.EnableScreenClicker(true)
+            input.SetCursorPos(savedMousePos.x, savedMousePos.y)
+
+            animationPanel = vgui.Create("DPanel")
+            animationPanel:SetSize(ScrW(), ScrH())
+            animationPanel:SetPos(0, 0)
+            animationPanel:SetDrawOnTop(true)
+            animationPanel:SetZPos(-32000)
+
+            animationPanel.startTime = CurTime()
+            animationPanel.duration = 0.2
+            animationPanel.animationType = "open"
+            animationPanel.cursorX, animationPanel.cursorY = savedMousePos.x, savedMousePos.y
+
+            animationPanel.Paint = function(self, w, h)
+                local progress = (CurTime() - self.startTime) / self.duration
+
+                if progress >= 1 then
+                    if self.animationType == "close" then
+                        self:Remove()
+                    end
+
+                    return
+                end
+
+                local radius, alpha
+
+                if self.animationType == "open" then
+                    radius = Lerp(progress, 0, ScrH() * 0.15)
+                    alpha = Lerp(progress, 255, 0)
+                else
+                    radius = Lerp(progress, ScrH() * 0.15, 0)
+                    alpha = Lerp(progress, 0, 255)
+                end
+
+                local informationColor = Arbitrage.theme:GetInformation()
+
+                surface.SetDrawColor(informationColor.r, informationColor.g, informationColor.b, alpha)
+                surface.DrawCircle(self.cursorX, self.cursorY, radius)
+
+                surface.SetDrawColor(informationColor.r, informationColor.g, informationColor.b, alpha * 0.5)
+                surface.DrawCircle(self.cursorX, self.cursorY, radius * 0.7)
+            end
         end
 
-        local panel = vgui.Create("arb.MainRemake:UI")
-        panel:Menu()
+        isMenuOpen = !isMenuOpen
     end,
     ["open_monomenu_ui"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.monomenu) then
@@ -480,15 +528,9 @@ hook("SpawnMenuOpen", function()
 end)
 
 hook("OnSettingsLoad", function()
-    local panel = asterionlib.netgui:Create("arb.MainRemake:UI")
-    panel:Content()
-
-    -- new menu...
-    --[[
     local panel = vgui.Create("arb.mainmenu:Primary")
     panel.content = panel:Add("arb.mainmenu:Content")
     panel.content:Dock(FILL)
-    ]]--
 
     RunConsoleCommand("stopsound")
 end)

@@ -1,5 +1,5 @@
 --[[
-        © AsterionStaff 2026.
+        © AsterionStaff 2022.
         This script was created from the developers of the Asterion Staff.
         You can get more information from one of the links below:
             Site - https://asterion.games
@@ -65,8 +65,8 @@ local emojiList = {
     ["^-^"] = "#emoji_very_happy",
     [":>"] = "#emoji_glad",
     [":<"] = "#emoji_upset",
-    ["o_O"] = "#emoji_surprised", ["о_O"] = "#emoji_surprised", ["о_О"] = "#emoji_surprised", ["o_О"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["о_0"] = "#emoji_surprised",
-    ["O_o"] = "#emoji_surprised", ["O_о"] = "#emoji_surprised", ["О_о"] = "#emoji_surprised", ["О_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_о"] = "#emoji_surprised",
+    ["o_O"] = "#emoji_surprised", ["о_O"] = "#emoji_surprised", ["о_О"] = "#emoji_surprised", ["o_О"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["о_0"] = "#emoji_surprised",
+    ["O_o"] = "#emoji_surprised", ["O_о"] = "#emoji_surprised", ["О_о"] = "#emoji_surprised", ["О_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_о"] = "#emoji_surprised",
     ["3:"] = "#emoji_expresses_dissatisfaction", ["з:"] = "#emoji_expresses_dissatisfaction", ["З:"] = "#emoji_expresses_dissatisfaction",
     [":3"] = "#emoji_expresses_joy", [":з"] = "#emoji_expresses_joy", [":З"] = "#emoji_expresses_joy"
 }
@@ -116,7 +116,12 @@ Arbitrage.chat.List = {
     ["me"] = {
         Color = Color(44, 176, 247),
         OnCreate = function(client, sender, data)
-            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -130,7 +135,12 @@ Arbitrage.chat.List = {
     ["mec"] = {
         Color = Color(44, 176, 247),
         OnCreate = function(client, sender, data)
-            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -144,7 +154,12 @@ Arbitrage.chat.List = {
     ["mel"] = {
         Color = Color(44, 176, 247),
         OnCreate = function(client, sender, data)
-            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("me"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. format(data[1], false, false)
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -171,7 +186,12 @@ Arbitrage.chat.List = {
     ["try"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -185,7 +205,12 @@ Arbitrage.chat.List = {
     ["tryc"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -199,7 +224,12 @@ Arbitrage.chat.List = {
     ["tryl"] = {
         Color = Color(44, 247, 85),
         OnCreate = function(client, sender, data)
-            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("try"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. format(data[1], false, false), data[2] and Color(59, 238, 133) or Color(225, 73, 73), " (" .. (data[2] and "#try_successfully" or "#try_unsuccessful") .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -225,7 +255,12 @@ Arbitrage.chat.List = {
     },
     ["ic"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " #chat_say: ", "'" .. format(data[1], true, true) .. "'"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " #chat_say: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -251,7 +286,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or (rank_color or Arbitrage.chat.Colors.player)
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return Arbitrage.chat.Colors.looc, "#chat_lnrp_type ", c_player, sender:Name(), c_other, ": ", "" .. data[1] .. ""
+            return Arbitrage.chat.Colors.looc, "#chat_lnrp_type ", c_player, sender:RealName(), c_other, ": ", "" .. data[1] .. ""
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -325,7 +360,12 @@ Arbitrage.chat.List = {
     },
     ["whispers"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " #chat_whispers: ", "'" .. format(data[1], true, true) .. "'"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " #chat_whispers: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -338,7 +378,12 @@ Arbitrage.chat.List = {
     },
     ["yell"] = {
         OnCreate = function(client, sender, data)
-            return Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " #chat_yell: ", "'" .. format(data[1], true, true) .. "'"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " #chat_yell: ", "'" .. format(data[1], true, true) .. "'"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -352,7 +397,12 @@ Arbitrage.chat.List = {
     ["it"] = {
         Color = color_white,
         OnCreate = function(client, sender, data)
-            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. name .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -366,7 +416,12 @@ Arbitrage.chat.List = {
     ["itc"] = {
         Color = color_white,
         OnCreate = function(client, sender, data)
-            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. name .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -380,7 +435,12 @@ Arbitrage.chat.List = {
     ["itl"] = {
         Color = color_white,
         OnCreate = function(client, sender, data)
-            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. sender:Name() .. ")"
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("it"), "● ", Arbitrage.chat.Colors.other, "** ", format(data[1], true, nil), Arbitrage.chat.Colors.player, " (" .. name .. ")"
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -407,7 +467,12 @@ Arbitrage.chat.List = {
     ["roll"] = {
         Color = Color(209, 69, 69),
         OnCreate = function(client, sender, data)
-            return chatColor("roll"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, sender:Name(), Arbitrage.chat.Colors.other, " " .. "#chat_roll_send " .. data[1] .. " #chat_roll_send_prefix " .. data[2] .. "."
+            local name, description = sender:Name(client)
+            if description then
+                name = description
+            end
+
+            return chatColor("roll"), "● ", Arbitrage.chat.Colors.other, "** ", Arbitrage.chat.Colors.player, name, Arbitrage.chat.Colors.other, " " .. "#chat_roll_send " .. data[1] .. " #chat_roll_send_prefix " .. data[2] .. "."
         end,
         OnSend = function(client, name, data)
             if !data then return end
@@ -427,7 +492,7 @@ Arbitrage.chat.List = {
             local c_player = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.player
             local c_other = bSpectate and Arbitrage.chat.Colors.spectate or Arbitrage.chat.Colors.other
 
-            return chatColor("pm"), "#chat_pm_type ", c_player, sender:Name(), c_other, " > ", c_player, target:Name(), c_other, ": ", message
+            return chatColor("pm"), "#chat_pm_type ", c_player, sender:RealName(), c_other, " > ", c_player, target:RealName(), c_other, ": ", message
         end,
         OnSend = function(client, name, data)
             local target = data[1]

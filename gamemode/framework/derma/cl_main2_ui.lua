@@ -321,17 +321,3 @@ function PANEL:Paint(w, h)
 end
 
 vgui.Register("arb.MainRemake:UI", PANEL, "EditablePanel")
-
-
-
-if LocalPlayer() and IsValid(Arbitrage.menu) then
-    Arbitrage.menu:Remove()
-
-    Arbitrage.menu = vgui.Create("arb.MainRemake:UI")
-
-    if SETTINGS.options.Get("show_beta_test") then
-        Arbitrage.menu:Menu()
-    else
-        Arbitrage.menu:Intro()
-    end
-end

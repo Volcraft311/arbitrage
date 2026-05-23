@@ -87,8 +87,8 @@ function PANEL:CreateCharacters(characters)
 
     for _, character in ipairs(characters) do
         local assets = character:GetAssets()
-
-        local greeting = Material(assets.greeting, "smooth")
+        print(character)
+        local greeting = Material(assets.greeting_new or assets.greeting, "smooth")
         local greeting_splash = Material(assets.greeting_splash, "smooth")
 
         local panel = charactersPanel:Add("DButton")

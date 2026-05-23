@@ -101,13 +101,13 @@ do
     hook.Add("asterionlib.workshop:Initialize", "arbitrage.workshop", function()
         -- MAIN
 
-        workshop:Add("2715755590", { -- Asterion Academy — Main Content
-            onCheck = function()
-                return !workshop:ModelIsError("models/bh/props/dead.mdl")
-            end
-        })
+            workshop:Add("3731399324", { --  Main Content
+                onCheck = function()
+                    return !workshop:ModelIsError("models/bh/props/dead.mdl")
+                end
+            })
 
-        workshop:Add("2786490267", { -- Asterion Academy — Sprites
+        workshop:Add("3731522409", { --  Sprites
             onCheck = function()
                 return !workshop:MaterialIsError("danganronpa/characters/akane/pixel.png") and !workshop:MaterialIsError("danganronpa/characters/junko/logo.png")
             end

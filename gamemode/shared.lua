@@ -1,9 +1,7 @@
 --[[
-        © AsterionStaff 2022.
-        This script was created from the developers of the Asterion Staff.
+        © PumpStaff 2026.
+        This script was created from the developers of the PumpStaff Staff.
         You can get more information from one of the links below:
-            Site - https://asterion.games
-            Discord - https://discord.gg/Np5evb5ZsR
         
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
@@ -14,19 +12,19 @@
 AddCSLuaFile()
 
 GM.Name = "GM-Arbitrage"
-GM.Author = "Selenter"
+GM.Author = "Selenter | Volcraft31"
 
 local gamemode_table = {
 	"base",
 	"sandbox"
 }
 
-for k, v in pairs(gamemode_table) do
+for _, v in ipairs(gamemode_table) do
 	DeriveGamemode(v)
 end
 
 Arbitrage = Arbitrage or {}
-Arbitrage.version = "0.163 (23.05.2026)"
+Arbitrage.version = "0.163p (23.05.2026)"
 Arbitrage.GM = GM
 
 include("dev.lua")

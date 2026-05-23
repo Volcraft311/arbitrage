@@ -313,7 +313,7 @@ function PANEL:CreatePlayers(scrollPanel)
         if !IsValid(client) then return end
 
         local steamName = client:SteamName()
-        local characterName = client:Name()
+        local characterName = L(client:GetCharacter().name != "#char_team_empty" and client:GetCharacter().name or "")
         local steamID = client:SteamID()
         local ping = client:Ping()
         local rank = client:GetUserGroup()

@@ -38,6 +38,7 @@ function PANEL:Init()
         musicChanel = nil
     end
     timer.Simple(0.2, function()
+        if !IsValid(self) or Arbitrage.IsDeveloper then return end
         sound.PlayFile("sound/main_music.mp3", "", function(channel, _, _)
             musicChanel = channel
             channel:SetVolume(0.1)

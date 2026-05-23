@@ -87,9 +87,14 @@ function PANEL:CreateCharacters(characters)
 
     for _, character in ipairs(characters) do
         local assets = character:GetAssets()
-        print(character)
         local greeting = Material(assets.greeting_new or assets.greeting, "smooth")
-        local greeting_splash = Material(assets.greeting_splash, "smooth")
+        -- TODO Удалить проверку, как переделают всех
+        local splash_sprite = assets.greeting_splash
+        if (!file.Exists("materials/" .. assets.greeting_splash, "GAME")) then
+            MsgC(Color(255,0,0), "[DEPRECATED SPRITE] ", color_white, assets.greeting_splash .. " - USING AN OLD SPRITE\n") 
+            splash_sprite = assets.splash
+        end
+        local greeting_splash = Material(splash_sprite, "smooth")
 
         local panel = charactersPanel:Add("DButton")
         panel:SetText("")
@@ -200,9 +205,9 @@ function PANEL:CreateCharacters(characters)
         asterionlib.DrawBlur(this, 10)
 
         if this.material then
-            surface.SetDrawColor(255, 255, 255)
+            surface.SetDrawColor(255, 255, 255, 100)
             surface.SetMaterial(this.material)
-            surface.DrawTexturedRect(w - h, 0, h, h)
+            surface.DrawTexturedRect(0, 0, w, h)
         end
 
         surface.SetDrawColor(0, 0, 0, 150)

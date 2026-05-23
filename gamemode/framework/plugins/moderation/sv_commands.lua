@@ -603,8 +603,8 @@ timer.Simple(1, function()
             if !client:IsAdmin() then return client:ChatNotify("#command_no_permission") end
             if bServerRestart then return client:ChatNotify("#command_restart_request_received") end
 
-            delay = delay or 30
-            delay = math.Clamp(delay, 30, 600)
+            delay = delay or 15
+            delay = math.Clamp(delay, 15, 600)
             delay = math.floor(delay)
 
             local adminName = client:FullName(true)

@@ -1,5 +1,5 @@
 --[[
-        © AsterionStaff 2022.
+        © AsterionStaff 2026.
         This script was created from the developers of the Asterion Staff.
         You can get more information from one of the links below:
             Site - https://asterion.games
@@ -65,8 +65,8 @@ local emojiList = {
     ["^-^"] = "#emoji_very_happy",
     [":>"] = "#emoji_glad",
     [":<"] = "#emoji_upset",
-    ["o_O"] = "#emoji_surprised", ["о_O"] = "#emoji_surprised", ["о_О"] = "#emoji_surprised", ["o_О"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["о_0"] = "#emoji_surprised",
-    ["O_o"] = "#emoji_surprised", ["O_о"] = "#emoji_surprised", ["О_о"] = "#emoji_surprised", ["О_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_о"] = "#emoji_surprised",
+    ["o_O"] = "#emoji_surprised", ["о_O"] = "#emoji_surprised", ["о_О"] = "#emoji_surprised", ["o_О"] = "#emoji_surprised", ["o_0"] = "#emoji_surprised", ["о_0"] = "#emoji_surprised",
+    ["O_o"] = "#emoji_surprised", ["O_о"] = "#emoji_surprised", ["О_о"] = "#emoji_surprised", ["О_o"] = "#emoji_surprised", ["0_o"] = "#emoji_surprised", ["0_о"] = "#emoji_surprised",
     ["3:"] = "#emoji_expresses_dissatisfaction", ["з:"] = "#emoji_expresses_dissatisfaction", ["З:"] = "#emoji_expresses_dissatisfaction",
     [":3"] = "#emoji_expresses_joy", [":з"] = "#emoji_expresses_joy", [":З"] = "#emoji_expresses_joy"
 }

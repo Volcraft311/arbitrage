@@ -30,14 +30,14 @@ function PLUGIN:CheckPassword(steamID64)
 			return true
 		end
 
-		return false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь к игровому мастеру проводившему игру.\n\nПодробная информация: https://asterion.games/academy"
+		return false, "У вас нет доступа к серверу! Если вы записаны на игру, то обратитесь к игровому мастеру проводившему игру.\n\nПодробная информация: https://discord.gg/rappumped"
 	end
 end
 
 function PLUGIN:InitPostEntity()
 	local data = asterionlib.data:Get("whitelist", {}, true)
 	local isChange = false
-
+	if !data then return end
 	for k, v in pairs(data) do
 		if v[1] == 0 then continue end
 

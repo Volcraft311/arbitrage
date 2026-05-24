@@ -298,18 +298,6 @@ do
             end
         })
 
-        workshop:Add("2892089039", { -- UNION Content Pack#1 [props]
-            onCheck = function()
-                return ! workshop:ModelIsError("models/union/props/ai2.mdl")
-            end
-        })
-
-        workshop:Add("2892095571", { -- UNION Content Pack#6 [furniture]
-            onCheck = function()
-                return ! workshop:ModelIsError("models/union/furniture/ac_wallunit.mdl")
-            end
-        })
-
         -- LAST DOWNLOAD
         workshop:Add("3347087744", { -- Asterion - Animations
             onCheck = function()

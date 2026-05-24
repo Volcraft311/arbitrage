@@ -22,7 +22,7 @@ local categoryData = {
             List:SetSpaceY(5)
             List:SetSpaceX(5)
 
-            for k, v in pairs(LocalPlayer():GetEvidences()) do
+            for k, v in pairs(LocalPlayer():GetEvidences()) do --TODO перевести в ipairs
                 local data = Evidence:GetEvidence(k)
                 if !data then continue end
 

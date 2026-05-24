@@ -72,7 +72,8 @@ function PANEL:CreateCharacters(characters)
 
     local charactersPanel = self.mainPanel:Add("Panel")
     charactersPanel:SetPos(100, 52)
-    charactersPanel:SetSize(0, ScrH() - self.title:GetTall() - 30 - self.bottomPanel:GetTall() - self.paddingTop - 130 - 52)
+    charactersPanel:SetSize(0,
+        ScrH() - self.title:GetTall() - 30 - self.bottomPanel:GetTall() - self.paddingTop - 130 - 52)
     charactersPanel.offset = 100
     charactersPanel.setOffset = 100
     -- charactersPanel.Paint = function(this, w, h)
@@ -87,14 +88,15 @@ function PANEL:CreateCharacters(characters)
 
     for _, character in ipairs(characters) do
         local assets = character:GetAssets()
-        local greeting = Material(assets.greeting_new or assets.greeting, "smooth")
+        local greeting = Material(assets.greeting_new or assets.greeting, "smooth clamp")
         -- TODO Удалить проверку, как переделают всех
         local splash_sprite = assets.greeting_splash
-        if (!file.Exists("materials/" .. assets.greeting_splash, "GAME")) then
-            MsgC(Color(255,0,0), "[DEPRECATED SPRITE] ", color_white, assets.greeting_splash .. " - USING AN OLD SPRITE\n") 
+        if (! file.Exists("materials/" .. assets.greeting_splash, "GAME")) then
+            MsgC(Color(255, 0, 0), "[DEPRECATED SPRITE] ", color_white,
+                assets.greeting_splash .. " - USING AN OLD SPRITE\n")
             splash_sprite = assets.splash
         end
-        local greeting_splash = Material(splash_sprite, "smooth")
+        local greeting_splash = Material(splash_sprite, "smooth mips")
 
         local panel = charactersPanel:Add("DButton")
         panel:SetText("")
@@ -104,7 +106,6 @@ function PANEL:CreateCharacters(characters)
         panel.alpha = 0.1
         panel.Paint = function(this, w, h)
             this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or 0.1)
-
             surface.SetDrawColor(255, 255, 255, this.alpha * 255)
             surface.SetMaterial(greeting)
             surface.DrawTexturedRect(0, 0, w, h)
@@ -175,7 +176,7 @@ function PANEL:CreateCharacters(characters)
     rightButton.DoClick = function(this)
         local offset = charactersPanel:GetWide() + charactersPanel:GetX()
         local bAllowOffset = offset > ScrW()
-        if !bAllowOffset then return end
+        if ! bAllowOffset then return end
 
         charactersPanel.setOffset = charactersPanel.setOffset - titleFontHeight * 80
     end
@@ -261,7 +262,8 @@ function PANEL:CreateCharacters(characters)
 
         local color = color_white
 
-        draw.SimpleText("НАЗАД", _buttonFont, w / 2, h / 2, Color(color.r, color.g, color.b, this.alpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("НАЗАД", _buttonFont, w / 2, h / 2, Color(color.r, color.g, color.b, this.alpha * 255),
+            TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         local color_information = Arbitrage.theme:GetInformation()
 
@@ -286,7 +288,8 @@ function PANEL:CreateCharacters(characters)
 
         local color = color_white
 
-        draw.SimpleText("ПОДТВЕРДИТЬ", _buttonFont, w / 2, h / 2, Color(color.r, color.g, color.b, this.alpha * 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("ПОДТВЕРДИТЬ", _buttonFont, w / 2, h / 2, Color(color.r, color.g, color.b, this.alpha * 255),
+            TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         local color_information = Arbitrage.theme:GetInformation()
 
@@ -295,9 +298,9 @@ function PANEL:CreateCharacters(characters)
     end
     selectButton.DoClick = function()
         local faction = Character.team:GetByUniqueID(self.characterPanel.uniqueID)
-        if !faction then return end
+        if ! faction then return end
 
-        if faction.admin and !LocalPlayer():IsAdmin() then return end
+        if faction.admin and ! LocalPlayer():IsAdmin() then return end
 
         netstream.Start("arb.SelectCharacter", faction.id)
 
@@ -348,12 +351,12 @@ function PANEL:CreateCategories()
 
         if this.bg_mat then
             local old = DisableClipping(true)
-                local size_w = ScrW()
-                local size_h = size_w * 0.5625
+            local size_w = ScrW()
+            local size_h = size_w * 0.5625
 
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(this.bg_mat)
-                surface.DrawTexturedRect(w / 2 - size_w / 2, h / 2 - size_h / 2 - self.title:GetTall() * 0.3, size_w, size_h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(this.bg_mat)
+            surface.DrawTexturedRect(w / 2 - size_w / 2, h / 2 - size_h / 2 - self.title:GetTall() * 0.3, size_w, size_h)
             DisableClipping(old)
         end
 
@@ -361,18 +364,19 @@ function PANEL:CreateCategories()
             this.char_offset = Lerp(FrameTime() * 10, this.char_offset, 0)
 
             local old = DisableClipping(true)
-                local size_w = ScrW()
-                local size_h = size_w * 0.5625
+            local size_w = ScrW()
+            local size_h = size_w * 0.5625
 
-                surface.SetDrawColor(255, 255, 255)
-                surface.SetMaterial(this.char_mat)
-                surface.DrawTexturedRect(w / 2 - size_w / 2 + this.char_offset, h / 2 - size_h / 2 - self.title:GetTall() * 0.3, size_w, size_h)
+            surface.SetDrawColor(255, 255, 255)
+            surface.SetMaterial(this.char_mat)
+            surface.DrawTexturedRect(w / 2 - size_w / 2 + this.char_offset,
+                h / 2 - size_h / 2 - self.title:GetTall() * 0.3, size_w, size_h)
             DisableClipping(old)
         end
 
         if this.cat_mat then
             local size_h = S(90)
-            local size_w = size_h * 3,125
+            local size_w = size_h * 3, 125
 
             surface.SetDrawColor(Arbitrage.theme:GetTextTitle())
             surface.SetMaterial(this.cat_mat)
@@ -392,7 +396,8 @@ function PANEL:CreateCategories()
 
     local bottomPanel = self.mainPanel:Add("Panel")
     bottomPanel:SetSize(s_460 - s_380, s_230)
-    bottomPanel:SetPos(80, ScrH() - bottomPanel:GetTall() - self.bottomPanel:GetTall() - self.paddingTop - 80 - self.title:GetTall() - 30)
+    bottomPanel:SetPos(80,
+        ScrH() - bottomPanel:GetTall() - self.bottomPanel:GetTall() - self.paddingTop - 80 - self.title:GetTall() - 30)
     bottomPanel.offset = 80
     bottomPanel.setOffset = 80
     bottomPanel.Think = function(this)
@@ -409,7 +414,8 @@ function PANEL:CreateCategories()
     local leftButton = self.mainPanel:Add("DButton")
     leftButton:SetText("")
     leftButton:SetSize(80, s_230)
-    leftButton:SetPos(0, ScrH() - leftButton:GetTall() - self.bottomPanel:GetTall() - self.paddingTop - 80 - self.title:GetTall() - 30)
+    leftButton:SetPos(0,
+        ScrH() - leftButton:GetTall() - self.bottomPanel:GetTall() - self.paddingTop - 80 - self.title:GetTall() - 30)
     leftButton.alpha = 0.1
     leftButton.Paint = function(this, w, h)
         this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or 0.1)
@@ -431,7 +437,8 @@ function PANEL:CreateCategories()
     local rightButton = self.mainPanel:Add("DButton")
     rightButton:SetText("")
     rightButton:SetSize(80, s_230)
-    rightButton:SetPos(ScrW() - rightButton:GetWide(), ScrH() - rightButton:GetTall() - self.bottomPanel:GetTall() - self.paddingTop - 80 - self.title:GetTall() - 30)
+    rightButton:SetPos(ScrW() - rightButton:GetWide(),
+        ScrH() - rightButton:GetTall() - self.bottomPanel:GetTall() - self.paddingTop - 80 - self.title:GetTall() - 30)
     rightButton.alpha = 0.1
     rightButton.Paint = function(this, w, h)
         this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or 0.1)
@@ -446,7 +453,7 @@ function PANEL:CreateCategories()
     rightButton.DoClick = function(this)
         local offset = bottomPanel:GetWide() + bottomPanel:GetX()
         local bAllowOffset = offset > ScrW()
-        if !bAllowOffset then return end
+        if ! bAllowOffset then return end
 
         bottomPanel.setOffset = bottomPanel.setOffset - titleFontHeight * 80
     end
@@ -476,7 +483,8 @@ function PANEL:CreateCategories()
             local bSelected = categoryPanel.select == idx
 
             this.alpha = Lerp(FrameTime() * 10, this.alpha, bSelected and 1 or 0.25)
-            this.color = LerpColor(FrameTime() * 10, this.color, bSelected and Arbitrage.theme:GetTextTitle() or Arbitrage.theme:GetTextPrimary())
+            this.color = LerpColor(FrameTime() * 10, this.color,
+                bSelected and Arbitrage.theme:GetTextTitle() or Arbitrage.theme:GetTextPrimary())
 
             local size_w = this:GetWide()
             local size_h = size_w * 0.52631578947
@@ -489,17 +497,18 @@ function PANEL:CreateCategories()
             surface.DrawTexturedRect(w / 2 - size_w / 2, cg * 0.52631578947, size_w, size_h)
 
             local old = DisableClipping(true)
-                local a = this.alpha * 255
+            local a = this.alpha * 255
 
-                surface.SetDrawColor(a, a, a)
-                surface.SetMaterial(mat)
-                surface.DrawTexturedRect(w / 2 - size_w / 2, -cg * 0.52631578947, size_w, size_h)
+            surface.SetDrawColor(a, a, a)
+            surface.SetMaterial(mat)
+            surface.DrawTexturedRect(w / 2 - size_w / 2, -cg * 0.52631578947, size_w, size_h)
             DisableClipping(old)
 
             surface.SetDrawColor(0, 0, 0, 200)
             surface.DrawRect(0, _h, w, h)
 
-            draw.SimpleText(name, titleFont, w / 2, h - titleFontHeight * 0.28571428571, this.color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(name, titleFont, w / 2, h - titleFontHeight * 0.28571428571, this.color, TEXT_ALIGN_CENTER,
+                TEXT_ALIGN_BOTTOM)
 
             -- surface.SetDrawColor(255, 0, 0)
             -- surface.DrawOutlinedRect(0, 0, w, h)
@@ -570,7 +579,8 @@ function PANEL:CreateMenu()
         surface.SetDrawColor(lineColor.r, lineColor.g, lineColor.b, 255)
         surface.DrawRect(0, h - 1, w, 1)
 
-        draw.SimpleText(self.bSelectCategory and "ВЫБОР ПЕРСОНАЖА" or "ВЫБОР ГЛАВЫ", titleFont, titleFontHeight * 1.26984126984, h / 2, Arbitrage.theme:GetTextCategory(), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(self.bSelectCategory and "ВЫБОР ПЕРСОНАЖА" or "ВЫБОР ГЛАВЫ", titleFont,
+            titleFontHeight * 1.26984126984, h / 2, Arbitrage.theme:GetTextCategory(), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     local pageFont = "arb.Font_FuturaPTMedium_9"
@@ -589,7 +599,8 @@ function PANEL:CreateMenu()
     presentersButton.alpha = 0
     presentersButton.color = Arbitrage.theme:GetTextUnHeader()
     presentersButton.Paint = function(this, w, h)
-        this.color = LerpColor(FrameTime() * 10, this.color, this:IsHovered() and Arbitrage.theme:GetTextHeader() or Arbitrage.theme:GetTextUnHeader())
+        this.color = LerpColor(FrameTime() * 10, this.color,
+            this:IsHovered() and Arbitrage.theme:GetTextHeader() or Arbitrage.theme:GetTextUnHeader())
         this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or 0)
 
         draw.SimpleText("ВЕДУЩИЕ", pageFont, w / 2, h / 2, this.color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -654,7 +665,8 @@ function PANEL:AddKey(key, keyName, keyDescription, callback)
         surface.DrawOutlinedRect(0, 0, keyNameSize, h, 2)
 
         draw.SimpleText(keyName, keyFont, 10, h / 2, this.textcolor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.SimpleText(keyDescription, keyFont, keyNameSize + 10, h / 2, this.textcolor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(keyDescription, keyFont, keyNameSize + 10, h / 2, this.textcolor, TEXT_ALIGN_LEFT,
+            TEXT_ALIGN_CENTER)
     end
     button.DoClick = function(this)
         if this.bOnClick then return end

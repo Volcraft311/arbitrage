@@ -458,7 +458,7 @@ Character.team:Create({
     description = "#char_dr_hiyoko_desc",
     color = Color(206, 184, 172),
     category = "goodbye_despair",
-    model = "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl",
+    model = "models/dih/SaionjiHiyokoSFW.mdl",
     uniqueID = "hiyoko",
     evidence_visibility = 0.4,
     stamina = {run_consumption = 1.2},

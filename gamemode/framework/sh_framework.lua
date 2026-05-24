@@ -4,12 +4,12 @@
         You can get more information from one of the links below:
             Site - https://asterion.games
             Discord - https://discord.gg/Np5evb5ZsR
-        
+
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
 
         ——— Chop your own wood and it will warm you twice.
-]]--
+]] --
 
 Arbitrage.HookRun("Initialize")
 
@@ -22,7 +22,7 @@ do
         end,
         OnRun = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
-            if !amount then return end
+            if ! amount then return end
 
             if Arbitrage.OnDeadLowStatictic() and amount <= 10 then
                 client:TakeDamage(1)
@@ -37,7 +37,7 @@ do
             end
         end,
         OnCanRun = function(client, info)
-            return !Arbitrage.OffFallHunger()
+            return ! Arbitrage.OffFallHunger()
         end,
         OnCanSpend = function(client, info)
             if client:HasTemporaryStatusEffect("hunger_a") then
@@ -54,7 +54,7 @@ do
         end,
         OnRun = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
-            if !amount then return end
+            if ! amount then return end
 
             if Arbitrage.OnDeadLowStatictic() and amount <= 10 then
                 client:TakeDamage(1)
@@ -69,7 +69,7 @@ do
             end
         end,
         OnCanRun = function(client, info)
-            return !Arbitrage.OffFallThirst()
+            return ! Arbitrage.OffFallThirst()
         end,
         OnCanSpend = function(client, info)
             if client:HasTemporaryStatusEffect("thirst_a") then
@@ -85,7 +85,7 @@ do
             return faction and tonumber(faction:GetFatique()) or 33
         end,
         OnCanRun = function(client, info)
-            return !Arbitrage.OffFallSleep()
+            return ! Arbitrage.OffFallSleep()
         end,
         OnCanSpend = function(client, info)
             if client:HasTemporaryStatusEffect("sleep_a") then
@@ -101,51 +101,59 @@ do
     hook.Add("asterionlib.workshop:Initialize", "arbitrage.workshop", function()
         -- MAIN
 
-            workshop:Add("3731399324", { --  Main Content
-                onCheck = function()
-                    return !workshop:ModelIsError("models/bh/props/dead.mdl")
-                end
-            })
+        workshop:Add("3731399324", {     --  Main Content
+            onCheck = function()
+                return ! workshop:ModelIsError("models/bh/props/dead.mdl")
+            end
+        })
+
+        workshop:Add("3731400716", {     --  Hyoko new MDL
+            onCheck = function()
+                return ! workshop:ModelIsError("models/dih/SaionjiHiyokoSFW.mdl")
+            end
+        })
 
         workshop:Add("3731522409", { --  Sprites
             onCheck = function()
-                return !workshop:MaterialIsError("danganronpa/characters/akane/pixel.png") and !workshop:MaterialIsError("danganronpa/characters/junko/logo.png")
+                return ! workshop:MaterialIsError("danganronpa/characters/akane/pixel.png") and
+                ! workshop:MaterialIsError("danganronpa/characters/junko/logo.png")
             end
         })
 
         workshop:Add("2717853308", { -- Asterion Academy - Models Content #1
             onCheck = function()
-                return !workshop:ModelIsError("models/custom/aoi_asahina.mdl") and !workshop:ModelIsError("models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl")
+                return ! workshop:ModelIsError("models/custom/aoi_asahina.mdl") and
+                ! workshop:ModelIsError("models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl")
             end
         })
 
         workshop:Add("2780751458", { -- Asterion Academy - Models Content #2
             onCheck = function()
-                return !workshop:ModelIsError("models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl")
+                return ! workshop:ModelIsError("models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl")
             end
         })
 
         workshop:Add("2723789180", { -- Asterion Academy - Models Content #3
             onCheck = function()
-                return !workshop:ModelIsError("models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl")
+                return ! workshop:ModelIsError("models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl")
             end
         })
 
         workshop:Add("2849953494", { -- Asterion Academy - Models Content #4
             onCheck = function()
-                return !workshop:ModelIsError("models/player/kotoko/kotoko_p.mdl")
+                return ! workshop:ModelIsError("models/player/kotoko/kotoko_p.mdl")
             end
         })
 
         workshop:Add("2791583716", { -- Asterion Academy - Additional Content
             onCheck = function()
-                return !workshop:MaterialIsError("danganronpa/characters/monokuma/white.png")
+                return ! workshop:MaterialIsError("danganronpa/characters/monokuma/white.png")
             end
         })
 
         workshop:Add("2860471023", { -- Asterion Academy — Prop Content #1
             onCheck = function()
-                return !workshop:ModelIsError("models/asterion/academy/props/classroom/ast_classroom_board.mdl")
+                return ! workshop:ModelIsError("models/asterion/academy/props/classroom/ast_classroom_board.mdl")
             end
         })
 
@@ -153,52 +161,52 @@ do
 
         workshop:Add("160250458", { -- Wiremod
             onCheck = function()
-                return !workshop:ModelIsError("models/segment.mdl")
+                return ! workshop:ModelIsError("models/segment.mdl")
             end
         })
 
         workshop:Add("2840031720", { -- TFA Base
             onCheck = function()
-                return !workshop:ModelIsError("models/tfa/rifleshell.mdl")
+                return ! workshop:ModelIsError("models/tfa/rifleshell.mdl")
             end
         })
 
         workshop:Add("246756300", { -- Stream Radio
             onCheck = function()
-                return !workshop:MaterialIsError("3dstreamradio/cursor.png")
+                return ! workshop:MaterialIsError("3dstreamradio/cursor.png")
             end
         })
 
         workshop:Add("108024198", { -- Food and Household items
             onCheck = function()
-                return !workshop:ModelIsError("models/foodnhouseholditems/apple.mdl")
+                return ! workshop:ModelIsError("models/foodnhouseholditems/apple.mdl")
             end
         })
 
         workshop:Add("1920810365", { -- Facial Emote Mod
             onCheck = function()
-                return !workshop:MaterialIsError("facial_emote/like.png")
+                return ! workshop:MaterialIsError("facial_emote/like.png")
             end
         })
 
-        workshop:Add("1784911999") -- LED screens
-        workshop:Add("329174479") -- Extended Emitter
+        workshop:Add("1784911999")   -- LED screens
+        workshop:Add("329174479")    -- Extended Emitter
 
         workshop:Add("1161268544", { -- Pink Blood
             onCheck = function()
-                return !workshop:ModelIsError("models/gibs/hgibs_spine.mdl")
+                return ! workshop:ModelIsError("models/gibs/hgibs_spine.mdl")
             end
         })
 
-        workshop:Add("2840295308", {  -- Primitive
+        workshop:Add("2840295308", { -- Primitive
             onCheck = function()
-                return !workshop:MaterialIsError("primitive/icons/cone.png")
+                return ! workshop:MaterialIsError("primitive/icons/cone.png")
             end
         })
 
         workshop:Add("2963988886", { -- more materials
             onCheck = function()
-                return !workshop:MaterialIsError("metal/metalwall1")
+                return ! workshop:MaterialIsError("metal/metalwall1")
             end
         })
         workshop:Add("2782265858") -- DSteps: Dynamic Footsteps
@@ -206,99 +214,99 @@ do
         -- WEAPONS
         workshop:Add("2842765511", { -- nmrih reupload
             onCheck = function()
-                return !workshop:ModelIsError("models/weapons/tfa_nmrih/v_fa_1911.mdl")
+                return ! workshop:ModelIsError("models/weapons/tfa_nmrih/v_fa_1911.mdl")
             end
         })
 
         workshop:Add("244540803", { -- Customizable Flashlight
             onCheck = function()
-                return !workshop:ModelIsError("models/weapons/w_flashlight_zm.mdl")
+                return ! workshop:ModelIsError("models/weapons/w_flashlight_zm.mdl")
             end
         })
 
         workshop:Add("921195220", { -- TFA CS:S Weapons
             onCheck = function()
-                return !workshop:ModelIsError("models/weapons/2_c4.mdl")
+                return ! workshop:ModelIsError("models/weapons/2_c4.mdl")
             end
         })
 
         workshop:Add("1414153810", { -- [TTT] Night vision
             onCheck = function()
-                return !workshop:ModelIsError("models/weapons/cbinocularsbp/w_nvbinoculars.mdl")
+                return ! workshop:ModelIsError("models/weapons/cbinocularsbp/w_nvbinoculars.mdl")
             end
         })
 
         workshop:Add("104607228", { -- Fire Extinguisher
             onCheck = function()
-                return !workshop:ModelIsError("models/weapons/w_fire_extinguisher.mdl")
+                return ! workshop:ModelIsError("models/weapons/w_fire_extinguisher.mdl")
             end
         })
 
         -- MAPS
         workshop:Add("2902905430", { -- Asterion Hope's Peak [Pre-Release]
             onCheck = function()
-                return !workshop:MaterialIsError("asterion_hopespeak/fish_1.png")
+                return ! workshop:MaterialIsError("asterion_hopespeak/fish_1.png")
             end
         })
 
         -- MODELS
-        workshop:Add("1246554779", {  -- Roleplay Props Extended
+        workshop:Add("1246554779", { -- Roleplay Props Extended
             onCheck = function()
-                return !workshop:ModelIsError("models/statua/falloutdoor.mdl")
+                return ! workshop:ModelIsError("models/statua/falloutdoor.mdl")
             end
         })
 
         workshop:Add("958532452", { -- Interior Props Pack
             onCheck = function()
-                return !workshop:ModelIsError("models/props/doors/door_barricade.mdl")
+                return ! workshop:ModelIsError("models/props/doors/door_barricade.mdl")
             end
         })
 
         workshop:Add("3324595242", { -- Developer Style Props!
             onCheck = function()
-                return !workshop:ModelIsError("models/props/dev_boxset.mdl")
+                return ! workshop:ModelIsError("models/props/dev_boxset.mdl")
             end
         })
 
         workshop:Add("1990021079", { -- Some school props
             onCheck = function()
-                return !workshop:ModelIsError("models/aschool25/camera.mdl")
+                return ! workshop:ModelIsError("models/aschool25/camera.mdl")
             end
         })
 
         workshop:Add("213181442", { -- Mobile Computing Pack
             onCheck = function()
-                return !workshop:ModelIsError("models/lt_c/tech/cellphone.mdl")
+                return ! workshop:ModelIsError("models/lt_c/tech/cellphone.mdl")
             end
         })
 
         workshop:Add("104477476", { -- Misc Props Pack
             onCheck = function()
-                return !workshop:ModelIsError("models/props_vtmb/armchair.mdl")
+                return ! workshop:ModelIsError("models/props_vtmb/armchair.mdl")
             end
         })
 
         workshop:Add("2546157752", { -- Stockplus - More Construct Props
             onCheck = function()
-                return !workshop:ModelIsError("models/okxapack/stockplus/hunter/pipes/pipe025.mdl")
+                return ! workshop:ModelIsError("models/okxapack/stockplus/hunter/pipes/pipe025.mdl")
             end
         })
 
         workshop:Add("1805856532", { -- [DR] Nidai Nekomaru
             onCheck = function()
-                return !workshop:ModelIsError("models/nekomaru/nekomaruniidai.mdl")
+                return ! workshop:ModelIsError("models/nekomaru/nekomaruniidai.mdl")
             end
         })
 
         workshop:Add("2892089039", { -- UNION Content Pack#1 [props]
             onCheck = function()
-                return !workshop:ModelIsError("models/union/props/ai2.mdl")
+                return ! workshop:ModelIsError("models/union/props/ai2.mdl")
             end
         })
 
         workshop:Add("2892095571", { -- UNION Content Pack#6 [furniture]
             onCheck = function()
-                return !workshop:ModelIsError("models/union/furniture/ac_wallunit.mdl")
+                return ! workshop:ModelIsError("models/union/furniture/ac_wallunit.mdl")
             end
         })
 
@@ -360,7 +368,7 @@ function Arbitrage:GetStored()
     local data = {
         -- Позиции начальной камеры
         camPos = {
-            asterion_hopespeak_prerelease = {Vector(4204.9350585938, -6540.875, -1521.4392089844), Angle(31.179883956909, -157.67475891113, 0)},
+            asterion_hopespeak_prerelease = { Vector(4204.9350585938, -6540.875, -1521.4392089844), Angle(31.179883956909, -157.67475891113, 0) },
         },
         -- Где должна находится камера в конце
         camPosEnd = {
@@ -489,7 +497,7 @@ function Arbitrage:GetInfo()
 end
 
 function Arbitrage:ClearVariables(data)
-    local variables = {"camPos", "camPosEnd", "placesList", "camPosPlaces", "spawnList", "lobbyList"}
+    local variables = { "camPos", "camPosEnd", "placesList", "camPosPlaces", "spawnList", "lobbyList" }
 
     for k, v in ipairs(variables) do
         if data[v] == nil then
@@ -514,6 +522,7 @@ function Arbitrage:ReplaceVariables()
     -- записываем всю инфу в переменные, ибо с ними проще работать
     self:SaveVariables(data)
 end
+
 Arbitrage:ReplaceVariables()
 
 function Arbitrage:ExtractArgs(text)
@@ -664,20 +673,20 @@ function Arbitrage.OnRecognizeDisable()
 end
 
 Arbitrage.DefaultRules = {
-    {"https://i.imgur.com/WqrdPdz.png", "#rules_1_title", "#rules_1_description"},
-    {"https://i.imgur.com/5BEGz5S.png", "#rules_2_title", "#rules_2_description"},
-    {"https://i.imgur.com/jGNR57p.png", "#rules_3_title", "#rules_3_description"},
-    {"https://i.imgur.com/N3y5t4N.png", "#rules_4_title", "#rules_4_description"},
-    {"https://i.imgur.com/5E0liqc.png", "#rules_5_title", "#rules_5_description"},
-    {"https://i.imgur.com/8Ar23ne.png", "#rules_6_title", "#rules_6_description"},
-    {"https://i.imgur.com/i6deVka.png", "#rules_7_title", "#rules_7_description"},
-    {"https://i.imgur.com/U4P1cUg.png", "#rules_8_title", "#rules_8_description"},
-    {"https://i.imgur.com/t89V6Gg.png", "#rules_9_title", "#rules_9_description"},
-    {"https://i.imgur.com/Eg5uJSu.png", "#rules_10_title", "#rules_10_description"},
-    {"https://i.imgur.com/hpqh3Cp.png", "#rules_11_title", "#rules_11_description"},
-    {"https://i.imgur.com/cMA8o7c.png", "#rules_12_title", "#rules_12_description"},
-    {"https://i.imgur.com/DB3K2Nt.png", "#rules_13_title", "#rules_13_description"},
-    {"https://i.imgur.com/KQ300mf.png", "#rules_14_title", "#rules_14_description"}
+    { "https://i.imgur.com/WqrdPdz.png", "#rules_1_title",  "#rules_1_description" },
+    { "https://i.imgur.com/5BEGz5S.png", "#rules_2_title",  "#rules_2_description" },
+    { "https://i.imgur.com/jGNR57p.png", "#rules_3_title",  "#rules_3_description" },
+    { "https://i.imgur.com/N3y5t4N.png", "#rules_4_title",  "#rules_4_description" },
+    { "https://i.imgur.com/5E0liqc.png", "#rules_5_title",  "#rules_5_description" },
+    { "https://i.imgur.com/8Ar23ne.png", "#rules_6_title",  "#rules_6_description" },
+    { "https://i.imgur.com/i6deVka.png", "#rules_7_title",  "#rules_7_description" },
+    { "https://i.imgur.com/U4P1cUg.png", "#rules_8_title",  "#rules_8_description" },
+    { "https://i.imgur.com/t89V6Gg.png", "#rules_9_title",  "#rules_9_description" },
+    { "https://i.imgur.com/Eg5uJSu.png", "#rules_10_title", "#rules_10_description" },
+    { "https://i.imgur.com/hpqh3Cp.png", "#rules_11_title", "#rules_11_description" },
+    { "https://i.imgur.com/cMA8o7c.png", "#rules_12_title", "#rules_12_description" },
+    { "https://i.imgur.com/DB3K2Nt.png", "#rules_13_title", "#rules_13_description" },
+    { "https://i.imgur.com/KQ300mf.png", "#rules_14_title", "#rules_14_description" }
 }
 
 function Arbitrage.GetAcademyRules()
@@ -733,16 +742,16 @@ do
 
     Arbitrage.TokoGenocideModel = "models/player/dewobedil/danganronpa/toko_fukawa/genocide_p.mdl"
     function playerMeta:IsTokoGenocide()
-    	local model = self:GetModel()
+        local model = self:GetModel()
 
-    	return model == Arbitrage.TokoGenocideModel
+        return model == Arbitrage.TokoGenocideModel
     end
 
     Arbitrage.TokoModel = "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl"
     function playerMeta:IsToko()
-    	local model = self:GetModel()
+        local model = self:GetModel()
 
-    	return model == Arbitrage.TokoModel or self:IsTokoGenocide()
+        return model == Arbitrage.TokoModel or self:IsTokoGenocide()
     end
 
     function IsPlaying(faction)
@@ -777,7 +786,6 @@ do
 
         return false
     end
-
 
     playerMeta.oldHasGodMode = playerMeta.oldHasGodMode or playerMeta.HasGodMode
     function playerMeta:HasGodMode()
@@ -849,124 +857,166 @@ player_manager.AddValidModel("group02female03", "models/player/group01/female_03
 player_manager.AddValidHands("group02female03", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
 
 -- v1
-player_manager.AddValidModel("Danganronpa Sayaka (Yoru)", "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/Sayaka_Yoru.mdl");
-player_manager.AddValidHands("Danganronpa Sayaka (Yoru)", "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/arms/Sayaka_Yoru_arms.mdl", 0, "00000000")
+player_manager.AddValidModel("Danganronpa Sayaka (Yoru)",
+    "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/Sayaka_Yoru.mdl");
+player_manager.AddValidHands("Danganronpa Sayaka (Yoru)",
+    "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/arms/Sayaka_Yoru_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Sakura Ogami", "models/player/yourtoast4/danganronpa/sakura_ogami.mdl")
 player_manager.AddValidHands("Sakura Ogami", "models/player/yourtoast4/danganronpa/c_arms/sakura_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Toko Fukawa", "models/player/dewobedil/danganronpa/toko_fukawa/default_p.mdl")
-player_manager.AddValidHands("Toko Fukawa", "models/player/dewobedil/danganronpa/toko_fukawa/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Toko Fukawa", "models/player/dewobedil/danganronpa/toko_fukawa/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Toko Fukawa (Genocide)", "models/player/dewobedil/danganronpa/toko_fukawa/genocide_p.mdl")
-player_manager.AddValidHands("Toko Fukawa (Genocide)", "models/player/dewobedil/danganronpa/toko_fukawa/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Toko Fukawa (Genocide)",
+    "models/player/dewobedil/danganronpa/toko_fukawa/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Celestia Ludenberg", "models/player/dewobedil/celestia_ludenberg/default_p.mdl")
-player_manager.AddValidHands("Celestia Ludenberg", "models/player/dewobedil/celestia_ludenberg/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Celestia Ludenberg", "models/player/dewobedil/celestia_ludenberg/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Chihiro", "models/player/dewobedil/danganronpa/chihiro/default_p.mdl")
 player_manager.AddValidHands("Chihiro", "models/player/dewobedil/danganronpa/chihiro/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Mukuro Ikusaba", "models/pacagma/danganronpa/mukuro_ikusaba/mukuro_ikusaba_player.mdl")
-player_manager.AddValidHands("Mukuro Ikusaba", "models/pacagma/danganronpa/mukuro_ikusaba/mukuro_ikusaba_arms.mdl", 0, "00000000")
+player_manager.AddValidHands("Mukuro Ikusaba", "models/pacagma/danganronpa/mukuro_ikusaba/mukuro_ikusaba_arms.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Hifumi Yamada", "models/player/yourtoast4/danganronpa/hifumi_yamada.mdl")
-player_manager.AddValidHands("Hifumi Yamada", "models/player/yourtoast4/danganronpa/c_arms/hifumi_arms.mdl", 0, "00000000")
-player_manager.AddValidModel("Junko Enoshima (Default)", "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl")
-player_manager.AddValidHands("Junko Enoshima (Default)", "models/player/dewobedil/danganronpa/junko_enoshima/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Hifumi Yamada", "models/player/yourtoast4/danganronpa/c_arms/hifumi_arms.mdl", 0,
+    "00000000")
+player_manager.AddValidModel("Junko Enoshima (Default)",
+    "models/player/dewobedil/danganronpa/junko_enoshima/default_p.mdl")
+player_manager.AddValidHands("Junko Enoshima (Default)",
+    "models/player/dewobedil/danganronpa/junko_enoshima/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Kiyotaka Ishimaru", "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/default_p.mdl")
-player_manager.AddValidHands("Kiyotaka Ishimaru", "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/c_arms/default_p.mdl", 0, "00000000")
-player_manager.AddValidModel("Danganronpa Kyoko Kirigiri (Yoru)", "models/Kyoko_Kirigiri_Yoru/Danganronpa/rstar/Kyoko_Kirigiri_Yoru/Kyoko_Kirigiri_Yoru.mdl");
-player_manager.AddValidHands("Danganronpa Kyoko Kirigiri (Yoru)", "models/Kyoko_Kirigiri_Yoru/Danganronpa/rstar/Kyoko_Kirigiri_Yoru/arms/Kyoko_Kirigiri_Yoru_arms.mdl", 0, "00000000")
+player_manager.AddValidHands("Kiyotaka Ishimaru",
+    "models/player/dewobedil/danganronpa/kiyotaka_ishimaru/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Danganronpa Kyoko Kirigiri (Yoru)",
+    "models/Kyoko_Kirigiri_Yoru/Danganronpa/rstar/Kyoko_Kirigiri_Yoru/Kyoko_Kirigiri_Yoru.mdl");
+player_manager.AddValidHands("Danganronpa Kyoko Kirigiri (Yoru)",
+    "models/Kyoko_Kirigiri_Yoru/Danganronpa/rstar/Kyoko_Kirigiri_Yoru/arms/Kyoko_Kirigiri_Yoru_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Leon Kuwata", "models/player/yourtoast4/danganronpa/leon_kuwata.mdl")
 player_manager.AddValidHands("Leon Kuwata", "models/player/yourtoast4/danganronpa/c_arms/leon_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Makoto Naegi", "models/player/yourtoast4/danganronpa/makoto_naegi.mdl")
 player_manager.AddValidHands("Makoto Naegi", "models/player/yourtoast4/danganronpa/c_arms/makoto_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Mondo Owada", "models/player/dewobedil/danganronpa/mondo_owada/default_p.mdl")
-player_manager.AddValidHands("Mondo Owada", "models/player/dewobedil/danganronpa/mondo_owada/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Mondo Owada", "models/player/dewobedil/danganronpa/mondo_owada/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Mondo Owada (White)", "models/player/dewobedil/danganronpa/mondo_owada/white_p.mdl")
-player_manager.AddValidHands("Mondo Owada (White)", "models/player/dewobedil/danganronpa/mondo_owada/c_arms/white_p.mdl", 0, "00000000")
-player_manager.AddValidModel("Aoi Asahina","models/custom/aoi_asahina.mdl")
+player_manager.AddValidHands("Mondo Owada (White)", "models/player/dewobedil/danganronpa/mondo_owada/c_arms/white_p.mdl",
+    0, "00000000")
+player_manager.AddValidModel("Aoi Asahina", "models/custom/aoi_asahina.mdl")
 player_manager.AddValidHands("Aoi Asahina", "models/custom/aoi_asahina_viewarms.mdl", 0, "00000000")
-player_manager.AddValidModel("Byakuya Togami","models/custom/byakuya_togami.mdl")
+player_manager.AddValidModel("Byakuya Togami", "models/custom/byakuya_togami.mdl")
 player_manager.AddValidHands("Byakuya Togami", "models/custom/byakuya_togami_viewarms.mdl", 0, "00000000")
 
 -- v2
 player_manager.AddValidModel("Fuyuhiko Kuzuryu", "models/player/dewobedil/danganronpa/fuyuhiko/default_p.mdl")
-player_manager.AddValidHands("Fuyuhiko Kuzuryu", "models/player/dewobedil/danganronpa/fuyuhiko/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Fuyuhiko Kuzuryu", "models/player/dewobedil/danganronpa/fuyuhiko/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Chiaki Nanami", "models/player/dewobedil/chiaki_nanami/default_p.mdl")
 player_manager.AddValidHands("Chiaki Nanami", "models/player/dewobedil/chiaki_nanami/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Gundam Tanaka", "models/player/dewobedil/gundam_tanaka/default_p.mdl")
 player_manager.AddValidHands("Gundam Tanaka", "models/player/dewobedil/gundam_tanaka/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Hajime Hinata", "models/player/dewobedil/danganronpa/hajime_hinata/default_p.mdl")
-player_manager.AddValidHands("Hajime Hinata", "models/player/dewobedil/danganronpa/hajime_hinata/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Hajime Hinata", "models/player/dewobedil/danganronpa/hajime_hinata/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Ibuki Mioda", "models/player/dewobedil/danganronpa/ibuki_mioda/default_p.mdl")
-player_manager.AddValidHands("Ibuki Mioda", "models/player/dewobedil/danganronpa/ibuki_mioda/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Ibuki Mioda", "models/player/dewobedil/danganronpa/ibuki_mioda/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Kazuichi Soda", "models/player/danganronpa/kazuichi_soda.mdl")
 player_manager.AddValidHands("Kazuichi Soda", "models/player/danganronpa/c_arms/kazuichi_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Mahiru Koizumi", "models/player/dewobedil/danganronpa/mahiru_koizumi/default_p.mdl")
-player_manager.AddValidHands("Mahiru Koizumi", "models/player/dewobedil/danganronpa/mahiru_koizumi/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Mahiru Koizumi", "models/player/dewobedil/danganronpa/mahiru_koizumi/c_arms/default_p.mdl",
+    0, "00000000")
 player_manager.AddValidModel("Mikan Tsumiki", "models/player/dewobedil/mikan_tsumiki/default_p.mdl")
 player_manager.AddValidHands("Mikan Tsumiki", "models/player/dewobedil/mikan_tsumiki/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Monomi", "models/player/dewobedil/monomi/default_p.mdl")
 player_manager.AddValidHands("Monomi", "models/player/dewobedil/monomi/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Nagito Komaeda", "models/player/dewobedil/nagito_komaeda/default_p.mdl")
-player_manager.AddValidHands("Nagito Komaeda", "models/player/dewobedil/nagito_komaeda/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Nagito Komaeda", "models/player/dewobedil/nagito_komaeda/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Peko Pekoyama", "models/player/dewobedil/peko_pekoyama/default_p.mdl")
 player_manager.AddValidHands("Peko Pekoyama", "models/player/dewobedil/peko_pekoyama/c_arms/default_p.mdl", 0, "00000000")
-player_manager.AddValidModel("Hiyoko Saionji (Danganronpa)", "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl")
-player_manager.AddValidHands("Hiyoko Saionji (Danganronpa)", "models/player/dewobedil/danganronpa/hiyoko_saionji/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidModel("Hiyoko Saionji (Danganronpa)",
+    "models/player/dewobedil/danganronpa/hiyoko_saionji/default_p.mdl")
+player_manager.AddValidHands("Hiyoko Saionji (Danganronpa)",
+    "models/player/dewobedil/danganronpa/hiyoko_saionji/c_arms/default_p.mdl", 0, "00000000")
+
+player_manager.AddValidModel("Hiyoko Saionji (NEW)", "models/dih/SaionjiHiyokoSFW.mdl")
+player_manager.AddValidHands("Hiyoko Saionji (NEW)", "models/dih/arms/c_arms_saionjihiyoko_hands.mdl", 0, "10000000")
+
 player_manager.AddValidModel("Sonia Nevermind", "models/player/dewobedil/danganronpa/sonia_nevermind/default_p.mdl")
-player_manager.AddValidHands("Sonia Nevermind", "models/player/dewobedil/danganronpa/sonia_nevermind/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Sonia Nevermind",
+    "models/player/dewobedil/danganronpa/sonia_nevermind/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Teruteru Hanamura", "models/player/yourtoast4/danganronpa/teruteru_hanamura.mdl")
-player_manager.AddValidHands("Teruteru Hanamura", "models/player/yourtoast4/danganronpa/c_arms/teruteru_arms.mdl", 0, "00000000")
+player_manager.AddValidHands("Teruteru Hanamura", "models/player/yourtoast4/danganronpa/c_arms/teruteru_arms.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Akane Owari", "models/player/yourtoast4/danganronpa/akane_owari.mdl")
 player_manager.AddValidHands("Akane Owari", "models/player/yourtoast4/danganronpa/c_arms/akane_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Byakuya Togami (DR2)", "models/player/dewobedil/danganronpa2/byakuya_togami/default_p.mdl")
-player_manager.AddValidHands("Byakuya Togami (DR2)", "models/player/dewobedil/danganronpa2/byakuya_togami/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Byakuya Togami (DR2)",
+    "models/player/dewobedil/danganronpa2/byakuya_togami/c_arms/default_p.mdl", 0, "00000000")
 
 -- v3
 player_manager.AddValidModel("Himiko Yumeno", "models/player/dewobedil/danganronpa/himiko_yumeno/default_p.mdl")
-player_manager.AddValidHands("Himiko Yumeno", "models/player/dewobedil/danganronpa/himiko_yumeno/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Himiko Yumeno", "models/player/dewobedil/danganronpa/himiko_yumeno/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Kaede Akamatsu", "models/player/dewobedil/danganronpa/kaede_akamatsu/default_p.mdl")
-player_manager.AddValidHands("Kaede Akamatsu", "models/player/dewobedil/danganronpa/kaede_akamatsu/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Kaede Akamatsu", "models/player/dewobedil/danganronpa/kaede_akamatsu/c_arms/default_p.mdl",
+    0, "00000000")
 player_manager.AddValidModel("Kaito Momota", "models/player/dewobedil/danganronpa/kaito_momota/default_p.mdl")
-player_manager.AddValidHands("Kaito Momota", "models/player/dewobedil/danganronpa/kaito_momota/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Kaito Momota", "models/player/dewobedil/danganronpa/kaito_momota/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("K1B0", "models/player_kiibo.mdl")
 player_manager.AddValidHands("K1B0", "models/kiibo_arms.mdl", 0, "00000000")
 player_manager.AddValidModel("Kirumi Tojo", "models/player/dewobedil/danganronpa/kirumi_tojo/default_p.mdl")
-player_manager.AddValidHands("Kirumi Tojo", "models/player/dewobedil/danganronpa/kirumi_tojo/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Kirumi Tojo", "models/player/dewobedil/danganronpa/kirumi_tojo/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Korekiyo Shinguji", "models/player/dewobedil/danganronpa/korekiyo_shinguji/default_p.mdl")
-player_manager.AddValidHands("Korekiyo Shinguji", "models/player/dewobedil/danganronpa/korekiyo_shinguji/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Korekiyo Shinguji",
+    "models/player/dewobedil/danganronpa/korekiyo_shinguji/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Maki Harukawa", "models/player/dewobedil/danganronpa/maki_harukawa/default_p.mdl")
-player_manager.AddValidHands("Maki Harukawa", "models/player/dewobedil/danganronpa/maki_harukawa/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Maki Harukawa", "models/player/dewobedil/danganronpa/maki_harukawa/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Miu Iruma", "models/player/dewobedil/danganronpa/miu_iruma/default_p.mdl")
-player_manager.AddValidHands("Miu Iruma", "models/player/dewobedil/danganronpa/miu_iruma/c_arms/default_p.mdl", 0, "00000000")
-player_manager.AddValidModel("Monokuma","models/player/yourtoast4/danganronpa/monokuma.mdl")
+player_manager.AddValidHands("Miu Iruma", "models/player/dewobedil/danganronpa/miu_iruma/c_arms/default_p.mdl", 0,
+    "00000000")
+player_manager.AddValidModel("Monokuma", "models/player/yourtoast4/danganronpa/monokuma.mdl")
 player_manager.AddValidHands("Monokuma", "models/player/yourtoast4/danganronpa/c_arms/monokuma_arms.mdl", 0, "00000000")
-player_manager.AddValidModel("Kokichi Oma School Uniform","models/player_kokichioumaschool.mdl")
+player_manager.AddValidModel("Kokichi Oma School Uniform", "models/player_kokichioumaschool.mdl")
 player_manager.AddValidHands("Kokichi Oma School Uniform", "models/arms_kokichiouma_school.mdl", 0, "00000000")
-player_manager.AddValidModel("Kokichi Oma School Uniform - No eyetrack","models/player_kokichioumaschool_notrack.mdl")
+player_manager.AddValidModel("Kokichi Oma School Uniform - No eyetrack", "models/player_kokichioumaschool_notrack.mdl")
 player_manager.AddValidHands("Kokichi Oma School Uniform - No eyetrack", "models/arms_kokichiouma.mdl", 0, "00000000")
-player_manager.AddValidModel("Kokichi Oma Ulimate Uniform","models/player_kokichioumaultimate.mdl")
+player_manager.AddValidModel("Kokichi Oma Ulimate Uniform", "models/player_kokichioumaultimate.mdl")
 player_manager.AddValidHands("Kokichi Oma Ulimate Uniform", "models/arms_kokichiouma.mdl", 0, "00000000")
-player_manager.AddValidModel("Kokichi Oma Ulimate Uniform - No eyetrack","models/player_kokichioumaultimate_notrack.mdl")
+player_manager.AddValidModel("Kokichi Oma Ulimate Uniform - No eyetrack", "models/player_kokichioumaultimate_notrack.mdl")
 player_manager.AddValidHands("Kokichi Oma Ulimate Uniform - No eyetrack", "models/arms_kokichiouma.mdl", 0, "00000000")
-player_manager.AddValidModel("Kokichi Oma Beta Uniform","models/player_kokichioumabeta.mdl")
+player_manager.AddValidModel("Kokichi Oma Beta Uniform", "models/player_kokichioumabeta.mdl")
 player_manager.AddValidHands("Kokichi Oma Beta Uniform", "models/arms_kokichiouma_beta.mdl", 0, "00000000")
-player_manager.AddValidModel("Kokichi Oma Beta Uniform - No eyetrack","models/player_kokichioumabeta_notrack.mdl")
+player_manager.AddValidModel("Kokichi Oma Beta Uniform - No eyetrack", "models/player_kokichioumabeta_notrack.mdl")
 player_manager.AddValidHands("Kokichi Oma Beta Uniform - No eyetrack", "models/arms_kokichiouma.mdl", 0, "00000000")
 player_manager.AddValidModel("Rantaro Amami", "models/player/dewobedil/danganronpa/rantaro_amami/default_p.mdl")
-player_manager.AddValidHands("Rantaro Amami", "models/player/dewobedil/danganronpa/rantaro_amami/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Rantaro Amami", "models/player/dewobedil/danganronpa/rantaro_amami/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Ryoma Hoshi", "models/player/dewobedil/danganronpa/ryoma_hoshi/default_p.mdl")
-player_manager.AddValidHands("Ryoma Hoshi", "models/player/dewobedil/danganronpa/ryoma_hoshi/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Ryoma Hoshi", "models/player/dewobedil/danganronpa/ryoma_hoshi/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Shuichi Saihara", "models/player/dewobedil/danganronpa/shuichi_saihara/default_p.mdl")
-player_manager.AddValidHands("Shuichi Saihara", "models/player/dewobedil/danganronpa/shuichi_saihara/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Shuichi Saihara",
+    "models/player/dewobedil/danganronpa/shuichi_saihara/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Tenko Chabashira", "models/player/dewobedil/danganronpa/tenko_chabashira/default_p.mdl")
-player_manager.AddValidHands("Tenko Chabashira", "models/player/dewobedil/danganronpa/tenko_chabashira/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Tenko Chabashira",
+    "models/player/dewobedil/danganronpa/tenko_chabashira/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Tsumugi Shirogane", "models/player/dewobedil/danganronpa/tsumugi_shirogane/default_p.mdl")
-player_manager.AddValidHands("Tsumugi Shirogane", "models/player/dewobedil/danganronpa/tsumugi_shirogane/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Tsumugi Shirogane",
+    "models/player/dewobedil/danganronpa/tsumugi_shirogane/c_arms/default_p.mdl", 0, "00000000")
 player_manager.AddValidModel("Angie Yonaga", "models/player/dewobedil/danganronpa/angie_yonaga/default_p.mdl")
-player_manager.AddValidHands("Angie Yonaga", "models/player/dewobedil/danganronpa/angie_yonaga/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Angie Yonaga", "models/player/dewobedil/danganronpa/angie_yonaga/c_arms/default_p.mdl", 0,
+    "00000000")
 player_manager.AddValidModel("Gonta Gokuhara", "models/player/dewobedil/danganronpa/gonta_gokuhara/default_p.mdl")
-player_manager.AddValidHands("Gonta Gokuhara", "models/player/dewobedil/danganronpa/gonta_gokuhara/c_arms/default_p.mdl", 0, "00000000")
+player_manager.AddValidHands("Gonta Gokuhara", "models/player/dewobedil/danganronpa/gonta_gokuhara/c_arms/default_p.mdl",
+    0, "00000000")
 
 -- UDG
-player_manager.AddValidModel( "Komaru Naegi (UDG)", "models/player/someguy/komaru_p.mdl" )
-player_manager.AddValidHands( "Komaru Naegi (UDG)", "models/player/someguy/komaru_arms.mdl", 0, "00000000")
+player_manager.AddValidModel("Komaru Naegi (UDG)", "models/player/someguy/komaru_p.mdl")
+player_manager.AddValidHands("Komaru Naegi (UDG)", "models/player/someguy/komaru_arms.mdl", 0, "00000000")
 
 -- отключаем ненужные звуки
 sound.Add({

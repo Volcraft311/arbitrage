@@ -88,7 +88,7 @@ function PANEL:CreateCharacters(characters)
 
     for _, character in ipairs(characters) do
         local assets = character:GetAssets()
-        local greeting = Material(assets.greeting_new or assets.greeting, "smooth clamp")
+        local greeting = Material(assets.greeting_new or assets.greeting, "smooth clamp mips")
         -- TODO Удалить проверку, как переделают всех
         local splash_sprite = assets.greeting_splash
         if (! file.Exists("materials/" .. assets.greeting_splash, "GAME")) then
@@ -102,7 +102,8 @@ function PANEL:CreateCharacters(characters)
         panel:SetText("")
         panel:Dock(LEFT)
         panel:DockMargin(0, 0, 10, 0)
-        panel:SetWide(charactersPanel:GetTall() * 0.31055900621)
+        -- panel:SetWide(charactersPanel:GetTall() * 0.31055900621)
+        panel:SetSize(128, 512)
         panel.alpha = 0.1
         panel.Paint = function(this, w, h)
             this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or 0.1)

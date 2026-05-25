@@ -172,7 +172,7 @@ function Arbitrage:StartLaw()
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then
-                local info = Arbitrage.placesList[place]
+                local info = Arbitrage.Trial.PlacesList[place]
                 local pos = info and info[1]
                 local ang = info and info[2]
 
@@ -367,7 +367,7 @@ function PLUGIN:PlayerInitialSpawn(client)
                 local place = tonumber(Arbitrage.players[steamid].place)
                 if !place then return end
 
-                local info = Arbitrage.placesList[place]
+                local info = Arbitrage.Trial.PlacesList[place]
                 local pos = info and info[1]
                 local ang = info and info[2]
 

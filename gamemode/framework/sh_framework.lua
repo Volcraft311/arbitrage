@@ -13,9 +13,6 @@
 
 Arbitrage.HookRun("Initialize")
 
-
-Arbitrage.Trial = Arbitrage.Trial or {}
-
 do
     Arbitrage.statistics.Add("hunger", {
         data = "Hunger",

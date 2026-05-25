@@ -151,7 +151,7 @@ end
 local function getPlaces(steamid)
     local data = {}
 
-    local copy = table.Copy(Arbitrage.placesList or {})
+    local copy = table.Copy(Arbitrage.Trial.PlacesList or {})
     copy[-1] = true -- обнуление места
 
     for k, v in pairs(copy) do

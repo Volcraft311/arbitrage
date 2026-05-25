@@ -17,10 +17,17 @@ LawSystem = PLUGIN
 
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
+
+Arbitrage.Trial = Arbitrage.Trial or {
+    PlacesList = {},
+    CamPlaces = {}
+}
+
+
 function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
-    if lawPos >= 0 and Arbitrage.camPosPlaces then
-        local pos = Arbitrage.camPosPlaces[lawPos]
+    if lawPos >= 0 and Arbitrage.Trial.CamPlacesList then
+        local pos = Arbitrage.Trial.CamPlacesList[lawPos]
 
         if pos then
             return pos
@@ -201,7 +208,7 @@ function PLUGIN:StartCommand(client, ucmd)
         ucmd:SetMouseWheel(0)
 
         local var = client:LawPlace()
-        local place = Arbitrage.placesList and Arbitrage.placesList[var]
+        local place = Arbitrage.Trial.PlacesList and Arbitrage.Trial.PlacesList[var]
 
         if place then
             client:SetEyeAngles(place[2])

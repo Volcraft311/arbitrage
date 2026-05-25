@@ -235,7 +235,7 @@ local actionList = {
         if !IsValid(target) then return end
 
         local count = table.Count(Arbitrage.players)
-        local id = Arbitrage.placesList and math.Clamp(count + 1, 1, #Arbitrage.placesList) or -1
+        local id = Arbitrage.Trial.PlacesList and math.Clamp(count + 1, 1, #Arbitrage.Trial.PlacesList) or -1
 
         Arbitrage.players[target:SteamID()] = {
             faction = target:Team(),

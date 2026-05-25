@@ -300,10 +300,10 @@ end
 local sizeW, sizeH = 150, 150
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawTranslucentRenderables()
-    if Arbitrage.placesList and !Arbitrage.lawEnable then
+    if Arbitrage.Trial.PlacesList and !Arbitrage.lawEnable then
         local client = LocalPlayer()
         local var = client:LawPlace()
-        local place = Arbitrage.placesList[var]
+        local place = Arbitrage.Trial.PlacesList[var]
 
         if var >= 0 and place then
             local anim = math.sin(CurTime() * 1.5) * 5

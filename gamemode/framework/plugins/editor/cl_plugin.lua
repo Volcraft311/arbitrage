@@ -113,7 +113,7 @@ function Editor:HUDPaint()
     draw.SimpleText(L("#editor_editmode"), "arb.Font_FuturaPTDemi_10", ScrW() / 2, H(10), Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
 
     do
-        for k, v in pairs(Arbitrage.placesList or {}) do
+        for k, v in pairs(Arbitrage.Trial.PlacesList or {}) do
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
             local pos, ang = v[1], v[2]
 
@@ -122,7 +122,7 @@ function Editor:HUDPaint()
     end
 
     do
-        for k, v in pairs(Arbitrage.camPosPlaces or {}) do
+        for k, v in pairs(Arbitrage.Trial.CamPlacesList or {}) do
             local color = k == 0 and Color(255, 0, 0) or Color(255, 171, 0)
 
             self:DrawInfo(L("#editor_camera") .. " " .. k, v, nil, color, "camPosPlaces_" .. k, "models/editor/air_node_hint.mdl")

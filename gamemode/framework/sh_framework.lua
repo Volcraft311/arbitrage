@@ -844,6 +844,13 @@ player_manager.AddValidHands("group01female07", "models/weapons/c_arms_citizen.m
 player_manager.AddValidModel("group02female03", "models/player/group01/female_03.mdl")
 player_manager.AddValidHands("group02female03", "models/weapons/c_arms_citizen.mdl", 1, "0000000")
 
+
+--- MAX PUMP
+player_manager.AddValidModel( "Max Pump",     "models/maxpump/maxpump.mdl" );
+list.Set( "PlayerOptionsModel", "Max Pump",   "models/maxpump/maxpump.mdl" );
+
+player_manager.AddValidHands( "Max Pump", "models/maxpump/dm_skel_hands.mdl", 0, "00000000" )
+
 -- v1
 player_manager.AddValidModel("Danganronpa Sayaka (Yoru)",
     "models/Sayaka_Yoru/Danganronpa/rstar/Sayaka_Yoru/Sayaka_Yoru.mdl");

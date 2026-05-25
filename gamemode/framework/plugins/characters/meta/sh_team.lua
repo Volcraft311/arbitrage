@@ -20,10 +20,10 @@ TEAM.description = ""
 TEAM.id = 0
 TEAM.uniqueID = nil
 TEAM.category = "#category_button_other"
-TEAM.model = "models/player/skeleton.mdl"
+TEAM.model = "models/maxpump/maxpump.mdl"
 TEAM.color = Color(240, 201, 73)
 TEAM.evidence_visibility = 1
-TEAM.scale = 1
+TEAM.scale = 0.8
 TEAM.hullscale = 1
 TEAM.hullduckscale = 1
 
@@ -104,7 +104,7 @@ function TEAM:GetCategory()
 end
 
 function TEAM:GetModel()
-    return tostring(self.model) or "models/player/skeleton.mdl"
+    return tostring(self.model) or "models/maxpump/maxpump.mdl"
 end
 
 function TEAM:GetColor()

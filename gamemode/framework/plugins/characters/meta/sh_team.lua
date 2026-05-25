@@ -23,7 +23,7 @@ TEAM.category = "#category_button_other"
 TEAM.model = "models/maxpump/maxpump.mdl"
 TEAM.color = Color(240, 201, 73)
 TEAM.evidence_visibility = 1
-TEAM.scale = 0.8
+TEAM.scale = 0.85
 TEAM.hullscale = 1
 TEAM.hullduckscale = 1
 

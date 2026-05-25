@@ -45,7 +45,8 @@ function PANEL:Init()
         self:OpenNew(self.selectIdx + 1)
     end
     rightButton.Paint = function(this, w, h)
-        this.alpha = Lerp(FrameTime() * 10, this.alpha, this:IsHovered() and 1 or (self.selectIdx >= #self.stored and 0.1 or 0.4))
+        this.alpha = Lerp(FrameTime() * 10, this.alpha,
+            this:IsHovered() and 1 or (self.selectIdx >= #self.stored and 0.1 or 0.4))
 
         local color = Arbitrage.theme:GetVisForeground()
         surface.SetDrawColor(color.r, color.g, color.b, 255 * this.alpha)
@@ -63,7 +64,7 @@ function PANEL:Init()
         surface.DrawRect(0, 0, w, h)
 
         local new = self.stored[self.selectIdx]
-        if !new then return end
+        if ! new then return end
 
         local mat = self.stored[self.selectIdx].mat
         if mat then
@@ -94,7 +95,7 @@ function PANEL:Init()
     end
     self.imagePanel.DoClick = function()
         local new = self.stored[self.selectIdx]
-        if !new then return end
+        if ! new then return end
 
         new.callback()
     end
@@ -105,13 +106,13 @@ function PANEL:Init()
 end
 
 function PANEL:InitNews()
-    self:AddNew(1, "https://i.ibb.co/4Rvj4ddQ/Max-Payne-RELEASE.png", function()
-        gui.OpenURL("https://discord.gg/rappumped")
+    self:AddNew(1, "https://i.ibb.co/BVstSKBc/MAX-PUMP-NEWS.png", function()
+        gui.OpenURL("https://discord.com/channels/1507709773427245206/1508055078731255941/1508480995178053794")
     end)
 
-    -- self:AddNew(2, "https://i.ibb.co/hFF4mk3s/image.png", function()
-    --     gui.OpenURL("https://discord.com/channels/744899300277878796/1116322080531697706/1305513992701345824")
-    -- end)
+    self:AddNew(2, "https://i.ibb.co/4Rvj4ddQ/Max-Payne-RELEASE.png", function()
+        gui.OpenURL("https://discord.gg/Ynx4VkEbZmd")
+    end)
 
     -- self:AddNew(3, "https://i.ibb.co/pjxbZmSW/STEAM-0-1-91455907-1760181303.jpg", function()
     --     gui.OpenURL("https://discord.com/channels/744899300277878796/1116322080531697706/1305513992701345824")
@@ -157,7 +158,9 @@ function PANEL:RebuildFlippingPanel()
         button:SetWide(self.flipPanel:GetTall())
         button.color = Arbitrage.theme:GetVisBackground()
         button.Paint = function(this, w, h)
-            this.color = LerpColor(FrameTime() * 10, this.color, (idx == self.selectIdx or this:IsHovered()) and Arbitrage.theme:GetVisForeground() or Arbitrage.theme:GetVisBackground())
+            this.color = LerpColor(FrameTime() * 10, this.color,
+                (idx == self.selectIdx or this:IsHovered()) and Arbitrage.theme:GetVisForeground() or
+                Arbitrage.theme:GetVisBackground())
 
             surface.SetDrawColor(this.color)
             surface.DrawRect(0, 0, w, h)

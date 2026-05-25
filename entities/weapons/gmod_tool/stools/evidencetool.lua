@@ -17,7 +17,7 @@ file.CreateDir("academy_evidencetool_configs")
 AddCSLuaFile()
 
 TOOL.Name = "Evidence Tool"
-TOOL.Category = "Asterion Tools"
+TOOL.Category = "Pump Tools"
 TOOL.Information = {
     {name = "left", stage = 0},
     {name = "right", stage = 0},

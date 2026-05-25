@@ -18,7 +18,7 @@ file.CreateDir("academy_doordistribution_configs/" .. game.GetMap())
 AddCSLuaFile()
 
 TOOL.Name = "Door Distribution Tool"
-TOOL.Category = "Asterion Tools"
+TOOL.Category = "Pump Tools"
 TOOL.Information = {
     {name = "left", stage = 0},
     {name = "right", stage = 0},

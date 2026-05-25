@@ -15,7 +15,7 @@
 AddCSLuaFile()
 
 TOOL.Name = "Trigger Tool"
-TOOL.Category = "Asterion Tools"
+TOOL.Category = "Pump Tools"
 TOOL.Information = {
 	{
 		name = "left",

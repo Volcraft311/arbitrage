@@ -9,6 +9,9 @@
             Selenter - https://steamcommunity.com/id/selenter
 
         ——— Chop your own wood and it will warm you twice.
+
+
+        --- Плагин отвечает за систему судов
 ]]--
 
 local PLUGIN = PLUGIN

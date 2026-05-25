@@ -15,7 +15,7 @@
 AddCSLuaFile()
 
 TOOL.Name = "Entities Info"
-TOOL.Category = "Asterion Tools"
+TOOL.Category = "Pump Tools"
 TOOL.Information = {
     {name = "left", stage = 0},
     {name = "right", stage = 0}

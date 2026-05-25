@@ -18,7 +18,7 @@ file.CreateDir("academy_mapentityremover_configs/" .. game.GetMap())
 AddCSLuaFile()
 
 TOOL.Name = "Map Entity Remover Tool"
-TOOL.Category = "Asterion Tools"
+TOOL.Category = "Pump Tools"
 TOOL.Information = {
     {name = "left", stage = 0},
     {name = "reload"}

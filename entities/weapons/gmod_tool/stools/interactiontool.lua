@@ -15,7 +15,7 @@
 AddCSLuaFile()
 
 TOOL.Name = "Interaction Tool"
-TOOL.Category = "Asterion Tools"
+TOOL.Category = "Pump Tools"
 TOOL.Information = {
     {name = "left", stage = 0},
     {name = "right", stage = 0},

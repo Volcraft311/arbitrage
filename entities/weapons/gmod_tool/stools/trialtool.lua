@@ -25,35 +25,46 @@ TOOL.Information = {
     }
 }
 
-if CLIENT then
-    TOOL.Data = TOOL.Data or {}
-    TOOL.ClientProps = TOOL.ClientProps or {}
+local Trial = Arbitrage.Trial
 
-    ---@param name string
-    local function _save(name)
-        Arbitrage.file.Write("trial_cfg/" .. name .. ".txt", "a")
+if CLIENT then
+
+    do -- Конфиги
+        ---@param name string
+        local function _save(name)
+            Arbitrage.file.Write("trial_cfg/" .. name .. ".txt", util.TableToJSON(Trial.Data))
+            LocalPlayer():ChatNotify("Конфиг " .. name .. ".txt сохранён!")
+        end
+
+        local function _load(name)
+            local data = Arbitrage.file.Read("trial_cfg/" .. name)
+            if !data then return LocalPlayer():ChatNotify("Конфиг " .. name .. ". не найден!") end
+            Arbitrage.Trial = util.JSONToTable(data) or Trial.Data
+        end
+
+        concommand.Add("arb_save_trial_cfg", function(ply, cmd, args)
+            _save(tostring(args[1]))
+        end)
+
+        concommand.Add("arb_load_trial_cfg", function(ply, cmd, args)
+            _load(tostring(args[1]))
+        end)
     end
 
-    concommand.Add("arb_save_trial_cfg", function(ply, cmd, args)
-        _save(tostring(args[1]))
-    end)
-
-
-    function TOOL:Reload()
+    function TOOL:Reload(trace)
         if !IsFirstTimePredicted() then return false end
-
-        LocalPlayer():ChatNotify("Добавлено место: " .. #Arbitrage.Trial.PlacesList)
+        local placeNumber = Trial:AddPlace(trace.HitPos)
+        LocalPlayer():ChatNotify("Добавлено место: " .. placeNumber)
+        hook.Run("Arbitrage_Trial_Updated")
         return true
     end
 end
 
 function TOOL.BuildCPanel(CPanel)
     local titleLabel = vgui.Create("DLabel")
-	titleLabel:SetText("Настройка \"Классного Суда\"(CLASS TRIAL)")
+    titleLabel:SetText("Настройка \"Классного Суда\"(CLASS TRIAL)")
     titleLabel:SetColor(color_black)
     titleLabel:SetContentAlignment(1)
-    -- titleLabel:SetWrap(true)
-    -- titleLabel:SetTall(30)
 
     local saveButton = vgui.Create("DButton")
     saveButton:SetText("Сохранения")
@@ -71,7 +82,7 @@ function TOOL.BuildCPanel(CPanel)
         local files = Arbitrage.file.Find("trial_cfg/*")
         for _, fname in ipairs(files) do
             SubMenu:AddOption(fname, function()
-                Trigger:Load(fname)
+                RunConsoleCommand("arb_load_trial_cfg", fname)
             end)
         end
         SubMenuOption:SetIcon("icon16/arrow_down.png")
@@ -80,23 +91,32 @@ function TOOL.BuildCPanel(CPanel)
     end
 
     local placesLabel = vgui.Create("DLabel")
-	placesLabel:SetText("Список Мест")
+    placesLabel:SetText("Список Мест")
     placesLabel:SetColor(color_black)
     placesLabel:SetContentAlignment(1)
 
     local placesList = vgui.Create("DListView")
-	placesList:AddColumn("Номер")
-	placesList:SetTall(130)
-	placesList.OnRowSelected = function(panel, index, row)
-		local value = tonumber(row:GetValue(1))
-		if !value then return end
+    placesList:AddColumn("Номер")
+    placesList:SetTall(130)
+    placesList.OnRowSelected = function(panel, index, row)
+        local value = tonumber(row:GetValue(1))
+        if !value then return end
+    end
 
-	end
+    hook("Arbitrage_Trial_Updated", function()
+        placesList:Clear()
+
+        for i, _ in ipairs(Trial.Data.PlacesList) do
+            placesList:AddLine(tostring(i))
+        end
+    end)
 
     CPanel:AddPanel(titleLabel)
     CPanel:AddPanel(saveButton)
     CPanel:AddPanel(placesLabel)
     CPanel:AddPanel(placesList)
+
+    hook.Run("Arbitrage_Trial_Updated")
 end
 
 function TOOL:DrawHUD()

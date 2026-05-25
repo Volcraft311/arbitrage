@@ -15,7 +15,6 @@
 ]]--
 
 local PLUGIN = PLUGIN
-
 function PLUGIN:StartPointing()
     hook.Remove("CalcView", "arb.LawTransferCamPos")
 

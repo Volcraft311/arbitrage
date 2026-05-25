@@ -18,11 +18,12 @@ LawSystem = PLUGIN
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
 
-Arbitrage.Trial = Arbitrage.Trial or {
+PLUGIN.Data = PLUGIN.Data or {
     PlacesList = {},
     CamPlaces = {}
 }
 
+Arbitrage.Trial = PLUGIN
 
 function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
@@ -214,6 +215,12 @@ function PLUGIN:StartCommand(client, ucmd)
             client:SetEyeAngles(place[2])
         end
     end
+end
+
+---@param vector Vector
+function PLUGIN:AddPlace(vector)
+    self.Data.PlacesList[#self.Data.PlacesList+1] = vector
+    return #self.Data.PlacesList
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

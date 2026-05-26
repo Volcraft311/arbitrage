@@ -11,6 +11,7 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+---@type TrialPlugin
 local PLUGIN = PLUGIN
 PLUGIN.name = "LawSystem"
 LawSystem = PLUGIN
@@ -18,14 +19,15 @@ LawSystem = PLUGIN
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
 
-PLUGIN.Data = PLUGIN.Data or {
-    PlacesList = {},
-    CamPlaces = {}
-}
-
-PLUGIN.LastPlaceId = 0
-
 Arbitrage.Trial = PLUGIN
+
+function PLUGIN.GetPlaces()
+    return GetNetVar("Arb_Trial_Places", {})
+end
+
+function PLUGIN.GetCameras()
+    return GetNetVar("Arb_Trial_Cameras", {})
+end
 
 function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
@@ -211,7 +213,7 @@ function PLUGIN:StartCommand(client, ucmd)
         ucmd:SetMouseWheel(0)
 
         local var = client:LawPlace()
-        local place = Arbitrage.Trial.PlacesList and Arbitrage.Trial.PlacesList[var]
+        local place = Arbitrage.Trial.GetPlaces() and Arbitrage.Trial.GetPlaces()[var]
 
         if place then
             client:SetEyeAngles(place[2])
@@ -219,12 +221,13 @@ function PLUGIN:StartCommand(client, ucmd)
     end
 end
 
----@param vector Vector
-function PLUGIN.AddPlace(vector)
-    PLUGIN.Data.PlacesList[#PLUGIN.Data.PlacesList+1] = vector
+---@param place Place
+function PLUGIN.AddPlace(place)
+    PLUGIN.Data.PlacesList[#PLUGIN.Data.PlacesList+1] = place
     PLUGIN.LastPlaceId = #PLUGIN.Data.PlacesList
     return PLUGIN.LastPlaceId
 end
 
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("cl_editor.lua")
 Arbitrage.base.Include("sv_plugin.lua")

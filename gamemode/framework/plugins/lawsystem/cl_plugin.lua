@@ -13,28 +13,9 @@
 
         --- Плагин отвечает за систему судов
 ]] --
-
+---@type TrialPlugin
 local PLUGIN = PLUGIN
 
-PLUGIN.CSProps = PLUGIN.CSProps or {
-    PlacesList = {}
-}
-
-function PLUGIN.ShowPlacesModels()
-    if #PLUGIN.CSProps.PlacesList >= #PLUGIN.Data.PlacesList then return end
-    for i, v in ipairs(PLUGIN.Data.PlacesList) do
-        print("Draw - ", i)
-        local ent = ClientsideModel("models/editor/spot.mdl")
-        ent:SetPos(v)
-        PLUGIN.CSProps.PlacesList[i] = ent
-    end
-end
-
-function PLUGIN.HidePlacesModels()
-    for i, v in ipairs(PLUGIN.CSProps.PlacesList) do
-        v:Remove()
-    end
-end
 
 function PLUGIN:StartPointing()
     hook.Remove("CalcView", "arb.LawTransferCamPos")
@@ -121,8 +102,9 @@ function PLUGIN:TransferCamPos()
 
     local newFov = 70
     local endPos = Arbitrage.camPosEnd
-    local startPos = Arbitrage.camPos[1]
-    local startAng = Arbitrage.camPos[2]
+    local camera = Arbitrage.Trial.GetCameras()[1]
+    local startPos = camera.pos
+    local startAng = camera.ang
     startAng.p = startAng.p + 30
 
     self._tcpAng = startAng
@@ -320,14 +302,16 @@ end
 local sizeW, sizeH = 150, 150
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawTranslucentRenderables()
-    if Arbitrage.Trial.PlacesList and ! Arbitrage.lawEnable then
+    local places = Arbitrage.Trial.GetPlaces()
+    if places and ! Arbitrage.lawEnable then
         local client = LocalPlayer()
         local var = client:LawPlace()
-        local place = Arbitrage.Trial.PlacesList[var]
+        local place = places[var]
 
         if var >= 0 and place then
             local anim = math.sin(CurTime() * 1.5) * 5
-            local vec = place[1] - Vector(0, 0, 10 + anim)
+            -- Print(place)
+            local vec = place.pos - Vector(0, 0, 10 + anim)
 
             local dist = client:GetPos():DistToSqr(vec)
             if dist <= 500000 then

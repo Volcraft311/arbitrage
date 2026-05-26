@@ -62,12 +62,12 @@ MonoMenu:AddGameFunction("#monomenu_gm_startgame", "icon16/control_play_blue.png
     onEnable = function(client)
         if CLIENT then return end
 
-        Arbitrage:StartGame()
+        Arbitrage.StartGame()
     end,
     onDisable = function(client)
         if CLIENT then return end
 
-        Arbitrage:StopGame()
+        Arbitrage.StopGame()
     end,
     OnCheck = function(client)
         return Arbitrage.IsStartGame()

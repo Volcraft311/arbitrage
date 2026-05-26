@@ -14,8 +14,39 @@
          --- Плагин отвечает за систему судов
 ]]--
 
+---@type TrialPlugin
 local PLUGIN = PLUGIN
 PLUGIN.InterruptionCD = 5
+
+PLUGIN.PlaceList = PLUGIN.PlaceList or {}
+PLUGIN.CameraList = PLUGIN.CameraList or {}
+
+---@param place Place
+function PLUGIN.AddPlace(place)
+    PLUGIN.PlaceList[#PLUGIN.PlaceList+1] = place
+    SetNetVar("Arb_Trial_Places", PLUGIN.PlaceList)
+    return #PLUGIN.PlaceList
+end
+
+function PLUGIN.SetPlaces(places)
+    PLUGIN.PlaceList = places
+    SetNetVar("Arb_Trial_Places", PLUGIN.PlaceList)
+end
+
+function PLUGIN.SetPlace(id, place)
+    if !PLUGIN.PlaceList[id] then return end
+    PLUGIN.PlaceList[id] = place
+    SetNetVar("Arb_Trial_Places", PLUGIN.PlaceList)
+end
+
+---@param camera Place
+function PLUGIN.SetCamera(id, camera)
+    if !PLUGIN.PlaceList[id] then return end
+    PLUGIN.CameraList[id] = camera
+    SetNetVar("Arb_Trial_Cameras", PLUGIN.CameraList)
+end
+
+
 
 local function randomID(old)
     local new = math.random(1, #PLUGIN.CamAnimData)
@@ -161,6 +192,7 @@ function Arbitrage:StartLaw()
             v:ConCommand("spectate")
         end
     end
+    local places = PLUGIN.GetPlaces()
 
     timer.Simple(2, function()
         local players_ignore = {}
@@ -172,7 +204,7 @@ function Arbitrage:StartLaw()
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then
-                local info = Arbitrage.Trial.PlacesList[place]
+                local info = places[place]
                 local pos = info and info[1]
                 local ang = info and info[2]
 
@@ -367,7 +399,7 @@ function PLUGIN:PlayerInitialSpawn(client)
                 local place = tonumber(Arbitrage.players[steamid].place)
                 if !place then return end
 
-                local info = Arbitrage.Trial.PlacesList[place]
+                local info = Arbitrage.Trial.GetPlaces()[place]
                 local pos = info and info[1]
                 local ang = info and info[2]
 

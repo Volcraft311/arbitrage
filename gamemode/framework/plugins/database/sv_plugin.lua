@@ -171,7 +171,8 @@ local lifting = Vector(0, 0, 64)
 timer.Create("Arbitrage:DeadTablets", 5, 0, function()
     if Arbitrage.OffSpawnDeadTablets() then return end
 
-    if !Arbitrage.Trial.PlacesList then return end
+    local places = Arbitrage.Trial.GetPlaces()
+    if #places == 0 then return end
 
     for k, v in pairs(Arbitrage.players) do
         local client = player.GetBySteamID(k)
@@ -187,7 +188,7 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
         local place = tonumber(v.place)
         if place == -1 then continue end -- Место неуказано
 
-        local placeList = Arbitrage.Trial.PlacesList[place]
+        local placeList = places[place]
         if !placeList then continue end
 
         local entity = DataBase.deathPlaques[k]

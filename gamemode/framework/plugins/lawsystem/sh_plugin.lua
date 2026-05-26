@@ -23,6 +23,8 @@ PLUGIN.Data = PLUGIN.Data or {
     CamPlaces = {}
 }
 
+PLUGIN.LastPlaceId = 0
+
 Arbitrage.Trial = PLUGIN
 
 function PLUGIN:GetClientPos(client)
@@ -218,9 +220,10 @@ function PLUGIN:StartCommand(client, ucmd)
 end
 
 ---@param vector Vector
-function PLUGIN:AddPlace(vector)
-    self.Data.PlacesList[#self.Data.PlacesList+1] = vector
-    return #self.Data.PlacesList
+function PLUGIN.AddPlace(vector)
+    PLUGIN.Data.PlacesList[#PLUGIN.Data.PlacesList+1] = vector
+    PLUGIN.LastPlaceId = #PLUGIN.Data.PlacesList
+    return PLUGIN.LastPlaceId
 end
 
 Arbitrage.base.Include("cl_plugin.lua")

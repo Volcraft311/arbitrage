@@ -28,7 +28,6 @@ TOOL.Information = {
 local Trial = Arbitrage.Trial
 
 if CLIENT then
-
     do -- Конфиги
         ---@param name string
         local function _save(name)
@@ -38,7 +37,7 @@ if CLIENT then
 
         local function _load(name)
             local data = Arbitrage.file.Read("trial_cfg/" .. name)
-            if !data then return LocalPlayer():ChatNotify("Конфиг " .. name .. ". не найден!") end
+            if ! data then return LocalPlayer():ChatNotify("Конфиг " .. name .. ". не найден!") end
             Arbitrage.Trial = util.JSONToTable(data) or Trial.Data
         end
 
@@ -52,12 +51,24 @@ if CLIENT then
     end
 
     function TOOL:Reload(trace)
-        if !IsFirstTimePredicted() then return false end
-        local placeNumber = Trial:AddPlace(trace.HitPos)
+        if ! IsFirstTimePredicted() then return false end
+        local placeNumber = Trial.AddPlace(trace.HitPos)
         LocalPlayer():ChatNotify("Добавлено место: " .. placeNumber)
         hook.Run("Arbitrage_Trial_Updated")
         return true
     end
+
+    function TOOL:Think()
+
+    end
+
+    function TOOL:Holster()
+        Trial.HidePlacesModels()
+    end
+
+    hook("TrialTool_DrawModels","Arbitrage_Trial_Updated" , function()
+        Trial.ShowPlacesModels()
+    end)
 end
 
 function TOOL.BuildCPanel(CPanel)
@@ -100,7 +111,7 @@ function TOOL.BuildCPanel(CPanel)
     placesList:SetTall(130)
     placesList.OnRowSelected = function(panel, index, row)
         local value = tonumber(row:GetValue(1))
-        if !value then return end
+        if ! value then return end
     end
 
     hook("Arbitrage_Trial_Updated", function()

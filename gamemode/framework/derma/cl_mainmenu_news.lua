@@ -64,7 +64,7 @@ function PANEL:Init()
         surface.DrawRect(0, 0, w, h)
 
         local new = self.stored[self.selectIdx]
-        if ! new then return end
+        if !new then return end
 
         local mat = self.stored[self.selectIdx].mat
         if mat then
@@ -95,7 +95,7 @@ function PANEL:Init()
     end
     self.imagePanel.DoClick = function()
         local new = self.stored[self.selectIdx]
-        if ! new then return end
+        if !new then return end
 
         new.callback()
     end

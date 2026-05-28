@@ -24,14 +24,14 @@ function PLUGIN:StartPointing()
 
     self._fov = nil
     self._entity = NULL
-    self.__camPos = Arbitrage.camPosEnd
+    self.__camPos = Arbitrage.Trial.GetEndPosCamera() --#
     self.animID = 1
     self.oldAnimID = -1
     self.someoneAlreadySaid = false
 
     timer.Simple(6, function()
         hook.Add("ArbitrageVoiceStart", "arb.LawStartVoice", function(client)
-            if ! Arbitrage.lawEnable then return end
+            if !Arbitrage.lawEnable then return end
 
             if client == LocalPlayer() then
                 netstream.Start("arb.StartVoice")
@@ -39,7 +39,7 @@ function PLUGIN:StartPointing()
         end)
 
         hook.Add("ArbitrageVoiceEnd", "arb.LawEndVoice", function(client)
-            if ! Arbitrage.lawEnable then return end
+            if !Arbitrage.lawEnable then return end
 
             if client == LocalPlayer() then
                 netstream.Start("arb.EndVoice")
@@ -55,12 +55,12 @@ function PLUGIN:StartPointing()
     hook.Add("CalcView", "arb.LawStartPointing", function(client, pos, angles, fov)
         incline = Lerp(FrameTime() * 0.5, incline, 5)
 
-        if ! self._fov then
+        if !self._fov then
             self._fov = 130
         end
 
         if IsValid(self._entity) then
-            if ! self.someoneAlreadySaid then
+            if !self.someoneAlreadySaid then
                 self.someoneAlreadySaid = true
                 self._fov = 90
             end
@@ -77,7 +77,7 @@ function PLUGIN:StartPointing()
         else
             self._angles.y = self._angles.y + FrameTime() * 25
 
-            if ! self.someoneAlreadySaid then
+            if !self.someoneAlreadySaid then
                 self._fov = Lerp(FrameTime() * 2, self._fov, 90)
             end
         end
@@ -101,8 +101,8 @@ function PLUGIN:TransferCamPos()
     hook.Remove("CalcView", "arb.LawCameraTwist")
 
     local newFov = 70
-    local endPos = Arbitrage.camPosEnd
-    local camera = Arbitrage.Trial.GetCameras()[1]
+    local endPos = Arbitrage.Trial.GetEndPosCamera()
+    local camera = Arbitrage.Trial.GetStartCamera()
     local startPos = camera.pos
     local startAng = camera.ang
     startAng.p = startAng.p + 30
@@ -252,7 +252,7 @@ function PLUGIN:Interruption(data)
 end
 
 function PLUGIN:Talking(client, anim)
-    if ! IsValid(client) then return end
+    if !IsValid(client) then return end
 
     self.animID = anim
     self._entity = client
@@ -270,40 +270,41 @@ function PLUGIN:CreateBullet(data)
     return self.bulletList[#self.bulletList], #self.bulletList
 end
 
-local function drawing(client, mat)
-    local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
-    local spriteW = 45 * spriteSize
-    local spriteH = 75 * spriteSize
-    local spriteShift = spriteW * 0.5
+local function draw_3d_sprites(data)
+    local places = Arbitrage.Trial.GetPlaces()
+    for i, v in ipairs(data) do
 
-    do
-        local ang = Angle(0, client:EyeAngles()[2] + 90, 90)
-        local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * spriteShift
+        local place = places[v:LawPlace()]
+        local character = v:GetCharacter()
+        if !character then return end
+        local uniqueID = character:GetUniqueID()
+        local emoji = Character.emoji:GetByUniqueID(uniqueID)
+        if !emoji then return end
+        local mat = Material(emoji:GetByIndex(v:GetNetVar("emoji", 1)))
+        -- print(mat)
+        local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
+        local spriteW = 45 * spriteSize
+        local spriteH = 75 * spriteSize
+        local spriteShift = spriteW * 0.5
 
+        local pos = place.pos
+        local ang = place.ang + Angle(0, 90, 90)
         cam.Start3D2D(pos, ang, 1)
-        surface.SetDrawColor(255, 255, 255)
-        surface.SetMaterial(mat)
-        surface.DrawTexturedRect(0, 0, spriteW, spriteH)
-        cam.End3D2D()
-    end
-
-    do
-        local ang = Angle(0, client:EyeAngles()[2] - 90, 90)
-        local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * -spriteShift
-
-        cam.Start3D2D(pos, ang, 1)
-        surface.SetDrawColor(0, 0, 0)
-        surface.SetMaterial(mat)
-        surface.DrawTexturedRectUV(0, 0, spriteW, spriteH, 1, 0, 0, 1)
+            surface.SetMaterial(mat)
+            surface.SetDrawColor(0, 0, 0, 255)
+            surface.DrawTexturedRect(-spriteShift, -spriteH/2, spriteW, spriteH )
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.DrawTexturedRect(-spriteShift, -spriteH/2, spriteW, spriteH)
         cam.End3D2D()
     end
 end
+
 
 local sizeW, sizeH = 150, 150
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawTranslucentRenderables()
     local places = Arbitrage.Trial.GetPlaces()
-    if places and ! Arbitrage.lawEnable then
+    if places and !Arbitrage.lawEnable then
         local client = LocalPlayer()
         local var = client:LawPlace()
         local place = places[var]
@@ -335,7 +336,7 @@ function PLUGIN:PostDrawTranslucentRenderables()
         surface.DrawTexturedRect(0, 0, 0, 0)
 
         local pos = Arbitrage.camPosEnd
-        if pos and ! Arbitrage.OffShowClassTrial() then
+        if pos and !Arbitrage.OffShowClassTrial() then
             local angle = Angle(90, 0, 0)
             local radius = 250
             local seg = 360
@@ -363,8 +364,8 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
                 local text = "class trial"
                 cam.Start3D2D(Pos, ang_t, 0.3)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
-                draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, Color(0,0,0, 30), TEXT_ALIGN_CENTER)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 40), TEXT_ALIGN_CENTER)
                 cam.End3D2D()
             end
         end
@@ -378,32 +379,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
             return a_place > b_place
         end)
+        draw_3d_sprites(data)
 
-        for _, v in ipairs(data) do
-            local place = v:LawPlace()
-            if place <= -1 then continue end
-
-            local character = v:GetCharacter()
-            if ! character then continue end
-
-            local uniqueID = character:GetUniqueID()
-
-            local emoji = Character.emoji:GetByUniqueID(uniqueID)
-            if ! emoji then continue end
-
-            local var = v:GetNetVar("emoji", 1)
-            local big, _ = emoji:GetByIndex(var)
-
-            if ! big then
-                big, _ = emoji:GetByIndex(1)
-            end
-
-            if big then
-                local mat = Material(big)
-
-                drawing(v, mat)
-            end
-        end
+      
     end
 end
 
@@ -419,7 +397,7 @@ local bulletMat = Material("danganronpa/law/bullet.png")
 local bulletMatL = Material("danganronpa/law/bullet_l.png")
 
 hook.Add("HUDPaint", "arb.DrawBullets", function()
-    if ! Arbitrage.lawEnable then return end
+    if !Arbitrage.lawEnable then return end
 
     for k, v in pairs(PLUGIN.bulletList) do
         v.alphato = v.alphato or v.alpha
@@ -462,7 +440,7 @@ local tab = {
 }
 
 function PLUGIN:RenderScreenspaceEffects()
-    if ! Arbitrage.lawEnable then return end
+    if !Arbitrage.lawEnable then return end
 
     DrawColorModify(tab)
 
@@ -682,7 +660,7 @@ function PLUGIN:CreateBulletAnimation1()
             })
 
             timer.Simple(math.random(100, 300) / 200, function()
-                if ! bulletData then return end
+                if !bulletData then return end
 
                 bulletData.alpha = 0
 
@@ -711,7 +689,7 @@ function PLUGIN:CreateBulletAnimation2()
             })
 
             timer.Simple(0.3, function()
-                if ! bulletData then return end
+                if !bulletData then return end
 
                 bulletData.alpha = 0
 
@@ -848,7 +826,7 @@ netstream.Hook("arb.DrawSprites", function()
 end)
 
 netstream.Hook("arb.LawInterruption", function(interrupter, speaker)
-    if ! IsValid(interrupter) then return end
+    if !IsValid(interrupter) then return end
 
     local data = interrupter:Team()
     PLUGIN:Interruption(data)
@@ -922,7 +900,7 @@ netstream.Hook("arb.ShowEvidence", function(client, data, indx)
     prestation:AddMaterial(icon, name)
 
     local panel = Arbitrage.gui.lawaction
-    if ! IsValid(panel) then return end
+    if !IsValid(panel) then return end
 
     timer.Simple(1, function()
         PLUGIN.bulletText = Evidence:GetEvidence(indx).name
@@ -954,9 +932,9 @@ netstream.Hook("arb.ShowItem", function(client, path, indx)
     prestation:AddMaterial(icon, name)
 
     local panel = Arbitrage.gui.lawaction
-    if ! IsValid(panel) then return end
+    if !IsValid(panel) then return end
 
-    if ! panel.items[indx] then
+    if !panel.items[indx] then
         panel.items[indx] = name
     end
 

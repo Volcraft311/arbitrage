@@ -46,6 +46,18 @@ function PLUGIN.SetCamera(id, camera)
     SetNetVar("Arb_Trial_Cameras", PLUGIN.CameraList)
 end
 
+function PLUGIN.SetFocusCamera(id)
+    if !PLUGIN.CameraList[id] then return print("Focus camera is out of bounds!!", id, "/", #PLUGIN.CameraList) end
+    SetNetVar("Arb_Trial_FocusCamera", id)
+end
+
+function PLUGIN.SetStartCamera(pos, ang)
+    SetNetVar("Arb_Trial_StartPosCamera", { pos = pos, ang = ang })
+end
+
+function PLUGIN.SetEndPosCamera(pos)
+    SetNetVar("Arb_Trial_EndPosCamera", pos)
+end
 
 
 local function randomID(old)
@@ -201,12 +213,15 @@ function Arbitrage:StartLaw()
             local client = player.GetBySteamID(k)
 
             local place = tonumber(v.place)
+            print("SET PLACE FOR", client, " : ", place)
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then
                 local info = places[place]
-                local pos = info and info[1]
-                local ang = info and info[2]
+                if !info then continue end
+                Print(info)
+                local pos = info.pos
+                local ang = info.ang
 
                 if pos and ang then
                     players_ignore[k] = true
@@ -226,7 +241,7 @@ function Arbitrage:StartLaw()
             if !players_ignore[v:SteamID()] then
                 v.arbOldPos = v:GetPos()
 
-                v:SetPos(Arbitrage.camPosEnd)
+                v:SetPos(Arbitrage.Trial.GetEndPosCamera())
             end
 
             v:Freeze(true)
@@ -241,14 +256,15 @@ function Arbitrage:StartLaw()
         if IsValid(entity) then
             AddOriginToPVS(entity:GetPos())
         end
+        AddOriginToPVS(Arbitrage.Trial.GetStartCamera().pos)
+        AddOriginToPVS(Arbitrage.Trial.GetEndPosCamera())
+        -- for k, v in ipairs({"camPosEnd"}) do
+        --     local pos = Arbitrage[v]()
 
-        for k, v in ipairs({"camPosEnd"}) do
-            local pos = Arbitrage[v]
-
-            if pos then
-                AddOriginToPVS(pos)
-            end
-        end
+        --     if pos then
+        --         AddOriginToPVS(pos)
+        --     end
+        -- end
     end)
 end
 
@@ -323,8 +339,9 @@ end
 
 function PLUGIN:Focus(client, anim)
     if self.IsRebuttalShowdowns then return end
-    if self.talk_entity == client then return end
-
+    -- if self.talk_entity == client then return end
+    anim = 5
+    print(client, anim)
     if !self.focusCD or CurTime() >= self.focusCD then
         netstream.Start(nil, "arb.LawTalking", client, anim, true)
 
@@ -400,8 +417,9 @@ function PLUGIN:PlayerInitialSpawn(client)
                 if !place then return end
 
                 local info = Arbitrage.Trial.GetPlaces()[place]
-                local pos = info and info[1]
-                local ang = info and info[2]
+                if !info then return end
+                local pos = info.pos
+                local ang = info.ang
 
                 if pos and ang then
                     client:SetPos(pos)

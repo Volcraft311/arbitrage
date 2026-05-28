@@ -271,7 +271,7 @@ netstream.Hook("ItemBase:CreationRegisterItem", function(client, data)
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationRegisterItem(baseID, uniqueID, info)
 
-    client:ChatNotify("Предмет " .. uniqueID .. " успешно был создан! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    client:ChatNotify("Предмет " .. uniqueID .. " успешно был создан!(Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
     AdminNotify:SendNotify("registeritem", client:FullName(), uniqueID)
 end)
 
@@ -298,7 +298,7 @@ netstream.Hook("ItemBase:CreationEditItem", function(client, data)
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationEditItem(uniqueID, info)
 
-    client:ChatNotify("Предмет " .. uniqueID .. " успешно был обновлен! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    client:ChatNotify("Предмет " .. uniqueID .. " успешно был обновлен!(Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
     AdminNotify:SendNotify("edititem", client:FullName(), uniqueID)
 end)
 
@@ -323,7 +323,7 @@ netstream.Hook("ItemBase:CreationRemoveItem", function(client, baseID, uniqueID)
     asterionlib.data:Set("itemslist", itemslist)
     ItemBase.CreationRemoveItem(uniqueID)
 
-    client:ChatNotify("Предмет " .. uniqueID .. " успешно был удален! (Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
+    client:ChatNotify("Предмет " .. uniqueID .. " успешно был удален!(Чтобы обновить список предметов в Q меню, пропишите в консоль: spawnmenu_reload)")
     AdminNotify:SendNotify("removeitem", client:FullName(), uniqueID)
 end)
 

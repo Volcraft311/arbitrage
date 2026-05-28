@@ -22,7 +22,7 @@ do
         end,
         OnRun = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
-            if ! amount then return end
+            if !amount then return end
 
             if Arbitrage.OnDeadLowStatictic() and amount <= 10 then
                 client:TakeDamage(1)
@@ -37,7 +37,7 @@ do
             end
         end,
         OnCanRun = function(client, info)
-            return ! Arbitrage.OffFallHunger()
+            return !Arbitrage.OffFallHunger()
         end,
         OnCanSpend = function(client, info)
             if client:HasTemporaryStatusEffect("hunger_a") then
@@ -54,7 +54,7 @@ do
         end,
         OnRun = function(client, info)
             local amount = Arbitrage.statistics.Get(client, info.data)
-            if ! amount then return end
+            if !amount then return end
 
             if Arbitrage.OnDeadLowStatictic() and amount <= 10 then
                 client:TakeDamage(1)
@@ -69,7 +69,7 @@ do
             end
         end,
         OnCanRun = function(client, info)
-            return ! Arbitrage.OffFallThirst()
+            return !Arbitrage.OffFallThirst()
         end,
         OnCanSpend = function(client, info)
             if client:HasTemporaryStatusEffect("thirst_a") then
@@ -85,7 +85,7 @@ do
             return faction and tonumber(faction:GetFatique()) or 33
         end,
         OnCanRun = function(client, info)
-            return ! Arbitrage.OffFallSleep()
+            return !Arbitrage.OffFallSleep()
         end,
         OnCanSpend = function(client, info)
             if client:HasTemporaryStatusEffect("sleep_a") then

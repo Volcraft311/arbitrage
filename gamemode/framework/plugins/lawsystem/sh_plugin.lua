@@ -18,6 +18,8 @@ LawSystem = PLUGIN
 
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
+local vector_zero = Vector(0, 0, 0)
+local angle_zero = Angle(0, 0, 0)
 
 Arbitrage.Trial = PLUGIN
 
@@ -29,17 +31,28 @@ function PLUGIN.GetCameras()
     return GetNetVar("Arb_Trial_Cameras", {})
 end
 
+function PLUGIN.GetFocusCamera()
+    return (GetNetVar("Arb_Trial_FocusCamera", 0))
+end
+
+function PLUGIN.GetStartCamera()
+    return GetNetVar("Arb_Trial_StartPosCamera", { pos = vector_zero, ang = angle_zero })
+end
+
+function PLUGIN.GetEndPosCamera()
+    return GetNetVar("Arb_Trial_EndPosCamera", vector_zero)
+end
+
 function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
-    if lawPos >= 0 and Arbitrage.Trial.CamPlacesList then
-        local pos = Arbitrage.Trial.CamPlacesList[lawPos]
+    local cameras = Arbitrage.Trial.GetCameras()
+    if lawPos >= 0 and cameras[lawPos] then
+        local pos = cameras[lawPos].pos
 
-        if pos then
-            return pos
-        end
+        if pos then return pos end
     end
 
-    return Arbitrage.camPosEnd
+    return PLUGIN.GetEndPosCamera()
 end
 
 function PLUGIN:GetClientAng(client, pos)
@@ -216,7 +229,7 @@ function PLUGIN:StartCommand(client, ucmd)
         local place = Arbitrage.Trial.GetPlaces() and Arbitrage.Trial.GetPlaces()[var]
 
         if place then
-            client:SetEyeAngles(place[2])
+            client:SetEyeAngles(place.ang)
         end
     end
 end

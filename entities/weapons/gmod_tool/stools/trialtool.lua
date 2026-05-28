@@ -25,6 +25,8 @@ TOOL.Information = {
     }
 }
 
+
+
 local Trial = Arbitrage.Trial
 
 local function _sprite_size()
@@ -46,16 +48,26 @@ end
 
 
 if CLIENT then
+    do -- Локализация
+        language.Add("tool.trialtool.name", "Trial Tool")
+        language.Add("tool.trialtool.desc", "Инструмент для настройки мест и камер для суда.")
+        language.Add("tool.trialtool.left", "Устанавливает позицию места.")
+        language.Add("tool.trialtool.right", "Устанавливает позицию камеры.")
+        language.Add("tool.trialtool.reload", "Создаёт новое место.")
+    end
+
     do -- Конфиги
         ---@param name string
         local function _save(name)
-            Arbitrage.file.Write("trial_cfg/" .. name .. ".txt", util.TableToJSON({ Places = Trial.GetPlaces(), Cameras = Trial.GetCameras(), StartCamera = Trial.GetStartCamera(), EndPosCamera = Trial.GetEndPosCamera() }))
+            Arbitrage.file.Write("trial_cfg/" .. name .. ".txt",
+                util.TableToJSON({ Places = Trial.GetPlaces(), Cameras = Trial.GetCameras(), StartCamera = Trial
+                .GetStartCamera(), EndPosCamera = Trial.GetEndPosCamera() }))
             LocalPlayer():ChatNotify("Конфиг " .. name .. ".txt сохранён!")
         end
 
         local function _load(name)
             local data = Arbitrage.file.Read("trial_cfg/" .. name)
-            if !data then return LocalPlayer():ChatNotify("Конфиг " .. name .. ". не найден!") end
+            if ! data then return LocalPlayer():ChatNotify("Конфиг " .. name .. ". не найден!") end
             netstream.Start("Arbitrage_Trial_LoadConfig", util.JSONToTable(data))
         end
 
@@ -71,10 +83,10 @@ if CLIENT then
     local function draw_3d_sprite()
         local place = Trial.GetPlaces()[Trial.SelectedPlaceID]
         local character = LocalPlayer():GetCharacter()
-        if !character then return end
+        if ! character then return end
         local uniqueID = character:GetUniqueID()
         local emoji = Character.emoji:GetByUniqueID(uniqueID)
-        if !emoji then return end
+        if ! emoji then return end
         local mat = Material(emoji:GetByIndex(1))
         -- print(mat)
         local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
@@ -105,7 +117,7 @@ if CLIENT then
     end
 
     function TOOL:LeftClick(tr)
-        if !IsFirstTimePredicted() then return false end
+        if ! IsFirstTimePredicted() then return false end
         local placeID = Trial.SelectedPlaceID
         if placeID<=0 then return end
 
@@ -115,7 +127,7 @@ if CLIENT then
     end
 
     function TOOL:RightClick()
-        if !IsFirstTimePredicted() then return false end
+        if ! IsFirstTimePredicted() then return false end
 
         netstream.Start("Arbitrage_Trial_SetCamera", Trial.SelectedPlaceID, LocalPlayer():EyePos(),
             LocalPlayer():EyeAngles())
@@ -133,7 +145,7 @@ if CLIENT then
             local textPos = v.pos + vector_offset
             local data2D = textPos:ToScreen()
             local color = i==Trial.SelectedPlaceID and color_white or color_text
-            if !data2D.visible then continue end
+            if ! data2D.visible then continue end
 
             draw.RoundedBox(8, data2D.x - 50, data2D.y, 100, 30,
                 i==Trial.SelectedPlaceID and color_bg or color_bg_unselected)
@@ -181,13 +193,13 @@ if CLIENT then
         placesList:SetTall(130)
         placesList.OnRowSelected = function(panel, index, row)
             local value = tonumber(row:GetValue(1))
-            if !value then return end
+            if ! value then return end
             Trial.SelectedPlaceID = value
             Trial.ShowPlacesModels()
         end
 
         hook("Arbitrage_Trial_Updated", function()
-            if !IsValid(placesList) then return end
+            if ! IsValid(placesList) then return end
             placesList:Clear()
             local places = Trial.GetPlaces()
             for i, _ in ipairs(places) do
@@ -215,7 +227,8 @@ if CLIENT then
         end
 
         local hintLabel = vgui.Create("DLabel")
-        hintLabel:SetText("* Рекомендую камеру для каждого персонажа направлять на его грудь, так фокус будет над ним, а на персонаже. \n\n*Начальная позиция камеры - пролёт для анимации в начале суда.\n*Конечная позиция - основная камера во время суда.")
+        hintLabel:SetText(
+        "* Рекомендую камеру для каждого персонажа направлять на его грудь, так фокус будет над ним, а на персонаже. \n\n*Начальная позиция камеры - пролёт для анимации в начале суда.\n*Конечная позиция - основная камера во время суда.")
         hintLabel:SetColor(color_black)
         hintLabel:SetContentAlignment(1)
         hintLabel:SetWrap(true)
@@ -245,7 +258,7 @@ if CLIENT then
 else
     ---@param tr TraceResult
     function TOOL:Reload(tr)
-        if !IsFirstTimePredicted() then return true end
+        if ! IsFirstTimePredicted() then return true end
         local pos, dir = _get_pos(self:GetOwner(), tr.HitPos)
         local placeNumber = Trial.AddPlace({ pos = pos, ang = dir })
         netstream.Start(self:GetOwner(), "Arbitrage_Trial_Updated", true)
@@ -255,7 +268,7 @@ else
     end
 
     netstream.Hook("Arbitrage_Trial_LoadConfig", function(client, data)
-        if !IsValid(client) and !client:IsAdmin() then return end
+        if ! IsValid(client) and ! client:IsAdmin() then return end
         Trial.SetPlaces(data.Places or {})
         Trial.SetCameras(data.Cameras or {})
         Trial.SetStartCamera(data.StartCamera)
@@ -264,31 +277,29 @@ else
     end)
 
     netstream.Hook("Arbitrage_Trial_SetPlace", function(client, id, pos, ang)
-        if !IsValid(client) and !client:IsAdmin() then return end
+        if ! IsValid(client) and ! client:IsAdmin() then return end
         Trial.SetPlace(id, { pos = pos, ang = ang })
         netstream.Start(client, "Arbitrage_Trial_Updated")
     end)
 
     netstream.Hook("Arbitrage_Trial_SetCamera", function(client, id, pos, ang)
-        if !IsValid(client) and !client:IsAdmin() then return end
+        if ! IsValid(client) and ! client:IsAdmin() then return end
         Trial.SetCamera(id, { pos = pos, ang = ang })
         netstream.Start(client, "Arbitrage_Trial_Updated")
         client:ChatNotify("Камера для места " .. id .. " установлена!")
-        
     end)
 
     netstream.Hook("Arbitrage_Trial_SetStartPosCamera", function(client, pos, ang)
-        if !IsValid(client) and !client:IsAdmin() then return end
+        if ! IsValid(client) and ! client:IsAdmin() then return end
         Trial.SetStartCamera(pos, ang)
         client:ChatNotify("Начальная позиция камеры установлена!")
         netstream.Start(client, "Arbitrage_Trial_Updated")
     end)
 
     netstream.Hook("Arbitrage_Trial_SetEndPosCamera", function(client, pos)
-        if !IsValid(client) and !client:IsAdmin() then return end
+        if ! IsValid(client) and ! client:IsAdmin() then return end
         Trial.SetEndPosCamera(pos)
         client:ChatNotify("Конечная позиция камеры установлена!")
         netstream.Start(client, "Arbitrage_Trial_Updated")
     end)
-
 end

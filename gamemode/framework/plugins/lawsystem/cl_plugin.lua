@@ -295,7 +295,7 @@ local function draw_3d_sprites(data)
             surface.DrawTexturedRect(-spriteShift, -spriteH/2, spriteW, spriteH )
             surface.SetDrawColor(255, 255, 255, 255)
             -- surface.DrawTexturedRect(-spriteShift, -spriteH/2, spriteW, spriteH)
-            surface.DrawTexturedRectUV(0, 0, spriteW, spriteH, 1, 0, 0, 1)
+            surface.DrawTexturedRectUV(-spriteShift, -spriteH/2, spriteW, spriteH, 1, 0, 0, 1)
         cam.End3D2D()
     end
 end

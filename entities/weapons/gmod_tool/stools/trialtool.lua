@@ -82,6 +82,7 @@ if CLIENT then
 
     local function draw_3d_sprite()
         local place = Trial.GetPlaces()[Trial.SelectedPlaceID]
+        if ! place then return end
         local character = LocalPlayer():GetCharacter()
         if ! character then return end
         local uniqueID = character:GetUniqueID()

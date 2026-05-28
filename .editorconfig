@@ -1,0 +1,2 @@
+[*.lua]
+space_around_logical_operator = false

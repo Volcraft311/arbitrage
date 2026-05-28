@@ -1,1 +1,1 @@
-Arbitrage.IsDeveloper = false
+Arbitrage.IsDeveloper = true

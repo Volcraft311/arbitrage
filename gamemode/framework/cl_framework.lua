@@ -156,12 +156,10 @@ do
         	local factionname = faction:GetName()
 
         	local lImageText = L("#discord_rpc_image_text") .. " " .. (username == steamname and (factionname and L(factionname) or L("#discord_rpc_image_unknown")) or username)
-            print(lImageText)
         	rpc:Set("largeImageText", lImageText)
 
         	local lImageKey = faction:GetUniqueID() or "big"
         	rpc:Set("largeImageKey", lImageKey)
-            print(lImageKey)
         end
     end)
 end

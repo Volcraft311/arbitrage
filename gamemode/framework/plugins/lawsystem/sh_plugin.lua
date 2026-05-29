@@ -50,7 +50,8 @@ function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
     local cameras = Arbitrage.Trial.GetCameras()
     if lawPos >= 0 and cameras[lawPos] then
-        local pos = cameras[lawPos].pos
+        local _pos = cameras[lawPos].pos
+        local pos = Vector(_pos.x, _pos.y, _pos.z) -- Меня убьют, но из-за того что мне пришлось выкатывать это в спешке, придётся создавать новый вектор, иначе анимация не будет возвращать на исходную
 
         if pos then return pos end
     end

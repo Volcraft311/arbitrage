@@ -226,6 +226,9 @@ local function createPlayerInfo(client)
 	return info
 end
 
+local a = false
+local b = false
+
 function PANEL:CheckerPlayers(client1, client2)
 	if !IsValid(client1) or !IsValid(client2) then
 		self:Remove()
@@ -252,7 +255,8 @@ function PANEL:CreatePlayersPanel(client1, client2)
 	self.PlayersPanel.Paint = function(this, w, h)
 		do
 			local view = viewPlayer(self.players[client1])
-
+			view.znear = b
+			view.zfar = a
 			render.SetRenderTarget(redTex)
 				render.RenderView(view)
 
@@ -308,7 +312,7 @@ function PANEL:CreatePlayersPanel(client1, client2)
 
 		renderRSGradient(w, h, RedBorderW)
 		renderRSCylinder(w, h)
-		renderRSMask(w, h)
+		renderRSMask()
 		renderRSNotify(w, h, RedBorderW, self.size)
 		renderRSDivider(w, h, RedBorderW)
 	end

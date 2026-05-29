@@ -211,6 +211,13 @@ if CLIENT then
             end
         end)
 
+        local removeLastButton = vgui.Create("DButton")
+        removeLastButton:SetText("Удалить последнее место")
+        removeLastButton.DoClick = function()
+            if #Trial.GetPlaces() <= 0 then return end
+            netstream.Start("Arbitrage_Trial_RemoveLastPlace")
+        end
+
         local setMaincameraButton = vgui.Create("DButton")
         setMaincameraButton:SetText("Установить начальную позицию камеры")
         setMaincameraButton.DoClick = function()
@@ -241,6 +248,7 @@ if CLIENT then
         CPanel:AddPanel(placesList)
         CPanel:AddPanel(setMaincameraButton)
         CPanel:AddPanel(setEndCameraPosButton)
+        CPanel:AddPanel(removeLastButton)
         CPanel:AddPanel(hintLabel)
         hook.Run("Arbitrage_Trial_Updated")
     end
@@ -301,6 +309,14 @@ else
         if ! IsValid(client) and ! client:IsAdmin() then return end
         Trial.SetEndPosCamera(pos)
         client:ChatNotify("Конечная позиция камеры установлена!")
+        netstream.Start(client, "Arbitrage_Trial_Updated")
+    end)
+
+    netstream.Hook("Arbitrage_Trial_RemoveLastPlace", function(client)
+        if !IsValid(client) and !client:IsAdmin() then return end
+
+        Trial.RemoveLastPlace()
+        client:ChatNotify("Последнее место удалено!")
         netstream.Start(client, "Arbitrage_Trial_Updated")
     end)
 end

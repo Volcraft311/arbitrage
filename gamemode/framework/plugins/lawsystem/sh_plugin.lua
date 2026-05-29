@@ -16,10 +16,9 @@ local PLUGIN = PLUGIN
 PLUGIN.name = "LawSystem"
 LawSystem = PLUGIN
 
-Arbitrage.lawEnable = Arbitrage.lawEnable or false
-
 local vector_zero = Vector(0, 0, 0)
-local angle_zero = Angle(0, 0, 0)
+
+Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
 Arbitrage.Trial = PLUGIN
 
@@ -36,11 +35,15 @@ function PLUGIN.GetFocusCamera()
 end
 
 function PLUGIN.GetStartCamera()
-    return GetNetVar("Arb_Trial_StartPosCamera", { pos = vector_zero, ang = angle_zero })
+    return table.Copy(GetNetVar("Arb_Trial_StartPosCamera", { pos = vector_zero, ang = Angle(0,0,0) }))
 end
 
 function PLUGIN.GetEndPosCamera()
     return GetNetVar("Arb_Trial_EndPosCamera", vector_zero)
+end
+
+function PLUGIN.IsRebuttalShowdowns()
+    return GetNetVar("Arb_Trial_RebuttalShowdowns", false)
 end
 
 function PLUGIN:GetClientPos(client)

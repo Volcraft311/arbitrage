@@ -438,7 +438,7 @@ MonoMenu:AddGameFunction("#monomenu_gm_rebuttal", "icon16/photos.png", {
 
         SetNetVar("arb.OffRebuttalShowdown", true)
 
-        if LawSystem.IsRebuttalShowdowns then
+        if LawSystem.IsRebuttalShowdowns() then
             LawSystem:EndRebuttalShowdowns()
         end
     end,

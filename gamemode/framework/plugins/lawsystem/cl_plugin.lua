@@ -273,33 +273,50 @@ end
 local function draw_3d_sprites(data)
     local places = Arbitrage.Trial.GetPlaces()
     for i, v in ipairs(data) do
-
         local place = places[v:LawPlace()]
         local character = v:GetCharacter()
-        if !character then return end
+        if not character then return end
+        
         local uniqueID = character:GetUniqueID()
         local emoji = Character.emoji:GetByUniqueID(uniqueID)
-        if !emoji then return end
+        if not emoji then return end
+        
         local mat = Material(emoji:GetByIndex(v:GetNetVar("emoji", 1)))
-        -- print(mat)
+        
         local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
         local spriteW = 45 * spriteSize
         local spriteH = 75 * spriteSize
         local spriteShift = spriteW * 0.5
 
-        local pos = place.pos
-        local ang = place.ang + Angle(0, 90, 90)
-        cam.Start3D2D(pos, ang, 1)
-            surface.SetMaterial(mat)
-            surface.SetDrawColor(0, 0, 0, 255)
-            surface.DrawTexturedRect(-spriteShift, -spriteH/2, spriteW, spriteH )
-            surface.SetDrawColor(255, 255, 255, 255)
-            -- surface.DrawTexturedRect(-spriteShift, -spriteH/2, spriteW, spriteH)
-            surface.DrawTexturedRectUV(-spriteShift, -spriteH/2, spriteW, spriteH, 1, 0, 0, 1)
-        cam.End3D2D()
+        local clientPos = v:GetPos()
+        local clientAngles = v:EyeAngles()
+
+        -- ПЕРВЫЙ СЛОЙ (Лицевая сторона)
+        do
+            local ang = Angle(0, clientAngles[2] + 90, 90)
+            local pos = clientPos + Vector(0, 0, spriteH) + clientAngles:Right() * spriteShift
+
+            cam.Start3D2D(pos, ang, 1)
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(mat)
+                surface.DrawTexturedRect(0, 0, spriteW, spriteH)
+            cam.End3D2D()
+        end
+
+        -- ВТОРОЙ СЛОЙ (Задняя сторона)
+        do
+            local ang = Angle(0, clientAngles[2] - 90, 90)
+            local pos = clientPos + Vector(0, 0, spriteH) + clientAngles:Right() * -spriteShift
+
+            cam.Start3D2D(pos, ang, 1)
+                surface.SetDrawColor(0, 0, 0, 255)
+                surface.SetMaterial(mat)
+                -- Отрисовка зеркально, как и было в drawing
+                surface.DrawTexturedRectUV(0, 0, spriteW, spriteH, 1, 0, 0, 1)
+            cam.End3D2D()
+        end
     end
 end
-
 
 local sizeW, sizeH = 150, 150
 local matArrow = Material("danganronpa/ui/arrow.png")

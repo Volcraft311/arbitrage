@@ -39,6 +39,13 @@ function PLUGIN.SetPlace(id, place)
     SetNetVar("Arb_Trial_Places", PLUGIN.PlaceList)
 end
 
+function PLUGIN.RemoveLastPlace()
+    local id = #PLUGIN.PlaceList
+    table.remove(PLUGIN.PlaceList, id)
+    table.remove(PLUGIN.CameraList, id)
+    SetNetVar("Arb_Trial_Places", PLUGIN.PlaceList)
+end 
+
 ---@param camera Place
 function PLUGIN.SetCamera(id, camera)
     if !PLUGIN.PlaceList[id] then return end
@@ -59,6 +66,9 @@ function PLUGIN.SetEndPosCamera(pos)
     SetNetVar("Arb_Trial_EndPosCamera", pos)
 end
 
+function PLUGIN.EnableRebuttalShowdowns(bool)
+    SetNetVar("Arb_Trial_RebuttalShowdowns", bool)
+end
 
 local function randomID(old)
     local new = math.random(1, #PLUGIN.CamAnimData)
@@ -72,7 +82,7 @@ end
 
 function PLUGIN:StartRebuttalShowdowns(client1, client2)
     if !Arbitrage.lawEnable then return end
-    if self.IsRebuttalShowdowns then return end
+    if self.IsRebuttalShowdowns() then return end
     if Arbitrage.OffRebuttalShowdown() then return end
 
     self.RS_players = {
@@ -81,7 +91,7 @@ function PLUGIN:StartRebuttalShowdowns(client1, client2)
     }
 
     self.RebuttalShowdownsMuted = CurTime() + 6.5
-    self.IsRebuttalShowdowns = true
+    self.EnableRebuttalShowdowns(true)
     self.RC_size = 0
 
     netstream.Start(nil, "arb.StartRebuttalShowdowns", client1, client2)
@@ -112,7 +122,7 @@ function PLUGIN:StartRebuttalShowdowns(client1, client2)
 end
 
 function PLUGIN:EndRebuttalShowdowns()
-    if !self.IsRebuttalShowdowns then return end
+    if !self.IsRebuttalShowdowns() then return end
 
     for client in pairs(self.RS_players or {}) do
         if IsValid(client) then
@@ -121,7 +131,7 @@ function PLUGIN:EndRebuttalShowdowns()
     end
 
     self.RS_players = {}
-    self.IsRebuttalShowdowns = false
+    self.EnableRebuttalShowdowns(false)
     self.RC_size = 0
 
     self.RC_interruption = nil
@@ -139,7 +149,7 @@ end
 
 concommand.Add("arb_stop_rebuttalshowdowns", function(client)
     if !Arbitrage.lawEnable then return end
-    if !PLUGIN.IsRebuttalShowdowns then return end
+    if !PLUGIN.IsRebuttalShowdowns() then return end
     if !client:IsAdmin() then return end
 
     if client:InGame() then
@@ -269,7 +279,7 @@ function Arbitrage:StartLaw()
 end
 
 function Arbitrage:EndLaw()
-    if PLUGIN.IsRebuttalShowdowns then
+    if PLUGIN.IsRebuttalShowdowns() then
         PLUGIN:EndRebuttalShowdowns()
     end
 
@@ -325,7 +335,7 @@ function PLUGIN:ChangeEmoji(client, index)
 end
 
 function PLUGIN:StartVoice(client, anim)
-    if self.IsRebuttalShowdowns then return end
+    if self.IsRebuttalShowdowns() then return end
 
     if !self.interruption or CurTime() >= self.interruption and self.talk_entity != client then
         netstream.Start(nil, "arb.LawTalking", client, anim)
@@ -338,7 +348,7 @@ function PLUGIN:StartVoice(client, anim)
 end
 
 function PLUGIN:Focus(client, anim)
-    if self.IsRebuttalShowdowns then return end
+    if self.IsRebuttalShowdowns() then return end
     -- if self.talk_entity == client then return end
     anim = 5
     print(client, anim)
@@ -354,7 +364,7 @@ function PLUGIN:Focus(client, anim)
 end
 
 function PLUGIN:Interruption(client, anim)
-    if self.IsRebuttalShowdowns then return end
+    if self.IsRebuttalShowdowns() then return end
 
     if self.RC_interruption == client then
         if IsValid(self.RC_lastClient) and self.RC_lastClient != client and !Arbitrage.OffRebuttalShowdown() then
@@ -436,7 +446,7 @@ function PLUGIN:PlayerInitialSpawn(client)
         timer.Simple(0.1, function()
             client:Freeze(true)
 
-            if PLUGIN.IsRebuttalShowdowns then
+            if PLUGIN.IsRebuttalShowdowns() then
                 local data = {}
 
                 for k, v in pairs(self.RS_players) do
@@ -462,7 +472,7 @@ netstream.Hook("arb.StartVoice", function(client)
     if client:InGame() and client:Alive() then
         PLUGIN:StartVoice(client, randomID(PLUGIN.oldAnimID))
 
-        if PLUGIN.IsRebuttalShowdowns and PLUGIN.RS_players[client] then
+        if PLUGIN.IsRebuttalShowdowns() and PLUGIN.RS_players[client] then
             if CurTime() < (LawSystem.RebuttalShowdownsMuted or 0) then
                 return
             end
@@ -487,7 +497,7 @@ netstream.Hook("arb.EndVoice", function(client)
     if client:InGame() and client:Alive() then
         -- other
 
-        if PLUGIN.IsRebuttalShowdowns and PLUGIN.RS_players[client] then
+        if PLUGIN.IsRebuttalShowdowns() and PLUGIN.RS_players[client] then
             client.RC_speak = false
         end
     end
@@ -512,7 +522,7 @@ netstream.Hook("arb.LawInterruption", function(client)
 end)
 
 netstream.Hook("arb.StopRebuttalShowdowns", function(client)
-    if !PLUGIN.IsRebuttalShowdowns then return end
+    if !PLUGIN.IsRebuttalShowdowns() then return end
 
     if PLUGIN.RS_players[client] then
         client:SetLocalVar("rs_stopvoting", true)

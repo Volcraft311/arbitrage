@@ -16,7 +16,6 @@ local offset = 4
 for i = offset, #Character.team.instances do
 	local v = Character.team.instances[i]
 	local id = v.uniqueID
-	Print(i, v.uniqueID)
 	Character.emoji:Register(id, {
 		["#classtrial_sprite_category_main"] = Character.emoji:GetMontedEmojies(id)
 	})

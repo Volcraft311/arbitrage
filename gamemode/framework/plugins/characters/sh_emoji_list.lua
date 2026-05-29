@@ -43,7 +43,6 @@ if SERVER then
 
 		print("[Emoji] Зарегистрировано " .. table.Count(config) .. " персонажей")
 	end
-end
 
 	timer.Simple(1, function()
 		Arbitrage.Character.ReadSprites()

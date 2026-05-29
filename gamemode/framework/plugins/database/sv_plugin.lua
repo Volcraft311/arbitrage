@@ -195,8 +195,8 @@ timer.Create("Arbitrage:DeadTablets", 5, 0, function()
         if IsValid(entity) then continue end
 
         local stored = placeList
-        local pos = stored[1] - lifting
-        local ang = stored[2]
+        local pos = stored.pos - lifting
+        local ang = stored.ang
 
         entity = ents.Create("arb_dead")
         entity:SetPos(pos)

@@ -47,6 +47,16 @@ if SERVER then
 	timer.Simple(1, function()
 		Character.ReadSprites()
 	end)
+
+	hook.Add("PlayerInitialSpawn", "Character:Emoji:PlayerInitialSpawn", function(ply)
+		if ply:IsBot() then return end
+		Print("Sync emoji list to " .. ply:Nick())
+		netstream.Start(ply, "Character:Emoji:Sync", Character.emoji.instances)
+	end)
+else
+	netstream.Hook("Character:Emoji:Sync", function(data)
+		Character.emoji.instances = data
+	end)
 end
 -- -- TRIGGER HAPPY HAVOC
 -- Character.emoji:Register("aoi", {

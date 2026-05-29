@@ -1,5 +1,5 @@
 local File = {}
-local base_path = "academy"
+local base_path = "pump_data"
 
 file.CreateDir(base_path)
 

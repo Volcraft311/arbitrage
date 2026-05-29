@@ -78,6 +78,20 @@ function Character.Caching()
 	end
 end
 
+concommand.Add("arb_register_sprites", function()
+	print("[Emoji] Регистрируются эмодзи персонажей...")
+	timer.Simple(1, function()
+		local config = {}
+		local offset = 4
+		for i = offset, #Character.team.instances do
+			local id = Character.team.instances[i].uniqueID
+			config[id] = Character.emoji:GetMontedEmojies(id)
+		end
+		Arbitrage.file.Write("emoji_config.json", util.TableToJSON(config, true))
+		print("[Emoji] Конфиг записан: arbitrage/emoji_config.json")
+	end)
+end)
+
 
 timer.Simple(1, Character.Caching)
 

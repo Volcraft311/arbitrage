@@ -22,6 +22,27 @@ timer.Simple(1, function()
 		})
 	end
 end)
+
+
+if SERVER then
+	timer.Simple(1, function()
+		if ! Arbitrage.file.Read("emoji_config.json") then
+			print("[Emoji] emoji_config.json не найден в arbitrage/")
+			return
+		end
+
+		local raw = Arbitrage.file.Read("emoji_config.json")
+		local config = util.JSONToTable(raw)
+
+		for id, sprites in pairs(config) do
+			Character.emoji:Register(id, {
+				["#classtrial_sprite_category_main"] = sprites
+			})
+		end
+
+		print("[Emoji] Зарегистрировано " .. table.Count(config) .. " персонажей")
+	end)
+end
 -- -- TRIGGER HAPPY HAVOC
 -- Character.emoji:Register("aoi", {
 -- 	["#classtrial_sprite_category_main"] = Character.emoji:GetMontedEmojies("aoi")

@@ -49,7 +49,7 @@ end
 function PANEL:StopMusic()
     if musicChanel != nil then
         timer.Create("Arb.MenuMusicFade", 0.1, 8, function()
-            if ! musicChanel then return end
+            if !musicChanel then return end
             musicChanel:SetVolume(math.Clamp(musicChanel:GetVolume() - 0.05, 0, 1))
         end)
         timer.Simple(1, function()

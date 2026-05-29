@@ -20,20 +20,7 @@ local optionData = {
 	end,
 	spawnList = function(key, value)
 		return Format("ID: %s / Vector(%s, %s, %s)", key, value.x, value.y, value.z)
-	end,
-	placesList = function(key, value)
-		local pos, ang = value[1], value[2]
-
-		return Format("ID: %s / Vector(%s, %s, %s), Angle(%s, %s, %s)", key, pos.x, pos.y, pos.z, ang[1], ang[2], ang[3])
-	end,
-	camPos = function(key, value)
-		local pos, ang = value[1], value[2]
-
-		return Format("Vector(%s, %s, %s), Angle(%s, %s, %s)", pos.x, pos.y, pos.z, ang[1], ang[2], ang[3])
-	end,
-	camPosPlaces = function(key, value)
-		return Format("ID: %s / Vector(%s, %s, %s)", key, value.x, value.y, value.z)
-	end,
+	end
 }
 
 local actionData = {
@@ -52,59 +39,17 @@ local actionData = {
 		add = function(key, data)
 			return {key, data[1]}
 		end
-	},
-	placesList = {
-		remove = function(key, value)
-			return {key, nil}
-		end,
-		add = function(key, data)
-			return {key, data[1], data[2]}
-		end
-	},
-	camPosEnd = {
-		remove = function(key, value)
-			return nil
-		end,
-		add = function(key, data)
-			return {data[1]}
-		end,
-		noReqeust = true
-	},
-	camPos = {
-		remove = function(key, value)
-			return nil
-		end,
-		add = function(key, data)
-			return {data[1], data[2]}
-		end,
-		noReqeust = true
-	},
-	camPosPlaces = {
-		remove = function(key, value)
-			return {key, nil}
-		end,
-		add = function(key, data)
-			return {key, data[1], data[2]}
-		end
-	},
+	}
 }
 
 local titleData = {
 	lobbyList = "#editor_lobbylist_current",
 	spawnList = "#editor_spawnlist_current",
-	placesList = "#editor_placeslist_current",
-	camPosEnd = "#editor_camposend_current",
-	camPos = "#editor_campos_current",
-	camPosPlaces = "#editor_camposplaces_current"
 }
 
 local textData = {
 	lobbyList = "#editor_lobbylist_set",
 	spawnList = "#editor_spawnlist_set",
-	placesList = "#editor_placeslist_set",
-	camPosEnd = "#editor_camposend_set",
-	camPos = "#editor_campos_set",
-	camPosPlaces = "#editor_camposplaces_set"
 }
 
 local function ReturnOptionName(id, key, value)
@@ -361,10 +306,6 @@ vgui.Register("Editor:MenuAdd", PANEL, "DFrame")
 local deleteData = {
 	lobbyList = "#editor_lobbylist_delete",
 	spawnList = "#editor_spawnlist_delete",
-	placesList = "#editor_placeslist_delete",
-	camPosEnd = "#editor_camposend_delete",
-	camPos = "#editor_campos_delete",
-	camPosPlaces = "#editor_camposplaces_delete"
 }
 
 local PANEL = {}

@@ -13,7 +13,7 @@ net.Receive("VoiceDist:StartVoice", function(len, client)
         if !client:Alive() then return end
         if !client:InGame() then return end
 
-        if LawSystem.IsRebuttalShowdowns then
+        if LawSystem.IsRebuttalShowdowns() then
             if CurTime() < (LawSystem.RebuttalShowdownsMuted or 0) then return end
             if !LawSystem.RS_players[client] then return end
         end

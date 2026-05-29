@@ -62,6 +62,23 @@ end
 
 Arbitrage.base.Include("sh_emoji_list.lua")
 
+local characters_path = "addons/PUMP_sprites/materials/danganronpa/characters/"
+-- local 
+function Character.emoji:GetMontedEmojies(id)
+    local data = Format(characters_path .. id .. "/emoji/*.png")
+    local png = file.Find(data, "GAME")
+    local result = {}
+    for _, v in ipairs(png) do
+        if string.find(v, "_m") then continue end
+        result[#result + 1] = v
+    end
+    table.sort(result, function(a, b)
+        return tonumber(a:match("%d+")) < tonumber(b:match("%d+")) -- чтобы вместо 1, 10, 11, 12 было 1, 2, 3, 4
+    end)
+    return result
+end
+
+
 
 timer.Simple(0, function()
 	for uniqueID, info in pairs(Character.creation.emoji) do

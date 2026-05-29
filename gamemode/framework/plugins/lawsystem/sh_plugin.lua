@@ -11,23 +11,51 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+---@type TrialPlugin
 local PLUGIN = PLUGIN
 PLUGIN.name = "LawSystem"
 LawSystem = PLUGIN
 
+local vector_zero = Vector(0, 0, 0)
+
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
+
+Arbitrage.Trial = PLUGIN
+
+function PLUGIN.GetPlaces()
+    return GetNetVar("Arb_Trial_Places", {})
+end
+
+function PLUGIN.GetCameras()
+    return GetNetVar("Arb_Trial_Cameras", {})
+end
+
+function PLUGIN.GetFocusCamera()
+    return (GetNetVar("Arb_Trial_FocusCamera", 0))
+end
+
+function PLUGIN.GetStartCamera()
+    return table.Copy(GetNetVar("Arb_Trial_StartPosCamera", { pos = vector_zero, ang = Angle(0,0,0) }))
+end
+
+function PLUGIN.GetEndPosCamera()
+    return GetNetVar("Arb_Trial_EndPosCamera", vector_zero)
+end
+
+function PLUGIN.IsRebuttalShowdowns()
+    return GetNetVar("Arb_Trial_RebuttalShowdowns", false)
+end
 
 function PLUGIN:GetClientPos(client)
     local lawPos = client:LawPlace()
-    if lawPos >= 0 and Arbitrage.camPosPlaces then
-        local pos = Arbitrage.camPosPlaces[lawPos]
+    local cameras = Arbitrage.Trial.GetCameras()
+    if lawPos >= 0 and cameras[lawPos] then
+        local pos = cameras[lawPos].pos
 
-        if pos then
-            return pos
-        end
+        if pos then return pos end
     end
 
-    return Arbitrage.camPosEnd
+    return PLUGIN.GetEndPosCamera()
 end
 
 function PLUGIN:GetClientAng(client, pos)
@@ -201,13 +229,21 @@ function PLUGIN:StartCommand(client, ucmd)
         ucmd:SetMouseWheel(0)
 
         local var = client:LawPlace()
-        local place = Arbitrage.placesList and Arbitrage.placesList[var]
+        local place = Arbitrage.Trial.GetPlaces() and Arbitrage.Trial.GetPlaces()[var]
 
         if place then
-            client:SetEyeAngles(place[2])
+            client:SetEyeAngles(place.ang)
         end
     end
 end
 
+---@param place Place
+function PLUGIN.AddPlace(place)
+    PLUGIN.Data.PlacesList[#PLUGIN.Data.PlacesList+1] = place
+    PLUGIN.LastPlaceId = #PLUGIN.Data.PlacesList
+    return PLUGIN.LastPlaceId
+end
+
 Arbitrage.base.Include("cl_plugin.lua")
+Arbitrage.base.Include("cl_editor.lua")
 Arbitrage.base.Include("sv_plugin.lua")

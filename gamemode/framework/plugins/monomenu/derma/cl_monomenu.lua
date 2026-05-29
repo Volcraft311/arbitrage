@@ -261,6 +261,9 @@ function PANEL:SetData(data)
             end
 
             button.DoClick = function()
+                if v.OnClick then
+                    if !v.OnClick(client) then return end
+                end
                 local function Csound()
                     asterionlib.EmitSound(PLUGIN.ClickSound)
                 end

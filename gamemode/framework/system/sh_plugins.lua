@@ -3,6 +3,12 @@ Arbitrage.plugin.list = Arbitrage.plugin.list or {}
 Arbitrage.plugin.unloaded = Arbitrage.plugin.unloaded or {}
 Arbitrage.hookscache = {}
 
+
+---@class BasePlugin
+---@field folder string
+---@field uniqueID string
+---@field name string
+
 function Arbitrage.plugin.Load(uniqueID, path, isSingleFile, variable)
 	variable = variable or "PLUGIN"
 

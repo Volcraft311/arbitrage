@@ -57,17 +57,19 @@ end
 --[[
     ИГРОВЫЕ ФУНКЦИИ
 ]]--
+
+local vector_zero = Vector(0, 0, 0)
 MonoMenu:AddGameFunction("#monomenu_gm_startgame", "icon16/control_play_blue.png", {
     isCheckBox = true,
     onEnable = function(client)
         if CLIENT then return end
 
-        Arbitrage:StartGame()
+        Arbitrage.StartGame()
     end,
     onDisable = function(client)
         if CLIENT then return end
 
-        Arbitrage:StopGame()
+        Arbitrage.StopGame()
     end,
     OnCheck = function(client)
         return Arbitrage.IsStartGame()
@@ -93,10 +95,12 @@ MonoMenu:AddGameFunction("#monomenu_gm_classtrial", "icon16/control_equalizer_bl
         return Arbitrage.IsStartLaw()
     end,
     onCreate = function(client)
-        if !Arbitrage.camPos then return false end
-        if !Arbitrage.camPosEnd then return false end
-
         return Arbitrage.IsStartGame()
+    end,
+    OnClick = function(client)
+        if (Arbitrage.Trial.GetStartCamera().pos == vector_zero) then return client:ChatNotify("Не установлена начальная позиция камеры") end
+        if (Arbitrage.Trial.GetEndPosCamera() == vector_zero) then return client:ChatNotify("Не установлена конечная позиция камеры")  end
+        return true
     end
 })
 
@@ -434,7 +438,7 @@ MonoMenu:AddGameFunction("#monomenu_gm_rebuttal", "icon16/photos.png", {
 
         SetNetVar("arb.OffRebuttalShowdown", true)
 
-        if LawSystem.IsRebuttalShowdowns then
+        if LawSystem.IsRebuttalShowdowns() then
             LawSystem:EndRebuttalShowdowns()
         end
     end,

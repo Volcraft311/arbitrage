@@ -134,11 +134,11 @@ do
     rpc:Set("largeImageKey", "big")
 
     rpc:Set("buttonText", "Присоединиться")
-    rpc:Set("buttonURL", "https://asterion.games")
+    rpc:Set("buttonURL", "https://discord.gg/W9JdxgbrZ")
     rpc:Set("smallImageText", "Карта: " .. game.GetMap())
 
     hook.Add("asterionlib.rpc:AppID", "asterionlib.rpc", function()
-        return "948976762136719380"
+        return "1509580402472521728"
     end)
 
     hook.Add("asterionlib.rpc:Update", "asterionlib.rpc", function()
@@ -151,11 +151,11 @@ do
 
         local faction = Character.team:GetByID(client:Team())
         if faction then
-        	local username = client:Name()
+        	local username = client:Nick()
         	local steamname = client:SteamName()
         	local factionname = faction:GetName()
 
-        	local lImageText = L("#discord_rpc_image_text") .. " " .. (username == steamname and (factionname and factionname or L("#discord_rpc_image_unknown")) or username)
+        	local lImageText = L("#discord_rpc_image_text") .. " " .. (username == steamname and (factionname and L(factionname) or L("#discord_rpc_image_unknown")) or username)
         	rpc:Set("largeImageText", lImageText)
 
         	local lImageKey = faction:GetUniqueID() or "big"

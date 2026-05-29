@@ -844,7 +844,7 @@ local function teleport()
     end
 end
 
-function Arbitrage:StartGame()
+function Arbitrage.StartGame()
     netstream.Start(nil, "Character:Caching")
     SetNetVar("arb.Time", 480)
 
@@ -863,7 +863,7 @@ function Arbitrage:StartGame()
     end)
 end
 
-function Arbitrage:StopGame()
+function Arbitrage.StopGame()
     Arbitrage.startgame = false
     SetNetVar("arb.StartGame", Arbitrage.startgame)
     SetNetVar("arb.StartGameTime", nil)

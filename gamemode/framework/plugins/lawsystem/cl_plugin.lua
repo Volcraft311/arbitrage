@@ -4,7 +4,7 @@
         You can get more information from one of the links below:
             Site - https://asterion.games
             Discord - https://discord.gg/Np5evb5ZsR
-        
+
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
 
@@ -12,9 +12,10 @@
 
 
         --- Плагин отвечает за систему судов
-]]--
-
+]] --
+---@type TrialPlugin
 local PLUGIN = PLUGIN
+
 
 function PLUGIN:StartPointing()
     hook.Remove("CalcView", "arb.LawTransferCamPos")
@@ -23,7 +24,7 @@ function PLUGIN:StartPointing()
 
     self._fov = nil
     self._entity = NULL
-    self.__camPos = Arbitrage.camPosEnd
+    self.__camPos = Arbitrage.Trial.GetEndPosCamera() --#
     self.animID = 1
     self.oldAnimID = -1
     self.someoneAlreadySaid = false
@@ -100,9 +101,10 @@ function PLUGIN:TransferCamPos()
     hook.Remove("CalcView", "arb.LawCameraTwist")
 
     local newFov = 70
-    local endPos = Arbitrage.camPosEnd
-    local startPos = Arbitrage.camPos[1]
-    local startAng = Arbitrage.camPos[2]
+    local endPos = Arbitrage.Trial.GetEndPosCamera()
+    local camera = Arbitrage.Trial.GetStartCamera()
+    local startPos = camera.pos
+    local startAng = camera.ang
     startAng.p = startAng.p + 30
 
     self._tcpAng = startAng
@@ -146,11 +148,11 @@ function PLUGIN:SendIntroText()
     local rightMove = 0
 
     local textTable = {
-        [1] = {nsb_1, 30, 255, 0, nsb_1_l},
-        [2] = {nsb_2, 280, 255, 0, nsb_2_l},
-        [3] = {nsb_3, 440, 255, 65, nsb_3_l},
-        [4] = {nsb_4, 690, 255, 50, nsb_4_l},
-        [5] = {nsb_5, 965, 255, 0, nsb_5_l},
+        [1] = { nsb_1, 30, 255, 0, nsb_1_l },
+        [2] = { nsb_2, 280, 255, 0, nsb_2_l },
+        [3] = { nsb_3, 440, 255, 65, nsb_3_l },
+        [4] = { nsb_4, 690, 255, 50, nsb_4_l },
+        [5] = { nsb_5, 965, 255, 0, nsb_5_l },
     }
 
     for k, v in SortedPairs(textTable) do
@@ -186,7 +188,7 @@ function PLUGIN:SendIntroText()
             v.x = Lerp(FrameTime() * 20, v.x, v.ToX)
             rightMove = rightMove + FrameTime() * 100
 
-            for k1, v1 in pairs({"r", "g", "b"}) do
+            for k1, v1 in pairs({ "r", "g", "b" }) do
                 v.color[v1] = Lerp(FrameTime(), v.color[v1], 0)
             end
         end
@@ -268,46 +270,67 @@ function PLUGIN:CreateBullet(data)
     return self.bulletList[#self.bulletList], #self.bulletList
 end
 
-local function drawing(client, mat)
-    local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
-    local spriteW = 45 * spriteSize
-    local spriteH = 75 * spriteSize
-    local spriteShift = spriteW * 0.5
+local function draw_3d_sprites(data)
+    local places = Arbitrage.Trial.GetPlaces()
+    for i, v in ipairs(data) do
+        local place = places[v:LawPlace()]
+        local character = v:GetCharacter()
+        if not character then return end
+        
+        local uniqueID = character:GetUniqueID()
+        local emoji = Character.emoji:GetByUniqueID(uniqueID)
+        if not emoji then return end
+        
+        local mat = Material(emoji:GetByIndex(v:GetNetVar("emoji", 1)))
+        
+        local spriteSize = 1.5 * GetNetVar("arb.SpritesSize", 1)
+        local spriteW = 45 * spriteSize
+        local spriteH = 75 * spriteSize
+        local spriteShift = spriteW * 0.5
 
-    do
-        local ang = Angle(0, client:EyeAngles()[2] + 90, 90)
-        local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * spriteShift
+        local clientPos = v:GetPos()
+        local clientAngles = v:EyeAngles()
 
-        cam.Start3D2D(pos, ang, 1)
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRect(0, 0, spriteW, spriteH)
-        cam.End3D2D()
-    end
+        -- ПЕРВЫЙ СЛОЙ (Лицевая сторона)
+        do
+            local ang = Angle(0, clientAngles[2] + 90, 90)
+            local pos = clientPos + Vector(0, 0, spriteH) + clientAngles:Right() * spriteShift
 
-    do
-        local ang = Angle(0, client:EyeAngles()[2] - 90, 90)
-        local pos = client:GetPos() + Vector(0, 0, spriteH) + client:EyeAngles():Right() * -spriteShift
+            cam.Start3D2D(pos, ang, 1)
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(mat)
+                surface.DrawTexturedRect(0, 0, spriteW, spriteH)
+            cam.End3D2D()
+        end
 
-        cam.Start3D2D(pos, ang, 1)
-            surface.SetDrawColor(0, 0, 0)
-            surface.SetMaterial(mat)
-            surface.DrawTexturedRectUV(0, 0, spriteW, spriteH, 1, 0, 0, 1)
-        cam.End3D2D()
+        -- ВТОРОЙ СЛОЙ (Задняя сторона)
+        do
+            local ang = Angle(0, clientAngles[2] - 90, 90)
+            local pos = clientPos + Vector(0, 0, spriteH) + clientAngles:Right() * -spriteShift
+
+            cam.Start3D2D(pos, ang, 1)
+                surface.SetDrawColor(0, 0, 0, 255)
+                surface.SetMaterial(mat)
+                -- Отрисовка зеркально, как и было в drawing
+                surface.DrawTexturedRectUV(0, 0, spriteW, spriteH, 1, 0, 0, 1)
+            cam.End3D2D()
+        end
     end
 end
 
 local sizeW, sizeH = 150, 150
 local matArrow = Material("danganronpa/ui/arrow.png")
 function PLUGIN:PostDrawTranslucentRenderables()
-    if Arbitrage.placesList and !Arbitrage.lawEnable then
+    local places = Arbitrage.Trial.GetPlaces()
+    if places and !Arbitrage.lawEnable then
         local client = LocalPlayer()
         local var = client:LawPlace()
-        local place = Arbitrage.placesList[var]
+        local place = places[var]
 
         if var >= 0 and place then
             local anim = math.sin(CurTime() * 1.5) * 5
-            local vec = place[1] - Vector(0, 0, 10 + anim)
+            -- Print(place)
+            local vec = place.pos - Vector(0, 0, 10 + anim)
 
             local dist = client:GetPos():DistToSqr(vec)
             if dist <= 500000 then
@@ -316,9 +339,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
                 ang:RotateAroundAxis(ang:Right(), 90)
 
                 cam.Start3D2D(vec, ang, 0.03)
-                    surface.SetDrawColor(255, 255, 255)
-                    surface.SetMaterial(matArrow)
-                    surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
+                surface.SetDrawColor(255, 255, 255)
+                surface.SetMaterial(matArrow)
+                surface.DrawTexturedRect(0 - sizeW, 0 - sizeH, sizeW * 2, sizeH * 2)
                 cam.End3D2D()
             end
         end
@@ -326,9 +349,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
     if Arbitrage.lawEnable then
         -- Если это удалить от сюда, то не будет отрисовывать текст CLASS TRIAL. Я правда не знаю с чем это связано и по какой причине. Если рендерить текстуру рандомную, то текст вернется (нужно имеено рендерить, цвет и установка материала не помогает)
-            surface.SetDrawColor(255, 255, 255)
-            surface.SetMaterial(matArrow)
-            surface.DrawTexturedRect(0, 0, 0, 0)
+        surface.SetDrawColor(255, 255, 255)
+        surface.SetMaterial(matArrow)
+        surface.DrawTexturedRect(0, 0, 0, 0)
 
         local pos = Arbitrage.camPosEnd
         if pos and !Arbitrage.OffShowClassTrial() then
@@ -359,8 +382,8 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
                 local text = "class trial"
                 cam.Start3D2D(Pos, ang_t, 0.3)
-                    draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, color_black, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 255), TEXT_ALIGN_CENTER)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 2, 2, Color(0,0,0, 30), TEXT_ALIGN_CENTER)
+                draw.SimpleText(text, "arb.Font_Nebula_35", 0, 0, Color(253, 8, 53, 40), TEXT_ALIGN_CENTER)
                 cam.End3D2D()
             end
         end
@@ -374,32 +397,9 @@ function PLUGIN:PostDrawTranslucentRenderables()
 
             return a_place > b_place
         end)
+        draw_3d_sprites(data)
 
-        for _, v in ipairs(data) do
-            local place = v:LawPlace()
-            if place <= -1 then continue end
-
-            local character = v:GetCharacter()
-            if !character then continue end
-
-            local uniqueID = character:GetUniqueID()
-
-            local emoji = Character.emoji:GetByUniqueID(uniqueID)
-            if !emoji then continue end
-
-            local var = v:GetNetVar("emoji", 1)
-            local big, _ = emoji:GetByIndex(var)
-
-            if !big then
-                big, _ = emoji:GetByIndex(1)
-            end
-
-            if big then
-                local mat = Material(big)
-
-                drawing(v, mat)
-            end
-        end
+      
     end
 end
 
@@ -434,7 +434,8 @@ hook.Add("HUDPaint", "arb.DrawBullets", function()
 
         surface.SetDrawColor(col)
         surface.SetMaterial(bulletMat)
-        surface.DrawTexturedRect(-ScrW() * 2 + v.x + ScrW() * 2 - 5, v.y + size * 0.7 - (v.size / 2) + 2, v.size * 2.5, v.size)
+        surface.DrawTexturedRect(-ScrW() * 2 + v.x + ScrW() * 2 - 5, v.y + size * 0.7 - (v.size / 2) + 2, v.size * 2.5,
+            v.size)
 
         surface.SetDrawColor(v.color.r, v.color.g, v.color.b, v.alphato)
         surface.SetMaterial(bulletMatL)
@@ -464,7 +465,8 @@ function PLUGIN:RenderScreenspaceEffects()
     Hints:AddKeyDraw("#hintsdraw_law_talk", "+voicerecord")
 
     local ui = MonoPad:GetUI()
-    Hints:AddKeyDraw((IsValid(ui) and "#hintsdraw_putaway" or "#hintsdraw_getit") .. " #hintsdraw_tablet", SETTINGS.binds.Get("open_material_ui"))
+    Hints:AddKeyDraw((IsValid(ui) and "#hintsdraw_putaway" or "#hintsdraw_getit") .. " #hintsdraw_tablet",
+        SETTINGS.binds.Get("open_material_ui"))
 end
 
 function PLUGIN:CameraTwist()
@@ -480,7 +482,7 @@ function PLUGIN:CameraTwist()
     end)
 end
 
-surface.CreateFont( "arb.LawBulletFont", {
+surface.CreateFont("arb.LawBulletFont", {
     font = "Futura PT Book",
     extended = true,
     size = ScreenScale(12),
@@ -533,15 +535,16 @@ function PLUGIN:StartCylinder()
                 do
                     local center2 = Vector(w / 2, h / 1.95)
                     local m = Matrix()
-                    m:Translate( center2 )
-                    m:Rotate(Angle( 0, -50, 0 ))
+                    m:Translate(center2)
+                    m:Rotate(Angle(0, -50, 0))
                     m:Scale(Vector(0.9, 1.3, 1))
-                    m:Translate( -center2 )
+                    m:Translate(-center2)
 
                     cam.PushModelMatrix(m)
-                        surface.SetDrawColor(255, 61, 96, 200)
-                        surface.SetMaterial(mat)
-                        surface.DrawTexturedRectRotated(ScrW() * 0.052, ScrH() * 0.24, ScrW() * 0.104, ScrW() * 0.104, -CurTime() % 360 * 10)
+                    surface.SetDrawColor(255, 61, 96, 200)
+                    surface.SetMaterial(mat)
+                    surface.DrawTexturedRectRotated(ScrW() * 0.052, ScrH() * 0.24, ScrW() * 0.104, ScrW() * 0.104,
+                        -CurTime() % 360 * 10)
                     cam.PopModelMatrix()
                 end
 
@@ -558,20 +561,21 @@ function PLUGIN:StartCylinder()
                     m:Translate(-center)
 
                     cam.PushModelMatrix(m)
-                        asterionlib.DrawRender(function()
-                            surface.SetDrawColor(255, 255, 255)
-                            surface.DrawRect(ScrW() * 0.1, 0, self.bulletMask, ScrH())
-                        end, function()
-                            surface.SetDrawColor(255, 61, 96, alpha)
-                            surface.SetMaterial(bulletblur)
-                            surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
+                    asterionlib.DrawRender(function()
+                        surface.SetDrawColor(255, 255, 255)
+                        surface.DrawRect(ScrW() * 0.1, 0, self.bulletMask, ScrH())
+                    end, function()
+                        surface.SetDrawColor(255, 61, 96, alpha)
+                        surface.SetMaterial(bulletblur)
+                        surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                            surface.SetDrawColor(208, 61, 88)
-                            surface.SetMaterial(bullet)
-                            surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
+                        surface.SetDrawColor(208, 61, 88)
+                        surface.SetMaterial(bullet)
+                        surface.DrawTexturedRect(ScrW() * 0.11, ScrH() * 0.789, bulletSizeW, bulletSizeH)
 
-                            draw.SimpleText(self.bulletText or "", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805, color_black, TEXT_ALIGN_LEFT)
-                        end)
+                        draw.SimpleText(self.bulletText or "", "arb.LawBulletFont", ScrW() * 0.13, ScrH() * 0.805,
+                            color_black, TEXT_ALIGN_LEFT)
+                    end)
                     cam.PopModelMatrix()
                 end
             end)
@@ -590,20 +594,21 @@ function PLUGIN:StartCylinder()
 
         hook.Add("RenderScreenspaceEffects", "arb.LawCylinder", function()
             x = Lerp(FrameTime() * 10, x, _x)
-            _moving = Lerp(FrameTime() * 10 , _moving, moving)
+            _moving = Lerp(FrameTime() * 10, _moving, moving)
             local center = Vector(w / 2.1, h / x)
 
             do
                 local m = Matrix()
-                m:Translate( center )
-                m:Rotate(Angle( 0, -50, 0 ))
+                m:Translate(center)
+                m:Rotate(Angle(0, -50, 0))
                 m:Scale(Vector(0.9, 1.3, 1))
-                m:Translate( -center )
+                m:Translate(-center)
 
                 cam.PushModelMatrix(m)
-                    surface.SetDrawColor(255, 61, 96, 200)
-                    surface.SetMaterial(mat)
-                    surface.DrawTexturedRectRotated(ScrW() * 0.152, ScrH() * 0.34, ScrW() * 0.304, ScrW() * 0.304, -CurTime() % 360 * 10 - _moving)
+                surface.SetDrawColor(255, 61, 96, 200)
+                surface.SetMaterial(mat)
+                surface.DrawTexturedRectRotated(ScrW() * 0.152, ScrH() * 0.34, ScrW() * 0.304, ScrW() * 0.304,
+                    -CurTime() % 360 * 10 - _moving)
                 cam.PopModelMatrix()
             end
 
@@ -629,15 +634,18 @@ function PLUGIN:StartCylinder()
                 m:Translate(-center2)
 
                 cam.PushModelMatrix(m)
-                    surface.SetDrawColor(255, 61, 96, 216)
-                    surface.SetMaterial(bulletblur)
-                    surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW, bulletSizeH)
+                surface.SetDrawColor(255, 61, 96, 216)
+                surface.SetMaterial(bulletblur)
+                surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW,
+                    bulletSizeH)
 
-                    surface.SetDrawColor(208, 61, 88)
-                    surface.SetMaterial(bullet)
-                    surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW, bulletSizeH)
+                surface.SetDrawColor(208, 61, 88)
+                surface.SetMaterial(bullet)
+                surface.DrawTexturedRect(i * 20 + ScrW() * 0.11, ScrH() * 0.78 + (i - 1) * (ScrH() * 0.05), bulletSizeW,
+                    bulletSizeH)
 
-                    draw.SimpleText(v, "arb.LawBulletFont", i * 20 + ScrW() * 0.125, ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), color_black, TEXT_ALIGN_LEFT)
+                draw.SimpleText(v, "arb.LawBulletFont", i * 20 + ScrW() * 0.125,
+                    ScrH() * 0.788 + (i - 1) * (ScrH() * 0.05), color_black, TEXT_ALIGN_LEFT)
                 cam.PopModelMatrix()
             end
         end)

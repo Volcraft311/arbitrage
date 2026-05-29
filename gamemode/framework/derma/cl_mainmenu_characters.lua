@@ -91,7 +91,7 @@ function PANEL:CreateCharacters(characters)
         local greeting = Material(assets.greeting_new or assets.greeting, "smooth clamp mips")
         -- TODO Удалить проверку, как переделают всех
         local splash_sprite = assets.greeting_splash
-        if (! file.Exists("materials/" .. assets.greeting_splash, "GAME")) then
+        if (!file.Exists("materials/" .. assets.greeting_splash, "GAME")) then
             MsgC(Color(255, 0, 0), "[DEPRECATED SPRITE] ", color_white,
                 assets.greeting_splash .. " - USING AN OLD SPRITE\n")
             splash_sprite = assets.splash
@@ -177,7 +177,7 @@ function PANEL:CreateCharacters(characters)
     rightButton.DoClick = function(this)
         local offset = charactersPanel:GetWide() + charactersPanel:GetX()
         local bAllowOffset = offset > ScrW()
-        if ! bAllowOffset then return end
+        if !bAllowOffset then return end
 
         charactersPanel.setOffset = charactersPanel.setOffset - titleFontHeight * 80
     end
@@ -299,9 +299,9 @@ function PANEL:CreateCharacters(characters)
     end
     selectButton.DoClick = function()
         local faction = Character.team:GetByUniqueID(self.characterPanel.uniqueID)
-        if ! faction then return end
+        if !faction then return end
 
-        if faction.admin and ! LocalPlayer():IsAdmin() then return end
+        if faction.admin and !LocalPlayer():IsAdmin() then return end
 
         netstream.Start("arb.SelectCharacter", faction.id)
 
@@ -454,7 +454,7 @@ function PANEL:CreateCategories()
     rightButton.DoClick = function(this)
         local offset = bottomPanel:GetWide() + bottomPanel:GetX()
         local bAllowOffset = offset > ScrW()
-        if ! bAllowOffset then return end
+        if !bAllowOffset then return end
 
         bottomPanel.setOffset = bottomPanel.setOffset - titleFontHeight * 80
     end

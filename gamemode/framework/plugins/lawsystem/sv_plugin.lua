@@ -223,7 +223,7 @@ function Arbitrage:StartLaw()
             local client = player.GetBySteamID(k)
 
             local place = tonumber(v.place)
-            print("SET PLACE FOR", client, " : ", place)
+            -- print("SET PLACE FOR", client, " : ", place)
             if place == -1 then continue end -- Место неуказано
 
             if IsValid(client) and client:Alive() and client:InGame() then

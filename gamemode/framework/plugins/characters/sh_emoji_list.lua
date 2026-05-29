@@ -4,23 +4,24 @@
         You can get more information from one of the links below:
             Site - https://asterion.games
             Discord - https://discord.gg/Np5evb5ZsR
-        
+
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
 
         ——— Chop your own wood and it will warm you twice.
-]]--
+]] --
 
--- Счёт начинается с тройки, ибо    
-local offset = 4
-for i = offset, #Character.team.instances do
-	local v = Character.team.instances[i]
-	local id = v.uniqueID
-	Character.emoji:Register(id, {
-		["#classtrial_sprite_category_main"] = Character.emoji:GetMontedEmojies(id)
-	})
-end
-
+-- Счёт начинается с тройки, ибо
+timer.Simple(1, function()
+	local offset = 4
+	for i = offset, #Character.team.instances do
+		local v = Character.team.instances[i]
+		local id = v.uniqueID
+		Character.emoji:Register(id, {
+			["#classtrial_sprite_category_main"] = Character.emoji:GetMontedEmojies(id)
+		})
+	end
+end)
 -- -- TRIGGER HAPPY HAVOC
 -- Character.emoji:Register("aoi", {
 -- 	["#classtrial_sprite_category_main"] = Character.emoji:GetMontedEmojies("aoi")

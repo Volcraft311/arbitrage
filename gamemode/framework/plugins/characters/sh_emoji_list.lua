@@ -26,7 +26,7 @@ end)
 
 
 if SERVER then
-	function Arbitrage.Character.ReadSprites()
+	function Character.ReadSprites()
 		if ! Arbitrage.file.Read("emoji_config.json") then
 			print("[Emoji] emoji_config.json не найден в arbitrage/")
 			return
@@ -45,7 +45,7 @@ if SERVER then
 	end
 
 	timer.Simple(1, function()
-		Arbitrage.Character.ReadSprites()
+		Character.ReadSprites()
 	end)
 end
 -- -- TRIGGER HAPPY HAVOC

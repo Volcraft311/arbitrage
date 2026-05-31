@@ -11,6 +11,8 @@
         ——— Chop your own wood and it will warm you twice.
 ]] --
 
+local encoded_emoji_data = ""
+
 if SERVER then
 	function Character.ReadSprites()
 		if ! Arbitrage.file.Read("emoji_config.json") then
@@ -26,7 +28,7 @@ if SERVER then
 				["#classtrial_sprite_category_main"] = sprites
 			})
 		end
-
+		encoded_emoji_data = asterionlib.encode(Character.emoji.instances)
 		print("[Emoji] Зарегистрировано " .. table.Count(config) .. " персонажей")
 	end
 
@@ -37,7 +39,7 @@ if SERVER then
 	hook.Add("PlayerInitialSpawn", "Character:Emoji:PlayerInitialSpawn", function(ply)
 		if ply:IsBot() then return end
 		Print("Sync emoji list to " .. ply:Nick())
-		netstream.Heavy(ply, "Character:Emoji:Sync", Character.emoji.instances) -- FIX : Heavy при заходе!!
+		netstream.RawHeavy(ply, "Character:Emoji:Sync", encoded_emoji_data)
 	end)
 else
 	netstream.Hook("Character:Emoji:Sync", function(data)

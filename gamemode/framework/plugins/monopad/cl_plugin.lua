@@ -240,7 +240,7 @@ function MonoPad:GetUI()
 end
 
 function MonoPad:SyncHistory(object)
-    netstream.Heavy("MonoPad:SyncHistory", object.id, object.history, object.lastHistory)
+    netstream.Heavy("MonoPad:SyncHistory", object.id, object.history, object.lastHistory) -- FIX : Heavy при открытии планшета!!
 end
 
 function MonoPad:StartRegisterMeta(panel)

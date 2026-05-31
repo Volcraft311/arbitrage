@@ -37,7 +37,7 @@ if SERVER then
 	hook.Add("PlayerInitialSpawn", "Character:Emoji:PlayerInitialSpawn", function(ply)
 		if ply:IsBot() then return end
 		Print("Sync emoji list to " .. ply:Nick())
-		netstream.Heavy(ply, "Character:Emoji:Sync", Character.emoji.instances)
+		netstream.Heavy(ply, "Character:Emoji:Sync", Character.emoji.instances) -- FIX : Heavy при заходе!!
 	end)
 else
 	netstream.Hook("Character:Emoji:Sync", function(data)

@@ -123,7 +123,8 @@ function PLUGIN:TransferCamPos()
         Ang.p = startAng.p
         self._tcpAng = Ang
 
-        startPos = startPos + Ang:Right() * (ft * (startPos:Distance(endPos) * 2))
+        local driftSpeed = math.min(startPos:Distance(endPos) * 2, 50) 
+        startPos = startPos + Ang:Right() * (ft * driftSpeed)
 
         local view = {
             origin = startPos,
@@ -271,15 +272,13 @@ function PLUGIN:CreateBullet(data)
 end
 
 local function draw_3d_sprites(data)
-    local places = Arbitrage.Trial.GetPlaces()
     for i, v in ipairs(data) do
-        local place = places[v:LawPlace()]
         local character = v:GetCharacter()
-        if not character then return end
+        if !character then continue end
         
         local uniqueID = character:GetUniqueID()
         local emoji = Character.emoji:GetByUniqueID(uniqueID)
-        if not emoji then return end
+        if !emoji then continue end
         
         local mat = Material(emoji:GetByIndex(v:GetNetVar("emoji", 1)))
         

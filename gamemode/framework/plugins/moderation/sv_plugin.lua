@@ -170,7 +170,6 @@ function Moderation:SendLog(client, uniqueID, ...)
 
         embed.footer.text = ("%s • Тип лога: %s[%s] • %s"):format(F("ru", client:FullName(true)), log.name, log.id, os.date("%H:%M:%S - %d/%m/%Y", os.time()))
         embed.footer.icon_url = client:AvatarURL()
-
         asterionlib.webhook:Arbitrage(nil, embed)
     end
 end

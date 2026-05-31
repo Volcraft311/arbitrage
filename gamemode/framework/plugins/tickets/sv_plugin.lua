@@ -29,7 +29,7 @@ end
 
 
 hook("PlayerInitialSpawnForRealz", function(client)
-    Ticket:SyncAll(client)
+    Ticket:SyncAll(client) -- FIX : Heavy при заходе!!
 end)
 
 

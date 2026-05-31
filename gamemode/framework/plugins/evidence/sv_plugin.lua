@@ -191,7 +191,7 @@ function Evidence:PlayerInitialSpawnForRealz(client)
         info[idx] = data
     end
 
-    netstream.Heavy(client, "Evidence:RegisterAllEvidences", info)
+    netstream.Heavy(client, "Evidence:RegisterAllEvidences", info) -- FIX : Heavy при заходе!!
 end
 
 

@@ -23,7 +23,7 @@ function Trigger:SyncAllTriggers(receivers)
 end
 
 
-function Trigger:PlayerInitialSpawnForRealz(client)
+function Trigger:PlayerInitialSpawnForRealz(client) -- FIX : Heavy при заходе!!
     self:SyncAllTriggers(client)
 end
 

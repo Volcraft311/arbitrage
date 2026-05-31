@@ -11,12 +11,13 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+
 ---@type TrialPlugin
 local PLUGIN = PLUGIN
 PLUGIN.name = "LawSystem"
 LawSystem = PLUGIN
 
-local vector_zero = Vector(0, 0, 0)
+local Vector = Vector
 
 Arbitrage.lawEnable = Arbitrage.lawEnable or false
 
@@ -35,11 +36,11 @@ function PLUGIN.GetFocusCamera()
 end
 
 function PLUGIN.GetStartCamera()
-    return table.Copy(GetNetVar("Arb_Trial_StartPosCamera", { pos = vector_zero, ang = Angle(0,0,0) }))
+    return table.Copy(GetNetVar("Arb_Trial_StartPosCamera", { pos = Vector(0, 0, 0), ang = Angle(0,0,0) }))
 end
 
 function PLUGIN.GetEndPosCamera()
-    return GetNetVar("Arb_Trial_EndPosCamera", vector_zero)
+    return GetNetVar("Arb_Trial_EndPosCamera", Vector(0, 0, 0))
 end
 
 function PLUGIN.IsRebuttalShowdowns()

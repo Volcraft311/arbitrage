@@ -55,6 +55,7 @@ function ItemBase.AnimDropItem(target, idx, class)
     netstream.Start(players, "ItemBase.AnimDropItem", target, idx, class)
 end
 
+-- FIX : Heavy при заходе!!
 function ItemBase:PlayerInitialSpawnForRealz(client)
     -- Синхронизируем Creation предметы
     ItemBase.CreationSync(client)

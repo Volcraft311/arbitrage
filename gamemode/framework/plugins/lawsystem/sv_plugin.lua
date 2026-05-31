@@ -44,6 +44,8 @@ function PLUGIN.RemoveLastPlace()
     table.remove(PLUGIN.PlaceList, id)
     table.remove(PLUGIN.CameraList, id)
     SetNetVar("Arb_Trial_Places", PLUGIN.PlaceList)
+    SetNetVar("Arb_Trial_Cameras", PLUGIN.CameraList)
+
 end 
 
 ---@param camera Place

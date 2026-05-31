@@ -28,7 +28,7 @@ if SERVER then
 				["#classtrial_sprite_category_main"] = sprites
 			})
 		end
-		encoded_emoji_data = asterionlib.encode(Character.emoji.instances)
+		encoded_emoji_data = asterionlib.encode({Character.emoji.instances})
 		print("[Emoji] Зарегистрировано " .. table.Count(config) .. " персонажей")
 	end
 

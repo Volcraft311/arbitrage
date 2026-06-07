@@ -11,6 +11,8 @@
         ——— Chop your own wood and it will warm you twice.
 ]]--
 
+local Material = Material
+local MaterialIsCached = MaterialIsCached
 
 asterionlib.loading:AddType("char_assets", {
 	name = "#load_assets_characters",

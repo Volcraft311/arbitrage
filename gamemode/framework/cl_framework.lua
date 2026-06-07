@@ -185,15 +185,17 @@ do
 end
 
 do
+    local im_material = Material("asterion/academy/ui/loading/image.png")
+    local ch_material = Material("asterion/academy/ui/loading/char_assets.png")
     hook.Add("asterionlib.loading:Initialize", "asterionlib.loading", function()
         local loading = asterionlib.loading
         local instances = loading.instances
 
         instances.image.name = "#load_assets_image"
-        instances.image.material = Material("asterion/academy/ui/loading/image.png")
+        instances.image.material = im_material
 
         -- instances.char_assets.name = "#load_assets_characters" -- Устанавливается в файле регистрации
-        instances.char_assets.material = Material("asterion/academy/ui/loading/char_assets.png")
+        instances.char_assets.material = ch_material
 
         local titleFont = "arb.Font_FuturaPTMedium_8"
         local titleHeight = draw.GetFontHeight(titleFont)

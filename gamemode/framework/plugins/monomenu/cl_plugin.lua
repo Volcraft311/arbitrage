@@ -732,7 +732,7 @@ local function getActionList(clientinfo)
     return {
         {
             {
-                name = m_name,
+                name = m_steamname .. " (" .. m_steamid .. ")",
                 icon = "icon16/book.png",
                 data = function()
                     SetClipboardText(m_name)

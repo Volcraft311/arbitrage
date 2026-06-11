@@ -246,103 +246,103 @@ local function getAllRecognize(client)
         end
     end
 
-    local data = {
-        {
-            name = "Изменить имя знакомства",
-            icon = "icon16/heart.png",
-            data = function()
-                Derma_StringRequest("Изменить имя знакомства", "Введите имя пользователя которое будет отображаться при знакомстве", client:RecognizeName() or "", function(text)
-                    runAction("setrecognizename", client, text)
-                end)
-            end,
-            check = function()
-                return IsValid(client)
-            end
-        },
-        {
-            name = "Раскрытие",
-            icon = "icon16/folder_heart.png",
-            data = {
-                {
-                    name = "Раскрыть пользователя для всех игроков",
-                    icon = "icon16/heart_add.png",
-                    data = function()
-                        runAction("recognizedisclosed", client, true)
-                    end,
-                    check = function()
-                        return IsValid(client) and !client:GetNetVar("recognizeDisclosed")
-                    end
-                },
-                {
-                    name = "Убрать раскрытие пользователя для всех игроков",
-                    icon = "icon16/heart_delete.png",
-                    data = function()
-                        runAction("recognizedisclosed", client, false)
-                    end,
-                    check = function()
-                        return IsValid(client) and client:GetNetVar("recognizeDisclosed")
-                    end
-                },
-                {
-                    name = "Раскрыть всех игроков для пользователя",
-                    icon = "icon16/heart_add.png",
-                    data = function()
-                        runAction("recognizeknowledgeall", client, true)
-                    end,
-                    check = function()
-                        return IsValid(client) and !client:GetNetVar("recognizeKnowledgeAll")
-                    end
-                },
-                {
-                    name = "Убрать раскрытие всех игроков для пользователя",
-                    icon = "icon16/heart_delete.png",
-                    data = function()
-                        runAction("recognizeknowledgeall", client, false)
-                    end,
-                    check = function()
-                        return IsValid(client) and client:GetNetVar("recognizeKnowledgeAll")
-                    end
-                },
-            }
-        },
-        {
-            name = "С кем знаком",
-            icon = "icon16/folder_heart.png",
-            data = recognizeInfo
-        },
-        {
-            name = "Раскрыть пользователя игрокам",
-            icon = "icon16/folder_heart.png",
-            data = {
-                {
-                    name = "На уровне шепета",
-                    icon = "icon16/heart.png",
-                    data = function()
-                        runAction("recognizesphere", client, "whispers")
-                    end
-                },
-                {
-                    name = "На уровне разговора",
-                    icon = "icon16/heart.png",
-                    data = function()
-                        runAction("recognizesphere", client, "talk")
-                    end
-                },
-                {
-                    name = "На уровне крика",
-                    icon = "icon16/heart.png",
-                    data = function()
-                        runAction("recognizesphere", client, "yell")
-                    end
-                },
-                {
-                    name = "Отдельно с игроком",
-                    icon = "icon16/folder_heart.png",
-                    data = recognizeKnowledge
-                }
-            }
-        }
-    }
+    -- local data = {
+    --     {
+    --         name = "Изменить имя знакомства",
+    --         icon = "icon16/heart.png",
+    --         data = function()
+    --             Derma_StringRequest("Изменить имя знакомства", "Введите имя пользователя которое будет отображаться при знакомстве", client:RecognizeName() or "", function(text)
+    --                 runAction("setrecognizename", client, text)
+    --             end)
+    --         end,
+    --         check = function()
+    --             return IsValid(client)
+    --         end
+    --     },
+    --     {
+    --         name = "Раскрытие",
+    --         icon = "icon16/folder_heart.png",
+    --         data = {
+    --             {
+    --                 name = "Раскрыть пользователя для всех игроков",
+    --                 icon = "icon16/heart_add.png",
+    --                 data = function()
+    --                     runAction("recognizedisclosed", client, true)
+    --                 end,
+    --                 check = function()
+    --                     return IsValid(client) and !client:GetNetVar("recognizeDisclosed")
+    --                 end
+    --             },
+    --             {
+    --                 name = "Убрать раскрытие пользователя для всех игроков",
+    --                 icon = "icon16/heart_delete.png",
+    --                 data = function()
+    --                     runAction("recognizedisclosed", client, false)
+    --                 end,
+    --                 check = function()
+    --                     return IsValid(client) and client:GetNetVar("recognizeDisclosed")
+    --                 end
+    --             },
+    --             {
+    --                 name = "Раскрыть всех игроков для пользователя",
+    --                 icon = "icon16/heart_add.png",
+    --                 data = function()
+    --                     runAction("recognizeknowledgeall", client, true)
+    --                 end,
+    --                 check = function()
+    --                     return IsValid(client) and !client:GetNetVar("recognizeKnowledgeAll")
+    --                 end
+    --             },
+    --             {
+    --                 name = "Убрать раскрытие всех игроков для пользователя",
+    --                 icon = "icon16/heart_delete.png",
+    --                 data = function()
+    --                     runAction("recognizeknowledgeall", client, false)
+    --                 end,
+    --                 check = function()
+    --                     return IsValid(client) and client:GetNetVar("recognizeKnowledgeAll")
+    --                 end
+    --             },
+    --         }
+    --     },
+    --     {
+    --         name = "С кем знаком",
+    --         icon = "icon16/folder_heart.png",
+    --         data = recognizeInfo
+    --     },
+    --     {
+    --         name = "Раскрыть пользователя игрокам",
+    --         icon = "icon16/folder_heart.png",
+    --         data = {
+    --             {
+    --                 name = "На уровне шепета",
+    --                 icon = "icon16/heart.png",
+    --                 data = function()
+    --                     runAction("recognizesphere", client, "whispers")
+    --                 end
+    --             },
+    --             {
+    --                 name = "На уровне разговора",
+    --                 icon = "icon16/heart.png",
+    --                 data = function()
+    --                     runAction("recognizesphere", client, "talk")
+    --                 end
+    --             },
+    --             {
+    --                 name = "На уровне крика",
+    --                 icon = "icon16/heart.png",
+    --                 data = function()
+    --                     runAction("recognizesphere", client, "yell")
+    --                 end
+    --             },
+    --             {
+    --                 name = "Отдельно с игроком",
+    --                 icon = "icon16/folder_heart.png",
+    --                 data = recognizeKnowledge
+    --             }
+    --         }
+    --     }
+    -- }
 
     return data
 end
@@ -889,21 +889,21 @@ local function getActionList(clientinfo)
                     return a_isvalid
                 end
             },
-            {
-                name = "Знакомство",
-                icon = "icon16/folder_heart.png",
-                data = getAllRecognize(client)
-            },
-            {
-                name = "#monomenu_stats_respawn",
-                icon = "icon16/arrow_refresh.png",
-                data = function()
-                    runAction("setfaction", m_steamid, client:Team(), true)
-                end,
-                check = function()
-                    return a_isvalid
-                end
-            },
+            -- {
+            --     name = "Знакомство",
+            --     icon = "icon16/folder_heart.png",
+            --     data = getAllRecognize(client)
+            -- },
+            -- {
+            --     name = "#monomenu_stats_respawn",
+            --     icon = "icon16/arrow_refresh.png",
+            --     data = function()
+            --         runAction("setfaction", m_steamid, client:Team(), true)
+            --     end,
+            --     check = function()
+            --         return a_isvalid
+            --     end
+            -- },
             {
                 name = "#monomenu_comms_chat",
                 icon = "icon16/sound.png",

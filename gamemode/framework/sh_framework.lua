@@ -400,7 +400,7 @@ function Arbitrage.OnGamemasterTheme()
 end
 
 function Arbitrage.OnRecognizeDisable()
-    return GetNetVar("arb.OnRecognizeDisable", false)
+    return true --GetNetVar("arb.OnRecognizeDisable", false)
 end
 
 Arbitrage.DefaultRules = {

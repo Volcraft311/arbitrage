@@ -160,27 +160,6 @@ MonoMenu:AddGameFunction("#monomenu_gm_statuseffects", "icon16/pill_go.png", {
     end
 })
 
-MonoMenu:AddGameFunction("#monomenu_gm_freezeall", "icon16/shading.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        for k, v in pairs(player.GetNoAdmins()) do
-            if v:IsSpectate() then continue end
-
-            v:Freeze(true)
-        end
-    end
-})
-
-MonoMenu:AddGameFunction("#monomenu_gm_unfreezeall", "icon16/shape_move_front.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        for k, v in pairs(player.GetNoAdmins()) do
-            v:Freeze(false)
-        end
-    end
-})
 
 MonoMenu:AddGameFunction("#monomenu_gm_setepisode", "icon16/color_swatch.png", {
     onRun = function(client)
@@ -209,14 +188,6 @@ MonoMenu:AddGameFunction("#monomenu_gm_setepisode", "icon16/color_swatch.png", {
         customButton:SetIcon("icon16/pencil.png")
 
         dermaPanel:Open()
-    end
-})
-
-MonoMenu:AddGameFunction("#monomenu_gm_whitelist", "icon16/application_view_list.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        Whitelist:OpenMenu(client)
     end
 })
 
@@ -260,20 +231,7 @@ MonoMenu:AddGameFunction("#monomenu_gm_musicplayer", "icon16/music.png", {
     end
 })
 
-MonoMenu:AddGameFunction("#monomenu_gm_clearstats", "icon16/chart_line.png", {
-    onRun = function(client)
-        if CLIENT then return end
 
-        for k, v in ipairs(player.GetAll()) do
-            v:SetHealth(ARBITRAGE_HEALTH)
-            v:SetArmor(ARBITRAGE_ARMOR)
-
-            for k2, v2 in pairs(Arbitrage.statistics.list) do
-                Arbitrage.statistics.Set(v, v2.data, 100)
-            end
-        end
-    end
-})
 
 MonoMenu:AddGameFunction("#monomenu_gm_stopsound", "icon16/sound_none.png", {
     onRun = function(client)
@@ -297,29 +255,6 @@ MonoMenu:AddGameFunction("#monomenu_gm_clearclues", "icon16/bug_delete.png", {
 
         Evidence.list = {}
         netstream.Start(nil, "Evidence:Clear")
-    end
-})
-
-MonoMenu:AddGameFunction("#monomenu_gm_clearchat", "icon16/application_delete.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        for k, v in ipairs(player.GetAll()) do
-            v:SendLua([[
-                RunConsoleCommand("arb_chatbox_reload")
-
-                timer.Simple(0.5, function()
-                    Arbitrage.commands.Notify(nil, "#chat_admin_clear")
-                end)
-            ]])
-        end
-    end
-})
-
-MonoMenu:AddGameFunction("Изменить время", "icon16/time.png", {
-    onRun = function(client)
-        if SERVER then return end
-        vgui.Create("arb.timeChangeMenu")
     end
 })
 
@@ -850,6 +785,75 @@ MonoMenu:AddAdminFunction("#monomenu_admin_fullbright", "icon16/lightbulb.png", 
         return MonoMenu.onFullBright
     end
 })
+
+MonoMenu:AddAdminFunction("#monomenu_gm_whitelist", "icon16/application_view_list.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        Whitelist:OpenMenu(client)
+    end
+})
+
+MonoMenu:AddAdminFunction("#monomenu_gm_clearstats", "icon16/chart_line.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in ipairs(player.GetAll()) do
+            v:SetHealth(ARBITRAGE_HEALTH)
+            v:SetArmor(ARBITRAGE_ARMOR)
+
+            for k2, v2 in pairs(Arbitrage.statistics.list) do
+                Arbitrage.statistics.Set(v, v2.data, 100)
+            end
+        end
+    end
+})
+
+MonoMenu:AddAdminFunction("#monomenu_gm_clearchat", "icon16/application_delete.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in ipairs(player.GetAll()) do
+            v:SendLua([[
+                RunConsoleCommand("arb_chatbox_reload")
+
+                timer.Simple(0.5, function()
+                    Arbitrage.commands.Notify(nil, "#chat_admin_clear")
+                end)
+            ]])
+        end
+    end
+})
+
+MonoMenu:AddAdminFunction("Изменить время", "icon16/time.png", {
+    onRun = function(client)
+        if SERVER then return end
+        vgui.Create("arb.timeChangeMenu")
+    end
+})
+
+MonoMenu:AddAdminFunction("#monomenu_gm_freezeall", "icon16/shading.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in pairs(player.GetNoAdmins()) do
+            if v:IsSpectate() then continue end
+
+            v:Freeze(true)
+        end
+    end
+})
+
+MonoMenu:AddAdminFunction("#monomenu_gm_unfreezeall", "icon16/shape_move_front.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in pairs(player.GetNoAdmins()) do
+            v:Freeze(false)
+        end
+    end
+})
+
 
 Arbitrage.base.Include("cl_plugin.lua")
 Arbitrage.base.Include("sv_plugin.lua")

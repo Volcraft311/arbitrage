@@ -375,10 +375,7 @@ local ActionPressIDList = {
     end,
     ["open_monomenu_ui"] = function(client, id, bIsVisibleGUI)
         if IsValid(Arbitrage.gui.monomenu) then
-            Arbitrage.gui.monomenu:AlphaTo(0, 0.3, 0, function()
-                Arbitrage.gui.monomenu:Remove()
-            end)
-
+            Arbitrage.gui.monomenu:Close()
             return
         end
 

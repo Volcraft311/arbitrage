@@ -4,25 +4,30 @@
         You can get more information from one of the links below:
             Site - https://asterion.games
             Discord - https://discord.gg/Np5evb5ZsR
-        
+
         developer(s):
             Selenter - https://steamcommunity.com/id/selenter
 
         ——— Chop your own wood and it will warm you twice.
-]]--
+]] --
 
 local PLUGIN = PLUGIN
 
+---@type DFrame
 local PANEL = {}
 
 function PANEL:Init()
     self:SetTitle("")
-    self:SetPos(0, 0)
     self:SetSize(W(960 * 1.3), H(540 * 1.3))
     self:MakePopup()
     self:SetAlpha(0)
-    self:AlphaTo(255, 0.3)
-    self:Center()
+    self:AlphaTo(255, 0.1)
+    local targetX = (ScrW() - self:GetWide()) * 0.5
+    local targetY = (ScrH() - self:GetTall()) * 0.5
+    self:SetPos(targetX, targetY*1.4)
+
+    self:MoveTo(targetX, targetY, 0.2)
+
     self:ShowCloseButton(false)
     self:SetZPos(30002)
 
@@ -36,12 +41,23 @@ function PANEL:Init()
         draw.DrawText("X", "arb.Font_FuturaPTBook_7", w / 2, H(4), Color(255, 255, 255, _.alpha), TEXT_ALIGN_LEFT)
     end
     close.DoClick = function()
-        self:AlphaTo(0, 0.2, 0, function()
-            self:Remove()
-        end)
+        self:Close()
     end
 
     Arbitrage.gui.monomenu = self
+end
+
+function PANEL:Close(callback)
+    local targetX = (ScrW() - self:GetWide()) * 0.5
+    local targetY = (ScrH() - self:GetTall()) * 0.5
+    
+    self:MoveTo(targetX, targetY*1.4, 0.2, 0, -1, function (animData, targetPanel)
+        self:Remove()
+        if callback then
+            callback()
+        end
+    end)
+    self:AlphaTo(0, 0.3)
 end
 
 function PANEL:InitPlayersCategory()
@@ -55,7 +71,8 @@ function PANEL:InitPlayersCategory()
     self.charactersPanel:Dock(TOP)
     self.charactersPanel.pl = {}
     self.charactersPanel.Paint = function(_, w, h)
-        draw.DrawText(L("#monomenu_menu_ingame"), "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#monomenu_menu_ingame"), "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50),
+            TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 255, 255, 50)
         surface.DrawRect(w * 0.15, 22 - 2, w - w * 0.3, 2)
@@ -65,7 +82,8 @@ function PANEL:InitPlayersCategory()
     self.notcharactersPanel:SetTall(H(22))
     self.notcharactersPanel:Dock(TOP)
     self.notcharactersPanel.Paint = function(_, w, h)
-        draw.DrawText(L("#monomenu_other"), "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50), TEXT_ALIGN_CENTER)
+        draw.DrawText(L("#monomenu_other"), "arb.Font_FuturaPTBook_6", w / 2, 0, Color(255, 255, 255, 50),
+            TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(255, 255, 255, 50)
         surface.DrawRect(w * 0.15, 22 - 2, w - w * 0.3, 2)
@@ -207,14 +225,14 @@ function PANEL:SetData(data)
     self.data = data
 
     for i = 1, 2 do
-        local tableData = i == 1 and PLUGIN.GameData or PLUGIN.AdminData
+        local tableData = i==1 and PLUGIN.GameData or PLUGIN.AdminData
 
         for k, v in ipairs(tableData) do
             local allow = true
             if v.onCreate then
                 local bState = v.onCreate(client)
 
-                if !bState then
+                if ! bState then
                     allow = false
                 end
             end
@@ -223,7 +241,7 @@ function PANEL:SetData(data)
             local text = isfunction(v.data) and v.data(client) or tostring(v.data)
             local alpha = 255
 
-            local panel_add = i == 1 and self.gamePanel or self.adminPanel
+            local panel_add = i==1 and self.gamePanel or self.adminPanel
 
             local panel = panel_add:Add("DPanel")
             panel:SetTall(H(30))
@@ -262,7 +280,7 @@ function PANEL:SetData(data)
 
             button.DoClick = function()
                 if v.OnClick then
-                    if !v.OnClick(client) then return end
+                    if ! v.OnClick(client) then return end
                 end
                 local function Csound()
                     asterionlib.EmitSound(PLUGIN.ClickSound)
@@ -294,14 +312,16 @@ function PANEL:SetData(data)
             end
 
             panel.Paint = function(_, w, h)
-                _.alpha = Lerp(FrameTime() * 10, _.alpha, (button:IsHovered() and ((v.onRun and allow) or isCheckBox)) and 200 or 0)
+                _.alpha = Lerp(FrameTime() * 10, _.alpha,
+                    (button:IsHovered() and ((v.onRun and allow) or isCheckBox)) and 200 or 0)
 
                 surface.SetDrawColor(27, 10, 13, _.alpha)
                 surface.DrawRect(0, 0, w, h)
 
-                draw.DrawText(F(text), "arb.Font_FuturaPTBook_7", panel:GetTall(), H(4), Color(alpha, alpha, alpha), TEXT_ALIGN_LEFT)
+                draw.DrawText(F(text), "arb.Font_FuturaPTBook_7", panel:GetTall(), H(4), Color(alpha, alpha, alpha),
+                    TEXT_ALIGN_LEFT)
 
-                if !allow then
+                if ! allow then
                     surface.SetDrawColor(255, 0, 0, 20)
                     surface.DrawRect(0, 0, w, h)
                 end
@@ -315,31 +335,35 @@ function PANEL:SetData(data)
         local nameColor = (IsValid(v.client) and v.client:IsAdmin()) and Color(86, 191, 223) or color_white
         local factionColor = IsPlaying(v.faction) and color_white or Color(255, 0, 0)
         local aliveColor = (v.alive and IsValid(v.client)) and Color(71, 235, 117) or Color(204, 99, 99)
-        local placeColor = v.place > 0 and color_white or (v.place == 0 and Color(86, 191, 223) or Color(242, 73, 73))
+        local placeColor = v.place>0 and color_white or (v.place==0 and Color(86, 191, 223) or Color(242, 73, 73))
 
         local panel = self.charactersPanel:Add("Panel")
         panel:SetTall(H(30))
         panel:Dock(TOP)
-        panel:DockMargin(0, num == 1 and H(25) or 0, 0, 0)
+        panel:DockMargin(0, num==1 and H(25) or 0, 0, 0)
         panel.Paint = function(_, w, h)
-            if num % 2 == 0 then
+            if num % 2==0 then
                 surface.SetDrawColor(255, 61, 96, 1)
                 surface.DrawRect(0, 0, w, h)
             end
 
-            local circle = Arbitrage.hud.GeneratePoly(w - panel:GetTall() / 3 * 6, H(5) + panel:GetTall() / 3, panel:GetTall() / 3, 360)
+            local circle = Arbitrage.hud.GeneratePoly(w - panel:GetTall() / 3 * 6, H(5) + panel:GetTall() / 3,
+                panel:GetTall() / 3, 360)
 
             surface.SetDrawColor(aliveColor)
             draw.NoTexture()
             surface.DrawPoly(circle)
 
-            draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor, TEXT_ALIGN_LEFT)
+            draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor,
+                TEXT_ALIGN_LEFT)
 
             if factionData then
-                draw.DrawText(L(factionData:GetName()), "arb.Font_FuturaPTBook_5", w / 2, H(8), factionColor, TEXT_ALIGN_CENTER)
+                draw.DrawText(L(factionData:GetName()), "arb.Font_FuturaPTBook_5", w / 2, H(8), factionColor,
+                    TEXT_ALIGN_CENTER)
             end
 
-            draw.DrawText(L("#monomenu_menu_ctplace") .. " " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + W(200), H(8), placeColor, TEXT_ALIGN_CENTER)
+            draw.DrawText(L("#monomenu_menu_ctplace") .. " " .. v.place, "arb.Font_FuturaPTBook_5", w / 2 + W(200), H(8),
+                placeColor, TEXT_ALIGN_CENTER)
         end
 
         local mat = (factionData and factionData:GetAssets().pixel) and Material(factionData:GetAssets().pixel) or nil
@@ -348,7 +372,7 @@ function PANEL:SetData(data)
         modelPanel:SetWide(panel:GetTall())
         modelPanel:Dock(LEFT)
         modelPanel.Paint = function(_, w, h)
-            if mat and !mat:IsError() then
+            if mat and ! mat:IsError() then
                 surface.SetDrawColor(255, 255, 255)
                 surface.SetMaterial(mat)
                 surface.DrawTexturedRect(0, 0, w, h)
@@ -370,23 +394,26 @@ function PANEL:SetData(data)
         local panel = self.notcharactersPanel:Add("Panel")
         panel:SetTall(H(30))
         panel:Dock(TOP)
-        panel:DockMargin(0, num == 1 and H(25) or 0, 0, 0)
+        panel:DockMargin(0, num==1 and H(25) or 0, 0, 0)
         panel.Paint = function(_, w, h)
-            if num % 2 == 0 then
+            if num % 2==0 then
                 surface.SetDrawColor(255, 61, 96, 1)
                 surface.DrawRect(0, 0, w, h)
             end
 
-            local circle = Arbitrage.hud.GeneratePoly(w - panel:GetTall() / 3 * 6, H(5) + panel:GetTall() / 3, panel:GetTall() / 3, 360)
+            local circle = Arbitrage.hud.GeneratePoly(w - panel:GetTall() / 3 * 6, H(5) + panel:GetTall() / 3,
+                panel:GetTall() / 3, 360)
 
             surface.SetDrawColor(aliveColor)
             draw.NoTexture()
             surface.DrawPoly(circle)
 
-            draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor, TEXT_ALIGN_LEFT)
+            draw.DrawText(v.steamname .. " (" .. v.steamid .. ")", "arb.Font_FuturaPTBook_5", W(45), H(8), nameColor,
+                TEXT_ALIGN_LEFT)
 
             if factionData then
-                draw.DrawText(L(factionData:GetName()), "arb.Font_FuturaPTBook_5", w / 2, H(8), color_white, TEXT_ALIGN_CENTER)
+                draw.DrawText(L(factionData:GetName()), "arb.Font_FuturaPTBook_5", w / 2, H(8), color_white,
+                    TEXT_ALIGN_CENTER)
             end
         end
 
@@ -396,7 +423,7 @@ function PANEL:SetData(data)
         modelPanel:SetWide(panel:GetTall())
         modelPanel:Dock(LEFT)
         modelPanel.Paint = function(_, w, h)
-            if mat and !mat:IsError() then
+            if mat and ! mat:IsError() then
                 surface.SetDrawColor(255, 255, 255)
                 surface.SetMaterial(mat)
                 surface.DrawTexturedRect(0, 0, w, h)

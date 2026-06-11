@@ -233,32 +233,6 @@ MonoMenu:AddGameFunction("#monomenu_gm_musicplayer", "icon16/music.png", {
 
 
 
-MonoMenu:AddGameFunction("#monomenu_gm_stopsound", "icon16/sound_none.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        for k, v in ipairs(player.GetAll()) do
-            v:ConCommand("stopsound")
-        end
-    end
-})
-
-MonoMenu:AddGameFunction("#monomenu_gm_clearclues", "icon16/bug_delete.png", {
-    onRun = function(client)
-        if CLIENT then return end
-
-        for k, v in ipairs(ents.GetAll()) do
-            if v:GetEvidence() then
-                v:Remove()
-            end
-        end
-
-        Evidence.list = {}
-        netstream.Start(nil, "Evidence:Clear")
-    end
-})
-
-
 -- MonoMenu:AddGameFunction("#monomenu_gm_mapreversion", "icon16/script_code_red.png", {
 --     isCheckBox = true,
 --     onEnable = function(client)
@@ -853,6 +827,32 @@ MonoMenu:AddAdminFunction("#monomenu_gm_unfreezeall", "icon16/shape_move_front.p
         end
     end
 })
+
+MonoMenu:AddAdminFunction("#monomenu_gm_stopsound", "icon16/sound_none.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in ipairs(player.GetAll()) do
+            v:ConCommand("stopsound")
+        end
+    end
+})
+
+MonoMenu:AddAdminFunction("#monomenu_gm_clearclues", "icon16/bug_delete.png", {
+    onRun = function(client)
+        if CLIENT then return end
+
+        for k, v in ipairs(ents.GetAll()) do
+            if v:GetEvidence() then
+                v:Remove()
+            end
+        end
+
+        Evidence.list = {}
+        netstream.Start(nil, "Evidence:Clear")
+    end
+})
+
 
 
 Arbitrage.base.Include("cl_plugin.lua")

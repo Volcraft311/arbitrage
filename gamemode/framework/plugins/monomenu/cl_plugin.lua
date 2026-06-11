@@ -713,7 +713,7 @@ local function getActionList(clientinfo)
     local faction = Character.team:GetByID(clientinfo.faction)
     local time = string.FormattedTime(curtime - (a_isvalid and client:GetNetVar("connectedTime", curtime) or curtime))
 
-    local m_name = a_isvalid and client:Name() or clientinfo.steamname
+    local m_name = a_isvalid and client:Nick() or clientinfo.steamname
     local m_steamname = clientinfo.steamname
     local m_steamid = clientinfo.steamid
     local m_time = ("%s:%s:%s"):format(time.h, time.m, time.s)
@@ -732,80 +732,38 @@ local function getActionList(clientinfo)
     return {
         {
             {
-                name = "#monomenu_stats_name " .. m_name,
+                name = m_name,
                 icon = "icon16/book.png",
                 data = function()
                     SetClipboardText(m_name)
                 end
             },
             {
-                name = "#monomenu_stats_steamname " .. m_steamname,
-                icon = "icon16/book_addresses.png",
-                data = function()
-                    SetClipboardText(m_steamname)
-                end
-            },
-            {
-                name = "#monomenu_stats_steamid " .. m_steamid,
-                icon = "icon16/book_link.png",
-                data = function()
-                    SetClipboardText(m_steamid)
-                end
-            },
-            {
-                name = "#monomenu_stats_uptime " .. m_time,
-                icon = "icon16/clock.png",
-                data = function()
-                    SetClipboardText(m_time)
-                end
-            },
-            {
-                name = "#monomenu_stats_status " .. m_status,
+                name = m_status,
                 icon = "icon16/status_online.png",
                 data = function()
                     SetClipboardText(m_status)
                 end
             },
             {
-                name = "#monomenu_stats_char " .. m_character,
+                name = m_character,
                 icon = "icon16/user.png",
                 data = function()
                     SetClipboardText(m_character)
                 end
             },
             {
-                name = "#monomenu_stats_health " .. s_health,
+                name = "ХП: " .. s_health .. ", Броня: " .. s_armor,
                 icon = "icon16/heart.png",
                 data = function()
-                    SetClipboardText(s_health)
+                    SetClipboardText(s_health .. ", " .. s_armor)
                 end
             },
             {
-                name = "#monomenu_stats_armor " .. s_armor,
-                icon = "icon16/shape_square.png",
-                data = function()
-                    SetClipboardText(s_armor)
-                end
-            },
-            {
-                name = "#monomenu_stats_hunger " .. s_hunger,
+                name = "Г:" .. s_hunger .. ", Ж:" .. s_thirst .. ", С:" .. s_sleep,
                 icon = "icon16/cake.png",
                 data = function()
-                    SetClipboardText(s_hunger)
-                end
-            },
-            {
-                name = "#monomenu_stats_thirst " .. s_thirst,
-                icon = "icon16/cup.png",
-                data = function()
-                    SetClipboardText(s_thirst)
-                end
-            },
-            {
-                name = "#monomenu_stats_sleep " .. s_sleep,
-                icon = "icon16/contrast_high.png",
-                data = function()
-                    SetClipboardText(s_sleep)
+                    SetClipboardText("Г:" .. s_hunger .. "Ж:" .. s_thirst .. "С:" .. s_sleep)
                 end
             }
         },

@@ -1472,7 +1472,7 @@ Arbitrage.language:Add("ru", {
     ["#monomenu_ply_status_clearall"] = "Очистить все эффекты",
 
     ["#monomenu_stats_alive"] = "Жив",
-    ["#monomenu_stats_dead"] = "Мертв",
+    ["#monomenu_stats_dead"] = "Мёртв",
     ["#monomenu_stats_name"] = "Имя:",
     ["#monomenu_stats_steamname"] = "SteamName:",
     ["#monomenu_stats_steamid"] = "SteamID:",

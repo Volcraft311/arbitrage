@@ -324,22 +324,22 @@ MonoMenu:AddGameFunction("Изменить время", "icon16/time.png", {
 })
 
 
-MonoMenu:AddGameFunction("#monomenu_gm_mapreversion", "icon16/script_code_red.png", {
-    isCheckBox = true,
-    onEnable = function(client)
-        if CLIENT then return end
+-- MonoMenu:AddGameFunction("#monomenu_gm_mapreversion", "icon16/script_code_red.png", {
+--     isCheckBox = true,
+--     onEnable = function(client)
+--         if CLIENT then return end
 
-        SetNetVar("arb.OnMapReversion", true)
-    end,
-    onDisable = function(client)
-        if CLIENT then return end
+--         SetNetVar("arb.OnMapReversion", true)
+--     end,
+--     onDisable = function(client)
+--         if CLIENT then return end
 
-        SetNetVar("arb.OnMapReversion", false)
-    end,
-    OnCheck = function(client)
-        return Arbitrage.OnMapReversion()
-    end
-})
+--         SetNetVar("arb.OnMapReversion", false)
+--     end,
+--     OnCheck = function(client)
+--         return Arbitrage.OnMapReversion()
+--     end
+-- })
 
 -- MonoMenu:AddGameFunction("Система знакомств", "icon16/heart_add.png", {
 --     isCheckBox = true,

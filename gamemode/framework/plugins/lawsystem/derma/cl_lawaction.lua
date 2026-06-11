@@ -28,7 +28,7 @@ local function createCategory(panel, name)
         surface.SetDrawColor(255, 61, 96, 50)
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleText(F(name), "arb.Font_FuturaPTBook_6", 5, 0, color_white, TEXT_ALIGN_LEFT)
+        draw.SimpleText(F(tostring(name)), "arb.Font_FuturaPTBook_6", 5, 0, color_white, TEXT_ALIGN_LEFT)
     end
 
     local button = title:Add("DButton")
